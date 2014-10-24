@@ -1,4 +1,0 @@
-mathspring
-==========
-
-mathspring bugs
