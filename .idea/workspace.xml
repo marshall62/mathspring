@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="fixes a 404 that happened when returning from MPP.">
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Readme.MD" afterPath="$PROJECT_DIR$/Readme.MD" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -15,7 +15,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1368816022243" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414178984169" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414180010619" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
     <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1413493163199" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
@@ -855,7 +855,7 @@
     <file path="/AskEmotionSliderIntervention.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1413492772202" ignored="false" />
     <file path="/DbEmotionResponses.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1413558045733" ignored="false" />
     <file path="/StudentModelMasteryHeuristic.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1413909320876" ignored="false" />
-    <file path="/Readme.MD" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414179969013" ignored="false" />
+    <file path="/Readme.MD" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414180489643" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1138,7 +1138,7 @@
       <file leaf-file-name="BasePedagogicalModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="150" column="33" selection-start="8434" selection-end="8434" vertical-scroll-proportion="-7.72">
+            <state line="145" column="23" selection-start="8128" selection-end="8128" vertical-scroll-proportion="-2.28">
               <folding>
                 <element signature="e#7737#7766#0" expanded="true" />
               </folding>
@@ -1158,7 +1158,7 @@
       <file leaf-file-name="Readme.MD" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Readme.MD">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="0" selection-start="687" selection-end="687" vertical-scroll-proportion="0.35628742">
+            <state line="12" column="35" selection-start="428" selection-end="428" vertical-scroll-proportion="0.30538923">
               <folding />
             </state>
           </provider>
@@ -2684,7 +2684,11 @@
       <created>1413992993224</created>
       <updated>1413992993224</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="alterred the instructions">
+      <created>1414180014294</created>
+      <updated>1414180014294</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2787,7 +2791,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes a 404 that happened when returning from MPP." />
+    <option name="LAST_COMMIT_MESSAGE" value="alterred the instructions" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -2801,7 +2805,6 @@
     <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Latest veresions of PedagogicalModel etc for Melissa to begin from." />
     <MESSAGE value="Added all the methods that are part of TopicSelector to ProblemGroupSelector so Melissa can change the signatures to be appropriate for both common core and topics." />
     <MESSAGE value="Fleshed out ProblemGroupSelector and alterred BasePedagogicalModel to use it as the declared type of topicSelector" />
     <MESSAGE value="turned off autoreading problems.   Added temp splash page and new event&#10;EnterTutor" />
@@ -2826,6 +2829,7 @@
     <MESSAGE value="made the update to statistics only happen for non guest/test" />
     <MESSAGE value="Added a &quot;select problem&quot; button so that test users can pick the next problem and so they can see the correct answer to the current problem" />
     <MESSAGE value="fixes a 404 that happened when returning from MPP." />
+    <MESSAGE value="alterred the instructions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3009,15 +3013,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="150" column="33" selection-start="8434" selection-end="8434" vertical-scroll-proportion="-7.72">
-          <folding>
-            <element signature="e#7737#7766#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="445" column="19" selection-start="20296" selection-end="20296" vertical-scroll-proportion="0.0">
@@ -3025,9 +3020,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="145" column="23" selection-start="8128" selection-end="8128" vertical-scroll-proportion="-2.28">
+          <folding>
+            <element signature="e#7737#7766#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Readme.MD">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="687" selection-end="687" vertical-scroll-proportion="0.35628742">
+        <state line="12" column="35" selection-start="428" selection-end="428" vertical-scroll-proportion="0.30538923">
           <folding />
         </state>
       </provider>
