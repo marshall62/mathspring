@@ -1,0 +1,321 @@
+
+<!-- 3/4/10 DM for testing Emote Servlet.   Delete this pedagogy once we see that
+Emote works.  We don't want to offer it to admins for classes-->
+<pedagogy>
+    <id>4</id>
+    <active>false</active>
+    <name>Random problem selection with no interventions</name>
+    <comment>for EmoteServlet test</comment>
+    <pedagogicalModelClass>GentleAdaptiveEmotionalWithFemaleCharacterPM</pedagogicalModelClass>
+
+</pedagogy>
+
+
+<pedagogy>
+<id>12</id>
+<active>false</active>
+<name>Random problem selection with random (fixed time) interventions</name>
+<comment>for group 1</comment>
+<pedagogicalModelClass>RandomProblemsPM</pedagogicalModelClass>
+
+<!--<studentModelClass>AffectStudentModel</studentModelClass>-->
+<!--<problemSelectorClass>RandomProblemSelector</problemSelectorClass>-->
+<!--<hintSelectorClass>PercentageHintSelector</hintSelectorClass>-->
+<!--<interventionSelectorClass>FixedTimeRandomInterventionSelector</interventionSelectorClass>-->
+
+</pedagogy>
+
+<pedagogy>
+<id>13</id>
+<active>false</active>
+<name>Adaptive topic-based problem selection with fixed (emotionfeedback) interventions</name>
+<comment>for pilot group</comment>
+<pedagogicalModelClass>AdaptiveWithEmotionFeedbackPM</pedagogicalModelClass>
+
+<!--<studentModelClass>StudentModelMotivationalImpl</studentModelClass>-->
+<!--<problemSelectorClass>AdaptiveProblemGroupProblemSelector</problemSelectorClass>-->
+<!--<hintSelectorClass>PercentageHintSelector</hintSelectorClass>-->
+<!--<interventionSelectorClass>FixedTimeConstantInterventionSelector</interventionSelectorClass>-->
+
+</pedagogy>
+<pedagogy>
+<id>14</id>
+<active>false</active>
+<name>Gentle Adaptive with Characters. Problems grouped by topic with JAKE providing feedback</name>
+<comment>for adaptive characters</comment>
+<pedagogicalModelClass>GentleAdaptiveWithMaleCharacterPM</pedagogicalModelClass>
+
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>MaleLC</learningCompanionClass>  -->
+
+</pedagogy>
+<pedagogy>
+<id>15</id>
+<active>false</active>
+<name>Gentle Adaptive with Characters. Problems grouped by topic with JANE providing feedback</name>
+<comment>for adaptive characters</comment>
+<pedagogicalModelClass>GentleAdaptiveWithFemaleCharacterPM</pedagogicalModelClass>
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>FemaleLC</learningCompanionClass>  -->
+
+</pedagogy>
+<pedagogy>
+<id>16</id>
+<active>false</active>
+<name>Gentle Adaptive. Problems grouped by topic, requesting emotions, without immediate feedback</name>
+<comment>for group 20</comment>
+<pedagogicalModelClass>GentleAdaptiveFixedTimeEmotionFeedbackPM</pedagogicalModelClass>
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>FixedTimeRandomEmotion</interventionSelectorClass>  -->
+
+</pedagogy>
+<pedagogy>
+<id>17</id>
+<active>false</active>
+<name>Challenging Adaptive. Problems grouped by topic, no interventions</name>
+<comment>for group 17</comment>
+<pedagogicalModelClass>ChallengingAdaptivePM</pedagogicalModelClass>
+<!--
+<studentModelClass>AffectStudentModel</studentModelClass>
+<problemSelectorClass>AdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass> -->
+
+</pedagogy>
+
+<pedagogy>
+<id>20</id>
+<active>false</active>
+<name>Test Pedagogy</name>
+<comment>debugging</comment>
+<pedagogicalModelClass>TestPedagogicalModel</pedagogicalModelClass>
+<!-- these 3 only here so it will parse -->
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+</pedagogy>
+
+<pedagogy>
+<id>21</id>
+<active>false</active>
+<name>Empathic JANE Learning Companion</name>
+<comment>for group 21</comment>
+<pedagogicalModelClass>JaneEmpathicPM</pedagogicalModelClass>
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>FemaleEmpathicLC</learningCompanionClass>   -->
+</pedagogy>
+
+<pedagogy>
+<id>22</id>
+<active>false</active>
+<name>Empathic JAKE Learning Companion</name>
+<comment>for group 22</comment>
+<pedagogicalModelClass>JakeEmpathicPM</pedagogicalModelClass>
+
+<!-- <studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>MaleEmpathicLC</learningCompanionClass>    -->
+</pedagogy>
+
+<pedagogy>
+<id>23</id>
+<active>false</active>
+<name>Random Empathic JANE Learning Companion</name>
+<comment>for group 23</comment>
+<pedagogicalModelClass>JaneRandomEmpathicPM</pedagogicalModelClass>
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>FemaleRandomEmpathicLC</learningCompanionClass>   -->
+</pedagogy>
+
+<pedagogy>
+<id>24</id>
+<active>false</active>
+<name>Random Empathic JAKE Learning Companion</name>
+<comment>for group 24</comment>
+
+<pedagogicalModelClass>JakeRandomEmpathicPM</pedagogicalModelClass>
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>MaleRandomEmpathicLC</learningCompanionClass>  -->
+</pedagogy>
+
+<pedagogy>
+<id>25</id>
+<active>false</active>
+<name>Non Emotional JANE Learning Companion</name>
+<comment>for group 25</comment>
+<pedagogicalModelClass>JaneNonEmotionalPM</pedagogicalModelClass>
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>FemaleNonEmotionalLC</learningCompanionClass>  -->
+</pedagogy>
+
+<pedagogy>
+<id>26</id>
+<active>false</active>
+<name>Non Emotional JAKE Learning Companion</name>
+<comment>for group 26</comment>
+<pedagogicalModelClass>JakeNonEmotionalPM</pedagogicalModelClass>
+<!--
+<studentModelClass>StudentModelMotivationalImpl</studentModelClass>
+<problemSelectorClass>GentleAdaptiveProblemGroupProblemSelector</problemSelectorClass>
+<hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+<interventionSelectorClass>CharacterImmFeedbackInterventionSelector</interventionSelectorClass>
+<learningCompanionClass>MaleNonEmotionalLC</learningCompanionClass>  -->
+</pedagogy>
+
+<pedagogy>
+<id>27</id>
+<active>false</active>
+<name>Gentle Adaptive Emotional Female Companion - Uses Emote Server</name>
+<comment>for group 27 - tests EmoteServlet</comment>
+<pedagogicalModelClass>GentleAdaptiveEmotionalWithFemaleCharacterPM</pedagogicalModelClass>
+</pedagogy>
+        30
+
+<pedagogy>
+<id>28</id>
+<active>false</active>
+<name>Adaptive Empathic Isabel (Latino Female) Learning Companion</name>
+<comment>for group 28</comment>
+<pedagogicalModelClass>IsabelEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+
+<pedagogy>
+<id>29</id>
+<active>false</active>
+<name>Adaptive Empathic Luis (Latino Male) Learning Companion</name>
+<comment>for group 29</comment>
+<pedagogicalModelClass>LuisEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+
+<pedagogy default="true">
+<id>30</id>
+<active>false</active>
+<name>Adaptive Empathic Isabel (Latino Female) With Hint Offering</name>
+<comment>for group 30</comment>
+<pedagogicalModelClass>IsabelImmFeedbackEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+
+<pedagogy default="true">
+<id>31</id>
+<active>false</active>
+<name>Adaptive Empathic Luis (Latino Male) With Hint Offering</name>
+<comment>for group 31</comment>
+<pedagogicalModelClass>LuisImmFeedbackEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+
+<pedagogy>
+<id>32</id>
+<active>false</active>
+<name>Adaptive Empathic Jane With EMOTE Selected emotion</name>
+<comment>for group 32</comment>
+<pedagogicalModelClass>JaneEMOTEEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+
+<pedagogy>
+<id>33</id>
+<active>false</active>
+<name>Adaptive Empathic Jake With EMOTE Selected emotion</name>
+<comment>for group 33</comment>
+<pedagogicalModelClass>JakeEMOTEEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+<pedagogy>
+<id>34</id>
+<active>false</active>
+<name>Adaptive Empathic Isabel With EMOTE Selected emotion</name>
+<comment>for group 34</comment>
+<pedagogicalModelClass>IsabelEMOTEEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+<pedagogy>
+<id>35</id>
+<active>false</active>
+<name>Adaptive Empathic Luis With EMOTE Selected emotion</name>
+<comment>for group 35</comment>
+<pedagogicalModelClass>LuisEMOTEEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+<pedagogy>
+<id>36</id>
+<active>false</active>
+<name>No character Adaptive Empathic With Hint Offering</name>
+<comment>for group 36</comment>
+<pedagogicalModelClass>NoCharacterImmFeedbackPM</pedagogicalModelClass>
+</pedagogy>
+<pedagogy default="true">
+<id>37</id>
+<active>false</active>
+<name>Adaptive Empathic JANE (White Female) With Hint Offering</name>
+<comment>for group 37</comment>
+<pedagogicalModelClass>JaneImmFeedbackEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+
+<pedagogy default="true">
+<id>38</id>
+<active>false</active>
+<name>Adaptive Empathic JAKE (White Male) With Hint Offering</name>
+<comment>for group 31</comment>
+<pedagogicalModelClass>JakeImmFeedbackEmpathicPM</pedagogicalModelClass>
+</pedagogy>
+<pedagogy default="true">
+<id>39</id>
+<active>false</active>
+<name>OnlyTutoring</name>
+<comment>No Interventions</comment>
+<pedagogicalModelClass>OnlyTutoringPM</pedagogicalModelClass>
+</pedagogy>
+
+
+<pedagogy default="true">
+<id>40</id>
+<active>false</active>
+<name>Tutor with ExternalActivities between problems as interventions</name>
+<comment>external activities used as interventions</comment>
+<pedagogicalModelClass>GentleAdaptiveWithExternalActivitiesPM</pedagogicalModelClass>
+</pedagogy>
+
+        <!--  Builds a subclass of SingleTopicPM which uses JaneEmpathicLC and customized nextProblem and attempt intervention
+        handling.   -->
+<pedagogy default="true">
+<id>41</id>
+<active>true</active>
+<package>pedModel2</package>
+<name>Jane Teach One topic for Assistments</name>
+<comment>for Assistments</comment>
+<pedagogicalModelClass>SingleTopicPM</pedagogicalModelClass>
+<nextProblemInterventionSelectorCombiner class="NextProblemListCombinerIS">
+    <nextProblemInterventionSelector>TopicSwitchAskIS</nextProblemInterventionSelector>
+    <nextProblemInterventionSelector>ExternalActivityIS</nextProblemInterventionSelector>
+</nextProblemInterventionSelectorCombiner>
+<attemptInterventionSelectorCombiner class="AttemptListCombinerIS">
+    <attemptInterventionSelector>HighlightHintButtonIS</attemptInterventionSelector>
+    <attemptInterventionSelector>GuessingAskAffectIS</attemptInterventionSelector>
+</attemptInterventionSelectorCombiner>
+<learningCompanionClass>JaneEmpathicLC</learningCompanionClass>
+
+</pedagogy>

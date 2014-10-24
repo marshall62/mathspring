@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="2033530450">
+    <data-source source="LOCAL" name="Data Source" product="MySQL" version="5.1.73" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.30 ( Revision: alexander.soklakov@oracle.com-20140310090514-8xt1yoht5ksg2e7c )" uuid="10765447-be55-49aa-960c-8d195063fbaf">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://rose.cs.umass.edu/wayangoutpostdb</jdbc-url>
+      <user-name>WayangServer</user-name>
+      <user-password>dfc0dfdfdfdadfc3dfdedfcfdfd8</user-password>
+      <libraries>
+        <library>
+          <url>jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar!/</url>
+        </library>
+      </libraries>
+    </data-source>
+  </component>
+</project>
+

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="woServer war Cadmium">
+    <output-path>$PROJECT_DIR$/out/artifacts/woj/cadmium</output-path>
+    <root id="archive" name="woj.war">
+      <element id="artifact" artifact-name="woServer:WebForCadmium exploded" />
+    </root>
+  </artifact>
+</component>

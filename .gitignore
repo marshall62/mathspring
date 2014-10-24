@@ -1,0 +1,7 @@
+/out/*
+**/.idea/tasks.xml
+/__artifacts_temp/
+/emailer/target/
+/servletFramework/target/
+/woServer/target/
+*.swd

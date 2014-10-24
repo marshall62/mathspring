@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+        <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class name="edu.umass.ckc.wo.beans.Teacher" table="teacher" catalog="wayangoutpostdb">
+    <id name="id" type="java.lang.Integer">
+        <column name="ID" />
+        <generator class="identity" />
+    </id>
+    <property name="fname" type="string">
+        <column name="fname" length="50" not-null="true" unique="false" />
+    </property>
+    <property name="lname" type="string">
+        <column name="lname" length="50" not-null="true" unique="false" />
+    </property>
+    <property name="userName" type="string">
+        <column name="userName" length="50" not-null="true" unique="true" />
+    </property>
+    <property name="email" type="string">
+        <column name="email" length="100" not-null="true" unique="true" />
+    </property>
+    <property name="password" type="string">
+        <column name="password" length="30"  not-null="true" unique="false" />
+    </property>
+
+</class>
+</hibernate-mapping>
