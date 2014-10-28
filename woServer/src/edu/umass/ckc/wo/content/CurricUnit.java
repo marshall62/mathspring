@@ -18,35 +18,27 @@ public class CurricUnit {
     private int clustId;
     private int lessonId;
     private int position;  // its position in the lesson (which implies that a curric unit exists only for one lesson)
-    private List<Integer> probIds;
+    private int probId;
+//    private List<Integer> probIds;
 
     private CCCluster cluster;
     private CCStandard standard;
-    private List<Problem> problems;
+//    private List<Problem> problems;
+    private Problem problem;
 
-    public CurricUnit(int id, String typ, int lessonId, int position) {
-        this.id=id;
-        this.t=type.problems;
-        this.lessonId=lessonId;
-        this.position=position;
-        this.probIds = new ArrayList<Integer>();
-    }
 
-    public CurricUnit(int id, String typ, String stdId, int lessonId, int position) {
+
+    public CurricUnit (int id,String stdId, int clustId, int probId, int lessonId, int position) {
         this.id=id;
         this.t=type.standard;
+        this.clustId = clustId;
         this.stdId=stdId;
+        this.probId = probId;
         this.lessonId=lessonId;
         this.position=position;
     }
 
-    public CurricUnit(int id, String typ, int clustId, int lessonId, int position) {
-        this.id=id;
-        this.t=type.cluster;
-        this.clustId=clustId;
-        this.lessonId=lessonId;
-        this.position=position;
-    }
+
 
     public void setCluster(CCCluster cluster) {
         this.cluster = cluster;
@@ -56,17 +48,23 @@ public class CurricUnit {
         this.standard = standard;
     }
 
-    public void setProbIds (List<Integer> probIds) {
-        this.probIds = probIds;
+    public int getProbId() {
+        return probId;
     }
 
-    public List<Integer> getProbIds () {
-        return this.probIds;
+    public void setProbId(int probId) {
+        this.probId = probId;
     }
 
-    public void setProblems(List<Problem> problems) {
-        this.problems = problems;
+    public Problem getProblem() {
+        return problem;
     }
+
+    public void setProblem(Problem problem) {
+        this.problem = problem;
+    }
+
+
 
     public int getId() {
         return id;
@@ -84,9 +82,6 @@ public class CurricUnit {
         return standard;
     }
 
-    public List<Problem> getProblems() {
-        return problems;
-    }
 
     public int getPosition() {
         return position;

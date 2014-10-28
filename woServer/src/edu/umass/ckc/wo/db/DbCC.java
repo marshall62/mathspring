@@ -116,14 +116,15 @@ public class DbCC {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select id,cu_type, clusterId, stdId, lessonid,position from curriculumunit where id=?";
+            String q = "select id, probId, clusterId, stdId, lessonid,position from curriculumunit where id=?";
             ps = conn.prepareStatement(q);
             ps.setInt(1,cuId);
             rs = ps.executeQuery();
             if (rs.next()) {
                 int id=rs.getInt("id");
-                String typ = rs.getString("cu_type");
-                boolean isStd=false,isClust=false;
+                boolean isStd=false,isClust=false, isProb=false;
+                int probId = rs.getInt("probId");
+                isProb = !rs.wasNull();
                 int clustId = rs.getInt("clusterId");
                 isClust = !rs.wasNull();
                 String stdId = rs.getString("stdId");
@@ -131,9 +132,7 @@ public class DbCC {
                 int lessonId = rs.getInt("lessonId");
                 int position=rs.getInt("position");
                 CurricUnit cu;
-                if (isClust)
-                    cu=new CurricUnit(id,typ,clustId,lessonId,position);
-                else cu=new CurricUnit(id,typ,stdId,lessonId,position);
+                cu = new CurricUnit(id,stdId,clustId,probId,lessonId,position);
                 return cu;
             }
             return null;
@@ -156,25 +155,24 @@ public class DbCC {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select id,cu_type, clusterId, stdId, lessonid,position from curriculumunit where id=?";
+            String q = "select id, clusterId, stdId, probId,lessonid,position from curriculumunit where id=?";
             ps = conn.prepareStatement(q);
             rs = ps.executeQuery();
             List<CurricUnit> cus = new ArrayList<CurricUnit>();
             while (rs.next()) {
                 int id=rs.getInt("id");
-                String typ = rs.getString("cu_type");
-                boolean isStd=false,isClust=false;
+                boolean isStd=false,isClust=false, isProb=false;
                 int clustId = rs.getInt("clusterId");
                 isClust = !rs.wasNull();
                 String stdId = rs.getString("stdId");
                 isStd = !rs.wasNull();
+                int probId = rs.getInt("probId");
+                isProb = !rs.wasNull();
                 String objId = rs.getString("cu_refoObjectId");
                 int lessonId = rs.getInt("lessonId");
                 int position=rs.getInt("position");
                 CurricUnit cu;
-                if (isClust)
-                    cu=new CurricUnit(id,typ,clustId,lessonId,position);
-                else cu=new CurricUnit(id,typ,stdId,lessonId,position);
+                cu = new CurricUnit(id,stdId,clustId,probId,lessonId,position);
                 cus.add(cu);
             }
             return cus;
@@ -197,28 +195,23 @@ public class DbCC {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select id,cu_type, clusterId, stdId, position from curriculumunit where lessonid=? order by position";
+            String q = "select id, clusterId, stdId, probId, position from curriculumunit where lessonid=? order by position";
             ps = conn.prepareStatement(q);
             ps.setInt(1,lessonId);
             rs = ps.executeQuery();
             List<CurricUnit> cus = new ArrayList<CurricUnit>();
             while (rs.next()) {
                 int id=rs.getInt("id");
-                String typ = rs.getString("cu_type");
-                boolean isStd=false,isClust=false;
+                boolean isStd=false,isClust=false,isProb=false;
                 int clustId = rs.getInt("clusterId");
                 isClust = !rs.wasNull();
+                int probId = rs.getInt("probId");
+                isProb = !rs.wasNull();
                 String stdId = rs.getString("stdId");
                 isStd = !rs.wasNull();
                 int position=rs.getInt("position");
                 CurricUnit cu;
-                if (isClust)
-                    cu=new CurricUnit(id,typ,clustId,lessonId,position);
-                else if (isStd) cu=new CurricUnit(id,typ,stdId,lessonId,position);
-                else {
-                    cu=new CurricUnit(id,typ,lessonId,position);
-                    setCUProblems(conn,cu);
-                }
+                cu = new CurricUnit(id,stdId,clustId,probId,lessonId,position);
                 cus.add(cu);
             }
             return cus;
@@ -315,29 +308,5 @@ public class DbCC {
         }
     }
 
-    public static void setCUProblems (Connection conn, CurricUnit cu) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            String q = "select probId from cuproblemmap where cuid=? order by position";
-            ps = conn.prepareStatement(q);
-            ps.setInt(1,cu.getId());
-            rs = ps.executeQuery();
-            List<Problem> probs = new ArrayList<Problem>();
-            List<Integer> ids = new ArrayList<Integer>();
-            while (rs.next()) {
-                int pid = rs.getInt("probId");
-                ids.add(pid);
-                Problem p = ProblemMgr.getProblem(pid);
-                probs.add(p);
-            }
-            cu.setProbIds(ids);
-            cu.setProblems(probs);
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (ps != null)
-                ps.close();
-        }
-    }
+
 }
