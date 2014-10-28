@@ -50,7 +50,7 @@ public class LessonMgr {
         return classLessons;
     }
 
-    // THe CU either points at a Cluster, Standard, or List of Problems.
+    // THe CU either points at a Cluster, Standard, or a Problem
     private void connectToCCStructure(CurricUnit cu) throws SQLException {
         if (cu.getClustId() != -1) {
             cu.setCluster(CCContentMgr.getInstance().getCluster(cu.getClustId()));
@@ -59,10 +59,8 @@ public class LessonMgr {
             cu.setStandard(CCContentMgr.getInstance().getStandard(cu.getStdId()));
         }
         else {
-            List<Problem> probs = new ArrayList<Problem>();
-            for (Integer pid: cu.getProbIds())
-                probs.add(ProblemMgr.getProblem(pid));
-            cu.setProblems(probs);
+            Problem p = ProblemMgr.getProblem(cu.getProbId());
+            cu.setProblem(p);
         }
 
     }

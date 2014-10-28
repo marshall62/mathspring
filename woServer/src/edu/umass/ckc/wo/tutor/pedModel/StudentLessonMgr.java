@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -128,7 +129,12 @@ public class StudentLessonMgr {
         // for now we just take the first lesson out of the list.  Later we'll have to figure out which one using dates.
         if (classLessons.size() <= 0)
             return; // a failure - class must have some lessons
-        curLesson = classLessons.get(0);
+        // the first lesson selected will be the first one with some CUs
+        int i=0;
+        do {
+            curLesson = classLessons.get(i++);
+        } while (curLesson.getCurricUnits().size()<=0);
+
         if (curLesson == null)
             return;  // a failure - a class must have some lesson
         state.setCurLesson(curLesson.getId());
@@ -180,9 +186,9 @@ public class StudentLessonMgr {
         CCStandard std = cu.getStandard();
         if (std != null)
             return isStandardDone(std);
-        List<Problem> plist = cu.getProblems();
-        if (plist != null)
-            return isProbListDone(plist);
+        Problem prob = cu.getProblem();
+        if (prob != null)
+            return isProbDone(prob);
         return true;
     }
 
@@ -208,11 +214,9 @@ public class StudentLessonMgr {
         return i == probs.size()-1;
     }
 
-    private boolean isProbListDone (List<Problem> probs) {
-	// It is possible at the beginning of a forced lesson (from assistments) that no problem exists at the outset.
-        int i = probs.indexOf(this.curProblem);
-        // so we just see if we are at the end of the list.
-        return i == probs.size()-1;
+    private boolean isProbDone (Problem prob) {
+        return (this.curProblem == prob) ;
+
     }
 
     public CCStandard getCurStandard (CCCluster clust){
@@ -295,7 +299,7 @@ public class StudentLessonMgr {
          * @return
          */
     // for now we forego the idea 'intelligent' problem selection and just get the next problem from the lesson based on the structure of objects in the lesson
-    public Problem getNextProblem() throws SQLException {
+    public Problem getNextProblem() throws Exception {
         if (this.curStd != null) {
 
             // if all problems in the standard have been shown, move forward and return a problem
@@ -305,30 +309,19 @@ public class StudentLessonMgr {
             }
             else return getNextProblem(this.curStd);
         }
-        else  // deal with a CU that is just a list of problems
+        else  // deal with a CU that is just a problem
 	    {
-            List<Problem> plist = this.curCU.getProblems();
-            if (isProbListDone(plist)) {
-                // move forward to next CU/Problem in the Lesson
+            if (curCU.getProbId() <= 0) throw new UserException("Curriculum Unit " + curCU.getId()+ " does not have content of probId, stdId,or clusterId");
+            Problem prob = ProblemMgr.getProblem(this.curCU.getProbId());
+            if (isProbDone(prob)) {
+                // move forward to next CU in the Lesson
                 boolean more = updateLocationInLesson();
                 if (more)
                     return getNextProblem();
                 else return null;
             }
             else
-            {
-                if (this.curProblem == null)
-                    return plist.get(0);
-                int ix = plist.indexOf(this.curProblem);
-                if (ix < plist.size()-1)
-                    return plist.get(ix+1);
-                else { // move forward to next CU/Problem in Lesson
-                    boolean more =updateLocationInLesson();
-                    if (more)
-                        return getNextProblem();
-                    else return null;
-                }
-            }
+                return prob;
         }
     }
 

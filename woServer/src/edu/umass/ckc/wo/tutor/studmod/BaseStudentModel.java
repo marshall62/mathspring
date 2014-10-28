@@ -330,7 +330,7 @@ public class BaseStudentModel extends StudentModel {
         this.problemHistory.endProblem(smgr,problemHistory.getCurProblem(), topicId);
         this.effort = this.problemHistory.getEffort(smgr.getSessionNum());
         // Only update the statistics about a problem if the user is allowed to
-        if (!DbUser.isUpdateStats(conn,studId))  {
+        if (DbUser.isUpdateStats(conn,studId))  {
             if (state.getCurProblemMode().equals(Problem.PRACTICE))
                 updateProblemStatistics(probId,isCorrect,mistakes,state.getNumHintsGivenOnCurProblem(),probElapsedTime);
         }
