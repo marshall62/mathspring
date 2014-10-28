@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -63,11 +64,34 @@ public class DbStudentProblemHistory {
 
     public static final String SPHTBL = "studentProblemHistory";
 
+    private static void saveBindings(Connection conn, int sphRow, String p) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            String q = "insert into problembindinghistory (probHistID, bindings) values (?,?)";
+            stmt = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1,sphRow);
+            stmt.setString(2,p);
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == Settings.duplicateRowError ||e.getErrorCode() == Settings.keyConstraintViolation )
+                return;
+            else throw e;
+        }
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+    }
 
     /** Called when a problem begins.   If this is the first encounter with the problem, it creates the row in the studentProblemHistory.
      * If this is a return to a problem that was previously unsolved (the only reason for  */
     public static int beginProblem(Connection conn, int sessId, int studId, int probId, int topicId, long startTime,
-                                   long timeInSession, long timeInTutor, String mode) throws SQLException {
+                                   long timeInSession, long timeInTutor, String mode, String p) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
@@ -88,7 +112,10 @@ public class DbStudentProblemHistory {
             stmt.execute();
             rs = stmt.getGeneratedKeys();
             rs.next();
-            return rs.getInt(1);
+            int sphRow = rs.getInt(1);
+            if (!p.equals(""))
+                saveBindings(conn, sphRow, p);
+            return sphRow;
         }
         catch (SQLException e) {
             System.out.println(e.getErrorCode());
@@ -246,7 +273,27 @@ public class DbStudentProblemHistory {
         }
     }
 
-
+    public static List<String> getSeenBindings(int probId, int studId, Connection conn) throws SQLException {
+        String s = "select id, problemId, studId, probHistId, bindings" +
+                " from StudentProblemHistory, ProblemBindingHistory" +
+                " where problemId=? and studId=? and id=probHistId";
+        PreparedStatement ps = conn.prepareStatement(s);
+        ps.setInt(1, probId);
+        ps.setInt(2, studId);
+        ResultSet rs = ps.executeQuery();
+        List<String> seenBindings = new ArrayList<String>();
+        try {
+            while (rs.next()) {
+                seenBindings.add(rs.getString("bindings"));
+            }
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+                ps.close();
+        }
+        return seenBindings;
+    }
 
     public static void loadHistory(Connection conn, int studId, List<StudentProblemData> history) throws SQLException {
         ResultSet rs=null;

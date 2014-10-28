@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.tutor.studmod;
 
+import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbStudentProblemHistory;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
@@ -55,8 +57,13 @@ public class StudentProblemHistory {
             topicId = DbTopics.getDummyTopic(smgr.getConnection());
             state.setCurTopic(topicId); // puts the student in this dummy topic so future transactions don't have failures.
         }
+        String params = "";
+        Problem p = ProblemMgr.getProblem(state.getCurProblem());
+        if (p != null && p.isParametrized()) {
+            params = state.getProblemBinding();
+        }
         DbStudentProblemHistory.beginProblem(smgr.getConnection(), e.getSessionId(), smgr.getStudentId(), state.getCurProblem(), topicId,
-            now, smgr.getTimeInSession(), now - state.getTutorEntryTime(), state.getCurProblemMode());
+            now, smgr.getTimeInSession(), now - state.getTutorEntryTime(), state.getCurProblemMode(), params);
 
         curProb = new StudentProblemData(state.getCurProblem(),state.getCurTopic(),e.getSessionId(),
                 now,smgr.getTimeInSession(), now-state.getTutorEntryTime(),state.getCurProblemMode());

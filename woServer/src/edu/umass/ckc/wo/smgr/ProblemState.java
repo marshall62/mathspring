@@ -53,6 +53,7 @@ public class ProblemState extends State {
     private static final String CUR_INTERVENTION = "st.curIntervention";
     private static final String INTERVENTION_START_TIME = "st.interventionStartTime";
     private static final String PROBLEM_BINDING = "st.problemBinding";
+    private static final String PROBLEM_ANSWER = "st.problemAnswer";
 
     private static String[] ALL_PROPS = new String[] { CUR_HINT, CUR_HINT_ID, PROB_ELAPSED_TIME, PROB_START_TIME, HINT_START_TIME, ATTEMPT_START_TIME,
             CUR_PROB_NUM_ATTEMPTS, CUR_PROB_AVG_TIME_BETWEEN_ATTEMPTS, CUR_PROB_NUM_MISTAKES, CUR_PROB_NUM_HINTS_GIVEN, CUR_PROB_NUM_HELPAIDS_GIVEN,
@@ -94,6 +95,7 @@ public class ProblemState extends State {
     private long interventionStartTime;
     private boolean inProblem;
     private String problemBinding;
+    private String problemAnswer;
 
 
     public ProblemState(Connection conn) {
@@ -131,6 +133,7 @@ public class ProblemState extends State {
         this.textReaderUsed = mapGetPropBoolean(m,TEXT_READER_USED,false);
         this.solutionHintGiven =  mapGetPropBoolean(m,SOLUTION_HINT_GIVEN,false);
         this.problemBinding = mapGetPropString(m,PROBLEM_BINDING,"");
+        this.problemAnswer = mapGetPropString(m,PROBLEM_ANSWER,"");
 
     }
 
@@ -164,7 +167,8 @@ public class ProblemState extends State {
         this.setIsVideoShown(false);
         this.setProbExamplesShown(0);
         this.setIsTextReaderUsed(false);
-        this.setProblemBinding("");
+//        this.setProblemBinding("");
+//        this.setProblemAnswer("");
     }
 
     public static void clearState (Connection conn, int objid) throws SQLException {
@@ -476,5 +480,14 @@ public class ProblemState extends State {
     public String getProblemBinding()
     {
         return problemBinding;
+    }
+
+    public void setProblemAnswer(String problemAnswer) throws SQLException {
+        this.problemAnswer = problemAnswer;
+        setProp(this.objid, PROBLEM_ANSWER, problemAnswer);
+    }
+
+    public String getProblemAnswer() {
+        return problemAnswer;
     }
 }
