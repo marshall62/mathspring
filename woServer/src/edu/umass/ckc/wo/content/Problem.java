@@ -186,12 +186,12 @@ public class Problem implements Activity {
                 jo.accumulate("solution",h.getJSON(new JSONObject()));
             }
         }
-        if (params != null) {
-            Map<String, String> bindings = params.getRandomAssignment(); // This needs to be changed to access the studentproblemhistory somehow
-            JSONObject jsonObj = params.getJSON(new JSONObject(), bindings);
-            jo.element("parameters",jsonObj);
-
-        }
+//        if (params != null) {
+//            Map<String, String> bindings = params.getRandomAssignment(); // This needs to be changed to access the studentproblemhistory somehow
+//            JSONObject jsonObj = params.getJSON(new JSONObject(), bindings);
+//            jo.element("parameters",jsonObj);
+//
+//        }
         return jo;
 
     }

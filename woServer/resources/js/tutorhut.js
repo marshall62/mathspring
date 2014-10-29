@@ -82,6 +82,14 @@ function getProblemParams() {
     return globals.params;
 }
 
+function getAnswer() {
+    return globals.answer;
+}
+
+// In the case of parameterized problems, we want to shuffle up the correct answer's position
+function getNewAnswer() {
+    return globals.newAnswer;
+}
 
 
 function updateTimers () {
@@ -451,8 +459,10 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         var standards = activity.standards;
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
-        if (globals.showAnswer)
+        if (globals.showAnswer) {
             showAnswer(activity.answer);
+            globals.answer = activity.answer;
+        }
         globals.resource = activity.resource;
         // hardwired instructions since what comes from the server is mostly useless.
 //        globals.instructions = activity.instructions;
@@ -473,6 +483,8 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             // formality problems call the servlet with their own begin /end events
             var solution = activity.solution;
             globals.params = activity.parameters;
+            globals.oldAnswer = activity.oldAnswer;
+            globals.newAnswer = activity.newAnswer;
             if (globals.probMode == MODE_DEMO) {
                 globals.exampleProbType = activityType;
             }

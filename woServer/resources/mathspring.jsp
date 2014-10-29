@@ -70,6 +70,7 @@
             <%--The fields below turn on things for test users --%>
             showSelectProblemButton: ${showProblemSelector},
             showAnswer: ${showAnswer},
+            newAnswer: null,
             params: null
         }
 

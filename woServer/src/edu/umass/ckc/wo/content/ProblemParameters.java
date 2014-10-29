@@ -4,6 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
+import edu.umass.ckc.wo.db.DbStudentProblemHistory;
+import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import net.sf.json.*;
 import java.util.Random;
 
@@ -84,31 +88,6 @@ public class ProblemParameters {
         return usedBindings;
     }
 
-    // TODO: Put this in DbStudentProblemHistory
-    private List<Binding> getSeenBindings(int probId, int studId, Connection conn) throws SQLException {
-        String s = "select id, problemId, studId, probHistId, bindings" +
-                " from StudentProblemHistory, ProblemBindingHistory" +
-                " where problemId=? and studId=? and id=probHistId";
-        PreparedStatement ps = conn.prepareStatement(s);
-        ps.setInt(1, probId);
-        ps.setInt(2, studId);
-        ResultSet rs = ps.executeQuery();
-        List<String> seenBindings = new ArrayList<String>();
-        try {
-            while (rs.next()) {
-                seenBindings.add(rs.getString("bindings"));
-            }
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (ps != null)
-                ps.close();
-        }
-        if (seenBindings.size() == 0)
-            return null;
-        return generateBindings(seenBindings);
-    }
-
     private List<Binding> getUnusedBindings(List<Binding> seenBindings) {
         List<Binding> unusedBindings = new ArrayList<Binding>();
         for (Binding binding : bindings) {
@@ -121,23 +100,68 @@ public class ProblemParameters {
     }
 
 
-    public String getUnusedAssignment(int probId, int studId, Connection conn) throws SQLException {
+    public Binding getUnusedAssignment(int probId, int studId, Connection conn) throws SQLException {
         if (bindings == null || bindings.size() == 0 || conn == null) {
             return null;
         }
         Random randomGenerator = new Random();
         int randomIndex = -1;
 
-        List<Binding> seenBindings = getSeenBindings(probId, studId, conn);
+        List<Binding> seenBindings = generateBindings(DbStudentProblemHistory.getSeenBindings(probId, studId, conn));
         List<Binding> unusedBindings = getUnusedBindings(seenBindings);
         if (unusedBindings.size() == 0) {
-            return null; // do something if we're out of bindings
+            randomIndex = randomGenerator.nextInt(bindings.size());
+            return bindings.get(randomIndex);
         }
         else {
             randomIndex = randomGenerator.nextInt(unusedBindings.size());
             Binding chosenBinding = unusedBindings.get(randomIndex);
-            return chosenBinding.toString();
+            return chosenBinding;
         }
+    }
+
+    // In parameterized problems, we would like the answer slot to be chosen randomly, so that the answer
+    // for a given problem is not always, for instance, c.
+    // Not all problems have an e answer, so e is not a candidate for switching.
+    private String chooseAnswerPosition(String oldAnswer) {
+        if (!(oldAnswer.equals("a") || oldAnswer.equals("b") || oldAnswer.equals("c") || oldAnswer.equals("d") || oldAnswer.equals("e"))) {
+            return "";
+        }
+        String newAns = "";
+        Random randomGenerator = new Random();
+        int randomIndex = randomGenerator.nextInt(4);
+        switch (randomIndex) {
+            case(0):
+              newAns = "a";
+              break;
+            case(1):
+                newAns = "b";
+                break;
+            case(2):
+                newAns = "c";
+                break;
+            case(3):
+                newAns = "d";
+                break;
+        }
+        return newAns;
+    }
+
+    public void addBindings(ProblemResponse r, int studId, Connection conn, StudentState state) throws SQLException {
+        JSONObject rJson = r.getJSON();
+        Binding unusedBinding = getUnusedAssignment(r.getProblem().getId(), studId, conn);
+        String oldAnswer = r.getProblem().getAnswer();
+        String newAnswer = chooseAnswerPosition(oldAnswer);
+        saveAssignment(unusedBinding, newAnswer, state);
+        JSONObject pJson = unusedBinding.getJSON(new JSONObject());
+        rJson.element("parameters", pJson);
+        rJson.element("oldAnswer", oldAnswer);
+        rJson.element("newAnswer", newAnswer);
+
+    }
+    private void saveAssignment(Binding b, String ans, StudentState state) throws SQLException {
+        state.setProblemBinding(b.toString());
+        state.setProblemAnswer(ans);
     }
 
     public boolean hasUnusedParametrization(int timesEncountered) {

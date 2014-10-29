@@ -604,6 +604,14 @@ public class StudentState extends State implements TutorEventHandler {
         return problemState.getProblemBinding();
     }
 
+    public void setProblemAnswer(String ans) throws SQLException {
+        problemState.setProblemAnswer(ans);
+    }
+
+    public String getProblemAnswer() {
+        return problemState.getProblemAnswer();
+    }
+
 
     /* end of problem state methods */
 
