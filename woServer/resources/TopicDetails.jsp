@@ -105,7 +105,7 @@
         problemList[i][3]=${pd.numAttemptsToSolve}
         problemList[i][4]=${pd.numHints};
         problemList[i][6]="${pd.ccstds}";
-        problemList[i][7]="${pd.screenshotURL}";
+        problemList[i][7]="${pd.snapshot}";
 
 
            i++;
@@ -201,9 +201,8 @@
 
 
 
-                                problemImagePath=problemList[index-1][7];
                             $("#problemDetails").append("<img id='problemImage' />");
-                            document.getElementById("problemImage").src =problemImagePath;
+                            document.getElementById("problemImage").src ="data:image/jpg;base64,"+problemList[index-1][7];
                             }
                             else{
 

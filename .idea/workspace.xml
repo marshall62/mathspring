@@ -7,20 +7,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/BaseStudentModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/BaseStudentModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbSession.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbSession.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/ScreenshotInserter.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/ScreenshotInserter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/TeachTopicEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/TeachTopicEvent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/TopicDetails.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/TopicDetails.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/TopicDetails.jsp" afterPath="$PROJECT_DIR$/woServer/resources/TopicDetails.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/problemDetails.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/problemDetails.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <ignored path="mathTutor.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1368816022243" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414682686332" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414692168662" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
     <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414684303710" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
@@ -868,7 +866,6 @@
     <file path="/StudentModelMasteryHeuristic.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1413909320876" ignored="false" />
     <file path="/params.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414518688341" ignored="false" />
     <file path="/ProblemParameters.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414526503508" ignored="false" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414527052396" ignored="false" />
     <file path="/ScreenshotInserter.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414685133193" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1146,7 +1143,7 @@
       <file leaf-file-name="problemDetails.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/problemDetails.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="91" column="38" selection-start="2329" selection-end="2329" vertical-scroll-proportion="0.7233273">
+            <state line="90" column="36" selection-start="2299" selection-end="2299" vertical-scroll-proportion="0.6925859">
               <folding />
             </state>
           </provider>
@@ -2774,7 +2771,11 @@
       <created>1413992993224</created>
       <updated>1413992993224</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="Snapshots in MPP now being read from database blobs.">
+      <created>1414692180750</created>
+      <updated>1414692180750</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2877,7 +2878,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes a 404 that happened when returning from MPP." />
+    <option name="LAST_COMMIT_MESSAGE" value="Snapshots in MPP now being read from database blobs." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -2891,7 +2892,6 @@
     <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Latest veresions of PedagogicalModel etc for Melissa to begin from." />
     <MESSAGE value="Added all the methods that are part of TopicSelector to ProblemGroupSelector so Melissa can change the signatures to be appropriate for both common core and topics." />
     <MESSAGE value="Fleshed out ProblemGroupSelector and alterred BasePedagogicalModel to use it as the declared type of topicSelector" />
     <MESSAGE value="turned off autoreading problems.   Added temp splash page and new event&#10;EnterTutor" />
@@ -2916,6 +2916,7 @@
     <MESSAGE value="made the update to statistics only happen for non guest/test" />
     <MESSAGE value="Added a &quot;select problem&quot; button so that test users can pick the next problem and so they can see the correct answer to the current problem" />
     <MESSAGE value="fixes a 404 that happened when returning from MPP." />
+    <MESSAGE value="Snapshots in MPP now being read from database blobs." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3099,7 +3100,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/problemDetails.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="38" selection-start="2329" selection-end="2329" vertical-scroll-proportion="0.7233273">
+        <state line="90" column="36" selection-start="2299" selection-end="2299" vertical-scroll-proportion="0.6925859">
           <folding />
         </state>
       </provider>
