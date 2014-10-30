@@ -4,7 +4,6 @@ import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.CCStandard;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.Hint;
-import edu.umass.ckc.wo.content.ProblemParameters;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;
@@ -144,7 +143,7 @@ public class ProblemMgr {
 
     private static void loadAllProblems (Connection conn) throws Exception {
         String s = "select p.id, answer, animationResource,p.name,nickname,strategicHintExists,hasVars,screenShotURL"+
-                ", diff_level, form, statementHTML, metainfo, isExternalActivity, type, video, example, p.status"  +
+                ", diff_level, form, statementHTML, metainfo, isExternalActivity, type, video, example, p.status, p.questType"  +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid and (status='Ready' or status='ready' or status='testable') order by p.id";    // and p.id=v.problemid
         PreparedStatement ps = conn.prepareStatement(s);
@@ -173,6 +172,8 @@ public class ProblemMgr {
                 if (rs.wasNull())
                     exampleId = -1;
                 String status = rs.getString("status");
+                String t = rs.getString("questType");
+                Problem.QuestType questType = Problem.parseType(t);
                 String vars = null;
                 if (hasVars) {
                     vars = getVarDomain(id, conn);
@@ -181,11 +182,9 @@ public class ProblemMgr {
                 if (rs.wasNull())
                     ssURL = null;
                 //                Problem p = new Problem(id, resource, answer, diff, name, nname,form,instructions,type);
-                Problem p = new Problem(id, resource,answer,name,nname,stratHint,diff,null,form,instructions,type, status, vars, ssURL);
+                Problem p = new Problem(id, resource,answer,name,nname,stratHint,
+                        diff,null,form,instructions,type, status, vars, ssURL, questType);
 
-                // mark the problem as formality or external if it is not a regular wayang problem
-                if (form != null && form.equalsIgnoreCase("formality"))
-                    p.setFormalityProb(true);
                 p.setExternalActivity(isExternal);
                 List<Hint> hints = DbHint.getHintsForProblem(conn,id);
                 p.setHasStrategicHint(stratHint);

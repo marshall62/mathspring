@@ -4,11 +4,9 @@ package edu.umass.ckc.wo.content;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.tutormeta.Activity;
 import net.sf.json.JSONObject;
-import sun.font.TrueTypeFont;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 
 
 /**
@@ -17,6 +15,17 @@ import java.util.Map;
  */
 
 public class Problem implements Activity {
+
+    public static QuestType parseType(String t) {
+        if (t.equals("shortanswer"))
+            return QuestType.shortAnswer;
+        return QuestType.multiChoice;
+    }
+
+    public enum QuestType {
+        multiChoice,
+        shortAnswer
+    }
     public static final String DEMO = "demo";
     public static final String EXAMPLE = "example";
     public static final String PRACTICE = "practice";
@@ -24,7 +33,9 @@ public class Problem implements Activity {
     public static final String TESTABLE_STATUS = "testable";
     protected int id;
     protected String resource;
-    private String answer;
+    private String answer;   // the letter of the multi-choice answer (a-e)
+    private List<String> answerVals;  // for short answer questions we have all possible answers
+    private QuestType questType; // multichoice or shortanswer
     private double diff_level ;
     private String metaInfo; // some XML that gives meta info about probs
     private String form;
@@ -42,7 +53,6 @@ public class Problem implements Activity {
     public static final String SAT_PROBLEM="satProblem";
     public static final String ADV_PROBLEM="advProblem";
 
-    private boolean isFormalityProb=false;
     private boolean isExternalActivity=false;
     private int inTopicId =-1; // a special variable that says what topic this problem is being played in.   Only used when
                         // client forces a prob + topic.   This is then used to make sure logging shows the given topic
@@ -54,7 +64,7 @@ public class Problem implements Activity {
 
     public static String FLASH_PROB_TYPE = "flash";
     public static String HTML_PROB_TYPE = "html5";
-    public static String FORMALITY_PROB_TYPE = "formality";
+//    public static String FORMALITY_PROB_TYPE = "formality";
     public static String TOPIC_INTRO_PROB_TYPE = "TopicIntro";
 
 
@@ -102,7 +112,7 @@ public class Problem implements Activity {
 
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
-                   String form, String _instructions, String type, String status, String vars, String ssURL)
+                   String form, String _instructions, String type, String status, String vars, String ssURL, QuestType questType)
     {
         this.id = id;
         this.resource = resource;
@@ -122,6 +132,7 @@ public class Problem implements Activity {
         if (vars != null)
             this.params = new ProblemParameters(vars);
         this.ssURL = ssURL;
+        this.questType = questType;
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
@@ -129,7 +140,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice);
     }
 
     public int getId () { return id; }
@@ -162,8 +173,7 @@ public class Problem implements Activity {
     public JSONObject buildJSON(JSONObject jo) {
         if (isExternalActivity())
             jo.element("activityType", "ExternalActivity");
-        else if (isFormalityProb())
-            jo.element("activityType", Problem.FORMALITY_PROB_TYPE);
+
         else if (type != null && type.equalsIgnoreCase(FLASH_PROB_TYPE))
             jo.element("activityType", Problem.FLASH_PROB_TYPE);
         else if (type != null &&  type.equalsIgnoreCase(HTML_PROB_TYPE))
@@ -172,7 +182,7 @@ public class Problem implements Activity {
             jo.element("activityType",this.activityType);
         jo.element("id",this.id);
         jo.element("isExternalActivity",isExternalActivity());
-        jo.element("mode",isFormalityProb() ? Problem.PRACTICE :  mode);
+        jo.element("mode", mode);
         jo.element("topicId",inTopicId);
         jo.element("topicName",topicName);
         jo.element("standards",getStandardsString(this.standards));
@@ -329,9 +339,7 @@ public class Problem implements Activity {
         return video;
     }
 
-    public void setFormalityProb (boolean b) {
-        this.isFormalityProb=b;
-    }
+
 
     public void setExternalActivity (boolean b) {
         this.isExternalActivity=b;
@@ -342,9 +350,6 @@ public class Problem implements Activity {
     }
 
 
-    public boolean isFormalityProb() {
-        return isFormalityProb;
-    }
 
     public String getProbNumber () {
         return this.name.substring(this.name.indexOf("_")+1);
@@ -461,7 +466,7 @@ public class Problem implements Activity {
     }
 
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();

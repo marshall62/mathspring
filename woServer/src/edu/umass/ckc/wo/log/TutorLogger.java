@@ -193,10 +193,7 @@ public class TutorLogger {
                 hr.getHint().getLabel(),hr.getHint().getId(),hr.getCharacterControl(),null,getTopic());
     }
 
-    public void logFormalityHintRequest(FormalityHintEvent e, Response hr) throws Exception {
-        insertLogEntry(RequestActions.FORMALITY_HINT,e.getProbId(),e.getUserInput(),smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),
-                "",-1,hr.getCharacterControl(),hr.logEventName(), smgr.getStudentState().getCurTopic());
-    }
+
 
     public void logHintRequestIntervention (IntraProblemEvent e, InterventionResponse r) throws Exception {
         insertLogEntry(RequestActions.HINT,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),
@@ -258,10 +255,7 @@ public class TutorLogger {
         insertLogEntry(RequestActions.ATTEMPT,e.getUserInput(),r.isCorrect(),e.getElapsedTime(),e.getProbElapsedTime(),
                 (curHint!= null && curHint.equals("0")) ? null : curHint ,smgr.getStudentState().getCurHintId(),r.getCharacterControl(),null, getTopic());
     }
-    public void logFormalityAttempt(FormalityAttemptEvent e, AttemptResponse r) throws Exception {
-        insertLogEntry(RequestActions.FORMALITY_ATTEMPT,e.getProbId(),e.getUserInput(),r.isCorrect(),e.getElapsedTime(),e.getProbElapsedTime(),
-                smgr.getStudentState().getCurHint(),smgr.getStudentState().getCurHintId(),r.getCharacterControl(),r.logEventName(), smgr.getStudentState().getCurTopic());
-    }
+
 
     public void logAttemptIntervention(AttemptEvent e, InterventionResponse r) throws Exception {
         insertLogEntry(RequestActions.ATTEMPT,e.getUserInput(),smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),
@@ -354,18 +348,9 @@ public class TutorLogger {
     }
 
 
-    public void logFormalityExternalActivity(FormalityExternalActivityEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.FORMALITY_EXTERNAL_ACTIVITY,e.getUserInput(),false,e.getElapsedTime(),e.getProbElapsedTime(),"",-1,null,r.logEventName(), getTopic());
-    }
 
-    public void logFormalityBeginProblem(FormalityBeginProblemEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.FORMALITY_BEGIN_PROBLEM,e.getProbId(),null,false,e.getElapsedTime(),0,null,-1,null,r.logEventName(), getTopic());
-    }
 
-    public void logFormalityEndProblem(FormalityEndProblemEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.FORMALITY_END_PROBLEM,e.getProbId(),null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,null,r.logEventName(), getTopic());
 
-    }
 
     public void logBeginExternalActivity(BeginExternalActivityEvent e, Response r) throws Exception {
         if (!hasOpenBegin(conn, e))

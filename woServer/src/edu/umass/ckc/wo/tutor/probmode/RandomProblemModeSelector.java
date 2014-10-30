@@ -57,9 +57,7 @@ public class RandomProblemModeSelector implements ProblemModeSelector {
 //        if (random.nextInt(7) == 0 && isProblemPlayableAsExample(p))
 //            mode = "example";
 
-        if ( p!= null && p.getForm() != null && p.getForm().equals(Problem.FORMALITY_PROB_TYPE) )
-                mode = Problem.PRACTICE ;
-        else if ( p!= null && p.getForm() != null && p.isExternalActivity())
+        if ( p!= null && p.getForm() != null && p.isExternalActivity())
             mode = Problem.EXTERNAL_MODE ;
 
         // TODO This is dependent on TopicIntro being seen first.   Some pedagogies might like no TopicIntro but examples first.
