@@ -1047,37 +1047,7 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
 
 
 
-    /**
-     * For every problem but the first one in a topic,  it will be 'practice'.   The classic system also needs the mode
-     * to be 4mality or external if the problem is one of those.   When the problem is the first one in the topic, it
-     * may be returned in EXAMPLE (classic system) / DEMO (hybrid system) mode.
-     * @param p
-     * @return
-     * @throws Exception
-     */
-    public String selectProblemMode(Problem p) throws Exception {
-        String mode = Problem.PRACTICE;
-        StudentState state = smgr.getStudentState();
-//        if (random.nextInt(7) == 0 && isProblemPlayableAsExample(p))
-//            mode = "example";
 
-        if ( p!= null && p.getForm() != null && p.getForm().equals(Problem.FORMALITY_PROB_TYPE) )
-            mode = Problem.PRACTICE ;
-        else if ( p!= null && p.getForm() != null && p.isExternalActivity())
-            mode = Problem.EXTERNAL_MODE ;
-        else if (this.showAllExample) {
-            mode = Settings.useHybridTutor ? Problem.DEMO : Problem.EXAMPLE;
-        }
-        else if (!this.showTopicIntroFirst && this.showExampleProblemFirst && state.getTopicNumProbsSeen() == 1)
-            mode = Settings.useHybridTutor ? Problem.DEMO : Problem.EXAMPLE;
-
-            // TODO This is dependent on TopicIntro being seen first.   Some pedagogies might like no TopicIntro but examples first.
-            // Need to make this condition know about that config.
-        else if (this.showExampleProblemFirst && state.isTopicIntroShown() && state.getTopicNumProbsSeen() == 1)
-            mode = Settings.useHybridTutor ? Problem.DEMO : Problem.EXAMPLE;
-
-        return mode;
-    }
 
 
     /**

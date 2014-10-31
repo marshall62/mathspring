@@ -140,18 +140,8 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
             smgr.getStudentState().setProbElapsedTime(((IntraProblemEvent) e).getProbElapsedTime());
         // Formality problem attempts handled separately from standard attempts
 
-        if (e instanceof FormalityAttemptEvent) {
-            FormalityAttemptEvent ee = (FormalityAttemptEvent) e;
-            boolean isCorrect =  ee.isCorrect();
-            r = new AttemptResponse(true,isCorrect,"Formality_attempt");
-            // update the student model and student state variables
-            // TODO this is failing because the problem passed in is not in a topic
-            studentModel.studentAttempt(smgr.getStudentState(), ee.getUserInput(), isCorrect, ee.getProbElapsedTime());
-            studentModel.save();
-            new TutorLogger(smgr).logFormalityAttempt(ee, (AttemptResponse) r);
-            return r;
-        }
-        else if (e instanceof AttemptEvent) {
+
+        if (e instanceof AttemptEvent) {
             r = processAttempt((AttemptEvent) e);
             studentModel.save();
             return r;
@@ -163,27 +153,9 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
             studentModel.save();
             return r;
         }
-        else if (e instanceof FormalityHintEvent) {
-            FormalityHintEvent ee = (FormalityHintEvent) e;
-            r = new Response();
-            // the only fields needed in the Hint object are ID and label so we build a Hint with just these
-            // so that the student model can update.
-            // TODO when this is called with externalActivity the hintID is a URL and not and integer
-            this.studentModel.hintGiven(smgr.getStudentState(), new Hint(ee.getHintId(),ee.getUserInput()));
-            // write the student model back to the database
-            this.studentModel.save();
-            new TutorLogger(smgr).logFormalityHintRequest((FormalityHintEvent) e, r);
-            return r;
-        }
 
-        // TODO untested
-        else if (e instanceof FormalityExternalActivityEvent) {
-            r = new Response();
 
-            new TutorLogger(smgr).logFormalityExternalActivity((FormalityExternalActivityEvent) e, r);
-            studentModel.save();
-            return r;
-        }
+
         else if (e instanceof HintEvent) {
             r =  processHintRequest((HintEvent) e);
             studentModel.save();
@@ -214,40 +186,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
             studentModel.save();
             return r;
         }
-        // TODO untested.   This event may best be sent by the Flash client rather than by 4mality which doesn't
-        // really need to know that the problem is over when it is being played in a wayang context
-        else if (e instanceof FormalityEndProblemEvent) {
-//            processFormalityEndProblemEvent((FormalityEndProblemEvent) e);
-            r = new Response();
-            new TutorLogger(smgr).logFormalityEndProblem((FormalityEndProblemEvent) e, r);
 
-            AssistmentsUser assu = DbAssistmentsUsers.getUserFromWayangStudId(smgr.getConnection(), smgr.getStudentId());
-            if (assu != null) {
-                smgr.setAssistmentsUser(true);
-            }
-            smgr.getStudentModel().endProblem(smgr, smgr.getStudentId(), ((FormalityEndProblemEvent) e).getProbElapsedTime(), e.getElapsedTime());
-            if (assu != null) {
-                AssistmentsHandler.logToAssistmentsProblemEnd(smgr, (FormalityEndProblemEvent) e);
-            }
-            studentModel.save();
-            return r;
-        }
-        else if (e instanceof FormalityBeginProblemEvent) {
-            // The problem is that wayang selects a formality problem and calls the formality servlet with the problem ID
-            // that refs the question in formality's db.   When formality calls back to wayang on problem start-up it passes
-            // the formality problem id which means nothing to wayang.   Wayang needs to convert the formality prob id into
-            // a wayang prob id (using the animationresource column on the problem table)
-            // update the student model/state
-            int formalityPID = ((FormalityBeginProblemEvent) e).getProbId();
-            int woPID = DbProblem.getFormalityProbId(smgr.getConnection(), formalityPID);
-//            processBeginProblemEvent((FormalityBeginProblemEvent) e);
-            smgr.getStudentState().beginFormalityProblem((FormalityBeginProblemEvent) e,woPID);
-            smgr.getStudentModel().beginProblem(smgr,(FormalityBeginProblemEvent) e);
-            r = new Response();
-            new TutorLogger(smgr).logFormalityBeginProblem((FormalityBeginProblemEvent) e, r);
-            studentModel.save();
-            return r;
-        }
 
         else if (e instanceof BeginProblemEvent) {
             r = processBeginProblemEvent((BeginProblemEvent) e);
@@ -365,6 +304,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
 
 
         else return new Response("Unknown Event");
+
     }
 
 

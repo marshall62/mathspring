@@ -266,7 +266,6 @@ public class DbSession {
             DbUser.deleteChildRows(conn, "sessionNumber", sessId, "preposttestproblems");
             DbUser.deleteChildRows(conn, "sessNum", sessId, "eventlog");
             DbUser.deleteChildRows(conn, "sessNum", sessId, "episodicadventuredata");
-            DbUser.deleteChildRows(conn, "sessionId", sessId, "mfrtestdata");
             DbUser.deleteChildRows(conn,"sessionId",sessId,"myprogresscomments");
             String q = "delete from session where id=?";
             stmt = conn.prepareStatement(q);
@@ -393,8 +392,8 @@ public class DbSession {
         DbUtil.loadDbDriver();
         Connection conn = null;
         try {
-            conn = DbUtil.getAConnection("localhost");
-             DbSession.cleanupStaleSessions(conn);
+            conn = DbUtil.getAConnection("rose.cs.umass.edu");
+             DbSession.deleteSession(conn,52056);
             System.out.println("Deleted stale sessions");
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

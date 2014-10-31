@@ -462,18 +462,7 @@ public class AssistmentsHandler {
 
 
 
-    public static void logToAssistmentsProblemEnd(SessionManager smgr, FormalityEndProblemEvent e) throws Exception {
-        if (Settings.loggingBackToAssistments) {
-            AssistmentsUser u = DbAssistmentsUsers.getUserFromWayangStudId(smgr.getConnection(),smgr.getStudentId());
-            AssistmentSessionData d = DbAssistmentsUsers.getSessionInfo(smgr.getConnection(),smgr.getSessionNum());
-            // The student model will need to be consulted to get the info about the last problem seen
-            // We use this to create a ProblemData record which then is turned into JSON and POSTED to assistments.
-            StudentProblemHistory hist = smgr.getStudentModel().getStudentProblemHistory();
-            // get the last problem
-            StudentProblemData lastProb = hist.getCurProblem();
-            new ProblemData(u,d,lastProb);
-        }
-    }
+
 
     public boolean getProblemData(GetProblemDataEvent e) throws SQLException {
         int[] a = DbAssistmentsUsers.getSessionInfo(servletInfo.getConn(),e.getUser(),e.getProblem(),e.getAssistment(),e.getAssignment());

@@ -5,7 +5,6 @@ import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
-import edu.umass.ckc.wo.event.tutorhut.FormalityBeginProblemEvent;
 import edu.umass.ckc.wo.tutor.intervSel.InterventionState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.TutorEventHandler;
@@ -919,15 +918,6 @@ public class StudentState extends State implements TutorEventHandler {
 
     }
 
-    // This is called when a problem is put on-screen in Flash.
-    public void beginFormalityProblem(FormalityBeginProblemEvent e, int probId) throws SQLException {
-        this.setInProblem(true);
-        problemState.beginFormalityProblem(e, probId);
-        this.setLastProblem(lessonState.getCurProblem());
-        this.setCurProblem(probId);
-        this.setCurProbType(Problem.FORMALITY_PROB_TYPE);
-        initializeProblemState(new DbProblem().getProblem(conn, lessonState.getCurProblem()));
-    }
 
     public void endProblem(SessionManager smgr, int studId,long probElapsedTime, long elapsedTime) throws SQLException {
         // At the end of each problem the timeInTopic is increased by the time spent in the problem.

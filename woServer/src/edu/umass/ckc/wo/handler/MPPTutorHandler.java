@@ -41,8 +41,7 @@ public class MPPTutorHandler {
 //            Response r = new ProblemResponse(p,smgr.getStudentModel().getTopicMasteries(),smgr.getStudentState().getCurTopic(), e.getElapsedTime());
             String lastProbType = state.getCurProbType();
             if (lastProbType != null) {
-                if (lastProbType.equalsIgnoreCase(Problem.FLASH_PROB_TYPE) || lastProbType.equalsIgnoreCase(Problem.HTML_PROB_TYPE) ||
-                        lastProbType.equalsIgnoreCase(Problem.FORMALITY_PROB_TYPE))  {
+                if (lastProbType.equalsIgnoreCase(Problem.FLASH_PROB_TYPE) || lastProbType.equalsIgnoreCase(Problem.HTML_PROB_TYPE) )  {
                     Problem p = ProblemMgr.getProblem(Integer.parseInt(((MPPReturnToHutEvent) e).getProbId()));
                     ProblemResponse r = new ProblemResponse(p);
                     // if the last problem is not a topic intro and it isn't solved, resume it (which means ending it and beginning it again)
