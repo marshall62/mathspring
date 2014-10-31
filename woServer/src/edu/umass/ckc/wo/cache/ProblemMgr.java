@@ -178,6 +178,11 @@ public class ProblemMgr {
                 if (hasVars) {
                     vars = getVarDomain(id, conn);
                 }
+                List<String> answerVals =null;
+                if (questType == Problem.QuestType.shortAnswer) {
+                    answerVals = getAnswerValues(conn,id);
+                }
+
                 String ssURL = rs.getString("screenShotURL");
                 if (rs.wasNull())
                     ssURL = null;
@@ -193,6 +198,9 @@ public class ProblemMgr {
                 p.setStandards(standards);
                 List<Topic> topics = DbProblem.getProblemTopics(conn,id);
                 p.setTopics(topics);
+                // short answer problems have a list of possible answers.
+                if (answerVals != null)
+                    p.setAnswerVals(answerVals);
                 allProblems.add(p );
                 if (exampleId == -1)
                     exampleId = (exSel != null) ? exSel.selectProblem(conn,id) : -1;
@@ -207,6 +215,29 @@ public class ProblemMgr {
                 rs.close();
             if (ps != null)
                 ps.close();
+        }
+    }
+
+    private static List<String> getAnswerValues(Connection conn, int id) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select val from problemshortanswers where probid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,id);
+            rs = stmt.executeQuery();
+            List<String> vals = new ArrayList<String>();
+            while (rs.next()) {
+                String v= rs.getString(1);
+                vals.add(v);
+            }
+            return vals;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
         }
     }
 

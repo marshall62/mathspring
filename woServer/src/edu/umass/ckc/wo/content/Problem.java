@@ -429,6 +429,14 @@ public class Problem implements Activity {
 
     }
 
+    public List<String> getAnswerVals() {
+        return answerVals;
+    }
+
+    public void setAnswerVals(List<String> answerVals) {
+        this.answerVals = answerVals;
+    }
+
     public static boolean isPracticeProblem (String mode) {
         return mode.equals(PRACTICE) ;
     }
