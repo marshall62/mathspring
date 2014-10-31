@@ -9,8 +9,7 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import edu.umass.ckc.wo.util.SqlQuery;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,13 +117,13 @@ public class TopicDetails {
                         effortBuffer = effort;
                     else effortBuffer = "null";
 
-                    problemDetails newProblemDetails = new problemDetails(problemId, problemName, effortBuffer, rs.getInt("numAttemptsToSolve"), rs.getInt("numHints"), stds);
+                    problemDetails newProblemDetails = new problemDetails(problemId, problemName, effortBuffer, rs.getInt("numAttemptsToSolve"), rs.getInt("numHints"), getSnapshot(problemId), stds);
                     problemDetailsList.add(newProblemDetails);
 
                 } else {
 
 
-                    problemDetails newProblemDetails = new problemDetails(problemId, problemName, "empty", 0, 0, stds);
+                    problemDetails newProblemDetails = new problemDetails(problemId, problemName, "empty", 0, 0, getSnapshot(problemId), stds);
                     problemDetailsList.add(newProblemDetails);
 
 
@@ -156,6 +155,31 @@ public class TopicDetails {
     public List<problemDetails> getProblemDetailsList() {
 
         return problemDetailsList;
+    }
+
+    public byte[] getSnapshot (int problemId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            Blob img ;
+            byte[] imgData = null ;
+            String q = "select snapshot from Problem where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,problemId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                img = rs.getBlob(1);
+                if (img != null)
+                    imgData = img.getBytes(1,(int)img.length());
+            }
+            return imgData;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
     }
 
 
