@@ -141,7 +141,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
         // Formality problem attempts handled separately from standard attempts
 
 
-        else if (e instanceof AttemptEvent) {
+        if (e instanceof AttemptEvent) {
             r = processAttempt((AttemptEvent) e);
             studentModel.save();
             return r;
@@ -304,7 +304,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
 
 
         else return new Response("Unknown Event");
-        return r;
+
     }
 
 
