@@ -299,7 +299,7 @@ public class PrePostProblemDefn extends Problem {
         return sb.toString();
     }
 
-    private boolean isShortAnswer() {
+    public  boolean isShortAnswer() {
         return this.ansType == SHORT_ANSWER;
     }
     public boolean isMultiChoice () {
