@@ -4,7 +4,6 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
-import edu.umass.ckc.wo.event.tutorhut.FormalityBeginProblemEvent;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
 
@@ -183,10 +182,7 @@ public class ProblemState extends State {
         this.setProbStartTime(e.getElapsedTime());
     }
 
-    // This is called when a problem is put on-screen in Flash.
-    public void beginFormalityProblem(FormalityBeginProblemEvent e, int probId) throws SQLException {
-        this.setProbStartTime(e.getElapsedTime());
-    }
+
 
 
     public void setCurHint(String curHint) throws SQLException {

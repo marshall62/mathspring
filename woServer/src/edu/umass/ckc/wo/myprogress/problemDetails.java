@@ -22,8 +22,9 @@ public class problemDetails {
     int numHints;
     String ccstds;
     String ssURL;
+    byte[] snapshot;
 
-    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve,int num_Hints){
+    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve,int num_Hints, byte[] snapshot){
 
         problemId=id;
         problemName=name;
@@ -32,11 +33,12 @@ public class problemDetails {
         numHints=num_Hints;
         Problem p = ProblemMgr.getProblemByName(name);
         this.ssURL = p.getScreenshotUrl();
+        this.snapshot = new org.apache.commons.codec.binary.Base64().encode(snapshot);
 
     }
 
-    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve,int num_Hints, List<CCStandard> standards){
-        this(id,name,effort_s,num_AttemptsToSolve,num_Hints);
+    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve,int num_Hints, byte[] snapshot, List<CCStandard> standards){
+        this(id,name,effort_s,num_AttemptsToSolve,num_Hints, snapshot);
         StringBuilder sb = new StringBuilder();
         setCCStds(standards, sb);
     }
@@ -82,5 +84,11 @@ public class problemDetails {
 
     public String getScreenshotURL() {
         return ssURL;
+    }
+
+    public String getSnapshot() {
+        if (snapshot != null)
+            return new String(this.snapshot);
+        return null;
     }
 }
