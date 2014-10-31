@@ -856,6 +856,7 @@ function showHTMLProblemAtStart () {
     var solution = activity.solution;
     var activityType = activity.activityType;
     var ans = activity.answer;
+    globals.params = activity.parameters;
     if (isExample) {
         globals.exampleProbType = activityType;
     }

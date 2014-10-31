@@ -21,6 +21,7 @@ public class ProblemResponse extends Response {
     protected Problem prob;
     private String endPage = null;
     private Intervention intervention = null;
+    private String params = null; // Specific bindings for student, if this problem is parametrized
 
     private boolean noMoreProblems=false;
     private boolean noMoreReviewProblems=false;
@@ -110,5 +111,13 @@ public class ProblemResponse extends Response {
 
     public String getEndPage() {
         return endPage;
+    }
+
+    public void setParams(String params) {
+        this.params = params;
+    }
+
+    public String getParams() {
+        return params;
     }
 }

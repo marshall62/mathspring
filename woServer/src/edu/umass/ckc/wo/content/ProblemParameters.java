@@ -154,6 +154,7 @@ public class ProblemParameters {
         String newAnswer = chooseAnswerPosition(oldAnswer);
         saveAssignment(unusedBinding, newAnswer, state);
         JSONObject pJson = unusedBinding.getJSON(new JSONObject());
+        r.setParams(pJson.toString());
         rJson.element("parameters", pJson);
         rJson.element("oldAnswer", oldAnswer);
         rJson.element("newAnswer", newAnswer);
