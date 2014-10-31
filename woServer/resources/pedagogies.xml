@@ -74,7 +74,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                 </config>
                 <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
                 <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">2</param>
+                <param name="interruptIntervalProblems">8</param>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="MyProgressNavigationAskIS">
                 <config>

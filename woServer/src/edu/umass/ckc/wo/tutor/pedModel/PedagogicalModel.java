@@ -386,7 +386,16 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     public boolean isAttemptCorrect (int probId, String userInput) throws SQLException {
         //Problem p = new DbProblem().getProblem(smgr.getConnection(),probId);
         Problem p = ProblemMgr.getProblem(probId);
-        if (p != null) {
+        if (p.isShortAnswer())
+        {
+            List<String> answers = p.getAnswerVals();
+            for (String a: answers) {
+                if (a.equalsIgnoreCase(userInput))
+                    return true;
+            }
+            return false;
+        }
+        else if (p != null) {
             return p.getAnswer().equalsIgnoreCase(userInput.trim());
         }
         return false;

@@ -489,4 +489,12 @@ public class Problem implements Activity {
     public boolean isTestProblem() {
         return status.equals(TESTABLE_STATUS);
     }
+
+    public boolean isShortAnswer () {
+        return this.questType == QuestType.shortAnswer;
+    }
+
+    public boolean isMultiChoice () {
+        return this.questType == QuestType.multiChoice;
+    }
 }
