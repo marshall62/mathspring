@@ -218,6 +218,7 @@ public class ProblemMgr {
         }
     }
 
+
     private static List<String> getAnswerValues(Connection conn, int id) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
