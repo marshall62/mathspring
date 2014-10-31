@@ -144,7 +144,8 @@ public class MPPTutorHandler {
             int lastProbId =  smgr.getStudentState().getCurProblem();
             // When user was in topicIntro prior to going to MPP this isn't correct.
             String typ = smgr.getStudentState().getCurProbType();
-            ProblemResponse r = pedMod.getProblemSelectedByStudent(npe);
+            //ProblemResponse r = pedMod.getProblemSelectedByStudent(npe);
+            ProblemResponse r = (ProblemResponse) pedMod.processNextProblemRequest(npe);
             Problem p = r.getProblem();
             smgr.getStudentModel().newProblem(state,r.getProblem());
 

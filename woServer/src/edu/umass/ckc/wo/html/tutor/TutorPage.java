@@ -152,7 +152,6 @@ public class TutorPage {
 
 
 
-
         // this is gonna have to do a lot more or the JSP will need to change because the JSON for the problem is what needs
         // to be sent back so the page can have all that it needs about the problem
         RequestDispatcher disp=null;
@@ -194,7 +193,6 @@ public class TutorPage {
         else  info.getRequest().setAttribute("learningCompanionMovie","");
 
         info.getRequest().setAttribute("lastProbType", lastProbType==null ? "" : lastProbType);
-
 
 
 
