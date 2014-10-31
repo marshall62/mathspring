@@ -246,7 +246,7 @@ public class DbSession {
 
     }
 
-    private static void cleanOutTestUsertData(Connection conn, int sessId, int studId) throws SQLException {
+    private static void cleanOutTestUserData(Connection conn, int sessId, int studId) throws SQLException {
         if (DbUser.isTestUser(conn, studId))
             DbUser.deleteStudentData(conn, studId);
 
@@ -317,12 +317,11 @@ public class DbSession {
                     rs.updateInt(3, 0);  // make inactive - JDBC 2.0 stuff may not work
                     rs.updateTimestamp(4, new Timestamp(now));
                     rs.updateRow();
-                    if (!DbUser.isKeepUser(conn,studId))
+                    if (!DbUser.isKeepUser(conn,studId) )
                         deleteStudentAndData(conn, studId);
                     else if (!DbUser.isKeepData(conn,studId))
                         DbUser.deleteStudentData(conn, studId);
-
-                    cleanOutTestUsertData(conn,sessId,studId);
+                    cleanOutTestUserData(conn, sessId, studId);
                     // blow away student data if the student associated with this session has no other active sessions.
                     if (hasNoActiveSessions(conn,studId))
                         removeTransientState(conn,studId);

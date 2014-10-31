@@ -119,7 +119,7 @@ public class TeachTopicEvent extends ActionEvent {
             if (problem == null)
                 problem = p.getString(PROBLEM);
             masteryLevel = p.getFloat(MASTERY_THRESHOLD, 1);  // Not sure what the default should be here.
-            isTestUser = p.getBoolean(IS_TEST_USER,false);
+            isTestUser = p.getBoolean(IS_TEST_USER,true);  // The default if no param is included is to make it behave as a TEST
             assistmentsUser = assistmentsClass!=null && assignment!=null && assistment!=null && user!=null;
 
         } catch (Throwable thr) {
