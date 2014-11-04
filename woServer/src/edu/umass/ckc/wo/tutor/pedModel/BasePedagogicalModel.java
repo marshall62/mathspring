@@ -662,7 +662,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         if (r != null && r instanceof ProblemResponse) {
             curProb = ((ProblemResponse) r).getProblem();
             // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
-            if (curProb.isParametrized()) {
+            if (curProb != null && curProb.isParametrized()) {
                 curProb.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
 
             }

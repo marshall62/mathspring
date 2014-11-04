@@ -30,16 +30,25 @@ function processFlashProblemAnswerChosenResult(responseText, textStatus, XMLHttp
 }
 
 
+tutorhut_shortAnswerSubmitted  = function (sym, answer) {
+    debugAlert("answerChosen CALLED! with: " + answer);
+    transients.sym = sym;
+    if (!isWaiting() && globals.probMode != MODE_DEMO) {
+        incrementTimers(globals);
+        servletGetWait("Attempt", {userInput: answer, probElapsedTime: globals.probElapsedTime}, processShortAnswerResult);
+
+    }
+};
 
 
 // This function is called by html5 IN problemWindow js when user attempts.  In HTML problems the attempt is
 // not graded until the server returns the grade.
-// selectedButton is the Edge symbol representing the button
-tutorhut_answerChosen = function (selectedButton, choice) {
+// sym is the Edge symbol representing the button
+tutorhut_answerChosen = function (sym, choice) {
     debugAlert("answerChosen CALLED! with: " + choice);
     if (!isWaiting() && globals.probMode != MODE_DEMO) {
         transients.answerChoice = choice;  // must remember this for callback to problem js
-        transients.selectedButton = selectedButton;  // must remember this for callback to problem js
+        transients.sym = sym;  // must remember this for callback to problem js
         // This prevents sending the server multiple message about user attempts on choices that have been previously selected.
         if (transients.answersChosenSoFar.indexOf(choice) < 0) {
             transients.answersChosenSoFar[transients.answersChosenSoFar.length] = choice; // adds an element to the end of the list
@@ -48,6 +57,18 @@ tutorhut_answerChosen = function (selectedButton, choice) {
         }
     }
 };
+
+function processShortAnswerResult (responseText, textStatus, XMLHttpRequest) {
+    debugAlert("processShortAnswerResult: Server returns " + responseText);
+    var json = JSON.parse(responseText);
+    var isCorrect = json.isCorrect;
+    var showGrade = json.showGrade;
+    var interv = json.intervention;
+    if (showGrade == undefined || showGrade)
+        callShortAnswerProblemGrader(isCorrect, transients);
+    showLearningCompanion(json);
+    processAttemptIntervention(interv);
+}
 
 // In HTML problems the server returns the grade and a possible intervention.
 // In the future it might make sense to not show the grading until processAttemptIntervention runs.   Perhaps
@@ -65,10 +86,20 @@ function processAnswerChosenResult(responseText, textStatus, XMLHttpRequest) {
 
 }
 
+
+function callShortAnswerProblemGrader(isCorrect, transients) {
+    debugAlert("In callShortAnswerProblemGrader with " + isCorrect);
+    // for now we don't turn on hints associated with wrong answers
+//    Comp.getStage().gradeAnswer(transients.sym,transients.answerChoice,isCorrect,false) ;
+    if (globals.probMode != MODE_DEMO)
+        document.getElementById(PROBLEM_WINDOW).contentWindow.prob_gradeAnswer(transients.sym, transients.answerChoice, isCorrect, false);
+}
+
+
 function callProblemGrader(isCorrect, transients) {
     debugAlert("In callProblemGrade with " + isCorrect);
     // for now we don't turn on hints associated with wrong answers
-//    Comp.getStage().gradeAnswer(transients.selectedButton,transients.answerChoice,isCorrect,false) ;
+//    Comp.getStage().gradeAnswer(transients.sym,transients.answerChoice,isCorrect,false) ;
     if (globals.probMode != MODE_DEMO)
-        document.getElementById(PROBLEM_WINDOW).contentWindow.prob_gradeAnswer(transients.selectedButton, transients.answerChoice, isCorrect, false);
+        document.getElementById(PROBLEM_WINDOW).contentWindow.prob_gradeAnswer(transients.sym, transients.answerChoice, isCorrect, false);
 }

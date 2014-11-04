@@ -90,7 +90,8 @@
         var transients = {
             answerChoice: null  ,
             selectedButton: null ,
-            answersChosenSoFar: []
+            answersChosenSoFar: [] ,
+            sym: null
         }
 
 

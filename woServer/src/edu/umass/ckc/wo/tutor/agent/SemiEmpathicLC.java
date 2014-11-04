@@ -47,7 +47,7 @@ public class SemiEmpathicLC extends EmotionalLC {
             }
             else if (r instanceof ProblemResponse) {
                 Problem p = ((ProblemResponse) r).getProblem();
-                if (p.isExample())  {
+                if (p != null && p.isExample())  {
                     clips.add("interestHigh");
                     return clips;
                 }

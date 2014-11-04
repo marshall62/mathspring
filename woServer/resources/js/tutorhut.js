@@ -277,7 +277,7 @@ function showUserPreferences (globals) {
 }
 
 function showDashboard () {
-    updateTimers();
+    sendEndEvent(globals);
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
     document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=Home&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&probId="+ globals.probId + "&learningCompanion=" + globals.learningCompanion;
