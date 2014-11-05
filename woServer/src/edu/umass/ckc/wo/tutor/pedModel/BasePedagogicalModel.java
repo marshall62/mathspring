@@ -417,10 +417,15 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 initiateDemoProblem(p);
             }
             else smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
-        }
         if (p != null)
             problemGiven(p);
+
         r = new ProblemResponse(p);
+        }
+        if (p != null && p.isParametrized()) {
+            p.getParams().addBindings(r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
+
+        }
         return r;
 
     }
@@ -671,7 +676,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         if (r != null && r instanceof ProblemResponse) {
             curProb = ((ProblemResponse) r).getProblem();
             // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
-            if (curProb.isParametrized()) {
+            if (curProb != null && curProb.isParametrized()) {
                 curProb.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
 
             }
@@ -697,6 +702,12 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         ProblemResponse r = getTopicIntroDemoOrProblem(e,smgr.getStudentState(),nextTopic,false);
         Problem p = r.getProblem();
         smgr.getStudentState().setCurProblem(p.getId());
+        // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
+        // This line of code needs to be duplicated because ONR calls this function directly instead of processNextProblemRequest.
+        if (p != null && p.isParametrized()) {
+            p.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
+
+        }
         return r;
     }
 
