@@ -47,6 +47,9 @@ public class BaseServlet extends HttpServlet {
     public static String adminEmail;
     public static boolean sendErrorEmail;
 
+    public static final boolean FORWARDED_TO_JSP = false;
+    public static final boolean PRODUCED_OUTPUST = true;
+
 //    protected static final String tomcatDataSourceURL_DavesDB="jdbc/mcasprep"; // make sure META-INF/context.xml defines this datasource
     private static Logger logger = Logger.getLogger(BaseServlet.class);
 

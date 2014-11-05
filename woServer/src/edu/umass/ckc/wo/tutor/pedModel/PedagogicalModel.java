@@ -193,6 +193,11 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
             studentModel.save();
             return r;
         }
+        else if (e instanceof ResumeProblemEvent) {
+            r = processResumeProblemEvent((ResumeProblemEvent) e);
+            studentModel.save();
+            return r;
+        }
         else if (e instanceof BeginExternalActivityEvent) {
             r = processBeginExternalActivityEvent((BeginExternalActivityEvent) e);
             studentModel.save();
@@ -323,6 +328,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
 
     public abstract Response processBeginProblemEvent (BeginProblemEvent e) throws Exception;
     public abstract Response processEndProblemEvent (EndProblemEvent e) throws Exception;
+    public abstract Response processResumeProblemEvent (ResumeProblemEvent e) throws Exception;
 
     // results: HintResponse | InterventionResponse
     public abstract Response processHintRequest (HintEvent e) throws Exception;

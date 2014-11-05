@@ -266,6 +266,11 @@ public class TutorLogger {
         insertLogEntry(RequestActions.BEGIN_PROBLEM,null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }
 
+    public void logResumeProblem(ResumeProblemEvent e, Response r) throws Exception {
+        insertLogEntryWorker(smgr.getStudentId(), smgr.getSessionNum(), RequestActions.RESUME_PROBLEM, null, false, e.getElapsedTime(), e.getProbElapsedTime(),
+                smgr.getStudentState().getCurProblem(), null, -1, r.getCharacterControl(), r.logEventName(), -1, null, getTopic());
+    }
+
     public void logEndProblem(EndProblemEvent e, Response r) throws Exception {
         insertLogEntry(RequestActions.END_PROBLEM,smgr.getStudentState().getCurProblem(),null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
 

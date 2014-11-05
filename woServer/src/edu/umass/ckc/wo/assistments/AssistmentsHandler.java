@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.assistments;
 
+import ckc.servlet.servbase.BaseServlet;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Topic;
@@ -39,6 +40,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 
+import javax.servlet.ServletException;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
@@ -98,9 +100,8 @@ public class AssistmentsHandler {
                 return teachTopicAssistmentsUser(e);
 
             // An external call (no assistments params) so its going to be temp user for this call only
-            else if (e.getUser()== null)
+            else
                 return teachTopicExternalTempUser(e);
-            return false;
 
         }
         catch (Exception exc) {
@@ -113,8 +114,10 @@ public class AssistmentsHandler {
         // This call is for testing the API only.   So we create a temp user that is allowed to test.
         UserRegistrationHandler.genName(conn,"externalTester");
         int studId = UserRegistrationHandler.registerTemporaryUser(conn, edu.umass.ckc.wo.db.DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.externalTempTest);
-        processTeachTopicRequest(e,studId,null);
-        return false;
+        if (e.isShowTransitionPage()) {
+            return showIntroPage(e);
+        }
+        else return processTeachTopicRequest(e,studId,null);
     }
 
     /**
@@ -151,13 +154,24 @@ public class AssistmentsHandler {
                 studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
 
             }
-
+            if (e.isShowTransitionPage())
+                return showIntroPage(e);
         }
-        else
+        else {
             studId = u.getStudId();
+        }
         return processTeachTopicRequest(e, studId, u);
 
+    }
 
+    private boolean showIntroPage(TeachTopicEvent e) throws ServletException, IOException {
+        // Build the same URL as what was given except strip off the showTransitionPage=true so that when the user clicks
+        // link it will reenter here and not show the video.
+        String url = servletInfo.getServletName() + "?" + servletInfo.getRequest().getQueryString().replace("&showTransitionPage=true","");
+
+        servletInfo.getRequest().setAttribute("teachTopicURL",url);
+        servletInfo.getRequest().getRequestDispatcher("portal.jsp").forward(servletInfo.getRequest(), servletInfo.getResponse());
+        return BaseServlet.FORWARDED_TO_JSP;
     }
 
     private boolean processTeachTopicRequest(TeachTopicEvent e, int studId, AssistmentsUser u) throws AssistmentsBadInputException, Exception {
@@ -272,7 +286,7 @@ public class AssistmentsHandler {
         new TutorPage(servletInfo,smgr).createTutorPageFromState(0, 0, topicId, r, "practice",  null, true, prob.getResource(), null, false, -1, showMPP);
 //        new TutorLogger(smgr).logMPPEvent(e,lastProbId);
 
-        return true;
+        return BaseServlet.FORWARDED_TO_JSP;
     }
 
 

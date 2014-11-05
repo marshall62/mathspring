@@ -835,10 +835,17 @@ function showFlashProblemAtStart () {
     else {
         container = FLASH_CONTAINER_INNER;
     }
+    // THe resumeProblem flag is on if a previous problem was unsolved and the user is returning to it
+    if (globals.resumeProblem) {
+        globals.resumeProblem = false;
+        sendResumeProblemEvent(globals);
+    }
     // end the last problem
-    if (globals.lastProbId != -1)
-        sendEndEvent(globals);
-    sendBeginEvent(globals) ;
+    else {
+        if (globals.lastProbId != -1)
+            sendEndEvent(globals);
+        sendBeginEvent(globals) ;
+    }
     showProblemInfo(pid,resource,topicName,standards);
     if (globals.showAnswer)
         showAnswer(ans);
@@ -860,9 +867,17 @@ function showHTMLProblemAtStart () {
     if (isExample) {
         globals.exampleProbType = activityType;
     }
-    if (globals.lastProbId != -1)
-        sendEndEvent(globals);
-    sendBeginEvent(globals) ;
+    // THe resumeProblem flag is on if a previous problem was unsolved and the user is returning to it
+    if (globals.resumeProblem) {
+        globals.resumeProblem = false;
+        sendResumeProblemEvent(globals);
+    }
+    // end the last problem
+    else {
+        if (globals.lastProbId != -1)
+            sendEndEvent(globals);
+        sendBeginEvent(globals) ;
+    }
     showProblemInfo(pid,resource,topicName,standards);
 
     if (globals.showAnswer)
@@ -871,6 +886,7 @@ function showHTMLProblemAtStart () {
 }
 
 // TODO need to create a test for this.
+// This came up after being in a problem and attempting it (correctly), going to MPP, then return to hut.
 function showInterventionAtStart () {
     if (sysGlobals.isDevEnv)
         alert("Return to mathspring.  Showing Intervention without cycling");

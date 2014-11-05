@@ -13,6 +13,7 @@ import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -138,6 +139,30 @@ public class TopicSummary {
         }
         return count;
     }
+    
+    private double getTopicMastery () throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select value, entered from studentTopicMastery where studId=? and topicId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            stmt.setInt(2,topicId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                double m= rs.getDouble(1);
+                boolean entered= rs.getBoolean(2);
+                return m;
+            }
+            return 0;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        } 
+    }
 
     // Dovans algorithm for determining the state of the topic given student past problem solving history within the topic
     private void determineTopicState() throws Exception {
@@ -177,7 +202,8 @@ public class TopicSummary {
         }
 
 
-        mastery = masteryArray[0];
+//        mastery = masteryArray[0];
+        mastery = getTopicMastery(); // do not calculate a mastery, get it from the table
         try {
             s = "select  mastery from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 ";
             stmt = conn.prepareStatement(s);

@@ -188,6 +188,15 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     }
 
     @Override
+    public Response processResumeProblemEvent(ResumeProblemEvent e) throws Exception {
+        Response r = new Response();
+        new TutorLogger(smgr).logResumeProblem(e,r);  // this relies on the above being done first
+        if (learningCompanion != null )
+            learningCompanion.processUncategorizedEvent(e,r);
+        return r;
+    }
+
+    @Override
     public Response processEndProblemEvent(EndProblemEvent e) throws Exception {
         Response r = new Response();
         // at the end of a problem the emotional state of the student model is updated

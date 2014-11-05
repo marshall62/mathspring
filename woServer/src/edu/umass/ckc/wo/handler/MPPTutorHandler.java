@@ -8,7 +8,6 @@ import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
@@ -45,8 +44,9 @@ public class MPPTutorHandler {
                     Problem p = ProblemMgr.getProblem(Integer.parseInt(((MPPReturnToHutEvent) e).getProbId()));
                     ProblemResponse r = new ProblemResponse(p);
                     // if the last problem is not a topic intro and it isn't solved, resume it (which means ending it and beginning it again)
+                    // TODO:   The problem is that ending it causes the student model to update as if an incorrect problem were submitted.
                     if (!p.isIntro() && !state.isProblemSolved()) {
-                        new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), r, "practice",  state.getCurProbType(),
+                        new TutorPage(info,smgr).createTutorPageForResumingPreviousProblem(e.getElapsedTime(), 0, e.getTopicId(), r, "practice", state.getCurProbType(),
                                 true, null, null, false, p.getId(), this.showMPP);
                         new TutorLogger(smgr).logMPPEvent(e,p.getId());
                         return;

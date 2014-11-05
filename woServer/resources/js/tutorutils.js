@@ -100,6 +100,11 @@ function sendBeginEvent(globals) {
 
 }
 
+function sendResumeProblemEvent (globals) {
+    incrementTimers(globals);
+    servletGetWait("ResumeProblem", {probElapsedTime: globals.probElapsedTime, probId: globals.lastProbId})
+}
+
 
 // don't send an endExternalActivity if the last prob was 4mality.  4mality sends its own begin/ends
 function sendSimpleNotificationEvent(globals, eventName) {

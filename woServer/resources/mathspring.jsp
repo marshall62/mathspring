@@ -71,7 +71,8 @@
             showSelectProblemButton: ${showProblemSelector},
             showAnswer: ${showAnswer},
             newAnswer: null,
-            params: null
+            params: null ,
+            resumeProblem: ${resumeProblem}
         }
 
         var sysGlobals = {

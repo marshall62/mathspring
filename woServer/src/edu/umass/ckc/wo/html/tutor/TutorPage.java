@@ -104,6 +104,7 @@ public class TutorPage {
         info.getRequest().setAttribute("answer", null);
         info.getRequest().setAttribute("activityJSON", null);
         info.getRequest().setAttribute("showMPP", true);
+        info.getRequest().setAttribute("resumeProblem",false);
 
         if (smgr.showTestUserControls()) {
             info.getRequest().setAttribute("showProblemSelector", true);
@@ -160,41 +161,13 @@ public class TutorPage {
         logger.info("<< JSP: " + TUTOR_MAIN_JSP);
     }
 
-//    This is called when the MPP Return to Tutor button is clicked.
+//    This is called when Assistments makes a call to our system.    It loads a page with a problem.
+    // This is also called on MPPReturnToHutEvent, MPPContinueTopicEvent, MPPReviewTopicEvent, MPPChallengeTopicEvent, MPPTryProblemEvent
     public void createTutorPageFromState(long elapsedTime, long probElapsedTime, int topicId,
                                          ProblemResponse problemResponse, String chalRevOrPracticeMode, String lastProbType,
                                          boolean solved, String resource, String answer, boolean isBeginningOfSession, int lastProbId,
                                          boolean showMPP) throws Exception {
-        Problem problem = problemResponse.getProblem();
-        setAttributesForJSP("");
-        info.getRequest().setAttribute("isBeginningOfSession", isBeginningOfSession);
-        info.getRequest().setAttribute("elapsedTime",elapsedTime);
-        info.getRequest().setAttribute("studId",smgr.getStudentId());
-
-        info.getRequest().setAttribute("probElapsedTime", probElapsedTime);
-        info.getRequest().setAttribute("topicId", topicId);
-        info.getRequest().setAttribute("probId", problem.getId());
-        info.getRequest().setAttribute("lastProbId",lastProbId);
-        info.getRequest().setAttribute("tutoringMode", chalRevOrPracticeMode);
-        info.getRequest().setAttribute("showMPP", showMPP);
-        // renamed to probMode (from mode) so it is clear that this is the mode of the problem being played (or requested to
-        // be played) - For some reason the JSP wasn't even settings its globals.probMode to this value until now.
-        info.getRequest().setAttribute("probMode", problem.getMode());
-        info.getRequest().setAttribute("resource", resource);
-        info.getRequest().setAttribute("answer", answer);
-        info.getRequest().setAttribute("probType", problem.getType());
-        info.getRequest().setAttribute("activityJSON", problemResponse.getJSON().toString());
-        if (smgr.getLearningCompanion() != null)
-            if (Settings.isDevelopmentEnv)
-                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath  + "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
-            else
-                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
-
-        else  info.getRequest().setAttribute("learningCompanionMovie","");
-
-        info.getRequest().setAttribute("lastProbType", lastProbType==null ? "" : lastProbType);
-
-
+        setJavascriptVars(elapsedTime,probElapsedTime,topicId,problemResponse,chalRevOrPracticeMode,lastProbType,solved,resource,answer,isBeginningOfSession,lastProbId,showMPP);
 
         // this is gonna have to do a lot more or the JSP will need to change because the JSON for the problem is what needs
         // to be sent back so the page can have all that it needs about the problem
@@ -204,10 +177,24 @@ public class TutorPage {
         logger.info("<< JSP: " + TUTOR_MAIN_JSP);
     }
 
+    //    This is called when Assistments makes a call to our system.    It loads a page with a problem.
+    // This is also called on MPPReturnToHutEvent, MPPContinueTopicEvent, MPPReviewTopicEvent, MPPChallengeTopicEvent, MPPTryProblemEvent
+    public void createTutorPageForResumingPreviousProblem(long elapsedTime, long probElapsedTime, int topicId,
+                                                          ProblemResponse problemResponse, String chalRevOrPracticeMode, String lastProbType,
+                                                          boolean solved, String resource, String answer, boolean isBeginningOfSession, int lastProbId,
+                                                          boolean showMPP) throws Exception {
+        setJavascriptVars(elapsedTime,probElapsedTime,topicId,problemResponse,chalRevOrPracticeMode,lastProbType,solved,resource,answer,isBeginningOfSession,lastProbId,showMPP);
+        info.getRequest().setAttribute("resumeProblem",true);  // tells tutorhut to not send EndProblem followed by BeginProblem events.  Instead will send ResumeProblem
+        RequestDispatcher disp=null;
+        disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
+        disp.forward(info.getRequest(),info.getResponse());
+        logger.info("<< JSP: " + TUTOR_MAIN_JSP);
+    }
+
 
     // This builds a tutor page that is going to show an intervention
     public void createTutorPageFromState(long elapsedTime, long probElapsedTime, int topicId,
-                                         InterventionResponse problemResponse, String chalRevOrPracticeMode, String lastProbType,
+                                         InterventionResponse intervResponse, String chalRevOrPracticeMode, String lastProbType,
                                          boolean solved, String resource, String answer, boolean isBeginningOfSession, int lastProbId, boolean showMPP) throws Exception {
 
         setAttributesForJSP("");
@@ -230,7 +217,7 @@ public class TutorPage {
         info.getRequest().setAttribute("resource", resource);
         info.getRequest().setAttribute("answer", answer);
         info.getRequest().setAttribute("probType", "intervention"); // This is how we tell the client its getting an intervention in the activityJSON
-        info.getRequest().setAttribute("activityJSON", problemResponse.getJSON().toString());
+        info.getRequest().setAttribute("activityJSON", intervResponse.getJSON().toString());
         if (smgr.getLearningCompanion() != null)
             if (Settings.isDevelopmentEnv)
                 info.getRequest().setAttribute("learningCompanionMovie", "mathspring/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
@@ -240,15 +227,47 @@ public class TutorPage {
         else  info.getRequest().setAttribute("learningCompanionMovie","");
 
         info.getRequest().setAttribute("lastProbType", lastProbType==null ? "" : lastProbType);
-
-
-
-
         // this is gonna have to do a lot more or the JSP will need to change because the JSON for the problem is what needs
         // to be sent back so the page can have all that it needs about the problem
         RequestDispatcher disp=null;
         disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
         logger.info("<< JSP: " + TUTOR_MAIN_JSP);
+    }
+
+    private void setJavascriptVars (long elapsedTime, long probElapsedTime, int topicId,
+                                    ProblemResponse response, String chalRevOrPracticeMode, String lastProbType,
+                                    boolean solved, String resource, String answer, boolean isBeginningOfSession, int lastProbId, boolean showMPP) throws Exception {
+
+        Problem problem = response.getProblem();
+        setAttributesForJSP("");
+        info.getRequest().setAttribute("isBeginningOfSession", isBeginningOfSession);
+        info.getRequest().setAttribute("elapsedTime",elapsedTime);
+        info.getRequest().setAttribute("studId",smgr.getStudentId());
+
+        info.getRequest().setAttribute("probElapsedTime", probElapsedTime);
+        info.getRequest().setAttribute("topicId", topicId);
+        info.getRequest().setAttribute("probId", problem.getId());
+        info.getRequest().setAttribute("lastProbId",lastProbId);
+        info.getRequest().setAttribute("tutoringMode", chalRevOrPracticeMode);
+        info.getRequest().setAttribute("showMPP", showMPP);
+        // renamed to probMode (from mode) so it is clear that this is the mode of the problem being played (or requested to
+        // be played) - For some reason the JSP wasn't even settings its globals.probMode to this value until now.
+        info.getRequest().setAttribute("probMode", problem.getMode());
+        info.getRequest().setAttribute("resource", resource);
+        info.getRequest().setAttribute("answer", answer);
+        info.getRequest().setAttribute("probType", problem.getType());
+        info.getRequest().setAttribute("activityJSON", response.getJSON().toString());
+        if (smgr.getLearningCompanion() != null)
+            if (Settings.isDevelopmentEnv)
+                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath  + "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
+            else
+                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
+
+        else  info.getRequest().setAttribute("learningCompanionMovie","");
+
+        info.getRequest().setAttribute("lastProbType", lastProbType==null ? "" : lastProbType);
+
+
     }
 }

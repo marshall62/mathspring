@@ -10,6 +10,7 @@ package edu.umass.ckc.wo.log;
 public class RequestActions {
 
     public static final String BEGIN_PROBLEM = "BeginProblem";
+    public static final String RESUME_PROBLEM = "ResumeProblem";
     public static final String FORMALITY_BEGIN_PROBLEM = "Formality_BeginProblem";
     public static final String END_PROBLEM = "EndProblem";
     public static final String FORMALITY_END_PROBLEM = "Formality_EndProblem";

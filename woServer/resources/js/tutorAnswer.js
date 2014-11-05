@@ -30,6 +30,35 @@ function processFlashProblemAnswerChosenResult(responseText, textStatus, XMLHttp
 }
 
 
+tutorhut_shortAnswerSubmitted  = function (sym, answer) {
+    debugAlert("answerChosen CALLED! with: " + answer);
+    transients.sym = sym;
+    if (!isWaiting() && globals.probMode != MODE_DEMO) {
+        incrementTimers(globals);
+        servletGetWait("Attempt", {userInput: answer, probElapsedTime: globals.probElapsedTime}, processShortAnswerResult);
+
+    }
+};
+
+function processShortAnswerResult (responseText, textStatus, XMLHttpRequest) {
+    debugAlert("processShortAnswerResult: Server returns " + responseText);
+    var json = JSON.parse(responseText);
+    var isCorrect = json.isCorrect;
+    var showGrade = json.showGrade;
+    var interv = json.intervention;
+    if (showGrade == undefined || showGrade)
+        callShortAnswerProblemGrader(isCorrect, transients);
+    showLearningCompanion(json);
+    processAttemptIntervention(interv);
+}
+
+function callShortAnswerProblemGrader(isCorrect, transients) {
+    debugAlert("In callShortAnswerProblemGrader with " + isCorrect);
+    // for now we don't turn on hints associated with wrong answers
+//    Comp.getStage().gradeAnswer(transients.sym,transients.answerChoice,isCorrect,false) ;
+    if (globals.probMode != MODE_DEMO)
+        document.getElementById(PROBLEM_WINDOW).contentWindow.prob_gradeAnswer(transients.sym, transients.answerChoice, isCorrect, false);
+}
 
 
 // This function is called by html5 IN problemWindow js when user attempts.  In HTML problems the attempt is
