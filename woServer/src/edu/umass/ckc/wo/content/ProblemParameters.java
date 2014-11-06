@@ -120,49 +120,17 @@ public class ProblemParameters {
         }
     }
 
-    // In parameterized problems, we would like the answer slot to be chosen randomly, so that the answer
-    // for a given problem is not always, for instance, c.
-    // Not all problems have an e answer, so e is not a candidate for switching.
-    private String chooseAnswerPosition(String oldAnswer) {
-        if (!(oldAnswer.equals("a") || oldAnswer.equals("b") || oldAnswer.equals("c") || oldAnswer.equals("d") || oldAnswer.equals("e"))) {
-            return "";
-        }
-        String newAns = "";
-        Random randomGenerator = new Random();
-        int randomIndex = randomGenerator.nextInt(4);
-        switch (randomIndex) {
-            case(0):
-              newAns = "a";
-              break;
-            case(1):
-                newAns = "b";
-                break;
-            case(2):
-                newAns = "c";
-                break;
-            case(3):
-                newAns = "d";
-                break;
-        }
-        return newAns;
-    }
-
     public void addBindings(ProblemResponse r, int studId, Connection conn, StudentState state) throws SQLException {
         JSONObject rJson = r.getJSON();
         Binding unusedBinding = getUnusedAssignment(r.getProblem().getId(), studId, conn);
-        String oldAnswer = r.getProblem().getAnswer();
-        String newAnswer = chooseAnswerPosition(oldAnswer);
-        saveAssignment(unusedBinding, newAnswer, state);
+        saveAssignment(unusedBinding, state);
         JSONObject pJson = unusedBinding.getJSON(new JSONObject());
         r.setParams(pJson.toString());
         rJson.element("parameters", pJson);
-        rJson.element("oldAnswer", oldAnswer);
-        rJson.element("newAnswer", newAnswer);
 
     }
-    private void saveAssignment(Binding b, String ans, StudentState state) throws SQLException {
+    private void saveAssignment(Binding b, StudentState state) throws SQLException {
         state.setProblemBinding(b.toString());
-        state.setProblemAnswer(ans);
     }
 
     public boolean hasUnusedParametrization(int timesEncountered) {
