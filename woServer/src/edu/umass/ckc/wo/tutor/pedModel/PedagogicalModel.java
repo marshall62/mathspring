@@ -402,7 +402,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
             return false;
         }
         else if (p != null) {
-            if (p.getType().equals(Problem.HTML_PROB_TYPE)) {
+            if (p.isParametrized()) {
                 return smgr.getStudentState().getProblemAnswer().equalsIgnoreCase(userInput.trim());
             }
             return p.getAnswer().equalsIgnoreCase(userInput.trim());
