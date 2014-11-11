@@ -333,7 +333,11 @@ public class BaseStudentModel extends StudentModel {
         // Only update the statistics about a problem if the user is allowed to
         if (DbUser.isUpdateStats(conn,studId) )  {
             if (state.getCurProblemMode().equals(Problem.PRACTICE))
-                updateProblemStatistics(probId,isCorrect,mistakes,state.getNumHintsGivenOnCurProblem(),probElapsedTime);
+                // TODO temporary protection to make sure we don't try to update stats on an empty problem
+                //  The CommonCOre ped model has a bad interaction with this that causes an error.   Because
+                // when a CU inits it sets curProb to -1 and then this can't update the stats of the last problem.
+                if (probId > 0)
+                    updateProblemStatistics(probId,isCorrect,mistakes,state.getNumHintsGivenOnCurProblem(),probElapsedTime);
         }
     }
 
