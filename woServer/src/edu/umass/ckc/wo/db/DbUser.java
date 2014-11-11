@@ -540,7 +540,7 @@ public class DbUser {
             stmt.setInt(1, studId);
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Failure during deletion of Student " + studId);
+            System.out.println("Failure during deletion of Student " + studId + " " + e.getMessage());
             error = true;
             conn.rollback();
             System.out.println("deleteStudent Rolled back");

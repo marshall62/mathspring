@@ -272,7 +272,7 @@ public class DbSession {
             stmt.setInt(1, sessId);
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Failure during DbSession.deleteSession for session: " + sessId);
+            System.out.println("Failure during DbSession.deleteSession for session: " + sessId + " " + e.getMessage());
             error = true;
             conn.rollback();
             System.out.println("Roll back completed");
