@@ -2,11 +2,14 @@ package edu.umass.ckc.wo.tutor.response;
 
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
+import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.TopicMastery;
 import net.sf.json.JSONObject;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p> Created by IntelliJ IDEA.
@@ -101,6 +104,42 @@ public class ProblemResponse extends Response {
 
     public Problem getProblem() {
         return prob;
+    }
+
+    // In multiple choice problems, we would like the answer slot to be chosen randomly, so that the answer
+    // for a given problem is not always, for instance, c.
+    // Not all problems have an e answer, so e is not a candidate for switching.
+    // Note that we only have the capability to shuffle answers in HTML5 problems.
+    private String chooseAnswerPosition(String oldAnswer) {
+        if (!(oldAnswer.equals("a") || oldAnswer.equals("b") || oldAnswer.equals("c") || oldAnswer.equals("d") || oldAnswer.equals("e"))) {
+            return "";
+        }
+        String newAns = "";
+        Random randomGenerator = new Random();
+        int randomIndex = randomGenerator.nextInt(4);
+        switch (randomIndex) {
+            case(0):
+                newAns = "a";
+                break;
+            case(1):
+                newAns = "b";
+                break;
+            case(2):
+                newAns = "c";
+                break;
+            case(3):
+                newAns = "d";
+                break;
+        }
+        return newAns;
+    }
+    
+    public void shuffleAnswers(StudentState state) throws SQLException {
+        String oldAnswer = getProblem().getAnswer();
+        String newAnswer = chooseAnswerPosition(oldAnswer);
+        state.setProblemAnswer(newAnswer);
+        jsonObject.element("oldAnswer", oldAnswer);
+        jsonObject.element("newAnswer", newAnswer);
     }
 
     public void setEndPage(String endPage) {
