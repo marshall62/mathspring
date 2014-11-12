@@ -152,7 +152,7 @@ public class AssistmentsHandler {
             else if (fromAssistments) {
                 User.UserType ut = User.UserType.assistmentStudent;
                 studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
-
+                u = DbAssistmentsUsers.insertUserInDb(conn,user,token, studId);
             }
             if (e.isShowTransitionPage())
                 return showIntroPage(e);
