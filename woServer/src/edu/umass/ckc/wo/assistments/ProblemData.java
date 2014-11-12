@@ -196,8 +196,9 @@ public class ProblemData {
         psd.element("mathspringProblemId",this.probId);
         psd.element("mathspringSessionId",this.sessId);
         psd.element("effort",this.effort);
-        o.element("partner_specific_data",psd.toString());
-
+//        o.element("partnerSpecificData",psd.toString());
+        // the nested element does not go through with correct syntax
+        o.element("partnerSpecificData","\"{}\"");
         return o.toString();
     }
 }

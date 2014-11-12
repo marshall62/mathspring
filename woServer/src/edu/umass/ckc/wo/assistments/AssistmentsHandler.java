@@ -35,8 +35,10 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 
@@ -450,12 +452,14 @@ public class AssistmentsHandler {
 
         List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
         parameters.add(new BasicNameValuePair("problemData", json));
-        StringEntity params =new StringEntity(json,
-                "application/json",
-                "UTF-8");
+//        StringEntity params =new StringEntity(json,
+//                "application/json",
+//                "UTF-8");
+        StringEntity params =new StringEntity(json, ContentType.APPLICATION_JSON);
         httppost.setEntity(params);
         httppost.setHeader("assistments-auth","partner=\"Wayang-Ref\"");
-        HttpClient httpclient = new DefaultHttpClient();
+//        HttpClient httpclient = new DefaultHttpClient();
+        HttpClient httpclient = HttpClientBuilder.create().build();
 
         HttpResponse httpResponse = httpclient.execute(httppost);
         HttpEntity resEntity = httpResponse.getEntity();

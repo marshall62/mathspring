@@ -330,6 +330,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                     !smgr.getStudentState().isExampleSeen(curTopic)) {
                 smgr.getStudentState().addExampleSeen(curTopic);
                 problem = topicSelector.getExample(curTopic, this.hintSelector);
+                if (problem == null) return null;
                 initiateDemoProblem(problem);
                 return problem;
             }
