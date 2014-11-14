@@ -320,7 +320,9 @@ function processShowVideo (responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     var video = activity.video;
     // khanacademy won't play inside an iFrame because it sets X-Frame-Options to SAMEORIGIN.
-    window.open(video, "width=500, height=500");
+    if (video != null)
+        window.open(video, "width=500, height=500");
+    else alert("There is no video to show for this problem");
 }
 
 function openExampleDialog(solution){

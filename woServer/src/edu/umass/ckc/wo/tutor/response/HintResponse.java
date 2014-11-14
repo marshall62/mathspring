@@ -28,7 +28,9 @@ public class HintResponse extends Response {
 
     public JSONObject buildJSON() {
         jsonObject = new JSONObject();
-        return hint.getJSON(jsonObject);
+        if (hint != null)
+            return hint.getJSON(jsonObject);
+        else return jsonObject;
     }
 
 

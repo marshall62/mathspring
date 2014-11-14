@@ -190,7 +190,7 @@ public class TutorLogger {
 
     public void logHintRequest(IntraProblemEvent e, HintResponse hr) throws Exception {
         insertLogEntry(RequestActions.HINT,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),
-                hr.getHint().getLabel(),hr.getHint().getId(),hr.getCharacterControl(),null,getTopic());
+                hr.getHint()!=null ? hr.getHint().getLabel() :  null,hr.getHint()!=null ? hr.getHint().getId() : -1,hr.getCharacterControl(),null,getTopic());
     }
 
 
