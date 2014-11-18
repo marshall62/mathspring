@@ -462,7 +462,10 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
-            showAnswer(activity.answer);
+            if (activity.newAnswer != null && activity.newAnswer != 'undefined') {
+                globals.newAnswer = activity.newAnswer;
+                showAnswer(activity.newAnswer);
+            }
             globals.answer = activity.answer;
         }
         globals.resource = activity.resource;
@@ -486,7 +489,6 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             var solution = activity.solution;
             globals.params = activity.parameters;
             globals.oldAnswer = activity.oldAnswer;
-            globals.newAnswer = activity.newAnswer;
             if (globals.probMode == MODE_DEMO) {
                 globals.exampleProbType = activityType;
             }
