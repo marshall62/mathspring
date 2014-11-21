@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.interventions.TopicSwitchIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.studmod.BaseStudentModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.apache.log4j.Logger;
 
@@ -95,7 +96,7 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
             smgr.getStudentState().setTopicSwitch(false);
             setUserInput(this,"<topicSwitch wantSwitch=\"" + wantSwitch + "\"/>",e);
         }
-        else logger.debug("Topic Switch: Student elects to SWITCH to new topic.");
+        else  logger.debug("Topic Switch: Student elects to SWITCH to new topic.");
         return null;  // no more interventions to return.
 
     }

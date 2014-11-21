@@ -102,7 +102,7 @@ public class TopicSummary {
         this.problemsDoneWithEffort = getNumProbsWithEffort(probHist);
         this.numProbsSolved = getNumProbsSolved(probHist);
 
-        if (problemsDone == 0) {
+        if (problemsDone == 0  && numProbsSolved == 0) {
             topicState = "topicEmpty";
         } else {
             determineTopicState();

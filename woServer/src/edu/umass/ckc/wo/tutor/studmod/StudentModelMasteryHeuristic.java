@@ -57,7 +57,7 @@ public class StudentModelMasteryHeuristic implements MasteryHeuristic {
 
         if ( mode != null && ( mode.equals("PracticeProblem") || //mode.equals( "4Mality") ||
                 mode.equals( "review") || mode.equals("practice") )){// && ! problemWasSkipped(timeToFirstAttempt, isCorrect, numMistakes) ) {
-            if ( numPracticeProbsInTopic-1 == 1 ) {   //First problem
+            if ( numPracticeProbsInTopic == 1 ) {   //First problem
                 if ( numMistakes == 0 && isCorrect && numHelpAids==0 )   //correct No Errors
                     topicMastery = 0.2 ;
     /*            else if ( isCorrect && numHelpAids > 0 )

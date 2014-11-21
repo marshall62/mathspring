@@ -102,7 +102,7 @@ public class TutorPage {
         info.getRequest().setAttribute("continueUnsolvedProblem", false);
         info.getRequest().setAttribute("resource", null);
         info.getRequest().setAttribute("answer", null);
-        info.getRequest().setAttribute("activityJSON", null);
+        info.getRequest().setAttribute("activityJSON", "null");
         info.getRequest().setAttribute("showMPP", true);
         info.getRequest().setAttribute("resumeProblem",false);
 
@@ -220,7 +220,7 @@ public class TutorPage {
         info.getRequest().setAttribute("activityJSON", intervResponse.getJSON().toString());
         if (smgr.getLearningCompanion() != null)
             if (Settings.isDevelopmentEnv)
-                info.getRequest().setAttribute("learningCompanionMovie", "mathspring/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
+                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath +  "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
             else
                 info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
 

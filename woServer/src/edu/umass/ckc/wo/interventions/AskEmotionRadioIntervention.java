@@ -57,15 +57,15 @@ public class AskEmotionRadioIntervention extends InputResponseIntervention imple
         str += "<br><input type=\"hidden\" name=\"" + EMOTION + "\" value=\"" + emotion.getName() + "\"><br>";
         for (int i =0;i<emotion.getLabels().size();i++)
             str += "<input name=\"" + LEVEL + "\" type=\"radio\" value=\"" + emotion.getVals().get(i) + "\">" + emotion.getLabels().get(i) + "</input><br>";
-        str += "<br>\n" +
-"        </br>";
+        str += "<br><br>";
         if (askWhy) {
             str += "Why is that?<br>";
             str += "<textarea name=\"" + REASON + "\" rows=\"4\" cols=\"40\"/>";
         }
+        str+= "</p>";
 
+        str+="</form></div>";
 
-        str+="</p></form></div>";
         return str;
     }
 

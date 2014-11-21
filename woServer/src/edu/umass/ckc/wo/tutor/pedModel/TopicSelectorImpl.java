@@ -183,12 +183,26 @@ public class TopicSelectorImpl implements TopicSelector {
         if (probs.size() == 0) {
             return null;
         }
-
+        int ix = (probs.size() - 1) / 2;
         int pid = probs.get((probs.size()-1)/2);
-        smgr.getStudentState().setCurProblemIndexInTopic((probs.size()-1)/2);
-        Problem p = ProblemMgr.getProblem(pid);
 
-        return p;
+        Problem p = ProblemMgr.getProblem(pid);
+        // If the problem doesn't have hints,  its not good to use for a demo
+        if (p.getNumHints() > 0) {
+            smgr.getStudentState().setCurProblemIndexInTopic((probs.size()-1)/2);
+            return p;
+        }
+        else {   // the middle problem didn't have hints,  pick the next easiest problem until one has hints and then use it
+            do {
+                pid = probs.get(ix--);
+                p = ProblemMgr.getProblem(pid);
+                if (p.getNumHints() > 0) {
+                    smgr.getStudentState().setCurProblemIndexInTopic((probs.size()-1)/2);
+                    return p;
+                }
+            } while (ix >= 1);
+            return null; // can't find one.
+        }
     }
 
 

@@ -261,4 +261,11 @@ public class StudentProblemHistory {
         }
         return ids;
     }
+
+    public int getNumPracticeProbsSeenInTopicAcrossSessions(int topicID) {
+        List<String> probs = getTopicProblemsSeen(topicID);
+        if (probs != null)
+            return probs.size();
+        else return 0;
+    }
 }
