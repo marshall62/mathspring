@@ -28,8 +28,10 @@ public class StudentLessonMgr {
     private CCCluster curCluster;
     private String curStdId;
     private CCStandard curStd;
-    private int curProbId;
+    private int curProbId;  // this variable represents the current problem that is on display
     private Problem curProblem;
+    private int nextProbId;  // when making a selection, this is the variable to set
+    private Problem nextProblem;
     private List<CurricUnit> curricUnitList;
     private StudentState state;
     private int studId;
@@ -262,24 +264,25 @@ public class StudentLessonMgr {
             curStd = curCluster.getFirstStandard();
             curStdId = curStd.getId();
             state.setCurStd(curStdId);
-            curProblem = null;
-            curProbId =  -1;
-            state.setCurProblem(-1);
+            curProblem = nextProblem = null;
+            curProbId =  nextProbId = -1;
+            state.setNextProblem(-1);
         }
         else if ((curStd = cu.getStandard()) != null) {
             curStdId = curStd.getId();
             state.setCurCluster(-1);
             state.setCurStd(curStdId);
-            curProblem = null;
-            curProbId =  -1;
-            state.setCurProblem(-1);
+            curProblem = nextProblem = null;
+            curProbId =  nextProbId = -1;
+            state.setNextProblem(-1);
         }
         else {
             state.setCurCluster(-1);
             state.setCurStd(null);
-            curProblem = null;
-            curProbId =  -1;
-            state.setCurProblem(-1);
+            curProblem = nextProblem = null;
+            curProbId =  nextProbId = -1;
+            state.setNextProblem(-1);
+
         }
     }
 
@@ -292,10 +295,13 @@ public class StudentLessonMgr {
         curStdId=null;
         curProblem=null;
         curProbId=-1;
+        nextProblem=null;
+        nextProbId=-1;
         state.setCurCU(-1);
         state.setCurCluster(-1);
         state.setCurStd(null);
         state.setCurProblem(-1);
+        state.setNextProblem(-1);
     }
 
         /**
@@ -377,7 +383,7 @@ public class StudentLessonMgr {
         }
     }
 
-    public Problem getNextProblem (CCStandard std) {
+    private Problem getNextProblem (CCStandard std) {
         List<Problem> probs = std.getProblems();
         int i = probs.indexOf(this.curProblem);
         Problem p= probs.get(i+1);
