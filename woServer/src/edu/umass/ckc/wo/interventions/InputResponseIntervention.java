@@ -27,7 +27,9 @@ public abstract class InputResponseIntervention extends SimpleBaseIntervention {
         jo.element("activityType", Intervention.INTERVENTION);
         jo.element("isInputIntervention",this.isInputIntervention);
         jo.element("interventionType",getType());
-        jo.element("html", getDialogHTML());
+        String html = "<!DOCTYPE html><html>"+getDialogHTML() + "</html>";
+//        String html = "<!DOCTYPE html><html></html>";
+        jo.element("html", html);
         return jo;
     }
 

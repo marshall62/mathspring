@@ -326,11 +326,13 @@ function processShowVideo (responseText, textStatus, XMLHttpRequest) {
 }
 
 function openExampleDialog(solution){
-    globals.exampleHintSequence = new Array(solution.length);
-    for (i=0;i<solution.length;i++) {
-        globals.exampleHintSequence[i] = solution[i].label;
+    if (solution != 'undefined' && solution != null) {
+        globals.exampleHintSequence = new Array(solution.length);
+        for (i=0;i<solution.length;i++) {
+            globals.exampleHintSequence[i] = solution[i].label;
+        }
+        globals.exampleCurHint = globals.exampleHintSequence[0];
     }
-    globals.exampleCurHint = globals.exampleHintSequence[0];
 //    globals.probMode = mode;
     // show a div that contains the example.
 //    $("#frameContainer").hide();              // hide the current problem
@@ -462,7 +464,10 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
-            showAnswer(activity.answer);
+            if (activity.newAnswer != null && activity.newAnswer != 'undefined') {
+                globals.newAnswer = activity.newAnswer;
+                showAnswer(activity.newAnswer);
+            }
             globals.answer = activity.answer;
         }
         globals.resource = activity.resource;
@@ -486,7 +491,6 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             var solution = activity.solution;
             globals.params = activity.parameters;
             globals.oldAnswer = activity.oldAnswer;
-            globals.newAnswer = activity.newAnswer;
             if (globals.probMode == MODE_DEMO) {
                 globals.exampleProbType = activityType;
             }
@@ -818,7 +822,7 @@ function clickHandling () {
 
 // This is called only when entering the tutor with specific problem (either from MPP or TeachTopic event from Assistments)
 function showFlashProblemAtStart () {
-    var activity = JSON.parse(globals.activityJSON);
+    var activity = globals.activityJSON;
     var mode = activity.mode;
     var activityType = activity.activityType;
     var resource = activity.resource;
@@ -855,7 +859,7 @@ function showFlashProblemAtStart () {
 }
 
 function showHTMLProblemAtStart () {
-    var activity = JSON.parse(globals.activityJSON);
+    var activity = globals.activityJSON;
     var mode = activity.mode;
     var isExample =  (mode == MODE_DEMO || mode == MODE_EXAMPLE);
     var pid = activity.id;
@@ -891,11 +895,19 @@ function showHTMLProblemAtStart () {
 // This came up after being in a problem and attempting it (correctly), going to MPP, then return to hut.
 function showInterventionAtStart () {
     if (sysGlobals.isDevEnv)
-        alert("Return to mathspring.  Showing Intervention without cycling");
-    var activity = JSON.parse(globals.activityJSON);
-    if (globals.lastProbId != -1)
-        sendEndEvent(globals);
-    processNextProblemIntervention(activity);
+        alert("Returning to Mathspring and playing intervention: " + globals.activityJSON);
+
+//        var ajson = globals.activityJSON;
+//        var qt = '\\"';
+//        var re = new RegExp(qt,'g');
+//        var cleanJSON = ajson.replace(re,'\\\"');
+        var activity = globals.activityJSON;
+        if (sysGlobals.isDevEnv)
+            alert("Activity is " + activity);
+        if (globals.lastProbId != -1)
+            sendEndEvent(globals);
+        processNextProblemIntervention(activity);
+
 
 }
 

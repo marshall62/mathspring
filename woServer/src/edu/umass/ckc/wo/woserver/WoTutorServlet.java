@@ -65,7 +65,7 @@ public class WoTutorServlet extends BaseServlet {
             // Flash client must be on same machine but can be served by other than servletEngine
             // (e.g. it is best served by apache)
             Settings.getSurveys(connection); // loads the pre/post Survey URLS
-            AssistmentsHandler.assistmentsLogbackURL = servletConfig.getInitParameter(Names.ASSISTMENTS_LOGBACK_URL);
+//            AssistmentsHandler.assistmentsLogbackURL = servletConfig.getInitParameter(Names.ASSISTMENTS_LOGBACK_URL);
             String videoURI = servletConfig.getInitParameter(Names.VIDEO_URI);
             Settings.videoURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
                     servletContext.getContextPath(),Settings.webContentPath, videoURI);

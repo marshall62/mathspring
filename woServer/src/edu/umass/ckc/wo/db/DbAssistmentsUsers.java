@@ -90,13 +90,13 @@ public class DbAssistmentsUsers {
     // THis will not attempt to insert in the db if any of the required Assistments parameters are absent.
     // TODO at some point we'll need to return an ERROR if they aren't present because logging back to assistments will
     // fail when this db insertion isn't made.
-    public static void saveSessionInfo(Connection conn, int sessionNum, String uid, String assignment, String assistment, String problem, String aClass) throws SQLException {
+    public static void saveSessionInfo(Connection conn, int sessionNum, String uid, String assignment, String assistment, String problem, String aClass, String logBackURL) throws SQLException {
         ResultSet rs = null;
         PreparedStatement s = null;
         try {
             if (uid != null && assignment != null && assistment != null && problem != null && aClass != null) {
-                String q = "insert into assistmentsessiondata (uid, sessionId, assignment, assistment, problem, class) " +
-                        "values (?,?,?,?,?,?)";
+                String q = "insert into assistmentsessiondata (uid, sessionId, assignment, assistment, problem, class, logbackURL) " +
+                        "values (?,?,?,?,?,?,?)";
                 s = conn.prepareStatement(q);
                 s.setString(1, uid);
                 s.setInt(2, sessionNum);
@@ -104,6 +104,9 @@ public class DbAssistmentsUsers {
                 s.setString(4, assistment);
                 s.setString(5, problem);
                 s.setString(6, aClass);
+                if (logBackURL != null)
+                    s.setString(7, logBackURL);
+                s.setNull(7,Types.VARCHAR);
                 s.execute();
             }
 
@@ -118,12 +121,19 @@ public class DbAssistmentsUsers {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select uid, assignment, assistment, problem, class from assistmentsessiondata where sessionId=?";
+            String q = "select uid, assignment, assistment, problem, class,logbackURL from assistmentsessiondata where sessionId=?";
             ps = conn.prepareStatement(q);
             ps.setInt(1,sessionNum);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return new AssistmentSessionData(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(1),rs.getString(5));
+                String assign=rs.getString(2);
+                String assist=rs.getString(3);
+                String prob = rs.getString(4);
+                String uid=rs.getString(1);
+                String aclass = rs.getString(5);
+                String logbackURL=rs.getString(6);
+                boolean b= rs.wasNull();
+                return new AssistmentSessionData(assign,assist,prob,uid,aclass,(!b?logbackURL:null));
             }
             return null;
         } finally {
