@@ -13,13 +13,15 @@ public class AssistmentSessionData {
     private String problem;
     private String uid;
     private String aClass;
+    private String logbackURL;
 
-    public AssistmentSessionData(String assignment, String assistment, String problem, String uid, String aClass) {
+    public AssistmentSessionData(String assignment, String assistment, String problem, String uid, String aClass, String logbackURL) {
         this.assignment = assignment;
         this.assistment = assistment;
         this.problem = problem;
         this.uid = uid;
         this.aClass = aClass;
+        this.logbackURL = logbackURL;
     }
 
     public String getAssignment() {
@@ -40,5 +42,9 @@ public class AssistmentSessionData {
 
     public String getaClass() {
         return aClass;
+    }
+
+    public String getLogbackURL() {
+        return logbackURL;
     }
 }

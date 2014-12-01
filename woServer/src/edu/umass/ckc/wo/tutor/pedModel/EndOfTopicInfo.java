@@ -25,18 +25,18 @@ public class EndOfTopicInfo {
             return null;
         StringBuilder sb = new StringBuilder();
         if (maxTimeReached)
-            sb.append("You've spent a lot of time in this topic. <br>");
+            sb.append("You&#39;ve spent a lot of time in this topic. <br>");
         if (maxProbsReached)
-            sb.append("You've seen a lot of problems in this topic. <br>");
+            sb.append("You&#39;ve seen a lot of problems in this topic. <br>");
         if (topicMasteryReached)
-            sb.append("You've mastered this topic! <br>");
+            sb.append("You&#39;ve mastered this topic! <br>");
         if (failToFindEasier)
-            sb.append("I can't find an easier problem.<br>");
+            sb.append("I can&#39;t find an easier problem.<br>");
         if (failToFindHarder)
-            sb.append("I can't find a problem more challenging.<br>");
+            sb.append("I can&#39;t find a problem more challenging.<br>");
         if (failToFindSame)
-            sb.append("I'm all out of problems in this topic.<br>");
-        sb.append("Let's try something else!");
+            sb.append("I&#39;m all out of problems in this topic.<br>");
+        sb.append("Let&#39;s try something else!");
         return sb.toString();
     }
 

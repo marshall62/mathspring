@@ -65,7 +65,7 @@
             interventionType: null,
             isInputIntervention: false ,
             learningCompanionClip: null,
-            activityJSON: '${activityJSON}',
+            activityJSON: ${activityJSON},
             showMPP: ${showMPP},
             <%--The fields below turn on things for test users --%>
             showSelectProblemButton: ${showProblemSelector},

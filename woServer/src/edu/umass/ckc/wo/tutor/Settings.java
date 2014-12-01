@@ -98,7 +98,7 @@ public class Settings {
     public static String postSurvey="";
 
     public static boolean useHybridTutor = true;
-    public static String flashClientURI;
+    public static String flashClientURI;  // not needed
 
 
     public static double externalActivityPercentage=5.0; // controls the intervention selector that picks external acts
