@@ -321,9 +321,13 @@ public class BaseStudentModel extends StudentModel {
             avgHintsGivenPerAssistedProb = perAssistedProbAvg(avgHintsGivenPerAssistedProb, state.getNumHintsGivenOnCurProblem());
 
         }
-        // increments totalHintTime if student was previously in a hint
+        // increments totalHintTime if student was previously in a hint .
+        // N.B. The above may be true but if user went to MPP probElapsedTime will be 0 resulting in a negative number.
         if (state.isLastEvent(StudentState.HINT_EVENT)) {
-            totalHintTime += state.getProbElapsedTime() - state.getHintStartTime();
+            long probElapsed=  state.getProbElapsedTime();
+            long hintStart =  state.getHintStartTime();
+            if ((probElapsed - hintStart) > 0)
+                totalHintTime += probElapsed - hintStart;
         }
         this.avgHintTime = (numProbsSeen > 0) ? (totalHintTime / numProbsSeen) : 0;
         // update these variables after computations about the last problem are made

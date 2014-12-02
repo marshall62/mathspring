@@ -31,6 +31,7 @@ public class TutorPage {
     private  ServletInfo info;
     SessionManager smgr;
     private String servContext;
+    private StringBuilder logMsg;
 
     public static final String TUTOR_MAIN_JSP = "mathspring.jsp"; // this is the HTML page that is the tutor hut (plugged with global variables below)
 //    public static final String INITIAL_TUTOR_FRAME_CONTENT = "welcome.html"; // when it first comes up it has this welcome HTML content
@@ -40,6 +41,7 @@ public class TutorPage {
     public TutorPage (ServletInfo info,  SessionManager smgr)  {
         this.info = info;
         this.smgr = smgr;
+        this.logMsg = new StringBuilder();
         servContext= info.getRequest().getContextPath();
         if (servContext != null && servContext.length()>1)
             servContext=servContext.substring(1);    // strip off the leading /
@@ -71,13 +73,15 @@ public class TutorPage {
         String flashClientPath = Settings.flashClientPath + smgr.getClient() ;
         info.getRequest().setAttribute("instructions",null);
         info.getRequest().setAttribute("studId",smgr.getStudentId());
-        info.getRequest().setAttribute("userName",smgr.getUserName());
+        appendLogMsg("studId",Integer.toString(smgr.getStudentId()));
+        info.getRequest().setAttribute("userName", smgr.getUserName());
         info.getRequest().setAttribute("flashClientPath",flashClientPath);
         info.getRequest().setAttribute("formalityServlet",Settings.formalityServletURI);
         LearningCompanion lc = smgr.getLearningCompanion();
         String character = "";
         if (lc != null) character = lc.getCharactersName();
         info.getRequest().setAttribute("learningCompanion",character);
+        appendLogMsg("learningCompanion",character);
         // We must pass the wayangServletContext of this servlet to 4m so that it can build a URL to call wayang back
         info.getRequest().setAttribute("wayangServletContext",servContext);
         info.getRequest().setAttribute("servletName",info.getServletName());
@@ -117,6 +121,14 @@ public class TutorPage {
 
     }
 
+    private void appendLogMsg(String var, String val) {
+        logMsg.append(String.format("[%s,%s]",var,val));
+    }
+
+    private void appendLogMsg(String var, int val) {
+        logMsg.append(String.format("[%s,%d]",var,val));
+    }
+
     // This is called when the MPP Return to Tutor button is clicked.
     public void createTutorPageFromState(long elapsedTime, long probElapsedTime, int topicId,
                                          int probId, String chalRevOrPracticeMode, String demoOrPracticeMode, String lastProbType,
@@ -127,7 +139,9 @@ public class TutorPage {
         info.getRequest().setAttribute("studId",smgr.getStudentId());
         info.getRequest().setAttribute("probElapsedTime", probElapsedTime);
         info.getRequest().setAttribute("topicId", topicId);
+        appendLogMsg("topicId",topicId);
         info.getRequest().setAttribute("probId", probId);
+        appendLogMsg("probId",probId);
         info.getRequest().setAttribute("isForceProblem", probId > 0);
         info.getRequest().setAttribute("isForceTopic", topicId > 0);
         info.getRequest().setAttribute("tutoringMode", chalRevOrPracticeMode);
@@ -139,6 +153,7 @@ public class TutorPage {
         info.getRequest().setAttribute("continueUnsolvedProblem", !solved);
         info.getRequest().setAttribute("resource", resource);
         info.getRequest().setAttribute("answer", answer);
+        appendLogMsg("answer",answer);
         if (smgr.getLearningCompanion() != null)
             if (Settings.isDevelopmentEnv)
 //                info.getRequest().setAttribute("learningCompanionMovie",  Settings.devWebContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
@@ -158,7 +173,7 @@ public class TutorPage {
         RequestDispatcher disp=null;
         disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP);
+        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
     }
 
 //    This is called when Assistments makes a call to our system.    It loads a page with a problem.
@@ -174,7 +189,7 @@ public class TutorPage {
         RequestDispatcher disp=null;
         disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP);
+        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
     }
 
     //    This is called when Assistments makes a call to our system.    It loads a page with a problem.
@@ -188,7 +203,7 @@ public class TutorPage {
         RequestDispatcher disp=null;
         disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP);
+        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
     }
 
 
@@ -201,9 +216,12 @@ public class TutorPage {
         info.getRequest().setAttribute("isBeginningOfSession", isBeginningOfSession);
         info.getRequest().setAttribute("elapsedTime",elapsedTime);
         info.getRequest().setAttribute("studId",smgr.getStudentId());
+        appendLogMsg("studId",smgr.getStudentId());
         info.getRequest().setAttribute("probElapsedTime", probElapsedTime);
         info.getRequest().setAttribute("topicId", topicId);
+        appendLogMsg("topicId",topicId);
         info.getRequest().setAttribute("probId", -1);
+        appendLogMsg("probId",-1);
         info.getRequest().setAttribute("lastProbId",lastProbId);
         info.getRequest().setAttribute("isForceProblem", true);
         info.getRequest().setAttribute("isForceTopic", topicId > 0);
@@ -218,6 +236,7 @@ public class TutorPage {
         info.getRequest().setAttribute("answer", answer);
         info.getRequest().setAttribute("probType", "intervention"); // This is how we tell the client its getting an intervention in the activityJSON
         info.getRequest().setAttribute("activityJSON", intervResponse.getJSON().toString());
+        appendLogMsg("activity",intervResponse.getJSON().toString());
         if (smgr.getLearningCompanion() != null)
             if (Settings.isDevelopmentEnv)
                 info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath +  "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
@@ -232,7 +251,7 @@ public class TutorPage {
         RequestDispatcher disp=null;
         disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP);
+        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
     }
 
     private void setJavascriptVars (long elapsedTime, long probElapsedTime, int topicId,
@@ -244,10 +263,12 @@ public class TutorPage {
         info.getRequest().setAttribute("isBeginningOfSession", isBeginningOfSession);
         info.getRequest().setAttribute("elapsedTime",elapsedTime);
         info.getRequest().setAttribute("studId",smgr.getStudentId());
-
+        appendLogMsg("studId",smgr.getStudentId());
         info.getRequest().setAttribute("probElapsedTime", probElapsedTime);
         info.getRequest().setAttribute("topicId", topicId);
+        appendLogMsg("topicId",topicId);
         info.getRequest().setAttribute("probId", problem.getId());
+        appendLogMsg("probId",problem.getId());
         info.getRequest().setAttribute("lastProbId",lastProbId);
         info.getRequest().setAttribute("tutoringMode", chalRevOrPracticeMode);
         info.getRequest().setAttribute("showMPP", showMPP);
@@ -256,8 +277,10 @@ public class TutorPage {
         info.getRequest().setAttribute("probMode", problem.getMode());
         info.getRequest().setAttribute("resource", resource);
         info.getRequest().setAttribute("answer", answer);
+        appendLogMsg("answer",answer);
         info.getRequest().setAttribute("probType", problem.getType());
         info.getRequest().setAttribute("activityJSON", response.getJSON().toString());
+        appendLogMsg("activity",response.getJSON().toString());
         if (smgr.getLearningCompanion() != null)
             if (Settings.isDevelopmentEnv)
                 info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath  + "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");

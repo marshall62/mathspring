@@ -108,8 +108,8 @@ public class UserRegistrationHandler {
                 studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), User.UserType.test);
             else
                 studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), User.UserType.student);
-
-            Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,e.getUserName(),e.getPassword(),e.getEmail());
+            if (e.getEmail()!= null && e.getEmail().length()>0)
+                Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,e.getUserName(),e.getPassword(),e.getEmail());
             return new UserRegistrationClassSelectionPage(url, studId, conn, Actions.createUser3,  e);
         }
     }
