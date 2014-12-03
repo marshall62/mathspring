@@ -23,6 +23,7 @@ public class ScreenshotInserter {
         int numFiles = 1000;
         Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
         for (int i=0; i < numFiles; ++i) {
+            // Use whatever directory your screenshots are in
             String dir = "C:\\Users\\jnewman\\Downloads\\screenshots\\";
             String filename = null;
             String nn = null;

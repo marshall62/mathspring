@@ -122,15 +122,18 @@ public class ProblemMgr {
         return null;
     }
 
-    // This could probably be written better since it's just a single row
-    public static String getVarDomain(int id, Connection conn) throws SQLException {
-       String s = "select probId, varDomain from ProblemVarDomain where probId="+Integer.toString(id);
+    public static HashMap<String, ArrayList<String>> getVarDomain(int id, Connection conn) throws SQLException {
+        String s = "select p.name, p.values from ProblemParamSet p where problemID="+Integer.toString(id);
         PreparedStatement ps = conn.prepareStatement(s);
         ResultSet rs = ps.executeQuery();
-        String vars = null;
+        HashMap<String, ArrayList<String>> vars = new HashMap<String, ArrayList<String>>();
+        String name = null;
+        ArrayList<String> vals = null;
         try {
             while (rs.next()) {
-                vars = rs.getString("varDomain");
+                name = "$"+rs.getString("name");
+                vals = new ArrayList<String>(Arrays.asList(rs.getString("values").split(",")));
+                vars.put(name, vals);
             }
         } finally {
             if (rs != null)
@@ -174,7 +177,7 @@ public class ProblemMgr {
                 String status = rs.getString("status");
                 String t = rs.getString("questType");
                 Problem.QuestType questType = Problem.parseType(t);
-                String vars = null;
+                HashMap<String, ArrayList<String>> vars = null;
                 if (hasVars) {
                     vars = getVarDomain(id, conn);
                 }
