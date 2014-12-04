@@ -19,71 +19,76 @@ import java.sql.SQLException;
  */
 public class ScreenshotInserter {
 
-   public static void main(String[] args) throws SQLException {
-        int numFiles = 1000;
-        Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
-        for (int i=0; i < numFiles; ++i) {
-            String dir = "C:\\Users\\jnewman\\Downloads\\screenshots\\";
-            String filename = null;
-            String nn = null;
-            try {
-                if (i < 10) {
-                    nn = "problem_00"+i+".jpg";
-                }
-                else if (i < 100) {
-                    nn="problem_0"+i+".jpg";
-                }
-                else {
-                    nn="problem_"+i+".jpg";
-                }
-                filename=dir+nn;
-                String[] name = nn.split("\\.");
-                FileInputStream inputStream = null;
-                String problem_name = name[0];
-                PreparedStatement ps=null;
-                ResultSet rs = null;
-                try {
-                    String q = "select screenShotURL from Problem where name=?";
-                    ps = conn.prepareStatement(q);
-                    ps.setString(1, problem_name);
-                    rs = ps.executeQuery();
+    public static void main(String[] args) throws SQLException {
 
-                    while (rs.next()) {
-                        String ssURL = null;
-                        ssURL = rs.getString("screenShotURL");
-                        if (ssURL != null) {
-                            int p = ssURL.lastIndexOf("/");
-                            String ssName = ssURL.substring(p+1);
-                            String ssn = ssName.split("\\.")[0];
-                            if (!ssn.equals(problem_name)) {
-                                inputStream = new FileInputStream(dir+ssName);
-                            }
-                        }
-                        if (inputStream == null) {
-                            inputStream = new FileInputStream(filename);
+        Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
+
+        String dir = "U:\\MathspringProblemSnapshots\\screenshots\\";
+
+
+        String problem_name = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String filename = null;
+        try {
+            String q = "select name, screenShotURL from Problem ";
+            ps = conn.prepareStatement(q);
+            rs = ps.executeQuery();
+            FileInputStream inputStream = null;
+            while (rs.next()) {
+                String ssURL = null;
+                problem_name = rs.getString("name");
+                ssURL = rs.getString("screenShotURL");
+                filename = dir + problem_name + ".jpg";
+                if (ssURL != null) {
+                    int p = ssURL.lastIndexOf("/");
+                    String ssName = ssURL.substring(p + 1);
+                    String ssn = ssName.split("\\.")[0];
+                    if (!ssn.equals(problem_name)) {
+                        try {
+                            inputStream = new FileInputStream(dir + ssName);
+                        } catch (FileNotFoundException e) {
+                            System.out.println("Cant find file " + dir + ssName);
+                            continue;
                         }
                     }
+                }
+                if (inputStream == null) {
+                    try {
+                        inputStream = new FileInputStream(filename);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("Can't find file " + filename);
+                        continue;
+                    }
+                }
 
+                PreparedStatement ps2 = null;
+                try {
                     q = "update Problem set snapshot=? where name=?";
 
-                    ps = conn.prepareStatement(q);
-                    ps.setBlob(1, inputStream);
-                    ps.setString(2, problem_name);
+                    ps2 = conn.prepareStatement(q);
+                    ps2.setBlob(1, inputStream);
+                    ps2.setString(2, problem_name);
 
-                    ps.executeUpdate();
-                }
-                catch (MysqlDataTruncation exc) {
+                    ps2.executeUpdate();
+                    System.out.println("Successfully wrote blob for " + problem_name);
+                } catch (MysqlDataTruncation exc) {
                     System.out.println("ss too large for " + filename);
                     continue;
-                }
-                finally {
-                    if (ps != null)
-                        ps.close();
+                } catch (Exception e) {
+                    System.out.println("Cannot process problem " + problem_name + " .. Omitting");
+                    continue;
+                } finally {
+                    ps2.close();
                 }
             }
-            catch (FileNotFoundException e) {
-                //System.out.println("Couldn't find" + dir);
-                continue;
-            }
+
+
+        } finally {
+            if (ps != null)
+                ps.close();
         }
-}   }
+    }
+
+}
+
