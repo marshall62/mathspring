@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.tutormeta.Activity;
 import net.sf.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -112,7 +113,7 @@ public class Problem implements Activity {
 
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
-                   String form, String _instructions, String type, String status, String vars, String ssURL, QuestType questType)
+                   String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL, QuestType questType)
     {
         this.id = id;
         this.resource = resource;
@@ -458,7 +459,7 @@ public class Problem implements Activity {
         return params;
     }
 
-    public void setParams(String params) {
+    public void setParams(HashMap<String, ArrayList<String>> params) {
         this.params = new ProblemParameters(params);
     }
 
@@ -482,7 +483,7 @@ public class Problem implements Activity {
         hints.add(h2);
         p.setSolution(hints);
         String vars ="{\"$a\": [\"40\", \"40\"],\"$\b\": [\"30\", \"30\"],\"$c\": [\"x\", \"45\"],\"$d\": [\"25\", \"x\"],\"$ans_A\": [\"65\", \"65\"],\"$ans_B\": [\"45\", \"45\"],\"$ans_C\": [\"50\", \"50\"],\"$ans_D\": [\"35\", \"35\"],\"$ans_E\": [\"45\", \"25\"]}";
-        p.setParams(vars);
+//        p.setParams(vars);
         System.out.println("JSON for problem is " + p.buildJSON(new JSONObject()));
     }
 
