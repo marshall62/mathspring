@@ -150,7 +150,7 @@ public class DbSession {
                 res[1] = rs.getInt(2);    // classId
                 return res;
 //                this.curGUIState= rs.getString(2);
-            } else throw new NoSessionException();
+            } else throw new NoSessionException(sessionId);
         } finally {
             rs.close();
             ps.close();

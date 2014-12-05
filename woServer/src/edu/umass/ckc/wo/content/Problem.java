@@ -38,7 +38,6 @@ public class Problem implements Activity {
     private List<String> answerVals;  // for short answer questions we have all possible answers
     private QuestType questType; // multichoice or shortanswer
     private double diff_level ;
-    private String metaInfo; // some XML that gives meta info about probs
     private String form;
     private String name;
     private String nickname;
@@ -357,13 +356,6 @@ public class Problem implements Activity {
     }
 
 
-    public String getMetaInfo() {
-        return metaInfo;
-    }
-
-    public void setMetaInfo(String metaInfo) {
-        this.metaInfo = metaInfo;
-    }
 
     public double getDiff_level() {
         return diff_level;

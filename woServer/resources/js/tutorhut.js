@@ -464,11 +464,16 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
+            // If server shuffles the answer to a different position, then newAnswer contains this position
             if (activity.newAnswer != null && activity.newAnswer != 'undefined') {
                 globals.newAnswer = activity.newAnswer;
                 showAnswer(activity.newAnswer);
             }
-            globals.answer = activity.answer;
+            else {
+                globals.answer = activity.answer;
+                showAnswer(activity.answer);
+            }
+
         }
         globals.resource = activity.resource;
         // hardwired instructions since what comes from the server is mostly useless.

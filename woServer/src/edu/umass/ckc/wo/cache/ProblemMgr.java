@@ -146,7 +146,7 @@ public class ProblemMgr {
 
     private static void loadAllProblems (Connection conn) throws Exception {
         String s = "select p.id, answer, animationResource,p.name,nickname,strategicHintExists,hasVars,screenShotURL"+
-                ", diff_level, form, statementHTML, metainfo, isExternalActivity, type, video, example, p.status, p.questType"  +
+                ", diff_level, form, statementHTML, isExternalActivity, type, video, example, p.status, p.questType"  +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid and (status='Ready' or status='ready' or status='testable') order by p.id";    // and p.id=v.problemid
         PreparedStatement ps = conn.prepareStatement(s);
@@ -165,7 +165,6 @@ public class ProblemMgr {
                 String form = rs.getString(Problem.FORM);
                 String instructions = rs.getString(Problem.INSTRUCTIONS) ;
                 String type = rs.getString(Problem.TYPE) ;
-                String metainfo = rs.getString(Problem.META_INFO);
                 boolean isExternal = rs.getBoolean(Problem.IS_EXTERNAL_ACTIVITY);
                 double diff = rs.getDouble("diff_level") ;
                 String video = rs.getString("video");
