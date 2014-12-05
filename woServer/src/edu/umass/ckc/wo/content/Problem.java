@@ -32,16 +32,20 @@ public class Problem implements Activity {
     public static final String PRACTICE = "practice";
     public static final String TOPIC_INTRO = "topicIntro";
     public static final String TESTABLE_STATUS = "testable";
+    public static final String QUICK_AUTH="quickAuth";
     protected int id;
     protected String resource;
     private String answer;   // the letter of the multi-choice answer (a-e)
-    private List<String> answerVals;  // for short answer questions we have all possible answers
+    private List<ProblemAnswer> answers;  // for short answer questions we have all possible answers  and multiple choice will be here too for quickAuth probs
     private QuestType questType; // multichoice or shortanswer
     private double diff_level ;
     private String form;
     private String name;
     private String nickname;
     private String instructions ;   //Instructions to the problem that go only with External URL Problems
+    private String statementHTML;
+    private String questionAudio;
+    private String imageURL;
     private List<Hint> allHints;
     private int numHints=0;   // only one client of this class uses this field - AdaptiveProblemGroupProblemSelector
     private boolean hasStrategicHint=false;
@@ -84,7 +88,7 @@ public class Problem implements Activity {
     public static final String ID = "id";
     public static final String ANSWER = "answer";
     public static final String ANIMATION_RESOURCE = "animationResource";
-    public static final String INSTRUCTIONS = "statementHTML" ;
+    public static final String INSTRUCTIONS = "instructions" ;
     public static final String SOURCE = "form" ;
     public static final String NAME = "name";
     public static final String NICKNAME = "nickname";
@@ -112,7 +116,8 @@ public class Problem implements Activity {
 
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
-                   String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL, QuestType questType)
+                   String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL,
+                   QuestType questType, String statementHTML, String imageURL, String audioResource)
     {
         this.id = id;
         this.resource = resource;
@@ -133,6 +138,9 @@ public class Problem implements Activity {
             this.params = new ProblemParameters(vars);
         this.ssURL = ssURL;
         this.questType = questType;
+        this.statementHTML = statementHTML;
+        this.imageURL = imageURL;
+        this.questionAudio = audioResource;
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
@@ -140,7 +148,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null);
     }
 
     public int getId () { return id; }
@@ -194,6 +202,17 @@ public class Problem implements Activity {
         if (solution != null) {
             for (Hint h : solution) {
                 jo.accumulate("solution",h.getJSON(new JSONObject()));
+            }
+        }
+        if (isQuickAuth()) {
+            jo.element("statementHTML", statementHTML);
+            jo.element("questionAudio", questionAudio);
+            jo.element("questionImage", imageURL);
+            for (Hint hint : getHints()) {
+                jo.accumulate("hints", hint.getJSON(new JSONObject()));
+            }
+            for (ProblemAnswer ans : getAnswers()) {
+                jo.accumulate("answers", ans.getJSON(new JSONObject()));
             }
         }
 //        if (params != null) {
@@ -422,12 +441,12 @@ public class Problem implements Activity {
 
     }
 
-    public List<String> getAnswerVals() {
-        return answerVals;
+    public List<ProblemAnswer> getAnswers() {
+        return answers;
     }
 
-    public void setAnswerVals(List<String> answerVals) {
-        this.answerVals = answerVals;
+    public void setAnswers(List<ProblemAnswer> answers) {
+        this.answers = answers;
     }
 
     public static boolean isPracticeProblem (String mode) {
@@ -466,8 +485,40 @@ public class Problem implements Activity {
         return ssURL;
     }
 
+    public boolean isQuickAuth () {
+        return form != null && form.equals(QUICK_AUTH);
+    }
+
+    public void setForm(String form) {
+        this.form = form;
+    }
+
+    public String getStatementHTML() {
+        return statementHTML;
+    }
+
+    public void setStatementHTML(String statementHTML) {
+        this.statementHTML = statementHTML;
+    }
+
+    public String getQuestionAudio() {
+        return questionAudio;
+    }
+
+    public void setQuestionAudio(String questionAudio) {
+        this.questionAudio = questionAudio;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();

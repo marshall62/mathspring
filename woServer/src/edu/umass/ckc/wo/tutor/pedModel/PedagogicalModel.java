@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.assistments.AssistmentsUser;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.content.ProblemAnswer;
 import edu.umass.ckc.wo.db.DbAssistmentsUsers;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.tutorhut.EnterTutorEvent;
@@ -394,9 +395,9 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
         Problem p = ProblemMgr.getProblem(probId);
         if (p.isShortAnswer())
         {
-            List<String> answers = p.getAnswerVals();
-            for (String a: answers) {
-                if (a.equalsIgnoreCase(userInput))
+            List<ProblemAnswer> answers = p.getAnswers();
+            for (ProblemAnswer a: answers) {
+                if (a.getVal().equalsIgnoreCase(userInput))
                     return true;
             }
             return false;

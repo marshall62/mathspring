@@ -1,8 +1,11 @@
 package edu.umass.ckc.wo.content;
 
+import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.tutor.Settings;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+
+import java.sql.SQLException;
 
 public class Hint  {
     private int id;
@@ -24,9 +27,13 @@ public class Hint  {
     public static final String STRATEGIC_HINT_LABEL = "strategic_hint";
     // a constant hint object which is the strategic hint for any problem.   Note it must have an id that is not -1
     // so that the hint selector will think that a real hint was given .
-   public static final Hint STRATEGIC_HINT  = new Hint(-113,STRATEGIC_HINT_LABEL,-1,false,false);
-   public static final Hint NO_STRATEGIC_HINT  = new Hint(-114,"noStrategicHint",-1,false,false);
-   public static final Hint STRATEGIC_HINT_PLAYED  = new Hint(-115,"strategicAlreadyPlayed",-1,false,false);
+    public static final Hint STRATEGIC_HINT  = new Hint(-113,STRATEGIC_HINT_LABEL,-1,false,false);
+    public static final Hint NO_STRATEGIC_HINT  = new Hint(-114,"noStrategicHint",-1,false,false);
+    public static final Hint STRATEGIC_HINT_PLAYED  = new Hint(-115,"strategicAlreadyPlayed",-1,false,false);
+
+    private String statementHTML;
+    private String audioResource;
+    private String hoverText;
 
     // This only exists to represent Hint information about a Hint event in 4mality.
     public Hint (int id, String label) {
@@ -42,13 +49,16 @@ public class Hint  {
         this.givesAnswer=givesAnswer;
     }
 
-    public Hint(int id, String label, int problemId, boolean givesAnswer, boolean is_root, boolean is_visual)  {
+    public Hint(int id, String label, int problemId, boolean givesAnswer, boolean is_root, String statementHTML, String audioResource, String hoverText)  {
         this.id=id;
         this.label=label;
         this.is_root=is_root;
         this.problemId=problemId;
         this.givesAnswer=givesAnswer;
-        this.is_visual = is_visual ;
+        this.is_visual = true ;
+        this.statementHTML = statementHTML;
+        this.audioResource = audioResource;
+        this.hoverText = hoverText;
     }
 
 
@@ -60,6 +70,19 @@ public class Hint  {
     public JSONObject getJSON (JSONObject jo) {
         jo.element("id",this.id);
         jo.element("label",this.label);
+        Problem p = null;
+        try {
+            p = ProblemMgr.getProblem(getProblemId());
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        if (p != null && p.isQuickAuth()) {
+            jo.element("statementHTML", statementHTML);
+            jo.element("audioResource", audioResource);
+            jo.element("hoverText", hoverText);
+        }
+
         return jo;
     }
 
