@@ -447,6 +447,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         }
     }
 
+
     public ProblemResponse getChallengingProblem (NextProblemEvent e) throws Exception {
         StudentState state = smgr.getStudentState();
         Problem p = null;

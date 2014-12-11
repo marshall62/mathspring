@@ -61,6 +61,7 @@
             tutoringMode: '${tutoringMode}',
             instructions : '${instructions}',
             resource : '${resource}',
+            form : null,
             answer : '${answer}',
             interventionType: null,
             isInputIntervention: false ,
@@ -72,7 +73,12 @@
             showAnswer: ${showAnswer},
             newAnswer: null,
             params: null ,
-            resumeProblem: ${resumeProblem}
+            resumeProblem: ${resumeProblem},
+            statementHTML: null,
+            questionAudio: null,
+            questionImage: null,
+            hints: null,
+            answers: null
         }
 
         var sysGlobals = {
