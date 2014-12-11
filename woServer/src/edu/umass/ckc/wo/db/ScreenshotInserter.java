@@ -55,10 +55,8 @@ public class ScreenshotInserter {
                         }
                     }
                 }
-                System.out.println(inputStream);
                 if (inputStream == null) {
                     try {
-                        System.out.println("Trying to find filename " + filename);
                         inputStream = new FileInputStream(filename);
                     } catch (FileNotFoundException e) {
                         System.out.println("Can't find file " + filename);
