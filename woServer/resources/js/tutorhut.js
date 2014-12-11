@@ -458,7 +458,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
             loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
-            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
         }
     }
 
