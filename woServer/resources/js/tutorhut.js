@@ -539,7 +539,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             var solution = activity.solution;
             globals.params = activity.parameters;
             globals.oldAnswer = activity.oldAnswer;
-            if (globals.probMode == MODE_DEMO) {
+            if (mode == MODE_DEMO) {
                 globals.exampleProbType = activityType;
             }
             if (activity.form==="quickAuth") {
@@ -626,10 +626,10 @@ function showLearningCompanion (json) {
             loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files);
             //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files;
-        }
-    }
-
 }
+}
+}
+
 
 function hideNonDefaultInterventionDialogButtons () {
     $("#ok_button").show();
