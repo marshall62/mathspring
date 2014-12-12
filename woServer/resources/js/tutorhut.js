@@ -86,6 +86,38 @@ function getAnswer() {
     return globals.answer;
 }
 
+function getProblemContentPath() {
+    return sysGlobals.problemContentPath;
+}
+
+function getResource() {
+    return globals.resource;
+}
+
+function getAnswers() {
+    return globals.answers;
+}
+
+function getProblemStatement() {
+    return globals.statementHTML;
+}
+
+function getProblemFigure() {
+    return globals.questionImage;
+}
+
+function getProblemSound() {
+    return globals.questionAudio;
+}
+
+function getHints() {
+    return globals.hints;
+}
+
+function getForm() {
+    return globals.form;
+}
+
 // In the case of parameterized problems, we want to shuffle up the correct answer's position
 function getNewAnswer() {
     return globals.newAnswer;
@@ -406,7 +438,12 @@ function showHTMLProblem (pid, solution, resource, mode) {
     var dir = resource.split(".")[0];
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
     if (!isDemo)  {
-        loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+        if (!globals.form==="quickAuth")  {
+            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+        }
+        else {
+            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+        }
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
 //        $(PROBLEM_WINDOWID).load(function () {
@@ -416,8 +453,14 @@ function showHTMLProblem (pid, solution, resource, mode) {
 //        });
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
-    else
-        loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+    else {
+        if (!globals.form==="quickAuth") {
+            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+        }
+        else {
+            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+        }
+    }
 
 
 }
@@ -496,8 +539,16 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             var solution = activity.solution;
             globals.params = activity.parameters;
             globals.oldAnswer = activity.oldAnswer;
-            if (globals.probMode == MODE_DEMO) {
+            if (mode == MODE_DEMO) {
                 globals.exampleProbType = activityType;
+            }
+            if (activity.form==="quickAuth") {
+                globals.form = "quickAuth";
+                globals.statementHTML = activity.statementHTML;
+                globals.questionAudio = activity.questionAudio;
+                globals.questionImage = activity.questionImage;
+                globals.hints = activity.hints;
+                globals.answers = activity.answers;
             }
             sendBeginEvent(globals);
             showHTMLProblem(pid,solution,resource,mode);
@@ -575,10 +626,10 @@ function showLearningCompanion (json) {
             loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files);
             //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files;
-        }
-    }
-
 }
+}
+}
+
 
 function hideNonDefaultInterventionDialogButtons () {
     $("#ok_button").show();
@@ -874,6 +925,16 @@ function showHTMLProblemAtStart () {
     var solution = activity.solution;
     var activityType = activity.activityType;
     var ans = activity.answer;
+
+    var form = activity.form;
+    if (form==="quickAuth") {
+        globals.isQuickAuth = true;
+        globals.statementHTML = activity.statementHTML;
+        globals.questionAudio = activity.questionAudio;
+        globals.questionImage = activity.questionImage;
+        globals.hints = activity.hints;
+        globals.answers = activity.answers;
+    }
     globals.params = activity.parameters;
     if (isExample) {
         globals.exampleProbType = activityType;

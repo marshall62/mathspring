@@ -36,8 +36,8 @@ public class ScreenshotInserter {
             String q = "select name, screenShotURL from Problem ";
             ps = conn.prepareStatement(q);
             rs = ps.executeQuery();
-            FileInputStream inputStream = null;
             while (rs.next()) {
+                FileInputStream inputStream = null;
                 String ssURL = null;
                 problem_name = rs.getString("name");
                 ssURL = rs.getString("screenShotURL");
