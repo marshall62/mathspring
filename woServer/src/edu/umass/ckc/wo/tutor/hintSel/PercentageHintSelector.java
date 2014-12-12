@@ -5,7 +5,6 @@ import edu.umass.ckc.wo.event.StudentActionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutormeta.HintSelector;
 import edu.umass.ckc.wo.util.SqlQuery;
-import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 
@@ -76,7 +75,7 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
             result.add(new Hint(id,
                                 label,
                                 problemId,
-                                givesAnswer==1, isroot==1, isVisual==1));
+                                givesAnswer==1, isroot==1, null, null, ""));
         }
         SqlQuery.closeRS(rs);
 

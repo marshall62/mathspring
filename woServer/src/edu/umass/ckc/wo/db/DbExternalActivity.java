@@ -28,7 +28,7 @@ public class DbExternalActivity {
        PreparedStatement stmt=null;
        try {
            List<ExternalActivity> l = new ArrayList<ExternalActivity>();
-           String q = "select a.id,a.name,a.description,a.url,a.creator,a.lastModifier,a.ready,a.instructions,a.metainfo,a.creationtime, d.diff_level " +
+           String q = "select a.id,a.name,a.description,a.url,a.creator,a.lastModifier,a.ready,a.instructions,a.creationtime, d.diff_level " +
                    "from externalactivity a, externalactivitytopic t, overallprobdifficulty d where a.id=t.xactid and d.problemId=a.id and t.topicId=? and a.ready=1 and " +
                    "t.xactid not in (select problemid from eventlog where studid=? and " +
                    "(action='BeginExternalActivity' or action='Formality_BeginProblem'))";
@@ -45,10 +45,9 @@ public class DbExternalActivity {
                String lastMod = rs.getString(6);
                boolean isReady = rs.getBoolean(7);
                String instr = rs.getString(8);
-               String meta = rs.getString(9);
-               Timestamp ts = rs.getTimestamp(10);
-               double diff = rs.getDouble(11);
-               ExternalActivity a = new ExternalActivity(id,name,descr,url, instr,meta,diff);
+               Timestamp ts = rs.getTimestamp(9);
+               double diff = rs.getDouble(10);
+               ExternalActivity a = new ExternalActivity(id,name,descr,url, instr, diff);
                l.add(a);
            }
            return l;
@@ -66,7 +65,7 @@ public class DbExternalActivity {
        PreparedStatement stmt=null;
        try {
            List<ExternalActivity> l = new ArrayList<ExternalActivity>();
-           String q = "select a.id,a.name,a.description,a.url,a.creator,a.lastModifier,a.ready,a.instructions,a.metainfo,a.creationtime,d.diff_level " +
+           String q = "select a.id,a.name,a.description,a.url,a.creator,a.lastModifier,a.ready,a.instructions,,a.creationtime,d.diff_level " +
                    "from externalactivity a, overallprobdifficulty d where a.id=? and a.id=d.problemId";
            stmt = conn.prepareStatement(q);
            stmt.setInt(1,xactId);
@@ -80,10 +79,9 @@ public class DbExternalActivity {
                String lastMod = rs.getString(6);
                boolean isReady = rs.getBoolean(7);
                String instr = rs.getString(8);
-               String meta = rs.getString(9);
-               Timestamp ts = rs.getTimestamp(10);
-               double diff = rs.getDouble(11);
-               ExternalActivity a = new ExternalActivity(id,name,descr,url, instr,meta,diff);
+               Timestamp ts = rs.getTimestamp(9);
+               double diff = rs.getDouble(10);
+               ExternalActivity a = new ExternalActivity(id,name,descr,url, instr, diff);
                return a;
            }
            return null;

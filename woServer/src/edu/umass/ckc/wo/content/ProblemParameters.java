@@ -28,34 +28,14 @@ public class ProblemParameters {
         this.bindings = null;
     }
 
-    public ProblemParameters(String params) {
-        JSONObject jParams = (JSONObject) JSONSerializer.toJSON(params);
-        Iterator<String> keys = jParams.keys();
-        this.bindings = new ArrayList<Binding>();
-
-        boolean firstJArray = true; // We only want to initialize bindings if we are looping through a variable's possible parameters for the first time. This is how we know how many there are.
-        while (keys.hasNext()) {
-            List<String> possibleParams = new ArrayList<String>();
-            String key = (String)keys.next();
-            Object jObject = jParams.get(key);
-            if (jObject instanceof JSONArray) {
-                JSONArray jPossibleParams = (JSONArray) jObject;
-                int count = 0;
-                for (Object o : jPossibleParams) {
-                    Binding b;
-                    if (firstJArray) {
-                        b = new Binding();
-                        this.bindings.add(b);
-                    }
-                    else {
-                        b = this.bindings.get(count);  // We make the assumption that all variables have the same number of possible parameterizations
-                    }
-                    b.addKVPair(key, o.toString());
-                    possibleParams.add(o.toString());
-                    ++count;
-                }
-                firstJArray = false;
+    public ProblemParameters(HashMap<String, ArrayList<String>> params) {
+        bindings = new ArrayList<Binding>();
+        for (int i = 0; i < params.entrySet().iterator().next().getValue().size(); ++i) {
+            Binding b =  new Binding();
+            for (String key : params.keySet()) {
+                b.addKVPair(key, params.get(key).get(i));
             }
+            bindings.add(b);
         }
     }
 
@@ -172,10 +152,10 @@ public class ProblemParameters {
                 "\"$ans_D\": \"35\",\n" +
                 "\"$ans_E\": \"45\"\n" +
                 "}";
-        List<String> bindingStrings = new ArrayList<String>();
-        bindingStrings.add(usedBinding);
-        ProblemParameters parameters = new ProblemParameters(jsonString);
-        List<Binding> b = parameters.generateBindings(bindingStrings);
-        System.out.println(parameters.getUnusedBindings(b));
+//        List<String> bindingStrings = new ArrayList<String>();
+//        bindingStrings.add(usedBinding);
+//        ProblemParameters parameters = new ProblemParameters(jsonString);
+//        List<Binding> b = parameters.generateBindings(bindingStrings);
+//        System.out.println(parameters.getUnusedBindings(b));
     }
 }

@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.CCStandard;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.Hint;
+import edu.umass.ckc.wo.content.ProblemAnswer;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;
@@ -122,15 +123,18 @@ public class ProblemMgr {
         return null;
     }
 
-    // This could probably be written better since it's just a single row
-    public static String getVarDomain(int id, Connection conn) throws SQLException {
-       String s = "select probId, varDomain from ProblemVarDomain where probId="+Integer.toString(id);
+    public static HashMap<String, ArrayList<String>> getVarDomain(int id, Connection conn) throws SQLException {
+        String s = "select p.name, p.values from ProblemParamSet p where problemID="+Integer.toString(id);
         PreparedStatement ps = conn.prepareStatement(s);
         ResultSet rs = ps.executeQuery();
-        String vars = null;
+        HashMap<String, ArrayList<String>> vars = new HashMap<String, ArrayList<String>>();
+        String name = null;
+        ArrayList<String> vals = null;
         try {
             while (rs.next()) {
-                vars = rs.getString("varDomain");
+                name = "$"+rs.getString("name");
+                vals = new ArrayList<String>(Arrays.asList(rs.getString("values").split(",")));
+                vars.put(name, vals);
             }
         } finally {
             if (rs != null)
@@ -143,7 +147,7 @@ public class ProblemMgr {
 
     private static void loadAllProblems (Connection conn) throws Exception {
         String s = "select p.id, answer, animationResource,p.name,nickname,strategicHintExists,hasVars,screenShotURL"+
-                ", diff_level, form, statementHTML, metainfo, isExternalActivity, type, video, example, p.status, p.questType"  +
+                ", diff_level, form, isExternalActivity, type, video, example, p.status, p.questType, statementHTML, imageURL, audioResource"  +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid and (status='Ready' or status='ready' or status='testable') order by p.id";    // and p.id=v.problemid
         PreparedStatement ps = conn.prepareStatement(s);
@@ -160,9 +164,8 @@ public class ProblemMgr {
                 String pname = name;
                 String nname = rs.getString(Problem.NICKNAME);
                 String form = rs.getString(Problem.FORM);
-                String instructions = rs.getString(Problem.INSTRUCTIONS) ;
+                String instructions = null ;
                 String type = rs.getString(Problem.TYPE) ;
-                String metainfo = rs.getString(Problem.META_INFO);
                 boolean isExternal = rs.getBoolean(Problem.IS_EXTERNAL_ACTIVITY);
                 double diff = rs.getDouble("diff_level") ;
                 String video = rs.getString("video");
@@ -173,14 +176,17 @@ public class ProblemMgr {
                     exampleId = -1;
                 String status = rs.getString("status");
                 String t = rs.getString("questType");
+                String statementHTML = rs.getString("statementHTML");
+                String imgURL = rs.getString("imageURL");
+                String audioRsc = rs.getString("audioResource");
                 Problem.QuestType questType = Problem.parseType(t);
-                String vars = null;
+                HashMap<String, ArrayList<String>> vars = null;
                 if (hasVars) {
                     vars = getVarDomain(id, conn);
                 }
-                List<String> answerVals =null;
-                if (questType == Problem.QuestType.shortAnswer) {
-                    answerVals = getAnswerValues(conn,id);
+                List<ProblemAnswer> answers =null;
+                if (form != null && (questType == Problem.QuestType.shortAnswer || form.equals(Problem.QUICK_AUTH))) {
+                    answers = getAnswerValues(conn,id);
                 }
 
                 String ssURL = rs.getString("screenShotURL");
@@ -188,7 +194,7 @@ public class ProblemMgr {
                     ssURL = null;
                 //                Problem p = new Problem(id, resource, answer, diff, name, nname,form,instructions,type);
                 Problem p = new Problem(id, resource,answer,name,nname,stratHint,
-                        diff,null,form,instructions,type, status, vars, ssURL, questType);
+                        diff,null,form,instructions,type, status, vars, ssURL, questType, statementHTML, imgURL, audioRsc);
 
                 p.setExternalActivity(isExternal);
                 List<Hint> hints = DbHint.getHintsForProblem(conn,id);
@@ -199,8 +205,8 @@ public class ProblemMgr {
                 List<Topic> topics = DbProblem.getProblemTopics(conn,id);
                 p.setTopics(topics);
                 // short answer problems have a list of possible answers.
-                if (answerVals != null)
-                    p.setAnswerVals(answerVals);
+                if (answers != null)
+                    p.setAnswers(answers);
                 allProblems.add(p );
                 if (exampleId == -1)
                     exampleId = (exSel != null) ? exSel.selectProblem(conn,id) : -1;
@@ -222,20 +228,21 @@ public class ProblemMgr {
     // jkhj
 
 
-    private static List<String> getAnswerValues(Connection conn, int id) throws SQLException {
+    private static List<ProblemAnswer> getAnswerValues(Connection conn, int id) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select val from problemshortanswers where probid=?";
+            String q = "select val,choiceletter from problemanswers where probid=?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,id);
             rs = stmt.executeQuery();
-            List<String> vals = new ArrayList<String>();
+            List<ProblemAnswer> answers = new ArrayList<ProblemAnswer>();
             while (rs.next()) {
-                String v= rs.getString(1);
-                vals.add(v);
+                String v= rs.getString("val");
+                String l= rs.getString("choiceLetter");
+                answers.add(new ProblemAnswer(v,l,null,true,id));
             }
-            return vals;
+            return answers;
         }
         finally {
             if (stmt != null)
