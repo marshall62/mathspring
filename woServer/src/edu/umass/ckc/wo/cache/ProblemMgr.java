@@ -188,6 +188,9 @@ public class ProblemMgr {
                 if (form != null && (questType == Problem.QuestType.shortAnswer || form.equals(Problem.QUICK_AUTH))) {
                     answers = getAnswerValues(conn,id);
                 }
+                // perhaps its a short answer problem but not built with quickAuth
+                else if (form == null && questType == Problem.QuestType.shortAnswer)
+                    answers= getAnswerValues(conn,id);
 
                 String ssURL = rs.getString("screenShotURL");
                 if (rs.wasNull())
