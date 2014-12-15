@@ -145,9 +145,11 @@ public class ProblemResponse extends Response {
         Problem problem = getProblem();
         String oldAnswer = problem.getAnswer();
         String newAnswer = chooseAnswerPosition(problem, oldAnswer);
-        state.setProblemAnswer(newAnswer);
-        jsonObject.element("oldAnswer", oldAnswer);
-        jsonObject.element("newAnswer", newAnswer);
+        if (newAnswer != "") {
+            state.setProblemAnswer(newAnswer);
+            jsonObject.element("oldAnswer", oldAnswer);
+            jsonObject.element("newAnswer", newAnswer);
+        }
     }
 
     public void setEndPage(String endPage) {
