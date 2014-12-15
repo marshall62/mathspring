@@ -61,18 +61,21 @@ public class DbHint extends BaseMgr {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select h.id, h.name, h.givesAnswer,a.value from Hint h, hintattributes a " +
-                    "where h.problemid= ? and a.hintid=h.id and a.attribute='visual'";
+            String q = "select id, name, givesAnswer, statementHTML, audioResource, hoverText from Hint " +
+                    "where problemid= ? ";
             ps = conn.prepareStatement(q);
             ps.setInt(1, probId);
             rs = ps.executeQuery();
             List<Hint> hints = new ArrayList<Hint>();
             while (rs.next()) {
-                int id = rs.getInt(1);
-                String name = rs.getString(2);
-                boolean givesAnswer = rs.getBoolean(3);
-                String visual = rs.getString(4);
-                Hint h = new Hint(id, name, probId, givesAnswer, false, visual.equals("1"));
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                boolean givesAnswer = rs.getBoolean("givesAnswer");
+                String audio = rs.getString("audioResource");
+                String hoverText = rs.getString("hoverText");
+                String stmtHTML = rs.getString("statementHTML");
+
+                Hint h = new Hint(id, name, probId, givesAnswer, false, stmtHTML, audio, hoverText);
                 setIsRoot(conn, h);
                 hints.add(h);
             }

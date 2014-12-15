@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.handler;
 
 
+import com.mysql.jdbc.Statement;
 import edu.umass.ckc.wo.admin.PedagogyAssigner;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbClass;
@@ -108,8 +109,8 @@ public class UserRegistrationHandler {
                 studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), User.UserType.test);
             else
                 studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), User.UserType.student);
-
-            Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,e.getUserName(),e.getPassword(),e.getEmail());
+            if (e.getEmail()!= null && e.getEmail().length()>0)
+                Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,e.getUserName(),e.getPassword(),e.getEmail());
             return new UserRegistrationClassSelectionPage(url, studId, conn, Actions.createUser3,  e);
         }
     }
@@ -309,4 +310,26 @@ public class UserRegistrationHandler {
         return (val >=15 && val <=20);
     }
 
+
+    public static void setUserTestProperty(Connection conn, int studId, User.UserType ut) throws SQLException {
+        boolean[] flags = User.getUserTypeFlags(ut);
+        boolean updateStats = flags[2];
+        boolean showTestControls = flags[3];
+        boolean isTrialUser = User.isTrialUser(ut);
+        PreparedStatement stmt = null;
+        try {
+            String q = "update Student set updateStats=?, showTestControls=?,trialUser=? where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, updateStats?1:0);
+            stmt.setInt(2, showTestControls?1:0);
+            stmt.setInt(3,isTrialUser?1:0);
+            stmt.setInt(4,studId);
+            stmt.executeUpdate();
+        } finally {
+            if (stmt != null)
+                stmt.close();
+        }
+
+
+    }
 }

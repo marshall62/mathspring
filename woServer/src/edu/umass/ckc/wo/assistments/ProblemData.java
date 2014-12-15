@@ -169,6 +169,7 @@ public class ProblemData {
          */
     public String toJSON () {
         JSONObject o = new JSONObject();
+        // For some reason Assistments wants a strange form of JSON with everything quoted and subobjects all have quotes escaped.
         o.element("user",this.user);
         o.element("studentClass",this.userClass);
         o.element("assistment",this.assistment);
@@ -189,16 +190,21 @@ public class ProblemData {
         o.element("hintCount",Integer.toString(this.hintCount));
         o.element("answerInHint",Boolean.toString(this.answerInHint));
         JSONObject psd = new JSONObject();
-        psd.element("timeToFirstHint",this.timeToFirstHint);
-        psd.element("timeToFirstAttempt",this.timeToFirstAttempt);
-        psd.element("problemEndTime",this.endTime);
-        psd.element("numHintsBeforeCorrect",this.numHintsBeforeCorrect);
-        psd.element("mathspringProblemId",this.probId);
-        psd.element("mathspringSessionId",this.sessId);
+        psd.element("timeToFirstHint",Long.toString(this.timeToFirstHint));
+        psd.element("timeToFirstAttempt",Long.toString(this.timeToFirstAttempt));
+        psd.element("problemEndTime",Long.toString(this.endTime));
+        psd.element("numHintsBeforeCorrect",Integer.toString(this.numHintsBeforeCorrect));
+        psd.element("mathspringProblemId",Integer.toString(this.probId));
+        psd.element("mathspringSessionId",Integer.toString(this.sessId));
         psd.element("effort",this.effort);
+        // have to fully escape all quote chars in the sub object
+        String psdStr = String.format("\"{\"timeToFirstHint\": \"%s\", \"timeToFirstAttempt\": \"%s\", \"problemEndTime\": \"%s\", \"numHintsBeforeCorrect\": \"%s\"," +
+                "\"mathspringProblemId\": \"%s\", \"mathspringSessionId\": \"%s\", \"effort\": \"%s\"   }\"",Long.toString(this.timeToFirstHint),
+                Long.toString(this.timeToFirstAttempt), Long.toString(this.endTime),Integer.toString(this.numHintsBeforeCorrect), Integer.toString(this.probId),
+                Integer.toString(this.sessId), this.effort);
 //        o.element("partnerSpecificData",psd.toString());
         // the nested element does not go through with correct syntax
-        o.element("partnerSpecificData","\"{}\"");
+        o.element("partnerSpecificData",psdStr);
         return o.toString();
     }
 }

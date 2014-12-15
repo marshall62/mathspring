@@ -86,6 +86,38 @@ function getAnswer() {
     return globals.answer;
 }
 
+function getProblemContentPath() {
+    return sysGlobals.problemContentPath;
+}
+
+function getResource() {
+    return globals.resource;
+}
+
+function getAnswers() {
+    return globals.answers;
+}
+
+function getProblemStatement() {
+    return globals.statementHTML;
+}
+
+function getProblemFigure() {
+    return globals.questionImage;
+}
+
+function getProblemSound() {
+    return globals.questionAudio;
+}
+
+function getHints() {
+    return globals.hints;
+}
+
+function getForm() {
+    return globals.form;
+}
+
 // In the case of parameterized problems, we want to shuffle up the correct answer's position
 function getNewAnswer() {
     return globals.newAnswer;
@@ -320,15 +352,19 @@ function processShowVideo (responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     var video = activity.video;
     // khanacademy won't play inside an iFrame because it sets X-Frame-Options to SAMEORIGIN.
-    window.open(video, "width=500, height=500");
+    if (video != null)
+        window.open(video, "width=500, height=500");
+    else alert("There is no video to show for this problem");
 }
 
 function openExampleDialog(solution){
-    globals.exampleHintSequence = new Array(solution.length);
-    for (i=0;i<solution.length;i++) {
-        globals.exampleHintSequence[i] = solution[i].label;
+    if (solution != 'undefined' && solution != null) {
+        globals.exampleHintSequence = new Array(solution.length);
+        for (i=0;i<solution.length;i++) {
+            globals.exampleHintSequence[i] = solution[i].label;
+        }
+        globals.exampleCurHint = globals.exampleHintSequence[0];
     }
-    globals.exampleCurHint = globals.exampleHintSequence[0];
 //    globals.probMode = mode;
     // show a div that contains the example.
 //    $("#frameContainer").hide();              // hide the current problem
@@ -402,7 +438,12 @@ function showHTMLProblem (pid, solution, resource, mode) {
     var dir = resource.split(".")[0];
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
     if (!isDemo)  {
-        loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+        if (globals.form!=="quickAuth")  {
+            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+        }
+        else {
+            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+        }
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
 //        $(PROBLEM_WINDOWID).load(function () {
@@ -412,8 +453,14 @@ function showHTMLProblem (pid, solution, resource, mode) {
 //        });
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
-    else
-        loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+    else {
+        if (!globals.form!=="quickAuth") {
+            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+        }
+        else {
+            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+        }
+    }
 
 
 }
@@ -460,8 +507,16 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
-            showAnswer(activity.answer);
-            globals.answer = activity.answer;
+            // If server shuffles the answer to a different position, then newAnswer contains this position
+            if (activity.newAnswer != null && activity.newAnswer != 'undefined') {
+                globals.newAnswer = activity.newAnswer;
+                showAnswer(activity.newAnswer);
+            }
+            else {
+                globals.answer = activity.answer;
+                showAnswer(activity.answer);
+            }
+
         }
         globals.resource = activity.resource;
         // hardwired instructions since what comes from the server is mostly useless.
@@ -484,9 +539,24 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             var solution = activity.solution;
             globals.params = activity.parameters;
             globals.oldAnswer = activity.oldAnswer;
-            globals.newAnswer = activity.newAnswer;
-            if (globals.probMode == MODE_DEMO) {
+            if (mode == MODE_DEMO) {
                 globals.exampleProbType = activityType;
+            }
+            if (activity.form==="quickAuth") {
+                globals.form = "quickAuth";
+                globals.statementHTML = activity.statementHTML;
+                globals.questionAudio = activity.questionAudio;
+                globals.questionImage = activity.questionImage;
+                globals.hints = activity.hints;
+                globals.answers = activity.answers;
+            }
+            else {
+                globals.form = null;
+                globals.statementHTML = null;
+                globals.questionAudio = null;
+                globals.questionImage = null;
+                globals.hints = null;
+                globals.answers = null;
             }
             sendBeginEvent(globals);
             showHTMLProblem(pid,solution,resource,mode);
@@ -564,10 +634,10 @@ function showLearningCompanion (json) {
             loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files);
             //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files;
-        }
-    }
-
 }
+}
+}
+
 
 function hideNonDefaultInterventionDialogButtons () {
     $("#ok_button").show();
@@ -816,7 +886,7 @@ function clickHandling () {
 
 // This is called only when entering the tutor with specific problem (either from MPP or TeachTopic event from Assistments)
 function showFlashProblemAtStart () {
-    var activity = JSON.parse(globals.activityJSON);
+    var activity = globals.activityJSON;
     var mode = activity.mode;
     var activityType = activity.activityType;
     var resource = activity.resource;
@@ -853,7 +923,7 @@ function showFlashProblemAtStart () {
 }
 
 function showHTMLProblemAtStart () {
-    var activity = JSON.parse(globals.activityJSON);
+    var activity = globals.activityJSON;
     var mode = activity.mode;
     var isExample =  (mode == MODE_DEMO || mode == MODE_EXAMPLE);
     var pid = activity.id;
@@ -863,6 +933,16 @@ function showHTMLProblemAtStart () {
     var solution = activity.solution;
     var activityType = activity.activityType;
     var ans = activity.answer;
+
+    var form = activity.form;
+    if (form==="quickAuth") {
+        globals.isQuickAuth = true;
+        globals.statementHTML = activity.statementHTML;
+        globals.questionAudio = activity.questionAudio;
+        globals.questionImage = activity.questionImage;
+        globals.hints = activity.hints;
+        globals.answers = activity.answers;
+    }
     globals.params = activity.parameters;
     if (isExample) {
         globals.exampleProbType = activityType;
@@ -889,11 +969,19 @@ function showHTMLProblemAtStart () {
 // This came up after being in a problem and attempting it (correctly), going to MPP, then return to hut.
 function showInterventionAtStart () {
     if (sysGlobals.isDevEnv)
-        alert("Return to mathspring.  Showing Intervention without cycling");
-    var activity = JSON.parse(globals.activityJSON);
-    if (globals.lastProbId != -1)
-        sendEndEvent(globals);
-    processNextProblemIntervention(activity);
+        alert("Returning to Mathspring and playing intervention: " + globals.activityJSON);
+
+//        var ajson = globals.activityJSON;
+//        var qt = '\\"';
+//        var re = new RegExp(qt,'g');
+//        var cleanJSON = ajson.replace(re,'\\\"');
+        var activity = globals.activityJSON;
+        if (sysGlobals.isDevEnv)
+            alert("Activity is " + activity);
+        if (globals.lastProbId != -1)
+            sendEndEvent(globals);
+        processNextProblemIntervention(activity);
+
 
 }
 

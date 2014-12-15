@@ -51,6 +51,7 @@ public class User {
         else return null;
     }
 
+
     public static boolean isTrialUser (UserType ut) {
         return (ut==UserType.test || ut==UserType.assistmentTest || ut==UserType.externalTempTest || ut==UserType.externalTest);
     }

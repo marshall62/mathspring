@@ -48,6 +48,10 @@ public class StudentLessonMgr {
         setLessonLocationState();
     }
 
+
+    // This is used to initialize the mgr when the call is from Assistments asking to show a particular lesson.
+    // In this situation we need to set the start location to the first CU in the lesson and then initialize the state
+    // further within the CU to be the first problem
     public void init (SessionManager smgr, int lessonId) throws SQLException {
         init(smgr);
         setLessonStartLocation(lessonId);
@@ -88,7 +92,8 @@ public class StudentLessonMgr {
     }
 
     /**
-     * Set the state of the student as his location within the lesson.   This means setting objects for the current Lesson, CU, Cluster, Standard, Problem
+     * Set the state of the student as his location within the lesson.
+     * This means setting objects for the current Lesson, CU, Cluster, Standard, Problem
      * @throws SQLException
      */
     public void setLessonLocationState() throws SQLException {

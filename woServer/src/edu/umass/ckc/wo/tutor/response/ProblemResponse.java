@@ -110,13 +110,20 @@ public class ProblemResponse extends Response {
     // for a given problem is not always, for instance, c.
     // Not all problems have an e answer, so e is not a candidate for switching.
     // Note that we only have the capability to shuffle answers in HTML5 problems.
-    private String chooseAnswerPosition(String oldAnswer) {
+    private String chooseAnswerPosition(Problem p, String oldAnswer) {
         if (!(oldAnswer.equals("a") || oldAnswer.equals("b") || oldAnswer.equals("c") || oldAnswer.equals("d") || oldAnswer.equals("e"))) {
             return "";
         }
         String newAns = "";
         Random randomGenerator = new Random();
-        int randomIndex = randomGenerator.nextInt(4);
+        int randomIndex = -1;
+        if (p.getForm() != null && p.getForm().equals(Problem.QUICK_AUTH) && p.isMultiChoice()) {
+
+            randomIndex = randomGenerator.nextInt(p.getAnswers().size());
+        }
+        else {
+            randomIndex = randomGenerator.nextInt(4);
+        }
         switch (randomIndex) {
             case(0):
                 newAns = "a";
@@ -135,11 +142,14 @@ public class ProblemResponse extends Response {
     }
     
     public void shuffleAnswers(StudentState state) throws SQLException {
-        String oldAnswer = getProblem().getAnswer();
-        String newAnswer = chooseAnswerPosition(oldAnswer);
-        state.setProblemAnswer(newAnswer);
-        jsonObject.element("oldAnswer", oldAnswer);
-        jsonObject.element("newAnswer", newAnswer);
+        Problem problem = getProblem();
+        String oldAnswer = problem.getAnswer();
+        String newAnswer = chooseAnswerPosition(problem, oldAnswer);
+        if (newAnswer != "") {
+            state.setProblemAnswer(newAnswer);
+            jsonObject.element("oldAnswer", oldAnswer);
+            jsonObject.element("newAnswer", newAnswer);
+        }
     }
 
     public void setEndPage(String endPage) {

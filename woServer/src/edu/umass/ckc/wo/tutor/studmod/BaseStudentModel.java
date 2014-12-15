@@ -83,7 +83,7 @@ public class BaseStudentModel extends StudentModel {
     public double avgHintTime = 0; // totalHintTime / numProblemsSeen
     public String gender="unknown";
     protected int sessId;
-
+    protected SessionManager smgr;
 
      /* END OF INSTANCE VARS CORRESPONDING TO DATABASE TABLE BASESTUDENTMODEL */
 
@@ -103,9 +103,15 @@ public class BaseStudentModel extends StudentModel {
     public BaseStudentModel() {
     }
 
+    /** This is a constructor called only through Java reflection (e.g. see BasePedagogicalModel constructor
+     *
+     * @param smgr
+     * @throws Exception
+     */
     public BaseStudentModel (SessionManager smgr) throws Exception {
         this(smgr.getConnection());
         this.sessId= smgr.getSessionNum();
+        this.smgr = smgr;
     }
 
     public BaseStudentModel(Connection conn) throws SQLException {
@@ -268,6 +274,7 @@ public class BaseStudentModel extends StudentModel {
      * @throws java.sql.SQLException
      */
     public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
+        this.numProbsSeen++;
         smgr.getStudentState().beginProblem(null, e);
         this.problemHistory.beginProblem(smgr,e);
 
@@ -286,7 +293,7 @@ public class BaseStudentModel extends StudentModel {
         long timeInLastProb = state.getProbElapsedTime();
         if (state.getNumHintsGivenOnCurProblem() > 0)
             this.numProbsReceivedAssistance++;
-        this.numProbsSeen++;
+
 
         // running averages that must be computed before numProbsSeen is incremented
         this.avgTimeInProb = perProbAvg(avgTimeInProb, timeInLastProb);
@@ -314,9 +321,13 @@ public class BaseStudentModel extends StudentModel {
             avgHintsGivenPerAssistedProb = perAssistedProbAvg(avgHintsGivenPerAssistedProb, state.getNumHintsGivenOnCurProblem());
 
         }
-        // increments totalHintTime if student was previously in a hint
+        // increments totalHintTime if student was previously in a hint .
+        // N.B. The above may be true but if user went to MPP probElapsedTime will be 0 resulting in a negative number.
         if (state.isLastEvent(StudentState.HINT_EVENT)) {
-            totalHintTime += state.getProbElapsedTime() - state.getHintStartTime();
+            long probElapsed=  state.getProbElapsedTime();
+            long hintStart =  state.getHintStartTime();
+            if ((probElapsed - hintStart) > 0)
+                totalHintTime += probElapsed - hintStart;
         }
         this.avgHintTime = (numProbsSeen > 0) ? (totalHintTime / numProbsSeen) : 0;
         // update these variables after computations about the last problem are made
@@ -326,7 +337,8 @@ public class BaseStudentModel extends StudentModel {
         int numHelpAids = state.getNumHelpAidsBeforeCorrect() ;
         int mistakes = state.getNumMistakesOnCurProblem() ;
         boolean isCorrect = state.isProblemSolved();
-        this.topicUpdate(state, probId,topicId, numHelpAids, isCorrect, mistakes, probElapsedTime);
+        if (!isCorrect)
+            this.topicUpdate(state, probId,topicId, numHelpAids, isCorrect, mistakes, probElapsedTime);
         state.endProblem(smgr, studId, probElapsedTime, elapsedTime);  // this call resets state.studentSelectedTopic to -1
         this.problemHistory.endProblem(smgr,problemHistory.getCurProblem(), topicId);
         this.effort = this.problemHistory.getEffort(smgr.getSessionNum());
@@ -456,6 +468,16 @@ public class BaseStudentModel extends StudentModel {
             this.totalAttempts++;
         if (!isSolved)
             this.avgTimeBetweenAttempts = totalTimeBetweenAttempts / totalAttempts;
+
+        int probId = state.getCurProblem();
+        // If the student forced this problem + topic, then topic is stored in the state until this prob ends
+        int topicId = (state.getStudentSelectedTopic() != -1) ? state.getStudentSelectedTopic() : state.getCurTopic();
+        int numHelpAids = state.getNumHelpAidsBeforeCorrect() ;
+        int mistakes = state.getNumMistakesOnCurProblem() ;
+        // When the student is correct,   we update the mastery stats for this student immediately so that
+        // if they see an MPP or move to another topic by force,  the mastery is correctly set.
+        if (isCorrect)
+            this.topicUpdate(state, probId,topicId, numHelpAids, isCorrect, mistakes, probElapsed);
         state.studentAttempt(null, answer, isCorrect, probElapsed);  // set/initialize student state variables based on student attempt event
     }
 
@@ -573,10 +595,11 @@ public class BaseStudentModel extends StudentModel {
      */
     public double topicUpdate(StudentState state, int probID, int topicID, int numHelpAids, boolean isCorrect, int mistakes, long probElapsed) throws SQLException {
         double topicMastery = getTopicMastery(topicID);
+        int numPracticeProbsSeenInTopicAcrossSessions = smgr.getStudentModel().getStudentProblemHistory().getNumPracticeProbsSeenInTopicAcrossSessions(topicID);
 //        this.heuristic = new StudentModelMasteryHeuristic(conn);
         this.heuristic = new StudentModelMasteryHeuristic(conn);
         topicMastery = this.heuristic.computeTopicMastery(probElapsed,topicMastery,probID,
-                topicID,numHelpAids,isCorrect,mistakes, state.getTopicNumPracticeProbsSeen(), state.getCurProblemMode());
+                topicID,numHelpAids,isCorrect,mistakes, numPracticeProbsSeenInTopicAcrossSessions, state.getCurProblemMode());
         setTopicMasteryLevel(topicID,topicMastery); // alter the mastery level in the db and in the SM instance variable for mastery levs
 //        this.setProp(objid,var,topicMastery);
         return topicMastery;

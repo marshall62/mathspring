@@ -102,9 +102,10 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         int numProbsInterval = probInterval != null ? Integer.parseInt(probInterval) : -1;
         // If the period of time between interventions is exceeded OR num problems exceeded (whichever comes first) , ask
         // By request of ivon we only ask if the previous problem was practice
-        if (curProbMode.equals(Problem.PRACTICE) &&
+        boolean condition = curProbMode.equals(Problem.PRACTICE) &&
                 ((timeIntervalMin > -1 && timeSinceLastQueryMin >= timeIntervalMin) ||
-                (numProbsInterval > -1 && problemsSinceLastQuery >= numProbsInterval))) {
+                        (numProbsInterval > -1 && problemsSinceLastQuery >= numProbsInterval)) ;
+        if (condition) {
             Emotion emotionToQuery= getEmotionToQueryRandom();
             if (inputType.equals("slider"))
                 intervention = new AskEmotionSliderIntervention(emotionToQuery, numVals, this.askWhy);

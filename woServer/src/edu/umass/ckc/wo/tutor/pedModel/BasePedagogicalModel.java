@@ -323,6 +323,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 if (!smgr.getStudentState().isExampleSeen(curTopic))
                     smgr.getStudentState().addExampleSeen(curTopic);
                 problem = topicSelector.getExample(curTopic, this.hintSelector);
+                if (problem == null)
+                    return null;
                 initiateDemoProblem(problem);
                 return problem;
             }
@@ -444,6 +446,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             else p.setInTopicName("");
         }
     }
+
 
     public ProblemResponse getChallengingProblem (NextProblemEvent e) throws Exception {
         StudentState state = smgr.getStudentState();

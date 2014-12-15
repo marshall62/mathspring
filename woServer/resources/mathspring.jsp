@@ -61,18 +61,24 @@
             tutoringMode: '${tutoringMode}',
             instructions : '${instructions}',
             resource : '${resource}',
+            form : null,
             answer : '${answer}',
             interventionType: null,
             isInputIntervention: false ,
             learningCompanionClip: null,
-            activityJSON: '${activityJSON}',
+            activityJSON: ${activityJSON},
             showMPP: ${showMPP},
             <%--The fields below turn on things for test users --%>
             showSelectProblemButton: ${showProblemSelector},
             showAnswer: ${showAnswer},
             newAnswer: null,
             params: null ,
-            resumeProblem: ${resumeProblem}
+            resumeProblem: ${resumeProblem},
+            statementHTML: null,
+            questionAudio: null,
+            questionImage: null,
+            hints: null,
+            answers: null
         }
 
         var sysGlobals = {
