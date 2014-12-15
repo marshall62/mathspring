@@ -149,15 +149,14 @@ public class AssistmentsHandler {
             String token = callBackForToken(e);  // I think WPI changed the spec and doesn't require that we get a token for the user.
             // creates a wayang user and assigns a pedagogy to him
             boolean isTestUser = e.isTestUser();
-            boolean fromAssistments = e.isAssistmentsUser();
             // legit user params are given from Assistments, so we create a user in our system that has persisting user/data
-            if (fromAssistments && isTestUser) {
+            if (isTestUser) {
                 User.UserType ut = User.UserType.assistmentTest;
                 studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
                 u = DbAssistmentsUsers.insertUserInDb(conn, user, token, studId);
             }
             // a call made Assistments that is not a test.
-            else if (fromAssistments) {
+            else {
                 User.UserType ut = User.UserType.assistmentStudent;
                 studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
                 u = DbAssistmentsUsers.insertUserInDb(conn, user, token, studId);
@@ -165,6 +164,15 @@ public class AssistmentsHandler {
             if (e.isShowTransitionPage())
                 return showIntroPage(e);
         } else {
+            // We may have heard of this user but we still want this session to run correctly based on the isTest param (e.g. a previous
+            // session for this user may have had isTest=false and this one may have isTest=true)
+
+            boolean isTestUser = e.isTestUser();
+            User.UserType ut;
+            if (isTestUser)
+                ut = User.UserType.assistmentTest;
+            else ut =  User.UserType.assistmentStudent;
+            UserRegistrationHandler.setUserTestProperty(servletInfo.getConn(),u.getStudId(),ut);
             studId = u.getStudId();
         }
         return processTeachTopicRequest(e, studId, u);
