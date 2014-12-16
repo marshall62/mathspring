@@ -442,7 +442,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
     var dir = resource.split(".")[0];
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
     if (!isDemo)  {
-        if (!globals.form==="quickAuth")  {
+        if (globals.form!=="quickAuth")  {
             loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
@@ -458,7 +458,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
     else {
-        if (!globals.form==="quickAuth") {
+        if (globals.form!=="quickAuth") {
             loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
@@ -553,6 +553,14 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.questionImage = activity.questionImage;
                 globals.hints = activity.hints;
                 globals.answers = activity.answers;
+            }
+            else {
+                globals.form = null;
+                globals.statementHTML = null;
+                globals.questionAudio = null;
+                globals.questionImage = null;
+                globals.hints = null;
+                globals.answers = null;
             }
             sendBeginEvent(globals);
             showHTMLProblem(pid,solution,resource,mode);
