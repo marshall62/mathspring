@@ -118,6 +118,10 @@ function getForm() {
     return globals.form;
 }
 
+function isParameterized() {
+    return (globals.params != null && globals.params != undefined)
+}
+
 // In the case of parameterized problems, we want to shuffle up the correct answer's position
 function getNewAnswer() {
     return globals.newAnswer;
