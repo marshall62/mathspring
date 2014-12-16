@@ -404,7 +404,11 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
         }
         else if (p != null) {
             if (p.isParametrized()) {
-                return smgr.getStudentState().getProblemAnswer().equalsIgnoreCase(userInput.trim());
+                if (p.isMultiChoice())
+                    return smgr.getStudentState().getProblemAnswer().equalsIgnoreCase(userInput.trim());
+                else {
+                    // TODO: Get the list and check if one element is equal to student input
+                }
             }
             return p.getAnswer().equalsIgnoreCase(userInput.trim());
         }
