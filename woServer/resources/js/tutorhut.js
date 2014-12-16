@@ -454,7 +454,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
     else {
-        if (!globals.form!=="quickAuth") {
+        if (globals.form!=="quickAuth") {
             loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
