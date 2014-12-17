@@ -14,7 +14,7 @@ import java.util.Set;
  * Time: 6:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Binding {
+public class Binding  {
     private Map<String, String> vars;
     private int position;
 
@@ -70,6 +70,13 @@ public class Binding {
         this.position = position;
     }
 
+    public Binding copy () {
+        Binding c  = new Binding();
+        c.vars = new HashMap<String,String>(this.vars); // a shallow copy of this.vars
+        c.position = this.position;
+        return c;
+    }
+
     @Override
     public boolean equals(Object bind) {
         Binding b;
@@ -92,4 +99,6 @@ public class Binding {
         }
         return true;
     }
+
+
 }

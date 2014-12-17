@@ -406,8 +406,9 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
                     // because it depends on the bindings selected for this problem and this student
                     List<String> possibleInputs = smgr.getStudentState().getPossibleShortAnswers();
                     List<ProblemAnswer> correctAnswers = new ArrayList<ProblemAnswer>();
+                    // turn the String coming out of the student state into simple ProblemAnswer objects so we can use the grade method
                     for (String a: possibleInputs) {
-                        correctAnswers.add(new ProblemAnswer(a,null,null,false,probId, -1));
+                        correctAnswers.add(new ProblemAnswer(a,null,null,false,probId, -1, -1));
                     }
                     return findAnswerMatch(correctAnswers,userInput);
                 }
