@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.util.WoProps;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,12 +54,13 @@ public class ProblemState extends State {
     private static final String INTERVENTION_START_TIME = "st.interventionStartTime";
     private static final String PROBLEM_BINDING = "st.problemBinding";
     private static final String PROBLEM_ANSWER = "st.problemAnswer";
+    private static final String POSSIBLE_SHORT_ANSWERS = "st.possibleShortAnswers";
 
     private static String[] ALL_PROPS = new String[] { CUR_HINT, CUR_HINT_ID, PROB_ELAPSED_TIME, PROB_START_TIME, HINT_START_TIME, ATTEMPT_START_TIME,
             CUR_PROB_NUM_ATTEMPTS, CUR_PROB_AVG_TIME_BETWEEN_ATTEMPTS, CUR_PROB_NUM_MISTAKES, CUR_PROB_NUM_HINTS_GIVEN, CUR_PROB_NUM_HELPAIDS_GIVEN,
             CUR_PROB_MAX_HINTS, PROBLEM_SOLVED, TIME_TO_SOLVE, TIME_TO_FIRST_EVENT, TIME_TO_FIRST_HINT, TIME_TO_FIRST_ATTEMPT, TIME_IN_HINTS_BEFORE_CORRECT,
             NUM_HINTS_BEFORE_CORRECT, NUM_HELPAIDS_BEFORE_CORRECT, FIRST_EVENT, LAST_EVENT, STRATEGIC_HINT_SHOWN, PROB_IDLE_TIME, VIDEO_SHOWN,
-            TEXT_READER_USED, SOLUTION_HINT_GIVEN, CUR_INTERVENTION, INTERVENTION_START_TIME, PROB_EXAMPLES_SHOWN};
+            TEXT_READER_USED, SOLUTION_HINT_GIVEN, CUR_INTERVENTION, INTERVENTION_START_TIME, PROB_EXAMPLES_SHOWN, PROBLEM_BINDING, PROBLEM_ANSWER,POSSIBLE_SHORT_ANSWERS};
          // N.B.  If you add a new field above,  make sure clearState deletes its value
 
 
@@ -95,6 +97,7 @@ public class ProblemState extends State {
     private boolean inProblem;
     private String problemBinding;
     private String problemAnswer;
+    private List<String> possibleShortAnswers;
 
 
     public ProblemState(Connection conn) {
@@ -133,7 +136,7 @@ public class ProblemState extends State {
         this.solutionHintGiven =  mapGetPropBoolean(m,SOLUTION_HINT_GIVEN,false);
         this.problemBinding = mapGetPropString(m,PROBLEM_BINDING,"");
         this.problemAnswer = mapGetPropString(m,PROBLEM_ANSWER,"");
-
+        this.possibleShortAnswers = mapGetPropList(m,POSSIBLE_SHORT_ANSWERS);
     }
 
     void initializeProblemState() throws SQLException {
@@ -166,6 +169,7 @@ public class ProblemState extends State {
         this.setIsVideoShown(false);
         this.setProbExamplesShown(0);
         this.setIsTextReaderUsed(false);
+        this.possibleShortAnswers = null;
 //        this.setProblemBinding("");
 //        this.setProblemAnswer("");
     }
@@ -485,5 +489,14 @@ public class ProblemState extends State {
 
     public String getProblemAnswer() {
         return problemAnswer;
+    }
+
+    public List<String> getPossibleShortAnswers() {
+        return possibleShortAnswers;
+    }
+
+    public void setPossibleShortAnswers(List<String> possibleShortAnswers) throws SQLException {
+        this.possibleShortAnswers = possibleShortAnswers;
+        setProp(this.objid,POSSIBLE_SHORT_ANSWERS,possibleShortAnswers);
     }
 }

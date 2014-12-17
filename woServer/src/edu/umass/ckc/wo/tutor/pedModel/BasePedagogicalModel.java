@@ -693,6 +693,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 curProb.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
                 if (curProb.isMultiChoice())
                     ((ProblemResponse)r).shuffleAnswers(smgr.getStudentState());
+                // parameterized short answer problems need to save the possible answers in the student state
+
             }
         }
         if (learningCompanion != null )

@@ -235,15 +235,19 @@ public class ProblemMgr {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select val,choiceletter from problemanswers where probid=?";
+            String q = "select a.val,a.choiceletter,a.bindingPosition,a.order from problemanswers a where a.probid=? order by a.order";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,id);
             rs = stmt.executeQuery();
             List<ProblemAnswer> answers = new ArrayList<ProblemAnswer>();
             while (rs.next()) {
-                String v= rs.getString("val");
-                String l= rs.getString("choiceLetter");
-                answers.add(new ProblemAnswer(v,l,null,true,id));
+                String v= rs.getString("a.val");
+                String l= rs.getString("a.choiceLetter");
+                int bn= rs.getInt("a.bindingPosition");
+                if (rs.wasNull())
+                     bn = -1;
+                int order = rs.getInt("a.order");
+                answers.add(new ProblemAnswer(v,l,null,true,id, bn, order));
             }
             return answers;
         }

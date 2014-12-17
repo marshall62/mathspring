@@ -612,6 +612,15 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
 
+    public List<String> getPossibleShortAnswers() {
+        return problemState.getPossibleShortAnswers();
+    }
+
+    public void setPossibleShortAnswers(List<String> possibleShortAnswers) throws SQLException {
+        problemState.setPossibleShortAnswers(possibleShortAnswers);
+    }
+
+
     /* end of problem state methods */
 
 

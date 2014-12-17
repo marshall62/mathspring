@@ -18,14 +18,18 @@ public class ProblemAnswer {
     private String letter;
     private String hint;
     private boolean distractor;
+    private int bindingNumber;
+    private int order;
     private int probId;
 
-    public ProblemAnswer(String val, String letter, String hint, boolean distractor, int probId) {
+    public ProblemAnswer(String val, String letter, String hint, boolean distractor, int probId, int bindingNumber, int order) {
         this.val = val;
         this.letter = letter;
         this.hint = hint;
         this.distractor = distractor;
         this.probId = probId;
+        this.bindingNumber = bindingNumber;
+        this.order = order;
     }
 
 
@@ -69,6 +73,22 @@ public class ProblemAnswer {
         this.probId = probId;
     }
 
+    public int getBindingNumber() {
+        return bindingNumber;
+    }
+
+    public void setBindingNumber(int bindingNumber) {
+        this.bindingNumber = bindingNumber;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     public JSONObject getJSON(JSONObject jo) {
         Problem p = null;
         try {
@@ -83,5 +103,9 @@ public class ProblemAnswer {
         }
 
         return jo;
+    }
+
+    public boolean grade (String studentInput) {
+        return val.equalsIgnoreCase(studentInput.trim());
     }
 }
