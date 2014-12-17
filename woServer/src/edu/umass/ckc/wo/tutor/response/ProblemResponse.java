@@ -152,10 +152,6 @@ public class ProblemResponse extends Response {
         }
     }
 
-    public void saveShortAnswer(StudentState state) throws SQLException {
-        // save the list of short answers for this parameterization in student state variable
-    }
-
     public void setEndPage(String endPage) {
         this.endPage = endPage;
         jsonObject.element("endPage",endPage);
