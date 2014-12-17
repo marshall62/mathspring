@@ -211,8 +211,10 @@ public class Problem implements Activity {
             for (Hint hint : getHints()) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
-            for (ProblemAnswer ans : getAnswers()) {
-                jo.accumulate("answers", ans.getJSON(new JSONObject()));
+            if (isMultiChoice()) {
+                for (ProblemAnswer ans : getAnswers()) {
+                   jo.accumulate("answers", ans.getJSON(new JSONObject()));
+                }
             }
         }
 //        if (params != null) {
