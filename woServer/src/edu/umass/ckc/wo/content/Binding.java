@@ -16,6 +16,7 @@ import java.util.Set;
  */
 public class Binding {
     private Map<String, String> vars;
+    private int position;
 
     public Binding() {
         this.vars = new HashMap<String, String>();
@@ -59,6 +60,14 @@ public class Binding {
             jo.element(entry.getKey(), entry.getValue());
         }
         return jo;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     @Override

@@ -251,7 +251,12 @@ public abstract class State {
 
     }
 
-
+    public boolean setProp (int id, String property, List<String> vals) throws SQLException {
+        clearProp(id,property);
+        for (String v : vals)
+            addProp(id,property,v);
+        return true;
+    }
 
     public boolean setProp (int id, String property, boolean val) throws SQLException {
         return setProp(id,property,Boolean.toString(val),0);

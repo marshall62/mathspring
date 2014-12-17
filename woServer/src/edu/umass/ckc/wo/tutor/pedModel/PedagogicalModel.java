@@ -2,15 +2,9 @@ package edu.umass.ckc.wo.tutor.pedModel;
 
 import ckc.servlet.servbase.BaseServlet;
 import edu.umass.ckc.email.Emailer;
-import edu.umass.ckc.wo.assistments.AssistmentsHandler;
-import edu.umass.ckc.wo.assistments.AssistmentsUser;
 import edu.umass.ckc.wo.cache.ProblemMgr;
-import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.ProblemAnswer;
-import edu.umass.ckc.wo.db.DbAssistmentsUsers;
-import edu.umass.ckc.wo.db.DbProblem;
-import edu.umass.ckc.wo.event.tutorhut.EnterTutorEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
@@ -22,7 +16,6 @@ import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.probSel.ChallengeModeProblemSelector;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.ReviewModeProblemSelector;
-import edu.umass.ckc.wo.tutor.response.AttemptResponse;
 import edu.umass.ckc.wo.tutor.response.HintResponse;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
@@ -30,6 +23,7 @@ import edu.umass.ckc.wo.tutormeta.*;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -390,24 +384,32 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     public abstract boolean isTopicContentAvailable (int topicId) throws Exception;
 
 
+    private boolean findAnswerMatch (List<ProblemAnswer> possible, String studentInput) {
+        for (ProblemAnswer a: possible) {
+            if (a.grade(studentInput))
+                return true;
+        }
+        return false;
+    }
+
     public boolean isAttemptCorrect (int probId, String userInput) throws SQLException {
         //Problem p = new DbProblem().getProblem(smgr.getConnection(),probId);
         Problem p = ProblemMgr.getProblem(probId);
         if (p.isShortAnswer())
-        {
-            List<ProblemAnswer> answers = p.getAnswers();
-            for (ProblemAnswer a: answers) {
-                if (a.getVal().equalsIgnoreCase(userInput))
-                    return true;
-            }
-            return false;
-        }
+            return findAnswerMatch(p.getAnswers(),userInput);
         else if (p != null) {
             if (p.isParametrized()) {
                 if (p.isMultiChoice())
                     return smgr.getStudentState().getProblemAnswer().equalsIgnoreCase(userInput.trim());
                 else {
-                    // TODO: Get the list and check if one element is equal to student input
+                    // Get the list and check if one element is equal to student input.  This list comes from the StudentState
+                    // because it depends on the bindings selected for this problem and this student
+                    List<String> possibleInputs = smgr.getStudentState().getPossibleShortAnswers();
+                    List<ProblemAnswer> correctAnswers = new ArrayList<ProblemAnswer>();
+                    for (String a: possibleInputs) {
+                        correctAnswers.add(new ProblemAnswer(a,null,null,false,probId, -1));
+                    }
+                    return findAnswerMatch(correctAnswers,userInput);
                 }
             }
             return p.getAnswer().equalsIgnoreCase(userInput.trim());

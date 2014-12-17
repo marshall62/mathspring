@@ -235,7 +235,7 @@ public class ProblemMgr {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select val,choiceletter from problemanswers where probid=?";
+            String q = "select val,choiceletter,bindingPosition from problemanswers where probid=?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,id);
             rs = stmt.executeQuery();
@@ -243,7 +243,10 @@ public class ProblemMgr {
             while (rs.next()) {
                 String v= rs.getString("val");
                 String l= rs.getString("choiceLetter");
-                answers.add(new ProblemAnswer(v,l,null,true,id));
+                int bn= rs.getInt("bindingPosition");
+                if (rs.wasNull())
+                     bn = -1;
+                answers.add(new ProblemAnswer(v,l,null,true,id, bn));
             }
             return answers;
         }

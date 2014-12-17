@@ -91,24 +91,46 @@ public class ProblemParameters {
         List<Binding> unusedBindings = getUnusedBindings(seenBindings);
         if (unusedBindings.size() == 0) {
             randomIndex = randomGenerator.nextInt(bindings.size());
-            return bindings.get(randomIndex);
+            Binding b = bindings.get(randomIndex);
+            b.setPosition(randomIndex);
+            return b;
         }
         else {
             randomIndex = randomGenerator.nextInt(unusedBindings.size());
             Binding chosenBinding = unusedBindings.get(randomIndex);
+            chosenBinding.setPosition(randomIndex);
             return chosenBinding;
         }
     }
 
     public void addBindings(ProblemResponse r, int studId, Connection conn, StudentState state) throws SQLException {
         JSONObject rJson = r.getJSON();
+        Problem p = r.getProblem();
         Binding unusedBinding = getUnusedAssignment(r.getProblem().getId(), studId, conn);
         saveAssignment(unusedBinding, state);
+        // short answer problems need to save the possible answers in the student state too.
+        if (p.isShortAnswer())
+            saveAnswerPossibilities(conn,state,p.getAnswers(),unusedBinding.getPosition());
         JSONObject pJson = unusedBinding.getJSON(new JSONObject());
         r.setParams(pJson.toString());
         rJson.element("parameters", pJson);
 
     }
+
+    // short answer problems that are parameterized need to save the appropriate set of possible answers into the student state.
+    // WHen the variable bindings are selected prior to calling this method, the index of the selected binding is kept and passed to this so that
+    // we can then select the possible answers that have the same index (the bindingPosition in the ProblemAnswer table)
+    private void saveAnswerPossibilities(Connection conn, StudentState state, List<ProblemAnswer> answers, int position) throws SQLException {
+        List<String> possibleAnswers = new ArrayList<String>();
+        // the list of ALL answers as defined for the problem.   We now go through them and get the ones that are for the given
+        // position (i.e. those that correspond with the position of the variable bindings that were just selected
+        for (ProblemAnswer a: answers) {
+            if (a.getBindingNumber() == position)
+                possibleAnswers.add(a.getVal());
+        }
+        state.setPossibleShortAnswers(possibleAnswers);
+    }
+
     private void saveAssignment(Binding b, StudentState state) throws SQLException {
         state.setProblemBinding(b.toString());
     }
