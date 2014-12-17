@@ -114,6 +114,10 @@ function getHints() {
     return globals.hints;
 }
 
+function getUnits() {
+    return globals.units;
+}
+
 function getForm() {
     return globals.form;
 }
@@ -549,6 +553,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.questionImage = activity.questionImage;
                 globals.hints = activity.hints;
                 globals.answers = activity.answers;
+                globals.units = activity.units;
             }
             else {
                 globals.form = null;

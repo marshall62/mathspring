@@ -103,6 +103,7 @@ public class Problem implements Activity {
     private boolean HTML5;
     private ProblemParameters params;
     private String ssURL;
+    private String units = null;
 
     public String toString() {
         return "Prob id="+Integer.toString(id) + " rsc="+this.resource;
@@ -117,7 +118,7 @@ public class Problem implements Activity {
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
                    String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL,
-                   QuestType questType, String statementHTML, String imageURL, String audioResource)
+                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units)
     {
         this.id = id;
         this.resource = resource;
@@ -141,6 +142,7 @@ public class Problem implements Activity {
         this.statementHTML = statementHTML;
         this.imageURL = imageURL;
         this.questionAudio = audioResource;
+        this.units = units;
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
@@ -148,7 +150,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null);
     }
 
     public int getId () { return id; }
@@ -208,6 +210,7 @@ public class Problem implements Activity {
             jo.element("statementHTML", statementHTML);
             jo.element("questionAudio", questionAudio);
             jo.element("questionImage", imageURL);
+            jo.element("units", units);
             for (Hint hint : getHints()) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
@@ -518,7 +521,7 @@ public class Problem implements Activity {
     }
 
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();
