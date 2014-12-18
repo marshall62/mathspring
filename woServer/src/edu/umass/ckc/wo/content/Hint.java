@@ -34,6 +34,7 @@ public class Hint  {
     private String statementHTML;
     private String audioResource;
     private String hoverText;
+    private int order;
 
     // This only exists to represent Hint information about a Hint event in 4mality.
     public Hint (int id, String label) {
@@ -49,7 +50,7 @@ public class Hint  {
         this.givesAnswer=givesAnswer;
     }
 
-    public Hint(int id, String label, int problemId, boolean givesAnswer, boolean is_root, String statementHTML, String audioResource, String hoverText)  {
+    public Hint(int id, String label, int problemId, boolean givesAnswer, boolean is_root, String statementHTML, String audioResource, String hoverText, int order)  {
         this.id=id;
         this.label=label;
         this.is_root=is_root;
@@ -59,6 +60,7 @@ public class Hint  {
         this.statementHTML = statementHTML;
         this.audioResource = audioResource;
         this.hoverText = hoverText;
+        this.order = order;
     }
 
 
@@ -125,6 +127,10 @@ public class Hint  {
 
     public void setIs_root(boolean is_root) {
         this.is_root = is_root;
+    }
+
+    public int getOrder() {
+        return order;
     }
 
     public static void main(String[] args) {

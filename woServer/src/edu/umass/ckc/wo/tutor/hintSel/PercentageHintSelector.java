@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.hintSel;
 
 import edu.umass.ckc.wo.content.Hint;
+import edu.umass.ckc.wo.db.DbHint;
 import edu.umass.ckc.wo.event.StudentActionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutormeta.HintSelector;
@@ -43,7 +44,7 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
      * @return
      * @throws Exception
      */
-    protected List<Hint> getHintsForProblem (int probId) throws Exception {
+    protected List<Hint> getHintsForProblemOld (int probId) throws Exception {
         //SqlQuery q = new SqlQuery();
         List result = new Vector();
         String s = "select min(" + Hint.ID + ") as id," + Hint.PROBLEM_ID + "," + Hint.NAME + "," +
@@ -75,7 +76,7 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
             result.add(new Hint(id,
                                 label,
                                 problemId,
-                                givesAnswer==1, isroot==1, null, null, ""));
+                                givesAnswer==1, isroot==1, null, null, "", -1));
         }
         SqlQuery.closeRS(rs);
 
@@ -83,26 +84,56 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
     }
 
 
+    // no longer doing complicated tree searches for the next hint.    Now it just gets the next one in the sequence
+    // which is stored in order in the Problem object.
     private Hint doSelectHint (int lastHintId, int probId, int studId) throws Exception {
         List<Hint> hints = getHintsForProblem(probId) ;
         // 2/23/11 DM do not include hints that give the answer unless they are ROOT hints
-        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId,lastHintId,hints, false);
+        if (lastHintId == -1 && hints != null && hints.size() > 0)
+            return hints.get(0);
+        else if (lastHintId != -1)
+        {
+            Hint last=null;
+            for (Hint h : hints)
+                if (h.getId()==lastHintId) {
+                    last = h;
+                    break;
+                }
+            if (last !=null)
+            {
+                int ix = hints.indexOf(last);
+                if (hints.size() > ix+1)
+                    return hints.get(ix+1);
+                return last;
+            }
+            return null;
+        }
+        else return null;
 
-        // select from among those hints identified as possible.
-
-
-        if ( possibleSuccessorHints.size() == 0 )
-            // There are no more "next" hints, repeat the last one
-            return getHint(hints, lastHintId);
-
-        if ( possibleSuccessorHints.size() == 1 )
-            // There is only 1 hint, so just show that one
-            return possibleSuccessorHints.get(0) ;
-
-        // return one of the possible.   Currently this always returns a hint that is ALGEBRAIC.
-        return pickBranchHint(possibleSuccessorHints, studId) ;
 
     }
+
+//
+//    private Hint doSelectHintOld (int lastHintId, int probId, int studId) throws Exception {
+//        List<Hint> hints = getHintsForProblem(probId) ;
+//        // 2/23/11 DM do not include hints that give the answer unless they are ROOT hints
+//        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId,lastHintId,hints, false);
+//
+//        // select from among those hints identified as possible.
+//
+//
+//        if ( possibleSuccessorHints.size() == 0 )
+//            // There are no more "next" hints, repeat the last one
+//            return getHint(hints, lastHintId);
+//
+//        if ( possibleSuccessorHints.size() == 1 )
+//            // There is only 1 hint, so just show that one
+//            return possibleSuccessorHints.get(0) ;
+//
+//        // return one of the possible.   Currently this always returns a hint that is ALGEBRAIC.
+//        return pickBranchHint(possibleSuccessorHints, studId) ;
+//
+//    }
 
 //    public Hint selectHintOld (SessionManager smgr, HintEvent e) throws Exception {
 //        if (problem == null)

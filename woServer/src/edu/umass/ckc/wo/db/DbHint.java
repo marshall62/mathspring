@@ -61,21 +61,21 @@ public class DbHint extends BaseMgr {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select id, name, givesAnswer, statementHTML, audioResource, hoverText from Hint " +
-                    "where problemid= ? ";
+            String q = "select h.id, h.name, h.givesAnswer, h.statementHTML, h.audioResource, h.hoverText, h.order from Hint h " +
+                    "where h.problemid= ? and h.order is not null order by h.order";
             ps = conn.prepareStatement(q);
             ps.setInt(1, probId);
             rs = ps.executeQuery();
             List<Hint> hints = new ArrayList<Hint>();
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                boolean givesAnswer = rs.getBoolean("givesAnswer");
-                String audio = rs.getString("audioResource");
-                String hoverText = rs.getString("hoverText");
-                String stmtHTML = rs.getString("statementHTML");
-
-                Hint h = new Hint(id, name, probId, givesAnswer, false, stmtHTML, audio, hoverText);
+                int id = rs.getInt("h.id");
+                String name = rs.getString("h.name");
+                boolean givesAnswer = rs.getBoolean("h.givesAnswer");
+                String audio = rs.getString("h.audioResource");
+                String hoverText = rs.getString("h.hoverText");
+                String stmtHTML = rs.getString("h.statementHTML");
+                int order = rs.getInt("h.order");
+                Hint h = new Hint(id, name, probId, givesAnswer, false, stmtHTML, audio, hoverText, order);
                 setIsRoot(conn, h);
                 hints.add(h);
             }

@@ -75,19 +75,19 @@ public abstract class BaseHintSelector implements HintSelector {
     }
 
 
-    protected Hint getNextHintInSequence(List<Hint> hints, int probId, int prevHint, int studId, int groupId) throws Exception {
-        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId, prevHint, hints, true);
-        if (possibleSuccessorHints.size() == 0)
-            // There are no more "next" hints, terminate with null
-            return null;
-
-        if (possibleSuccessorHints.size() == 1)
-            // There is only 1 hint, so just return that one
-            return possibleSuccessorHints.get(0);
-
-        // return one of the possible.   Currently this always returns a hint that is ALGEBRAIC.
-        return pickBranchHint(possibleSuccessorHints, studId);
-    }
+//    protected Hint getNextHintInSequence(List<Hint> hints, int probId, int prevHint, int studId, int groupId) throws Exception {
+//        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId, prevHint, hints, true);
+//        if (possibleSuccessorHints.size() == 0)
+//            // There are no more "next" hints, terminate with null
+//            return null;
+//
+//        if (possibleSuccessorHints.size() == 1)
+//            // There is only 1 hint, so just return that one
+//            return possibleSuccessorHints.get(0);
+//
+//        // return one of the possible.   Currently this always returns a hint that is ALGEBRAIC.
+//        return pickBranchHint(possibleSuccessorHints, studId);
+//    }
 
     /**
      * Going from the last hint given (maybe none for this problem), this will return a sequence of hints
@@ -110,6 +110,7 @@ public abstract class BaseHintSelector implements HintSelector {
 
     private List<Hint> selectHintPath(SessionManager smgr, int probId, boolean fromBeginning) throws Exception {
         int lastHintId;
+        problem = ProblemMgr.getProblem(probId);
         if (!fromBeginning)
             lastHintId = smgr.getStudentState().getCurHintId();
         else lastHintId = -1;
@@ -120,18 +121,22 @@ public abstract class BaseHintSelector implements HintSelector {
 //        } catch (Exception exc) {
 //            throw new UserException("There is no groupId recorded. You probably should not be using PercentageHintSelector");
 //        }
-        List<Hint> allHints = getHintsForProblem(probId);
-        List<Hint> hintSequence = new ArrayList<Hint>();
-        Hint h = getNextHintInSequence(allHints, probId, lastHintId, smgr.getStudentId(), groupId);
-        if (h != null)
-            lastHintId = h.getId();
-        while (h != null) {
-            hintSequence.add(h);
-            h = getNextHintInSequence(allHints, probId, lastHintId, smgr.getStudentId(), groupId);
-            if (h != null)
-                lastHintId = h.getId();
-        }
-        return hintSequence;
+//        List<Hint> allHints = getHintsForProblem(probId);
+        List<Hint> allHints = problem.getHints();
+
+        return allHints;
+        // no longer using trees based in the solutionpath table.  The problem now just has the list of hints in order.
+//        List<Hint> hintSequence = new ArrayList<Hint>();
+//        Hint h = getNextHintInSequence(allHints, probId, lastHintId, smgr.getStudentId(), groupId);
+//        if (h != null)
+//            lastHintId = h.getId();
+//        while (h != null) {
+//            hintSequence.add(h);
+//            h = getNextHintInSequence(allHints, probId, lastHintId, smgr.getStudentId(), groupId);
+//            if (h != null)
+//                lastHintId = h.getId();
+//        }
+//        return hintSequence;
     }
 
 
@@ -189,7 +194,7 @@ public abstract class BaseHintSelector implements HintSelector {
      * @return
      * @throws Exception
      */
-    protected List<Hint> getPossibleSuccessorHints(int probId, int lastHintId, List<Hint> hints, boolean includeAnswerGivingHint) throws Exception {
+    protected List<Hint> getPossibleSuccessorHintsOld(int probId, int lastHintId, List<Hint> hints, boolean includeAnswerGivingHint) throws Exception {
         List<Hint> possibleHints = new ArrayList<Hint>();
         // if no last hint, then add only the root hint to list of possible.
         if (lastHintId == -1) {
@@ -236,7 +241,5 @@ public abstract class BaseHintSelector implements HintSelector {
             }
         }
     }
-
-
-
 }
+
