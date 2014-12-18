@@ -6,7 +6,7 @@ package edu.umass.ckc.wo.content;
 public class Reinforcement extends Hint {
 
     public Reinforcement(int id, String label, int problemId) throws Exception {
-        super(id,label,problemId,false, false);
+        super(id,label,problemId,false);
     }
 
     public String getXML () {

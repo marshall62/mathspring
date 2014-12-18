@@ -56,34 +56,9 @@ public class RandomHintSelector extends BaseHintSelector implements HintSelector
         return possibleHints.get(ix);
     }
 
-
+      // This isn't being used.
     private Hint doSelectHint(int lastHintId, int probId) throws Exception {
-        List hints = getHintsForProblem(probId);
-
-        if (lastHintId == -1) {
-            for (int i = 0; i < hints.size(); i++) {
-                if (((Hint) (hints.get(i))).isRoot()) {
-                    return (Hint) hints.get(i);
-                }
-            }
-        } else {
-            SqlQuery q = new SqlQuery();
-            String s = "select targetHint from SolutionPath where sourceHint = " + lastHintId;
-            ResultSet rs = q.read(conn_, s);
-
-            while (rs.next()) {
-                int newhint_id = rs.getInt("targetHint");
-                ;
-                if (rs.isLast() || Math.random() < 0.5) {
-                    SqlQuery.closeRS(rs);
-                    return getHint(hints, newhint_id);
-                }
-
-            }
-            SqlQuery.closeRS(rs);
-        }
-
-        return getHint(hints, lastHintId);
+       return null;
     }
 
     // get the ID of a hint from the list of hints for this problem

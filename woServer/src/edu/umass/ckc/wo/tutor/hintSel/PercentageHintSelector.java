@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.tutor.hintSel;
 
 import edu.umass.ckc.wo.content.Hint;
-import edu.umass.ckc.wo.db.DbHint;
 import edu.umass.ckc.wo.event.StudentActionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutormeta.HintSelector;
@@ -38,50 +37,6 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
 //
 //    }
 
-    /**
-     * Overloads the BaseHintSelectors version of this method
-     * @param probId
-     * @return
-     * @throws Exception
-     */
-    protected List<Hint> getHintsForProblemOld (int probId) throws Exception {
-        //SqlQuery q = new SqlQuery();
-        List result = new Vector();
-        String s = "select min(" + Hint.ID + ") as id," + Hint.PROBLEM_ID + "," + Hint.NAME + "," +
-            Hint.IS_ROOT + "," + Hint.GIVES_ANSWER +
-            " from Hint where " + Hint.PROBLEM_ID + "=" + probId +
-            " group by " + Hint.PROBLEM_ID + "," + Hint.NAME + "," + Hint.IS_ROOT + "," + Hint.GIVES_ANSWER ;
-
-        ResultSet rs = SqlQuery.read(conn_,s);
-
-        while (rs.next()) {
-            int id = rs.getInt(Hint.ID);
-            int problemId = rs.getInt(Hint.PROBLEM_ID);
-            String label = rs.getString(Hint.NAME);
-            int givesAnswer = rs.getInt(Hint.GIVES_ANSWER);
-            int isroot = rs.getInt(Hint.IS_ROOT);
-
-            String att_query = "select " + Hint.ATT_VALUE +
-                " from HintAttributes " +
-                " where hintId" + "=" + id +
-                " and attribute = 'visual' " ;
-
-            ResultSet attres = SqlQuery.read(conn_,att_query) ;
-            int isVisual = 0 ;
-            if ( attres.next() ) {
-                if ( attres.getInt(Hint.ATT_VALUE) == 1 )
-                    isVisual = 1 ;
-            }
-
-            result.add(new Hint(id,
-                                label,
-                                problemId,
-                                givesAnswer==1, isroot==1, null, null, "", -1));
-        }
-        SqlQuery.closeRS(rs);
-
-        return result;
-    }
 
 
     // no longer doing complicated tree searches for the next hint.    Now it just gets the next one in the sequence

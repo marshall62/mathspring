@@ -60,6 +60,7 @@ public class ProblemMgr {
         if (!loaded) {
             loaded = true;
             allProblems = new ArrayList<Problem>();
+            allTopics = new ArrayList<Topic>();
             probsByTopic = new HashMap<Integer,ArrayList<Problem>>();
             stdsByTopic = new HashMap<Integer,Set<CCStandard>>();
             loadTopics(conn);
