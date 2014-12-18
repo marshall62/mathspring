@@ -395,7 +395,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     public boolean isAttemptCorrect (int probId, String userInput) throws SQLException {
         //Problem p = new DbProblem().getProblem(smgr.getConnection(),probId);
         Problem p = ProblemMgr.getProblem(probId);
-        if (p.isShortAnswer())
+        if (p.isShortAnswer() && !p.isParametrized())
             return findAnswerMatch(p.getAnswers(),userInput);
         else if (p != null) {
             if (p.isParametrized()) {

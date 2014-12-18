@@ -201,11 +201,6 @@ public class Problem implements Activity {
         jo.element("type",type);
         jo.element("resource",resource);
         jo.element("instructions",instructions);
-        if (solution != null) {
-            for (Hint h : solution) {
-                jo.accumulate("solution",h.getJSON(new JSONObject()));
-            }
-        }
         if (isQuickAuth()) {
             jo.element("statementHTML", statementHTML);
             jo.element("questionAudio", questionAudio);
@@ -218,6 +213,11 @@ public class Problem implements Activity {
                 for (ProblemAnswer ans : getAnswers()) {
                    jo.accumulate("answers", ans.getJSON(new JSONObject()));
                 }
+            }
+        }
+        if (solution != null) {
+            for (Hint h : solution) {
+                jo.accumulate("solution",h.getJSON(new JSONObject()));
             }
         }
 //        if (params != null) {

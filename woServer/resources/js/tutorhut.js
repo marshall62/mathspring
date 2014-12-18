@@ -564,6 +564,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.statementHTML = null;
                 globals.questionAudio = null;
                 globals.questionImage = null;
+                globals.units = null;
                 globals.hints = null;
                 globals.answers = null;
             }
