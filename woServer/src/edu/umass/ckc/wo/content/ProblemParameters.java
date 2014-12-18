@@ -107,7 +107,12 @@ public class ProblemParameters {
     }
 
     public void addBindings(ProblemResponse r, int studId, Connection conn, StudentState state) throws SQLException {
+
         JSONObject rJson = r.getJSON();
+        // We have already bound this problem
+        if (r.getParams() != null) {
+            return;
+        }
         Problem p = r.getProblem();
         Binding unusedBinding = getUnusedAssignment(r.getProblem().getId(), studId, conn);
         saveAssignment(unusedBinding, state);
