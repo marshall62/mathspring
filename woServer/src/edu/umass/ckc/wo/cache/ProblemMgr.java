@@ -148,7 +148,7 @@ public class ProblemMgr {
 
     private static void loadAllProblems (Connection conn) throws Exception {
         String s = "select p.id, answer, animationResource,p.name,nickname,strategicHintExists,hasVars,screenShotURL"+
-                ", diff_level, form, isExternalActivity, type, video, example, p.status, p.questType, statementHTML, imageURL, audioResource"  +
+                ", diff_level, form, isExternalActivity, type, video, example, p.status, p.questType, statementHTML, imageURL, audioResource, units"  +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid and (status='Ready' or status='ready' or status='testable') order by p.id";    // and p.id=v.problemid
         PreparedStatement ps = conn.prepareStatement(s);
@@ -180,6 +180,7 @@ public class ProblemMgr {
                 String statementHTML = rs.getString("statementHTML");
                 String imgURL = rs.getString("imageURL");
                 String audioRsc = rs.getString("audioResource");
+                String units = rs.getString("units");
                 Problem.QuestType questType = Problem.parseType(t);
                 HashMap<String, ArrayList<String>> vars = null;
                 if (hasVars) {
@@ -198,7 +199,7 @@ public class ProblemMgr {
                     ssURL = null;
                 //                Problem p = new Problem(id, resource, answer, diff, name, nname,form,instructions,type);
                 Problem p = new Problem(id, resource,answer,name,nname,stratHint,
-                        diff,null,form,instructions,type, status, vars, ssURL, questType, statementHTML, imgURL, audioRsc);
+                        diff,null,form,instructions,type, status, vars, ssURL, questType, statementHTML, imgURL, audioRsc, units);
 
                 p.setExternalActivity(isExternal);
                 List<Hint> hints = DbHint.getHintsForProblem(conn,id);
