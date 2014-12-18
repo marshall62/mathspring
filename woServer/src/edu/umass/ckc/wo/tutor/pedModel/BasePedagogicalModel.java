@@ -430,7 +430,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        }
         if (p != null && p.isParametrized()) {
             p.getParams().addBindings(r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-            r.shuffleAnswers(smgr.getStudentState());
+            if (p.isMultiChoice())
+                r.shuffleAnswers(smgr.getStudentState());
 
         }
         return r;
@@ -690,7 +691,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
             if (curProb != null && curProb.isParametrized()) {
                 curProb.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-                ((ProblemResponse)r).shuffleAnswers(smgr.getStudentState());
+                if (curProb.isMultiChoice())
+                    ((ProblemResponse)r).shuffleAnswers(smgr.getStudentState());
+                // parameterized short answer problems need to save the possible answers in the student state
+
             }
         }
         if (learningCompanion != null )
@@ -721,7 +725,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        }
         if (p != null && p.isParametrized()) {
             p.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-            r.shuffleAnswers(smgr.getStudentState());
+            if (p.isMultiChoice())
+                r.shuffleAnswers(smgr.getStudentState());
         }
         return r;
     }
