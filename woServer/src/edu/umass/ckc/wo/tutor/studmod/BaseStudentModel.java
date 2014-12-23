@@ -91,7 +91,7 @@ public class BaseStudentModel extends StudentModel {
 
     public int classId;
     private static final String INITIAL_TOPIC_MASTERY_ESTIMATE = "0.5";
-    public static final double INITIAL_TOPIC_MASTERY_ESTIMATE_FL = 0.5;
+    public static final double INITIAL_TOPIC_MASTERY_ESTIMATE_FL = 0.1;
 
 
 

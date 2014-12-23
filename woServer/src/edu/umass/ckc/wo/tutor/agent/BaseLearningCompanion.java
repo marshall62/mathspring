@@ -9,7 +9,10 @@ import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.TransactionLogger;
 import edu.umass.ckc.wo.tutor.hintSel.StrategicHintSelector;
 import edu.umass.ckc.wo.tutor.response.*;
+import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -120,5 +123,25 @@ public class BaseLearningCompanion extends LearningCompanion {
         }
     }
 
+    // All learning companions need to say they are solving the problems with the student and to show interest in the
+    // examples.  Otherwise, by default, idle.   Sub-classes will override this.
+    protected List<String> selectEmotions(AffectStudentModel m, Response r, SessionManager smgr) throws Exception {
+        if (r instanceof ProblemResponse) {
+            Problem p = ((ProblemResponse) r).getProblem();
+            // By request of Ivon 6/14
+            if (smgr.getStudentState().getNumRealProblemsThisTutorSession() == 1)
+            {
+                clips.add("solveTogether");
+                return clips;
+            }
+            if (p != null && p.isExample())  {
+                clips.add("interestHigh");
+                return clips;
+            }
+        }
+        clips.add("idle");
+
+        return clips;
+    }
 
 }

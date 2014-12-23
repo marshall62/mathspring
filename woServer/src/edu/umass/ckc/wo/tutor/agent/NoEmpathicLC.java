@@ -1,10 +1,13 @@
 package edu.umass.ckc.wo.tutor.agent;
 
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.response.AttemptResponse;
+import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -22,11 +25,18 @@ import java.util.List;
  */
 public class NoEmpathicLC extends EmotionalLC {
 
-    public Response processNextProblemRequest(SessionManager smgr, NextProblemEvent e, Response r) {
-        List<String> l = selectEmotions((AffectStudentModel) smgr.
-                getStudentModel());
+    public Response processNextProblemRequest(SessionManager smgr, NextProblemEvent e, Response r) throws Exception {
+        AffectStudentModel sm;
+        try {
+            sm = (AffectStudentModel) smgr.getStudentModel();
+        } catch (Exception ex) {
+            throw new DeveloperException("You must use an AffectStudentModel when learning companions are part of the pedagogy");
+        }
+        List<String> l = selectEmotions(sm,r, smgr);
         addCharacterControl(r);
         return r;
+
+
     }
 
     public Response processAttempt (SessionManager smgr, AttemptEvent attemptEvent, AttemptResponse r) throws Exception {
@@ -52,13 +62,4 @@ public class NoEmpathicLC extends EmotionalLC {
         return r;
     }
 
-
-
-
-
-        // TODO this code duplicates a method below that should be eliminated
-    public List<String> selectEmotions(StudentModel m) {
-        clips.add("idle");
-        return clips;
-    }
 }
