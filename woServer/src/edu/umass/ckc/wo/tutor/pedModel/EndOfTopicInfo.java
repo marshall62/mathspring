@@ -31,7 +31,7 @@ public class EndOfTopicInfo {
         if (topicMasteryReached)
             sb.append("You&#39;ve mastered this topic! <br>");
         if (failToFindEasier)
-            sb.append("I can&#39;t find an easier problem.<br>");
+            sb.append("I cannot find a problem that is just right for you.<br>");
         if (failToFindHarder)
             sb.append("I can&#39;t find a problem more challenging.<br>");
         if (failToFindSame)
