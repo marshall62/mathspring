@@ -654,6 +654,9 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         StudentState state = smgr.getStudentState();
         Problem curProb=null;
 
+        //Don't carry over an answer from the last problem.
+        state.setProblemAnswer(null);
+
         r = getProblemSelectedByStudent(e);
         if (r == null) r = getChallengingProblem(e);
         if (r == null) r = getReviewProblem(e);
