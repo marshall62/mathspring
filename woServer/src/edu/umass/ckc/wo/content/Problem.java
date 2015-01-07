@@ -197,6 +197,7 @@ public class Problem implements Activity {
         jo.element("topicName",topicName);
         jo.element("standards",getStandardsString(this.standards));
         jo.element("answer",answer);
+        jo.element("numHints",numHints);
         jo.element("form",form);
         jo.element("type",type);
         jo.element("resource",resource);

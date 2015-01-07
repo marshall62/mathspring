@@ -131,6 +131,12 @@ function getNewAnswer() {
     return globals.newAnswer;
 }
 
+// each time we start a new problem, set global variables that contain info about its state.
+function setGlobalProblemInfo (activity) {
+    globals.numHints = activity.numHints;
+    globals.numHintsSeen = 0;
+}
+
 
 function updateTimers () {
     var now = new Date().getTime();
@@ -173,9 +179,17 @@ function showHourglassCursor(b) {
      }
 }
 
+function displayHintCount () {
+    if (globals.numHints > 0 && globals.numHintsSeen == 0)
+        $("#hint").html("Hint (" + globals.numHints + ")");
+    else if (globals.numHintsSeen <= globals.numHints)
+        $("#hint").html("Hint (" + globals.numHintsSeen + "/" + globals.numHints + ")");
+}
+
 function showProblemInfo (pid, name, topic, standards) {
     $("#pid").text(pid + ":" + name);  // shows the problem ID + resource
-    $("#problemTopicAndStandards").html("Topic:" + topic + "<br>Standards:" + standards)
+    $("#problemTopicAndStandards").html("Topic:" + topic + "<br>Standards:" + standards);
+    displayHintCount();
 }
 
 function showUserInfo (userName) {
@@ -500,6 +514,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     var mode = activity.mode;
     var activityType = activity.activityType;
     var type = activity.type;
+
     if (activityType == NO_MORE_PROBLEMS || activityType == NO_MORE_CHALLENGE_PROBLEMS || activityType == NO_MORE_REVIEW_PROBLEMS)  {
         // send EndEvent for previous problem
         sendEndEvent(globals);
@@ -512,6 +527,8 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         var resource =activity.resource;
         var topic = activity.topicName;
         var standards = activity.standards;
+        setGlobalProblemInfo(activity);
+
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
@@ -906,6 +923,7 @@ function showFlashProblemAtStart () {
     var type = activity.type;
     var ans = activity.answer;
     var solution = activity.solution;
+    setGlobalProblemInfo(activity);
     var isExample =  (mode == MODE_DEMO || mode == MODE_EXAMPLE);
     var container;
     if (isExample) {
@@ -941,6 +959,7 @@ function showHTMLProblemAtStart () {
     var topicName = activity.topicName;
     var standards = activity.standards;
     var solution = activity.solution;
+    setGlobalProblemInfo(activity);
     var activityType = activity.activityType;
     var ans = activity.answer;
 
