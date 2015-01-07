@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class SemiEmpathicLC extends EmotionalLC {
 
-    public Response processNextProblemRequest(SessionManager smgr, NextProblemEvent e, Response r) throws DeveloperException {
+    public Response processNextProblemRequest(SessionManager smgr, NextProblemEvent e, Response r) throws Exception {
 
         AffectStudentModel sm;
         try {
@@ -31,7 +31,7 @@ public class SemiEmpathicLC extends EmotionalLC {
         } catch (Exception ex) {
             throw new DeveloperException("You must use an AffectStudentModel when learning companions are part of the pedagogy");
         }
-        List<String> l = selectEmotions(sm,r);
+        List<String> l = selectEmotions(sm,r,smgr);
         addCharacterControl(r);
         return r;
 
@@ -39,19 +39,18 @@ public class SemiEmpathicLC extends EmotionalLC {
 
 
 
-        // TODO this code duplicates a method below that should be eliminated
-        public List<String> selectEmotions(AffectStudentModel m, Response r) {
+
+        public List<String> selectEmotions(AffectStudentModel m, Response r, SessionManager smgr) throws Exception {
             if (r instanceof TopicIntroResponse || r instanceof InterventionResponse) {
                 clips.add("idle");
                 return clips;
             }
-            else if (r instanceof ProblemResponse) {
-                Problem p = ((ProblemResponse) r).getProblem();
-                if (p != null && p.isExample())  {
-                    clips.add("interestHigh");
-                    return clips;
-                }
-            }
+            // 12/22/14 DM:  This block of code is repeated in FullEmpathicLC, SemiEmpathicLC, NoEmpathicLC.   This was
+            // done this way because of a request and the desire to make the simplest change necessary to achieve the behavior.
+
+            else if (r instanceof ProblemResponse)
+                return super.selectEmotions(m,r,smgr);
+
             //Every 5 problems, it trains attributions
             if (java.lang.Math.random() < 0.10) {
                 List genAttrList = Arrays.asList(generalAttribution);

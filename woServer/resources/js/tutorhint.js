@@ -70,6 +70,10 @@ function processRequestHintResult(responseText, textStatus, XMLHttpRequest) {
     var hint = JSON.parse(responseText);
     var label = hint.label;
     var id = hint.id;
+    if (globals.numHintsSeen < globals.numHints)  {
+        globals.numHintsSeen++;
+        displayHintCount();
+    }
     debugAlert("hint returned is ID: " + id + " label: " + label);
     globals.curHint = label;
     callProblemPlayHint(label);
