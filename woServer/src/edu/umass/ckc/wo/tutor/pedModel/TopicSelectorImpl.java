@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
@@ -323,11 +324,19 @@ public class TopicSelectorImpl implements TopicSelector {
      * @return
      * @throws SQLException
      */
-    public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws SQLException {
+    public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws Exception {
         // studentID and classID were set in init method.
         List<Integer> topicProbs = ProblemMgr.getTopicProblemIds(topicId);  // operates on a clone so destruction is ok
-        if (!includeTestProblems)
+        // TODO:  Issue:  If all the problems in a topic are marked as TESTABLE and there are no ready problems, the
+        // list of problems becomes empty if the includeTestProblems flag is false.   Then we have a bug because
+        // we can't find a problem in an empty list.
+
+        if (!includeTestProblems)  {
             removeTestProblems(topicProbs);
+            if (topicProbs.size() == 0)
+                throw new UserException("Cannot find a problem in topic " + topicId + ".  For a non-test user, the topic must contain READY problems.  Try running the system with isTest=true");
+
+        }
         List<Integer> omittedProbIds = DbClass.getClassOmittedProblems(conn, classID, topicId); // problems omitted for this class
         topicProbs.removeAll(omittedProbIds);
         return topicProbs;

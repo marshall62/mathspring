@@ -19,7 +19,7 @@ public class User {
 
 
     public enum UserType {
-        test, guest, student, assistmentStudent, assistmentTest, externalTest, externalTempTest
+        test, guest, student, assistmentStudent, assistmentTest, externalTest, externalTempTest, externalTempNonTest
     }
 
     public User(String fname, String lname, String uname, String email, String password, int id) {
@@ -48,6 +48,8 @@ public class User {
             return new boolean[] {true,true,false,true} ;
         else if (userType == UserType.externalTempTest)
             return new boolean[] {false,false,false,true} ;
+        else if (userType == UserType.externalTempNonTest)
+            return new boolean[] {false,false,false,false} ;
         else return null;
     }
 

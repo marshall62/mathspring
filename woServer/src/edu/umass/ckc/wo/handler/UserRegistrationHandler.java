@@ -140,13 +140,29 @@ public class UserRegistrationHandler {
     }
 
 
+    /**
+     * This is called when the p1-p5 params that indicate the call is from Assistments ARE NOT PRESENT.  This means
+     * the TeachTopic action is being requested by what we call an external means (i.e. location box in a browser or a URL clicked on)
+     * This means the entry into the system is not for a given user.  Essentially its an anonymous entry and we call this a
+     * "temporary user".  This means that there isn't going to be data about the user kept.
+     * @param conn
+     * @param className
+     * @param userType
+     * @return
+     * @throws Exception
+     */
     public static int registerTemporaryUser(Connection conn, String className, User.UserType userType) throws Exception {
         int count = DbUser.getGuestUserCounter(conn);
         String prefix="temp";
         if (userType == User.UserType.guest)
             prefix = "guest";
+        // Either no isTest was included OR &isTest=true was passed so show tester controls and include testable problems
         else if (userType == User.UserType.externalTempTest)
-            prefix = "externalTempTest";
+            prefix = "externalTempTester";
+        // &istest=false was passed so do NOT show tester controls and do not include testable problems.  This
+        // allows one to see the system as a real user would see it (without updating stats about problem difficulty)
+        else if (userType == User.UserType.externalTempNonTest)
+            prefix = "externalTempCaller";
         String user = genName(conn,prefix);
         int studId = DbUser.createUser(conn,"","", user,"","", userType);
         ClassInfo cl = DbClass.getClassByName(conn, className);
