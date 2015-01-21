@@ -180,7 +180,7 @@ function showHourglassCursor(b) {
 }
 
 function displayHintCount () {
-    if (globals.numHints > 0 && globals.numHintsSeen == 0)
+    if (globals.numHints >= 0 && globals.numHintsSeen == 0)
         $("#hint").html("Hint (" + globals.numHints + ")");
     else if (globals.numHintsSeen <= globals.numHints)
         $("#hint").html("Hint (" + globals.numHintsSeen + "/" + globals.numHints + ")");
