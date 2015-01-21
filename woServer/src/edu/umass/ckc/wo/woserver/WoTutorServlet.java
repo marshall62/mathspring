@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.assistments.AssistmentsHandler;
 import edu.umass.ckc.wo.beans.Teacher;
 import edu.umass.ckc.wo.beans.TeacherEntity;
 import edu.umass.ckc.wo.content.CCContentMgr;
+import edu.umass.ckc.wo.content.LessonMgr;
 import edu.umass.ckc.wo.db.HibernateUtil;
 import edu.umass.ckc.wo.exc.AssistmentsBadInputException;
 import edu.umass.ckc.wo.mrcommon.Names;
@@ -89,6 +90,8 @@ public class WoTutorServlet extends BaseServlet {
                 this.problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
                 problemMgr.loadProbs(connection);
                 CCContentMgr.getInstance().loadContent(connection);
+                LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
+
             }
             logger.debug("end init of WoTutorServlet");
 

@@ -34,7 +34,7 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
      * @param ped
      * @throws SQLException
      */
-    public CCPedagogicalModel (SessionManager smgr, Pedagogy ped) throws SQLException {
+    public CCPedagogicalModel (SessionManager smgr, Pedagogy ped) throws Exception {
         super(smgr,ped);
         studentLessonMgr = new StudentLessonMgr(smgr);
     }

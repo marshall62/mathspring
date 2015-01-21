@@ -395,8 +395,19 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     public boolean isAttemptCorrect (int probId, String userInput) throws SQLException {
         //Problem p = new DbProblem().getProblem(smgr.getConnection(),probId);
         Problem p = ProblemMgr.getProblem(probId);
-        if (p.isShortAnswer() && !p.isParametrized())
-            return findAnswerMatch(p.getAnswers(),userInput);
+
+        // Note:  Auth tool has two places to put answer for a short answer problem.  If only one answer is
+        // put in, it can be fetched using p.getAnswer().   If there are multiple forms of the answer, then use
+        // p.getAnswers().   Code below checks for which one was used and then uses it/them for grading the user input
+        if (p.isShortAnswer() && !p.isParametrized()) {
+            List<ProblemAnswer> possibleAnswers = null;
+            if (p.getAnswers().size()== 0) {
+                possibleAnswers = new ArrayList<ProblemAnswer>();
+                possibleAnswers.add(new ProblemAnswer(p.getAnswer(),probId));
+            }
+            else possibleAnswers = p.getAnswers();
+            return findAnswerMatch(possibleAnswers,userInput);
+        }
         else if (p != null) {
             if (p.isParametrized()) {
                 if (p.isMultiChoice())
@@ -408,7 +419,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
                     List<ProblemAnswer> correctAnswers = new ArrayList<ProblemAnswer>();
                     // turn the String coming out of the student state into simple ProblemAnswer objects so we can use the grade method
                     for (String a: possibleInputs) {
-                        correctAnswers.add(new ProblemAnswer(a,null,null,false,probId, -1, -1));
+                        correctAnswers.add(new ProblemAnswer(a,probId));
                     }
                     return findAnswerMatch(correctAnswers,userInput);
                 }

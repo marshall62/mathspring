@@ -316,7 +316,7 @@ public class AssistmentsHandler {
     /*
         If the call has a lessonId,  then we fetch the Lesson and add it to the CCPedagogicalModel
      */
-    private void setLesson(int clId, int lessonId, SessionManager smgr) throws SQLException {
+    private void setLesson(int clId, int lessonId, SessionManager smgr) throws Exception {
         if (lessonId != -1) {
             CCPedagogicalModel pm = (CCPedagogicalModel) smgr.getPedagogicalModel();
             pm.getStudentLessonMgr().init(smgr, lessonId);

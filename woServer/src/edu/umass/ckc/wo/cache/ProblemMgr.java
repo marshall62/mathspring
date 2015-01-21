@@ -1,10 +1,7 @@
 package edu.umass.ckc.wo.cache;
 
 import edu.umass.ckc.wo.beans.Topic;
-import edu.umass.ckc.wo.content.CCStandard;
-import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.Hint;
-import edu.umass.ckc.wo.content.ProblemAnswer;
+import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;

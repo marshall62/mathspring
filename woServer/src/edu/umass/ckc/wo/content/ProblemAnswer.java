@@ -32,6 +32,10 @@ public class ProblemAnswer {
         this.order = order;
     }
 
+    public ProblemAnswer (String val, int probId) {
+        this(val,null,null,false,probId,-1,-1);
+    }
+
 
     public String getVal() {
         return val;

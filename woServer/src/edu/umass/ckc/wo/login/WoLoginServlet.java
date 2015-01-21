@@ -5,6 +5,7 @@ import ckc.servlet.servbase.BaseServlet;
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCContentMgr;
+import edu.umass.ckc.wo.content.LessonMgr;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
@@ -59,6 +60,7 @@ public class WoLoginServlet extends BaseServlet {
             ProblemMgr problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
             problemMgr.loadProbs(connection);
             CCContentMgr.getInstance().loadContent(connection);
+            LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
         }
         logger.debug("end init of WOLoginServlet");
 

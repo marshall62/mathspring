@@ -43,7 +43,7 @@ public class StudentLessonMgr {
      * @param smgr
      * @throws SQLException
      */
-    public StudentLessonMgr(SessionManager smgr) throws SQLException {
+    public StudentLessonMgr(SessionManager smgr) throws Exception {
         init(smgr);
         setLessonLocationState();
     }
@@ -52,7 +52,7 @@ public class StudentLessonMgr {
     // This is used to initialize the mgr when the call is from Assistments asking to show a particular lesson.
     // In this situation we need to set the start location to the first CU in the lesson and then initialize the state
     // further within the CU to be the first problem
-    public void init (SessionManager smgr, int lessonId) throws SQLException {
+    public void init (SessionManager smgr, int lessonId) throws Exception {
         init(smgr);
         setLessonStartLocation(lessonId);
     }
@@ -81,7 +81,7 @@ public class StudentLessonMgr {
     }
 
     // This is for an initial call from Assistments to a set a fixed lesson for a student.
-    public void setLessonStartLocation (int lessonId) throws SQLException {
+    public void setLessonStartLocation (int lessonId) throws Exception {
         this.lessonId = lessonId;
         this.classLessons = LessonMgr.getInstance().getClassLessons(conn, classId);
         this.curLesson = getCurLesson(); // get the Lesson object from the lessonId
@@ -96,7 +96,7 @@ public class StudentLessonMgr {
      * This means setting objects for the current Lesson, CU, Cluster, Standard, Problem
      * @throws SQLException
      */
-    public void setLessonLocationState() throws SQLException {
+    public void setLessonLocationState() throws Exception {
         // this will load Lesson structure as it applies to the student
 
         // get all the lessons for the class the student is in

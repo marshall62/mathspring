@@ -112,7 +112,7 @@ public class DbCC {
     }
 
 
-    public static CurricUnit getCurriculumUnit (Connection conn, int cuId) throws SQLException {
+    public static CurricUnit getCurriculumUnit (Connection conn, int cuId) throws Exception {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -151,7 +151,7 @@ public class DbCC {
      * @return
      * @throws SQLException
      */
-    public static List<CurricUnit> getCurriculumUnits (Connection conn) throws SQLException {
+    public static List<CurricUnit> getCurriculumUnits (Connection conn) throws Exception {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -191,7 +191,7 @@ public class DbCC {
      * @return
      * @throws SQLException
      */
-    public static List<CurricUnit> getLessonCurricUnits (Connection conn, int lessonId ) throws SQLException {
+    public static List<CurricUnit> getLessonCurricUnits (Connection conn, int lessonId ) throws Exception {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -217,6 +217,32 @@ public class DbCC {
             return cus;
         }
         finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+                ps.close();
+        }
+    }
+
+    public static List<Lesson> getAllLessons (Connection conn) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q = "select id,name,notes,assigndate,duedate from ccorelesson";
+            ps = conn.prepareStatement(q);
+            rs = ps.executeQuery();
+            List<Lesson> lessons = new ArrayList<Lesson>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String notes = rs.getString("notes");
+                Timestamp due = rs.getTimestamp("dueDate");
+                Timestamp assigned = rs.getTimestamp("assigndate");
+                Lesson l = new Lesson(id,name,notes, due, assigned);
+                lessons.add(l);
+            }
+            return lessons;
+        } finally {
             if (rs != null)
                 rs.close();
             if (ps != null)
