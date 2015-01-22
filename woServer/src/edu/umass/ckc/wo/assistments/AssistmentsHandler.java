@@ -76,18 +76,24 @@ public class AssistmentsHandler {
     private Connection conn;
 
     public static final String assistmentServletName = "partnerProblemLog";
-    public String assistmentsLogbackURL = "https://test1.assistments.org/api2/partnerProblemLog"; // this will be overwritten by value from web.xml
+    public static String assistmentsLogbackURL = "https://test1.assistments.org/api2/partnerProblemLog"; // this will be overwritten by value from web.xml
 //    private static String assistmentsLogbackURL = "http://rose.cs.umass.edu/mt/TutorBrain?action=EnterTutor";
 
     public AssistmentsHandler(ServletInfo servletInfo) {
         String assLinkUserURL = servletInfo.getServletContext().getInitParameter(ASSISTMENTS_LINK_USER_URL);
+
         if (assLinkUserURL != null && !assLinkUserURL.equals(""))
             this.assUserTokenURL = assLinkUserURL;
         this.servletInfo = servletInfo;
         this.conn = servletInfo.getConn();
+//        getReferer(servletInfo); // doesn't work with the calls coming from ASsistments
+        System.out.println(assistmentsLogbackURL);
+    }
+
+    private void getReferer(ServletInfo servletInfo) {
         String referer = servletInfo.getRequest().getHeader(HttpHeaders.REFERER);
         if (referer == null)
-            assistmentsLogbackURL = null;
+            ;
         else {
             int i = referer.indexOf(assistmentServletName);
             if (i != -1)
@@ -511,6 +517,7 @@ public class AssistmentsHandler {
             if (history.size() > 0) {
                 StudentProblemData d = history.get(history.size() - 1);
                 ProblemData pd = new ProblemData(u, sd, d);
+                System.out.println(pd.toJSON());
                 servletInfo.getOutput().append(pd.toJSON());
             } else {
                 JSONObject o = new JSONObject();
