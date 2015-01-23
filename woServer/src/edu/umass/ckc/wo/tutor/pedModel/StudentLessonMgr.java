@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class StudentLessonMgr {
+
+    private static final Logger logger = Logger.getLogger(StudentLessonMgr.class);
     private SessionManager smgr;
     private int lessonId;
     private Lesson curLesson;
@@ -46,6 +49,7 @@ public class StudentLessonMgr {
     public StudentLessonMgr(SessionManager smgr) throws Exception {
         init(smgr);
         setLessonLocationState();
+        logger.debug("StudentLessonMgr instantiated");
     }
 
 

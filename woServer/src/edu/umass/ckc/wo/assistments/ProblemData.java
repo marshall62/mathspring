@@ -198,11 +198,11 @@ public class ProblemData {
         psd.element("mathspringSessionId",Integer.toString(this.sessId));
         psd.element("effort",this.effort);
         // have to fully escape all quote chars in the sub object
-//        String psdStr = String.format("\"{\"timeToFirstHint\": \"%s\", \"timeToFirstAttempt\": \"%s\", \"problemEndTime\": \"%s\", \"numHintsBeforeCorrect\": \"%s\"," +
-//                "\"mathspringProblemId\": \"%s\", \"mathspringSessionId\": \"%s\", \"effort\": \"%s\"   }\"",Long.toString(this.timeToFirstHint),
-//                Long.toString(this.timeToFirstAttempt), Long.toString(this.endTime),Integer.toString(this.numHintsBeforeCorrect), Integer.toString(this.probId),
-//                Integer.toString(this.sessId), this.effort);
-//        o.element("partnerSpecificData",psdStr);
+        String psdStr = String.format("\"{\"timeToFirstHint\": \"%s\", \"timeToFirstAttempt\": \"%s\", \"problemEndTime\": \"%s\", \"numHintsBeforeCorrect\": \"%s\"," +
+                "\"mathspringProblemId\": \"%s\", \"mathspringSessionId\": \"%s\", \"effort\": \"%s\"   }\"",Long.toString(this.timeToFirstHint),
+                Long.toString(this.timeToFirstAttempt), Long.toString(this.endTime),Integer.toString(this.numHintsBeforeCorrect), Integer.toString(this.probId),
+                Integer.toString(this.sessId), this.effort);
+        o.element("partnerSpecificData",psdStr);
         return o.toString();
     }
 }
