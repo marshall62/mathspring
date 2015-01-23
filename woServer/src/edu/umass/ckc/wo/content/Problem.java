@@ -233,6 +233,7 @@ public class Problem implements Activity {
 
     private int getNumNonAnswerHints() {
         int n=0;
+        if (this.getHints() == null) return 0;
         for (Hint h: this.getHints())
             if (!h.getGivesAnswer())
                 n++;
@@ -361,7 +362,9 @@ public class Problem implements Activity {
     public List<Hint> getHints() {
         // return a clone to make sure that if the user of the returned list mutates it,
         // then this won't be harmed.
-        return (List<Hint>) ((ArrayList<Hint>) allHints).clone();
+        if (allHints != null)
+            return (List<Hint>) ((ArrayList<Hint>) allHints).clone();
+        else return null;
     }
 
     public void setVideo(String url) {
