@@ -57,8 +57,13 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
             if (last !=null)
             {
                 int ix = hints.indexOf(last);
-                if (hints.size() > ix+1)
-                    return hints.get(ix+1);
+                if (hints.size() > ix+1) {
+                    Hint h= hints.get(ix+1);
+                    // We do not want to give hints that give the answer.
+                    if (h.getGivesAnswer())
+                        return last;
+                    else return h;
+                }
                 return last;
             }
             return null;

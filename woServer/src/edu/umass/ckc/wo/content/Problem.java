@@ -197,7 +197,7 @@ public class Problem implements Activity {
         jo.element("topicName",topicName);
         jo.element("standards",getStandardsString(this.standards));
         jo.element("answer",answer);
-        jo.element("numHints",numHints);
+        jo.element("numHints",getNumNonAnswerHints());
         jo.element("form",form);
         jo.element("type",type);
         jo.element("resource",resource);
@@ -229,6 +229,14 @@ public class Problem implements Activity {
 //        }
         return jo;
 
+    }
+
+    private int getNumNonAnswerHints() {
+        int n=0;
+        for (Hint h: this.getHints())
+            if (!h.getGivesAnswer())
+                n++;
+        return n;
     }
 
     private String getStandardsString(List<CCStandard> standards) {
