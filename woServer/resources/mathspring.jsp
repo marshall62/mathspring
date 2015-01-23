@@ -61,7 +61,7 @@
             tutoringMode: '${tutoringMode}',
             instructions : '${instructions}',
             resource : '${resource}',
-            form : null,
+            form : '${form}',
             answer : '${answer}',
             interventionType: null,
             isInputIntervention: false ,

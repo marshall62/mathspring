@@ -275,6 +275,7 @@ public class TutorPage {
         // renamed to probMode (from mode) so it is clear that this is the mode of the problem being played (or requested to
         // be played) - For some reason the JSP wasn't even settings its globals.probMode to this value until now.
         info.getRequest().setAttribute("probMode", problem.getMode());
+        info.getRequest().setAttribute("form",problem.getForm());
         info.getRequest().setAttribute("resource", resource);
         info.getRequest().setAttribute("answer", answer);
         appendLogMsg("answer",answer);
