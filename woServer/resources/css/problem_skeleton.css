@@ -1,0 +1,238 @@
+#ProblemStatement{
+    position: absolute;
+    left: 18px;
+    top: 20px;
+    width: 494px;
+    height: 75px;
+}
+#ProblemFigure{
+    position: absolute;
+    left: 18px;
+    top: 120px;
+    width: 261px;
+    height: 220px;
+    background-color: rgba(248,250,248,0);
+}
+#Answers{
+    position: absolute;
+    left: 30px;
+    top: 390px;
+    width: 156px;
+    height: 204px;
+}
+#AButton{
+    top: 0px;
+}
+#BButton{
+    top: 50px;
+}
+#CButton{
+    top: 86px;
+}
+#DButton{
+    top: 121px;
+}
+#EButton{
+    top: 157px;
+}
+#AnswerA{
+    top: 393px;
+}
+#AnswerB{
+    top: 434px;
+}
+#AnswerC{
+    top: 483px;
+}
+#AnswerD{
+    top: 527px;
+}
+#AnswerE{
+    top: 569px;
+}
+#ShortAnswerBox{
+    position: absolute;
+    left: 17px;
+    top: 412px;
+    width: 267px;
+    height: 64px;
+    border: 1px solid rgba(4,4,4,0.180392);
+    background-color: rgba(6,6,6,0);
+    z-index: 1;
+}
+#Hint1Thumb{
+    top: 95px;
+}
+#Hint2Thumb{
+    top: 125px;
+}
+#Hint3Thumb{
+    top: 155px;
+}
+#Hint4Thumb{
+    top: 187px;
+}
+#Hint5Thumb{
+    top: 216px;
+}
+#Hint6Thumb{
+    top: 246px;
+}
+#Hint7Thumb{
+    top: 276px;
+}
+#Hint8Thumb{
+    top: 306px;
+}
+#Hint9Thumb{
+    top: 336px;
+}
+#Hint10Thumb{
+    top: 366px;
+}
+
+.button{
+    left: 8px;
+    width: 25px;
+    height: 24px;
+    margin-bottom: 20px;
+}
+.ellipse{
+    position: absolute;
+    width: 25px;
+    height: 24px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    border: 1px solid rgb(0,0,0);
+    background-color: rgb(232,241,160);
+    z-index: 1;
+}
+.button_text{
+    position: absolute;
+    margin-top: 4px;
+    width: 27px;
+    height: 19px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 14px;
+    color: rgb(0,0,0);
+    font-weight: normal;
+    font-style: normal;
+    text-align: center;
+    z-index: 2;
+}
+.answer_text{
+    position: absolute;
+    left: 74px;
+    width: 109px;
+    height: 20px;
+}
+.x{
+    position: absolute;
+    left: -8px;
+    margin-top: -4px;
+    width: 42px;
+    height: 33px;
+    background-image: url(../images/x.png);
+    background-size: 100% 100%;
+    display: none;
+    z-index: 3;
+}
+.check{
+    position: absolute;
+    left: -8px;
+    margin-top: -16px;
+    width: 65px;
+    height: 42px;
+    background-image: url(../images/check.png);
+    background-size: 100% 100%;
+    display: none;
+    z-index: 3;
+}
+.short_answer_check{
+    position: absolute;
+    left: 187px;
+    top: 32px;
+    width: 33px;
+    height: 31px;
+    background-image: url(../images/check2.png);
+    background-size: 100% 100%;
+    display: none;
+    z-index: 2;
+}
+.short_answer_x{
+    position: absolute;
+    left: 187px;
+    top: 32px;
+    width: 33px;
+    height: 31px;
+    background-image: url(../images/x2.png);
+    background-size: 100% 100%;
+    display: none;
+    z-index: 2;
+}
+.hint_thumb{
+    position: absolute;
+    left: 521px;
+    width: 70px;
+    height: 30px;
+}
+.hint_thumb_img{
+    position: absolute;
+    width: 70px;
+    height: 30px;
+    background-image: url(../images/hintbutton.png);
+    background-size: 100% 100%;
+    z-index: 1;
+}
+.hint_thumb_img_pressed{
+    position: absolute;
+    width: 70px;
+    height: 30px;
+    background-image: url(../images/hintpressed.png);
+    background-size: 100% 100%;
+    display: none;
+    z-index: 1;
+}
+.hint_thumb_text{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 59px;
+    height: 19px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 12px;
+    color: rgb(32, 61, 29);
+    font-weight: 700;
+    font-style: normal;
+    text-align: center;
+    z-index: 2;
+}
+.hint{
+    position: absolute;
+    left: 270px;
+    top: 92px;
+    width: 221px;
+    height: 467px;
+    z-index: 0;
+}
+.hint.slide_left{
+    -o-transition: left 1s ease, top 0s ease;
+    -moz-transition: left 1s ease, top 0s ease;
+    -webkit-transition: left 1s ease, top 0s ease;
+    transition: left 1s ease, top 0s ease;
+    left: 270px;
+    top: 92px;
+}
+.hint.slide_up{
+    -o-transition: left 0s ease, top 1s ease;
+    -moz-transition: left 0s ease, top 1s ease;
+    -webkit-transition: left 0s ease, top 1s ease;
+    transition: left 0s ease, top 1s ease;
+    left: 270px;
+    top: 92px;
+}
+.hint.default{
+    left: 270px;
+    top: 92px;
+}
+
