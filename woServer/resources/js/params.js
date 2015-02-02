@@ -130,8 +130,10 @@ function addHintHandler(doc, hintLabel){
 }
 
 function plug(doc) {
-    doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(getProblemStatement()));
-    doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(getProblemFigure()));
+    if(getProblemStatement() != null && getProblemStatement() != undefined)
+        doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(getProblemStatement()));
+    if(getProblemFigure() != null && getProblemFigure() != undefined)
+        doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(getProblemFigure()));
     if (getProblemSound() != undefined && getProblemSound() != "") {
         doc.getElementById("QuestionSound").setAttribute("src", getURL(getProblemSound()+".ogg"));
         doc.getElementById("QuestionSound").setAttribute("src", getURL(getProblemSound()+".mp3"));
