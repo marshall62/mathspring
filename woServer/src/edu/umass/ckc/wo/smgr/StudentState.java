@@ -5,7 +5,7 @@ import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
-import edu.umass.ckc.wo.tutor.intervSel.InterventionState;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.TutorEventHandler;
 import edu.umass.ckc.wo.util.State;

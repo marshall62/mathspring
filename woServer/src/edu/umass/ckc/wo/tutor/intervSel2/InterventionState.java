@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.tutor.intervSel;
+package edu.umass.ckc.wo.tutor.intervSel2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
