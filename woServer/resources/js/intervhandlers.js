@@ -17,6 +17,7 @@ function processTopicSwitchIntervention(html) {
     //alert("Switching topics because " + reason)
     interventionDialogOpen("Switching Topics", html, NEXT_PROBLEM_INTERVENTION );
 
+
 }
 
 function processAskEmotionIntervention(html) {
