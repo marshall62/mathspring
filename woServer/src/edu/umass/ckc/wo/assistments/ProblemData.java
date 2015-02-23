@@ -202,8 +202,6 @@ public class ProblemData {
                 "\"mathspringProblemId\": \"%s\", \"mathspringSessionId\": \"%s\", \"effort\": \"%s\"   }\"",Long.toString(this.timeToFirstHint),
                 Long.toString(this.timeToFirstAttempt), Long.toString(this.endTime),Integer.toString(this.numHintsBeforeCorrect), Integer.toString(this.probId),
                 Integer.toString(this.sessId), this.effort);
-//        o.element("partnerSpecificData",psd.toString());
-        // the nested element does not go through with correct syntax
         o.element("partnerSpecificData",psdStr);
         return o.toString();
     }

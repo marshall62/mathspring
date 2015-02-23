@@ -1,5 +1,9 @@
 package edu.umass.ckc.wo.content;
 
+import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.cache.ProblemMgr;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +21,7 @@ public class CurricUnit {
     private String stdId;
     private int clustId;
     private int lessonId;
-    private int position;  // its position in the lesson (which implies that a curric unit exists only for one lesson)
+    private int position;  // 1-based its position in the lesson (which implies that a curric unit exists only for one lesson)
     private int probId;
 //    private List<Integer> probIds;
 
@@ -28,14 +32,32 @@ public class CurricUnit {
 
 
 
-    public CurricUnit (int id,String stdId, int clustId, int probId, int lessonId, int position) {
+    public CurricUnit (int id,String stdId, int clustId, int probId, int lessonId, int position) throws UserException, SQLException {
         this.id=id;
         this.t=type.standard;
         this.clustId = clustId;
         this.stdId=stdId;
-        this.probId = probId;
+        setProbId(probId);
+        // We must make sure the content referred to by the CU exists.
+        if (clustId > 0) {
+            CCCluster clust = CCContentMgr.getInstance().getCluster(clustId);
+            if (clust == null)
+                throw new UserException("Curriculum Unit " + id + " has a cluster (" + clustId + ") that can't be found " );
+        }
+        if (stdId != null) {
+            CCStandard std = CCContentMgr.getInstance().getStandard(stdId);
+            if (std == null)
+                throw new UserException("Curriculum Unit " + id + " has a standard (" + stdId + ") that can't be found " );
+
+        }
+        if (probId > 0) {
+            Problem p = ProblemMgr.getProblem(probId);
+            if (p == null)
+                throw new UserException("Curriculum Unit " + id + " has a problem (" + probId + ") that can't be found " );
+            this.setProblem(p);
+        }
         this.lessonId=lessonId;
-        this.position=position;
+        setPosition(position);
     }
 
 
@@ -80,6 +102,12 @@ public class CurricUnit {
 
     public CCStandard getStandard() {
         return standard;
+    }
+
+    public void setPosition (int p) throws UserException {
+        this.position = p;
+        if (p < 1)
+            throw new UserException("Curriculum Unit "+ this.getId() +  " must be given a position >= 1");
     }
 
 

@@ -53,7 +53,7 @@ public abstract class FullEmpathicLC extends EmotionalLC {
         return r;
     }
 
-    // TODO this code duplicates a method below that should be eliminated
+
     public List<String> selectEmotions(AffectStudentModel sm, Response r, SessionManager smgr) throws Exception {
 
         // TopicIntros tend to have audio.   We can't return a clip that also has audio or there will be double audio.  Must return idle
@@ -62,19 +62,8 @@ public abstract class FullEmpathicLC extends EmotionalLC {
             clips.add("idle");
             return clips;
         }
-        else if (r instanceof ProblemResponse) {
-           Problem p = ((ProblemResponse) r).getProblem();
-            // By request of Ivon 6/14
-           if (smgr.getStudentState().getNumRealProblemsThisTutorSession() == 1)
-           {
-               clips.add("solveTogether");
-               return clips;
-           }
-           if (p != null && p.isExample())  {
-               clips.add("interestHigh");
-                return clips;
-           }
-        }
+        else if (r instanceof ProblemResponse)
+            return super.selectEmotions(sm,r,smgr);
 
         // only make the character react 25% of the time.
         if (java.lang.Math.random() < 0.25) {

@@ -76,18 +76,24 @@ public class AssistmentsHandler {
     private Connection conn;
 
     public static final String assistmentServletName = "partnerProblemLog";
-    public String assistmentsLogbackURL = "https://test1.assistments.org/api2/partnerProblemLog"; // this will be overwritten by value from web.xml
+    public static String assistmentsLogbackURL = "https://test1.assistments.org/api2/partnerProblemLog"; // this will be overwritten by value from web.xml
 //    private static String assistmentsLogbackURL = "http://rose.cs.umass.edu/mt/TutorBrain?action=EnterTutor";
 
     public AssistmentsHandler(ServletInfo servletInfo) {
         String assLinkUserURL = servletInfo.getServletContext().getInitParameter(ASSISTMENTS_LINK_USER_URL);
+
         if (assLinkUserURL != null && !assLinkUserURL.equals(""))
             this.assUserTokenURL = assLinkUserURL;
         this.servletInfo = servletInfo;
         this.conn = servletInfo.getConn();
+//        getReferer(servletInfo); // doesn't work with the calls coming from ASsistments
+        System.out.println(assistmentsLogbackURL);
+    }
+
+    private void getReferer(ServletInfo servletInfo) {
         String referer = servletInfo.getRequest().getHeader(HttpHeaders.REFERER);
         if (referer == null)
-            assistmentsLogbackURL = null;
+            ;
         else {
             int i = referer.indexOf(assistmentServletName);
             if (i != -1)
@@ -122,8 +128,17 @@ public class AssistmentsHandler {
 
     public boolean teachTopicExternalTempUser(TeachTopicEvent e) throws Exception, AssistmentsBadInputException {
         // This call is for testing the API only.   So we create a temp user that is allowed to test.
-        UserRegistrationHandler.genName(conn, "externalTester");
-        int studId = UserRegistrationHandler.registerTemporaryUser(conn, edu.umass.ckc.wo.db.DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.externalTempTest);
+        UserRegistrationHandler.genName(conn, "externalCaller");
+        // TODO:  TeachTopicEvent currently treats absence of isTest as meaning isTest=true (per request of Tom).  This needs
+        // change so that absence of isTest means isTest=false.   Do this sometime after Feb 15, 2015
+        boolean isTest = e.isTestUser();
+
+        int studId = -1;
+        if (isTest)
+            studId=UserRegistrationHandler.registerTemporaryUser(conn, edu.umass.ckc.wo.db.DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.externalTempTest);
+        else
+            studId=UserRegistrationHandler.registerTemporaryUser(conn, edu.umass.ckc.wo.db.DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.externalTempNonTest);
+
         if (e.isShowTransitionPage()) {
             return showIntroPage(e);
         } else return processTeachTopicRequest(e, studId, null);
@@ -307,7 +322,7 @@ public class AssistmentsHandler {
     /*
         If the call has a lessonId,  then we fetch the Lesson and add it to the CCPedagogicalModel
      */
-    private void setLesson(int clId, int lessonId, SessionManager smgr) throws SQLException {
+    private void setLesson(int clId, int lessonId, SessionManager smgr) throws Exception {
         if (lessonId != -1) {
             CCPedagogicalModel pm = (CCPedagogicalModel) smgr.getPedagogicalModel();
             pm.getStudentLessonMgr().init(smgr, lessonId);
@@ -502,6 +517,7 @@ public class AssistmentsHandler {
             if (history.size() > 0) {
                 StudentProblemData d = history.get(history.size() - 1);
                 ProblemData pd = new ProblemData(u, sd, d);
+                System.out.println(pd.toJSON());
                 servletInfo.getOutput().append(pd.toJSON());
             } else {
                 JSONObject o = new JSONObject();

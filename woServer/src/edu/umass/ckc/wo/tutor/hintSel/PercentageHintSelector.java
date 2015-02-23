@@ -37,72 +37,63 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
 //
 //    }
 
-    /**
-     * Overloads the BaseHintSelectors version of this method
-     * @param probId
-     * @return
-     * @throws Exception
-     */
-    protected List<Hint> getHintsForProblem (int probId) throws Exception {
-        //SqlQuery q = new SqlQuery();
-        List result = new Vector();
-        String s = "select min(" + Hint.ID + ") as id," + Hint.PROBLEM_ID + "," + Hint.NAME + "," +
-            Hint.IS_ROOT + "," + Hint.GIVES_ANSWER +
-            " from Hint where " + Hint.PROBLEM_ID + "=" + probId +
-            " group by " + Hint.PROBLEM_ID + "," + Hint.NAME + "," + Hint.IS_ROOT + "," + Hint.GIVES_ANSWER ;
-
-        ResultSet rs = SqlQuery.read(conn_,s);
-
-        while (rs.next()) {
-            int id = rs.getInt(Hint.ID);
-            int problemId = rs.getInt(Hint.PROBLEM_ID);
-            String label = rs.getString(Hint.NAME);
-            int givesAnswer = rs.getInt(Hint.GIVES_ANSWER);
-            int isroot = rs.getInt(Hint.IS_ROOT);
-
-            String att_query = "select " + Hint.ATT_VALUE +
-                " from HintAttributes " +
-                " where hintId" + "=" + id +
-                " and attribute = 'visual' " ;
-
-            ResultSet attres = SqlQuery.read(conn_,att_query) ;
-            int isVisual = 0 ;
-            if ( attres.next() ) {
-                if ( attres.getInt(Hint.ATT_VALUE) == 1 )
-                    isVisual = 1 ;
-            }
-
-            result.add(new Hint(id,
-                                label,
-                                problemId,
-                                givesAnswer==1, isroot==1, null, null, ""));
-        }
-        SqlQuery.closeRS(rs);
-
-        return result;
-    }
 
 
+    // no longer doing complicated tree searches for the next hint.    Now it just gets the next one in the sequence
+    // which is stored in order in the Problem object.
     private Hint doSelectHint (int lastHintId, int probId, int studId) throws Exception {
         List<Hint> hints = getHintsForProblem(probId) ;
         // 2/23/11 DM do not include hints that give the answer unless they are ROOT hints
-        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId,lastHintId,hints, false);
+        if (lastHintId == -1 && hints != null && hints.size() > 0)
+            return hints.get(0);
+        else if (lastHintId != -1)
+        {
+            Hint last=null;
+            for (Hint h : hints)
+                if (h.getId()==lastHintId) {
+                    last = h;
+                    break;
+                }
+            if (last !=null)
+            {
+                int ix = hints.indexOf(last);
+                if (hints.size() > ix+1) {
+                    Hint h= hints.get(ix+1);
+                    // We do not want to give hints that give the answer.
+                    if (h.getGivesAnswer())
+                        return last;
+                    else return h;
+                }
+                return last;
+            }
+            return null;
+        }
+        else return null;
 
-        // select from among those hints identified as possible.
-
-
-        if ( possibleSuccessorHints.size() == 0 )
-            // There are no more "next" hints, repeat the last one
-            return getHint(hints, lastHintId);
-
-        if ( possibleSuccessorHints.size() == 1 )
-            // There is only 1 hint, so just show that one
-            return possibleSuccessorHints.get(0) ;
-
-        // return one of the possible.   Currently this always returns a hint that is ALGEBRAIC.
-        return pickBranchHint(possibleSuccessorHints, studId) ;
 
     }
+
+//
+//    private Hint doSelectHintOld (int lastHintId, int probId, int studId) throws Exception {
+//        List<Hint> hints = getHintsForProblem(probId) ;
+//        // 2/23/11 DM do not include hints that give the answer unless they are ROOT hints
+//        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId,lastHintId,hints, false);
+//
+//        // select from among those hints identified as possible.
+//
+//
+//        if ( possibleSuccessorHints.size() == 0 )
+//            // There are no more "next" hints, repeat the last one
+//            return getHint(hints, lastHintId);
+//
+//        if ( possibleSuccessorHints.size() == 1 )
+//            // There is only 1 hint, so just show that one
+//            return possibleSuccessorHints.get(0) ;
+//
+//        // return one of the possible.   Currently this always returns a hint that is ALGEBRAIC.
+//        return pickBranchHint(possibleSuccessorHints, studId) ;
+//
+//    }
 
 //    public Hint selectHintOld (SessionManager smgr, HintEvent e) throws Exception {
 //        if (problem == null)

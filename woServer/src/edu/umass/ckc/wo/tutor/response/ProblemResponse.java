@@ -117,7 +117,7 @@ public class ProblemResponse extends Response {
         String newAns = "";
         Random randomGenerator = new Random();
         int randomIndex = -1;
-        if (p.getForm().equals(Problem.QUICK_AUTH) && p.isMultiChoice()) {
+        if (p.getForm() != null && p.getForm().equals(Problem.QUICK_AUTH) && p.isMultiChoice()) {
 
             randomIndex = randomGenerator.nextInt(p.getAnswers().size());
         }

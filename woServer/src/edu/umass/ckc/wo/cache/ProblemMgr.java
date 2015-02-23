@@ -1,10 +1,7 @@
 package edu.umass.ckc.wo.cache;
 
 import edu.umass.ckc.wo.beans.Topic;
-import edu.umass.ckc.wo.content.CCStandard;
-import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.Hint;
-import edu.umass.ckc.wo.content.ProblemAnswer;
+import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;
@@ -60,6 +57,7 @@ public class ProblemMgr {
         if (!loaded) {
             loaded = true;
             allProblems = new ArrayList<Problem>();
+            allTopics = new ArrayList<Topic>();
             probsByTopic = new HashMap<Integer,ArrayList<Problem>>();
             stdsByTopic = new HashMap<Integer,Set<CCStandard>>();
             loadTopics(conn);
@@ -147,7 +145,7 @@ public class ProblemMgr {
 
     private static void loadAllProblems (Connection conn) throws Exception {
         String s = "select p.id, answer, animationResource,p.name,nickname,strategicHintExists,hasVars,screenShotURL"+
-                ", diff_level, form, isExternalActivity, type, video, example, p.status, p.questType, statementHTML, imageURL, audioResource"  +
+                ", diff_level, form, isExternalActivity, type, video, example, p.status, p.questType, statementHTML, imageURL, audioResource, units"  +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid and (status='Ready' or status='ready' or status='testable') order by p.id";    // and p.id=v.problemid
         PreparedStatement ps = conn.prepareStatement(s);
@@ -179,6 +177,7 @@ public class ProblemMgr {
                 String statementHTML = rs.getString("statementHTML");
                 String imgURL = rs.getString("imageURL");
                 String audioRsc = rs.getString("audioResource");
+                String units = rs.getString("units");
                 Problem.QuestType questType = Problem.parseType(t);
                 HashMap<String, ArrayList<String>> vars = null;
                 if (hasVars) {
@@ -197,7 +196,7 @@ public class ProblemMgr {
                     ssURL = null;
                 //                Problem p = new Problem(id, resource, answer, diff, name, nname,form,instructions,type);
                 Problem p = new Problem(id, resource,answer,name,nname,stratHint,
-                        diff,null,form,instructions,type, status, vars, ssURL, questType, statementHTML, imgURL, audioRsc);
+                        diff,null,form,instructions,type, status, vars, ssURL, questType, statementHTML, imgURL, audioRsc, units);
 
                 p.setExternalActivity(isExternal);
                 List<Hint> hints = DbHint.getHintsForProblem(conn,id);
@@ -235,15 +234,19 @@ public class ProblemMgr {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select val,choiceletter from problemanswers where probid=?";
+            String q = "select a.val,a.choiceletter,a.bindingPosition,a.order from problemanswers a where a.probid=? order by a.order";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,id);
             rs = stmt.executeQuery();
             List<ProblemAnswer> answers = new ArrayList<ProblemAnswer>();
             while (rs.next()) {
-                String v= rs.getString("val");
-                String l= rs.getString("choiceLetter");
-                answers.add(new ProblemAnswer(v,l,null,true,id));
+                String v= rs.getString("a.val");
+                String l= rs.getString("a.choiceLetter");
+                int bn= rs.getInt("a.bindingPosition");
+                if (rs.wasNull())
+                     bn = -1;
+                int order = rs.getInt("a.order");
+                answers.add(new ProblemAnswer(v,l,null,true,id, bn, order));
             }
             return answers;
         }

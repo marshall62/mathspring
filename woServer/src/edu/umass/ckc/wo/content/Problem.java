@@ -103,9 +103,10 @@ public class Problem implements Activity {
     private boolean HTML5;
     private ProblemParameters params;
     private String ssURL;
+    private String units = null;
 
     public String toString() {
-        return "Prob id="+Integer.toString(id) + " rsc="+this.resource;
+        return "Prob id="+Integer.toString(id) + " rsc="+getResource();
     }
 
     public Problem () {}
@@ -117,7 +118,7 @@ public class Problem implements Activity {
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
                    String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL,
-                   QuestType questType, String statementHTML, String imageURL, String audioResource)
+                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units)
     {
         this.id = id;
         this.resource = resource;
@@ -141,6 +142,7 @@ public class Problem implements Activity {
         this.statementHTML = statementHTML;
         this.imageURL = imageURL;
         this.questionAudio = audioResource;
+        this.units = units;
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
@@ -148,7 +150,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null);
     }
 
     public int getId () { return id; }
@@ -161,8 +163,11 @@ public class Problem implements Activity {
         return topicIds;
     }
 
+    // N.B.  In quickAuth problems we don't use an animationResource.  So we return the problem name
     public String getResource() {
-      return resource ;
+        if (isQuickAuth())
+            return name;
+        else return resource ;
     }
 
     public void setResource (String r) {
@@ -195,24 +200,28 @@ public class Problem implements Activity {
         jo.element("topicName",topicName);
         jo.element("standards",getStandardsString(this.standards));
         jo.element("answer",answer);
+        jo.element("numHints",getNumNonAnswerHints());
         jo.element("form",form);
         jo.element("type",type);
-        jo.element("resource",resource);
+        jo.element("resource",getResource());
         jo.element("instructions",instructions);
-        if (solution != null) {
-            for (Hint h : solution) {
-                jo.accumulate("solution",h.getJSON(new JSONObject()));
-            }
-        }
         if (isQuickAuth()) {
             jo.element("statementHTML", statementHTML);
             jo.element("questionAudio", questionAudio);
             jo.element("questionImage", imageURL);
+            jo.element("units", units);
             for (Hint hint : getHints()) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
-            for (ProblemAnswer ans : getAnswers()) {
-                jo.accumulate("answers", ans.getJSON(new JSONObject()));
+            if (isMultiChoice()) {
+                for (ProblemAnswer ans : getAnswers()) {
+                   jo.accumulate("answers", ans.getJSON(new JSONObject()));
+                }
+            }
+        }
+        if (solution != null) {
+            for (Hint h : solution) {
+                jo.accumulate("solution",h.getJSON(new JSONObject()));
             }
         }
 //        if (params != null) {
@@ -223,6 +232,15 @@ public class Problem implements Activity {
 //        }
         return jo;
 
+    }
+
+    private int getNumNonAnswerHints() {
+        int n=0;
+        if (this.getHints() == null) return 0;
+        for (Hint h: this.getHints())
+            if (!h.getGivesAnswer())
+                n++;
+        return n;
     }
 
     private String getStandardsString(List<CCStandard> standards) {
@@ -290,7 +308,7 @@ public class Problem implements Activity {
     public boolean isIntro() {
         String[] name_parts ;
 
-        name_parts = resource.split("_") ;
+        name_parts = getResource().split("_") ;
         if (name_parts.length < 2) {
             return false;
         }
@@ -347,7 +365,9 @@ public class Problem implements Activity {
     public List<Hint> getHints() {
         // return a clone to make sure that if the user of the returned list mutates it,
         // then this won't be harmed.
-        return (List<Hint>) ((ArrayList<Hint>) allHints).clone();
+        if (allHints != null)
+            return (List<Hint>) ((ArrayList<Hint>) allHints).clone();
+        else return null;
     }
 
     public void setVideo(String url) {
@@ -425,10 +445,16 @@ public class Problem implements Activity {
     }
 
     public String getHTMLDir () {
-        if (this.resource.indexOf('.') == -1) {
-            resource+=".html";
+        String rsc = getResource();
+
+
+        // If a resource is present but isn't a legit filename, make it be .html by default
+        if (rsc.indexOf('.') == -1) {
+            rsc +=".html";
         }
-        return this.resource.substring(0,resource.indexOf('.'));
+        // We assume the name of the html file and directory it lives in must be the same so we can
+        // just return the name of the file minus its extension
+        return rsc.substring(0,rsc.indexOf('.'));
     }
 
     public void setTopics(List<Topic> topics) {
@@ -518,7 +544,7 @@ public class Problem implements Activity {
     }
 
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();

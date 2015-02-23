@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.assistments.AssistmentsHandler;
 import edu.umass.ckc.wo.beans.Teacher;
 import edu.umass.ckc.wo.beans.TeacherEntity;
 import edu.umass.ckc.wo.content.CCContentMgr;
+import edu.umass.ckc.wo.content.LessonMgr;
 import edu.umass.ckc.wo.db.HibernateUtil;
 import edu.umass.ckc.wo.exc.AssistmentsBadInputException;
 import edu.umass.ckc.wo.mrcommon.Names;
@@ -65,7 +66,7 @@ public class WoTutorServlet extends BaseServlet {
             // Flash client must be on same machine but can be served by other than servletEngine
             // (e.g. it is best served by apache)
             Settings.getSurveys(connection); // loads the pre/post Survey URLS
-//            AssistmentsHandler.assistmentsLogbackURL = servletConfig.getInitParameter(Names.ASSISTMENTS_LOGBACK_URL);
+            AssistmentsHandler.assistmentsLogbackURL = servletConfig.getInitParameter(Names.ASSISTMENTS_LOGBACK_URL);
             String videoURI = servletConfig.getInitParameter(Names.VIDEO_URI);
             Settings.videoURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
                     servletContext.getContextPath(),Settings.webContentPath, videoURI);
@@ -89,6 +90,8 @@ public class WoTutorServlet extends BaseServlet {
                 this.problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
                 problemMgr.loadProbs(connection);
                 CCContentMgr.getInstance().loadContent(connection);
+                LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
+
             }
             logger.debug("end init of WoTutorServlet");
 

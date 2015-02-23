@@ -114,13 +114,27 @@ function getHints() {
     return globals.hints;
 }
 
+function getUnits() {
+    return globals.units;
+}
+
 function getForm() {
     return globals.form;
+}
+
+function isParameterized() {
+    return (globals.params != null && globals.params != undefined)
 }
 
 // In the case of parameterized problems, we want to shuffle up the correct answer's position
 function getNewAnswer() {
     return globals.newAnswer;
+}
+
+// each time we start a new problem, set global variables that contain info about its state.
+function setGlobalProblemInfo (activity) {
+    globals.numHints = activity.numHints;
+    globals.numHintsSeen = 0;
 }
 
 
@@ -165,9 +179,17 @@ function showHourglassCursor(b) {
      }
 }
 
+function displayHintCount () {
+    if (globals.numHints >= 0 && globals.numHintsSeen == 0)
+        $("#hint").html("Hint (" + globals.numHints + ")");
+    else if (globals.numHintsSeen <= globals.numHints)
+        $("#hint").html("Hint (" + globals.numHintsSeen + "/" + globals.numHints + ")");
+}
+
 function showProblemInfo (pid, name, topic, standards) {
     $("#pid").text(pid + ":" + name);  // shows the problem ID + resource
-    $("#problemTopicAndStandards").html("Topic:" + topic + "<br>Standards:" + standards)
+    $("#problemTopicAndStandards").html("Topic:" + topic + "<br>Standards:" + standards);
+    displayHintCount();
 }
 
 function showUserInfo (userName) {
@@ -438,11 +460,13 @@ function showHTMLProblem (pid, solution, resource, mode) {
     var dir = resource.split(".")[0];
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
     if (!isDemo)  {
-        if (!globals.form==="quickAuth")  {
+        if (globals.form!=="quickAuth")  {
             loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
-            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+//            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+            // TODO change this to point at Melissa's JSP version of this file in resources folder
+            loadIframe(PROBLEM_WINDOWID,  "problem_skeleton.jsp");
         }
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
@@ -454,11 +478,13 @@ function showHTMLProblem (pid, solution, resource, mode) {
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
     else {
-        if (!globals.form==="quickAuth") {
+        if (globals.form!=="quickAuth") {
             loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
-            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+//            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
+            // TODO change this to point to Melissa's JSP file in resources
+            loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp");
         }
     }
 
@@ -492,6 +518,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     var mode = activity.mode;
     var activityType = activity.activityType;
     var type = activity.type;
+
     if (activityType == NO_MORE_PROBLEMS || activityType == NO_MORE_CHALLENGE_PROBLEMS || activityType == NO_MORE_REVIEW_PROBLEMS)  {
         // send EndEvent for previous problem
         sendEndEvent(globals);
@@ -504,15 +531,19 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         var resource =activity.resource;
         var topic = activity.topicName;
         var standards = activity.standards;
+        setGlobalProblemInfo(activity);
+
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
             // If server shuffles the answer to a different position, then newAnswer contains this position
             if (activity.newAnswer != null && activity.newAnswer != 'undefined') {
                 globals.newAnswer = activity.newAnswer;
+                globals.answer = activity.answer
                 showAnswer(activity.newAnswer);
             }
             else {
+                globals.newAnswer = activity.newAnswer;
                 globals.answer = activity.answer;
                 showAnswer(activity.answer);
             }
@@ -549,6 +580,16 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.questionImage = activity.questionImage;
                 globals.hints = activity.hints;
                 globals.answers = activity.answers;
+                globals.units = activity.units;
+            }
+            else {
+                globals.form = null;
+                globals.statementHTML = null;
+                globals.questionAudio = null;
+                globals.questionImage = null;
+                globals.units = null;
+                globals.hints = null;
+                globals.answers = null;
             }
             sendBeginEvent(globals);
             showHTMLProblem(pid,solution,resource,mode);
@@ -888,6 +929,7 @@ function showFlashProblemAtStart () {
     var type = activity.type;
     var ans = activity.answer;
     var solution = activity.solution;
+    setGlobalProblemInfo(activity);
     var isExample =  (mode == MODE_DEMO || mode == MODE_EXAMPLE);
     var container;
     if (isExample) {
@@ -923,6 +965,7 @@ function showHTMLProblemAtStart () {
     var topicName = activity.topicName;
     var standards = activity.standards;
     var solution = activity.solution;
+    setGlobalProblemInfo(activity);
     var activityType = activity.activityType;
     var ans = activity.answer;
 

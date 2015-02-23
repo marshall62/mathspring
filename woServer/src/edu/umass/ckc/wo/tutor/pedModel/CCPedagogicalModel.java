@@ -12,6 +12,7 @@ import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentEffort;
+import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class CCPedagogicalModel extends BasePedagogicalModel {
+    private static final Logger logger = Logger.getLogger(CCPedagogicalModel.class);
 
     private StudentLessonMgr studentLessonMgr;
 
@@ -34,9 +36,10 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
      * @param ped
      * @throws SQLException
      */
-    public CCPedagogicalModel (SessionManager smgr, Pedagogy ped) throws SQLException {
+    public CCPedagogicalModel (SessionManager smgr, Pedagogy ped) throws Exception {
         super(smgr,ped);
         studentLessonMgr = new StudentLessonMgr(smgr);
+        logger.debug("Instantiated CCPedagogicalModel");
     }
 
 

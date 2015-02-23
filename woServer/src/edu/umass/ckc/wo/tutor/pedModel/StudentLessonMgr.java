@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class StudentLessonMgr {
+
+    private static final Logger logger = Logger.getLogger(StudentLessonMgr.class);
     private SessionManager smgr;
     private int lessonId;
     private Lesson curLesson;
@@ -45,16 +48,17 @@ public class StudentLessonMgr {
      * @param smgr
      * @throws SQLException
      */
-    public StudentLessonMgr(SessionManager smgr) throws SQLException {
+    public StudentLessonMgr(SessionManager smgr) throws Exception {
         init(smgr);
         setLessonLocationState();
+        logger.debug("StudentLessonMgr instantiated");
     }
 
 
     // This is used to initialize the mgr when the call is from Assistments asking to show a particular lesson.
     // In this situation we need to set the start location to the first CU in the lesson and then initialize the state
     // further within the CU to be the first problem
-    public void init (SessionManager smgr, int lessonId) throws SQLException {
+    public void init (SessionManager smgr, int lessonId) throws Exception {
         init(smgr);
         setLessonStartLocation(lessonId);
     }
@@ -83,7 +87,7 @@ public class StudentLessonMgr {
     }
 
     // This is for an initial call from Assistments to a set a fixed lesson for a student.
-    public void setLessonStartLocation (int lessonId) throws SQLException {
+    public void setLessonStartLocation (int lessonId) throws Exception {
         this.lessonId = lessonId;
         this.classLessons = LessonMgr.getInstance().getClassLessons(conn, classId);
         this.curLesson = getCurLesson(); // get the Lesson object from the lessonId
@@ -98,7 +102,7 @@ public class StudentLessonMgr {
      * This means setting objects for the current Lesson, CU, Cluster, Standard, Problem
      * @throws SQLException
      */
-    public void setLessonLocationState() throws SQLException {
+    public void setLessonLocationState() throws Exception {
         // this will load Lesson structure as it applies to the student
 
         // get all the lessons for the class the student is in

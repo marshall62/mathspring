@@ -110,7 +110,9 @@ public abstract class EmotionalLC extends BaseLearningCompanion
         "incorrect1",
         "incorrect2",
         "incorrect3",
-        "incorrect4",
+        "incorrect4"
+//        "example",
+//        "video"
     } ;
 
     public static final String[] incorrectNeutral = {

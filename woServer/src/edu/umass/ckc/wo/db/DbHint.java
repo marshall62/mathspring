@@ -22,38 +22,7 @@ import org.apache.log4j.Logger;
 public class DbHint extends BaseMgr {
     private static final Logger logger = Logger.getLogger(DbHint.class);
 
-    /**
-     * Gets all the hints associated with the problem
-     *
-     * @param probId
-     * @return
-     * @throws Exception
-     */
-    public static List<Hint> getHintsForProblemOld(Connection conn, int probId) throws Exception {
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        try {
-            List<Hint> result = new ArrayList<Hint>();
-            String q = "select " + Hint.ID + "," + Hint.PROBLEM_ID + "," + Hint.NAME + "," + Hint.IS_ROOT + "," + Hint.GIVES_ANSWER +
-                    " from Hint where " + Hint.PROBLEM_ID + "=" + probId;
-            ps = conn.prepareStatement(q);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt(Hint.ID);
-                int problemId = rs.getInt(Hint.PROBLEM_ID);
-                String label = rs.getString(Hint.NAME);
-                int givesAnswer = rs.getInt(Hint.GIVES_ANSWER);
-                int isroot = rs.getInt(Hint.IS_ROOT);
-                result.add(new Hint(id, label, problemId, givesAnswer == 1, isroot == 1));
-            }
-            return result;
-        } finally {
-            if (ps != null)
-                ps.close();
-            if (rs != null)
-                rs.close();
-        }
-    }
+
 
     // rewrote the above method to determine isRoot status of a hint based on solutionpath rather than the isRoot column in
     // the hint table which is error prone.
@@ -61,22 +30,23 @@ public class DbHint extends BaseMgr {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select id, name, givesAnswer, statementHTML, audioResource, hoverText from Hint " +
-                    "where problemid= ? ";
+            String q = "select h.id, h.name, h.givesAnswer, h.statementHTML, h.audioResource, h.hoverText, h.order, h.is_root from Hint h " +
+                    "where h.problemid= ? and h.order is not null order by h.order";
             ps = conn.prepareStatement(q);
             ps.setInt(1, probId);
             rs = ps.executeQuery();
             List<Hint> hints = new ArrayList<Hint>();
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                boolean givesAnswer = rs.getBoolean("givesAnswer");
-                String audio = rs.getString("audioResource");
-                String hoverText = rs.getString("hoverText");
-                String stmtHTML = rs.getString("statementHTML");
-
-                Hint h = new Hint(id, name, probId, givesAnswer, false, stmtHTML, audio, hoverText);
-                setIsRoot(conn, h);
+                int id = rs.getInt("h.id");
+                String name = rs.getString("h.name");
+                boolean givesAnswer = rs.getBoolean("h.givesAnswer");
+                String audio = rs.getString("h.audioResource");
+                String hoverText = rs.getString("h.hoverText");
+                String stmtHTML = rs.getString("h.statementHTML");
+                int order = rs.getInt("h.order");
+                boolean isroot = rs.getBoolean("h.is_root");
+                Hint h = new Hint(id, name, probId, givesAnswer, stmtHTML, audio, hoverText, order);
+                h.setIs_root(isroot);
                 hints.add(h);
             }
             return hints;
@@ -90,33 +60,76 @@ public class DbHint extends BaseMgr {
 
     }
 
-    private static void setIsRoot(Connection conn, Hint h) throws SQLException {
-        boolean isSrc = hintInColumn(conn,h.getId(),"sourceHint");
-        boolean isTgt = hintInColumn(conn,h.getId(),"targetHint");
-        h.setIs_root(isSrc && !isTgt);
+    public static void main(String[] args) {
+        try {
+            Connection conn = DbUtil.getAConnection("localhost");
+            addInSolutionHints(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
     }
 
-    private static boolean hintInColumn (Connection conn, int hintId, String colName) throws SQLException {
-        boolean inCol=false;
-
+    private static void addInSolutionHints(Connection conn) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select * from solutionpath where " +colName+ "=?";
+            String q = "select h.id, h.problemId, max(h.order) as position from hint h where h.order is not null group by h.problemId order by h.problemid";
             ps = conn.prepareStatement(q);
-            ps.setInt(1, hintId);
             rs = ps.executeQuery();
-            if (rs.next()) {
-                inCol=true;
+            while (rs.next()) {
+                int hid = rs.getInt("h.id");
+                int position = rs.getInt("position");
+                int nextHint = getNextHint(conn,hid);
+                if (nextHint != -1) {
+                    updateAsLast(conn,nextHint,position+1);
+                }
             }
-            return inCol;
+
         } finally {
             if (rs != null)
                 rs.close();
             if (ps != null)
                 ps.close();
-
         }
     }
+
+    private static int updateAsLast(Connection conn, int nextHint, int i) throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            String q = "update hint h set h.order=? where h.id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, i);
+            stmt.setInt(2, nextHint);
+            return stmt.executeUpdate();
+        } finally {
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
+    private static int getNextHint(Connection conn, int parent) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q = "select p.targetHint, h.givesAnswer from solutionpath p, hint h where p.sourceHint=? and p.targethint=h.id";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1,parent);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int childId = rs.getInt("p.targetHint");
+                boolean givesAnswer = rs.getBoolean("h.givesAnswer");
+                if (givesAnswer)
+                    return childId;
+            }
+            return -1;
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+                ps.close();
+        }
+    }
+
 
 }

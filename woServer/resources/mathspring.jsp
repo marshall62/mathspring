@@ -61,13 +61,14 @@
             tutoringMode: '${tutoringMode}',
             instructions : '${instructions}',
             resource : '${resource}',
-            form : null,
+            form : '${form}',
             answer : '${answer}',
             interventionType: null,
             isInputIntervention: false ,
             learningCompanionClip: null,
             activityJSON: ${activityJSON},
             showMPP: ${showMPP},
+            units: null,
             <%--The fields below turn on things for test users --%>
             showSelectProblemButton: ${showProblemSelector},
             showAnswer: ${showAnswer},
@@ -78,7 +79,9 @@
             questionAudio: null,
             questionImage: null,
             hints: null,
-            answers: null
+            answers: null ,
+            numHintsSeen: 0,
+            numHints: 0
         }
 
         var sysGlobals = {
@@ -247,7 +250,7 @@
             </div>
 
             <%-- This div contains information about the current problem (its topic and standard)--%>
-            <div id="problemTopicAndStandards" style="position:absolute; top:550px; right:400px">Topic:<br/>Standards:</div>
+            <div id="problemTopicAndStandards" style="position:absolute; top:650px; right:400px">Topic:<br/>Standards:</div>
 
 
             <div id="flashContainer1" >

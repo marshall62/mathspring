@@ -58,7 +58,7 @@ public interface TopicSelector {
      * @return  The list of problems that are not solved, seen as an example, or turned off (status != ready), for a class/topic
      * @throws SQLException
      */
-    public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws SQLException;
+    public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws Exception;
 
     // return a list of ids of problems that have been given to the student
     public List<Integer> getPracticeProblemsSeen (int topicId) throws  Exception;

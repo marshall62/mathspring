@@ -593,6 +593,7 @@ public class SessionManager {
         try {
             Class c = Class.forName(p.getPedagogicalModelClass());
             Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
+            logger.debug("Instantiating a pedagogical model of type: " + c.getName());
             this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, p);
             studentModel = this.pedagogicalModel.getStudentModel();
             if (studentModel == null) {

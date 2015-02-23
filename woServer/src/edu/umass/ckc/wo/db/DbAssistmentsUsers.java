@@ -106,7 +106,7 @@ public class DbAssistmentsUsers {
                 s.setString(6, aClass);
                 if (logBackURL != null)
                     s.setString(7, logBackURL);
-                s.setNull(7,Types.VARCHAR);
+                else s.setNull(7,Types.VARCHAR);
                 s.execute();
             }
 
