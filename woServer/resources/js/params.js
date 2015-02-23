@@ -145,46 +145,17 @@ function plug(doc) {
     var hintID = "";
     if (hints != undefined && hints != null) {
         for (i=0; i<hints.length;++i)  {
-            switch (hints[i].label) {
-                case "Hint 1":
-                    hintID = "Hint1";
-                    break;
-                case "Hint 2":
-                    hintID = "Hint2";
-                    break;
-                case "Hint 3":
-                    hintID = "Hint3";
-                    break;
-                case "Hint 4":
-                    hintID = "Hint4";
-                    break;
-                case "Hint 5":
-                    hintID = "Hint5";
-                    break;
-                case "Hint 6":
-                    hintID = "Hint6";
-                    break;
-                case "Hint 7":
-                    hintID = "Hint7";
-                    break;
-                case "Hint 8":
-                    hintID = "Hint8";
-                    break;
-                case "Hint 9":
-                    hintID = "Hint9";
-                    break;
-                case "Show Answer":
-                    hintID = "Hint10";
-                    break;
-            }
+            hintID = getElementCorrespondingToHint(hints[i].label);
+
             doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML));
             doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText)));
             if (hints[i].audioResource != undefined && hints[i].audioResource != "")  {
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".ogg"));
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".mp3"));
-                doc.getElementById(hintID+"Sound").preload="auto";
             }
         }
+
+        doc.getElementById(getElementCorrespondingToHint(hints[0].label)+"Sound").load();
     }
 
     if (isMultiChoice()) {
@@ -331,12 +302,12 @@ function replaceWithHTML(file, ext){
 
     //Replace and image file name inside {} with the appropriate html
     if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg"){
-        toInsert = "<img src=\""+getURL(file+"."+ext)+"\"/></img>";
+        toInsert = "<img src=\""+getURL(file+"."+ext)+"\"></img>";
     }
 
     //Do the same for a video
     else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
-       toInsert = "<video src="+getURL(file+"."+ext)+" controls ></video>";
+       toInsert = "<video src=\""+getURL(file+"."+ext)+" controls preload=\"auto\"></video>";
     }
 
     //If it is not one of the above, it is probably an expression

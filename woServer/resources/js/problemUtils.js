@@ -174,6 +174,10 @@ function prob_playHint (hintLabel) {
     }
   */
     document.getElementById(hint+"Sound").play();
+    var preload = document.getElementById(getNextHint(hint) + "Sound");
+    if(preload != null && document.getElementById(hint+"Thumb").style.display != "initial"){
+        preload.load();
+    }
 
 }
 
@@ -221,6 +225,36 @@ function getElementCorrespondingToHint(hintLabel){
             case "Hint 9":
                 return "Hint9";
             case "Show Answer":
+                return "Hint10";
+            default:
+                return "";
+        }
+    }
+    else{
+        return hintLabel;
+    }
+}
+
+function getNextHint(hintLabel){
+    if (window.parent.getForm() === "quickAuth") {
+        switch (hintLabel) {
+            case "Hint 1":
+                return "Hint2";
+            case "Hint 2":
+                return "Hint3";
+            case "Hint 3":
+                return "Hint4";
+            case "Hint 4":
+                return "Hint5";
+            case "Hint 5":
+                return "Hint6";
+            case "Hint 6":
+                return "Hint7";
+            case "Hint 7":
+                return "Hint8";
+            case "Hint 8":
+                return "Hint9";
+            case "Hint 9":
                 return "Hint10";
             default:
                 return "";
