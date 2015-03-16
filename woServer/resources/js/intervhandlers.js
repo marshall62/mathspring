@@ -44,8 +44,31 @@ function processMyProgressNavAskIntervention (html) {
 
 }
 
+function processCollaborationPartnerIntervention(html) {
+    interventionDialogOpen("Work with a partner", html, NEXT_PROBLEM_INTERVENTION);
+    $("#ok_button").hide();
+    servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+    globals.interventionType = null;
+    globals.isInputIntervention= false;
+}
 
+function processCollaborationConfirmationIntervention(html) {
+    interventionDialogOpen("Work with a partner", html, NEXT_PROBLEM_INTERVENTION);
+    $("#ok_button").show();
+}
 
+function processCollaborationOriginatorIntervention(html) {
+    interventionDialogOpen("Waiting for a partner", html, NEXT_PROBLEM_INTERVENTION);
+    $("#ok_button").hide();
+    servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+    globals.interventionType = null;
+    globals.isInputIntervention= false;
+}
+
+function processCloseWindowIntervention(html) {
+    globals.interventionType = NEXT_PROBLEM_INTERVENTION;
+    interventionDialogClose();
+}
 
 
 function processRapidAttemptIntervention (html) {
