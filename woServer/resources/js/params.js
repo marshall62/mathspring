@@ -148,7 +148,7 @@ function plug(doc) {
             hintID = getElementCorrespondingToHint(hints[i].label);
 
             doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML));
-            doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(hints[i].hoverText));
+            doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText)));
             if (hints[i].audioResource != undefined && hints[i].audioResource != "")  {
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".ogg"));
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".mp3"));
@@ -185,7 +185,7 @@ function plug(doc) {
 function getURL (filename) {
     if (filename == null || filename == undefined)
         return filename;
-    return window.parent.getProblemContentPath() + "/html5Probs/" + window.parent.getResource().split()[0] + "/" + filename;
+    return window.parent.getProblemContentPath() + "/html5Probs/" + window.parent.getResource().split(".")[0] + "/" + filename;
 }
 
 function format (rawText) {

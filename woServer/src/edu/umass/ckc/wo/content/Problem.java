@@ -106,7 +106,7 @@ public class Problem implements Activity {
     private String units = null;
 
     public String toString() {
-        return "Prob id="+Integer.toString(id) + " rsc="+this.resource;
+        return "Prob id="+Integer.toString(id) + " rsc="+getResource();
     }
 
     public Problem () {}
@@ -163,8 +163,11 @@ public class Problem implements Activity {
         return topicIds;
     }
 
+    // N.B.  In quickAuth problems we don't use an animationResource.  So we return the problem name
     public String getResource() {
-      return resource ;
+        if (isQuickAuth())
+            return name;
+        else return resource ;
     }
 
     public void setResource (String r) {
@@ -200,7 +203,7 @@ public class Problem implements Activity {
         jo.element("numHints",getNumNonAnswerHints());
         jo.element("form",form);
         jo.element("type",type);
-        jo.element("resource",resource);
+        jo.element("resource",getResource());
         jo.element("instructions",instructions);
         if (isQuickAuth()) {
             jo.element("statementHTML", statementHTML);
@@ -305,7 +308,7 @@ public class Problem implements Activity {
     public boolean isIntro() {
         String[] name_parts ;
 
-        name_parts = resource.split("_") ;
+        name_parts = getResource().split("_") ;
         if (name_parts.length < 2) {
             return false;
         }
@@ -442,10 +445,16 @@ public class Problem implements Activity {
     }
 
     public String getHTMLDir () {
-        if (this.resource.indexOf('.') == -1) {
-            resource+=".html";
+        String rsc = getResource();
+
+
+        // If a resource is present but isn't a legit filename, make it be .html by default
+        if (rsc.indexOf('.') == -1) {
+            rsc +=".html";
         }
-        return this.resource.substring(0,resource.indexOf('.'));
+        // We assume the name of the html file and directory it lives in must be the same so we can
+        // just return the name of the file minus its extension
+        return rsc.substring(0,rsc.indexOf('.'));
     }
 
     public void setTopics(List<Topic> topics) {
