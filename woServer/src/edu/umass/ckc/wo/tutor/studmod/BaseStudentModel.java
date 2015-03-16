@@ -276,6 +276,8 @@ public class BaseStudentModel extends StudentModel {
     public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
         this.numProbsSeen++;
         smgr.getStudentState().beginProblem(null, e);
+       if (PartnerManager.requestExists(smgr.getStudentId()))
+            smgr.setCollaboratingWith(PartnerManager.getRequestedPartner(smgr.getStudentId()));
         this.problemHistory.beginProblem(smgr,e);
 
     }

@@ -71,6 +71,7 @@ public class SessionManager {
     private long elapsedTime =0;
     private boolean testUser;
     private User user;
+    private int collaboratingWithStudId;
 
     public SessionManager(Connection connection) {
         this.connection = connection;
@@ -909,5 +910,13 @@ public class SessionManager {
 
     public void setPedagogyId(int pedagogyId) {
         this.pedagogyId = pedagogyId;
+    }
+
+    public void setCollaboratingWith (int studId) {
+        this.collaboratingWithStudId = studId;
+    }
+
+    public int getCollaboratingWithStudId() {
+        return collaboratingWithStudId;
     }
 }

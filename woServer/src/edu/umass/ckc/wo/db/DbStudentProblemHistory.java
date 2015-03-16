@@ -91,15 +91,15 @@ public class DbStudentProblemHistory {
     /** Called when a problem begins.   If this is the first encounter with the problem, it creates the row in the studentProblemHistory.
      * If this is a return to a problem that was previously unsolved (the only reason for  */
     public static int beginProblem(Connection conn, int sessId, int studId, int probId, int topicId, long startTime,
-                                   long timeInSession, long timeInTutor, String mode, String p) throws SQLException {
+                                   long timeInSession, long timeInTutor, String mode, String p, int collabWithStudId) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
 
 
             String q = "insert into " +SPHTBL+
-                    " (problemID, studID, sessionID, topicID, problemBeginTime, timeInTutor, timeInSession, mode) " +
-                    "values (?,?,?,?,?,?,?,?)";
+                    " (problemID, studID, sessionID, topicID, problemBeginTime, timeInTutor, timeInSession, mode,collaboratedWith) " +
+                    "values (?,?,?,?,?,?,?,?,?)";
             stmt = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1,probId);
             stmt.setInt(2, studId);
@@ -109,6 +109,9 @@ public class DbStudentProblemHistory {
             stmt.setLong(6, timeInTutor);
             stmt.setLong(7,timeInSession);
             stmt.setString(8,mode);
+            if (collabWithStudId != -1)
+                stmt.setInt(9,collabWithStudId);
+            else stmt.setNull(9,Types.INTEGER);
             stmt.execute();
             rs = stmt.getGeneratedKeys();
             rs.next();
@@ -181,8 +184,7 @@ public class DbStudentProblemHistory {
      * @param mastery
      * @param effort     @return
      * @param seenVideo
-     * @param seenExample
-     * @param textReaderUsed @throws SQLException                                       */
+     * * @param textReaderUsed @throws SQLException                                       */
     public static int endProblem(Connection conn, int historyRecId, int numHintsBeforeSolve, int numAttemptsToSolve,
                                  long timeToSolve, long timeToFirstHint, long timeToFirstAttempt, boolean isCorrect,
                                  long problemEndTime, int numMistakes, int numHints,
