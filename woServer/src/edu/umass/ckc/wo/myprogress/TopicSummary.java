@@ -91,7 +91,7 @@ public class TopicSummary {
         curTopicLoader = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters(),smgr.getPedagogicalModel());
         ProblemSelector psel = smgr.getPedagogicalModel().getProblemSelector();
 //        this.hasAvailableContent = psel.topicHasRemainingContent(smgr, topicId);
-        this.hasAvailableContent = smgr.getPedagogicalModel().isTopicContentAvailable(topicId);
+        this.hasAvailableContent = smgr.getPedagogicalModel().isLessonContentAvailable(topicId);
         List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
         totalProblems = l.size();
         StudentProblemHistory h = smgr.getStudentModel().getStudentProblemHistory();

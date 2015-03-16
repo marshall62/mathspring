@@ -43,7 +43,7 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
     }
 
 
-    public ProblemResponse getProblemSelectedByStudent (NextProblemEvent e) throws SQLException {
+    public Response processStudentSelectsProblemRequest (NextProblemEvent e) throws SQLException {
         if (! e.isForceProblem())
             return null;
 
@@ -87,11 +87,10 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
         // We have a fixed sequence which prefers forced problems, followed by topic intros, examples, interventions, regular problems.
         // If we ever want something more customized (e.g. from a XML pedagogy defn),  this would have to operate based on that defn
 
-        Response r;
+        Response r=null;
         StudentState state = smgr.getStudentState();
         Problem curProb=null;
 
-        r = getProblemSelectedByStudent(e);
 
         // only grade the problem if we aren't trying to force a topic or problem
         if (r == null)

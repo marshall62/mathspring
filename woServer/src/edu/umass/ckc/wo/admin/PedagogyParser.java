@@ -21,7 +21,7 @@ import java.util.List;
  * Date: Dec 19, 2007
  * Time: 4:22:53 PM    kk
  */
-public class PedConfig {
+public class PedagogyParser {
     private String defaultClasspath;
     private List<Pedagogy> pedagogies;
 
@@ -32,7 +32,7 @@ public class PedConfig {
     public static final String DEFAULT_REVIEW_MODE_PROBLEM_SELECTOR = "ReviewModeProblemSelector";
     public static final String DEFAULT_CHALLENGE_MODE_PROBLEM_SELECTOR = "ChallengeModeProblemSelector";
 
-    public PedConfig(InputStream str) throws ClassNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, DataConversionException {
+    public PedagogyParser(InputStream str) throws ClassNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, DataConversionException {
 //        File f = new File(filename);
         Document d = makeDocument(str);
         pedagogies = readPedagogies(d);
@@ -125,6 +125,11 @@ public class PedConfig {
         }
         else p.setHintSelectorClass(DEFAULT_HINT_SELECTOR);
 
+        e = pedElt.getChild("lessonControl");
+        if (e != null) {
+            p.setLessonControlElement(e);
+        }
+
         e = pedElt.getChild("nextProblemInterventionSelector");
         if (e != null)
             readNextProblemInterventionSelectors(p,e);
@@ -162,6 +167,12 @@ public class PedConfig {
             s = c.getValue();
             int maxTimeSecs = Integer.parseInt(s);
             params.setMaxTimeInTopicSecs(maxTimeSecs);
+        }
+
+        c = p.getChild("lessonStyle");
+        if (c != null) {
+            s = c.getValue();
+            params.setLessonStyle(s);
         }
 
         c = p.getChild("contentFailureThreshold");

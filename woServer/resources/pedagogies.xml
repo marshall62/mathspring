@@ -44,7 +44,15 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
             turns it on.   If false, intervention selector has no effect - it is always off-->
             <displayMyProgressPage>true</displayMyProgressPage>
         </controlParameters>
-
+        <lessonControl>
+            <interventions>
+                <interventionSelector onEvent="EndOfTopic" weight="1" class="TopicSwitchAskIS">
+                    <config>
+                        <ask val="false"></ask>
+                    </config>
+                </interventionSelector>
+            </interventions>
+        </lessonControl>
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">

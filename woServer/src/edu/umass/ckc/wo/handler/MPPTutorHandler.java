@@ -7,10 +7,9 @@ import edu.umass.ckc.wo.html.tutor.TutorPage;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.response.InterventionResponse;
-import edu.umass.ckc.wo.tutor.response.ProblemResponse;
-import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.woserver.ServletInfo;
 
 import java.sql.SQLException;
@@ -82,7 +81,15 @@ public class MPPTutorHandler {
             String typ = smgr.getStudentState().getCurProbType();
             int lastProbId =  smgr.getStudentState().getCurProblem(); // must do before next line because it clears curProb
             // problem:  this wipes out the student problemstate so that state.curProb = -1
-            ProblemResponse r = pedMod.getProblemInTopicSelectedByStudent(npe);
+            // TODO will want to get topicModel from some place other than pedagogy.   We tell it to process a BeginningOfTopic event
+            // and let it decide what gets returned.
+            // TODO We shouldn't be assuming a ProblemEvent comes back.  What if an Intervention were selected to begin a topic?
+            InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
+            TopicModel topicModel = (TopicModel) pedMod.getLessonModel();
+            ProblemResponse r = (ProblemResponse) topicModel.processInternalEvent(beginningOfTopicEvent); // getProblemInTopicSelectedByStudent(npe);
+            // if the
+            if (r == null)
+                r=topicModel.getProblemInTopicSelectedByStudent(npe);
             Problem p = r.getProblem();
             smgr.getStudentModel().newProblem(state,p);  // this does not set curProb = new prob id,
             smgr.getStudentState().setCurProblem(lastProbId);  // must make curProb be lastProb id so EndProblem event that comes in next has the id of last problem
@@ -101,7 +108,7 @@ public class MPPTutorHandler {
             npe.setMode(PedagogicalModel.REVIEW_MODE);
             int lastProbId =  smgr.getStudentState().getCurProblem();
             String typ = smgr.getStudentState().getCurProbType();
-            ProblemResponse r = pedMod.getReviewProblem(npe);
+            ProblemResponse r = (ProblemResponse) pedMod.processReviewModeNextProblemRequest(npe);
             Problem p = r.getProblem();
             if (e.getTopicId() != smgr.getStudentState().getCurTopic())
                 smgr.getStudentState().newTopic();
@@ -119,7 +126,8 @@ public class MPPTutorHandler {
             npe.setMode(PedagogicalModel.CHALLENGE_MODE);
             int lastProbId =  smgr.getStudentState().getCurProblem();
             String typ = smgr.getStudentState().getCurProbType();
-            ProblemResponse r = pedMod.getChallengingProblem(npe);
+            ProblemResponse r = (ProblemResponse) pedMod.processChallengeModeNextProblemRequest(npe);
+
             Problem p = r.getProblem();
             if (e.getTopicId() != smgr.getStudentState().getCurTopic())
                 smgr.getStudentState().newTopic();

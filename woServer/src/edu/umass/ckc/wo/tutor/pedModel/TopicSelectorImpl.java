@@ -42,15 +42,15 @@ public class TopicSelectorImpl implements TopicSelector {
     private Connection conn;
     private PedagogicalModelParameters pmParameters;
     private ProblemGrader.difficulty nextProbDesiredDifficulty;
-    private PedagogicalModel pedagogicalModel;
+//    private PedagogicalModel pedagogicalModel;
 
     public TopicSelectorImpl() {
     }
 
-    public TopicSelectorImpl(SessionManager smgr, PedagogicalModelParameters params, PedagogicalModel pedagogicalModel) throws SQLException {
+    public TopicSelectorImpl(SessionManager smgr, PedagogicalModelParameters params) throws SQLException {
         this.smgr = smgr;
         this.conn = smgr.getConnection();
-        this.pedagogicalModel=pedagogicalModel;
+//        this.pedagogicalModel=pedagogicalModel;
         this.pmParameters = params;
         this.classID = smgr.getClassID();  // get either the default class (with default lesson plan) or the actual class (with a custom plan)
 

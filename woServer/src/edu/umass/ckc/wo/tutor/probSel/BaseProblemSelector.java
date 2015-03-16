@@ -6,6 +6,8 @@ import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
@@ -22,12 +24,12 @@ import java.util.List;
 public class BaseProblemSelector implements ProblemSelector {
 
     protected PedagogicalModelParameters parameters;
-    protected TopicSelector topicSelector;
+    protected TopicModel topicModel;
     protected SessionManager smgr;
 
-    public BaseProblemSelector(SessionManager smgr, TopicSelector topicSelector, PedagogicalModelParameters params) {
+    public BaseProblemSelector(SessionManager smgr, LessonModel lessonModel, PedagogicalModelParameters params) {
         this.smgr = smgr;
-        this.topicSelector = topicSelector;
+        this.topicModel = (TopicModel) lessonModel;
         this.parameters=params;
     }
 
@@ -43,7 +45,7 @@ public class BaseProblemSelector implements ProblemSelector {
      */
     public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception {
         StudentState state = smgr.getStudentState();
-        List<Integer> topicProbIds = topicSelector.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), smgr.isTestUser());
+        List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), smgr.isTestUser());
 //        List<Problem> topicProblems = xx;
         int lastIx = state.getCurProblemIndexInTopic();
         int nextIx=-1;

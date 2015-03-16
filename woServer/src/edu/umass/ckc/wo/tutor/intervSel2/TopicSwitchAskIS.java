@@ -10,7 +10,6 @@ import edu.umass.ckc.wo.interventions.TopicSwitchIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.studmod.BaseStudentModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.apache.log4j.Logger;
 
@@ -46,7 +45,7 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
         if (smgr.getStudentState().getCurTopic() < 1) {
             return null;
         }
-        boolean topicContinues = pedagogicalModel.isTopicContentAvailable(smgr.getStudentState().getCurTopic()) ;
+        boolean topicContinues = pedagogicalModel.isLessonContentAvailable(smgr.getStudentState().getCurTopic()) ;
         NextProblemIntervention intervention = null;
         if (!topicContinues) {
             EndOfTopicInfo reasons = pedagogicalModel.getReasonsForEndOfTopic();

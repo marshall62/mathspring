@@ -5,6 +5,7 @@ import edu.umass.ckc.email.Emailer;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.ProblemAnswer;
+import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
@@ -13,10 +14,13 @@ import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.MyProgressPageIS;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
+import edu.umass.ckc.wo.tutor.model.TutorEventProcessor;
 import edu.umass.ckc.wo.tutor.probSel.ChallengeModeProblemSelector;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.ReviewModeProblemSelector;
 import edu.umass.ckc.wo.tutor.response.HintResponse;
+import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.*;
@@ -35,13 +39,14 @@ import java.util.List;
  * Time: 9:56:34 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class PedagogicalModel { // extends PedagogicalModelOld {
+public abstract class PedagogicalModel implements TutorEventProcessor { // extends PedagogicalModelOld {
 
     private static Logger logger = Logger.getLogger(PedagogicalModel.class);
 
     public static final String CHALLENGE_MODE = "challenge";
     public static final String REVIEW_MODE = "review";
 
+    protected LessonModel lessonModel;
     protected PedagogicalModelParameters params;
     protected StudentModel studentModel;
     protected ProblemSelector problemSelector ;// problem selection is a pluggable strategy
@@ -59,6 +64,10 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     public PedagogicalModelParameters setParams(PedagogicalModelParameters classParams, PedagogicalModelParameters defaultParams) {
         defaultParams.overload(classParams);
         return defaultParams;
+    }
+
+    public LessonModel getLessonModel () {
+        return this.lessonModel;
     }
 
     public PedagogicalModelParameters getParams () {
@@ -79,6 +88,10 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
 
     public void setHintSelector(HintSelector hintSelector) {
         this.hintSelector = hintSelector;
+    }
+
+    public HintSelector getHintSelector() {
+        return hintSelector;
     }
 
     public void setSmgr(SessionManager smgr) {
@@ -118,6 +131,11 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     }
 
 
+    @Override
+    public Response processInternalEvent(InternalEvent e) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     /**
      * Handle a TutorHutEvent and dispatch to the abstract method which handles it.  Each PedagogicalModel will
      * will have these processing methods plus potentially two others when an intervention selector is part of the pedagogy.
@@ -126,8 +144,10 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
      * @param e
      * @return
      * @throws Exception
+     *
      */
-    public Response processEvent (TutorHutEvent e) throws Exception {
+    @Override
+    public Response processUserEvent(TutorHutEvent e) throws Exception {
         Response r = null;
         StudentState state = smgr.getStudentState();
         // make sure probElapseTime is saved on each event containing one
@@ -144,7 +164,14 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
 
 
         else if (e instanceof NextProblemEvent)  {
-            r = processNextProblemRequest((NextProblemEvent) e);
+            NextProblemEvent ee = (NextProblemEvent)  e;
+            if (ee.isForceProblem())
+                r = processStudentSelectsProblemRequest(ee);
+            else if (ee.getMode().equalsIgnoreCase(CHALLENGE_MODE) || state.isInChallengeMode())
+                r = processChallengeModeNextProblemRequest(ee);
+            else if (ee.getMode().equalsIgnoreCase(REVIEW_MODE) || state.isInReviewMode())
+                r = processReviewModeNextProblemRequest(ee);
+            else r = processNextProblemRequest((NextProblemEvent) e);
             studentModel.save();
             return r;
         }
@@ -309,12 +336,6 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
 
 
 
-    public abstract ProblemResponse getProblemSelectedByStudent(NextProblemEvent e) throws Exception;
-    public abstract ProblemResponse getProblemInTopicSelectedByStudent(NextProblemEvent e) throws Exception;
-    public abstract ProblemResponse getChallengingProblem (NextProblemEvent e) throws Exception;
-    public abstract ProblemResponse getReviewProblem (NextProblemEvent e) throws Exception;
-
-
 
 
 
@@ -332,6 +353,10 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
 
     // results: ProblemResponse | InterventionResponse
     public abstract Response processNextProblemRequest (NextProblemEvent e) throws Exception;
+    public abstract Response processStudentSelectsProblemRequest (NextProblemEvent e) throws Exception;
+    public abstract Response processChallengeModeNextProblemRequest (NextProblemEvent e) throws Exception;
+    public abstract Response processReviewModeNextProblemRequest (NextProblemEvent e) throws Exception;
+    public abstract ProblemResponse getProblemInTopicSelectedByStudent(NextProblemEvent e) throws Exception;
 //    protected abstract Response startTutor(EnterTutorEvent e) throws Exception ;
 
 
@@ -363,7 +388,9 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     public abstract Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;
 
 
-;
+
+
+
 
     /** These two methods are called each time a pedagogical model makes a problem/hint selection as a result
      * of an intervention selector requesting that a problem/hint be given in response to an intervention.
@@ -381,7 +408,7 @@ public abstract class PedagogicalModel { // extends PedagogicalModelOld {
     protected abstract Problem doSelectChallengeProblem(NextProblemEvent e) throws Exception;
     protected abstract Problem doSelectReviewProblem (NextProblemEvent e) throws Exception;
 
-    public abstract boolean isTopicContentAvailable (int topicId) throws Exception;
+    public abstract boolean isLessonContentAvailable(int topicId) throws Exception;
 
 
     private boolean findAnswerMatch (List<ProblemAnswer> possible, String studentInput) {

@@ -26,6 +26,7 @@ public class PedagogicalModelParameters {
 
 
 
+
     public enum frequency {
         never,
         oncePerSession,
@@ -53,6 +54,7 @@ public class PedagogicalModelParameters {
     private int problemReuseIntervalSessions;
     private int problemReuseIntervalDays;
     private boolean showMPP=true;
+    private String lessonStyle;
 
     // overload the params of this with those given for class.
     public PedagogicalModelParameters overload(PedagogicalModelParameters classParams) {
@@ -397,5 +399,18 @@ public class PedagogicalModelParameters {
 
     public void setShowMPP(boolean showMPP) {
         this.showMPP = showMPP;
+    }
+
+    public boolean isTopicLessonStyle() {
+        return lessonStyle.equals("topics");
+    }
+
+
+    public void setLessonStyle(String lessonStyle) {
+        this.lessonStyle = lessonStyle;
+    }
+
+    public String getLessonStyle() {
+        return lessonStyle;
     }
 }

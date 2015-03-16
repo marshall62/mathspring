@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.admin;
 
-import edu.umass.ckc.wo.admin.PedConfig;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import org.apache.log4j.Logger;
 import org.jdom.DataConversionException;
@@ -25,11 +24,11 @@ public class PedMap extends Hashtable<String, Pedagogy> {
     private static final Logger logger = Logger.getLogger(PedMap.class);
 
     public PedMap(InputStream str) throws IOException, ClassNotFoundException, DataConversionException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        PedConfig config = new PedConfig(str); // a list of Pedagogy objects
+        PedagogyParser config = new PedagogyParser(str); // a list of Pedagogy objects
         buildMap(config);
     }
 
-    private void buildMap(PedConfig config) {
+    private void buildMap(PedagogyParser config) {
         for (Pedagogy p: config.getPedagogies())  {
             this.put(p.getId(),p);
             logger.debug(p);

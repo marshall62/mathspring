@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor;
 
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import org.jdom.Element;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class Pedagogy implements Comparable {
     private List<InterventionSelectorSpec> subAttemptInterventionSelectors;
     private String reviewModeProblemSelectorClass;
     private String challengeModeProblemSelectorClass;
+    private Element lessonControlElement;
 
 
     public Pedagogy() {
@@ -243,5 +245,22 @@ public class Pedagogy implements Comparable {
 
     public String getChallengeModeProblemSelectorClass() {
         return challengeModeProblemSelectorClass;
+    }
+
+    /* An XML element of the form
+    *        <lessonControl>
+            <interventions>
+                <interventionSelector onEvent="EndOfTopic" class="TopicSwitchAskIS">
+                    <param name="ask">false</param>
+                </interventionSelector>
+            </interventions>
+        </lessonControl>
+     */
+    public void setLessonControlElement(Element lessonControlElement) {
+        this.lessonControlElement = lessonControlElement;
+    }
+
+    public Element getLessonControlElement() {
+        return lessonControlElement;
     }
 }
