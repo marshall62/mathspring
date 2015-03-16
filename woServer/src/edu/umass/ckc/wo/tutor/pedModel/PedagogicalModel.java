@@ -16,6 +16,7 @@ import edu.umass.ckc.wo.tutor.intervSel2.MyProgressPageIS;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TutorEventProcessor;
+import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.probSel.ChallengeModeProblemSelector;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.ReviewModeProblemSelector;
@@ -60,6 +61,8 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     protected ChallengeModeProblemSelector challengeModeSelector;
     protected ReviewModeProblemSelector reviewModeSelector;
     protected EndOfTopicInfo reasonsForEndOfTopic;
+
+    private TutorModel tutorModel; // temporarily here until we build the correct set of models
 
     public PedagogicalModelParameters setParams(PedagogicalModelParameters classParams, PedagogicalModelParameters defaultParams) {
         defaultParams.overload(classParams);
@@ -512,5 +515,13 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
             }
         }
         return this.getParams().isShowMPP();
+    }
+
+    public TutorModel getTutorModel() {
+        return tutorModel;
+    }
+
+    public void setTutorModel(TutorModel tutorModel) {
+        this.tutorModel = tutorModel;
     }
 }

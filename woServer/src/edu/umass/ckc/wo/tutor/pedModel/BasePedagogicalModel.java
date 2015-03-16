@@ -24,6 +24,7 @@ import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
+import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.probSel.*;
 import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
@@ -57,6 +58,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     public BasePedagogicalModel (SessionManager smgr, Pedagogy pedagogy) throws SQLException {
         setSmgr(smgr);
+        setTutorModel(new TutorModel());
         pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
         params = setParams(smgr.getPedagogicalModelParameters(),pedagogy.getParams());
         buildComponents(smgr,pedagogy);
@@ -70,6 +72,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
 //            topicSelector = new TopicSelectorImpl(smgr,params, this);
             lessonModel =  new LessonModel(smgr,params,pedagogy,this,this).buildModel();
+            this.getTutorModel().setLessonModel(lessonModel);
             setStudentModel((StudentModel) Class.forName(pedagogy.getStudentModelClass()).getConstructor(SessionManager.class).newInstance(smgr));
             smgr.setStudentModel(getStudentModel());
             setProblemSelector((ProblemSelector) Class.forName(pedagogy.getProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
@@ -482,15 +485,21 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
      * @return
      * @throws Exception
      */
-    protected ProblemResponse getProblem(NextProblemEvent e, ProblemGrader.difficulty nextProbDesiredDiff) throws Exception {
-        Problem p = problemSelector.selectProblem(smgr, e,nextProbDesiredDiff);
+     public ProblemResponse getProblem(NextProblemEvent e, ProblemGrader.difficulty nextProbDesiredDiff) throws Exception {
+        Problem curProb = problemSelector.selectProblem(smgr, e,nextProbDesiredDiff);
         ProblemResponse r=null;
-        if (p != null) {
-            p.setMode(Problem.PRACTICE);
-            setProblemTopic(p, smgr.getStudentState().getCurTopic());
-            smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
-            problemGiven(p); // inform pedagogical move listeners that a problem is given.
-            r = new ProblemResponse(p);
+        if (curProb != null) {
+            curProb.setMode(Problem.PRACTICE);
+
+            problemGiven(curProb); // inform pedagogical move listeners that a problem is given.
+            r = new ProblemResponse(curProb);
+            if (curProb != null && curProb.isParametrized()) {
+                curProb.getParams().addBindings( r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
+                if (curProb.isMultiChoice())
+                    r.shuffleAnswers(smgr.getStudentState());
+                // parameterized short answer problems need to save the possible answers in the student state
+
+            }
         }
         else r = ProblemResponse.NO_MORE_PROBLEMS;
         return r;
@@ -942,6 +951,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         StudentState st = smgr.getStudentState();
         st.setNumRealProblemsThisTutorSession(st.getNumRealProblemsThisTutorSession()+1);
         st.setNumProblemsThisTutorSession(st.getNumProblemsThisTutorSession()+1);
+        st.setCurProblem(p.getId());
+        setProblemTopic(p, st.getCurTopic());
+        if (p.getMode().equals(Problem.PRACTICE))
+            st.setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
         for (PedagogicalMoveListener l : this.pedagogicalMoveListeners)
             l.problemGiven(p);
     }

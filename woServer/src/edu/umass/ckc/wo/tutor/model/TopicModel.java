@@ -75,11 +75,16 @@ public class TopicModel extends LessonModel {
         }
         // When beginning a topic we need to see if we should show an intro and/or a demo problem
         else if (r == null && e instanceof BeginningOfTopicEvent) {
-            TopicIntro ti = getTopicIntro(state.getCurTopic());
+            smgr.getStudentState().newTopic();   // this completely resets the lesson state
+            int nextTopic = state.getCurTopic();
+            pedagogicalMoveListener.newTopic(ProblemMgr.getTopic(nextTopic)); // inform pedagogical move listeners of topic switch
+            topicSelector.initializeTopic(nextTopic, smgr.getStudentState());
+            smgr.getStudentState().setCurTopic(nextTopic);
+            TopicIntro ti = getTopicIntro(nextTopic);
             if (ti != null)   {
                 return new TopicIntroResponse(ti);
             }
-            Problem ex = getTopicExample(state.getCurTopic());
+            Problem ex = getTopicExample(nextTopic);
             if (ex != null) {
                 r=  new DemoResponse(ex);
                 pedagogicalMoveListener.exampleGiven(ex);  // inform pedagogical move listeners of example being given
@@ -229,7 +234,7 @@ public class TopicModel extends LessonModel {
         smgr.getStudentState().setCurTopic(nextTopic);
         // TODO No need for returning TopicIntro or Demo.  That was handled by processInternalEvent.  This just needs to return a Problem
         // Remember:  the student has only selected a topic and not  problem.  So we need to get a problem from the topic
-        ProblemResponse r = getTopicIntroDemoOrProblem(e,smgr.getStudentState(),nextTopic,false);
+        ProblemResponse r = this.pedagogicalModel.getProblem();
         Problem p = r.getProblem();
         smgr.getStudentState().setCurProblem(p.getId());
         // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.

@@ -19,6 +19,7 @@ import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
+import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.pedModel.CCPedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
@@ -300,12 +301,11 @@ public class AssistmentsHandler {
             r = (ProblemResponse) pedMod.processStudentSelectsProblemRequest(npe);
         } else if (topicId > 0) {
             npe = new NextProblemEvent(0, 0, topicId);
+            // TODO We shouldn't be assuming a ProblemEvent comes back.  What if an Intervention were selected to begin a topic?
             InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,topicId);
-            // TODO The topic model will be moved out of the pedagogical model.
-            TopicModel topicModel = (TopicModel) pedMod.getLessonModel();
-            r = (ProblemResponse) topicModel.processInternalEvent(beginningOfTopicEvent);
-            if (r == null)
-                r=topicModel.getProblemInTopicSelectedByStudent(npe);
+            TutorModel tutMod = pedMod.getTutorModel();
+            tutMod.processInternalEvent(beginningOfTopicEvent);
+
             prob = r.getProblem();
         } else if (lessonId > 0) {
             npe = new NextProblemEvent(0, 0);
