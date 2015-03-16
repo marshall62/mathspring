@@ -20,7 +20,6 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class PartnerManager {
-
     private static HashMap<Integer, WaitingStudent> requesters = new HashMap<Integer, WaitingStudent>();
     private static HashMap<Integer, HashSet<Integer>> requestees_requesters = new HashMap<Integer, HashSet<Integer>>();
     private static HashMap<Integer, Integer> current_matches = new HashMap<Integer, Integer>();
@@ -95,6 +94,12 @@ public class PartnerManager {
         WaitingStudent waiter = new WaitingStudent();
         waiter.setPartners(conn, id, conditions);
         return !waiter.getPossiblePartners().isEmpty();
+    }
+
+    public static void clearOldData(int id){
+        requesters.remove(id);
+        current_matches.remove(id);
+        current_matches.values().remove(id);
     }
 
 
