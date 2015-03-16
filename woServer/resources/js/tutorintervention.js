@@ -25,6 +25,14 @@ function processNextProblemIntervention(activityJSON) {
         processMyProgressNavIntervention(activityJSON.html);
     else if (interventionType === "MyProgressNavigationAsk")
         processMyProgressNavAskIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationPartnerIntervention")
+        processCollaborationPartnerIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationConfirmationIntervention")
+        processCollaborationConfirmationIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationOriginatorIntervention")
+        processCollaborationOriginatorIntervention(activityJSON.html);
+    else if(interventionType === "CloseWindowIntervention")
+        processCloseWindowIntervention(activityJSON.html);
     sendBeginIntervention(globals);
 
 }
