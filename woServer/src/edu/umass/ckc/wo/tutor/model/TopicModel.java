@@ -87,6 +87,7 @@ public class TopicModel extends LessonModel {
             Problem ex = getTopicExample(nextTopic);
             if (ex != null) {
                 r=  new DemoResponse(ex);
+                ((DemoResponse) r).setProblemBindings(smgr);
                 pedagogicalMoveListener.exampleGiven(ex);  // inform pedagogical move listeners of example being given
             }
 
@@ -101,6 +102,8 @@ public class TopicModel extends LessonModel {
 
         return r;
     }
+
+
 
     protected int switchTopics (int curTopic) throws Exception {
         int nextTopic = topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
@@ -167,14 +170,6 @@ public class TopicModel extends LessonModel {
     }
 
 
-    public void initiateDemoProblem(Problem problem) throws Exception {
-        smgr.getStudentState().setIsExampleShown(true);
-        hintSelector.init(smgr);
-        // need to put in the solution since its an example
-        List<Hint> soln = hintSelector.selectFullHintPath(smgr, problem.getId());
-        problem.setSolution(soln);
-        problem.setMode(Problem.DEMO);
-    }
 
     protected Problem getTopicExample (int curTopic) throws Exception {
         Problem problem = null;
@@ -186,7 +181,8 @@ public class TopicModel extends LessonModel {
                 problem = topicSelector.getExample(curTopic, this.hintSelector);
                 if (problem == null)
                     return null;
-                initiateDemoProblem(problem);
+                smgr.getStudentState().setIsExampleShown(true);
+                new TutorModelUtils().setupDemoProblem(problem,smgr,hintSelector);
                 return problem;
             }
             else if (exampleFreq == PedagogicalModelParameters.frequency.oncePerSession &&
@@ -194,7 +190,8 @@ public class TopicModel extends LessonModel {
                 smgr.getStudentState().addExampleSeen(curTopic);
                 problem = topicSelector.getExample(curTopic, this.hintSelector);
                 if (problem == null) return null;
-                initiateDemoProblem(problem);
+                smgr.getStudentState().setIsExampleShown(true);
+                new TutorModelUtils().setupDemoProblem(problem,smgr,hintSelector);
                 return problem;
             }
         }
@@ -234,7 +231,7 @@ public class TopicModel extends LessonModel {
         smgr.getStudentState().setCurTopic(nextTopic);
         // TODO No need for returning TopicIntro or Demo.  That was handled by processInternalEvent.  This just needs to return a Problem
         // Remember:  the student has only selected a topic and not  problem.  So we need to get a problem from the topic
-        ProblemResponse r = this.pedagogicalModel.getProblem();
+        ProblemResponse r = this.pedagogicalModel.getProblem(e, ProblemGrader.difficulty.SAME);
         Problem p = r.getProblem();
         smgr.getStudentState().setCurProblem(p.getId());
         // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
@@ -242,11 +239,7 @@ public class TopicModel extends LessonModel {
 //        if (p != null && p.getType().equals(Problem.HTML_PROB_TYPE)) {
 //            r.shuffleAnswers(smgr.getStudentState());
 //        }
-        if (p != null && p.isParametrized()) {
-            p.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-            if (p.isMultiChoice())
-                r.shuffleAnswers(smgr.getStudentState());
-        }
+
         return r;
     }
 

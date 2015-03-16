@@ -360,6 +360,8 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     public abstract Response processChallengeModeNextProblemRequest (NextProblemEvent e) throws Exception;
     public abstract Response processReviewModeNextProblemRequest (NextProblemEvent e) throws Exception;
     public abstract ProblemResponse getProblemInTopicSelectedByStudent(NextProblemEvent e) throws Exception;
+    public abstract ProblemResponse getProblem(NextProblemEvent e, ProblemGrader.difficulty nextProbDesiredDiff) throws Exception;
+
 //    protected abstract Response startTutor(EnterTutorEvent e) throws Exception ;
 
 

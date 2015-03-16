@@ -23,8 +23,8 @@ import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
-import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.model.TutorModel;
+import edu.umass.ckc.wo.tutor.model.TutorModelUtils;
 import edu.umass.ckc.wo.tutor.probSel.*;
 import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
@@ -379,7 +379,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         // the student is at a point in a new topic where an example has not been shown yet, then set the mode to DEMO
         if (e.isForceProblem() )     {
             if (showAsDemo) {
-                initiateDemoProblem(p);   // TODO don't want to cast to TopicModel and call the method there.  Need to resolve this
+                new TutorModelUtils().setupDemoProblem(p,smgr,hintSelector);
             }
             else smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
         if (p != null)
@@ -390,12 +390,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        if (p != null && p.getType().equals(Problem.HTML_PROB_TYPE)) {
 //            r.shuffleAnswers(smgr.getStudentState());
 //        }
-        if (p != null && p.isParametrized()) {
-            p.getParams().addBindings(r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-            if (p.isMultiChoice())
-                r.shuffleAnswers(smgr.getStudentState());
-
-        }
+        r.setProblemBindings(smgr);
         return r;
 
     }
@@ -493,17 +488,13 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
             problemGiven(curProb); // inform pedagogical move listeners that a problem is given.
             r = new ProblemResponse(curProb);
-            if (curProb != null && curProb.isParametrized()) {
-                curProb.getParams().addBindings( r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-                if (curProb.isMultiChoice())
-                    r.shuffleAnswers(smgr.getStudentState());
-                // parameterized short answer problems need to save the possible answers in the student state
-
-            }
+            r.setProblemBindings(smgr);
         }
         else r = ProblemResponse.NO_MORE_PROBLEMS;
         return r;
     }
+
+
 
 
 
@@ -586,19 +577,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         }
         if (r != null && r instanceof ProblemResponse) {
-            curProb = ((ProblemResponse) r).getProblem();
-
-//            if (curProb != null && curProb.getType().equals(Problem.HTML_PROB_TYPE)) {
-//                ((ProblemResponse)r).shuffleAnswers(smgr.getStudentState());
-//            }
-            // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
-            if (curProb != null && curProb.isParametrized()) {
-                curProb.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-                if (curProb.isMultiChoice())
-                    ((ProblemResponse)r).shuffleAnswers(smgr.getStudentState());
-                // parameterized short answer problems need to save the possible answers in the student state
-
-            }
+            ((ProblemResponse) r).setProblemBindings(smgr);
         }
         if (learningCompanion != null )
             learningCompanion.processNextProblemRequest(smgr,e,r);
@@ -612,28 +591,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return r;
     }
 
-    // TODO this is totally based on topics and should not be part of the API for the PedagogicalModel
-    public ProblemResponse getProblemInTopicSelectedByStudent (NextProblemEvent e) throws Exception {
-        int nextTopic = e.getTopicToForce();
-        smgr.getStudentState().newTopic();   // this completely resets the lesson state
-        newTopic(ProblemMgr.getTopic(nextTopic)); // inform pedagogical move listeners of topic switch
-        topicSelector.initializeTopic(nextTopic, smgr.getStudentState());
-        smgr.getStudentState().setCurTopic(nextTopic);
-        ProblemResponse r = getTopicIntroDemoOrProblem(e,smgr.getStudentState(),nextTopic,false);
-        Problem p = r.getProblem();
-        smgr.getStudentState().setCurProblem(p.getId());
-        // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
-//        // This line of code needs to be duplicated because ONR calls this function directly instead of processNextProblemRequest.
-//        if (p != null && p.getType().equals(Problem.HTML_PROB_TYPE)) {
-//            r.shuffleAnswers(smgr.getStudentState());
-//        }
-        if (p != null && p.isParametrized()) {
-            p.getParams().addBindings((ProblemResponse) r, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-            if (p.isMultiChoice())
-                r.shuffleAnswers(smgr.getStudentState());
-        }
-        return r;
-    }
+
 
 //    private ProblemResponse getTopicIntroDemoOrProblem(NextProblemEvent e, StudentState state, int curTopic, boolean topicDone) throws Exception {
 //        ProblemResponse r=null;
