@@ -1,6 +1,8 @@
 package edu.umass.ckc.wo.smgr;
 
+import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
+import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
 import edu.umass.ckc.wo.event.tutorhut.LogoutEvent;
@@ -456,6 +458,8 @@ public class SessionManager {
                     DbUser.deleteStudent(connection, studId);
                      return new LoginResult(-1, "This user is invalid because it is not in a class.   You need to re-register and select a class", LoginResult.ERROR);
                 }
+                //Remove collaboration requests and pairings for students who have just logged in, as any such data is erroneous.
+                PartnerManager.clearOldData(studId);
                 int oldSessId = DbSession.findActiveSession(getConnection(), studId);
                 Pedagogy ped;
                 if (oldSessId != -1)  {
@@ -881,7 +885,11 @@ public class SessionManager {
 //    }
 
     public String getClassTeacher() throws SQLException {
-        return DbClass.getClass(getConnection(),this.getStudentClass(this.getStudentId())).getTeacherName();
+        int id = this.getStudentId();
+        int classy = this.getStudentClass(id);
+        Connection conny = getConnection();
+        ClassInfo dbclass = DbClass.getClass(conny,classy);
+        return dbclass.getTeacherName();
     }
 
 

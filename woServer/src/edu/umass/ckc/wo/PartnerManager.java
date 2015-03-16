@@ -110,6 +110,12 @@ public class PartnerManager {
         return !waiter.getPossiblePartners().isEmpty();
     }
 
+    public static void clearOldData(int id){
+        requesters.remove(id);
+        current_matches.remove(id);
+        current_matches.values().remove(id);
+    }
+
 
     private static class WaitingStudent{
         private ArrayList<Integer> possiblePartners;
