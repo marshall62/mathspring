@@ -54,12 +54,12 @@ The results of this go into out/artifacts/MathSpring_exploded
     options are wodbcadmium for cadmium db or wodblocal for db on localhost -->
     <context-param>
         <param-name>wodb.datasource</param-name>
-        <param-value>jdbc/wodblocal</param-value>
+        <param-value>jdbc/wodbrose</param-value>
     </context-param>
 
     <context-param>
         <param-name>host</param-name>
-        <param-value>adara</param-value>
+        <param-value>localhost</param-value>
         <!--<param-value>cadmium.cs.umass.edu</param-value>-->
     </context-param>
     <context-param>
@@ -69,7 +69,7 @@ The results of this go into out/artifacts/MathSpring_exploded
 
     <context-param>
         <param-name>webContentPath</param-name>
-        <param-value>http://adara:8080/mt/mathspring/mscontent/</param-value>
+        <param-value>http://localhost:8080/mt/mathspring/mscontent/</param-value>
         <!--<param-value>http://cadmium.cs.umass.edu/mathspring/</param-value>-->
         <!--<param-value>http://rose.cs.umass.edu/mathspring/</param-value>-->
     </context-param>
