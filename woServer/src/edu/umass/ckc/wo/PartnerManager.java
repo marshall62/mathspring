@@ -1,6 +1,8 @@
 package edu.umass.ckc.wo;
 
 import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.db.DbUser;
+import edu.umass.ckc.wo.smgr.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +20,6 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class PartnerManager {
-
     private static HashMap<Integer, WaitingStudent> requesters = new HashMap<Integer, WaitingStudent>();
     private static HashMap<Integer, HashSet<Integer>> requestees_requesters = new HashMap<Integer, HashSet<Integer>>();
     private static HashMap<Integer, Integer> current_matches = new HashMap<Integer, Integer>();
@@ -80,26 +81,11 @@ public class PartnerManager {
     }
 
     public synchronized static String getPartnerName(Connection conn, int id) throws SQLException{
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String toReturn;
-        try {
-            String q = "select fname from student where id=?";
-            ps = conn.prepareStatement(q);
-            ps.setInt(1,id);
-            rs = ps.executeQuery();
-            rs.next();
-
-            toReturn = rs.getString("fname");
-            rs.next();
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (ps != null)
-                ps.close();
-
-        }
-        return toReturn;
+        User u = DbUser.getStudent(conn,id);
+        String name = u.getFname();
+        if (name == null || name.equals(""))
+            return u.getUname();
+        else return name;
     }
 
     //TODO update partners method

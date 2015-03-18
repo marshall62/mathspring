@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.tutor.studmod;
 
+import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
@@ -276,6 +277,8 @@ public class BaseStudentModel extends StudentModel {
     public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
         this.numProbsSeen++;
         smgr.getStudentState().beginProblem(null, e);
+       if (PartnerManager.requestExists(smgr.getStudentId()))
+            smgr.setCollaboratingWith(PartnerManager.getRequestedPartner(smgr.getStudentId()));
         this.problemHistory.beginProblem(smgr,e);
 
     }

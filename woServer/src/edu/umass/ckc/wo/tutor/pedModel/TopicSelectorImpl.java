@@ -343,10 +343,18 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
     public boolean hasReadyContent(int topicId) throws Exception {
-        List<Integer> topicProbs =getClassTopicProblems(topicId, classID, smgr.isTestUser());
-        List<Integer> recentProbs = getRecentExamplesAndCorrectlySolvedProblems(smgr, topicId);
-        topicProbs.removeAll(recentProbs);
-        return topicProbs.size() > 0;
+        try {
+            // N.B. The MPP calls this and if the topic has no ready problems it will throw a UserException.  But
+            // we need to show the MPP in this situation so we let the catch deal with it.
+            List<Integer> topicProbs =getClassTopicProblems(topicId, classID, smgr.isTestUser());
+            if (topicProbs == null)
+                return false;
+            List<Integer> recentProbs = getRecentExamplesAndCorrectlySolvedProblems(smgr, topicId);
+            topicProbs.removeAll(recentProbs);
+            return topicProbs.size() > 0;
+        } catch (UserException e) {
+            return false;
+        }
     }
 
 

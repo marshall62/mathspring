@@ -1361,7 +1361,7 @@ JakeNoSPPButton-->
     <pedagogy default="true">
         <id>44</id>
         <active>true</active>
-        <name>Jane Full Empathy</name>
+        <name>Collaboration Testing with Jane Full Empathy</name>
         <comment>Collaboration Testing</comment>
         <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
@@ -1389,7 +1389,7 @@ JakeNoSPPButton-->
             <topicExampleFrequency>oncePerSession</topicExampleFrequency>
             <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
             turns it on.   If false, intervention selector has no effect - it is always off-->
-            <displayMyProgressPage>false</displayMyProgressPage>
+            <displayMyProgressPage>true</displayMyProgressPage>
         </controlParameters>
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
@@ -1399,6 +1399,7 @@ JakeNoSPPButton-->
                 <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
                 <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
                 <intervalCriteria type="random" frequency="3"/>
+                <maxPartnerWaitMin>3</maxPartnerWaitMin>
                 <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
             </config>
         </nextProblemInterventionSelector>

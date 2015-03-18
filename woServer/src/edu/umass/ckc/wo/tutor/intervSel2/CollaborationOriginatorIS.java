@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.PartnerManager;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
@@ -9,6 +10,7 @@ import edu.umass.ckc.wo.interventions.CollaborationConfirmationIntervention;
 import edu.umass.ckc.wo.interventions.CollaborationOriginatorIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.apache.log4j.Logger;
@@ -69,7 +71,9 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             }
             //TODO log the partner here, somehow.
             rememberInterventionSelector(this);
-            return new CollaborationConfirmationIntervention();
+            User u = DbUser.getStudent(smgr.getConnection(),partner);
+            String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
+            return new CollaborationConfirmationIntervention(name);
     }
 
     //  For when students are asked to help or when waiting for a helper (so when polling)
