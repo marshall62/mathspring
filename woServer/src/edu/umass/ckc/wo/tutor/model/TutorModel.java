@@ -12,7 +12,7 @@ import edu.umass.ckc.wo.tutor.response.Response;
  * Time: 2:55 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TutorModel extends TutorEventProcessor {
+public class TutorModel implements TutorEventProcessor {
     private LessonModel lessonModel;
 
 

@@ -68,9 +68,9 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
 
         if (lastProb != null  && lastProbMode.equals(Problem.PRACTICE))     {
             score = problemGrader.gradePerformance(lastProb);
-            nextDiff = problemGrader.getNextProblemDifficulty(score);
+//            nextDiff = problemGrader.getNextProblemDifficulty(score);
         }
-        else nextDiff = TopicModel.difficulty.SAME;
+//        else nextDiff = TopicModel.difficulty.SAME;
 //        this.reasonsForEndOfTopic=  topicSelector.isEndOfTopic(probElapsedTime, nextDiff);
 //        boolean topicDone = reasonsForEndOfTopic.isTopicDone();
         return false;
@@ -157,7 +157,7 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
 //    }
 
 
-    protected ProblemResponse getNextProblem(NextProblemEvent e) throws Exception {
+    public ProblemResponse getNextProblem(NextProblemEvent e) throws Exception {
         Problem p= studentLessonMgr.getNextProblem();
         ProblemResponse r=null;
         if (p != null) {

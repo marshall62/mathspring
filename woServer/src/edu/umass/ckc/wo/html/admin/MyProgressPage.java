@@ -34,7 +34,7 @@ public class MyProgressPage implements View  {
       topicMasteries = smgr.getStudentModel().getTopicMasteries() ;
       client = smgr.getClient() ;
       masteryThreshold = (smgr.getClassMasteryThreshold()) ;
-      topicSelector = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters(),smgr.getPedagogicalModel());
+      topicSelector = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters());
   }
 
   public String getHeaderView() {
