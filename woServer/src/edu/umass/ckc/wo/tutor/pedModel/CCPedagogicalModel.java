@@ -9,8 +9,8 @@ import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.response.*;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentEffort;
 import org.apache.log4j.Logger;
 
@@ -60,17 +60,17 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
 
     protected boolean gradeProblem (long probElapsedTime) throws Exception {
         StudentState state = smgr.getStudentState();
-        ProblemGrader grader = new ProblemGrader();
+
         Problem lastProb = ProblemMgr.getProblem(state.getCurProblem());
         String lastProbMode = state.getCurProblemMode();
         Problem curProb=null;
         ProblemScore score=null;
 
         if (lastProb != null  && lastProbMode.equals(Problem.PRACTICE))     {
-            score = grader.gradePerformance(smgr.getConnection(),lastProb,smgr.getStudentState());
-            nextDiff = grader.getNextProblemDifficulty(score);
+            score = problemGrader.gradePerformance(lastProb);
+            nextDiff = problemGrader.getNextProblemDifficulty(score);
         }
-        else nextDiff = ProblemGrader.difficulty.SAME;
+        else nextDiff = TopicModel.difficulty.SAME;
 //        this.reasonsForEndOfTopic=  topicSelector.isEndOfTopic(probElapsedTime, nextDiff);
 //        boolean topicDone = reasonsForEndOfTopic.isTopicDone();
         return false;
@@ -100,7 +100,7 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
         // TODO: if the lesson is done, we need to return something that tells the student this and then move on to the next lesson somehow
         if (!lessonDone) {
             // TODO assumption for now is that we go through the lesson in order (which amounts to harder problems)
-            r = getProblem(e, ProblemGrader.difficulty.HARDER);
+            r = getNextProblem(e);
         }
         else r = ProblemResponse.NO_MORE_PROBLEMS;
 
@@ -157,7 +157,7 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
 //    }
 
 
-    protected ProblemResponse getProblem(NextProblemEvent e, ProblemGrader.difficulty nextProbDesiredDiff) throws Exception {
+    protected ProblemResponse getNextProblem(NextProblemEvent e) throws Exception {
         Problem p= studentLessonMgr.getNextProblem();
         ProblemResponse r=null;
         if (p != null) {
@@ -184,5 +184,7 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
         ll.add(l);
         this.studentLessonMgr.setClassLessons(ll);
     }
+
+
 
 }

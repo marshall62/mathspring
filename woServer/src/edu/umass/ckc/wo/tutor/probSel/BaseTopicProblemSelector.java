@@ -4,8 +4,7 @@ import edu.umass.ckc.wo.content.Problem;
 //import edu.umass.ckc.wo.content.ProblemImpl;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.Settings;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
+import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.BaseProblemSelectorOld;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.interventions.SelectProblemSpecs;
@@ -149,7 +148,7 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
     }
 
     @Override
-    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception {
+    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

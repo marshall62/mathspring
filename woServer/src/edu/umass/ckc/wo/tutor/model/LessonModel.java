@@ -2,12 +2,13 @@ package edu.umass.ckc.wo.tutor.model;
 
 
 
+import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 
+import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
@@ -16,7 +17,13 @@ import org.jdom.Element;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +32,7 @@ import java.util.List;
  * Time: 3:33 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LessonModel {
+public class LessonModel implements TutorEventProcessor {
 
     protected SessionManager smgr;
     protected PedagogicalModelParameters  pmParams;
@@ -33,6 +40,8 @@ public class LessonModel {
     protected Pedagogy pedagogy;
     protected PedagogicalMoveListener pedagogicalMoveListener;
     protected PedagogicalModel pedagogicalModel;
+    protected StudentState studentState;
+
 
 
     protected InterventionGroup interventionGroup;
@@ -54,7 +63,7 @@ public class LessonModel {
         this.pmParams=pmParams;
         this.pedagogy = pedagogy;
         this.pedagogicalMoveListener = pedagogicalMoveListener;
-
+        this.studentState = smgr.getStudentState();
     }
 
 
@@ -96,12 +105,22 @@ public class LessonModel {
     }
 
 
+    @Override
+    public Response processUserEvent(TutorHutEvent e) throws Exception {
+        return null;
+    }
 
-     public Response processInternalEvent(InternalEvent e) throws Exception {
+    @Override
+    /**
+     * Gets the interventions that are defined for this model and finds ones that apply to the situation using
+     * the onEventName tag of the intervention.   It selects the best candidate using a default algorithm that
+     * takes uses the weight of each intervention to put it in order.
+     */
+    public Response processInternalEvent(InternalEvent e) throws Exception {
         Response r;
         List<InterventionSpec> candidates;
 
-        // select interventions that apply to EndOfTopic
+        // select interventions that apply to the onEvent (e.g. EndOfTopic)
         candidates= getCandidateInterventionForEvent(e, e.getOnEventName());  // get back a list of all the interventions with onEvent == EndOfTopic
         InterventionSpec spec = selectBestCandidate(candidates, e); // overrides methods take care of the selection
         if (spec != null)
@@ -116,12 +135,13 @@ public class LessonModel {
 
     // TODO this method needs renaming and a new signature to make sense for lessons but it is a start in
     // the  right direction for getting this test out of the BasePedMod
-    public EndOfTopicInfo isEndOfTopic(long probElapsedTime, ProblemGrader.difficulty difficulty) throws Exception {
+    public EndOfTopicInfo isEndOfTopic(long probElapsedTime, TopicModel.difficulty difficulty) throws Exception {
         return null;
     }
 
     protected InterventionSpec selectBestCandidate(List<InterventionSpec> candidates, InternalEvent e) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        Collections.sort(candidates);   // sort into ascending order by weight
+        return candidates.get(0);
     }
 
     protected void sortCandidates(List<InterventionSpec> candidates) {

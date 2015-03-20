@@ -1,15 +1,12 @@
 package edu.umass.ckc.wo.tutor.model;
 
-import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
 import edu.umass.ckc.wo.tutor.probSel.ChallengeModeProblemSelector;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.ReviewModeProblemSelector;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.*;
 import org.apache.log4j.Logger;
@@ -31,7 +28,7 @@ public class DefaultPedagogicalModel extends PedagogicalModel {
     private static Logger logger = Logger.getLogger(DefaultPedagogicalModel.class);
     protected LessonModel lessonModel;
     //    protected TopicSelector topicSelector;
-    ProblemGrader.difficulty nextDiff;
+    TopicModel.difficulty nextDiff;
     List<PedagogicalMoveListener> pedagogicalMoveListeners;
     PedagogicalModelParameters params;
 

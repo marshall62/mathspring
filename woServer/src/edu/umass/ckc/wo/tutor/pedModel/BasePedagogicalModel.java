@@ -23,6 +23,7 @@ import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.model.TutorModelUtils;
 import edu.umass.ckc.wo.tutor.probSel.*;
@@ -48,7 +49,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     private static Logger logger = Logger.getLogger(BasePedagogicalModel.class);
 //    protected TopicSelector topicSelector;
-    ProblemGrader.difficulty nextDiff;
+//    TopicModel.difficulty nextDiff;
     List<PedagogicalMoveListener> pedagogicalMoveListeners;
 
 
@@ -66,6 +67,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     private void buildComponents (SessionManager smgr, Pedagogy pedagogy) {
         try {
+            problemGrader = new ProblemGrader(smgr);
             setExampleSelector(new BaseExampleSelector());
             setVideoSelector(new BaseVideoSelector());
             // Use the params from the pedagogy and then overwrite any values with things that are set up for the class
@@ -321,10 +323,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             intervention= nextProblemInterventionSelector.selectIntervention(e);
         }
         if (intervention != null) {
-            // When we generate a NextProb intervention we need to save the grading of the problem that was just done (i.e. whether we want
-            // an easier,harder/same problem) because after intervention responses are processed we go back to showing problems and we need
-            // that grade for making calls to the TopicSelector.
-            smgr.getStudentState().setNextProblemDesiredDifficulty(nextDiff.name());
+
+
             interventionGiven(intervention); // tell pedagogical move listeners that an intervention is given
 //            smgr.getStudentState().setInBtwProbIntervention(true);
             r = new NextProblemInterventionResponse(intervention);
@@ -419,21 +419,20 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             if (e.isForceTopic() && e.getTopicToForce() != smgr.getStudentState().getCurTopic()) {
                 smgr.getStudentState().setSidelinedTopic(smgr.getStudentState().getCurTopic());
             }
-            p = doSelectChallengeProblem(e);
-            if (p == null) {
+            r = doSelectChallengeProblem(e);
+            if (r == null) {
                 r = ProblemResponse.NO_MORE_CHALLENGE_PROBLEMS;
                 ((ProblemResponse) r).setEndPage(ChallengeModeProblemSelector.END_PAGE);
                 return r;
             }
         }
-        if (p ==null && (smgr.getStudentState().isInChallengeMode())) {
+        if (r ==null && (smgr.getStudentState().isInChallengeMode())) {
             smgr.getStudentState().setInReviewMode(false);
             smgr.getStudentState().setInChallengeMode(false);
             e.clearTopicToForce(); // A topic is on the NextProb event because it is for review/challenge mode.  We clear it so the regular
         }
-        if (p != null)  {
-            r = new ProblemResponse(p) ;
-            problemGiven(p); // tell all the pedagogical move listeners that a problem is being given.
+        if (r != null)  {
+            problemGiven(r.getProblem()); // tell all the pedagogical move listeners that a problem is being given.
         }
         return r;
     }
@@ -452,36 +451,52 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             if (e.isForceTopic() && e.getTopicToForce() != smgr.getStudentState().getCurTopic()) {
                 smgr.getStudentState().setSidelinedTopic(smgr.getStudentState().getCurTopic());
             }
-            p = doSelectReviewProblem(e);
-            if (p == null)  {
+            r = doSelectReviewProblem(e);
+            if (r == null)  {
                 r= ProblemResponse.NO_MORE_REVIEW_PROBLEMS;
                 ((ProblemResponse) r).setEndPage(ReviewModeProblemSelector.END_PAGE);
                 return r;
             }
         }
-        if (p ==null &&  smgr.getStudentState().isInReviewMode()) {
+        if (r ==null &&  smgr.getStudentState().isInReviewMode()) {
             smgr.getStudentState().setInReviewMode(false);
             smgr.getStudentState().setInChallengeMode(false);
             e.clearTopicToForce(); // A topic is on the NextProb event because it is for review/challenge mode.  We clear it so the regular
         }
-        if (p != null)  {
-            r = new ProblemResponse(p) ;
-            problemGiven(p); // tell all the pedagogical move listeners that a problem is being given.
+        if (r != null)  {
+            problemGiven(r.getProblem()); // tell all the pedagogical move listeners that a problem is being given.
         }
         return r;
+
+    }
+
+    public ProblemResponse doSelectChallengeProblem (NextProblemEvent e) throws Exception {
+        problemSelector = challengeModeSelector;
+        if (e.getTopicToForce() > 0)
+            smgr.getStudentState().setCurTopic(e.getTopicToForce());
+        return getNextProblem(e);
+
+    }
+
+    public ProblemResponse doSelectReviewProblem (NextProblemEvent e) throws Exception {
+        problemSelector = reviewModeSelector;
+        if (e.getTopicToForce() > 0)
+            smgr.getStudentState().setCurTopic(e.getTopicToForce());
+        return getNextProblem(e);
 
     }
 
 
     /**
      * Note that this always returns a non-null problem even if to just indicate no more problems
+     *
      * @param e
-     * @param nextProbDesiredDiff
      * @return
      * @throws Exception
      */
-     public ProblemResponse getProblem(NextProblemEvent e, ProblemGrader.difficulty nextProbDesiredDiff) throws Exception {
-        Problem curProb = problemSelector.selectProblem(smgr, e,nextProbDesiredDiff);
+     public ProblemResponse getNextProblem(NextProblemEvent e) throws Exception {
+
+        Problem curProb = problemSelector.selectProblem(smgr, e, lastProblemScore);
         ProblemResponse r=null;
         if (curProb != null) {
             curProb.setMode(Problem.PRACTICE);
@@ -497,45 +512,23 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
 
 
-
-
-    public EndOfTopicInfo getReasonsForEndOfTopic () {
-        return  reasonsForEndOfTopic;
-    }
-
-    public boolean isLessonContentAvailable(int topicId) throws Exception {
-        //   reasonsForEndOfTopic will be bound if this method is called during processing of a NextProblem event because the first thing it
-        // does is to score the student which binds this variable.   Other contexts such as the MPP want to know if a topic can play but
-        // we haven't got a basis for scoring a student (to see max time, max problems, or content failure) so we just return if
-        // there are any available problems in the topic.
-        if (reasonsForEndOfTopic == null)
-            return lessonModel.hasReadyContent(topicId);
-        else return !reasonsForEndOfTopic.isTopicDone();
-    }
-
-    public EndOfTopicInfo getReasonsForTopicEnd () {
-        return reasonsForEndOfTopic;
-    }
-
-
-    // TODO This still has topic specific crap in it that has to be abstracted and moved out of this class.
-    protected boolean gradeProblem (long probElapsedTime) throws Exception {
+    /** Sets the lastProblemScore property
+     *
+     * @return
+     * @throws Exception
+     */
+    protected ProblemScore gradeLastProblem () throws Exception {
         StudentState state = smgr.getStudentState();
-        ProblemGrader grader = new ProblemGrader();
         Problem lastProb = ProblemMgr.getProblem(state.getCurProblem());
         String lastProbMode = state.getCurProblemMode();
-        Problem curProb=null;
-        ProblemScore score=null;
 
         if (lastProb != null  && lastProbMode.equals(Problem.PRACTICE))     {
-            score = grader.gradePerformance(smgr.getConnection(),lastProb,smgr.getStudentState());
-            nextDiff = grader.getNextProblemDifficulty(score);
+            this.lastProblemScore =  problemGrader.gradePerformance(lastProb);
         }
-        else nextDiff = ProblemGrader.difficulty.SAME;
-        this.reasonsForEndOfTopic=  lessonModel.isEndOfTopic(probElapsedTime, nextDiff);
-        boolean topicDone = reasonsForEndOfTopic.isTopicDone();
-        return topicDone;
+
+        return this.lastProblemScore;
     }
+
 
 
     /**
@@ -552,31 +545,31 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         Response r=null;
         StudentState state = smgr.getStudentState();
         Problem curProb=null;
+        // First grade the last practice problem which sets the lastProblemScore property of this class (used by subsequent code)
+        gradeLastProblem();
+        // NextProblem is an event that the lesson/topic models want to watch.   They may change their internal state or return EndOfLesson/Topic
+        r = lessonModel.processUserEvent(e);  // If the lesson/topic is done we get a response (an internal event) and exit
+        // if we get back a non-null response (EndOfLesson/Topic), return it
+        if (r != null)
+            return r;
 
-        // grade the last problem the student was in when they clicked NextProblem
-        gradeProblem(e.getProbElapsedTime());  // grading sets the desired difficulty of the next prob.  - nextDiff
 
-        int curTopic = smgr.getStudentState().getCurTopic();
-        // TODO Have to figure out how to abstract end of lesson stuff
-        this.reasonsForEndOfTopic=  lessonModel.isEndOfTopic(e.getProbElapsedTime(), nextDiff);
-        boolean topicDone = curTopic == -1 || reasonsForEndOfTopic.isTopicDone();
-        if (topicDone)
-            return new EndOfTopicEvent(e,reasonsForEndOfTopic,curTopic);
-        // second we try to find an intervention
+        // First we see if there is an intervention
         if (r == null) r = getNextProblemIntervention(e);
-        // Some interventions are designed to be shown while a problem is being shown
-        // These interventions are a property of a problem
-        if (r == null || (r instanceof NextProblemInterventionResponse && ((NextProblemInterventionResponse) r).isBuildProblem())) {
-            Intervention intervention = null;
-            if (r != null)
-                intervention = ((NextProblemInterventionResponse)r).getIntervention();
-            r = getProblem(e,nextDiff);  // will always get back non-null response (bc NOMOREPROBLEMS is returned when out)
-            // give the problem its intervention property
-            if (r instanceof ProblemResponse)
-                ((ProblemResponse)r).setIntervention(intervention);
-
+        // Some interventions are designed to be shown while a problem is being shown (perhaps some GUI element is changed)
+        // For cases like this, the intervention's isBuildProblem is true.
+        // If the intervention requires a problem, get the next problem and return a Problem with the intervention as a property of a problem
+        if (r != null && r instanceof NextProblemInterventionResponse ) {
+            if (((NextProblemInterventionResponse) r).isBuildProblem()) {
+                ProblemResponse pr = getNextProblem(e);
+                pr.setIntervention(((NextProblemInterventionResponse) r).getIntervention());
+                r = pr;
+            }
         }
+        if (r == null)
+            r = getNextProblem(e);
         if (r != null && r instanceof ProblemResponse) {
+             curProb = ((ProblemResponse) r).getProblem();
             ((ProblemResponse) r).setProblemBindings(smgr);
         }
         if (learningCompanion != null )
@@ -758,28 +751,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return isel;
     }
 
-    @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
-        Response r;
-        smgr.getStudentState().setProblemIdleTime(0);
-        NextProblemInterventionSelector isel = (NextProblemInterventionSelector) getLastInterventionSelector();
-        Intervention intervention = isel.processContinueNextProblemInterventionEvent(e);
-
-        if (intervention != null) {
-            r= new InterventionResponse(intervention);
-        }
-        // this does not want to generate another intervention.  So select a new prob
-        else {
-            StudentState state = smgr.getStudentState();
-            boolean isTopicDone = gradeProblem(e.getProbElapsedTime());
-            r = getTopicIntroDemoOrProblem(new NextProblemEvent(e.getElapsedTime(), e.getProbElapsedTime()), state, state.getCurTopic(), isTopicDone);
-            studentModel.newProblem(state, ((ProblemResponse) r).getProblem());
-        }
-        new TutorLogger(smgr).logContinueNextProblemIntervention(e, r);
-        if (learningCompanion != null )
-            learningCompanion.processUncategorizedEvent(e,r);
-        return r;
-    }
 
     @Override
     public Response processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception {
@@ -804,35 +775,70 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return r;
     }
 
+
+    @Override
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+        Response r;
+        smgr.getStudentState().setProblemIdleTime(0);
+
+        r = lessonModel.processUserEvent(e) ; // give lesson model a chance to weigh in.
+        //If null comes back, the intervention
+        // wasn't relevant to the lesson model and this should process it.
+        if ( r == null) {
+            NextProblemInterventionSelector isel = (NextProblemInterventionSelector) getLastInterventionSelector();
+            r = isel.processContinueNextProblemInterventionEvent(e);
+        }
+        // TODO stop having intervention selectors return more interventions.   This should be done by rules running
+        // in the pedagogical model
+        if (r instanceof InterventionResponse)
+            ;  // we returned another intervention
+            // this does not want to generate another intervention.  So select a new prob
+        else {
+            StudentState state = smgr.getStudentState();
+            // have to regrade last problem so that we can select a problem
+            gradeLastProblem();
+
+            r = getNextProblem(null);
+            studentModel.newProblem(state, ((ProblemResponse) r).getProblem());
+        }
+        new TutorLogger(smgr).logContinueNextProblemIntervention(e, r);
+        if (learningCompanion != null )
+            learningCompanion.processUncategorizedEvent(e,r);
+        return r;
+    }
+
+
     @Override
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
-        Response r;
-        Intervention intervention = nextProblemInterventionSelector.processInputResponseNextProblemInterventionEvent(e);
-        e.setUserInput(nextProblemInterventionSelector.getUserInputXML());
-//        intervention.setUserInput()
-        // We need to know what grade the student got on the last problem they solved so we can tell if the topic is about to end
-        String diff = smgr.getStudentState().getNextProblemDesiredDifficulty();
-        nextDiff = ProblemGrader.difficulty.valueOf(diff);
-        EndOfTopicInfo info = topicSelector.isEndOfTopic(e.getProbElapsedTime(), nextDiff);
-        if (intervention != null && intervention instanceof SelectProblemSpecs) {
-            nextDiff = ((SelectProblemSpecs) intervention).getDesiredDifficulty();
-            info = topicSelector.isEndOfTopic(e.getProbElapsedTime(),nextDiff);
-            if (info.isTopicDone()) {
-                return  ProblemResponse.NO_MORE_PROBLEMS;
-            }
-            else r = getProblem(new NextProblemEvent(e.getElapsedTime(),e.getProbElapsedTime()),nextDiff);
-            studentModel.newProblem(smgr.getStudentState(), ((ProblemResponse) r).getProblem());
-        }
-        else if (intervention != null) {
-            r= new InterventionResponse(intervention);
+        Response r = lessonModel.processUserEvent(e) ; // give lesson model a chance to weigh in.
+        // If the lesson model doesn't care about the event, it returns null so we have to process it here.
+        if (r == null) {
+            r  = nextProblemInterventionSelector.processInputResponseNextProblemInterventionEvent(e);
+            e.setUserInput(nextProblemInterventionSelector.getUserInputXML());
         }
         else {
-//            smgr.getStudentState().setInBtwProbIntervention(false);
-            r= getTopicIntroDemoOrProblem(new NextProblemEvent(e.getElapsedTime(), e.getProbElapsedTime()),
-                    smgr.getStudentState(), smgr.getStudentState().getCurTopic(), info.isTopicDone());
-            studentModel.newProblem(smgr.getStudentState(), ((ProblemResponse) r).getProblem());
+            // Got rid of code that handled an SelectProblemSpecs type of Intervention was returned by an intervention selector.
+            // This would presumably be used as input to the problem selector to guide its selection.  Figure out a better
+            // way to do it later if necessary.
+            ;
+
         }
+
+        // TODO stop having intervention selectors return more interventions.   This should be done by rules running
+        // in the pedagogical model
+        if (r instanceof InterventionResponse)
+            ;  // we returned another intervention
+            // this does not want to generate another intervention.  So select a new prob
+        else {
+            StudentState state = smgr.getStudentState();
+            // have to regrade last problem so that we can select a problem
+            gradeLastProblem();
+
+            r = getNextProblem(null);
+            studentModel.newProblem(state, ((ProblemResponse) r).getProblem());
+        }
+
         new TutorLogger(smgr).logInputResponseNextProblemIntervention( e, r);
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
@@ -865,43 +871,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     }
 
 
-    public Problem doSelectChallengeProblem (NextProblemEvent e) throws Exception {
-        StudentState state =smgr.getStudentState();
-        int lastIx= state.getCurProblemIndexInTopic();
-        lastIx++;
-        List<Integer> topicProbIds = topicSelector.getClassTopicProblems(state.getCurTopic(), smgr.getClassID(), smgr.isTestUser());
-        if (lastIx >= topicProbIds.size())    {
-            state.setInChallengeMode(false);
-            return null;
-        }
-        else {
-            Problem p;
-            if (e.getTopicToForce() > 0)
-                smgr.getStudentState().setCurTopic(e.getTopicToForce());
-            challengeModeSelector.init(smgr);
-            p= challengeModeSelector.selectProblem(smgr, e, ProblemGrader.difficulty.HARDER);
-            return p;
-        }
-    }
 
-    public Problem doSelectReviewProblem (NextProblemEvent e) throws Exception {
-        StudentState state =smgr.getStudentState();
-        int lastIx= state.getCurProblemIndexInTopic();
-        lastIx++;
-        List<Integer> topicProbIds = topicSelector.getClassTopicProblems(state.getCurTopic(), smgr.getClassID(), smgr.isTestUser());
-        if (lastIx >= topicProbIds.size())    {
-            state.setInReviewMode(false);
-            return null;
-        }
-        else {
-            Problem p;
-            if (e.getTopicToForce() > 0)
-                smgr.getStudentState().setCurTopic(e.getTopicToForce());
-            reviewModeSelector.init(smgr);
-            p= reviewModeSelector.selectProblem(smgr, e, ProblemGrader.difficulty.HARDER);
-            return p;
-        }
-    }
 
 
     @Override

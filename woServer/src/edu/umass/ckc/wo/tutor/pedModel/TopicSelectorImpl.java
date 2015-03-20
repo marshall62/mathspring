@@ -8,6 +8,7 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
@@ -41,7 +42,7 @@ public class TopicSelectorImpl implements TopicSelector {
     private SessionManager smgr;
     private Connection conn;
     private PedagogicalModelParameters pmParameters;
-    private ProblemGrader.difficulty nextProbDesiredDifficulty;
+    private TopicModel.difficulty nextProbDesiredDifficulty;
 //    private PedagogicalModel pedagogicalModel;
 
     public TopicSelectorImpl() {
@@ -215,7 +216,7 @@ public class TopicSelectorImpl implements TopicSelector {
      * @return
      * @throws Exception
      */
-    public EndOfTopicInfo isEndOfTopic(long probElapsedTime, ProblemGrader.difficulty difficulty) throws Exception {
+    public EndOfTopicInfo isEndOfTopic(long probElapsedTime, TopicModel.difficulty difficulty) throws Exception {
         boolean maxProbsReached=false, maxTimeReached=false, topicMasteryReached=false, contentFailure=false;
         // if maxProbs then we're done
         if (smgr.getStudentState().getTopicNumPracticeProbsSeen() >= pmParameters.getMaxNumberProbs())
@@ -237,15 +238,15 @@ public class TopicSelectorImpl implements TopicSelector {
 
 
      // checks two flags which say whether the current topic has an easier problem or a harder problem
-    private EndOfTopicInfo isContentFailure (ProblemGrader.difficulty diff) throws Exception {
+    private EndOfTopicInfo isContentFailure (TopicModel.difficulty diff) throws Exception {
         boolean failEasier=false, failHarder=false,failSame=false;
 
         boolean fail=false;
-        if (diff == ProblemGrader.difficulty.EASIER)
+        if (diff == TopicModel.difficulty.EASIER)
             failEasier= !smgr.getStudentState().curTopicHasEasierProblem();
-        else if (diff == ProblemGrader.difficulty.HARDER)
+        else if (diff == TopicModel.difficulty.HARDER)
             failHarder =  !smgr.getStudentState().curTopicHasHarderProblem();
-        else if (diff == ProblemGrader.difficulty.SAME)
+        else if (diff == TopicModel.difficulty.SAME)
             failSame = !(smgr.getStudentState().curTopicHasHarderProblem() || smgr.getStudentState().curTopicHasEasierProblem());
         EndOfTopicInfo info = new EndOfTopicInfo(false,false,failEasier,failHarder, failSame, false);
         return info;

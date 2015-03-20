@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
@@ -88,10 +89,12 @@ public class TopicSummary {
         classId = smgr.getClassID();
         conn = smgr.getConnection();
         sessionId = smgr.getSessionNum();
-        curTopicLoader = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters(),smgr.getPedagogicalModel());
+        curTopicLoader = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters());
         ProblemSelector psel = smgr.getPedagogicalModel().getProblemSelector();
+
 //        this.hasAvailableContent = psel.topicHasRemainingContent(smgr, topicId);
-        this.hasAvailableContent = smgr.getPedagogicalModel().isLessonContentAvailable(topicId);
+        LessonModel lm = smgr.getPedagogicalModel().getLessonModel();
+        this.hasAvailableContent = lm.hasReadyContent(topicId);
         List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
         totalProblems = l.size();
         StudentProblemHistory h = smgr.getStudentModel().getStudentProblemHistory();

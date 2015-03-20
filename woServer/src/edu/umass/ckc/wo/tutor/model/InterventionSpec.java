@@ -9,7 +9,7 @@ import org.jdom.Element;
  * Time: 11:16 AM
  * To change this template use File | Settings | File Templates.
  */
-public class InterventionSpec {
+public class InterventionSpec implements Comparable<InterventionSpec> {
     private String onEvent;
     private String className;
     private Element config;
@@ -47,5 +47,14 @@ public class InterventionSpec {
 
     public int getWeight() {
         return weight;
+    }
+
+    @Override
+    public int compareTo(InterventionSpec interventionSpec) {
+        if (this.getWeight() < interventionSpec.getWeight())
+            return -1;
+        else if (this.getWeight() > interventionSpec.getWeight())
+            return 1;
+        else return 0;
     }
 }

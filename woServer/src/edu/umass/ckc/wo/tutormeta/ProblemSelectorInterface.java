@@ -5,7 +5,7 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 
 import java.util.List;
 
@@ -23,5 +23,5 @@ public interface ProblemSelectorInterface {
 
     public List<String> getReasonsForNullProblem (StudentState state);
 
-    public Problem selectProblem(SessionManager smgr, StudentModel studentModel, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception;
+    public Problem selectProblem(SessionManager smgr, StudentModel studentModel, NextProblemEvent e, TopicModel.difficulty nextProblemDesiredDifficulty) throws Exception;
 }

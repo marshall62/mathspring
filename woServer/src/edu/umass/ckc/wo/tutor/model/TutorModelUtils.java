@@ -3,8 +3,12 @@ package edu.umass.ckc.wo.tutor.model;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
+import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.HintSelector;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -22,5 +26,13 @@ public class TutorModelUtils {
         List<Hint> soln = hintSelector.selectFullHintPath(smgr, problem.getId());
         problem.setSolution(soln);
         problem.setMode(Problem.DEMO);
+    }
+
+    public InterventionSelector getLastInterventionSelector (SessionManager smgr) throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        String lastInterventionClass = smgr.getStudentState().getLastIntervention();
+        Class interventionSelectorClass = Class.forName(lastInterventionClass);
+        Constructor constructor = interventionSelectorClass.getConstructor(SessionManager.class, PedagogicalModel.class);
+        InterventionSelector isel = (InterventionSelector) constructor.newInstance(smgr,this);
+        return isel;
     }
 }

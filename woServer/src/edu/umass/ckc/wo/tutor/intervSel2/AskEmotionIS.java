@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.interventions.AskEmotionSliderIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -137,7 +138,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
 
 
     @Override
-    public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -150,7 +151,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
      * next one.   The parameters will be inside the event and will need to be retrieved.  Value of wantSwitch will either be
      *
      */
-    public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
         String emotion = params.getString(AskEmotionSliderIntervention.EMOTION);
         String level = params.getString(AskEmotionSliderIntervention.LEVEL);

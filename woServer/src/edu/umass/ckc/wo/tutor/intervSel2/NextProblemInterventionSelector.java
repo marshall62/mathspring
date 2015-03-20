@@ -8,6 +8,7 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 
@@ -49,8 +50,8 @@ public abstract class NextProblemInterventionSelector extends InterventionSelect
      */
     public abstract NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception;
 
-    public abstract Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception;
-    public abstract Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;
+    public abstract Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception;
+    public abstract Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;
 
 
     @Override

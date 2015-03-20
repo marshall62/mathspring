@@ -5,7 +5,6 @@ import edu.umass.ckc.email.Emailer;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.ProblemAnswer;
-import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
@@ -15,6 +14,7 @@ import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.MyProgressPageIS;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.model.TutorEventProcessor;
 import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.probSel.ChallengeModeProblemSelector;
@@ -60,7 +60,8 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     protected VideoSelector videoSelector=null; // an optional video selector (can be null)
     protected ChallengeModeProblemSelector challengeModeSelector;
     protected ReviewModeProblemSelector reviewModeSelector;
-    protected EndOfTopicInfo reasonsForEndOfTopic;
+    protected ProblemGrader problemGrader;
+    protected ProblemScore lastProblemScore;
 
     private TutorModel tutorModel; // temporarily here until we build the correct set of models
 
@@ -359,8 +360,8 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     public abstract Response processStudentSelectsProblemRequest (NextProblemEvent e) throws Exception;
     public abstract Response processChallengeModeNextProblemRequest (NextProblemEvent e) throws Exception;
     public abstract Response processReviewModeNextProblemRequest (NextProblemEvent e) throws Exception;
-    public abstract ProblemResponse getProblemInTopicSelectedByStudent(NextProblemEvent e) throws Exception;
-    public abstract ProblemResponse getProblem(NextProblemEvent e, ProblemGrader.difficulty nextProbDesiredDiff) throws Exception;
+
+    public abstract ProblemResponse getNextProblem(NextProblemEvent e) throws Exception;
 
 //    protected abstract Response startTutor(EnterTutorEvent e) throws Exception ;
 
@@ -410,10 +411,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
      * @throws Exception
      */
     public abstract HintResponse doSelectHint (SelectHintSpecs selectionCriteria) throws Exception;
-    protected abstract Problem doSelectChallengeProblem(NextProblemEvent e) throws Exception;
-    protected abstract Problem doSelectReviewProblem (NextProblemEvent e) throws Exception;
 
-    public abstract boolean isLessonContentAvailable(int topicId) throws Exception;
 
 
     private boolean findAnswerMatch (List<ProblemAnswer> possible, String studentInput) {
@@ -496,9 +494,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         return this.problemSelector;
     }
 
-    public EndOfTopicInfo getReasonsForEndOfTopic () {
-        return this.reasonsForEndOfTopic;
-    }
 
     public abstract void newSession (int sessionId) throws SQLException;
 
@@ -525,5 +520,13 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
     public void setTutorModel(TutorModel tutorModel) {
         this.tutorModel = tutorModel;
+    }
+
+    public ProblemGrader getProblemGrader() {
+        return problemGrader;
+    }
+
+    public ProblemScore getLastProblemScore() {
+        return lastProblemScore;
     }
 }

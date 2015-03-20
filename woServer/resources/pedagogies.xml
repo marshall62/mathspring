@@ -51,6 +51,16 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                         <ask val="false"></ask>
                     </config>
                 </interventionSelector>
+                <interventionSelector onEvent="BeginningOfTopic" weight="1" class="TopicIntroIS">
+                    <config>
+
+                    </config>
+                </interventionSelector>
+                <interventionSelector onEvent="BeginningOfTopic" weight="2" class="DemoProblemIS">
+                    <config>
+
+                    </config>
+                </interventionSelector>
             </interventions>
         </lessonControl>
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>

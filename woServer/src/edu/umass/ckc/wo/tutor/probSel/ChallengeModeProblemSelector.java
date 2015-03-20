@@ -6,8 +6,7 @@ import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
-import edu.umass.ckc.wo.tutormeta.TopicSelector;
+import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -47,7 +46,7 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
     }
 
     @Override
-    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception {
+    public Problem selectProblem(SessionManager smgr, NextProblemEvent eIgnored, ProblemScore lastProblemScoreIgnored) throws Exception {
         StudentState state = smgr.getStudentState();
         List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), false);
         int nextIx = state.getCurProblemIndexInTopic();
@@ -63,8 +62,10 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
             nextIx++;
             state.setCurProblemIndexInTopic(nextIx);
         }
-        if (nextIx >= topicProbIds.size())
+        if (nextIx >= topicProbIds.size()) {
+            state.setInChallengeMode(false);
             return null;
+        }
         int nextProbId = topicProbIds.get(nextIx);
         Problem p = ProblemMgr.getProblem(nextProbId);
         p.setMode(Problem.PRACTICE);

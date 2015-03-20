@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,13 +44,13 @@ public class NextProblemListCombinerIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
         return ((NextProblemInterventionSelector) getInterventionSelectorThatGeneratedIntervention()).processContinueNextProblemInterventionEvent(e);
 
     }
 
 
-    public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         if (this.subSelectorList != null) {
             String classname = smgr.getStudentState().getLastIntervention();
             for (NextProblemInterventionSelector helper: this.subSelectorList) {

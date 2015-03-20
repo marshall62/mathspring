@@ -8,9 +8,8 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
+import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
-import edu.umass.ckc.wo.tutormeta.TopicSelector;
 
 import java.util.List;
 
@@ -36,14 +35,13 @@ public class BaseProblemSelector implements ProblemSelector {
 
 
 
-
-
     @Override
     /**
      * precondition:  This method is only called if we know the topic has no upcoming content failure and all other conditions for continuing in a topic
      * are met.    In theory,  there should be no fencepost errors based on this.
      */
-    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception {
+    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
+        TopicModel.difficulty nextDiff = topicModel.getNextProblemDifficulty(lastProblemScore);
         StudentState state = smgr.getStudentState();
         List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), smgr.isTestUser());
 //        List<Problem> topicProblems = xx;
@@ -53,18 +51,18 @@ public class BaseProblemSelector implements ProblemSelector {
         if (lastIx == -1)
             nextIx = (topicProbIds.size()-1) / parameters.getDifficultyRate();
 
-        if (nextIx == -1 && nextProblemDesiredDifficulty == ProblemGrader.difficulty.EASIER) {
+        if (nextIx == -1 && nextDiff == TopicModel.difficulty.EASIER) {
             if (lastIx <= 0)
                 throw new DeveloperException("Last problem index=0 and want easier problem.   Content failure NOT PREDICTED by TopicSelector");
             nextIx = lastIx / parameters.getDifficultyRate();
         }
-        else if (nextIx == -1 && nextProblemDesiredDifficulty == ProblemGrader.difficulty.HARDER) {
+        else if (nextIx == -1 && nextDiff == TopicModel.difficulty.HARDER) {
             if (lastIx >= topicProbIds.size())
                 throw new DeveloperException("Last problem >= number of problems in topic.   Content failure NOT PREDICTED by TopicSelector");
             nextIx = lastIx + ((topicProbIds.size()-1 - lastIx) / parameters.getDifficultyRate());
 
         }
-        else if (nextIx == -1 && nextProblemDesiredDifficulty == ProblemGrader.difficulty.SAME) {
+        else if (nextIx == -1 && nextDiff == TopicModel.difficulty.SAME) {
             nextIx = Math.min(lastIx, topicProbIds.size()-1);
         }
         int nextProbId = topicProbIds.get(nextIx);

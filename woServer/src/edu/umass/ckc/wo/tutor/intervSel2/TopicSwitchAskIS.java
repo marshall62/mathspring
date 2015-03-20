@@ -8,8 +8,12 @@ import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.TopicSwitchAskIntervention;
 import edu.umass.ckc.wo.interventions.TopicSwitchIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
+import edu.umass.ckc.wo.tutor.response.BeginningOfTopicEvent;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.apache.log4j.Logger;
 
@@ -45,10 +49,14 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
         if (smgr.getStudentState().getCurTopic() < 1) {
             return null;
         }
-        boolean topicContinues = pedagogicalModel.isLessonContentAvailable(smgr.getStudentState().getCurTopic()) ;
+//        boolean topicContinues = pedagogicalModel.isLessonContentAvailable(smgr.getStudentState().getCurTopic()) ;
+        boolean topicContinues = pedagogicalModel.getLessonModel().hasReadyContent(smgr.getStudentState().getCurTopic());
         NextProblemIntervention intervention = null;
         if (!topicContinues) {
-            EndOfTopicInfo reasons = pedagogicalModel.getReasonsForEndOfTopic();
+            TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
+            ProblemScore lastProbScore = pedagogicalModel.getLastProblemScore();
+            TopicModel.difficulty nextDiff = tm.getNextProblemDifficulty(lastProbScore);
+            EndOfTopicInfo reasons = tm.isEndOfTopic(e.getProbElapsedTime(), nextDiff);
             if (reasons.isTopicDone()) {
                 String expl = reasons.getExplanation();
                 String ask = this.getParameter("ask",this.getParams());
@@ -70,8 +78,8 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 
 
     @Override
-    public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+        return new BeginningOfTopicEvent(e,smgr.getStudentState().getCurTopic());
     }
 
     // inherits selectIntervention which does a rememberIntervention.   I think this should remember the name of this class
@@ -83,7 +91,7 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
      * next one.   The parameters will be inside the event and will need to be retrieved.  Value of wantSwitch will either be
      *
      */
-    public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
         String wantSwitch = params.getString(TopicSwitchAskIntervention.WANT_TO_SWITCH);
         // if they want to stay in the topic for either reason,  then we reset these counters/timers so they
@@ -94,9 +102,13 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
             logger.debug("Topic Switch: Student elects to STAY in topic.  Turning off topicSwitch flag");
             smgr.getStudentState().setTopicSwitch(false);
             setUserInput(this,"<topicSwitch wantSwitch=\"" + wantSwitch + "\"/>",e);
+            return null;  // no interventions - TODO we were in EndOfTopic and need to do something to return
         }
-        else  logger.debug("Topic Switch: Student elects to SWITCH to new topic.");
-        return null;  // no more interventions to return.
+        else  {
+            logger.debug("Topic Switch: Student elects to SWITCH to new topic.");
+            return new BeginningOfTopicEvent(e,smgr.getStudentState().getCurTopic());
+        }
+
 
     }
 
