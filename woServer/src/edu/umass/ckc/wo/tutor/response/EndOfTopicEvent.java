@@ -11,12 +11,10 @@ import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
  * To change this template use File | Settings | File Templates.
  */
 public class EndOfTopicEvent extends InternalEvent {
-    private EndOfTopicInfo endOfTopicInfo;
     private int topicId;
 
-    public EndOfTopicEvent(SessionEvent sessionEvent, EndOfTopicInfo info, int topicId) {
+    public EndOfTopicEvent(SessionEvent sessionEvent, int topicId) {
         super(sessionEvent,"EndOfTopic");
-        this.endOfTopicInfo=info;
         this.topicId=topicId;
     }
 

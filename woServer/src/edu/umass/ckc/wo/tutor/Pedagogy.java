@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Pedagogy implements Comparable {
 
-    private static final String defaultClasspath = "edu.umass.ckc.wo.tutor";
+    public static final String defaultClasspath = "edu.umass.ckc.wo.tutor";
     private String problemSelectorClass;
     private String hintSelectorClass;
     private String studentModelClass;
@@ -150,7 +150,7 @@ public class Pedagogy implements Comparable {
      * @param classname
      * @return  the fully qualified classname
      */
-    private String getFullyQualifiedClassname (String defaultClasspath, String classname) {
+    public static String getFullyQualifiedClassname (String defaultClasspath, String classname) {
         if (classname == null)
             return null;
         if (classname.indexOf('.') == -1)
@@ -166,7 +166,7 @@ public class Pedagogy implements Comparable {
     }
 
     public void setAttemptInterventionSelector(InterventionSelectorSpec attemptInterventionSelector) {
-        String className =   getFullyQualifiedClassname(defaultClasspath + ".intervSel2", attemptInterventionSelector.getClassName());
+        String className =   attemptInterventionSelector.getFullyQualifiedClassname();
         attemptInterventionSelector.setClassName(className);
         this.attemptInterventionSelector = attemptInterventionSelector;
     }
@@ -176,7 +176,7 @@ public class Pedagogy implements Comparable {
     }
 
     public void setNextProblemInterventionSelector(InterventionSelectorSpec nextProblemInterventionSelector) {
-        String className =   getFullyQualifiedClassname(defaultClasspath + ".intervSel2", nextProblemInterventionSelector.getClassName());
+        String className =  nextProblemInterventionSelector.getFullyQualifiedClassname();
         nextProblemInterventionSelector.setClassName(className);
         this.nextProblemInterventionSelector =  nextProblemInterventionSelector;
     }

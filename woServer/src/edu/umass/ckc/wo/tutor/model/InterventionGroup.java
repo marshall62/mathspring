@@ -13,17 +13,17 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class InterventionGroup {
-    private List<InterventionSpec> interventionsSpecs;
+    private List<InterventionSelectorSpec> interventionsSpecs;
 
     public InterventionGroup() {
-        this.interventionsSpecs = new ArrayList<InterventionSpec>();
+        this.interventionsSpecs = new ArrayList<InterventionSelectorSpec>();
     }
 
-    public void add (InterventionSpec s) {
+    public void add (InterventionSelectorSpec s) {
         this.interventionsSpecs.add(s);
     }
 
-    public List<InterventionSpec> getInterventionsSpecs() {
+    public List<InterventionSelectorSpec> getInterventionsSpecs() {
         return interventionsSpecs;
     }
 }

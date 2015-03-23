@@ -73,7 +73,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             // Use the params from the pedagogy and then overwrite any values with things that are set up for the class
 
 //            topicSelector = new TopicSelectorImpl(smgr,params, this);
-            lessonModel =  new LessonModel(smgr,params,pedagogy,this,this).buildModel();
+
             this.getTutorModel().setLessonModel(lessonModel);
             setStudentModel((StudentModel) Class.forName(pedagogy.getStudentModelClass()).getConstructor(SessionManager.class).newInstance(smgr));
             smgr.setStudentModel(getStudentModel());
@@ -87,6 +87,9 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 setNextProblemInterventionSelector(buildNextProblemIS(smgr, pedagogy));
             if (pedagogy.getAttemptInterventionSelector() != null)
                 setAttemptInterventionSelector(buildAttemptIS(smgr, pedagogy));
+
+            // this needs to come last because it uses things created above
+            lessonModel =  new LessonModel(smgr,params,pedagogy,this,this).buildModel();
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {
@@ -119,13 +122,14 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     private NextProblemInterventionSelector buildNextProblemIS(SessionManager smgr, Pedagogy pedagogy) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         InterventionSelectorSpec npSpec = pedagogy.getNextProblemInterventionSelector();
         List<InterventionSelectorSpec> subs = pedagogy.getSubNextProblemInterventionSelectors();
-        NextProblemInterventionSelector sel = (NextProblemInterventionSelector) newInstance(npSpec,smgr);
+//        NextProblemInterventionSelector sel = (NextProblemInterventionSelector) newInstance(npSpec,smgr);
+        NextProblemInterventionSelector sel = (NextProblemInterventionSelector) npSpec.buildIS(smgr);
         this.addPedagogicalMoveListener(sel);
 
         if (subs != null) {
             List<NextProblemInterventionSelector> subSels = new ArrayList<NextProblemInterventionSelector>();
             for (InterventionSelectorSpec sub : subs) {
-                NextProblemInterventionSelector ss = (NextProblemInterventionSelector) newInstance(sub,smgr);
+                NextProblemInterventionSelector ss = (NextProblemInterventionSelector) sub.buildIS(smgr);
                 this.addPedagogicalMoveListener(ss);
                 subSels.add(ss);
             }
@@ -137,7 +141,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     private AttemptInterventionSelector buildAttemptIS(SessionManager smgr, Pedagogy pedagogy) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         InterventionSelectorSpec atSpec = pedagogy.getAttemptInterventionSelector();
         List<InterventionSelectorSpec> subs = pedagogy.getSubAttemptInterventionSelectors();
-        AttemptInterventionSelector sel = (AttemptInterventionSelector) newInstance(atSpec,smgr);
+//        AttemptInterventionSelector sel = (AttemptInterventionSelector) newInstance(atSpec,smgr);
+        AttemptInterventionSelector sel = (AttemptInterventionSelector) atSpec.buildIS(smgr);
         this.addPedagogicalMoveListener(sel);
         if (subs != null) {
             List<AttemptInterventionSelector> subSels = new ArrayList<AttemptInterventionSelector>();
@@ -549,10 +554,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         gradeLastProblem();
         // NextProblem is an event that the lesson/topic models want to watch.   They may change their internal state or return EndOfLesson/Topic
         r = lessonModel.processUserEvent(e);  // If the lesson/topic is done we get a response (an internal event) and exit
-        // if we get back a non-null response (EndOfLesson/Topic), return it
-        if (r != null)
-            return r;
-
 
         // First we see if there is an intervention
         if (r == null) r = getNextProblemIntervention(e);

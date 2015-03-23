@@ -5,12 +5,14 @@ import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
+import edu.umass.ckc.wo.interventions.TopicIntroIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.response.TopicIntroResponse;
+import org.jdom.Element;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,22 +23,40 @@ import edu.umass.ckc.wo.tutor.response.TopicIntroResponse;
  */
 public class TopicIntroIS extends NextProblemInterventionSelector {
     TopicModel topicModel;
+    PedagogicalModelParameters.frequency freq;
 
     public TopicIntroIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
         super(smgr, pedagogicalModel);
         topicModel = (TopicModel) pedagogicalModel.getLessonModel();
     }
+
+    @Override
+    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+//        super.init(smgr,pedagogicalModel);
+        configure();
+    }
+
+    private void configure () {
+        Element config = this.getConfigXML();
+        Element freqElt = config.getChild("topicIntroFrequency");
+        String freqstr = freqElt.getTextTrim();
+        this.freq = PedagogicalModelParameters.convertTopicIntroFrequency(freqstr);
+
+    }
+
     @Override
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         TopicIntro intro = getTopicIntro(studentState.getCurTopic());
-        TopicIntroResponse tir = new TopicIntroResponse(intro);
-
-        return tir;
+        if (intro != null)  {
+            TopicIntroIntervention tii = new TopicIntroIntervention(intro);
+            return tii;
+        }
+        return null;
     }
 
     protected TopicIntro getTopicIntro (int curTopic) throws Exception {
         // all checking of conditions for display of intro is done in getTopicIntro
-        return topicModel.getTopicIntro(curTopic);
+        return topicModel.getTopicIntro(curTopic,this.freq);
     }
 
 
@@ -51,8 +71,5 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+
 }

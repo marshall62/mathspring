@@ -73,7 +73,7 @@ public class StudStateClean {
 
     private static void cleanStudentState(Connection conn, int id) throws SQLException {
         ProblemState.clearState(conn,id);
-        LessonState.clearState(conn, id);
+        TopicState.clearState(conn, id);
         SessionState.clearState(conn, id);
         PrePostState.clearState(conn, id);
         WorkspaceState.clearState(conn, id);

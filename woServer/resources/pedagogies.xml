@@ -53,12 +53,14 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                 </interventionSelector>
                 <interventionSelector onEvent="BeginningOfTopic" weight="1" class="TopicIntroIS">
                     <config>
-
+                        <!-- legal values never, oncePerSession, always-->
+                        <topicIntroFrequency>always</topicIntroFrequency>
                     </config>
                 </interventionSelector>
                 <interventionSelector onEvent="BeginningOfTopic" weight="2" class="DemoProblemIS">
                     <config>
-
+                        <!-- legal values never, oncePerSession, always-->
+                        <topicExampleFrequency>always</topicExampleFrequency>
                     </config>
                 </interventionSelector>
             </interventions>

@@ -269,6 +269,14 @@ public class TopicSelectorImpl implements TopicSelector {
             smgr.getStudentState().setCurTopicHasEasierProblem(false);
     }
 
+    public int getFirstTopic () throws SQLException {
+        List<Integer> topics = DbClass.getClassLessonTopics(conn,classID);
+        if (topics.size() > 0)
+            return topics.get(0);
+
+        return -1;
+    }
+
     // Cycle through the topics looking for one that is available (i.e. has problems that haven't been solved,omitted, or given
     // as examples).   If it goes through the whole list of topics and returns to the current topic,  then it returns -1
     public int getNextTopicWithAvailableProblems(Connection conn, int topicID,
@@ -290,6 +298,10 @@ public class TopicSelectorImpl implements TopicSelector {
             return nextTopicId;
         }
         List<Integer> topics = DbClass.getClassLessonTopics(conn, classID);
+        // if -1 is passed as the current topic, then return the first topic in the list as this is presumably a session that hasn't been
+        // assigned a topic
+        if (topicID == -1)
+            return topics.get(0);
         int nextTopicPos = topics.indexOf(topicID);
         do {
             nextTopicPos = nextTopicPos+1;

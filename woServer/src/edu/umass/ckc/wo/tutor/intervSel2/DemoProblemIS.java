@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
@@ -29,10 +30,11 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
     @Override
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         Problem demo = getDemoProblem(studentState.getCurTopic());
-        DemoResponse dr = new DemoResponse(demo);
-        dr.setProblemBindings(smgr);
-        // TODO need to call pedagogicalMoveListener.exampleGiven();
-        return dr;
+        if (demo != null) {
+            DemoProblemIntervention dpi = new DemoProblemIntervention(demo);
+            return dpi;
+        }
+        return null;
     }
 
     protected Problem getDemoProblem (int curTopic) throws Exception {

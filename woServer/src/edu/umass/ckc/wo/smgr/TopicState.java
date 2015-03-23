@@ -15,7 +15,7 @@ import java.util.Map;
  * Time: 3:39 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LessonState extends State {
+public class TopicState extends State {
 
 
     private static final String CUR_PROBLEM = "st.curProblem";
@@ -56,8 +56,12 @@ public class LessonState extends State {
     private static final String TOPIC_HAS_HARDER_PROBLEM = "st.topicHasHarderProblem";
     private static final String EXAMPLE_SHOWN = "st.exampleShown";
     private static final String CUR_PROB_INDEX_IN_TOPIC = "st.curProbIndexInTopic";
+    private static final String TOPIC_STATE = "st.topicState"; // one of Begin, In, End
 
 
+    public static final String BEGINNING_OF_TOPIC = "BeginningOfTopic";
+    public static final String IN_TOPIC = "InTopic";
+    public static final String END_OF_TOPIC = "EndOfTopic";
 
 
     private static String[] ALL_PROPS = new String[] { CUR_PROBLEM , LAST_PROBLEM , NEXT_PROBLEM , CUR_PROBLEM_MODE , NEXT_PROBLEM_MODE, LAST_PROBLEM_MODE ,
@@ -71,7 +75,7 @@ public class LessonState extends State {
             CLIP_COUNTERS , STUDENT_SELECTED_TOPIC , SIDELINED_TOPIC , REVIEW_MODE ,EXAMPLE_SHOWN,
             CHALLENGE_MODE , TEACH_TOPIC_MODE
              , TOPIC_SWITCH , CONTENT_FAILURE_TOPIC_SWITCH,TOPIC_HAS_EASIER_PROBLEM,TOPIC_HAS_HARDER_PROBLEM,
-            CUR_PROB_INDEX_IN_TOPIC} ;
+            CUR_PROB_INDEX_IN_TOPIC, TOPIC_STATE} ;
     private int curProblem;
     private int lastProblem;
     private int nextProblem;
@@ -111,9 +115,10 @@ public class LessonState extends State {
     private boolean curTopicHasHarderProblem;
     private boolean exampleShown;
     private int curProblemIndexInTopic;
+    private String internalState;
 
 
-    public LessonState(Connection conn) {
+    public TopicState(Connection conn) {
         this.conn = conn;
     }
 
@@ -162,7 +167,7 @@ public class LessonState extends State {
         curTopicHasHarderProblem =  mapGetPropBoolean(m,TOPIC_HAS_HARDER_PROBLEM,true);
         this.exampleShown = mapGetPropBoolean(m, EXAMPLE_SHOWN, false);
         this.curProblemIndexInTopic = mapGetPropInt(m, CUR_PROB_INDEX_IN_TOPIC, -1);
-
+        this.internalState = mapGetPropString(m,TOPIC_STATE,TopicState.BEGINNING_OF_TOPIC);
 
     }
 
@@ -206,7 +211,8 @@ public class LessonState extends State {
         setCurTopicHasHarderProblem(true);
         setCurProblemIndexInTopic(-1);
         setIsExampleShown(false);
-
+        // each time we initialize the TopicState we set it back to a BeginningOfTopic state.
+        setInternalState(TopicState.BEGINNING_OF_TOPIC);
     }
 
 
@@ -572,7 +578,11 @@ public class LessonState extends State {
         return TOPIC_INTRO_SHOWN;
     }
 
+    public String getInternalState() {
+        return internalState;
+    }
 
-
-
+    public void setInternalState(String topicState) {
+        this.internalState = topicState;
+    }
 }

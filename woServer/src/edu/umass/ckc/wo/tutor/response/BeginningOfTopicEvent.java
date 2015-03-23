@@ -18,4 +18,8 @@ public class BeginningOfTopicEvent extends InternalEvent {
         super(sessionEvent,"BeginningOfTopic");
         this.topicId=topicId;  // last topic we were in
     }
+
+    public int getTopicId() {
+        return topicId;
+    }
 }
