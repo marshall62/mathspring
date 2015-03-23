@@ -1,9 +1,14 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
+import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
+import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import org.jdom.Element;
 
@@ -42,6 +47,14 @@ public abstract class InterventionSelector {
         this.studentState = smgr.getStudentState();
         this.studentModel = smgr.getStudentModel();
         this.pedagogicalModel= pedagogicalModel;
+    }
+
+    public Intervention selectIntervention(SessionEvent e) throws Exception {
+        if (this instanceof NextProblemInterventionSelector)
+            return ((NextProblemInterventionSelector) this).selectIntervention((NextProblemEvent) e);
+        else if (this instanceof AttemptInterventionSelector)
+            return ((AttemptInterventionSelector) this).selectIntervention((AttemptEvent) e);
+        else return null;
     }
 
     public abstract void init(SessionManager smgr, PedagogicalModel pedagogicalModel);

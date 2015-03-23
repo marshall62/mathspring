@@ -30,7 +30,7 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         TopicIntro intro = getTopicIntro(studentState.getCurTopic());
         TopicIntroResponse tir = new TopicIntroResponse(intro);
-        // TODO need to call pedagogicalMoveListener.lessonIntroGiven();
+
         return tir;
     }
 

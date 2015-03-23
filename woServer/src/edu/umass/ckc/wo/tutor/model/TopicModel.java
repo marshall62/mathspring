@@ -30,6 +30,7 @@ import org.jdom.Element;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -159,8 +160,7 @@ public class TopicModel extends LessonModel {
             // that grade for making calls to the TopicSelector.
             // We save the desired next problem difficulty in the student state because its possible that we return a bunch
             // of interventions and then need to select a problem.   This will be pulled out and used to guide problem selection.
-            // TODO this is awful.  We should remember the last problem and just regrade it based on the history record rather
-            // tucking this away.
+            // TODO We aren't currently relying on this.  If grading an old problem works, then we can get rid of it.
             smgr.getStudentState().setNextProblemDesiredDifficulty(nextDiff.name());
             // now we need to use the score to find the desired difficulty of the next problem
             EndOfTopicInfo eot = isEndOfTopic(((NextProblemEvent) e).getProbElapsedTime(),nextDiff);
@@ -288,7 +288,7 @@ public class TopicModel extends LessonModel {
             return candidates.get(0);
         else {
             // sort them by weight and return the first
-            sortCandidates(candidates);
+            Collections.sort(candidates);
             return candidates.get(0);
         }
     }

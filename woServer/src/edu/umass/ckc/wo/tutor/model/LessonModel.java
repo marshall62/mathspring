@@ -2,19 +2,24 @@ package edu.umass.ckc.wo.tutor.model;
 
 
 
+import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.response.InternalEvent;
+import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 import org.jdom.Element;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,7 +129,7 @@ public class LessonModel implements TutorEventProcessor {
         candidates= getCandidateInterventionForEvent(e, e.getOnEventName());  // get back a list of all the interventions with onEvent == EndOfTopic
         InterventionSpec spec = selectBestCandidate(candidates, e); // overrides methods take care of the selection
         if (spec != null)
-            return buildIntervention(spec);
+            return buildIntervention(spec,e.getSessionEvent());
         else return null;
 
     }
@@ -144,12 +149,28 @@ public class LessonModel implements TutorEventProcessor {
         return candidates.get(0);
     }
 
-    protected void sortCandidates(List<InterventionSpec> candidates) {
-        // TODO reorder the list of candidates based on weight
-    }
 
-    private Response buildIntervention(InterventionSpec spec) {
+
+    private Response buildIntervention(InterventionSpec spec, SessionEvent ev) throws Exception {
         // TODO build the InterventionSelector from the spec.   Call it to get the Intervention Reponse
+        try {
+            InterventionSelector isel = (InterventionSelector) Class.forName(spec.getClassName()).getConstructor(SessionManager.class,PedagogicalModel.class).newInstance(smgr,pedagogicalModel);
+            Intervention interv= isel.selectIntervention(ev);
+            if (interv != null)
+                return new InterventionResponse(interv);
+            else return null;
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         return null;
     }
 
