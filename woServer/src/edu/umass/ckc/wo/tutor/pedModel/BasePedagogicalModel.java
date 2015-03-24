@@ -111,13 +111,13 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         this.pedagogicalMoveListeners.add(listener);
     }
 
-    private InterventionSelector newInstance (InterventionSelectorSpec interventionSelectorSpec, SessionManager smgr) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        InterventionSelector sel= (InterventionSelector) Class.forName(interventionSelectorSpec.getClassName()).getConstructor(SessionManager.class, PedagogicalModel.class).newInstance(smgr,this);
-        sel.setParams(interventionSelectorSpec.getParams());
-        sel.setConfigXML(interventionSelectorSpec.getConfigXML());
-        sel.init(smgr,this);
-        return sel;
-    }
+//    private InterventionSelector newInstance (InterventionSelectorSpec interventionSelectorSpec, SessionManager smgr) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+//        InterventionSelector sel= (InterventionSelector) Class.forName(interventionSelectorSpec.getClassName()).getConstructor(SessionManager.class, PedagogicalModel.class).newInstance(smgr,this);
+//        sel.setParams(interventionSelectorSpec.getParams());
+//        sel.setConfigXML(interventionSelectorSpec.getConfigXML());
+//        sel.init(smgr,this);
+//        return sel;
+//    }
 
     private NextProblemInterventionSelector buildNextProblemIS(SessionManager smgr, Pedagogy pedagogy) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         InterventionSelectorSpec npSpec = pedagogy.getNextProblemInterventionSelector();
@@ -147,7 +147,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         if (subs != null) {
             List<AttemptInterventionSelector> subSels = new ArrayList<AttemptInterventionSelector>();
             for (InterventionSelectorSpec sub : subs) {
-                AttemptInterventionSelector ss = (AttemptInterventionSelector) newInstance(sub,smgr);
+                AttemptInterventionSelector ss = (AttemptInterventionSelector) sub.buildIS(smgr);
                 this.addPedagogicalMoveListener(ss);
                 subSels.add(ss);
             }
@@ -182,8 +182,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         // first update the student model so that intervention selectors have access to latest stats based on this attempt
         studentModel.studentAttempt(smgr.getStudentState(), e.getUserInput(), isCorrect, e.getProbElapsedTime());
-        if (attemptInterventionSelector != null)
+        if (attemptInterventionSelector != null)  {
+            attemptInterventionSelector.init(smgr,smgr.getPedagogicalModel());
             intervention = attemptInterventionSelector.selectIntervention(e);
+        }
         AttemptResponse r;
         // No more interventions
         if (intervention == null) {
@@ -324,7 +326,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         if (nextProblemInterventionSelector != null && !smgr.getStudentState().isInChallengeMode() && !smgr.getStudentState().isInReviewMode() &&
                 e.isTutorMode())
         {
-//            nextProblemInterventionSelector.init(smgr, this);
+            nextProblemInterventionSelector.init(smgr, this);
             intervention= nextProblemInterventionSelector.selectIntervention(e);
         }
         if (intervention != null) {
@@ -556,7 +558,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         r = lessonModel.processUserEvent(e);  // If the lesson/topic is done we get a response (an internal event) and exit
 
         // First we see if there is an intervention
-        if (r == null) r = getNextProblemIntervention(e);
+        if (r == null)
+            r = getNextProblemIntervention(e);
         // Some interventions are designed to be shown while a problem is being shown (perhaps some GUI element is changed)
         // For cases like this, the intervention's isBuildProblem is true.
         // If the intervention requires a problem, get the next problem and return a Problem with the intervention as a property of a problem

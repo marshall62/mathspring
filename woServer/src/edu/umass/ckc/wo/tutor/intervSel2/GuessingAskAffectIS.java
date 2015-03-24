@@ -25,13 +25,13 @@ public class GuessingAskAffectIS extends AttemptInterventionSelector {
     public static final int GUESS_THRESHOLD_TIME = 10 * 1000;  // 10 seconds
     public static final int NUM_ATTEMPTS = 3;  // 3 attempts within threshold period is considered guessing
 
-    public GuessingAskAffectIS (SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr,pedagogicalModel);
+    public GuessingAskAffectIS (SessionManager smgr) {
+        super(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.pedagogicalModel=pedagogicalModel;
     }
 
     @Override

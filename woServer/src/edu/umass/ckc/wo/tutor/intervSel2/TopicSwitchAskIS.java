@@ -14,7 +14,6 @@ import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutor.response.BeginningOfTopicEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.apache.log4j.Logger;
 
 /**
@@ -28,13 +27,13 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 
     private static Logger logger = Logger.getLogger(TopicSwitchAskIS.class);
 
-    public TopicSwitchAskIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public TopicSwitchAskIS(SessionManager smgr) {
+        super(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.pedagogicalModel=pedagogicalModel;
     }
 
 

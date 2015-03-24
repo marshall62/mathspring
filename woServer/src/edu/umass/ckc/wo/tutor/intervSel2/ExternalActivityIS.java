@@ -8,7 +8,6 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,13 +23,13 @@ import java.util.Random;
 public class ExternalActivityIS extends NextProblemInterventionSelector {
     private double PERCENT_TIME_TO_SELECT_EXTERNAL_ACT = Settings.externalActivityPercentage;
 
-    public ExternalActivityIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public ExternalActivityIS(SessionManager smgr) {
+        super(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.pedagogicalModel=pedagogicalModel;
     }
 
 

@@ -11,7 +11,6 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
@@ -40,12 +39,13 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private boolean askWhy=false;
     private MyState state;
 
-    public AskEmotionIS(SessionManager smgr, PedagogicalModel pedagogicalModel) throws SQLException {
-        super(smgr, pedagogicalModel);
+    public AskEmotionIS(SessionManager smgr) throws SQLException {
+        super(smgr);
         state = new MyState(smgr);
     }
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+        this.pedagogicalModel=pedagogicalModel;
 //        super.init(smgr,pedagogicalModel);
         configure();
     }

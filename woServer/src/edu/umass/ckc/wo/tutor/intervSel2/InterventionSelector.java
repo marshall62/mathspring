@@ -40,13 +40,12 @@ public abstract class InterventionSelector {
     protected String userInputXML;
 
 
-    public InterventionSelector(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+    public InterventionSelector(SessionManager smgr) {
 //        init(smgr, pedagogicalModel);
         this.smgr = smgr;
         this.conn = smgr.getConnection();
         this.studentState = smgr.getStudentState();
         this.studentModel = smgr.getStudentModel();
-        this.pedagogicalModel= pedagogicalModel;
     }
 
     public Intervention selectIntervention(SessionEvent e) throws Exception {
@@ -57,6 +56,14 @@ public abstract class InterventionSelector {
         else return null;
     }
 
+    /**
+     * The init method of the InterventionSelector is called at a time later than the constructor.  This is necessary because
+     * some of the objects necessary to the InterventinoSelector are not available at the time of its construction (e.g. the PedagogicalModel).
+     * So we wait until just before we really need the InterventionSelector and then call its init method passing it the stuff it has to have at that point
+     *
+     * @param smgr
+     * @param pedagogicalModel
+     */
     public abstract void init(SessionManager smgr, PedagogicalModel pedagogicalModel);
 
     /**

@@ -16,13 +16,13 @@ import edu.umass.ckc.wo.tutormeta.Intervention;
  */
 public class HighlightHintButtonIS extends AttemptInterventionSelector {
 
-    public HighlightHintButtonIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public HighlightHintButtonIS(SessionManager smgr) {
+        super(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.pedagogicalModel=pedagogicalModel;
     }
 
     @Override

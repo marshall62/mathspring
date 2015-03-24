@@ -1,25 +1,20 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
-import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
-import edu.umass.ckc.wo.interventions.AskEmotionRadioIntervention;
-import edu.umass.ckc.wo.interventions.AskEmotionSliderIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.ShowMPPIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
 import org.jdom.Element;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +35,13 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
     String emLowerBound=null;
     String emUpperBound=null;
 
-    public MyProgressPageIS(SessionManager smgr, PedagogicalModel pedagogicalModel) throws SQLException {
-        super(smgr, pedagogicalModel);
+    public MyProgressPageIS(SessionManager smgr) throws SQLException {
+        super(smgr);
         state = new MyState(smgr);
     }
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel)  {
+        this.pedagogicalModel=pedagogicalModel;
         if (getParameter("selectProblem", this.params) != null)
             this.setBuildProblem(Boolean.parseBoolean(getParameter("selectProblem",this.params)));
         configure();

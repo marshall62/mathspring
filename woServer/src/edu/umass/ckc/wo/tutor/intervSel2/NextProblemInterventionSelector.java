@@ -12,7 +12,6 @@ import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public abstract class NextProblemInterventionSelector extends InterventionSelect
     protected List<NextProblemInterventionSelector> subSelectorList;
     private boolean buildProblem=false;
 
-    public NextProblemInterventionSelector(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public NextProblemInterventionSelector(SessionManager smgr) {
+        super(smgr);
     }
 
     public void setSubSelectors (List<NextProblemInterventionSelector> subSelectors) {

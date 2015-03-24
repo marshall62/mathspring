@@ -11,7 +11,6 @@ import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.response.Response;
-import edu.umass.ckc.wo.tutor.response.TopicIntroResponse;
 import org.jdom.Element;
 
 /**
@@ -25,14 +24,16 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
     TopicModel topicModel;
     PedagogicalModelParameters.frequency freq;
 
-    public TopicIntroIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
-        topicModel = (TopicModel) pedagogicalModel.getLessonModel();
+    public TopicIntroIS(SessionManager smgr) {
+        super(smgr);
+
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
 //        super.init(smgr,pedagogicalModel);
+        this.pedagogicalModel=pedagogicalModel;
+        topicModel = (TopicModel) pedagogicalModel.getLessonModel();
         configure();
     }
 

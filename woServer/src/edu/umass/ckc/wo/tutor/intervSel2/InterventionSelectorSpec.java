@@ -74,10 +74,10 @@ public class InterventionSelectorSpec implements Comparable<InterventionSelector
 
     public InterventionSelector buildIS (SessionManager smgr) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
-        InterventionSelector sel= (InterventionSelector) Class.forName(this.getClassName()).getConstructor(SessionManager.class, PedagogicalModel.class).newInstance(smgr,smgr.getPedagogicalModel());
+        InterventionSelector sel= (InterventionSelector) Class.forName(this.getClassName()).getConstructor(SessionManager.class).newInstance(smgr);
         sel.setParams(this.getParams());
         sel.setConfigXML(this.getConfigXML());
-        sel.init(smgr,smgr.getPedagogicalModel());
+        //sel.init(smgr,smgr.getPedagogicalModel());  // Want to put off the call to init til just before we call .selectIntervention()
         return sel;
     }
 

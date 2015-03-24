@@ -5,9 +5,6 @@ import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
-import edu.umass.ckc.wo.tutormeta.Intervention;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,13 +17,16 @@ import java.lang.reflect.InvocationTargetException;
 public class NextProblemListCombinerIS extends NextProblemInterventionSelector {
 
 
-    public NextProblemListCombinerIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public NextProblemListCombinerIS(SessionManager smgr) {
+        super(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.pedagogicalModel=pedagogicalModel;
+        for (NextProblemInterventionSelector sel: this.subSelectorList) {
+            sel.init(smgr,pedagogicalModel);
+        }
     }
 
     @Override

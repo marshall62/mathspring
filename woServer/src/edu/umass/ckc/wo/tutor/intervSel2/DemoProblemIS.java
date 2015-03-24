@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
@@ -10,7 +9,6 @@ import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.response.DemoResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 
 /**
@@ -23,10 +21,17 @@ import edu.umass.ckc.wo.tutor.response.Response;
 public class DemoProblemIS extends NextProblemInterventionSelector {
     TopicModel topicModel;
 
-    public DemoProblemIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public DemoProblemIS(SessionManager smgr) {
+        super(smgr);
+
+    }
+
+    @Override
+    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+        this.pedagogicalModel=pedagogicalModel;
         topicModel = (TopicModel) pedagogicalModel.getLessonModel();
     }
+
     @Override
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         Problem demo = getDemoProblem(studentState.getCurTopic());
@@ -54,8 +59,5 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+
 }

@@ -99,9 +99,8 @@ public class TopicModel extends LessonModel {
         if (nextTopic == -1)
             return ProblemResponse.NO_MORE_PROBLEMS;
         // We did get a new topic
-        pedagogicalMoveListener.newTopic(ProblemMgr.getTopic(nextTopic)); // inform pedagogical move listeners of topic switch
-        topicSelector.initializeTopic(nextTopic, smgr.getStudentState());
-        smgr.getStudentState().setCurTopic(nextTopic);
+
+
         // TopicIntro and Example are now interventions that take place on BeginningOfTopic Event.
         // See if we should play the TopicIntro. Return it if so.
 //        TopicIntro ti = getTopicIntro(nextTopic);
@@ -355,12 +354,15 @@ public class TopicModel extends LessonModel {
     public TopicIntro getTopicIntro (int curTopic, PedagogicalModelParameters.frequency topicIntroFreq) throws Exception {
         topicIntroFreq= this.pmParams.getTopicIntroFrequency();
         // if the topic intro sho
-        if (topicIntroFreq == PedagogicalModelParameters.frequency.always) {
-            if (!smgr.getStudentState().isTopicIntroSeen(curTopic))
+        if (topicIntroFreq == PedagogicalModelParameters.frequency.always && !studentState.isTopicIntroShown()) {
+            if (!smgr.getStudentState().isTopicIntroSeen(curTopic) )  {
                 smgr.getStudentState().addTopicIntrosSeen(curTopic);
+                studentState.setTopicIntroShown(true);
+            }
             TopicIntro intro =topicSelector.getIntro(curTopic);
             this.pedagogicalMoveListener.lessonIntroGiven(intro); // inform pedagogical move listeners that an intervention is given
             return intro;
+
         }
         else if (topicIntroFreq == PedagogicalModelParameters.frequency.oncePerSession &&
                 !smgr.getStudentState().isTopicIntroSeen(curTopic)) {

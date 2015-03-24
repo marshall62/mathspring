@@ -149,6 +149,7 @@ public class LessonModel implements TutorEventProcessor {
             String className = spec.getFullyQualifiedClassname();
             spec.setClassName(className);
             InterventionSelector isel = spec.buildIS(smgr);
+            isel.init(smgr,smgr.getPedagogicalModel());
             // will check to see if the selector wants to run an intervention
             Intervention interv= isel.selectIntervention(e.getSessionEvent());
             if (interv != null)
