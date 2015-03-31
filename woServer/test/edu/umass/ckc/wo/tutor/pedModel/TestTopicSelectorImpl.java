@@ -32,9 +32,9 @@ import java.sql.Connection;
             TestSessionManager tsmgr = new TestSessionManager();
             smgr = tsmgr.setUpTestSession();
             conn = smgr.getConnection();
-            params = smgr.getPedagogicalModelParameters();
+            params = smgr.getPedagogicalModel().getParams();
             studState = smgr.getStudentState();
-            topicSelector = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters());
+            topicSelector = new TopicSelectorImpl(smgr,smgr.getPedagogicalModel().getParams());
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

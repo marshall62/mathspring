@@ -49,8 +49,14 @@ public abstract class InterventionSelector {
     }
 
     public Intervention selectIntervention(SessionEvent e) throws Exception {
-        if (this instanceof NextProblemInterventionSelector)
+        if (this instanceof NextProblemInterventionSelector)          {
+            //  e could be a continueNextProblemInterventionEvent or InputResponseNextProb...
+            if (! (e instanceof NextProblemEvent)) {
+                e = new NextProblemEvent(e.getServletParams());
+                e.setSessionId(e.getSessionId());
+            }
             return ((NextProblemInterventionSelector) this).selectIntervention((NextProblemEvent) e);
+        }
         else if (this instanceof AttemptInterventionSelector)
             return ((AttemptInterventionSelector) this).selectIntervention((AttemptEvent) e);
         else return null;
@@ -112,12 +118,19 @@ public abstract class InterventionSelector {
     }
 
     protected String getParameter (String name, List<InterventionSelectorParam> params) {
+        if (params == null)
+            return null;
         for (InterventionSelectorParam param: params) {
             if (param.getName().equals(name))
                 return param.getValue();
         }
         return null;
 
+    }
+
+
+    protected String getConfigParameter (String name) {
+        return configXML.getChild(name).getTextTrim();
     }
 
     protected List<String> getParameters (String name, List<InterventionSelectorParam> params) {

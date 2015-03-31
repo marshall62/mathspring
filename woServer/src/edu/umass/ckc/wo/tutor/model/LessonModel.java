@@ -61,13 +61,15 @@ public class LessonModel implements TutorEventProcessor {
      * @param smgr
      * @param pmParams
      */
-    public LessonModel(SessionManager smgr, PedagogicalModelParameters pmParams,Pedagogy pedagogy, PedagogicalModel pedagogicalModel, PedagogicalMoveListener pedagogicalMoveListener) {
+    public void init (SessionManager smgr, PedagogicalModelParameters pmParams,Pedagogy pedagogy,
+                      PedagogicalModel pedagogicalModel, PedagogicalMoveListener pedagogicalMoveListener) throws SQLException {
         this.smgr = smgr;
         this.pmParams=pmParams;
         this.pedagogy = pedagogy;
         this.pedagogicalModel = pedagogicalModel;
         this.pedagogicalMoveListener = pedagogicalMoveListener;
         this.studentState = smgr.getStudentState();
+        this.readLessonControl(this.pedagogy.getLessonControlElement());
     }
 
 
@@ -76,12 +78,12 @@ public class LessonModel implements TutorEventProcessor {
      * @return
      * @throws SQLException
      */
-    public LessonModel buildModel() throws SQLException {
+    public static LessonModel buildModel(SessionManager smgr, String lessonStyle) throws SQLException {
         LessonModel lm;
-        if (this.pmParams.isTopicLessonStyle())
-            lm= new TopicModel(this.smgr,this.pmParams,this.pedagogy, this.pedagogicalModel,this.pedagogicalMoveListener);
-        else lm= new LessonModel(this.smgr,this.pmParams,this.pedagogy,this.pedagogicalModel,this.pedagogicalMoveListener);
-        lm.readLessonControl(this.pedagogy.getLessonControlElement());
+        if (lessonStyle.equalsIgnoreCase("topics"))
+            lm= new TopicModel(smgr);
+        else lm= new LessonModel(smgr);
+
         return lm;
     }
 

@@ -61,7 +61,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         setSmgr(smgr);
         setTutorModel(new TutorModel());
         pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
-        params = setParams(smgr.getPedagogicalModelParameters(),pedagogy.getParams());
+        params = getPedagogicalModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
+        setParams(params);
         buildComponents(smgr,pedagogy);
     }
 
@@ -74,6 +75,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
 //            topicSelector = new TopicSelectorImpl(smgr,params, this);
 
+            // need a pointer to the lessonModel object to pass into the various components.
+            lessonModel =  LessonModel.buildModel(smgr, params.getLessonStyle());
             this.getTutorModel().setLessonModel(lessonModel);
             setStudentModel((StudentModel) Class.forName(pedagogy.getStudentModelClass()).getConstructor(SessionManager.class).newInstance(smgr));
             smgr.setStudentModel(getStudentModel());
@@ -87,9 +90,9 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 setNextProblemInterventionSelector(buildNextProblemIS(smgr, pedagogy));
             if (pedagogy.getAttemptInterventionSelector() != null)
                 setAttemptInterventionSelector(buildAttemptIS(smgr, pedagogy));
-
             // this needs to come last because it uses things created above
-            lessonModel =  new LessonModel(smgr,params,pedagogy,this,this).buildModel();
+            lessonModel.init(smgr,params,pedagogy,this,this);
+
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {
@@ -574,7 +577,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             r = getNextProblem(e);
         if (r != null && r instanceof ProblemResponse) {
              curProb = ((ProblemResponse) r).getProblem();
-            ((ProblemResponse) r).setProblemBindings(smgr);
         }
         if (learningCompanion != null )
             learningCompanion.processNextProblemRequest(smgr,e,r);
@@ -750,8 +752,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public InterventionSelector getLastInterventionSelector () throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         String lastInterventionClass = smgr.getStudentState().getLastIntervention();
         Class interventionSelectorClass = Class.forName(lastInterventionClass);
-        Constructor constructor = interventionSelectorClass.getConstructor(SessionManager.class, PedagogicalModel.class);
-        InterventionSelector isel = (InterventionSelector) constructor.newInstance(smgr,this);
+        Constructor constructor = interventionSelectorClass.getConstructor(SessionManager.class);
+        InterventionSelector isel = (InterventionSelector) constructor.newInstance(smgr);
         return isel;
     }
 
@@ -790,6 +792,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         // wasn't relevant to the lesson model and this should process it.
         if ( r == null) {
             NextProblemInterventionSelector isel = (NextProblemInterventionSelector) getLastInterventionSelector();
+            isel.init(smgr,this);
             r = isel.processContinueNextProblemInterventionEvent(e);
         }
         // TODO stop having intervention selectors return more interventions.   This should be done by rules running

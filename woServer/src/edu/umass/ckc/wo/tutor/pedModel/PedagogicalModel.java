@@ -5,11 +5,14 @@ import edu.umass.ckc.email.Emailer;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.ProblemAnswer;
+import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.db.DbUserPedagogyParams;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.MyProgressPageIS;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
@@ -27,6 +30,7 @@ import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.*;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +69,10 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
     private TutorModel tutorModel; // temporarily here until we build the correct set of models
 
-    public PedagogicalModelParameters setParams(PedagogicalModelParameters classParams, PedagogicalModelParameters defaultParams) {
-        defaultParams.overload(classParams);
-        return defaultParams;
-    }
+//    public PedagogicalModelParameters setParams(PedagogicalModelParameters classParams, PedagogicalModelParameters defaultParams) {
+//        defaultParams.overload(classParams);
+//        return defaultParams;
+//    }
 
     public LessonModel getLessonModel () {
         return this.lessonModel;
@@ -466,6 +470,24 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
     public void setLearningCompanion(LearningCompanion learningCompanion) {
         this.learningCompanion = learningCompanion;
+    }
+
+    protected PedagogicalModelParameters getPedagogicalModelParametersForUser(Connection connection, Pedagogy ped, int classId, int studId) throws SQLException {
+
+        // first we get the parameters out of the Pedagogy as defined in the XML pedagogies.xml
+        PedagogicalModelParameters defaultParams = ped.getParams();
+        // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
+        // see if this user has a set of parameters and if so use them to configure the pedagogy.
+        // these params come from settings in the WoAdmin tool for the class.
+        PedagogicalModelParameters classParams = DbClass.getPedagogicalModelParameters(connection, classId);
+        // overload the defaults with stuff defined for the class.
+        defaultParams.overload(classParams);
+//       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
+        // these params are the ones that were passed in by Assistments and saved for the user
+        PedagogyParams userParams = DbUserPedagogyParams.getPedagogyParams(connection, studId);
+        // overload the params with anything provided for the user.
+        defaultParams.overload(userParams);
+        return defaultParams;
     }
 
 

@@ -83,7 +83,7 @@ public class TopicDetails {
         conn = smgr.getConnection();
 
 
-        curTopicLoader = new TopicSelectorImpl(smgr, smgr.getPedagogicalModelParameters());
+        curTopicLoader = new TopicSelectorImpl(smgr, smgr.getClassPedagogicalModelParameters());
         List<Integer> problemIdList = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
         List<Problem> problemList = new ArrayList<Problem>();
         for (int id : problemIdList)

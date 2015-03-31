@@ -3,7 +3,6 @@ package edu.umass.ckc.wo.html.admin;
 import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
-import edu.umass.ckc.wo.tutor.probSel.TopicLoader;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutormeta.TopicMastery;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
@@ -34,7 +33,7 @@ public class MyProgressPage implements View  {
       topicMasteries = smgr.getStudentModel().getTopicMasteries() ;
       client = smgr.getClient() ;
       masteryThreshold = (smgr.getClassMasteryThreshold()) ;
-      topicSelector = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters());
+      topicSelector = new TopicSelectorImpl(smgr,smgr.getClassPedagogicalModelParameters());
   }
 
   public String getHeaderView() {

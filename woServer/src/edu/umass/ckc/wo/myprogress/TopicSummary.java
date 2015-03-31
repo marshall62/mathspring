@@ -89,7 +89,7 @@ public class TopicSummary {
         classId = smgr.getClassID();
         conn = smgr.getConnection();
         sessionId = smgr.getSessionNum();
-        curTopicLoader = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters());
+        curTopicLoader = new TopicSelectorImpl(smgr,smgr.getClassPedagogicalModelParameters());
         ProblemSelector psel = smgr.getPedagogicalModel().getProblemSelector();
 
 //        this.hasAvailableContent = psel.topicHasRemainingContent(smgr, topicId);

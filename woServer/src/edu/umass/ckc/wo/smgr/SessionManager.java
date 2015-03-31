@@ -232,35 +232,28 @@ public class SessionManager {
 
         Pedagogy ped = PedagogyRetriever.getPedagogy(connection, studId);
         // these are the parameters as dfined in the XML file pedagogies.xml
-        PedagogicalModelParameters defaultParams = ped.getParams();
+
         this.pedagogyId = Integer.parseInt(ped.getId());
         // pedagogical model needs to be instantiated as last thing because its constructor takes the smgr instance (this)
         // and makes calls to get stuff so we want this as fully constructed as possible before the call to instantiate
         // so that the smgr is fully functional except for its ped model.
-
+//        PedagogicalModelParameters pedModelParams = getPedagogicalModelParametersForUser(connection, ped);
        // build the Pedagogical model for the student.  The PedagogicalModel constructor is responsible for
        // creating the StudentModel which also gets set in the below method
        instantiatePedagogicalModel(ped);
 
-       // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
-       // see if this user has a set of parameters and if so use them to configure the pedagogy.
-       // these params come from settings in the WoAdmin tool for the class.
-       PedagogicalModelParameters classParams = DbClass.getPedagogicalModelParameters(connection,classId);
-        // overload the defaults with stuff defined for the class.
-        defaultParams.overload(classParams);
-//       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
-        // these params are the ones that were passed in by Assistments and saved for the user
-        PedagogyParams userParams = DbUserPedagogyParams.getPedagogyParams(connection,studId);
-        // overload the params with anything provided for the user.
-        defaultParams.overload(userParams);
+
+
         // set theparams on the ped model
-        pedagogicalModel.setParams(defaultParams);
+//        pedagogicalModel.setParams(pedModelParams);
 
 //            if (userParams != null)
 //                ((ConfigurablePedagogy) pedagogicalModel).configure(userParams);
 //       }
        this.learningCompanion = this.pedagogicalModel.getLearningCompanion();
     }
+
+
 
 
     // only used by test driver
@@ -836,7 +829,7 @@ public class SessionManager {
      // I tried making this just return the sessions pedagogical model params rather than going to classes, etc but it fails.
     // I think the problem is that the Guest user class has some parameters set (but not the new one showMPP) so the row is found
     // and then it builds a set of params with the default value of showMPP of true which then overloads the value set in the pedagogy.
-    public PedagogicalModelParameters getPedagogicalModelParameters() throws SQLException {
+    public PedagogicalModelParameters getClassPedagogicalModelParameters() throws SQLException {
 //        return this.pedagogicalModel.getParams();
         PedagogicalModelParameters params= DbClass.getPedagogicalModelParameters(connection, this.classId);
         // If parameters are not stored for this particular class, a default set should be stored

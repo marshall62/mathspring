@@ -31,8 +31,8 @@ public class TutorModelUtils {
     public InterventionSelector getLastInterventionSelector (SessionManager smgr) throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         String lastInterventionClass = smgr.getStudentState().getLastIntervention();
         Class interventionSelectorClass = Class.forName(lastInterventionClass);
-        Constructor constructor = interventionSelectorClass.getConstructor(SessionManager.class, PedagogicalModel.class);
-        InterventionSelector isel = (InterventionSelector) constructor.newInstance(smgr,this);
+        Constructor constructor = interventionSelectorClass.getConstructor(SessionManager.class);
+        InterventionSelector isel = (InterventionSelector) constructor.newInstance(smgr);
         return isel;
     }
 }

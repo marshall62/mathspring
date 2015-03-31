@@ -39,6 +39,11 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private boolean askWhy=false;
     private MyState state;
 
+    private String timeInterval ;
+    private String probInterval ;
+    private String numVals ;
+    private String inputType ;
+
     public AskEmotionIS(SessionManager smgr) throws SQLException {
         super(smgr);
         state = new MyState(smgr);
@@ -53,6 +58,10 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private void configure() {
         emotions = new ArrayList<Emotion>();
         Element config = this.getConfigXML();
+        timeInterval = getConfigParameter("interruptIntervalMin");
+        probInterval = getConfigParameter("interruptIntervalProblems");
+        numVals = getConfigParameter("numVals");
+        inputType = getConfigParameter("inputType");
         if (config != null) {
             List<Element> emotElts = config.getChildren("emotion");
             for (Element em: emotElts) {
@@ -95,10 +104,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         int problemsSinceLastQuery =  state.getNumProblemsSinceLastIntervention();
 
         NextProblemIntervention intervention=null;
-        String timeInterval = getParameter("interruptIntervalMin",this.params);
-        String probInterval = getParameter("interruptIntervalProblems",this.params);
-        String numVals = getParameter("numVals",this.params);
-        String inputType = getParameter("inputType",this.params);
+
         int timeIntervalMin = timeInterval  != null ? Integer.parseInt(timeInterval) : -1;
         int numProbsInterval = probInterval != null ? Integer.parseInt(probInterval) : -1;
         // If the period of time between interventions is exceeded OR num problems exceeded (whichever comes first) , ask

@@ -81,6 +81,8 @@ public class PedagogicalModelParameters {
             this.topicExampleFrequency =classParams.getTopicExampleFrequency();
         if (classParams.getProblemReuseIntervalSessions() > 0)
             this.problemReuseIntervalSessions =classParams.getProblemReuseIntervalSessions();
+        if (classParams.getLessonStyle() != null )
+            this.lessonStyle = classParams.getLessonStyle();
         return this;
 
     }
@@ -140,7 +142,7 @@ public class PedagogicalModelParameters {
     public PedagogicalModelParameters(long maxTimeInTopic, int contentFailureThreshold, double topicMastery, int minNumberProbs,
                                       long minTimeInTopic, int difficultyRate, int externalActivityTimeThreshold, int maxNumberProbs,
                                       boolean showTopicIntro, boolean showExampleProblemFirst, frequency topicIntroFreq, frequency exampleFreq,
-                                      int probReuseIntervalSessions, int probReuseIntervalDays) {
+                                      int probReuseIntervalSessions, int probReuseIntervalDays, String lessonStyle) {
         this.maxNumberProbs = maxNumberProbs;
         this.maxTimeInTopic = maxTimeInTopic;
         this.contentFailureThreshold = contentFailureThreshold;
@@ -155,6 +157,7 @@ public class PedagogicalModelParameters {
         this.topicExampleFrequency = exampleFreq;
         this.problemReuseIntervalSessions = probReuseIntervalSessions;
         this.problemReuseIntervalDays = probReuseIntervalDays;
+        this.lessonStyle = lessonStyle;
     }
 
     public PedagogicalModelParameters() {

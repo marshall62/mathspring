@@ -15,6 +15,7 @@ import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutor.response.BeginningOfTopicEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
 import org.apache.log4j.Logger;
+import org.jdom.Element;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +26,8 @@ import org.apache.log4j.Logger;
  */
 public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 
+    private boolean ask=false;
+
     private static Logger logger = Logger.getLogger(TopicSwitchAskIS.class);
 
     public TopicSwitchAskIS(SessionManager smgr) {
@@ -34,8 +37,16 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
         this.pedagogicalModel=pedagogicalModel;
+        configure(this.getConfigXML());
     }
 
+    private void configure (Element configElt) {
+        if (configElt != null) {
+            Element ask = configElt.getChild("ask");
+            this.ask = Boolean.parseBoolean(ask.getTextTrim());
+
+        }
+    }
 
     @Override
     /**
@@ -58,13 +69,10 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
             EndOfTopicInfo reasons = tm.isEndOfTopic(e.getProbElapsedTime(), nextDiff);
             if (reasons.isTopicDone()) {
                 String expl = reasons.getExplanation();
-                String ask = this.getParameter("ask",this.getParams());
-                boolean isAsk=false;
-                if (ask != null)
-                    isAsk = Boolean.parseBoolean(ask);
+                //
                 // If configured to ask about staying in the topic and not a content failure, then pop up dialog asking if stay or switch topics.
                 // Can only stay in the current topic if we have more content (i.e. maxProbs = true or maxTime has been reached)
-                if (isAsk && !reasons.isContentFailure())
+                if (this.ask && !reasons.isContentFailure())
                     intervention = new TopicSwitchAskIntervention(expl,smgr.getSessionNum());
                 // just inform that we are moving to next topic
                 else intervention = new TopicSwitchIntervention(expl);
@@ -78,7 +86,7 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 
     @Override
     public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
-        return new BeginningOfTopicEvent(e,smgr.getStudentState().getCurTopic());
+        return null;
     }
 
     // inherits selectIntervention which does a rememberIntervention.   I think this should remember the name of this class

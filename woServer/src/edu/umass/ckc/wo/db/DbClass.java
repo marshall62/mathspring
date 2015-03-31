@@ -9,7 +9,6 @@ import edu.umass.ckc.wo.handler.UserRegistrationHandler;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
-import org.hibernate.classic.Session;
 
 
 import java.sql.*;
@@ -448,8 +447,10 @@ public class DbClass {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
-            String q = "select maxNumberProbsToShowPerTopic,maxTimeInTopic,contentFailureThreshold,topicMastery,minNumberProbsToShowPerTopic," +
-                    "minTimeInTopic,difficultyRate, externalActivityTimeThreshold,topicIntroFrequency,exampleFrequency, problemReuseIntervalSessions, problemReuseIntervalDays" +
+            String q = "select maxNumberProbsToShowPerTopic,maxTimeInTopic,contentFailureThreshold,topicMastery," +
+                    "minNumberProbsToShowPerTopic," +
+                    "minTimeInTopic,difficultyRate, externalActivityTimeThreshold,topicIntroFrequency," +
+                    "exampleFrequency, problemReuseIntervalSessions, problemReuseIntervalDays, lessonStyle" +
                     " from classconfig where classId=?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1, classId);
@@ -459,6 +460,8 @@ public class DbClass {
                 int maxProbsInTopic = rs.getInt(1);
                 // If the class has one null param, treat them all as null and return defaults
                 // since they should all get set to real values or all be null
+                // TODO this makes no sense.   These are values set in teacher tools.   If some aren't set, shouldn't
+                // we keep the defaults that were defined the control params of the Pedagogy defined the in the XML file?
                 if (rs.wasNull())
                     return new PedagogicalModelParameters();
                 long maxTimeInTopic = rs.getLong(2);
@@ -480,10 +483,11 @@ public class DbClass {
                 int probReuseIntervalDays = rs.getInt(12);
                 if (rs.wasNull())
                     probReuseIntervalDays=-1;
+                String lessonStyle = rs.getString("lessonStyle");
                 PedagogicalModelParameters.frequency tif =  topicIntroFreq == null ? null : PedagogicalModelParameters.convertTopicIntroFrequency(topicIntroFreq);
                 PedagogicalModelParameters.frequency ef =  exampleFreq == null ? null : PedagogicalModelParameters.convertExampleFrequency(exampleFreq);
                 return new PedagogicalModelParameters(maxTimeInTopic, thresh, mastery, minProbsInTopic, minTimeInTopic, difficultyRate, externalActivityTimeThresh, maxProbsInTopic,
-                        true, true,tif,ef,probReuseIntervalSessions, probReuseIntervalDays);
+                        true, true,tif,ef,probReuseIntervalSessions, probReuseIntervalDays, lessonStyle);
             }
             return null;
         } finally {

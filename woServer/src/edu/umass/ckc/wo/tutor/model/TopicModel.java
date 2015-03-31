@@ -7,10 +7,7 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 
 import edu.umass.ckc.wo.event.SessionEvent;
-import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
-import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
-import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
-import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
+import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.interventions.TopicIntroIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -53,19 +50,48 @@ public class TopicModel extends LessonModel {
     protected HintSelector hintSelector;
 
 
+    /** This constructor is called initially just to get a pointer to the object.   Later we call a build method
+     * to send it objects it needs to do its work.
+     * @param smgr
+     */
+    public TopicModel (SessionManager smgr) {
+        super(smgr);
+    }
 
 
 
 
-
-
-    public TopicModel(SessionManager smgr, PedagogicalModelParameters pmParams, Pedagogy pedagogy, PedagogicalModel pedagogicalModel,
+    public void init (SessionManager smgr, PedagogicalModelParameters pmParams, Pedagogy pedagogy, PedagogicalModel pedagogicalModel,
                       PedagogicalMoveListener pedagogicalMoveListener) throws SQLException {
         // The superclass constructor calls readLessonControl which takes the control parameters out of the pedagogy and
         // builds the intervention handling for the model
-        super(smgr, pmParams,pedagogy,pedagogicalModel,pedagogicalMoveListener);
+        super.init(smgr, pmParams, pedagogy, pedagogicalModel, pedagogicalMoveListener);
         hintSelector = pedagogicalModel.getHintSelector();
         topicSelector = new TopicSelectorImpl(smgr,pmParams);
+    }
+
+
+    /**
+     * Processing an internal event may return an intervention, or another InternalEvent.   In some cases (BeginningOfTopic)
+     * it can return responses like TopicIntro or DemoProblem.
+     * @param e
+     * @return
+     * @throws Exception
+     */
+    public Response processInternalEvent (InternalEvent e) throws Exception {
+
+
+        // This switches to the next topic
+        if (e instanceof BeginningOfTopicEvent)
+            return processBeginTopic((BeginningOfTopicEvent) e);
+
+        else if (e instanceof EndOfTopicEvent) {
+            return processEndOfTopic((EndOfTopicEvent) e);
+        }
+        else if (e instanceof InTopicEvent) {
+            return processInTopic((InTopicEvent) e);
+        }
+        return null;
     }
 
     /**
@@ -77,7 +103,7 @@ public class TopicModel extends LessonModel {
      * @throws Exception
      */
     private Response processBeginTopic (BeginningOfTopicEvent e) throws Exception {
-
+        studentState.setTopicInternalState(TopicState.BEGINNING_OF_TOPIC);
         int curTopic = studentState.getCurTopic();
         // We assume that we switched topics right after EndOfTopic was done.
 
@@ -98,48 +124,37 @@ public class TopicModel extends LessonModel {
         // If we couldn't switch to a new topic and no interventions were applicable, return no-more-problems
         if (nextTopic == -1)
             return ProblemResponse.NO_MORE_PROBLEMS;
-        // We did get a new topic
+        return processInternalEvent(new InTopicEvent(e.getSessionEvent(),studentState.getCurTopic()));
 
-
-        // TopicIntro and Example are now interventions that take place on BeginningOfTopic Event.
-        // See if we should play the TopicIntro. Return it if so.
-//        TopicIntro ti = getTopicIntro(nextTopic);
-//        if (ti != null)   {
-//            return new TopicIntroResponse(ti);
-//        }
-//        // See if we should play a Demo problem.   Return it if so.
-//        Problem ex = getTopicExample(nextTopic);
-//        if (ex != null) {
-//            r=  new DemoResponse(ex);
-//            ((DemoResponse) r).setProblemBindings(smgr);
-//            pedagogicalMoveListener.exampleGiven(ex);  // inform pedagogical move listeners of example being given
-//        }
-        // There's nothing special to do so let the Pedagogical Model start running the topic
-        return null;
     }
 
-    /**
-     * Processing an internal event may return an intervention, or another InternalEvent.   In some cases (BeginningOfTopic)
-     * it can return responses like TopicIntro or DemoProblem.
-     * @param e
-     * @return
-     * @throws Exception
-     */
-    public Response processInternalEvent (InternalEvent e) throws Exception {
-        Response r=null;
-        int nextTopic=-1;
-        StudentState state = smgr.getStudentState();
-        /// Run some code prior to seeing if there are interventions applicable.
 
-        // This switches to the next topic
-        if (e instanceof BeginningOfTopicEvent)
-            return processBeginTopic((BeginningOfTopicEvent) e);
+    private Response processInTopic (InTopicEvent e) throws Exception {
+        Response r;
+        studentState.setTopicInternalState(TopicState.IN_TOPIC);
 
-        else if (e instanceof EndOfTopicEvent) {
-            return processEndOfTopic((EndOfTopicEvent) e);
+        //// See if there are interventions applicable for InTopic
+        r = super.processInternalEvent(e); // gets intervention that is highest ranked for this InternalEvent
+        if (r != null) {
+            return r;
         }
-
-        return r;
+        // No interventions, so grade the last problem and if EOT, send an internal event for that
+        ProblemGrader grader = pedagogicalModel.getProblemGrader();
+        Problem lastProb = ProblemMgr.getProblem(smgr.getStudentState().getCurProblem());
+        ProblemScore score;
+        difficulty nextDiff;
+        score = grader.gradePerformance(lastProb);
+        nextDiff = getNextProblemDifficulty(score);
+        smgr.getStudentState().setNextProblemDesiredDifficulty(nextDiff.name());
+        // Have to convert the SessionEvent to IntraProblemEvent because we're in the middle of a problem in a topic and need the probElapsed to grade it.
+        IntraProblemEvent ipe = (IntraProblemEvent) e.getSessionEvent();
+        // now we need to use the score to find the desired difficulty of the next problem
+        EndOfTopicInfo eot = isEndOfTopic(ipe.getProbElapsedTime(),nextDiff);
+        if (eot.isTopicDone())   {
+            // So we need send ourselves an EndOfTopicEvent
+            return this.processInternalEvent(new EndOfTopicEvent(e.getSessionEvent(), studentState.getCurTopic()));
+        }
+        else return null;
     }
 
     /**
@@ -149,6 +164,7 @@ public class TopicModel extends LessonModel {
      * @throws Exception
      */
     private Response processEndOfTopic(EndOfTopicEvent e) throws Exception {
+        studentState.setTopicInternalState(TopicState.END_OF_TOPIC);
         // Find an intervention that applies to EndOfTopic
         Response r = super.processInternalEvent(e);
         // r == null means we have no interventions about end of topic and we move on to BeginTopic
@@ -165,33 +181,22 @@ public class TopicModel extends LessonModel {
 
     private Response processNextProblemEvent (NextProblemEvent e) throws Exception {
         Response r;
+        // a students first session will not have a topic in the student state so grab the first one
+        if (studentState.getCurTopic() == -1) {
+            switchTopics(-1);
+        }
+        // If the current state is BeginningOfTopic, then send an BOT internal event to get interventions for that if any
         if (studentState.getTopicInternalState().equals(TopicState.BEGINNING_OF_TOPIC))  {
-            r= processInternalEvent(new BeginningOfTopicEvent(e,-1));
-            if (r == null)  {
-                studentState.setTopicInternalState(TopicState.IN_TOPIC);
-            }
-            else return r;
+            return processInternalEvent(new BeginningOfTopicEvent(e,-1));
         }
-        else  if (studentState.getTopicInternalState().equals(TopicState.END_OF_TOPIC))  {
-            r= processInternalEvent(new EndOfTopicEvent(e, studentState.getCurTopic()));
-            return r;
+        // If the current state is EndOfTopic, send EOT internal event to get interventions for that if any
+        if (studentState.getTopicInternalState().equals(TopicState.END_OF_TOPIC))  {
+            return processInternalEvent(new EndOfTopicEvent(e, studentState.getCurTopic()));
         }
-        // We come to this if the internal state of the topic is IN
-
-        ProblemGrader grader = pedagogicalModel.getProblemGrader();
-        Problem lastProb = ProblemMgr.getProblem(smgr.getStudentState().getCurProblem());
-        ProblemScore score;
-        difficulty nextDiff;
-        score = grader.gradePerformance(lastProb);
-        nextDiff = getNextProblemDifficulty(score);
-        smgr.getStudentState().setNextProblemDesiredDifficulty(nextDiff.name());
-        // now we need to use the score to find the desired difficulty of the next problem
-        EndOfTopicInfo eot = isEndOfTopic(((NextProblemEvent) e).getProbElapsedTime(),nextDiff);
-        if (eot.isTopicDone())   {
-            // So we need send ourselves an EndOfTopicEvent
-            return this.processInternalEvent(new EndOfTopicEvent(e, studentState.getCurTopic()));
+        if (studentState.getTopicInternalState().equals(TopicState.IN_TOPIC)) {
+            return  processInternalEvent(new InTopicEvent(e,studentState.getCurTopic()));
         }
-        else return null;
+        return null;
 
     }
 
@@ -209,12 +214,12 @@ public class TopicModel extends LessonModel {
             // TODO need to determine if this intervention / response is relevant to this topic model.
             boolean isRelevant = true;
             if (isRelevant)  {
+                intSel.init(smgr,pedagogicalModel);
                 // N.B. Assumption is that we no longer get Interventions back
                 Response r = intSel.processContinueNextProblemInterventionEvent((ContinueNextProblemInterventionEvent) e);
+                // no state change (InternalState returned) means process it just like a NextProblemEvent
                 if (r == null)
-                    return new InterventionInputProcessed(e);  // indicator that the intervention processed the input but has no state change
-                // has the effect of running the rules for the internal state returned by the intervention.  The state may stay the
-                // same and thus we get the effect of possibly returning more than one intervention for an internal state
+                    return processNextProblemEvent(new NextProblemEvent(e.getServletParams()));
                 else if (r instanceof InternalEvent)
                     return this.processInternalEvent((InternalEvent) r);
             }
@@ -227,6 +232,7 @@ public class TopicModel extends LessonModel {
             // TODO need to determine if this intervention / response is relevant to this topic model.
             boolean isRelevant = true;
             if (isRelevant)  {
+                intSel.init(smgr,pedagogicalModel);
                 // this either returns an InternalState which keeps processing going within this model. o/w the intervention is done
                 Response r = intSel.processInputResponseNextProblemInterventionEvent((InputResponseNextProblemInterventionEvent) e);
                 if (r == null)
@@ -242,6 +248,9 @@ public class TopicModel extends LessonModel {
     }
 
     public difficulty getNextProblemDifficulty (ProblemScore score) {
+        // New sessions won't have a previous problem score so we just return same difficulty
+        if (score == null)
+            return TopicModel.difficulty.SAME;
         if (!score.isCorrect())
             return TopicModel.difficulty.EASIER;
         if (score.getMistakes() > score.getAvgMistakes()) {
@@ -287,11 +296,6 @@ public class TopicModel extends LessonModel {
 
     protected int switchTopics (int curTopic) throws Exception {
         int nextTopic;
-        if (curTopic == -1)   {
-            nextTopic = topicSelector.getFirstTopic();
-            smgr.getStudentState().newTopic();
-            return nextTopic;
-        }
         nextTopic = topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
         smgr.getStudentState().newTopic();
         if (nextTopic != -1)

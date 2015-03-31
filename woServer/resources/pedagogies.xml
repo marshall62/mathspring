@@ -63,54 +63,53 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                         <topicExampleFrequency>always</topicExampleFrequency>
                     </config>
                 </interventionSelector>
+                <interventionSelector onEvent="InTopic" weight="1" class="AskEmotionIS">
+                    <config>
+                        <inputType>radio</inputType>
+                        <numVals>5</numVals>
+                        <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                        <interruptIntervalMin>5</interruptIntervalMin>
+                        <interruptIntervalProblems>8</interruptIntervalProblems>
+                        <emotion name="Frustration">
+                            <label val="1">Not at all Frustrated</label>
+                            <label val="2">A little Frustrated</label>
+                            <label val="3">Somewhat Frustrated</label>
+                            <label val="4">Quite a bit Frustrated</label>
+                            <label val="5">Extremely Frustrated</label>
+                        </emotion>
+                        <emotion name="Confidence">
+                            <label val="1">Not at all Confident</label>
+                            <label val="2">A little Confident</label>
+                            <label val="3">Somewhat Confident</label>
+                            <label val="4">Quite a bit Confident</label>
+                            <label val="5">Extremely Confident</label>
+                        </emotion>
+                        <askWhy>true</askWhy>
+                    </config>
+
+                </interventionSelector>
+                <interventionSelector onEvent="InTopic" weight="2" class="MyProgressNavigationAskIS">
+                    <config>
+                        <!--  This IS will tell the student they are going to the MPP on certain conditions being true-->
+
+                        <dialogType ask="false"/>
+                        <minIntervalBetweenMPPQueriesBasedOnAffect>10</minIntervalBetweenMPPQueriesBasedOnAffect>
+                        <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                        <!-- If confidence is <= 2 show the MPP-->
+                        <intervalCriteria type="affect" emotion="Confidence" lowerBound="3" upperBound="3"/>
+                        <intervalCriteria type="affect" emotion="Excitement" upperBound="3"/>
+                        <!-- If confidence is <= 2 show the MPP-->
+                        <intervalCriteria type="affect" emotion="Interested" upperBound="3"/>
+                    </config>
+                </interventionSelector>
+
+
+
             </interventions>
         </lessonControl>
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
-        <nextProblemInterventionSelector class="NextProblemListCombinerIS">
-            <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
-            </nextProblemInterventionSelector>
-            <!--We should give a param to the below IS telling it how long to wait before generating extern acts rather than as a control param-->
-            <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
-                <config>
-                    <emotion name="Frustration">
-                        <label val="1">Not at all Frustrated</label>
-                        <label val="2">A little Frustrated</label>
-                        <label val="3">Somewhat Frustrated</label>
-                        <label val="4">Quite a bit Frustrated</label>
-                        <label val="5">Extremely Frustrated</label>
-                    </emotion>
-                    <emotion name="Confidence">
-                        <label val="1">Not at all Confident</label>
-                        <label val="2">A little Confident</label>
-                        <label val="3">Somewhat Confident</label>
-                        <label val="4">Quite a bit Confident</label>
-                        <label val="5">Extremely Confident</label>
-                    </emotion>
-                    <askWhy>true</askWhy>
-                </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
-            </nextProblemInterventionSelector>
-            <nextProblemInterventionSelector class="MyProgressNavigationAskIS">
-                <config>
-                    <!--  This IS will tell the student they are going to the MPP on certain conditions being true-->
 
-                    <dialogType ask="false"/>
-                    <minIntervalBetweenMPPQueriesBasedOnAffect>10</minIntervalBetweenMPPQueriesBasedOnAffect>
-                    <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
-                    <!-- If confidence is <= 2 show the MPP-->
-                    <intervalCriteria type="affect" emotion="Confidence" lowerBound="3" upperBound="3"/>
-                    <intervalCriteria type="affect" emotion="Excitement" upperBound="3"/>
-                    <!-- If confidence is <= 2 show the MPP-->
-                    <intervalCriteria type="affect" emotion="Interested" upperBound="3"/>
-                </config>
-            </nextProblemInterventionSelector>
-        </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
             <attemptInterventionSelector class="HighlightHintButtonIS">
                 <param name="threshold">1</param>
@@ -158,12 +157,17 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -180,9 +184,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
 
             <nextProblemInterventionSelector class="MyProgressNavigationAskIS">
@@ -245,12 +247,17 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -267,9 +274,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -316,12 +321,17 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -338,9 +348,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -387,12 +395,17 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -409,9 +422,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -458,13 +469,18 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <!--We should give a param to the below IS telling it how long to wait before generating extern acts rather than as a control param-->
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -481,9 +497,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -601,12 +615,17 @@ DM - notes we have a 5 minute restriction rather than every 3 problems.
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Interested">
                         <label val="1">Not at all Interested</label>
                         <label val="2">A little Interested</label>
@@ -623,9 +642,7 @@ DM - notes we have a 5 minute restriction rather than every 3 problems.
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
 
             <nextProblemInterventionSelector class="MyProgressNavigationAskIS">
@@ -688,12 +705,17 @@ DM - notes we have a 5 minute restriction rather than every 3 problems.
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Interest">
                         <label val="1">Not at all Interested</label>
                         <label val="2">A little Interested</label>
@@ -710,9 +732,7 @@ DM - notes we have a 5 minute restriction rather than every 3 problems.
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
 
             <nextProblemInterventionSelector class="MyProgressNavigationAskIS">
@@ -790,12 +810,17 @@ JaneForceSPP
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Interest">
                         <label val="1">Not at all Interested</label>
                         <label val="2">A little Interested</label>
@@ -812,9 +837,7 @@ JaneForceSPP
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
 
             <nextProblemInterventionSelector class="MyProgressNavigationAskIS">
@@ -877,12 +900,17 @@ JaneForceSPP
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Interest">
                         <label val="1">Not at all Interested</label>
                         <label val="2">A little Interested</label>
@@ -899,9 +927,7 @@ JaneForceSPP
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
 
             <nextProblemInterventionSelector class="MyProgressNavigationAskIS">
@@ -974,12 +1000,17 @@ JakeYesSPPButton-->
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Excitement">
                         <label val="1">Not at all Excited</label>
                         <label val="2">A little Excited</label>
@@ -996,9 +1027,7 @@ JakeYesSPPButton-->
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -1046,13 +1075,18 @@ JakeYesSPPButton-->
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                <ask val="false"></ask>
+            </config>
             </nextProblemInterventionSelector>
             <!--We should give a param to the below IS telling it how long to wait before generating extern acts rather than as a control param-->
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Interest">
                         <label val="1">Not at all Interested</label>
                         <label val="2">A little Interested</label>
@@ -1069,9 +1103,7 @@ JakeYesSPPButton-->
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -1125,12 +1157,17 @@ JakeNoSPPButton-->
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Excitement">
                         <label val="1">Not at all Excited</label>
                         <label val="2">A little Excited</label>
@@ -1147,9 +1184,7 @@ JakeNoSPPButton-->
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -1197,13 +1232,18 @@ JakeNoSPPButton-->
         <package>pedModel2</package>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">false</param>
+                <config>
+                    <ask val="false"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <!--We should give a param to the below IS telling it how long to wait before generating extern acts rather than as a control param-->
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Interest">
                         <label val="1">Not at all Interested</label>
                         <label val="2">A little Interested</label>
@@ -1220,9 +1260,7 @@ JakeNoSPPButton-->
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">
@@ -1342,12 +1380,17 @@ JakeNoSPPButton-->
         <studentModelClass>AffectStudentModel</studentModelClass>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">
             <nextProblemInterventionSelector class="TopicSwitchAskIS">
-                <param name="ask">true</param>
+                <config>
+                    <ask val="true"></ask>
+                </config>
             </nextProblemInterventionSelector>
             <nextProblemInterventionSelector class="AskEmotionIS">
-                <param name="inputType">radio</param>
-                <param name="numVals">5</param>
+
                 <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -1364,9 +1407,7 @@ JakeNoSPPButton-->
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
-                <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                <param name="interruptIntervalMin">5</param>
-                <param name="interruptIntervalProblems">8</param>
+
             </nextProblemInterventionSelector>
         </nextProblemInterventionSelector>
         <attemptInterventionSelector class="AttemptListCombinerIS">

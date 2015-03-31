@@ -39,7 +39,7 @@ public interface TopicSelector {
     // we're done with the current topic,  figure out what topic to give next.    Seems that this will need a StudentModel input
     // to support intelligent selection.
     public  int getNextTopicWithAvailableProblems (Connection conn, int curTopic, StudentState state)  throws Exception ;
-    public int getFirstTopic () throws SQLException;
+
 
     // are there problems available to be played in this topic?   This must weed out problems that have been solved recently or given
     // as examples, etc.

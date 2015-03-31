@@ -269,13 +269,6 @@ public class TopicSelectorImpl implements TopicSelector {
             smgr.getStudentState().setCurTopicHasEasierProblem(false);
     }
 
-    public int getFirstTopic () throws SQLException {
-        List<Integer> topics = DbClass.getClassLessonTopics(conn,classID);
-        if (topics.size() > 0)
-            return topics.get(0);
-
-        return -1;
-    }
 
     // Cycle through the topics looking for one that is available (i.e. has problems that haven't been solved,omitted, or given
     // as examples).   If it goes through the whole list of topics and returns to the current topic,  then it returns -1
