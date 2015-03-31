@@ -107,10 +107,12 @@ public class TopicModel extends LessonModel {
         int curTopic = studentState.getCurTopic();
         // We assume that we switched topics right after EndOfTopic was done.
 
-        int nextTopic;
-        if (curTopic == -1)
-            nextTopic = switchTopics(studentState.getCurTopic());
-        else nextTopic = curTopic;
+        if (curTopic == -1)  {
+
+            curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
+            switchTopics(curTopic);
+        }
+
 
 
 
@@ -122,7 +124,7 @@ public class TopicModel extends LessonModel {
             return r;
         }
         // If we couldn't switch to a new topic and no interventions were applicable, return no-more-problems
-        if (nextTopic == -1)
+        if (curTopic == -1)
             return ProblemResponse.NO_MORE_PROBLEMS;
         return processInternalEvent(new InTopicEvent(e.getSessionEvent(),studentState.getCurTopic()));
 
@@ -169,7 +171,8 @@ public class TopicModel extends LessonModel {
         Response r = super.processInternalEvent(e);
         // r == null means we have no interventions about end of topic and we move on to BeginTopic
         if (r == null) {
-            int nextTopic = switchTopics(studentState.getCurTopic());
+            int curTopic=studentState.getCurTopic();
+            int nextTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
             if (nextTopic == -1)
                 return ProblemResponse.NO_MORE_PROBLEMS;
             studentState.setCurTopic(nextTopic);
@@ -183,7 +186,8 @@ public class TopicModel extends LessonModel {
         Response r;
         // a students first session will not have a topic in the student state so grab the first one
         if (studentState.getCurTopic() == -1) {
-            switchTopics(-1);
+            int nextTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), -1, smgr.getStudentState());
+            switchTopics(nextTopic);
         }
         // If the current state is BeginningOfTopic, then send an BOT internal event to get interventions for that if any
         if (studentState.getTopicInternalState().equals(TopicState.BEGINNING_OF_TOPIC))  {
@@ -291,12 +295,13 @@ public class TopicModel extends LessonModel {
     }
 
 
-
-
-
-    protected int switchTopics (int curTopic) throws Exception {
-        int nextTopic;
-        nextTopic = topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
+    /**
+     * Once we are truly ready to begin the nextTopic switchTopics initializes the state variables associated with the current topic.
+     * @param nextTopic
+     * @return
+     * @throws Exception
+     */
+    protected int switchTopics (int nextTopic) throws Exception {
         smgr.getStudentState().newTopic();
         if (nextTopic != -1)
             pedagogicalMoveListener.newTopic(ProblemMgr.getTopic(nextTopic)); // inform pedagogical move listeners of topic switch

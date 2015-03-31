@@ -56,7 +56,7 @@ public class TopicState extends State {
     private static final String TOPIC_HAS_HARDER_PROBLEM = "st.topicHasHarderProblem";
     private static final String EXAMPLE_SHOWN = "st.exampleShown";
     private static final String CUR_PROB_INDEX_IN_TOPIC = "st.curProbIndexInTopic";
-    private static final String TOPIC_STATE = "st.topicState"; // one of Begin, In, End
+    private static final String TOPIC_INTERNAL_STATE = "st.topicInternalState"; // one of Begin, In, End
 
 
     public static final String BEGINNING_OF_TOPIC = "BeginningOfTopic";
@@ -75,7 +75,7 @@ public class TopicState extends State {
             CLIP_COUNTERS , STUDENT_SELECTED_TOPIC , SIDELINED_TOPIC , REVIEW_MODE ,EXAMPLE_SHOWN,
             CHALLENGE_MODE , TEACH_TOPIC_MODE
              , TOPIC_SWITCH , CONTENT_FAILURE_TOPIC_SWITCH,TOPIC_HAS_EASIER_PROBLEM,TOPIC_HAS_HARDER_PROBLEM,
-            CUR_PROB_INDEX_IN_TOPIC, TOPIC_STATE} ;
+            CUR_PROB_INDEX_IN_TOPIC, TOPIC_INTERNAL_STATE} ;
     private int curProblem;
     private int lastProblem;
     private int nextProblem;
@@ -167,7 +167,7 @@ public class TopicState extends State {
         curTopicHasHarderProblem =  mapGetPropBoolean(m,TOPIC_HAS_HARDER_PROBLEM,true);
         this.exampleShown = mapGetPropBoolean(m, EXAMPLE_SHOWN, false);
         this.curProblemIndexInTopic = mapGetPropInt(m, CUR_PROB_INDEX_IN_TOPIC, -1);
-        this.internalState = mapGetPropString(m,TOPIC_STATE,TopicState.BEGINNING_OF_TOPIC);
+        this.internalState = mapGetPropString(m,TOPIC_INTERNAL_STATE,TopicState.BEGINNING_OF_TOPIC);
 
     }
 
@@ -582,7 +582,8 @@ public class TopicState extends State {
         return internalState;
     }
 
-    public void setInternalState(String topicState) {
+    public void setInternalState(String topicState) throws SQLException {
         this.internalState = topicState;
+        setProp(this.objid,TOPIC_INTERNAL_STATE,topicState);
     }
 }

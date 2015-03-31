@@ -381,7 +381,7 @@ public class StudentState extends State implements TutorEventHandler {
         return topicState.getInternalState();
     }
 
-    public void setTopicInternalState (String st) {
+    public void setTopicInternalState (String st) throws SQLException {
         topicState.setInternalState(st);
     }
 
