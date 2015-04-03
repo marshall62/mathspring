@@ -55,10 +55,13 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
      * student can stay in topic longer.   Other reasons for leaving topic (e.g. mastery, content failures) we cannot
      * do anything about so student is just given a message that we are moving to next topic.
      */
+    /*
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         if (smgr.getStudentState().getCurTopic() < 1) {
             return null;
         }
+
+        // I don't see why we need this test.   Grading the students last answer is sufficient
 //        boolean topicContinues = pedagogicalModel.isLessonContentAvailable(smgr.getStudentState().getCurTopic()) ;
         boolean topicContinues = pedagogicalModel.getLessonModel().hasReadyContent(smgr.getStudentState().getCurTopic());
         NextProblemIntervention intervention = null;
@@ -82,10 +85,41 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
         }
         else return null;
     }
+    */
+
+    public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
+        if (smgr.getStudentState().getCurTopic() < 1) {
+            return null;
+        }
+        // TODO As long as its END_OF_TOPIC this will be true and will return intervention
+        // It has to shut off after playing at the end of a topic and then become possible
+        // again in the next topic.
+
+        // The TopicModel already did this test before switching to EndOfTopic, so know its
+        // true.
+        NextProblemIntervention intervention=null;
+        TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
+        EndOfTopicInfo reasons = tm.getEndOfTopicInfo();
+        if (reasons != null && reasons.isTopicDone()) {
+            String expl = reasons.getExplanation();
+            int seen = studentState.getTopicNumPracticeProbsSeen();
+            int solved = studentState.getTopicProblemsSolved();
+            // If configured to ask about staying in the topic and not a content failure, then pop up dialog asking if stay or switch topics.
+            // Can only stay in the current topic if we have more content (i.e. maxProbs = true or maxTime has been reached)
+            if (this.ask && !reasons.isContentFailure())
+                intervention = new TopicSwitchAskIntervention(expl,smgr.getSessionNum());
+                // just inform that we are moving to next topic
+            else intervention = new TopicSwitchIntervention(expl,seen,solved);
+        }
+        rememberInterventionSelector(this);
+        return intervention;
+    }
 
 
     @Override
     public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+        TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
+        tm.clearEndOfTopicInfo();
         return null;
     }
 

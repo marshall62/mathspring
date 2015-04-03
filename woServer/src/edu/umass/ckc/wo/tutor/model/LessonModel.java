@@ -44,9 +44,6 @@ public class LessonModel implements TutorEventProcessor {
     protected PedagogicalMoveListener pedagogicalMoveListener;
     protected PedagogicalModel pedagogicalModel;
     protected StudentState studentState;
-
-
-
     protected InterventionGroup interventionGroup;
 
 
@@ -62,7 +59,7 @@ public class LessonModel implements TutorEventProcessor {
      * @param pmParams
      */
     public void init (SessionManager smgr, PedagogicalModelParameters pmParams,Pedagogy pedagogy,
-                      PedagogicalModel pedagogicalModel, PedagogicalMoveListener pedagogicalMoveListener) throws SQLException {
+                      PedagogicalModel pedagogicalModel, PedagogicalMoveListener pedagogicalMoveListener) throws Exception {
         this.smgr = smgr;
         this.pmParams=pmParams;
         this.pedagogy = pedagogy;
@@ -100,14 +97,9 @@ public class LessonModel implements TutorEventProcessor {
             </interventions>
         </lessonControl>
      */
-    protected void readLessonControl(Element lessonControlElement) {
-        List<Element> intervSels = lessonControlElement.getChild("interventions").getChildren("interventionSelector");
-        this.interventionGroup = new InterventionGroup();
-        for (Element intervSel : intervSels) {
-            InterventionSelectorSpec spec = new InterventionSelectorSpec(intervSel);
-            this.interventionGroup.add(spec);
-        }
-
+    protected void readLessonControl(Element lessonControlElement) throws Exception {
+        this.interventionGroup = new InterventionGroup( lessonControlElement.getChild("interventions"));
+        this.interventionGroup.buildInterventions(smgr,pedagogicalModel);
     }
 
 
@@ -124,13 +116,8 @@ public class LessonModel implements TutorEventProcessor {
      */
     public Response processInternalEvent(InternalEvent e) throws Exception {
         Response r;
-        List<InterventionSelectorSpec> candidates;
-
-        // select interventions that apply to the onEvent (e.g. EndOfTopic)
-        candidates= getCandidateInterventionForEvent(e, e.getOnEventName());  // get back a list of all the interventions with onEvent == EndOfTopic
-        return selectBestCandidate(candidates, e); // overrides methods take care of the selection
-
-
+        Intervention interv = interventionGroup.selectIntervention(smgr,e.getSessionEvent(),e.getOnEventName());
+        return buildInterventionResponse(interv);
     }
 
     public boolean hasReadyContent(int lessonId) throws Exception {
@@ -143,36 +130,21 @@ public class LessonModel implements TutorEventProcessor {
         return null;
     }
 
-    // Go through the intervention selectors in priority order and take the first one that returns an intervention.  This
-    // means each selector is responsible for shutting itself off after it runs.
-    protected Response selectBestCandidate(List<InterventionSelectorSpec> candidates, InternalEvent e) throws Exception {
-        Collections.sort(candidates);   // sort into ascending order by weight
-        for (InterventionSelectorSpec spec: candidates) {
-            String className = spec.getFullyQualifiedClassname();
-            spec.setClassName(className);
-            InterventionSelector isel = spec.buildIS(smgr);
-            isel.init(smgr,smgr.getPedagogicalModel());
-            // will check to see if the selector wants to run an intervention
-            Intervention interv= isel.selectIntervention(e.getSessionEvent());
-            if (interv != null)
-                return buildInterventionResponse(interv);
-        }
-        return null;
-    }
+
+
+//    protected InterventionSelectorSpec getInterventionSelectorSpec(String lastInterventionClass) {
+//        for (InterventionSelectorSpec s : this.interventionGroup.getInterventionsSpecs()) {
+//            if (s.getFullyQualifiedClassname().equals(lastInterventionClass))
+//                return s;
+//        }
+//        return null;
+//    }
 
     protected Response buildInterventionResponse (Intervention interv) throws Exception {
-        return new InterventionResponse(interv);
+        if (interv == null)
+            return null;
+        else return new InterventionResponse(interv);
     }
 
 
-
-
-    private List<InterventionSelectorSpec> getCandidateInterventionForEvent (InternalEvent e, String onEvent) {
-        List<InterventionSelectorSpec> specs = new ArrayList<InterventionSelectorSpec>();
-        for (InterventionSelectorSpec i: this.interventionGroup.getInterventionsSpecs()) {
-            if (i.getOnEvent().equals(onEvent))
-                specs.add(i);
-        }
-        return specs;
-    }
 }

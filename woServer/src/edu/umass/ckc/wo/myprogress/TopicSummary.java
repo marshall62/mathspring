@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.myprogress;
 
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbTopics;
@@ -94,9 +95,17 @@ public class TopicSummary {
 
 //        this.hasAvailableContent = psel.topicHasRemainingContent(smgr, topicId);
         LessonModel lm = smgr.getPedagogicalModel().getLessonModel();
-        this.hasAvailableContent = lm.hasReadyContent(topicId);
-        List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
-        totalProblems = l.size();
+        try {
+            this.hasAvailableContent = lm.hasReadyContent(topicId);
+        } catch (UserException ue) {
+            this.hasAvailableContent = false;
+        }
+        try {
+            List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
+            totalProblems = l.size();
+        } catch (UserException ue) {
+            totalProblems=0;
+        }
         StudentProblemHistory h = smgr.getStudentModel().getStudentProblemHistory();
         List<StudentProblemData> probHist = h.getTopicHistory(topicId);
 

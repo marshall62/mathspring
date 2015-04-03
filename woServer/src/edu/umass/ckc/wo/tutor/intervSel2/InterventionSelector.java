@@ -112,8 +112,9 @@ public abstract class InterventionSelector {
     public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         String classname = smgr.getStudentState().getLastIntervention();
         Class c = Class.forName(classname);
-        Constructor constructor = c.getConstructor(SessionManager.class,PedagogicalModel.class);
-        InterventionSelector is =(InterventionSelector) constructor.newInstance(smgr,pedagogicalModel);
+        Constructor constructor = c.getConstructor(SessionManager.class);
+        InterventionSelector is =(InterventionSelector) constructor.newInstance(smgr);
+        is.init(smgr,pedagogicalModel);
         return is;
     }
 
@@ -130,7 +131,10 @@ public abstract class InterventionSelector {
 
 
     protected String getConfigParameter (String name) {
-        return configXML.getChild(name).getTextTrim();
+        Element x = configXML.getChild(name);
+        if (x != null)
+            return x.getTextTrim();
+        else return null;
     }
 
     protected List<String> getParameters (String name, List<InterventionSelectorParam> params) {

@@ -385,6 +385,14 @@ public class StudentState extends State implements TutorEventHandler {
         topicState.setInternalState(st);
     }
 
+    public int getTopicProblemsSolved () {
+        return topicState.getTopicProblemsSolved();
+    }
+
+    public void setTopicProblemsSolved (int n) throws SQLException {
+        topicState.setTopicProblemsSolved(n);
+    }
+
 
     /////////////////  End of Topic State methods
 
@@ -1053,6 +1061,8 @@ public class StudentState extends State implements TutorEventHandler {
         // there are certain counters and stats that shouldn't be touched if this problem has already been solved and the student is
         // just clicking on other answers.
         boolean previouslySolved = isProblemSolved();
+        if (!previouslySolved && isCorrect)
+            topicState.setTopicProblemsSolved(topicState.getTopicProblemsSolved()+1);
         // I have no idea what this now time is coming from.   Its always 0 and
         // causes bad calculations
 //        long now = this.getTime();

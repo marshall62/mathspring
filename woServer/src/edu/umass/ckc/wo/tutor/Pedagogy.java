@@ -37,6 +37,7 @@ public class Pedagogy implements Comparable {
     private String reviewModeProblemSelectorClass;
     private String challengeModeProblemSelectorClass;
     private Element lessonControlElement;
+    private Element interventionsElement;
 
 
     public Pedagogy() {
@@ -262,5 +263,13 @@ public class Pedagogy implements Comparable {
 
     public Element getLessonControlElement() {
         return lessonControlElement;
+    }
+
+    public Element getInterventionsElement() {
+        return interventionsElement;
+    }
+
+    public void setInterventionsElement(Element interventionsElement) {
+        this.interventionsElement = interventionsElement;
     }
 }

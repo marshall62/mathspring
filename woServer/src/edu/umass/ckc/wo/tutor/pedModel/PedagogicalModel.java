@@ -13,13 +13,9 @@ import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
-import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
-import edu.umass.ckc.wo.tutor.intervSel2.MyProgressPageIS;
-import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
-import edu.umass.ckc.wo.tutor.model.LessonModel;
-import edu.umass.ckc.wo.tutor.model.TopicModel;
-import edu.umass.ckc.wo.tutor.model.TutorEventProcessor;
-import edu.umass.ckc.wo.tutor.model.TutorModel;
+import edu.umass.ckc.wo.tutor.intervSel2.*;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
+import edu.umass.ckc.wo.tutor.model.*;
 import edu.umass.ckc.wo.tutor.probSel.ChallengeModeProblemSelector;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.ReviewModeProblemSelector;
@@ -66,7 +62,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     protected ReviewModeProblemSelector reviewModeSelector;
     protected ProblemGrader problemGrader;
     protected ProblemScore lastProblemScore;
-
+    protected InterventionGroup interventionGroup;
     private TutorModel tutorModel; // temporarily here until we build the correct set of models
 
 //    public PedagogicalModelParameters setParams(PedagogicalModelParameters classParams, PedagogicalModelParameters defaultParams) {
@@ -551,4 +547,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     public ProblemScore getLastProblemScore() {
         return lastProblemScore;
     }
+
+    public abstract void addPedagogicalMoveListener(PedagogicalMoveListener pml);
 }

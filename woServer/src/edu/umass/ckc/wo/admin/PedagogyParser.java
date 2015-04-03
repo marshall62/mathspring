@@ -124,7 +124,10 @@ public class PedagogyParser {
             p.setHintSelectorClass(hClass);
         }
         else p.setHintSelectorClass(DEFAULT_HINT_SELECTOR);
-
+        e = pedElt.getChild("interventions");
+        if (e != null) {
+            p.setInterventionsElement(e);
+        }
         e = pedElt.getChild("lessonControl");
         if (e != null) {
             p.setLessonControlElement(e);

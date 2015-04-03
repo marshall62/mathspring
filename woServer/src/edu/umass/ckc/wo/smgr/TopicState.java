@@ -25,6 +25,7 @@ public class TopicState extends State {
     private static final String NEXT_PROBLEM_MODE = "st.nextProblemMode";
     private static final String CUR_PROB_TYPE= "st.curProbType";
     private static final String TOPIC_INTRO_SHOWN = "st.isTopicIntroShown";
+    public static final String TOPIC_PROBLEMS_SOLVED = "st.problemsSolvedInTopic";
     private static final String PENULTIMATE_PROBLEM_SOLVED_WELL = "st.penultimateProblemSolvedWell";
     private static final String SECOND_EASIEST_PROBLEM_FAILED_SOLVE = "st.secondEasiestProblemFailedSolve";
     private static final String PENULTIMATE_PROBLEM_SHOWN = "st.penultimateProblemShown";
@@ -75,7 +76,7 @@ public class TopicState extends State {
             CLIP_COUNTERS , STUDENT_SELECTED_TOPIC , SIDELINED_TOPIC , REVIEW_MODE ,EXAMPLE_SHOWN,
             CHALLENGE_MODE , TEACH_TOPIC_MODE
              , TOPIC_SWITCH , CONTENT_FAILURE_TOPIC_SWITCH,TOPIC_HAS_EASIER_PROBLEM,TOPIC_HAS_HARDER_PROBLEM,
-            CUR_PROB_INDEX_IN_TOPIC, TOPIC_INTERNAL_STATE} ;
+            CUR_PROB_INDEX_IN_TOPIC, TOPIC_INTERNAL_STATE, TOPIC_PROBLEMS_SOLVED} ;
     private int curProblem;
     private int lastProblem;
     private int nextProblem;
@@ -116,6 +117,7 @@ public class TopicState extends State {
     private boolean exampleShown;
     private int curProblemIndexInTopic;
     private String internalState;
+    private int topicProblemsSolved;
 
 
     public TopicState(Connection conn) {
@@ -168,6 +170,7 @@ public class TopicState extends State {
         this.exampleShown = mapGetPropBoolean(m, EXAMPLE_SHOWN, false);
         this.curProblemIndexInTopic = mapGetPropInt(m, CUR_PROB_INDEX_IN_TOPIC, -1);
         this.internalState = mapGetPropString(m,TOPIC_INTERNAL_STATE,TopicState.BEGINNING_OF_TOPIC);
+        this.topicProblemsSolved = mapGetPropInt(m,TOPIC_PROBLEMS_SOLVED,0);
 
     }
 
@@ -213,6 +216,7 @@ public class TopicState extends State {
         setIsExampleShown(false);
         // each time we initialize the TopicState we set it back to a BeginningOfTopic state.
         setInternalState(TopicState.BEGINNING_OF_TOPIC);
+        setTopicProblemsSolved(0);
     }
 
 
@@ -585,5 +589,14 @@ public class TopicState extends State {
     public void setInternalState(String topicState) throws SQLException {
         this.internalState = topicState;
         setProp(this.objid,TOPIC_INTERNAL_STATE,topicState);
+    }
+
+    public int getTopicProblemsSolved() {
+        return topicProblemsSolved;
+    }
+
+    public void setTopicProblemsSolved(int topicProblemsSolved) throws SQLException {
+        this.topicProblemsSolved = topicProblemsSolved;
+        setProp(this.objid,TOPIC_PROBLEMS_SOLVED,topicProblemsSolved);
     }
 }

@@ -12,7 +12,6 @@ import edu.umass.ckc.wo.db.DbAssistmentsUsers;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
-import edu.umass.ckc.wo.interventions.SelectProblemSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
@@ -22,15 +21,13 @@ import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
-import edu.umass.ckc.wo.tutor.model.LessonModel;
-import edu.umass.ckc.wo.tutor.model.TopicModel;
-import edu.umass.ckc.wo.tutor.model.TutorModel;
-import edu.umass.ckc.wo.tutor.model.TutorModelUtils;
+import edu.umass.ckc.wo.tutor.model.*;
 import edu.umass.ckc.wo.tutor.probSel.*;
 import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 import edu.umass.ckc.wo.tutormeta.*;
 import org.apache.log4j.Logger;
+import org.jdom.Element;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -86,11 +83,14 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             setHintSelector((HintSelector) Class.forName( pedagogy.getHintSelectorClass()).getConstructor().newInstance());
             if (pedagogy.getLearningCompanionClass() != null)
                 setLearningCompanion((LearningCompanion) Class.forName( pedagogy.getLearningCompanionClass()).getConstructor(SessionManager.class).newInstance(smgr));
-            if (pedagogy.getNextProblemInterventionSelector() != null)
-                setNextProblemInterventionSelector(buildNextProblemIS(smgr, pedagogy));
-            if (pedagogy.getAttemptInterventionSelector() != null)
-                setAttemptInterventionSelector(buildAttemptIS(smgr, pedagogy));
+//            if (pedagogy.getNextProblemInterventionSelector() != null)
+//                setNextProblemInterventionSelector(buildNextProblemIS(smgr, pedagogy));
+//            if (pedagogy.getAttemptInterventionSelector() != null)
+//                setAttemptInterventionSelector(buildAttemptIS(smgr, pedagogy));
             // this needs to come last because it uses things created above
+            if (pedagogy.getInterventionsElement() != null)
+                buildInterventions(pedagogy.getInterventionsElement());
+            else interventionGroup = new InterventionGroup();
             lessonModel.init(smgr,params,pedagogy,this,this);
 
         } catch (InstantiationException e) {
@@ -105,7 +105,15 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
+    }
+
+    protected void buildInterventions (Element interventionsElt) throws Exception {
+        this.interventionGroup = new InterventionGroup(interventionsElt);
+        this.interventionGroup.buildInterventions(smgr,this);
 
     }
 
@@ -181,22 +189,23 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processAttempt(AttemptEvent e) throws Exception {
         boolean isCorrect = isAttemptCorrect(smgr.getStudentState().getCurProblem(),e.getUserInput());
         e.setCorrect(isCorrect);
-        Intervention intervention=null;
-
         // first update the student model so that intervention selectors have access to latest stats based on this attempt
         studentModel.studentAttempt(smgr.getStudentState(), e.getUserInput(), isCorrect, e.getProbElapsedTime());
-        if (attemptInterventionSelector != null)  {
-            attemptInterventionSelector.init(smgr,smgr.getPedagogicalModel());
-            intervention = attemptInterventionSelector.selectIntervention(e);
+        AttemptResponse r = (AttemptResponse) lessonModel.processUserEvent(e); // this should always return null
+
+        Intervention intervention=null;
+        if (r == null )  {
+            intervention = interventionGroup.selectIntervention(smgr,e,"Attempt");
+            if (intervention != null)
+                interventionGiven(intervention); // inform pedagogical move listeners that an intervention is given
+
         }
-        AttemptResponse r;
-        // No more interventions
+        // No interventions
         if (intervention == null) {
-            interventionGiven(intervention); // inform pedagogical move listeners that an intervention is given
 //            studentModel.studentAttempt(smgr.getStudentState(), e.getUserInput(), isCorrect, e.getProbElapsedTime());
             r = new AttemptResponse(true,isCorrect, studentModel.getTopicMasteries(),smgr.getStudentState().getCurTopic());
         }
-        else {
+        else if (r == null) {
             // record this attempt.  We will need to send back information about its correctness
             // once the interventions are done.
             attemptGraded(isCorrect); // inform pedagogical move listeners that an intervention is given
@@ -205,7 +214,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         }
 
         if (learningCompanion != null )
-            learningCompanion.processAttempt(smgr,e,r);
+            learningCompanion.processAttempt(smgr,e, r);
         new TutorLogger(smgr).logAttempt(e, r);
         return r;
     }
@@ -317,10 +326,23 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return r;
     }
 
+    protected InterventionResponse getNextProblemIntervention (NextProblemEvent e) throws Exception {
+        NextProblemIntervention intervention = (NextProblemIntervention) interventionGroup.selectIntervention(smgr,e,"NextProblem");
+        if (intervention != null) {
+            interventionGiven(intervention); // tell pedagogical move listeners that an intervention is given
+            NextProblemInterventionResponse ir = new NextProblemInterventionResponse(intervention);
+            // A hack because we need to determine if the Intervention returned should also build a Problem.   So we have to see if
+            // the intervention is a NextProblemIntervention and then ask if it wants a problem built.   The only case of this currently
+            // is the intervention which turns on/off MPP which at same time should show a new problem
+            ir.setBuildProblem(intervention.isBuildProblem());
+            return ir;
+        }
+        else return null;
+    }
 
 
 
-
+ /*
 
     protected InterventionResponse getNextProblemIntervention (NextProblemEvent e) throws Exception {
        NextProblemIntervention intervention = null;
@@ -345,6 +367,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         }
         return r;
     }
+    */
 
 
     /**
@@ -558,9 +581,11 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         // First grade the last practice problem which sets the lastProblemScore property of this class (used by subsequent code)
         gradeLastProblem();
         // NextProblem is an event that the lesson/topic models want to watch.   They may change their internal state or return EndOfLesson/Topic
+        // Many interventions are generated in this call because the Lesson Model wants to notify the student about beginnings of new
+        // lessons, endings of lessons, etc.
         r = lessonModel.processUserEvent(e);  // If the lesson/topic is done we get a response (an internal event) and exit
 
-        // First we see if there is an intervention
+        // If the lessonModel didn't generate something, now we see if the pedagogical model wants to generate an intervention
         if (r == null)
             r = getNextProblemIntervention(e);
         // Some interventions are designed to be shown while a problem is being shown (perhaps some GUI element is changed)
@@ -781,26 +806,45 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return r;
     }
 
+    public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        String classname = smgr.getStudentState().getLastIntervention();
+        Class c = Class.forName(classname);
+        Constructor constructor = c.getConstructor(SessionManager.class);
+        InterventionSelector is =(InterventionSelector) constructor.newInstance(smgr);
+        is.init(smgr,this);
+        return is;
+    }
+
 
     @Override
     public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
         Response r;
         smgr.getStudentState().setProblemIdleTime(0);
-
+        // if the lesson model generated the intervention it will process this event and may return a response or not
         r = lessonModel.processUserEvent(e) ; // give lesson model a chance to weigh in.
-        //If null comes back, the intervention
-        // wasn't relevant to the lesson model and this should process it.
+        // If the lesson model doesn't have a response to this event, see if the pedagogical model does.
         if ( r == null) {
-            NextProblemInterventionSelector isel = (NextProblemInterventionSelector) getLastInterventionSelector();
-            isel.init(smgr,this);
-            r = isel.processContinueNextProblemInterventionEvent(e);
+            String lastInterventionClass = smgr.getStudentState().getLastIntervention();
+            InterventionSelectorSpec spec= interventionGroup.getInterventionSelectorSpec(lastInterventionClass);
+            if (spec != null) {
+                NextProblemInterventionSelector intSel = (NextProblemInterventionSelector) spec.buildIS(smgr);
+                intSel.init(smgr,this);
+                // N.B. Assumption is that we no longer get Interventions back
+                r = intSel.processContinueNextProblemInterventionEvent( e);
+                // The last intervention selector will either return an InternalEvent or null
+                // if an internal state is returned, then process it
+                if (r instanceof InternalEvent)
+                    processInternalEvent((InternalEvent) r);
+                // if null comes back, see if the pedagogical model has an intervention
+                else r =  getNextProblemIntervention(new NextProblemEvent(e.getServletParams()));
+            }
         }
-        // TODO stop having intervention selectors return more interventions.   This should be done by rules running
-        // in the pedagogical model
-        if (r instanceof InterventionResponse)
-            ;  // we returned another intervention
-            // this does not want to generate another intervention.  So select a new prob
-        else {
+        // lesson model had the intervnetion that was interested in the continue request but didn't have anything else to do
+        // so see if this model wants to intervene
+        else if (r instanceof InterventionInputProcessed)
+            r = getNextProblemIntervention(new NextProblemEvent(e.getServletParams()));
+        // If we don't pick an intervention or if the lesson model didn't, grade the last problem and try to give a new problem
+        if (r == null) {
             StudentState state = smgr.getStudentState();
             // have to regrade last problem so that we can select a problem
             gradeLastProblem();
@@ -819,25 +863,35 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = lessonModel.processUserEvent(e) ; // give lesson model a chance to weigh in.
-        // If the lesson model doesn't care about the event, it returns null so we have to process it here.
+        // If the lesson model did not handled the event, this will find the last intervention and have it process the event.
+        // We then see if there is an intervention that applies after that is done (or process an internal event
+        if ( r == null) {
+            String lastInterventionClass = smgr.getStudentState().getLastIntervention();
+            InterventionSelectorSpec spec= interventionGroup.getInterventionSelectorSpec(lastInterventionClass);
+            if (spec != null) {
+                NextProblemInterventionSelector intSel = (NextProblemInterventionSelector) spec.buildIS(smgr);
+                intSel.init(smgr,this);
+                // N.B. Assumption is that we no longer get Interventions back
+                r = intSel.processInputResponseNextProblemInterventionEvent( e);
+                // I don't understand why we are adding stuff to the event after its been sent to the npis
+//                e.setUserInput(intSel.getUserInputXML());
+                // The last intervention selector will either return an InternalEvent or null
+                // if an internal state is returned, then process it
+                if (r instanceof InternalEvent)
+                    // this should not happen because pedagogical models don't have internal events.
+                    r = processInternalEvent((InternalEvent) r);
+                    // if null comes back, see if the pedagogical model has an intervention
+                else r =  getNextProblemIntervention(new NextProblemEvent(e.getServletParams()));
+            }
+        }
+        // the lesson model processed the intervention input but didn't want to select a response after that
+        // so see if this model wants to intervene.
+        else if (r instanceof InterventionInputProcessed) {
+            r = getNextProblemIntervention(new NextProblemEvent(e.getServletParams()));
+        }
+
+       // If we don't pick an intervention or if the lesson model didn't, grade the last problem and try to give a new problem
         if (r == null) {
-            r  = nextProblemInterventionSelector.processInputResponseNextProblemInterventionEvent(e);
-            e.setUserInput(nextProblemInterventionSelector.getUserInputXML());
-        }
-        else {
-            // Got rid of code that handled an SelectProblemSpecs type of Intervention was returned by an intervention selector.
-            // This would presumably be used as input to the problem selector to guide its selection.  Figure out a better
-            // way to do it later if necessary.
-            ;
-
-        }
-
-        // TODO stop having intervention selectors return more interventions.   This should be done by rules running
-        // in the pedagogical model
-        if (r instanceof InterventionResponse)
-            ;  // we returned another intervention
-            // this does not want to generate another intervention.  So select a new prob
-        else {
             StudentState state = smgr.getStudentState();
             // have to regrade last problem so that we can select a problem
             gradeLastProblem();
