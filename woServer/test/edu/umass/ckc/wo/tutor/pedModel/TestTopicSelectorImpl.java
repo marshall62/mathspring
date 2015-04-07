@@ -34,7 +34,8 @@ import java.sql.Connection;
             conn = smgr.getConnection();
             params = smgr.getPedagogicalModel().getParams();
             studState = smgr.getStudentState();
-            topicSelector = new TopicSelectorImpl(smgr,smgr.getPedagogicalModel().getParams());
+            // TODO need to create some TopicModelParameters instead of null
+            topicSelector = new TopicSelectorImpl(smgr,null);
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

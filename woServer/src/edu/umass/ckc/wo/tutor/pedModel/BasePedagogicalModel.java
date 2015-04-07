@@ -56,9 +56,11 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     public BasePedagogicalModel (SessionManager smgr, Pedagogy pedagogy) throws SQLException {
         setSmgr(smgr);
+        smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
         setTutorModel(new TutorModel());
         pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
         params = getPedagogicalModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
+        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
         setParams(params);
         buildComponents(smgr,pedagogy);
     }
@@ -73,7 +75,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //            topicSelector = new TopicSelectorImpl(smgr,params, this);
 
             // need a pointer to the lessonModel object to pass into the various components.
-            lessonModel =  LessonModel.buildModel(smgr, params.getLessonStyle());
+            lessonModel =  LessonModel.buildModel(smgr, lessonModelParameters);
             this.getTutorModel().setLessonModel(lessonModel);
             setStudentModel((StudentModel) Class.forName(pedagogy.getStudentModelClass()).getConstructor(SessionManager.class).newInstance(smgr));
             smgr.setStudentModel(getStudentModel());
@@ -91,7 +93,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             if (pedagogy.getInterventionsElement() != null)
                 buildInterventions(pedagogy.getInterventionsElement());
             else interventionGroup = new InterventionGroup();
-            lessonModel.init(smgr,params,pedagogy,this,this);
+            lessonModel.init(smgr,lessonModelParameters,pedagogy,this,this);
 
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -400,7 +402,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         setProblemTopic(p, topicId);
         boolean showAsDemo = false;
         if (e.getProbMode() == null) {
-            if (!smgr.getStudentState().isExampleShown() && params.getTopicExampleFrequency() != PedagogicalModelParameters.frequency.never) {
+            if (!smgr.getStudentState().isExampleShown() && params.getTopicExampleFrequency() != TopicModelParameters.frequency.never) {
                 showAsDemo = true;
             }
         }
@@ -453,8 +455,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 smgr.getStudentState().setSidelinedTopic(smgr.getStudentState().getCurTopic());
             }
             r = doSelectChallengeProblem(e);
-            if (r == null) {
-                r = ProblemResponse.NO_MORE_CHALLENGE_PROBLEMS;
+            if (r == ProblemResponse.NO_MORE_CHALLENGE_PROBLEMS) {
                 ((ProblemResponse) r).setEndPage(ChallengeModeProblemSelector.END_PAGE);
                 return r;
             }
@@ -485,8 +486,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 smgr.getStudentState().setSidelinedTopic(smgr.getStudentState().getCurTopic());
             }
             r = doSelectReviewProblem(e);
-            if (r == null)  {
-                r= ProblemResponse.NO_MORE_REVIEW_PROBLEMS;
+            if (r == ProblemResponse.NO_MORE_REVIEW_PROBLEMS)  {
                 ((ProblemResponse) r).setEndPage(ReviewModeProblemSelector.END_PAGE);
                 return r;
             }
@@ -507,7 +507,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         problemSelector = challengeModeSelector;
         if (e.getTopicToForce() > 0)
             smgr.getStudentState().setCurTopic(e.getTopicToForce());
-        return getNextProblem(e);
+        ProblemResponse r = getNextProblem(e);
+        if (r == ProblemResponse.NO_MORE_PROBLEMS)
+            return ProblemResponse.NO_MORE_CHALLENGE_PROBLEMS;
+        else return r;
 
     }
 
@@ -515,7 +518,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         problemSelector = reviewModeSelector;
         if (e.getTopicToForce() > 0)
             smgr.getStudentState().setCurTopic(e.getTopicToForce());
-        return getNextProblem(e);
+        ProblemResponse r = getNextProblem(e);
+        if (r == ProblemResponse.NO_MORE_PROBLEMS)
+            return ProblemResponse.NO_MORE_REVIEW_PROBLEMS;
+        else return r;
 
     }
 
@@ -958,6 +964,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     @Override
     public void lessonIntroGiven(TopicIntro intro) throws SQLException {
+        StudentState st = smgr.getStudentState();
+        st.setNextProblem(intro.getId());
         for (PedagogicalMoveListener l : this.pedagogicalMoveListeners)
             l.lessonIntroGiven(intro);
     }

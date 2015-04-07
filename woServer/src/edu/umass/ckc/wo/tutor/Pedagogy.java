@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.tutor;
 
+import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import org.jdom.Element;
@@ -36,8 +37,10 @@ public class Pedagogy implements Comparable {
     private List<InterventionSelectorSpec> subAttemptInterventionSelectors;
     private String reviewModeProblemSelectorClass;
     private String challengeModeProblemSelectorClass;
-    private Element lessonControlElement;
+
     private Element interventionsElement;
+    private String lessonName;
+    private LessonXML lessonXML;
 
 
     public Pedagogy() {
@@ -257,13 +260,7 @@ public class Pedagogy implements Comparable {
             </interventions>
         </lessonControl>
      */
-    public void setLessonControlElement(Element lessonControlElement) {
-        this.lessonControlElement = lessonControlElement;
-    }
 
-    public Element getLessonControlElement() {
-        return lessonControlElement;
-    }
 
     public Element getInterventionsElement() {
         return interventionsElement;
@@ -271,5 +268,21 @@ public class Pedagogy implements Comparable {
 
     public void setInterventionsElement(Element interventionsElement) {
         this.interventionsElement = interventionsElement;
+    }
+
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
+    }
+
+    public String getLessonName() {
+        return lessonName;
+    }
+
+    public LessonXML getLessonXML() {
+        return lessonXML;
+    }
+
+    public void setLessonXML(LessonXML lessonXML) {
+        this.lessonXML = lessonXML;
     }
 }

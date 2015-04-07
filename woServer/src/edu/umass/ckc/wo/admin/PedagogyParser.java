@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.admin;
 
 import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorParam;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
@@ -38,7 +39,26 @@ public class PedagogyParser {
         pedagogies = readPedagogies(d);
     }
 
+    /**
+     * Make a JDOM Document out of the file.
+     * @param str
+     * @return  JDOM Document
+     */
+    public Document makeDocument (InputStream str) {
 
+        SAXBuilder parser = new SAXBuilder();
+        try {
+            Document doc = parser.build(str);
+            Element root = doc.getRootElement();
+            this.defaultClasspath = root.getAttribute("defaultClasspath").getValue();
+            return doc;
+        } catch (JDOMException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+    }
 
     /**
      *
@@ -128,17 +148,12 @@ public class PedagogyParser {
         if (e != null) {
             p.setInterventionsElement(e);
         }
-        e = pedElt.getChild("lessonControl");
-        if (e != null) {
-            p.setLessonControlElement(e);
-        }
 
-        e = pedElt.getChild("nextProblemInterventionSelector");
-        if (e != null)
-            readNextProblemInterventionSelectors(p,e);
-        e = pedElt.getChild("attemptInterventionSelector");
-        if (e != null)
-            readAttemptInterventionSelectors(p,e);
+        e = pedElt.getChild("lesson");
+        if (e != null) {
+            p.setLessonName(e.getTextTrim());
+        }
+        p.setLessonXML(Settings.lessonMap.get(p.getLessonName()));
         e = pedElt.getChild("controlParameters");
         // get the default params
         PedagogicalModelParameters params = new PedagogicalModelParameters();
@@ -164,61 +179,8 @@ public class PedagogyParser {
     // overwrites any that are provided.
     private void readControlParams(PedagogicalModelParameters params, Element p) {
 
-        Element c = p.getChild("maxTimeInTopicSecs");
+        Element c;
         String s;
-        if (c != null) {
-            s = c.getValue();
-            int maxTimeSecs = Integer.parseInt(s);
-            params.setMaxTimeInTopicSecs(maxTimeSecs);
-        }
-
-        c = p.getChild("lessonStyle");
-        if (c != null) {
-            s = c.getValue();
-            params.setLessonStyle(s);
-        }
-
-        c = p.getChild("contentFailureThreshold");
-        if (c != null) {
-            s = c.getValue();
-            int contentFailureThreshold = Integer.parseInt(s);
-            params.setContentFailureThreshold(contentFailureThreshold);
-        }
-
-        c = p.getChild("topicMastery");
-        if (c != null) {
-            s = c.getValue();
-            double topicMastery = Double.parseDouble(s);
-            params.setTopicMastery(topicMastery);
-        }
-
-        c = p.getChild("minNumberProbs");
-        if (c != null) {
-            s = c.getValue();
-            int minNumberProbs = Integer.parseInt(s);
-            params.setMinNumberProbs(minNumberProbs);
-        }
-
-        c = p.getChild("maxNumberProbs");
-        if (c != null) {
-            s = c.getValue();
-            int maxNumberProbs = Integer.parseInt(s);
-            params.setMaxNumberProbs(maxNumberProbs);
-        }
-
-        c = p.getChild("minTimeInTopicSecs");
-        if (c != null) {
-            s = c.getValue();
-            int minTimeInTopicSecs = Integer.parseInt(s);
-            params.setMinTimeInTopicSecs(minTimeInTopicSecs);
-        }
-
-        c = p.getChild("difficultyRate");
-        if (c != null) {
-            s = c.getValue();
-            int difficultyRate = Integer.parseInt(s);
-            params.setDifficultyRate(difficultyRate);
-        }
 
         c = p.getChild("externalActivityTimeThresholdMins");
         if (c != null) {
@@ -227,32 +189,6 @@ public class PedagogyParser {
             params.setExternalActivityTimeThreshold(externalActivityTimeThresholdMins);
         }
 
-        c = p.getChild("showTopicIntro");
-        if (c != null) {
-            s = c.getValue();
-            boolean showTopicIntro = Boolean.parseBoolean(s);
-            params.setShowTopicIntro(showTopicIntro);
-        }
-
-        c = p.getChild("showExampleFirst");
-        if (c != null) {
-            s = c.getValue();
-            boolean showExampleFirst = Boolean.parseBoolean(s);
-            params.setShowExampleFirst(showExampleFirst);
-        }
-        // this will replace showTopicIntro
-        c = p.getChild("topicIntroFrequency");
-        if (c != null) {
-            s = c.getValue();
-            params.setTopicIntroFrequency(s);
-        }
-
-        // this will replace showExampleFirst
-        c = p.getChild("topicExampleFrequency");
-        if (c != null) {
-            s = c.getValue();
-            params.setTopicExampleFrequency(s);
-        }
         c = p.getChild("problemReuseIntervalSessions");
         if (c != null) {
             s = c.getValue();
@@ -316,25 +252,6 @@ public class PedagogyParser {
     }
 
 
-    /**
-     * Make a JDOM Document out of the file.
-     * @param str
-     * @return  JDOM Document
-     */
-    public Document makeDocument (InputStream str) {
 
-        SAXBuilder parser = new SAXBuilder();
-        try {
-            Document doc = parser.build(str);
-            Element root = doc.getRootElement();
-            this.defaultClasspath = root.getAttribute("defaultClasspath").getValue();
-            return doc;
-        } catch (JDOMException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;
-    }
 
 }

@@ -56,16 +56,22 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
            nextIx = topicProbIds.size()/2;
            state.setCurProblemIndexInTopic(nextIx);
         }
-        // If the last problem given is the same as this one,  then the user must have got it wrong because it wasn't removed in the
-        // prepare step above.   So we increase the index
-        if (state.getCurProblem() == topicProbIds.get(nextIx)) {
-            nextIx++;
-            state.setCurProblemIndexInTopic(nextIx);
-        }
         if (nextIx >= topicProbIds.size()) {
             state.setInChallengeMode(false);
             return null;
         }
+        // If the last problem given is the same as this one,  then the user must have got it wrong because it wasn't removed in the
+        // prepare step above.   So we increase the index
+        if (state.getCurProblem() == topicProbIds.get(nextIx)) {
+            nextIx++;
+            if (nextIx >= topicProbIds.size() )
+            {
+                state.setInChallengeMode(false);
+                return null;
+            }
+            else  state.setCurProblemIndexInTopic(nextIx);
+        }
+
         int nextProbId = topicProbIds.get(nextIx);
         Problem p = ProblemMgr.getProblem(nextProbId);
         p.setMode(Problem.PRACTICE);

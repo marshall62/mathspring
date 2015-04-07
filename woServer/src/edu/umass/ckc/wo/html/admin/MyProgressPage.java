@@ -1,12 +1,17 @@
 package edu.umass.ckc.wo.html.admin;
 
 import ckc.servlet.servbase.View;
+import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.TopicMastery;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 
+import java.sql.Connection;
 import java.util.List;
 import java.sql.SQLException;
 
@@ -33,7 +38,9 @@ public class MyProgressPage implements View  {
       topicMasteries = smgr.getStudentModel().getTopicMasteries() ;
       client = smgr.getClient() ;
       masteryThreshold = (smgr.getClassMasteryThreshold()) ;
-      topicSelector = new TopicSelectorImpl(smgr,smgr.getClassPedagogicalModelParameters());
+      int classId = smgr.getClassID();
+      Connection conn = smgr.getConnection();
+      topicSelector = new TopicSelectorImpl(smgr, (TopicModelParameters) DbClass.getClassLessonModelParameters(conn, classId));
   }
 
   public String getHeaderView() {
@@ -68,7 +75,9 @@ public class MyProgressPage implements View  {
             List<Integer> practiceProbsSeen;
 
             try {
-                practiceProbsSeen = topicSelector.getPracticeProblemsSeen(t.getTopic().getId());
+                StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
+                List<StudentProblemData> probEncountersInTopic = studentProblemHistory.getTopicHistoryMostRecentEncounters(t.getTopic().getId());
+                practiceProbsSeen = smgr.getPedagogicalModel().getPracticeProblemsSeen(probEncountersInTopic);
                 numProbsSeenInTopic = practiceProbsSeen.size();
             } catch (SQLException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.Response;
 import org.jdom.Element;
 
@@ -22,7 +23,7 @@ import org.jdom.Element;
  */
 public class TopicIntroIS extends NextProblemInterventionSelector {
     TopicModel topicModel;
-    PedagogicalModelParameters.frequency freq;
+    TopicModelParameters.frequency freq;
 
     public TopicIntroIS(SessionManager smgr) {
         super(smgr);
@@ -57,7 +58,7 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
 
     protected TopicIntro getTopicIntro (int curTopic) throws Exception {
         // all checking of conditions for display of intro is done in getTopicIntro
-        return topicModel.getTopicIntro(curTopic,this.freq);
+        return topicModel.getTopicIntro(curTopic);
     }
 
 

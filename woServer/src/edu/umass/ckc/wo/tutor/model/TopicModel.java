@@ -6,32 +6,26 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 
-import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.interventions.TopicIntroIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
 
 import edu.umass.ckc.wo.smgr.TopicState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
-import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.pedModel.*;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutormeta.HintSelector;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import org.apache.log4j.Logger;
-import org.jdom.Element;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,6 +43,7 @@ public class TopicModel extends LessonModel {
     protected EndOfTopicInfo reasonsForEndOfTopic;
     protected HintSelector hintSelector;
     protected EndOfTopicInfo eotInfo;
+    protected TopicModelParameters tmParams;
 
 
     /** This constructor is called initially just to get a pointer to the object.   Later we call a build method
@@ -60,15 +55,15 @@ public class TopicModel extends LessonModel {
     }
 
 
+    public void init (SessionManager smgr, LessonModelParameters lmParams,Pedagogy pedagogy,
+                      PedagogicalModel pedagogicalModel, PedagogicalMoveListener pedagogicalMoveListener) throws Exception {
 
-
-    public void init (SessionManager smgr, PedagogicalModelParameters pmParams, Pedagogy pedagogy, PedagogicalModel pedagogicalModel,
-                      PedagogicalMoveListener pedagogicalMoveListener) throws Exception {
         // The superclass constructor calls readLessonControl which takes the control parameters out of the pedagogy and
         // builds the intervention handling for the model
-        super.init(smgr, pmParams, pedagogy, pedagogicalModel, pedagogicalMoveListener);
+        super.init(smgr, lmParams, pedagogy, pedagogicalModel, pedagogicalMoveListener);
+        this.tmParams = (TopicModelParameters) lmParams;
         hintSelector = pedagogicalModel.getHintSelector();
-        topicSelector = new TopicSelectorImpl(smgr,pmParams);
+        topicSelector = new TopicSelectorImpl(smgr,tmParams);
         eotInfo = null;
     }
 
@@ -393,16 +388,6 @@ public class TopicModel extends LessonModel {
         return nextTopic;
     }
 
-    /**
-     *
-     * Called by the superclass constructor to read the XML control for this model.   It puts together a list of
-     * intervention selectors.
-     * @param lessonControlElement
-     * @override
-     */
-    protected void readLessonControl(Element lessonControlElement) throws Exception {
-        super.readLessonControl(lessonControlElement);  // for now the superclass does everything we need
-    }
 
 
 
@@ -417,9 +402,9 @@ public class TopicModel extends LessonModel {
 
     public Problem getTopicExample (int curTopic) throws Exception {
         Problem problem = null;
-        PedagogicalModelParameters.frequency exampleFreq= this.pmParams.getTopicExampleFrequency();
+        TopicModelParameters.frequency exampleFreq= this.tmParams.getTopicExampleFrequency();
         if (!smgr.getStudentState().isExampleShown()) {
-            if (exampleFreq == PedagogicalModelParameters.frequency.always) {
+            if (exampleFreq == TopicModelParameters.frequency.always) {
                 if (!smgr.getStudentState().isExampleSeen(curTopic))
                     smgr.getStudentState().addExampleSeen(curTopic);
                 problem = topicSelector.getExample(curTopic, this.hintSelector);
@@ -429,7 +414,7 @@ public class TopicModel extends LessonModel {
                 new TutorModelUtils().setupDemoProblem(problem,smgr,hintSelector);
                 return problem;
             }
-            else if (exampleFreq == PedagogicalModelParameters.frequency.oncePerSession &&
+            else if (exampleFreq == TopicModelParameters.frequency.oncePerSession &&
                     !smgr.getStudentState().isExampleSeen(curTopic)) {
                 smgr.getStudentState().addExampleSeen(curTopic);
                 problem = topicSelector.getExample(curTopic, this.hintSelector);
@@ -443,10 +428,10 @@ public class TopicModel extends LessonModel {
     }
 
 
-    public TopicIntro getTopicIntro (int curTopic, PedagogicalModelParameters.frequency topicIntroFreq) throws Exception {
-        topicIntroFreq= this.pmParams.getTopicIntroFrequency();
+    public TopicIntro getTopicIntro(int curTopic) throws Exception {
+        TopicModelParameters.frequency topicIntroFreq= this.tmParams.getTopicIntroFrequency();
         // if the topic intro sho
-        if (topicIntroFreq == PedagogicalModelParameters.frequency.always && !studentState.isTopicIntroShown()) {
+        if (topicIntroFreq == TopicModelParameters.frequency.always && !studentState.isTopicIntroShown()) {
             if (!smgr.getStudentState().isTopicIntroSeen(curTopic) )  {
                 smgr.getStudentState().addTopicIntrosSeen(curTopic);
                 studentState.setTopicIntroShown(true);
@@ -456,7 +441,7 @@ public class TopicModel extends LessonModel {
             return intro;
 
         }
-        else if (topicIntroFreq == PedagogicalModelParameters.frequency.oncePerSession &&
+        else if (topicIntroFreq == TopicModelParameters.frequency.oncePerSession &&
                 !smgr.getStudentState().isTopicIntroSeen(curTopic)) {
             smgr.getStudentState().addTopicIntrosSeen(curTopic);
             TopicIntro intro =topicSelector.getIntro(curTopic);
@@ -467,27 +452,7 @@ public class TopicModel extends LessonModel {
         return null;
     }
 
-    public TopicIntro getTopicIntro (int curTopic) throws Exception {
-        PedagogicalModelParameters.frequency topicIntroFreq, exampleFreq;
-        topicIntroFreq= this.pmParams.getTopicIntroFrequency();
-        // if the topic intro sho
-        if (topicIntroFreq == PedagogicalModelParameters.frequency.always) {
-            if (!smgr.getStudentState().isTopicIntroSeen(curTopic))
-                smgr.getStudentState().addTopicIntrosSeen(curTopic);
-            TopicIntro intro =topicSelector.getIntro(curTopic);
-            this.pedagogicalMoveListener.lessonIntroGiven(intro); // inform pedagogical move listeners that an intervention is given
-            return intro;
-        }
-        else if (topicIntroFreq == PedagogicalModelParameters.frequency.oncePerSession &&
-                !smgr.getStudentState().isTopicIntroSeen(curTopic)) {
-            smgr.getStudentState().addTopicIntrosSeen(curTopic);
-            TopicIntro intro =topicSelector.getIntro(curTopic);
-            this.pedagogicalMoveListener.lessonIntroGiven(intro); // inform pedagogical move listeners that an intervention is given
-            return intro;
-        }
 
-        return null;
-    }
 
 
     public ProblemResponse getProblemInTopicSelectedByStudent (NextProblemEvent e) throws Exception {
@@ -534,8 +499,10 @@ public class TopicModel extends LessonModel {
     protected Response buildInterventionResponse (Intervention interv) throws Exception {
         if (interv == null)
             return null;
-        else if (interv instanceof TopicIntroIntervention)
+        else if (interv instanceof TopicIntroIntervention) {
+            pedagogicalMoveListener.lessonIntroGiven(((TopicIntroIntervention) interv).getTopicIntro());
             return new TopicIntroResponse(((TopicIntroIntervention) interv).getTopicIntro());
+        }
         else if (interv instanceof DemoProblemIntervention)   {
             DemoResponse r= new DemoResponse(((DemoProblemIntervention) interv).getProblem());
 //                    r.setProblemBindings(smgr);

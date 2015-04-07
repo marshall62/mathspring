@@ -60,8 +60,7 @@ public interface TopicSelector {
      */
     public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws Exception;
 
-    // return a list of ids of problems that have been given to the student
-    public List<Integer> getPracticeProblemsSeen (int topicId) throws  Exception;
+
 
     // return a list of problems that have not been solved or given as examples or omitted for this class
     public List<Integer> getUnsolvedProblems(int topicId, int classId, boolean includeTestProblems) throws Exception ;

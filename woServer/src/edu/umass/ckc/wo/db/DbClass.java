@@ -8,7 +8,9 @@ import edu.umass.ckc.wo.exc.AdminException;
 import edu.umass.ckc.wo.handler.UserRegistrationHandler;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 
 
 import java.sql.*;
@@ -443,6 +445,56 @@ public class DbClass {
         }
     }
 
+    // TODO have assumed only topicModels are being used for now
+    public static LessonModelParameters getLessonModelParameters(Connection conn, int classId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            String q = "select maxNumberProbsToShowPerTopic,maxTimeInTopic,contentFailureThreshold,topicMastery," +
+                    "minNumberProbsToShowPerTopic," +
+                    "minTimeInTopic,difficultyRate,topicIntroFrequency," +
+                    "exampleFrequency, lessonStyle" +
+                    " from classconfig where classId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, classId);
+            rs = stmt.executeQuery();
+            PedagogicalModelParameters params;
+            if (rs.next()) {
+                int maxProbsInTopic = rs.getInt(1);
+                // If the class has one null param, treat them all as null and return defaults
+                // since they should all get set to real values or all be null
+                // TODO this makes no sense.   These are values set in teacher tools.   If some aren't set, shouldn't
+                // we keep the defaults that were defined the control params of the Pedagogy defined the in the XML file?
+                if (rs.wasNull())
+                    return new TopicModelParameters();
+                long maxTimeInTopic = rs.getLong("maxNumberProbsToShowPerTopic");
+                int thresh = rs.getInt("contentFailureThreshold");
+                double mastery = rs.getDouble("topicMastery");
+                int minProbsInTopic = rs.getInt("minNumberProbsToShowPerTopic");
+                long minTimeInTopic = rs.getLong("minTimeInTopic");
+                int difficultyRate = rs.getInt("difficultyRate");
+                String topicIntroFreq= rs.getString("topicIntroFrequency");
+                if (rs.wasNull())
+                    topicIntroFreq = null;
+                String exampleFreq= rs.getString("exampleFrequency");
+                if (rs.wasNull())
+                    exampleFreq = null;
+
+                String lessonStyle = rs.getString("lessonStyle");
+                TopicModelParameters.frequency tif =  topicIntroFreq == null ? null : TopicModelParameters.convertTopicIntroFrequency(topicIntroFreq);
+                TopicModelParameters.frequency ef =  exampleFreq == null ? null : TopicModelParameters.convertExampleFrequency(exampleFreq);
+                return new TopicModelParameters(maxTimeInTopic, thresh, mastery, minProbsInTopic, minTimeInTopic, difficultyRate,  maxProbsInTopic,
+                        tif,ef, lessonStyle);
+            }
+            return null;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
     public static PedagogicalModelParameters getPedagogicalModelParameters(Connection conn, int classId) throws SQLException {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -484,8 +536,8 @@ public class DbClass {
                 if (rs.wasNull())
                     probReuseIntervalDays=-1;
                 String lessonStyle = rs.getString("lessonStyle");
-                PedagogicalModelParameters.frequency tif =  topicIntroFreq == null ? null : PedagogicalModelParameters.convertTopicIntroFrequency(topicIntroFreq);
-                PedagogicalModelParameters.frequency ef =  exampleFreq == null ? null : PedagogicalModelParameters.convertExampleFrequency(exampleFreq);
+                TopicModelParameters.frequency tif =  topicIntroFreq == null ? null : PedagogicalModelParameters.convertTopicIntroFrequency(topicIntroFreq);
+                TopicModelParameters.frequency ef =  exampleFreq == null ? null : PedagogicalModelParameters.convertExampleFrequency(exampleFreq);
                 return new PedagogicalModelParameters(maxTimeInTopic, thresh, mastery, minProbsInTopic, minTimeInTopic, difficultyRate, externalActivityTimeThresh, maxProbsInTopic,
                         true, true,tif,ef,probReuseIntervalSessions, probReuseIntervalDays, lessonStyle);
             }
@@ -496,6 +548,37 @@ public class DbClass {
             if (rs != null)
                 rs.close();
         }
+    }
+
+    // I tried making this just return the sessions pedagogical model params rather than going to classes, etc but it fails.
+    // I think the problem is that the Guest user class has some parameters set (but not the new one showMPP) so the row is found
+    // and then it builds a set of params with the default value of showMPP of true which then overloads the value set in the pedagogy.
+    public static PedagogicalModelParameters getClassPedagogicalModelParameters(Connection conn, int classId) throws SQLException {
+//        return this.pedagogicalModel.getParams();
+        PedagogicalModelParameters params= DbClass.getPedagogicalModelParameters(conn, classId);
+        // If parameters are not stored for this particular class, a default set should be stored
+        // in classconfig table for classId=1.   If nothing there, then use the defaults created
+        // in the default PedagogicalModelParameters constructor
+        if (params == null) {
+            params = DbClass.getPedagogicalModelParameters(conn, 1);
+            if (params == null)
+                params = new PedagogicalModelParameters();
+        }
+        return params;
+    }
+
+    public static LessonModelParameters getClassLessonModelParameters(Connection conn, int classId) throws SQLException {
+//        return this.pedagogicalModel.getParams();
+        LessonModelParameters params= DbClass.getLessonModelParameters(conn, classId);
+        // If parameters are not stored for this particular class, a default set should be stored
+        // in classconfig table for classId=1.   If nothing there, then use the defaults created
+        // in the default PedagogicalModelParameters constructor
+        if (params == null) {
+            params = DbClass.getLessonModelParameters(conn, 1);
+            if (params == null)
+                params = new TopicModelParameters();
+        }
+        return params;
     }
 
     public static void setProblemSelectorParameters(Connection conn, int classId, PedagogicalModelParameters params) throws SQLException {

@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor.model;
 
 
 
+import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -12,7 +13,9 @@ import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
@@ -38,7 +41,7 @@ import java.util.List;
 public class LessonModel implements TutorEventProcessor {
 
     protected SessionManager smgr;
-    protected PedagogicalModelParameters  pmParams;
+    protected LessonModelParameters  lmParams;
     protected Element lessonControlXML;
     protected Pedagogy pedagogy;
     protected PedagogicalMoveListener pedagogicalMoveListener;
@@ -56,17 +59,19 @@ public class LessonModel implements TutorEventProcessor {
      * based on the definition.  This includes rules that say what should happen on BeginLesson, EndLesson, and BeginTopic
      * and EndTopic (handled in the TopicModel subclass of this which relies on this for some inheritance of model behavior)
      * @param smgr
-     * @param pmParams
+     * @param lmParams
      */
-    public void init (SessionManager smgr, PedagogicalModelParameters pmParams,Pedagogy pedagogy,
+    public void init (SessionManager smgr, LessonModelParameters lmParams,Pedagogy pedagogy,
                       PedagogicalModel pedagogicalModel, PedagogicalMoveListener pedagogicalMoveListener) throws Exception {
         this.smgr = smgr;
-        this.pmParams=pmParams;
+        this.lmParams=lmParams;
         this.pedagogy = pedagogy;
         this.pedagogicalModel = pedagogicalModel;
         this.pedagogicalMoveListener = pedagogicalMoveListener;
         this.studentState = smgr.getStudentState();
-        this.readLessonControl(this.pedagogy.getLessonControlElement());
+        LessonXML x = pedagogy.getLessonXML();
+        interventionGroup = new InterventionGroup(x.getInterventions());
+        interventionGroup.buildInterventions(smgr,pedagogicalModel);
     }
 
 
@@ -75,32 +80,16 @@ public class LessonModel implements TutorEventProcessor {
      * @return
      * @throws SQLException
      */
-    public static LessonModel buildModel(SessionManager smgr, String lessonStyle) throws SQLException {
+    public static LessonModel buildModel(SessionManager smgr, LessonModelParameters params) throws SQLException {
         LessonModel lm;
-        if (lessonStyle.equalsIgnoreCase("topics"))
+        if (params instanceof TopicModelParameters)
             lm= new TopicModel(smgr);
         else lm= new LessonModel(smgr);
 
         return lm;
     }
 
-    /*     Take apart XML like:
-        <lessonControl>
-            <interventions>
-                <interventionSelector onEvent="EndOfTopic" weight="1" class="TopicSwitchAskIS">
-                    <config>
-                        <ask val="false"></ask>
-                    </config>
-                </interventionSelector>
-                .
-                .
-            </interventions>
-        </lessonControl>
-     */
-    protected void readLessonControl(Element lessonControlElement) throws Exception {
-        this.interventionGroup = new InterventionGroup( lessonControlElement.getChild("interventions"));
-        this.interventionGroup.buildInterventions(smgr,pedagogicalModel);
-    }
+
 
 
     @Override

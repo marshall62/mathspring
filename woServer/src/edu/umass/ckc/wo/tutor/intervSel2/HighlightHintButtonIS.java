@@ -29,7 +29,7 @@ public class HighlightHintButtonIS extends AttemptInterventionSelector {
     public Intervention selectIntervention(AttemptEvent e) throws Exception {
         StudentState st = smgr.getStudentState();
         boolean isSolved= pedagogicalModel.isAttemptCorrect(st.getCurProblem(),e.getUserInput());
-        String threshold= getParameter("threshold",this.params);
+        String threshold= getConfigParameter("threshold");
         int numMistakesAllowedBeforeHighlight=2;
         if (threshold!=null)
             numMistakesAllowedBeforeHighlight= Integer.parseInt(threshold);

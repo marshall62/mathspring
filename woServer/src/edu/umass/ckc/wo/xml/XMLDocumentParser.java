@@ -1,8 +1,12 @@
 package edu.umass.ckc.wo.xml;
 
 import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 
 /**
@@ -30,6 +34,8 @@ public class XMLDocumentParser {
 
 
   }
+
+
 
   public static void main (String[] args) {
     XMLDocumentParser p = new XMLDocumentParser();

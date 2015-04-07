@@ -118,6 +118,7 @@ public class DbStudentProblemHistory {
             return sphRow;
         }
         catch (SQLException e) {
+            System.out.println("Can't save to student problem history: studid:"+studId+"sessId:"+sessId+"topicId:"+topicId+"problemId:"+probId);
             System.out.println(e.getErrorCode());
             if (e.getErrorCode() == Settings.duplicateRowError ||e.getErrorCode() == Settings.keyConstraintViolation )
                 return -1;
@@ -181,7 +182,6 @@ public class DbStudentProblemHistory {
      * @param mastery
      * @param effort     @return
      * @param seenVideo
-     * @param seenExample
      * @param textReaderUsed @throws SQLException                                       */
     public static int endProblem(Connection conn, int historyRecId, int numHintsBeforeSolve, int numAttemptsToSolve,
                                  long timeToSolve, long timeToFirstHint, long timeToFirstAttempt, boolean isCorrect,

@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.HintSelector;
@@ -41,103 +42,32 @@ public class TopicSelectorImpl implements TopicSelector {
 
     private SessionManager smgr;
     private Connection conn;
-    private PedagogicalModelParameters pmParameters;
+    private TopicModelParameters tmParameters;
     private TopicModel.difficulty nextProbDesiredDifficulty;
-//    private PedagogicalModel pedagogicalModel;
+    private PedagogicalModel pedagogicalModel;
 
     public TopicSelectorImpl() {
     }
 
-    public TopicSelectorImpl(SessionManager smgr, PedagogicalModelParameters params) throws SQLException {
+    public TopicSelectorImpl(SessionManager smgr, TopicModelParameters tmParams) throws SQLException {
         this.smgr = smgr;
         this.conn = smgr.getConnection();
-//        this.pedagogicalModel=pedagogicalModel;
-        this.pmParameters = params;
+        this.pedagogicalModel=smgr.getPedagogicalModel();
+        this.tmParameters = tmParams;
         this.classID = smgr.getClassID();  // get either the default class (with default lesson plan) or the actual class (with a custom plan)
 
     }
 
 
-    /**
-     * Get a list of problems the student has solved or seen as an example.   Works using the problemReuseInterval which is a number of
-     * sessions or days.  We only select problems within the interval.  This is a way to control recency.   We want solved problems and examples to be eligible to
-     * show again after a certain number of sessions or days (ideally this number might be determined on a per student basis but for now it lives in the pedagogy
-     * definition)
-     * @param smgr
-     * @param topicId
-     * @return
-     * @throws Exception
-     */
-    List<Integer> getRecentExamplesAndCorrectlySolvedProblems (SessionManager smgr, int topicId) throws Exception {
+
+
+    private List<StudentProblemData> getHistoryProblemsInTopic(SessionManager smgr, int topicId) {
         StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
-        List<StudentProblemData> probEncountersInTopic = studentProblemHistory.getTopicHistoryMostRecentEncounters(topicId);
-        // get the ones that are within the problemReuseInterval
-        List<Integer> probs = new ArrayList<Integer>();
-        int nSessionReuseInterval = this.pmParameters.getProblemReuseIntervalSessions();
-        int nDayReuseInterval = this.pmParameters.getProblemReuseIntervalDays();
-        int sess = smgr.getSessionNum();
-        Date now = new Date(System.currentTimeMillis());
-        int numSessions=0;
-        for (StudentProblemData d: probEncountersInTopic) {
-            Date probBeginTime = new Date(d.getProblemBeginTime());
-            if (d.getSessId() != sess) {
-                numSessions++;
-                sess = d.getSessId();
-            }
-            int dayDiff = computeDayDiff(now,probBeginTime);
-            // We stop when one of the intervals is reached
-            if (numSessions == nSessionReuseInterval || dayDiff >= nDayReuseInterval)
-                break;
-            if (d.isSolved())
-                probs.add(d.getProbId());
-            else if (d.getMode().equals(Problem.DEMO))
-                probs.add(d.getProbId());
-        }
-        return probs;
+        return studentProblemHistory.getTopicHistoryMostRecentEncounters(topicId);
     }
 
-    private int computeDayDiff(Date now, Date probBeginTime) {
-        long msDif = now.getTime() - probBeginTime.getTime();
-        long secs = msDif / 1000;
-        long mins = secs / 60;
-        long hrs = mins / 60;
-        int days = (int) hrs / 24;
-        return days;
-    }
 
-    /**
-     * Returns ids of problems that have been given to the student.  Problems considered "seen" must be within
-     * the problem reuse interval specified for the pedagogy and class.
-     * @param topicId
-     * @return
-     * @throws Exception
-     */
-    public List<Integer> getPracticeProblemsSeen (int topicId) throws Exception {
-        StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
-        List<StudentProblemData> probEncountersInTopic = studentProblemHistory.getTopicHistoryMostRecentEncounters(topicId);
-        // get the ones that are within the problemReuseInterval
-        List<Integer> probs = new ArrayList<Integer>();
-        int nSessionReuseInterval = this.pmParameters.getProblemReuseIntervalSessions();
-        int nDayReuseInterval = this.pmParameters.getProblemReuseIntervalDays();
-        int sess = smgr.getSessionNum();
-        Date now = new Date(System.currentTimeMillis());
-        int numSessions=0;
-        for (StudentProblemData d: probEncountersInTopic) {
-            Date probBeginTime = new Date(d.getProblemBeginTime());
-            if (d.getSessId() != sess) {
-                numSessions++;
-                sess = d.getSessId();
-            }
-            int dayDiff = computeDayDiff(now,probBeginTime);
-            if (numSessions == nSessionReuseInterval || dayDiff >= nDayReuseInterval)
-                break;
-            if (d.isPracticeProblem())
-                probs.add(d.getProbId());
 
-        }
-        return probs;
-
-    }
 
 
     /**
@@ -152,7 +82,8 @@ public class TopicSelectorImpl implements TopicSelector {
 
         // studentID and classID were set in init method.
         List<Integer> topicProbs = getClassTopicProblems(theTopicId, classId, includeTestProblems);
-        List<Integer> recentProbs = getRecentExamplesAndCorrectlySolvedProblems(smgr,theTopicId);
+        List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, theTopicId);
+        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         topicProbs.removeAll(recentProbs);
         return topicProbs;
     }
@@ -180,7 +111,8 @@ public class TopicSelectorImpl implements TopicSelector {
     // by the way Flash problems (being used as demos) work
     public Problem getExample(int curTopic, HintSelector hintSelector) throws Exception {
         List<Integer> probs = getClassTopicProblems(curTopic, classID, smgr.isTestUser());
-        List<Integer> recentProbs = getRecentExamplesAndCorrectlySolvedProblems(smgr,curTopic);
+        List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
+        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         probs.removeAll(recentProbs);
         if (probs.size() == 0) {
             return null;
@@ -219,14 +151,14 @@ public class TopicSelectorImpl implements TopicSelector {
     public EndOfTopicInfo isEndOfTopic(long probElapsedTime, TopicModel.difficulty difficulty) throws Exception {
         boolean maxProbsReached=false, maxTimeReached=false, topicMasteryReached=false, contentFailure=false;
         // if maxProbs then we're done
-        if (smgr.getStudentState().getTopicNumPracticeProbsSeen() >= pmParameters.getMaxNumberProbs())
+        if (smgr.getStudentState().getTopicNumPracticeProbsSeen() >= tmParameters.getMaxNumberProbs())
             maxProbsReached=true;
 
         //if maxTime then we're done
-        else if (smgr.getStudentState().getTimeInTopic() + probElapsedTime >= pmParameters.getMaxTimeInTopic())
+        else if (smgr.getStudentState().getTimeInTopic() + probElapsedTime >= tmParameters.getMaxTimeInTopic())
             maxTimeReached=true;
 
-        else if (smgr.getStudentModel().getTopicMastery(smgr.getStudentState().getCurTopic()) >= pmParameters.getTopicMastery()) {
+        else if (smgr.getStudentModel().getTopicMastery(smgr.getStudentState().getCurTopic()) >= tmParameters.getTopicMastery()) {
             topicMasteryReached=true;
         }
         EndOfTopicInfo info = isContentFailure(difficulty);
@@ -256,7 +188,8 @@ public class TopicSelectorImpl implements TopicSelector {
 
     public void initializeTopic(int curTopic, StudentState state) throws Exception {
         List<Integer> probs = getClassTopicProblems(curTopic, classID, smgr.isTestUser());
-        List<Integer> recentProbs = getRecentExamplesAndCorrectlySolvedProblems(smgr,curTopic);
+        List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
+        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         probs.removeAll(recentProbs);
         // If there is only one problem in the list, this is the example so there will not be content next time
         // It is assumed that the topic has at least one problem, since we just called getNextTopicWithAvailableContent
@@ -350,7 +283,8 @@ public class TopicSelectorImpl implements TopicSelector {
 
     public boolean hasReadyContent(int topicId) throws Exception {
         List<Integer> topicProbs =getClassTopicProblems(topicId, classID, smgr.isTestUser());
-        List<Integer> recentProbs = getRecentExamplesAndCorrectlySolvedProblems(smgr, topicId);
+        List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, topicId);
+        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         topicProbs.removeAll(recentProbs);
         return topicProbs.size() > 0;
     }

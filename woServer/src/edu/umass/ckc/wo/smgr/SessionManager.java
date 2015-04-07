@@ -821,27 +821,16 @@ public class SessionManager {
         return pedagogicalModel;
     }
 
+    public void setPedagogicalModel (PedagogicalModel pm) {
+        this.pedagogicalModel = pm;
+    }
+
     public void clearUserProperties() {
         int studId = this.getStudentId();
 
     }
 
-     // I tried making this just return the sessions pedagogical model params rather than going to classes, etc but it fails.
-    // I think the problem is that the Guest user class has some parameters set (but not the new one showMPP) so the row is found
-    // and then it builds a set of params with the default value of showMPP of true which then overloads the value set in the pedagogy.
-    public PedagogicalModelParameters getClassPedagogicalModelParameters() throws SQLException {
-//        return this.pedagogicalModel.getParams();
-        PedagogicalModelParameters params= DbClass.getPedagogicalModelParameters(connection, this.classId);
-        // If parameters are not stored for this particular class, a default set should be stored
-        // in classconfig table for classId=1.   If nothing there, then use the defaults created
-        // in the default PedagogicalModelParameters constructor
-        if (params == null) {
-            params = DbClass.getPedagogicalModelParameters(connection, 1);
-            if (params == null)
-                params = new PedagogicalModelParameters();
-        }
-        return params;
-    }
+
 
     public long getTimeInSession() {
         return timeInSession;

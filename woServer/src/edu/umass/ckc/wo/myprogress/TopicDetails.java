@@ -3,9 +3,11 @@ package edu.umass.ckc.wo.myprogress;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCStandard;
+import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import edu.umass.ckc.wo.util.SqlQuery;
 
@@ -83,7 +85,7 @@ public class TopicDetails {
         conn = smgr.getConnection();
 
 
-        curTopicLoader = new TopicSelectorImpl(smgr, smgr.getClassPedagogicalModelParameters());
+        curTopicLoader = new TopicSelectorImpl(smgr, (TopicModelParameters) DbClass.getClassLessonModelParameters(conn,classId));
         List<Integer> problemIdList = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
         List<Problem> problemList = new ArrayList<Problem>();
         for (int id : problemIdList)

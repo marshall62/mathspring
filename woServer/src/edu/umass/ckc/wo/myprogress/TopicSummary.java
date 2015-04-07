@@ -3,10 +3,12 @@ package edu.umass.ckc.wo.myprogress;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
@@ -90,7 +92,7 @@ public class TopicSummary {
         classId = smgr.getClassID();
         conn = smgr.getConnection();
         sessionId = smgr.getSessionNum();
-        curTopicLoader = new TopicSelectorImpl(smgr,smgr.getClassPedagogicalModelParameters());
+        curTopicLoader = new TopicSelectorImpl(smgr, (TopicModelParameters) DbClass.getClassLessonModelParameters(conn, classId));
         ProblemSelector psel = smgr.getPedagogicalModel().getProblemSelector();
 
 //        this.hasAvailableContent = psel.topicHasRemainingContent(smgr, topicId);

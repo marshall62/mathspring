@@ -107,6 +107,10 @@ public class ProblemResponse extends Response {
         return prob;
     }
 
+    public boolean isNoMoreProblems () {
+        return this.noMoreProblems;
+    }
+
     // In multiple choice problems, we would like the answer slot to be chosen randomly, so that the answer
     // for a given problem is not always, for instance, c.
     // Not all problems have an e answer, so e is not a candidate for switching.

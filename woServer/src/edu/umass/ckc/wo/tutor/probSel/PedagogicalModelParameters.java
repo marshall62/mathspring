@@ -18,8 +18,8 @@ public class PedagogicalModelParameters {
     public static final double TOPIC_MASTERY = 0.85;
     public static final int DIFFICULTY_RATE = 2;
     public static final int EXTERNAL_ACTIVITY_TIME_TRHRESHOLD = 10;   // given in minutes
-    public static final frequency DEFAULT_TOPIC_INTRO_FREQ = frequency.always;
-    public static final frequency DEFAULT_EXAMPLE_FREQ = frequency.always;
+    public static final TopicModelParameters.frequency DEFAULT_TOPIC_INTRO_FREQ = TopicModelParameters.frequency.always;
+    public static final TopicModelParameters.frequency DEFAULT_EXAMPLE_FREQ = TopicModelParameters.frequency.always;
     public static final int DEFAULT_PROBLEM_REUSE_INTERVAL_SESSIONS =3;
     public static final int DEFAULT_PROBLEM_REUSE_INTERVAL_DAYS =10;
     public static final boolean DEFAULT_SHOW_MPP =true;
@@ -27,15 +27,10 @@ public class PedagogicalModelParameters {
 
 
 
-    public enum frequency {
-        never,
-        oncePerSession,
-        always
-    }
 
 
-    private frequency topicIntroFrequency;
-    private frequency topicExampleFrequency;
+    private TopicModelParameters.frequency topicIntroFrequency;
+    private TopicModelParameters.frequency topicExampleFrequency;
     private String ccss;
     private int difficultyRate ; // this is the divisor that the problem selector uses to find increase/decrease its index into the
     private int maxNumberProbs ;   // list of available problems
@@ -91,17 +86,17 @@ public class PedagogicalModelParameters {
         if (userParams == null)
             return this;
         if (userParams.isShowIntro())
-            this.topicIntroFrequency=frequency.oncePerSession;
+            this.topicIntroFrequency=TopicModelParameters.frequency.oncePerSession;
         if (userParams.getMode().equalsIgnoreCase("Example"))  {
-            topicExampleFrequency = frequency.always;
+            topicExampleFrequency = TopicModelParameters.frequency.always;
         }
         else if (userParams.getMode().equalsIgnoreCase("Practice")) {
-            topicExampleFrequency = frequency.never;
+            topicExampleFrequency = TopicModelParameters.frequency.never;
         }
         else {
-            topicExampleFrequency = frequency.oncePerSession;
+            topicExampleFrequency = TopicModelParameters.frequency.oncePerSession;
         }
-        topicIntroFrequency = userParams.isShowIntro() ? frequency.oncePerSession : frequency.never;
+        topicIntroFrequency = userParams.isShowIntro() ? TopicModelParameters.frequency.oncePerSession : TopicModelParameters.frequency.never;
         maxTimeInTopic = userParams.getMaxTime();
         minTimeInTopic = 0;
         maxNumberProbs = userParams.getMaxProbs();
@@ -141,7 +136,7 @@ public class PedagogicalModelParameters {
     // Called with parameters read from TeacherAdmin's class config
     public PedagogicalModelParameters(long maxTimeInTopic, int contentFailureThreshold, double topicMastery, int minNumberProbs,
                                       long minTimeInTopic, int difficultyRate, int externalActivityTimeThreshold, int maxNumberProbs,
-                                      boolean showTopicIntro, boolean showExampleProblemFirst, frequency topicIntroFreq, frequency exampleFreq,
+                                      boolean showTopicIntro, boolean showExampleProblemFirst, TopicModelParameters.frequency topicIntroFreq, TopicModelParameters.frequency exampleFreq,
                                       int probReuseIntervalSessions, int probReuseIntervalDays, String lessonStyle) {
         this.maxNumberProbs = maxNumberProbs;
         this.maxTimeInTopic = maxTimeInTopic;
@@ -181,16 +176,16 @@ public class PedagogicalModelParameters {
 
 
     // gets the given TopicIntro frequency from a string
-    public static frequency convertTopicIntroFrequency (String s) {
+    public static TopicModelParameters.frequency convertTopicIntroFrequency (String s) {
         if (s != null && !s.trim().equalsIgnoreCase(""))
-            return frequency.valueOf(s);
+            return TopicModelParameters.frequency.valueOf(s);
         else return DEFAULT_TOPIC_INTRO_FREQ;
     }
 
-    // gets the given TopicIntro frequency from a string
-    public static frequency convertExampleFrequency (String s) {
+    // gets the given TopicIntro TopicModelParameters.frequency from a string
+    public static TopicModelParameters.frequency convertExampleFrequency (String s) {
         if (s != null && !s.trim().equalsIgnoreCase(""))
-            return frequency.valueOf(s);
+            return TopicModelParameters.frequency.valueOf(s);
         else return DEFAULT_EXAMPLE_FREQ;
     }
 
@@ -361,18 +356,18 @@ public class PedagogicalModelParameters {
     }
 
     public void setTopicIntroFrequency(String topicIntroFrequency) {
-        this.topicIntroFrequency = PedagogicalModelParameters.frequency.valueOf(topicIntroFrequency);
+        this.topicIntroFrequency = TopicModelParameters.frequency.valueOf(topicIntroFrequency);
     }
 
-    public frequency getTopicIntroFrequency() {
+    public TopicModelParameters.frequency getTopicIntroFrequency() {
         return topicIntroFrequency;
     }
 
     public void setTopicExampleFrequency(String topicExampleFrequency) {
-        this.topicExampleFrequency = PedagogicalModelParameters.frequency.valueOf(topicExampleFrequency);
+        this.topicExampleFrequency = TopicModelParameters.frequency.valueOf(topicExampleFrequency);
     }
 
-    public frequency getTopicExampleFrequency() {
+    public TopicModelParameters.frequency getTopicExampleFrequency() {
         return topicExampleFrequency;
     }
 
