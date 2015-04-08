@@ -97,9 +97,33 @@ public class PartnerManager {
     }
 
     public static void clearOldData(int id){
+        removeSelfFromLists(id);
         requesters.remove(id);
+        //TODO change the next two removals to only remove if prospective partner is inactive?
+        if(requestees_requesters.containsKey(id)){
+            requestees_requesters.remove(id);
+        }
         current_matches.remove(id);
         current_matches.values().remove(id);
+    }
+
+    public synchronized static void removeSelfFromLists(int id){
+        ArrayList<Integer> toRemove = null;
+        WaitingStudent requester = requesters.get(id);
+        if(requester != null){
+            toRemove = requester.getPossiblePartners();
+        }
+        if(toRemove != null){
+            for(Integer rem : toRemove){
+                HashSet<Integer> requestee =  requestees_requesters.get(rem);
+                if(requestee != null){
+                    requestee.remove(id);
+                    if(requestees_requesters.get(rem).isEmpty()){
+                        requestees_requesters.remove(rem);
+                    }
+                }
+            }
+        }
     }
 
 

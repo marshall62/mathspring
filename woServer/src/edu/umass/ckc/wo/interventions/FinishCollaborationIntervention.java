@@ -7,13 +7,16 @@ package edu.umass.ckc.wo.interventions;
  * Time: 12:33 AM
  * To change this template use File | Settings | File Templates.
  */
-public class CloseWindowIntervention extends InputResponseIntervention implements NextProblemIntervention{
+public class FinishCollaborationIntervention extends InputResponseIntervention implements NextProblemIntervention{
     public String getType () {
-        return "CloseWindowIntervention";
+        return "FinishCollaborationIntervention";
     }
 
     public String getDialogHTML () {
-        return null;
+        String str = "<div><p>Finished working together.<br/>";
+
+        str+="</div>";
+        return str;
     }
 
     @Override
