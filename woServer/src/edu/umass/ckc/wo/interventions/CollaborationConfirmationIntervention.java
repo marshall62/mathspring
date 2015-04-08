@@ -21,11 +21,11 @@ public class CollaborationConfirmationIntervention extends InputResponseInterven
 
     public String getDialogHTML () {
         String str = "<div><p>The next activity is a special one. <br/> " +
-                 "You will be working with the " + partnerName + " who is sitting next to you. "+
-                 partnerName + " reads the problem aloud, and your job is to use the " +
-                 "mouse and keyboard and WAIT and NOT RUSH to answer.  WORK " +
-                 "TOGETHER  ON PAPER to solve the problem, make a sketch, write an " +
-                 "equation, whatever is necessary. <br/>";
+                 "You will be working with <b><font color='red'>" + partnerName + "</font></b> on <b>ONE</b> problem. "+
+                 "<b><font color='red'>" + partnerName + "</font></b> will read the problem aloud, and your job is to use the " +
+                 "<b>mouse</b> and <b>keyboard</b>.  <b>WORK " +
+                 "TOGETHER</b> to solve the problem. <br/>" +
+                 "Click 'Ok' to start solving a problem together";
 
         str+="</div>";
         return str;

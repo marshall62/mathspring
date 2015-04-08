@@ -16,13 +16,11 @@ public class CollaborationPartnerIntervention extends InformationIntervention im
     }
 
     public String getDialogHTML () {
-        //TODO find a better way to indicate the partner
-        String str = "<div><p>In this next problem, you will work with " + name + " who should be" +
-                " sitting next to you.   You will work on ONE math problem, and then you will come back to your screen again. <br/> <br/>" +
-                name +" will click on answers and hints and use the" +
-                " keyboard, and your job is to READ the math problem aloud.<br/><br/>" +
-                " Discuss the math problem. Work together on how to solve it. USE PAPER" +
-                " and PENCIL so that you sketch out a solution.<br/>";
+        String str = "<div><p>In this next problem, you will work with <b><font color='red'>" + name + "</font></b> who should be" +
+                " sitting next to you, on <b><font color='red'>" + name + "</font></b>'s screen for <strong>ONE</strong> math problem. <br/> <br/>" +
+                "<b><font color='red'>" + name + "</font></b> will use the mouse and keyboard." +
+                " Your job is to <strong>READ</strong> the math problem aloud on "+name+"'s screen.<br/><br/>" +
+                " Work <strong>together</strong> to solve the problem.<br/>";
         str+="</div>";
         return str;
     }

@@ -14,9 +14,9 @@ public class CollaborationOriginatorIntervention extends InformationIntervention
     }
 
     public String getDialogHTML () {
-        String str = "<div><p>\"Please wait while we find a partner for you... <br/>" +
-                "You will discuss the problem together." +
-                "YOUR job is to use the mouse and keyboard.<br/>";
+        String str = "<div><p>Please wait while we find a partner for you... <br/>" +
+                "You will discuss the problem <b>together</b>. <br/>" +
+                "<b>YOUR</b> job is to use the <b>mouse</b> and <b>keyboard</b>.<br/>";
 
         str+="</div>";
         return str;

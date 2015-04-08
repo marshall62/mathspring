@@ -31,8 +31,12 @@ function processNextProblemIntervention(activityJSON) {
         processCollaborationConfirmationIntervention(activityJSON.html);
     else if(interventionType === "CollaborationOriginatorIntervention")
         processCollaborationOriginatorIntervention(activityJSON.html);
-    else if(interventionType === "CloseWindowIntervention")
-        processCloseWindowIntervention(activityJSON.html);
+    else if(interventionType === "FinishCollaborationIntervention")
+        processCollaborationFinishedIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationTimeoutIntervention")
+        processCollaborationTimeoutIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationOptionIntervention")
+        processCollaborationOptionIntervention(activityJSON.html);
     sendBeginIntervention(globals);
 
 }

@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.PartnerManager;
+import edu.umass.ckc.wo.db.DbCollaborationLogging;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
@@ -39,6 +40,7 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
 
     public NextProblemIntervention selectInterventionWithId(NextProblemEvent e, int id) throws Exception{
         partnerName = PartnerManager.getPartnerName(smgr.getConnection(), id);
+        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), id, null, "CollaborationPartnerIntervention");
         return selectIntervention(e);
     }
 
@@ -47,7 +49,8 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
             Thread.sleep(200);
         }
         rememberInterventionSelector(this);
-        return new CloseWindowIntervention();
+        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationPartnerIntervention");
+        return new FinishCollaborationIntervention();
     }
 
     //  For when students are asked to help or when waiting for a helper (so when polling)

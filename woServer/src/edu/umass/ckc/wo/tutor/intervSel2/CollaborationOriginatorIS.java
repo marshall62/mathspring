@@ -1,13 +1,15 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.PartnerManager;
+import edu.umass.ckc.wo.db.DbCollaborationLogging;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
-import edu.umass.ckc.wo.interventions.CloseWindowIntervention;
 import edu.umass.ckc.wo.interventions.CollaborationConfirmationIntervention;
 import edu.umass.ckc.wo.interventions.CollaborationOriginatorIntervention;
+import edu.umass.ckc.wo.interventions.CollaborationTimeoutIntervention;
+import edu.umass.ckc.wo.interventions.CollaborationOptionIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
@@ -48,11 +50,12 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
             //Random is used to make sure the collaboration is not triggered every time.
             double random = Math.random();
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .2) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .1) {
                 rememberInterventionSelector(this);
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
-                return new CollaborationOriginatorIntervention();
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationOptionIntervention");
+                return new CollaborationOptionIntervention();
             }
             else{
                 return null;
@@ -65,20 +68,40 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
     //  Select 2nd intervention that does wait
     public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
             Integer partner = null;
+            int wait = 0;
             while(partner == null){
                 Thread.sleep(200);
                 partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
+                wait = wait + 200;
+                if(wait >= 60000){
+                    DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimeoutIntervention");
+                    return new CollaborationTimeoutIntervention();
+                }
             }
             //TODO log the partner here, somehow.
             rememberInterventionSelector(this);
             User u = DbUser.getStudent(smgr.getConnection(),partner);
             String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
-            return new CollaborationConfirmationIntervention(name);
+        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationIntervention");
+        return new CollaborationConfirmationIntervention(name);
     }
 
     //  For when students are asked to help or when waiting for a helper (so when polling)
     public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
-        return null;
+        String option = e.getServletParams().getString(CollaborationTimeoutIntervention.OPTION);
+        if(option != null && option.equals("Yes")){
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationOriginatorIntervention");
+            return new CollaborationOriginatorIntervention();
+        }
+        else if(option != null && (option.equals("No") || option.equals("No_alone") || option.equals("No_decline"))){
+            PartnerManager.removeSelfFromLists(smgr.getStudentId());
+            PartnerManager.removeRequest(smgr.getStudentId());
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationConfirmationIntervention");
+            return null;
+        }
+        else{
+            return null;
+        }
     }
 
 }

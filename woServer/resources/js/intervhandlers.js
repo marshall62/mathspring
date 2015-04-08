@@ -55,7 +55,6 @@ function processCollaborationPartnerIntervention(html) {
 
 function processCollaborationConfirmationIntervention(html) {
     interventionDialogOpen("Work with a partner", html, NEXT_PROBLEM_INTERVENTION);
-    $("#ok_button").show();
 }
 
 function processCollaborationOriginatorIntervention(html) {
@@ -66,9 +65,16 @@ function processCollaborationOriginatorIntervention(html) {
     globals.isInputIntervention= false;
 }
 
-function processCloseWindowIntervention(html) {
-    globals.interventionType = NEXT_PROBLEM_INTERVENTION;
-    interventionDialogClose();
+function processCollaborationFinishedIntervention(html) {
+    interventionDialogOpen("Collaboration over", html, NEXT_PROBLEM_INTERVENTION);
+}
+
+function processCollaborationTimeoutIntervention(html) {
+    interventionDialogOpen("Continue Waiting?", html, NEXT_PROBLEM_INTERVENTION );
+}
+
+function processCollaborationOptionIntervention(html) {
+    interventionDialogOpen("Work with a partner?", html, NEXT_PROBLEM_INTERVENTION);
 }
 
 
