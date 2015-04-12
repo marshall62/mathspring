@@ -1361,7 +1361,7 @@ JakeNoSPPButton-->
     <pedagogy default="true">
         <id>44</id>
         <active>true</active>
-        <name>Collaboration Testing with Jane Full Empathy</name>
+        <name>Collaboration Testing with Jane Semi Empathy</name>
         <comment>Collaboration Testing</comment>
         <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
@@ -1403,7 +1403,62 @@ JakeNoSPPButton-->
                 <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
             </config>
         </nextProblemInterventionSelector>
-        <learningCompanionClass>JaneEmpathicLC</learningCompanionClass>
+        <learningCompanionClass>JaneSemiEmpathicLC</learningCompanionClass>
+
+        <attemptInterventionSelector class="AttemptListCombinerIS">
+            <attemptInterventionSelector class="HighlightHintButtonIS">
+                <param name="threshold">1</param>
+            </attemptInterventionSelector>
+            <attemptInterventionSelector class="GuessingAskAffectIS"/>
+        </attemptInterventionSelector>
+    </pedagogy>
+
+    <pedagogy default="true">
+        <id>45</id>
+        <active>true</active>
+        <name>Collaboration Testing with Jake Semi Empathy</name>
+        <comment>Collaboration Testing</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <controlParameters>
+            <lessonStyle>topics</lessonStyle>
+
+            <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
+            <contentFailureThreshold>1</contentFailureThreshold>
+            <topicMastery>1.2</topicMastery>
+            <minNumberProbs>3</minNumberProbs>
+            <maxNumberProbs>10</maxNumberProbs>
+            <minTimeInTopicSecs>120</minTimeInTopicSecs>
+            <difficultyRate>3</difficultyRate>
+            <externalActivityTimeThresholdMins>10</externalActivityTimeThresholdMins>
+            <showTopicIntro>false</showTopicIntro>
+            <showExampleFirst>false</showExampleFirst>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+            <!-- legal values never, oncePerSession, always-->
+            <topicIntroFrequency>oncePerSession</topicIntroFrequency>
+            <topicExampleFrequency>oncePerSession</topicExampleFrequency>
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <package>pedModel2</package>
+        <nextProblemInterventionSelector class="CollaborationIS">
+            <config>
+                <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
+                <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                <intervalCriteria type="random" frequency="3"/>
+                <maxPartnerWaitMin>3</maxPartnerWaitMin>
+                <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
+            </config>
+        </nextProblemInterventionSelector>
+        <learningCompanionClass>JakeSemiEmpathicLC</learningCompanionClass>
 
         <attemptInterventionSelector class="AttemptListCombinerIS">
             <attemptInterventionSelector class="HighlightHintButtonIS">
