@@ -50,7 +50,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
             //Random is used to make sure the collaboration is not triggered every time.
             double random = Math.random();
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .1) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .3) {
                 rememberInterventionSelector(this);
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
@@ -67,21 +67,22 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
     //  Send one of these when the thing closes
     //  Select 2nd intervention that does wait
     public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
-            Integer partner = null;
-            int wait = 0;
-            while(partner == null){
-                Thread.sleep(200);
-                partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
-                wait = wait + 200;
-                if(wait >= 60000){
-                    DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimeoutIntervention");
-                    return new CollaborationTimeoutIntervention();
-                }
+        Integer partner = null;
+        int wait = 0;
+        while(partner == null){
+            Thread.sleep(200);
+            partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
+            wait = wait + 200;
+            if(wait >= 60000){
+                rememberInterventionSelector(this);
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimeoutIntervention");
+                return new CollaborationTimeoutIntervention();
             }
-            //TODO log the partner here, somehow.
-            rememberInterventionSelector(this);
-            User u = DbUser.getStudent(smgr.getConnection(),partner);
-            String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
+        }
+        //TODO log the partner here, somehow.
+        rememberInterventionSelector(this);
+        User u = DbUser.getStudent(smgr.getConnection(),partner);
+        String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
         DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationIntervention");
         return new CollaborationConfirmationIntervention(name);
     }
@@ -90,12 +91,13 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
     public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
         String option = e.getServletParams().getString(CollaborationTimeoutIntervention.OPTION);
         if(option != null && option.equals("Yes")){
+            rememberInterventionSelector(this);
             DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationOriginatorIntervention");
             return new CollaborationOriginatorIntervention();
         }
         else if(option != null && (option.equals("No") || option.equals("No_alone") || option.equals("No_decline"))){
-            PartnerManager.removeSelfFromLists(smgr.getStudentId());
-            PartnerManager.removeRequest(smgr.getStudentId());
+            PartnerManager.decline(smgr.getStudentId());
+            rememberInterventionSelector(this);
             DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationConfirmationIntervention");
             return null;
         }
