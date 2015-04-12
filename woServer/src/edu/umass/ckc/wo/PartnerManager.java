@@ -126,6 +126,11 @@ public class PartnerManager {
         }
     }
 
+    public synchronized static void decline(int id) {
+        removeSelfFromLists(id);
+        removeRequest(id);
+    }
+
 
     private static class WaitingStudent{
         private ArrayList<Integer> possiblePartners;
