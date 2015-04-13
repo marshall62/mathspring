@@ -18,6 +18,7 @@ import edu.umass.ckc.wo.util.ProbPlayer;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * useless comment
  * Class summary per problem.  Which problems are challenging for your students.
  * User: marshall. Date: Mar 2, 2004
  * Modifications: Ivon. August 17, 2006.
