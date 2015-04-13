@@ -11,9 +11,6 @@ public class CollaborationTimeoutIntervention extends InputResponseIntervention 
 
     public static final String OPTION = "option";
 
-    public  CollaborationTimeoutIntervention () {
-        super();
-    }
     public String getType () {
         return "CollaborationTimeoutIntervention";
     }
