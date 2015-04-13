@@ -50,7 +50,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
             //Random is used to make sure the collaboration is not triggered every time.
             double random = Math.random();
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .3) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .1) {
                 rememberInterventionSelector(this);
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
@@ -68,16 +68,16 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
     //  Select 2nd intervention that does wait
     public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
         Integer partner = null;
-        int wait = 0;
+     //   int wait = 0;
         while(partner == null){
             Thread.sleep(200);
             partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
-            wait = wait + 200;
+       /**     wait = wait + 200;
             if(wait >= 60000){
                 rememberInterventionSelector(this);
                 DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimeoutIntervention");
                 return new CollaborationTimeoutIntervention();
-            }
+            } **/
         }
         //TODO log the partner here, somehow.
         rememberInterventionSelector(this);
