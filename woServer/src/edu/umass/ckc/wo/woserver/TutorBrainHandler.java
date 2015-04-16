@@ -235,18 +235,7 @@ public class TutorBrainHandler {
             servletInfo.getOutput().append(v.getView());
 
         }
-        else if (e instanceof FlashDebugLoginEvent) {
-            FlashDebugLoginEvent le = (FlashDebugLoginEvent) e;
-            String ipAddr = null;
-            // should be provided by Flash, but in case it isn't we'll just use the one that
-            // is sent with the servlet request (which may be a proxy server)
-            if (ipAddr == null)
-                ipAddr = servletInfo.getRequest().getRemoteAddr();
 
-            SessionManager smgr = new SessionManager(servletInfo.getConn());
-            String response = smgr.flashDebugLogin(le.getUname(), le.getPassword(), le.getFlashClient());
-            servletInfo.getOutput().append(response);
-        }
         else if (e instanceof SystemTestLoginEvent) {
             SessionManager smgr = new SessionManager(servletInfo.getConn());
             servletInfo.getOutput().append(smgr.loginSystemTester((SystemTestLoginEvent) e));

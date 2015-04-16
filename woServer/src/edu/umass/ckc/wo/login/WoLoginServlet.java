@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
+import edu.umass.ckc.wo.woserver.ServletInfo;
 import edu.umass.ckc.wo.woserver.ServletUtil;
 import org.apache.log4j.Logger;
 
@@ -37,16 +38,31 @@ public class WoLoginServlet extends BaseServlet {
     protected boolean handleRequest(ServletContext servletContext, Connection conn, HttpServletRequest request,
                                     HttpServletResponse response, ServletParams params, StringBuffer servletOutput) throws Exception {
         ServletAction action = ActionFactory.buildAction(params);
+        ServletInfo servletInfo = new ServletInfo(servletContext,conn,request,response,params,servletOutput,hostPath,contextPath,this.getServletName());
         Settings.getSurveys(conn); // makes sure the latest survey URLS from the DB are used.
         logger.info(">>" + params.toString());
-        String viewName = action.process(conn, servletContext,params, request,response, servletOutput);
-        logger.info("<< JSP: " + viewName);
-        if (viewName != null) {
-            RequestDispatcher disp = request.getRequestDispatcher(viewName);
-            disp.forward(request,response);
-            return false; // tells the superclass servlet not to write to the output stream because the request has been forwarded.
+        // after the user/pw has been accepted all the other actions are LoginEvent
+        if (action.equals("LoginEvent"))   {
+            LoginSequence ls = new LoginSequence(servletInfo);
+            ls.processAction(params);
+            return false;
         }
-        else return true; // the action just wrote some stuff into servletOutput so the servlet should flush it out
+        else {  // processes the first login event which is the user id/pw
+            String viewName = action.process(conn, servletContext,params, request,response, servletOutput);
+            // If the login goes cleanly, it returns null and then we move to the LoginSequence
+            if (viewName == null) {
+                LoginSequence ls = new LoginSequence(servletInfo);
+                ls.processAction(params);
+                return false;
+            }
+            logger.info("<< JSP: " + viewName);
+            if (viewName != null) {
+                RequestDispatcher disp = request.getRequestDispatcher(viewName);
+                disp.forward(request,response);
+                return false; // tells the superclass servlet not to write to the output stream because the request has been forwarded.
+            }
+            else return true; // the action just wrote some stuff into servletOutput so the servlet should flush it out
+        }
     }
 
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
@@ -61,6 +77,7 @@ public class WoLoginServlet extends BaseServlet {
             problemMgr.loadProbs(connection);
             CCContentMgr.getInstance().loadContent(connection);
             LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
+
         }
         logger.debug("end init of WOLoginServlet");
 

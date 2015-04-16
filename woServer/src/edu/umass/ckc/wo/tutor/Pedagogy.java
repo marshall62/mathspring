@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor;
 
 import edu.umass.ckc.wo.config.LessonXML;
+import edu.umass.ckc.wo.config.LoginXML;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import org.jdom.Element;
@@ -41,6 +42,7 @@ public class Pedagogy implements Comparable {
     private Element interventionsElement;
     private String lessonName;
     private LessonXML lessonXML;
+    private LoginXML loginXML;
 
 
     public Pedagogy() {
@@ -282,7 +284,16 @@ public class Pedagogy implements Comparable {
         return lessonXML;
     }
 
+
     public void setLessonXML(LessonXML lessonXML) {
         this.lessonXML = lessonXML;
+    }
+
+    public LoginXML getLoginXML() {
+        return loginXML;
+    }
+
+    public void setLoginXML(LoginXML loginXML) {
+        this.loginXML = loginXML;
     }
 }

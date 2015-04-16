@@ -52,7 +52,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
     public static final String CHALLENGE_MODE = "challenge";
     public static final String REVIEW_MODE = "review";
-
+    protected Pedagogy pedagogy;
     protected LessonModel lessonModel;
     protected PedagogicalModelParameters params;
     protected LessonModelParameters lessonModelParameters;
@@ -656,6 +656,11 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     public ProblemScore getLastProblemScore() {
         return lastProblemScore;
     }
+
+    public Pedagogy getPedagogy () {
+        return this.pedagogy;
+    }
+
 
     public abstract void addPedagogicalMoveListener(PedagogicalMoveListener pml);
 }

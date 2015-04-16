@@ -55,6 +55,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
 
     public BasePedagogicalModel (SessionManager smgr, Pedagogy pedagogy) throws SQLException {
+        this.pedagogy = pedagogy;
         setSmgr(smgr);
         smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
         setTutorModel(new TutorModel());

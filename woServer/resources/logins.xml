@@ -1,0 +1,30 @@
+<logins>
+
+    <login name="CollabLogin">
+        <controlParameters>
+
+        </controlParameters>
+
+        <interventions>
+            <interventionSelector onEvent="Login" weight="1" class="edu.umass.ckc.wo.login.interv.GetNeighbors">
+                <config>
+                </config>
+            </interventionSelector>
+            <interventionSelector onEvent="Login" weight="2" class="edu.umass.ckc.wo.login.interv.MathAttitudes">
+                <config>
+
+                </config>
+            </interventionSelector>
+
+            <interventionSelector onEvent="Login" weight="1" class="edu.umass.ckc.wo.login.interv.StudentName">
+                <config>
+
+                </config>
+            </interventionSelector>
+
+
+
+        </interventions>
+    </login>
+
+</logins>

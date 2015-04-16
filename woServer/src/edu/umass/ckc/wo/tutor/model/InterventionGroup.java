@@ -109,4 +109,12 @@ public class InterventionGroup {
         }
         return null;
     }
+
+    public List<InterventionSelector> getAllInterventions() {
+        List<InterventionSelector> selectors = new ArrayList<InterventionSelector>();
+        for (InterventionSelectorSpec spec: this.interventionsSpecs) {
+            selectors.add(spec.getSelector());
+        }
+        return selectors;
+    }
 }

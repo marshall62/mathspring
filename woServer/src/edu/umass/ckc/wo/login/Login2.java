@@ -55,23 +55,9 @@ public class Login2 implements ServletAction {
             return login1_jsp;
         }
         else {
-             req.setAttribute(LoginParams.SESSION_ID,smgr.getSessionNum());
-             if (lr.hasExistingSession()) {
-                 req.setAttribute(LoginParams.MESSAGE, "You had an old session which has been automatically logged out.");
-                 List<User> students = DbClass.getClassStudents(conn,smgr.getStudentClass(smgr.getStudentId()));
-                 req.setAttribute(LoginParams.STUDENTS,students);
-                 return login_getFlankingUsers_jsp;
-            }
-            boolean isFirstLogin = smgr.isFirstLogin();
-            if (isFirstLogin) {
+            return null;
 
-                return login_getName_jsp;
-            }
-            else {
-                List<User> students = DbClass.getClassStudents(conn,smgr.getStudentClass(smgr.getStudentId()));
-                req.setAttribute(LoginParams.STUDENTS,students);
-                return login_getFlankingUsers_jsp;
-            }
+
 
         }
     }

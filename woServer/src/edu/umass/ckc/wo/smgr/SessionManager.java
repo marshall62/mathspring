@@ -84,48 +84,6 @@ public class SessionManager {
         return attemptSessionCreation(uname, password, sessBeginTime, logoutExistingSession);
     }
 
-    public String flashDebugLogin (String uname, String password, String flashClient ) throws Exception {
-        return flashLoginSessionCreation(uname,password,flashClient);
-
-    }
-
-    public String flashLoginSessionCreation(String uname, String password, String flashClient) throws Exception {
-
-        StringBuffer result = new StringBuffer();
-        int sessId = -1;
-        int studId = -1;
-        LearningCompanion lc;
-        // given a password so use uname/pwd
-        if (password != null) {
-            studId = DbUser.getStudent(this.getConnection(), uname, password);
-
-            if (studId == -1)
-                return getLoginView(LOGIN_USER_PASS,NavigationHandler.FALSE,"Invalid user name/password combination",-1,studId,null);
-
-            else {
-
-                int oldSessId = DbSession.findActiveSession(getConnection(), studId);
-                if (oldSessId != -1)  {
-                    inactivateAllUserSessions();
-
-                    this.sessionId = DbSession.newSession(getConnection(), studId, System.currentTimeMillis(), false);
-
-                }
-                else {
-                      this.sessionId = DbSession.newSession(getConnection(), studId, System.currentTimeMillis(), false);
-                }
-                buildSession(connection,this.sessionId );
-                studState.getSessionState().initializeState();
-                DbSession.setClientType(connection, this.sessionId, flashClient);
-                lc = this.pedagogicalModel.getLearningCompanion();
-                return getLoginView(LOGIN_USER_PASS,NavigationHandler.TRUE,null,sessionId,studId,lc);
-
-            }
-
-        } else {
-            return getLoginView(LOGIN_USER_PASS,NavigationHandler.FALSE,"Invalid user name/password combination",-1,studId,null);
-        }
-    }
 
     /**
      * Constructor only used when the user is logging in from Assistments
