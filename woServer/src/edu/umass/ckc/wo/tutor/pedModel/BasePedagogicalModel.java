@@ -133,7 +133,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        return sel;
 //    }
 
-    private NextProblemInterventionSelector buildNextProblemIS(SessionManager smgr, Pedagogy pedagogy) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private NextProblemInterventionSelector buildNextProblemIS(SessionManager smgr, Pedagogy pedagogy) throws  Exception {
         InterventionSelectorSpec npSpec = pedagogy.getNextProblemInterventionSelector();
         List<InterventionSelectorSpec> subs = pedagogy.getSubNextProblemInterventionSelectors();
 //        NextProblemInterventionSelector sel = (NextProblemInterventionSelector) newInstance(npSpec,smgr);
@@ -152,7 +152,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return sel;
     }
 
-    private AttemptInterventionSelector buildAttemptIS(SessionManager smgr, Pedagogy pedagogy) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private AttemptInterventionSelector buildAttemptIS(SessionManager smgr, Pedagogy pedagogy) throws Exception{
         InterventionSelectorSpec atSpec = pedagogy.getAttemptInterventionSelector();
         List<InterventionSelectorSpec> subs = pedagogy.getSubAttemptInterventionSelectors();
 //        AttemptInterventionSelector sel = (AttemptInterventionSelector) newInstance(atSpec,smgr);
@@ -813,7 +813,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return r;
     }
 
-    public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws Exception {
         String classname = smgr.getStudentState().getLastIntervention();
         Class c = Class.forName(classname);
         Constructor constructor = c.getConstructor(SessionManager.class);

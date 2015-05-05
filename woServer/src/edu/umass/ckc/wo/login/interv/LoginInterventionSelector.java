@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
@@ -30,6 +31,7 @@ public class LoginInterventionSelector extends InterventionSelector implements P
     protected HttpServletRequest request;
     protected ServletInfo servletInfo;
     protected MyState interventionState;
+    protected boolean runOnce;
 
     public LoginInterventionSelector( SessionManager smgr) throws SQLException {
         super(smgr);
@@ -52,6 +54,10 @@ public class LoginInterventionSelector extends InterventionSelector implements P
         req.setAttribute("interventionClass",getClass().getName());
         req.setAttribute("sessionId",e.getSessionId());
         return null;
+    }
+
+    public void clearState () throws SQLException {
+        this.interventionState.clearState();
     }
 
 
@@ -100,7 +106,7 @@ public class LoginInterventionSelector extends InterventionSelector implements P
     }
 
     @Override
-    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws Exception {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -128,6 +134,10 @@ public class LoginInterventionSelector extends InterventionSelector implements P
         protected void setTimeOfLastIntervention(long timeOfLastIntervention) throws SQLException {
             this.timeOfLastIntervention = timeOfLastIntervention;
             setProp(this.objid,TIME_OF_LAST_INTERVENTION,timeOfLastIntervention);
+        }
+
+        protected void clearState () throws SQLException {
+            this.clearProp(this.objid,TIME_OF_LAST_INTERVENTION);
         }
 
 

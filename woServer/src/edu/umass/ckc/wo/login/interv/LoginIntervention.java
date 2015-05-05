@@ -13,12 +13,12 @@ import net.sf.json.JSONObject;
 public class LoginIntervention implements Intervention {
     private String view;  // name of JSP
     private String url;   // URL which will be shown in a separate browser window
-    private boolean hasURL=false; // tells whether this is just a simple JSP or JSP + URL
+    private boolean separateWindow =false; // tells whether to display the URL in a separate window
 
-    public LoginIntervention(String view, String url, boolean hasURL) {
+    public LoginIntervention(String view, String url, boolean separateWindow) {
         this.view = view;
         this.url = url;
-        this.hasURL=hasURL;
+        this.separateWindow =separateWindow;
     }
 
     public LoginIntervention(String view) {
@@ -30,8 +30,8 @@ public class LoginIntervention implements Intervention {
         return this.view;
     }
 
-    public boolean hasURL () {
-        return this.hasURL;
+    public boolean openInSeparateWindow () {
+        return this.separateWindow;
     }
 
     public String getURL () {

@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
@@ -70,7 +71,7 @@ public abstract class InterventionSelector {
      * @param smgr
      * @param pedagogicalModel
      */
-    public abstract void init(SessionManager smgr, PedagogicalModel pedagogicalModel);
+    public abstract void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws Exception;
 
     /**
      * Returns a JDOM XML Element that is the <config> ... </config> for the intervention selector
@@ -109,7 +110,7 @@ public abstract class InterventionSelector {
 
     }
 
-    public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws Exception {
         String classname = smgr.getStudentState().getLastIntervention();
         Class c = Class.forName(classname);
         Constructor constructor = c.getConstructor(SessionManager.class);

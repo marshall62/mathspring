@@ -105,9 +105,7 @@ public class TutorBrainHandler {
             tutorPage.handleRequest((TutorHomeEvent) e);
             return false;
         }
-        else if (e instanceof SystemTestLoginEvent) {
-            servletInfo.getOutput().append("<systemTest>working</systemTest>");
-        }
+
         else if (e instanceof DbTestEvent) {
             SessionManager smgr = new SessionManager(servletInfo.getConn(),((DbTestEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession();
             StudentState state = smgr.getStudentState();
@@ -236,11 +234,6 @@ public class TutorBrainHandler {
 
         }
 
-        else if (e instanceof SystemTestLoginEvent) {
-            SessionManager smgr = new SessionManager(servletInfo.getConn());
-            servletInfo.getOutput().append(smgr.loginSystemTester((SystemTestLoginEvent) e));
-
-        }
 
         else if (e instanceof KillSessionsEvent) {
             SessionManager smgr = new SessionManager(servletInfo.getConn(),((KillSessionsEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession();

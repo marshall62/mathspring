@@ -44,14 +44,16 @@ public class WoLoginServlet extends BaseServlet {
 
         logger.info(">>" + params.toString());
         // after the user/pw has been accepted all the other actions are LoginEvent or LoginInterventionInput
-        if (action == null && params.getString("action").equals("LoginEvent"))   {
-            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
-            ls.processAction(params);
-            return false;
-        }
-        // When an intervention is complete, the form is submitted with an action=LoginInterventionInput and interventionClass=InterventionSelector
-        // so that we can send the form inputs to the intervention selector that generated the intervention.
-        else if (action == null && params.getString("action").equals("LoginInterventionInput")) {
+//        if (action instanceof LoginEvent)   {
+//            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
+//            ls.processAction(params);
+//            return false;
+//        }
+//        // When an intervention is complete, the form is submitted with an action=LoginInterventionInput and interventionClass=InterventionSelector
+//        // so that we can send the form inputs to the intervention selector that generated the intervention.
+//        else
+        // All actions are either inputs to a Login intervention or the first login screen with user/pw
+        if (action instanceof LoginInterventionInput) {
             String cl = params.getString("interventionClass");
             int sessId = params.getInt("sessionId");
             Class c = Class.forName(cl);

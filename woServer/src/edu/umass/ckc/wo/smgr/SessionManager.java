@@ -4,7 +4,6 @@ import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
 import edu.umass.ckc.wo.event.tutorhut.LogoutEvent;
-import edu.umass.ckc.wo.event.SystemTestLoginEvent;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.NavigationHandler;
@@ -599,17 +598,6 @@ public class SessionManager {
     }
 
 
-    public String loginSystemTester(SystemTestLoginEvent event) throws SQLException {
-        PreparedStatement ps = null;
-        try {
-            String q = "update session set isActive=1 where id=1";
-            ps = this.connection.prepareStatement(q);
-            int n = ps.executeUpdate();
-            return getLoginView(LOGIN_USER_PASS, NavigationHandler.TRUE, null, 1, 1, null);
-        } finally {
-            ps.close();
-        }
-    }
 
     // To remove all evidence of a student in the system, delete the eventlog for his session, delete the studentproblemhistory for his session
     // delete the session

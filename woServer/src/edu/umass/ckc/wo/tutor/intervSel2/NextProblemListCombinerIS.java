@@ -22,7 +22,7 @@ public class NextProblemListCombinerIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws Exception{
         this.pedagogicalModel=pedagogicalModel;
         for (NextProblemInterventionSelector sel: this.subSelectorList) {
             sel.init(smgr,pedagogicalModel);

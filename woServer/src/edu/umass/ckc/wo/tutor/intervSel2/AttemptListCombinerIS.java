@@ -20,7 +20,7 @@ public class AttemptListCombinerIS extends AttemptInterventionSelector {
     }
 
     @Override
-    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws Exception {
         this.pedagogicalModel=pedagogicalModel;
         for (AttemptInterventionSelector sel: this.subSelectors) {
             sel.init(smgr,pedagogicalModel);

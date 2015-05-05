@@ -8,12 +8,15 @@ import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.model.InterventionGroup;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.woserver.ServletInfo;
 
 import javax.servlet.RequestDispatcher;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,14 +69,32 @@ public class LoginSequence {
             if (skin != null && skin.equalsIgnoreCase("adult"))
                 loginJSP = "login/loginAdult.jsp";
             servletInfo.getRequest().setAttribute("innerjsp",innerJSP);
-            if (li.hasURL())
+            if (li.getURL() != null )  {
+                servletInfo.getRequest().setAttribute("openInSeparateWindow",li.openInSeparateWindow());
                 servletInfo.getRequest().setAttribute("URL",li.getURL());
+            }
+
 
             RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
             disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
         }
         else {
+            // At the end of the login sequence, remove any state in interventions that were specified as ONCE_PER_SESSION
+            // so that the next login will run them again.
+            clearInterventionState();
             new LandingPage(servletInfo,smgr).handleRequest();
         }
+    }
+
+    private void clearInterventionState() throws SQLException {
+        List<InterventionSelectorSpec> specs = interventionGroup.getInterventionsSpecs();
+        for (InterventionSelectorSpec s: specs) {
+            if (s.getRunFreq().equals(InterventionSelectorSpec.ONCE_PER_SESSION)) {
+                LoginInterventionSelector lis = (LoginInterventionSelector) s.getSelector();
+                lis.clearState();
+            }
+
+        }
+
     }
 }

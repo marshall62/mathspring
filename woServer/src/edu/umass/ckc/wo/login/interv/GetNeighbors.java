@@ -36,6 +36,7 @@ public class GetNeighbors extends LoginInterventionSelector {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
         if (shownTime > 0)
             return null;
+        // At end of LoginSequence we need to clear this time so that a new login will show this again.
         else {
             super.selectIntervention(e);
             List<User> students = DbClass.getClassStudents(conn,smgr.getStudentClass(smgr.getStudentId()));

@@ -6,26 +6,29 @@
         </controlParameters>
 
         <interventions>
-            <interventionSelector onEvent="Login" weight="3" runOnce="true" class="edu.umass.ckc.wo.login.interv.GetNeighbors">
+            <interventionSelector onEvent="Login" weight="3" runFreq="oncePerSession" class="edu.umass.ckc.wo.login.interv.GetNeighbors">
                 <config>
                 </config>
             </interventionSelector>
-            <interventionSelector onEvent="Login" weight="2" runOnce="true" class="edu.umass.ckc.wo.login.interv.MathAttitudes">
-                <config>
-
-                </config>
-            </interventionSelector>
-
-            <interventionSelector onEvent="Login" weight="1" runOnce="true" class="edu.umass.ckc.wo.login.interv.StudentName">
+            <interventionSelector onEvent="Login" weight="2" runFreq="once" class="edu.umass.ckc.wo.login.interv.MathAttitudes">
                 <config>
 
                 </config>
             </interventionSelector>
 
-            <interventionSelector onEvent="Login" weight="1" runOnce="true" class="edu.umass.ckc.wo.login.interv.PreSurvey">
+            <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.StudentName">
                 <config>
 
                 </config>
+            </interventionSelector>
+
+            <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PreSurvey">
+                <config>
+                    <url>
+                    <iframe src="https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+                    </url>
+                    <embed>true</embed>
+            </config>
             </interventionSelector>
 
 
