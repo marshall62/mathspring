@@ -94,6 +94,7 @@
 
                             <form method="post" action="${pageContext.request.contextPath}/WoLoginServlet">
                                 <input type="hidden" name="action" value="LoginAdult_2"/>
+                                <input type="hidden" name="skin" value="adult"/>
                                 <input type="hidden" name="clientType" value="${clientType}"/>
 
                                 <p>User Name:

@@ -80,7 +80,8 @@ function checkSound() {
                 <p>&nbsp;</p>
                 <div class="nest2">
                     <form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
-                                    <input type="hidden" name="action" value="LoginK12_1"/>
+                        <input type="hidden" name="action" value="LoginK12_1"/>
+                        <input type="hidden" name="skin" value="k12"/>
                   <p>
                     <input value="Return to Login Page" type="submit"/>
 
@@ -95,6 +96,8 @@ function checkSound() {
                     <input type="hidden" name="uname" value="${uname}"/>
                     <input type="hidden" name="password" value="${password}"/>
                     <input type="hidden" name="logoutExistingSession" value="true"/>
+                     <input type="hidden" name="skin" value="k12"/>
+
                   </p>
                   </form>
 

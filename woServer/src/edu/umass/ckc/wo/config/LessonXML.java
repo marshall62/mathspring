@@ -13,10 +13,7 @@ import org.jdom.Element;
  * To change this template use File | Settings | File Templates.
  */
 public class LessonXML extends ConfigXML{
-    private Element interventions;
-    private Element control;
-    private String name;
-    private String style;
+
 
     public LessonXML(Element interventions, Element control, String name, String style) {
         super(interventions, control, name, style);

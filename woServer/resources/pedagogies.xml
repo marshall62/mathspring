@@ -97,6 +97,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>

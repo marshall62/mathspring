@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.login;
 import ckc.servlet.servbase.ServletAction;
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.woserver.ServletInfo;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,22 +19,17 @@ import java.io.IOException;
  * Time: 3:47:51 PM
  * The first login page for a k12 user.    Presents user/password inputs plus other buttons
  */
-public class LoginK12_1 implements ServletAction {
+public class LoginK12_1 implements LoginServletAction {
 
     /**
      * Process the login action for k12.   This returns a JSP for k12 login.
-     * @param conn
-     * @param servletContext
-     * @param params
-     * @param req
-     * @param resp
-     * @param servletOutput
+     * @param  servletInfo
      * @return
      * @throws ServletException
      * @throws IOException
      */
-    public String process(Connection conn, ServletContext servletContext, ServletParams params,
-                          HttpServletRequest req, HttpServletResponse resp, StringBuffer servletOutput) throws ServletException, IOException {
+    public LoginResult process(ServletInfo servletInfo) throws ServletException, IOException {
+        HttpServletRequest req = servletInfo.getRequest() ;
         req.setAttribute(LoginParams.USER_NAME,"" );
         req.setAttribute(LoginParams.PASSWORD,"" );
         req.setAttribute(LoginParams.LOGOUT_EXISTING_SESSION,"false");
@@ -45,6 +41,9 @@ public class LoginK12_1 implements ServletAction {
             name = name.substring(name.lastIndexOf('.')+1);
         req.setAttribute(LoginParams.START_PAGE,name);  // must be name of this class
         req.setAttribute(LoginParams.MESSAGE,null);
-        return "woK12/login.jsp";
+        String jsp= "woK12/login.jsp";
+        req.getRequestDispatcher(jsp).forward(req, servletInfo.getResponse());
+        LoginResult lr = new LoginResult(-1,null,LoginResult.NEW_SESSION,LoginResult.FORWARDED_TO_JSP);
+        return lr;
     }
 }

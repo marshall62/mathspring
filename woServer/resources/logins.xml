@@ -6,17 +6,23 @@
         </controlParameters>
 
         <interventions>
-            <interventionSelector onEvent="Login" weight="1" class="edu.umass.ckc.wo.login.interv.GetNeighbors">
+            <interventionSelector onEvent="Login" weight="3" runOnce="true" class="edu.umass.ckc.wo.login.interv.GetNeighbors">
                 <config>
                 </config>
             </interventionSelector>
-            <interventionSelector onEvent="Login" weight="2" class="edu.umass.ckc.wo.login.interv.MathAttitudes">
+            <interventionSelector onEvent="Login" weight="2" runOnce="true" class="edu.umass.ckc.wo.login.interv.MathAttitudes">
                 <config>
 
                 </config>
             </interventionSelector>
 
-            <interventionSelector onEvent="Login" weight="1" class="edu.umass.ckc.wo.login.interv.StudentName">
+            <interventionSelector onEvent="Login" weight="1" runOnce="true" class="edu.umass.ckc.wo.login.interv.StudentName">
+                <config>
+
+                </config>
+            </interventionSelector>
+
+            <interventionSelector onEvent="Login" weight="1" runOnce="true" class="edu.umass.ckc.wo.login.interv.PreSurvey">
                 <config>
 
                 </config>

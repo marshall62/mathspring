@@ -12,9 +12,6 @@ public class LoginAdult_2 extends Login2 {
 
     public LoginAdult_2() {
         this.login1_jsp = LOGIN_JSP;
-        this.login_getName_jsp = "woAdult/login2a.jsp";
-        this.login_getFlankingUsers_jsp = "woAdult/login2b.jsp";
         this.login_existingSess_jsp= "woAdult/loginExistingSession.jsp";
-        this.clientType = "adult";
     }
 }

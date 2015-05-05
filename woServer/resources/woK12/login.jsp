@@ -78,6 +78,7 @@ function checkSound() {
               <p></p>
               <form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
                 <input type="hidden" name="action" value="LoginK12_2"/>
+                <input type="hidden" name="skin" value="k12"/>
                 <p>User Name:
                   <input type="text" name="uname" value="${userName}" />
                   <br />

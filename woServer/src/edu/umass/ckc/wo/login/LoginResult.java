@@ -8,11 +8,13 @@ public class LoginResult {
     String message;
     LearningCompanion learningCompanion;
     int status;
+    boolean forwardedToJSP=true;
 
     public static final int  NEW_SESSION = 1;
     public static final int  ALREADY_LOGGED_IN = 2;
     public static final int  ERROR = -1;
-
+    public static final boolean  FORWARDED_TO_JSP = true;
+    public static final boolean  NOT_FORWARDED_TO_JSP = false;
 
     public LoginResult(int sessId, String loginView) {
         this.sessId = sessId;
@@ -23,6 +25,12 @@ public class LoginResult {
     public LoginResult(int sessId, String loginView, int status) {
         this(sessId,loginView);
         this.status = status;
+    }
+
+    public LoginResult(int sessId, String loginView, int status, boolean forwardedToJSP) {
+        this(sessId,loginView);
+        this.status = status;
+        this.forwardedToJSP = forwardedToJSP;
     }
 
     public int getStatus() {
@@ -56,5 +64,13 @@ public class LoginResult {
 
     public int getSessId() {
         return sessId;
+    }
+
+    public boolean isForwardedToJSP() {
+        return forwardedToJSP;
+    }
+
+    public void setForwardedToJSP(boolean forwardedToJSP) {
+        this.forwardedToJSP = forwardedToJSP;
     }
 }

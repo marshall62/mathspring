@@ -154,6 +154,14 @@ public class PedagogyParser {
             p.setLessonName(e.getTextTrim());
         }
         p.setLessonXML(Settings.lessonMap.get(p.getLessonName()));
+
+        e = pedElt.getChild("login");
+        if (e != null) {
+            p.setLoginXMLName(e.getTextTrim());
+            p.setLoginXML(Settings.loginMap.get(p.getLoginXMLName()));
+        }
+        else p.setLoginXML(null);
+
         e = pedElt.getChild("controlParameters");
         // get the default params
         PedagogicalModelParameters params = new PedagogicalModelParameters();

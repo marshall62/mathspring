@@ -12,14 +12,20 @@ import ckc.servlet.servbase.ServletParams;
  */
 public class ActionFactory {
 
-    public static ServletAction buildAction(ServletParams params) throws Exception {
+    public static LoginServletAction buildAction(ServletParams params) throws Exception {
         String action = params.getMandatoryString("action");
         Class c = ActionFactory.class;
         String packageName = c.getPackage().getName();
         // assumption is that the action class lives in the same package as this factory.
         String actionClassName = packageName + "." + action;
-        c = Class.forName(actionClassName);
-        return (ServletAction) c.newInstance();
+        try {
+            c = Class.forName(actionClassName);
+            return (LoginServletAction) c.newInstance();
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+
+
 
     }
 }

@@ -12,13 +12,10 @@ import org.jdom.Element;
  * To change this template use File | Settings | File Templates.
  */
 public class LoginXML extends ConfigXML{
-    private Element interventions;
-    private Element control;
-    private String name;
-    private String style;
 
-    public LoginXML(Element interventions, Element control, String name, String style) {
-        super(interventions, control, name, style);
+
+    public LoginXML(Element interventions, Element control, String name) {
+        super(interventions, control, name, null);
     }
 
 

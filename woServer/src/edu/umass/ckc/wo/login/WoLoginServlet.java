@@ -6,7 +6,9 @@ import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCContentMgr;
 import edu.umass.ckc.wo.content.LessonMgr;
+import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
 import edu.umass.ckc.wo.mrcommon.Names;
+import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
@@ -37,31 +39,42 @@ public class WoLoginServlet extends BaseServlet {
 
     protected boolean handleRequest(ServletContext servletContext, Connection conn, HttpServletRequest request,
                                     HttpServletResponse response, ServletParams params, StringBuffer servletOutput) throws Exception {
-        ServletAction action = ActionFactory.buildAction(params);
+        LoginServletAction action = ActionFactory.buildAction(params);
         ServletInfo servletInfo = new ServletInfo(servletContext,conn,request,response,params,servletOutput,hostPath,contextPath,this.getServletName());
-        Settings.getSurveys(conn); // makes sure the latest survey URLS from the DB are used.
+
         logger.info(">>" + params.toString());
-        // after the user/pw has been accepted all the other actions are LoginEvent
-        if (action.equals("LoginEvent"))   {
-            LoginSequence ls = new LoginSequence(servletInfo);
+        // after the user/pw has been accepted all the other actions are LoginEvent or LoginInterventionInput
+        if (action == null && params.getString("action").equals("LoginEvent"))   {
+            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
+            ls.processAction(params);
+            return false;
+        }
+        // When an intervention is complete, the form is submitted with an action=LoginInterventionInput and interventionClass=InterventionSelector
+        // so that we can send the form inputs to the intervention selector that generated the intervention.
+        else if (action == null && params.getString("action").equals("LoginInterventionInput")) {
+            String cl = params.getString("interventionClass");
+            int sessId = params.getInt("sessionId");
+            Class c = Class.forName(cl);
+            SessionManager smgr = new SessionManager(conn,sessId,servletInfo.getHostPath(),servletInfo.getContextPath()).buildExistingSession();
+            LoginInterventionSelector is = (LoginInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
+            is.init(servletInfo);
+            is.processInput(params);
+            // Now find the next intervention
+            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
             ls.processAction(params);
             return false;
         }
         else {  // processes the first login event which is the user id/pw
-            String viewName = action.process(conn, servletContext,params, request,response, servletOutput);
-            // If the login goes cleanly, it returns null and then we move to the LoginSequence
-            if (viewName == null) {
-                LoginSequence ls = new LoginSequence(servletInfo);
+            LoginResult lr = action.process(servletInfo);
+            // Sometimes the login is processed by forwarding to a JSP, so just return false because a page is already generated
+            if (lr.isForwardedToJSP())
+                return false;
+            else {
+                LoginSequence ls = new LoginSequence(servletInfo,lr.getSessId());
                 ls.processAction(params);
                 return false;
             }
-            logger.info("<< JSP: " + viewName);
-            if (viewName != null) {
-                RequestDispatcher disp = request.getRequestDispatcher(viewName);
-                disp.forward(request,response);
-                return false; // tells the superclass servlet not to write to the output stream because the request has been forwarded.
-            }
-            else return true; // the action just wrote some stuff into servletOutput so the servlet should flush it out
+
         }
     }
 

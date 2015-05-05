@@ -1,12 +1,14 @@
 package edu.umass.ckc.wo.login.interv;
 
-import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbSession;
+import ckc.servlet.servbase.ServletParams;
+import edu.umass.ckc.wo.db.DbUser;
+import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.User;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,13 +17,34 @@ import java.util.List;
  * Time: 3:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public class StudentName extends LoginIntervention  {
+public class StudentName extends LoginInterventionSelector {
 
-    private static final String JSP = "login/js/neighbors.jsp";
+    private static final String JSP = "studentName.jsp";
 
-    public StudentName(SessionManager smgr) {
+    public StudentName(SessionManager smgr) throws SQLException {
         super(smgr);
     }
+
+    public Intervention selectIntervention (SessionEvent e) throws SQLException {
+        long shownTime = this.interventionState.getTimeOfLastIntervention();
+        boolean firstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId());
+        // Only return an intervention when this is the very first login
+        if (!firstLogin || shownTime > 0)
+            return null;
+        else {
+            super.selectIntervention(e);
+            return new LoginIntervention(JSP);
+        }
+    }
+
+    public void processInput (ServletParams params) throws SQLException {
+        String fname = params.getString(LoginParams.FNAME);
+        String lini = params.getString(LoginParams.LINI);
+        DbUser.setUserNames(servletInfo.getConn(), smgr.getStudentId(), fname, lini);
+
+    }
+
+
 
     public String f (SessionManager smgr) {
 //        if (isFirstLogin) {

@@ -13,15 +13,12 @@
         <input type="hidden" name="sessionId" value="${sessionId}"/>
         <input type="hidden" name="action" value="LoginInterventionInput"/>
         <input type="hidden" name="interventionClass" value="${interventionClass}"/>
-        <p>&nbsp;</p>
-        <p>First Name:
-            <input type="text" name="fname" />
-            Last Initial:
-            <input type="text" name="lini" />
-            <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input  type="submit"  value="Submit" />
-
-
+        <p>&nbsp;
+        Please fill out the survey in the new browser window that should be showing (if not, check that your
+            browser is not blocking pop-up windows).   When you have completed the survey, close the window it is in and
+            click the continue button below.  <br><br>
+        &nbsp;&nbsp;&nbsp;<input type="submit" name="Continue" value="Continue"/>
         </p>
+
     </form>
 </div>

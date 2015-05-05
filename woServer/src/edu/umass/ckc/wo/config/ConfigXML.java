@@ -12,10 +12,10 @@ import org.jdom.Element;
  * To change this template use File | Settings | File Templates.
  */
 public class ConfigXML {
-    private Element interventions;
-    private Element control;
-    private String name;
-    private String style;
+    protected Element interventions;
+    protected Element control;
+    protected String name;
+    protected String style;
 
     public ConfigXML(Element interventions, Element control, String name, String style) {
         this.interventions = interventions;

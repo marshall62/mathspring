@@ -58,6 +58,7 @@
 
                             <form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
                                 <input type="hidden" name="action" value="LoginAdult_1"/>
+                                <input type="hidden" name="skin" value="adult"/>
                                 <p>
                                     <input value="Return to Login Page" type="submit"/>
 
@@ -72,6 +73,7 @@
                                      <input type="hidden" name="uname" value="${uname}"/>
                                      <input type="hidden" name="password" value="${password}"/>
                                      <input type="hidden" name="logoutExistingSession" value="true"/>
+                                     <input type="hidden" name="skin" value="adult"/>
                                  </p>
                              </form>
                         </div>

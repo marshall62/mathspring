@@ -19,10 +19,7 @@ public class LoginK12_2 extends Login2 {
 
     public LoginK12_2() {
         this.login1_jsp = LOGIN_JSP;
-        this.login_getName_jsp = "woK12/login2a.jsp";
-        this.login_getFlankingUsers_jsp = "woK12/login2b.jsp";
         this.login_existingSess_jsp = "woK12/loginExistingSession.jsp";
-        this.clientType = "k12";
     }
 
 

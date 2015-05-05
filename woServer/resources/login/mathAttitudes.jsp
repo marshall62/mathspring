@@ -8,14 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
-    <input type="hidden" name="action" value="LoginAdult_3"/>
+    <input type="hidden" name="action" value="LoginInterventionInput"/>
     <input type="hidden" name="sessionId" value="${sessionId}">
+    <input type="hidden" name="skin" value="${skin}"/>
+    <input type="hidden" name="interventionClass" value="${interventionClass}"/>
+
     <p>&nbsp;</p>
-    <p><b>First Name:
-        <input type="text" name="fname" />
-        Last Initial:
-        <input type="text" name="lini" /> </b></p>
-    <br>
+
     <p><b>How confident do you feel when solving math problems?:</b></p>
     <input type="radio" name="confidence" value="1">Not at all</input>
     <input type="radio" name="confidence" value="2">A little</input>

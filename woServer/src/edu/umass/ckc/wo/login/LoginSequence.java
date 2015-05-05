@@ -2,21 +2,18 @@ package edu.umass.ckc.wo.login;
 
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.config.LoginXML;
-import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbSession;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.interv.LoginIntervention;
+import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.model.InterventionGroup;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.woserver.ServletInfo;
 
+import javax.servlet.RequestDispatcher;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,11 +34,11 @@ public class LoginSequence {
 
      // need to be able to use this class before there is a sessionId passed on the params
 
-    public LoginSequence(ServletInfo servletInfo) throws Exception {
+    public LoginSequence(ServletInfo servletInfo, int sessId) throws Exception {
         this.servletInfo = servletInfo;
         this.conn = servletInfo.getConn();
         ServletParams params = servletInfo.getParams();
-        this.sessId = params.getInt("sessionId");
+        this.sessId = sessId;
         this.smgr = new SessionManager(servletInfo.getConn(),sessId,servletInfo.getHostPath(),servletInfo.getContextPath()).buildExistingSession();
         pedagogicalModel = smgr.getPedagogicalModel();
         Pedagogy ped = pedagogicalModel.getPedagogy();
@@ -54,13 +51,29 @@ public class LoginSequence {
         interventionGroup = new InterventionGroup(loginXML.getInterventions());
         interventionGroup.buildInterventions(smgr,pedagogicalModel);
         for (InterventionSelector s : interventionGroup.getAllInterventions()) {
-            LoginIntervention ls = (LoginIntervention) s;
-            ls.init(servletInfo.getRequest());
+            LoginInterventionSelector ls = (LoginInterventionSelector) s;
+            ls.init(servletInfo);
         }
     }
 
 
     public void processAction (ServletParams params) throws Exception {
-        interventionGroup.selectIntervention(smgr,new SessionEvent(params),"Login");
+        LoginIntervention li = (LoginIntervention) interventionGroup.selectIntervention(smgr,new SessionEvent(params,this.sessId),"Login");
+        if (li != null) {
+            String innerJSP = li.getView();
+            String skin = params.getString("skin");
+            String loginJSP="login/logink12.jsp" ;
+            if (skin != null && skin.equalsIgnoreCase("adult"))
+                loginJSP = "login/loginAdult.jsp";
+            servletInfo.getRequest().setAttribute("innerjsp",innerJSP);
+            if (li.hasURL())
+                servletInfo.getRequest().setAttribute("URL",li.getURL());
+
+            RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
+            disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
+        }
+        else {
+            new LandingPage(servletInfo,smgr).handleRequest();
+        }
     }
 }

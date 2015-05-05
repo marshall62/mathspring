@@ -14,9 +14,12 @@
 
     <div class="set">
         <form method="post" name="login"
-              action="<c:out value="${pageContext.request.contextPath}"/>/WoLoginServlet">
-        <input type="hidden" name="action" value="Login4"/>
+              action="${pageContext.request.contextPath}/WoLoginServlet">
+        <input type="hidden" name="action" value="LoginInterventionInput"/>
         <input type="hidden" name="sessionId" value="${sessionId}"/>
+        <input type="hidden" name="skin" value="${skin}"/>
+        <input type="hidden" name="interventionClass" value="${interventionClass}"/>
+
         <c:out value="${message}"/>
         <p>Who is on your left?
             <select name="left">

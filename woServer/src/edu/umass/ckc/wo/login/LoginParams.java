@@ -15,10 +15,10 @@ public class LoginParams {
     static final String START_PAGE= "startPage";
     public static final String MESSAGE = "message";
     static final String SESSION_ID = "sessionId";
-    static final String FNAME = "fname";
-    static final String LINI = "lini";
-    static final String LEFT = "left";
-    static final String RIGHT = "right";
+    public static final String FNAME = "fname";
+    public static final String LINI = "lini";
+    public static final String LEFT = "left";
+    public static final String RIGHT = "right";
     public static final String STUDENTS = "students";
     public static final String CONFIDENCE = "confidence";
     public static final String EXCITEMENT = "excitement";
