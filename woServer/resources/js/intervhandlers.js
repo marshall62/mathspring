@@ -1,3 +1,5 @@
+var timeout = 0;
+
 // This is for an attempt event that asks to highlight the hint button
 // its a shame this function has to know the image files that are defined in the CSS rather than fetching them from it.
 function highlightHintButton() {
@@ -48,9 +50,11 @@ function processMyProgressNavAskIntervention (html) {
 function processCollaborationPartnerIntervention(html) {
     interventionDialogOpen("Work with a partner", html, NEXT_PROBLEM_INTERVENTION);
     $("#ok_button").hide();
-    servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
-    globals.interventionType = null;
-    globals.isInputIntervention= false;
+    setTimeout(function(){
+        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+        globals.interventionType = null;
+        globals.isInputIntervention= false;
+    }, 1000);
 }
 
 function processCollaborationConfirmationIntervention(html) {
@@ -60,9 +64,18 @@ function processCollaborationConfirmationIntervention(html) {
 function processCollaborationOriginatorIntervention(html) {
     interventionDialogOpen("Waiting for a partner", html, NEXT_PROBLEM_INTERVENTION);
     $("#ok_button").hide();
-    servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
-    globals.interventionType = null;
-    globals.isInputIntervention= false;
+    setTimeout(function(){
+            if(timeout >= 60000){
+                timeout = 0;
+                servletGet("TimedIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+            }
+            else{
+                timeout = timeout + 1000;
+                servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+            }
+            globals.interventionType = null;
+            globals.isInputIntervention= false;}
+        , 1000);
 }
 
 function processCollaborationFinishedIntervention(html) {

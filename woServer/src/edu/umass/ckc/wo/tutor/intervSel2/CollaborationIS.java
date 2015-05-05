@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.event.tutorhut.TimedInterventionEvent;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -33,7 +34,6 @@ public class CollaborationIS extends NextProblemInterventionSelector {
 
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception{
         Integer partner = PartnerManager.checkForRequestingPartner(smgr.getStudentId());
-        //TODO log partner here somehow
         if(partner != null){
               return (new CollaborationPartnerIS(smgr, pedagogicalModel)).selectInterventionWithId(e, partner);
         }
@@ -52,19 +52,17 @@ public class CollaborationIS extends NextProblemInterventionSelector {
         }
     }
 
-    // Some interventions ask if you want to do something
-    //  No choices
-    //  Use this one
-    //  Look at TopicSwitchIntervention for reference
-    //  Send one of these when the thing closes
-    //  Select 2nd intervention that does wait
     public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
         return ((NextProblemInterventionSelector) getInterventionSelectorThatGeneratedIntervention()).processContinueNextProblemInterventionEvent(e);
     }
 
-    //  For when students are asked to help or when waiting for a helper (so when polling)
     public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
         return ((NextProblemInterventionSelector) getInterventionSelectorThatGeneratedIntervention()).processInputResponseNextProblemInterventionEvent(e);
+    }
+
+    @Override
+    public Intervention processTimedInterventionEvent(TimedInterventionEvent e) throws Exception {
+        return ((NextProblemInterventionSelector) getInterventionSelectorThatGeneratedIntervention()).processTimedInterventionEvent(e);
     }
 
 }

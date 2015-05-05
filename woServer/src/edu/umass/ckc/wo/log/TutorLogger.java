@@ -290,6 +290,9 @@ public class TutorLogger {
     public void logContinueNextProblemIntervention (ContinueNextProblemInterventionEvent e, Response r) throws Exception {
         insertLogEntry(RequestActions.CONTINUE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }
+    public void logTimedIntervention (TimedInterventionEvent e, Response r) throws Exception {
+        insertLogEntry(RequestActions.CONTINUE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
+    }
     public void logContinueAttemptIntervention(ContinueAttemptInterventionEvent e, Response r) throws Exception {
         insertLogEntry(RequestActions.CONTINUE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }

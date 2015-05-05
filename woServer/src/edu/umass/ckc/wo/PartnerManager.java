@@ -45,7 +45,7 @@ public class PartnerManager {
         if(requestees_requesters.containsKey(id)){
             Integer partner = requestees_requesters.get(id).iterator().next();
             requesters.get(partner).setPartner(id);
-            current_matches.put(partner, id);
+            current_matches.put(id, partner);
             ArrayList<Integer> toRemove = requesters.get(partner).getPossiblePartners();
             for(Integer rem : toRemove){
                 requestees_requesters.get(rem).remove(partner);
@@ -66,7 +66,7 @@ public class PartnerManager {
 
     public synchronized static void removeRequest(int id){
         requesters.remove(id);
-        current_matches.remove(id);
+        current_matches.values().remove(id);
     }
 
     public synchronized static boolean requestExists(int id) {
@@ -74,10 +74,17 @@ public class PartnerManager {
     }
 
     public synchronized static boolean isPartner(int id){
-        if(current_matches.containsValue(id)){
+        if(current_matches.containsKey(id)){
             return true;
         }
         return false;
+    }
+
+    public synchronized static Integer getRequestingPartner(int id) {
+        if(current_matches.containsKey(id)){
+            return current_matches.get(id);
+        }
+        return null;
     }
 
     public synchronized static String getPartnerName(Connection conn, int id) throws SQLException{

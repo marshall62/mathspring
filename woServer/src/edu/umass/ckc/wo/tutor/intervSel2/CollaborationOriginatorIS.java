@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.event.tutorhut.TimedInterventionEvent;
 import edu.umass.ckc.wo.interventions.CollaborationConfirmationIntervention;
 import edu.umass.ckc.wo.interventions.CollaborationOriginatorIntervention;
 import edu.umass.ckc.wo.interventions.CollaborationTimeoutIntervention;
@@ -50,7 +51,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
             //Random is used to make sure the collaboration is not triggered every time.
             double random = Math.random();
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .1) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .5) {
                 rememberInterventionSelector(this);
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
@@ -67,27 +68,21 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
     //  Send one of these when the thing closes
     //  Select 2nd intervention that does wait
     public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
-        Integer partner = null;
-        int wait = 0;
-        while(partner == null){
-            Thread.sleep(200);
-            partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
-            wait = wait + 200;
-            if(wait >= 60000){
-                rememberInterventionSelector(this);
-                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimeoutIntervention");
-                return new CollaborationTimeoutIntervention();
-            }
+        Integer partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
+        if(partner == null){
+            rememberInterventionSelector(this);
+            //Do not log the intervention this time or the database will become cluttered
+            return new CollaborationOriginatorIntervention();
         }
-        //TODO log the partner here, somehow.
-        rememberInterventionSelector(this);
-        User u = DbUser.getStudent(smgr.getConnection(),partner);
-        String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
-        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationIntervention");
-        return new CollaborationConfirmationIntervention(name);
+        else{
+            rememberInterventionSelector(this);
+            User u = DbUser.getStudent(smgr.getConnection(),partner);
+            String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationIntervention");
+            return new CollaborationConfirmationIntervention(name);
+        }
     }
 
-    //  For when students are asked to help or when waiting for a helper (so when polling)
     public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
         String option = e.getServletParams().getString(CollaborationTimeoutIntervention.OPTION);
         if(option != null && option.equals("Yes")){
@@ -106,4 +101,9 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         }
     }
 
+    public Intervention processTimedInterventionEvent(TimedInterventionEvent e) throws Exception {
+        rememberInterventionSelector(this);
+        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimeoutIntervention");
+        return new CollaborationTimeoutIntervention();
+    }
 }

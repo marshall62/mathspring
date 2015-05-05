@@ -45,8 +45,12 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
     }
 
     public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
-        while(PartnerManager.isPartner(smgr.getStudentId())){
-            Thread.sleep(200);
+        if(PartnerManager.isPartner(smgr.getStudentId())){
+            rememberInterventionSelector(this);
+            CollaborationPartnerIntervention interv = new CollaborationPartnerIntervention();
+            Integer partnerId = PartnerManager.getRequestingPartner(smgr.getStudentId());
+            interv.setPartner(PartnerManager.getPartnerName(conn, partnerId));
+            return interv;
         }
         rememberInterventionSelector(this);
         DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationPartnerIntervention");
