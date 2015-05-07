@@ -5,6 +5,7 @@
   Time: 3:46 PM
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="p7ccm04-1col-column1-cnt p7ccm04-content">
     <p>If you are working in a classroom or a lab the MathSpring Mathematics Tutor can better
@@ -21,16 +22,13 @@
         <input type="hidden" name="interventionClass" value="${interventionClass}"/>
 
         <c:out value="${message}"/>
-        Your class has ${nstudents}
-        The first student is ${students[0].fname}<br>
-
-        The list len is ${students.size()}
         <p>Who is on your left?
             <select name="left">
 
                 <option value="-1">No One</option>
                 <c:forEach var="u" items="${students}">
-
+                    <%--<c:out value="${u.id}"/>--%>
+                     <%--<br>--%>
                     <option value="${u.id}">${u.uname} : ${u.fname} ${u.lname}</option>
                 </c:forEach>
             </select>
