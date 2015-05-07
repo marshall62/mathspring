@@ -25,9 +25,9 @@ public class StudentName extends LoginInterventionSelector {
         super(smgr);
     }
 
-    public Intervention selectIntervention (SessionEvent e) throws SQLException {
+    public Intervention selectIntervention (SessionEvent e) throws Exception {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
-        boolean firstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId());
+        boolean firstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId(),smgr.getSessionNum());
         // Only return an intervention when this is the very first login
         if (!firstLogin || shownTime > 0)
             return null;

@@ -46,7 +46,7 @@ public class LoginInterventionSelector extends InterventionSelector implements P
 
     }
 
-    public Intervention selectIntervention (SessionEvent e) throws SQLException {
+    public Intervention selectIntervention (SessionEvent e) throws Exception {
         rememberInterventionSelector(this);
         interventionState.setTimeOfLastIntervention(System.currentTimeMillis());
         HttpServletRequest req = this.servletInfo.getRequest();

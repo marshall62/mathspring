@@ -1,5 +1,6 @@
 <logins>
 
+    <!-- Asks for student name, math attitudes, neighbors, a survey-->
     <login name="CollabLogin">
         <controlParameters>
 
@@ -24,11 +25,64 @@
 
             <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PreSurvey">
                 <config>
-                    <url>
-                    <iframe src="https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-                    </url>
-                    <embed>true</embed>
+                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?usp=send_form</url>
+                    <embed>false</embed>
             </config>
+            </interventionSelector>
+
+
+
+        </interventions>
+    </login>
+
+    <!-- Asks student name, math attitudes, survey-->
+
+    <login name="SurveyLogin">
+        <controlParameters>
+
+        </controlParameters>
+
+        <interventions>
+
+
+            <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.StudentName">
+                <config>
+
+                </config>
+            </interventionSelector>
+
+            <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PreSurvey">
+                <config>
+                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?embedded=true</url>
+                    <embed>true</embed>
+                </config>
+            </interventionSelector>
+
+
+
+        </interventions>
+    </login>
+
+
+    <login name="SurveyPopupLogin">
+        <controlParameters>
+
+        </controlParameters>
+
+        <interventions>
+
+
+            <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.StudentName">
+                <config>
+
+                </config>
+            </interventionSelector>
+
+            <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PreSurvey">
+                <config>
+                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?usp=send_form</url>
+                    <embed>false</embed>
+                </config>
             </interventionSelector>
 
 

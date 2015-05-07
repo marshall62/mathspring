@@ -35,12 +35,13 @@ public class LoginAdult_1 implements LoginServletAction {
         req.setAttribute("clientType",LoginParams.ADULT);
         req.setAttribute("preSurvey", Settings.preSurvey);
         req.setAttribute("postSurvey", Settings.postSurvey);
+        req.setAttribute("startPage",this.getClass().getSimpleName());
         String name = getClass().getName();
         if (name.lastIndexOf('.') > 0)
             name = name.substring(name.lastIndexOf('.')+1);
         req.setAttribute(LoginParams.START_PAGE,name);
         req.setAttribute(LoginParams.MESSAGE,null);
-        String jsp= "woAdult/login.jsp";
+        String jsp= "login/loginAdult.jsp";
         req.getRequestDispatcher(jsp).forward(req, servletInfo.getResponse());
         LoginResult lr = new LoginResult(-1,null,LoginResult.NEW_SESSION,LoginResult.FORWARDED_TO_JSP);
         // results are forwarded to a JSP

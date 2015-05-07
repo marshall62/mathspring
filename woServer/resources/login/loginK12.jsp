@@ -102,8 +102,6 @@ function checkSound() {
 
                   <p>
                     <button type="button" onClick="javascript:signup();">Sign up</button>
-
-                    <input type="hidden" name="startPage" value="LoginAdult_1"/>
                   </p>
                   </form>
                   <p><strong>Or you may</strong></p>

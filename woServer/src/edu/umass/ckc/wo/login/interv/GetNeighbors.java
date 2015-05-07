@@ -32,7 +32,7 @@ public class GetNeighbors extends LoginInterventionSelector {
 
 
 
-    public Intervention selectIntervention (SessionEvent e) throws SQLException {
+    public Intervention selectIntervention (SessionEvent e) throws Exception {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
         if (shownTime > 0)
             return null;
@@ -42,6 +42,7 @@ public class GetNeighbors extends LoginInterventionSelector {
             List<User> students = DbClass.getClassStudents(conn,smgr.getStudentClass(smgr.getStudentId()));
             HttpServletRequest req = this.servletInfo.getRequest();
             req.setAttribute(LoginParams.STUDENTS,students);
+            req.setAttribute("nstudents",students.size());
             return new LoginIntervention(JSP);
         }
     }
@@ -53,12 +54,4 @@ public class GetNeighbors extends LoginInterventionSelector {
     }
 
 
-    public String f (SessionManager smgr) throws SQLException {
-        int oldSessId = DbSession.findActiveSession(smgr.getConnection(), smgr.getStudentId());
-        if (oldSessId != -1)
-            request.setAttribute(LoginParams.MESSAGE, "You had an old session which has been automatically logged out.");
-        List<User> students = DbClass.getClassStudents(smgr.getConnection(), smgr.getStudentClass(smgr.getStudentId()));
-        request.setAttribute(LoginParams.STUDENTS,students);
-        return JSP;
-    }
 }

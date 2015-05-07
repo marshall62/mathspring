@@ -25,9 +25,9 @@ public class MathAttitudes extends LoginInterventionSelector {
         super(smgr);
     }
 
-    public Intervention selectIntervention (SessionEvent e) throws SQLException {
+    public Intervention selectIntervention (SessionEvent e) throws Exception {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
-        boolean isFirstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId());
+        boolean isFirstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId(),smgr.getSessionNum());
         // isFirstLogin is checked so that we only show this the first time the student logs in.
         // shownTime is checked to make sure we don't show this more than once in that first login
         if (!isFirstLogin || shownTime > 0)

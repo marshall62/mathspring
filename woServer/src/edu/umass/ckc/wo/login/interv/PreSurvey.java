@@ -51,24 +51,25 @@ public class PreSurvey  extends LoginInterventionSelector {
 
 
 
-    public Intervention selectIntervention (SessionEvent e) throws SQLException {
+    public Intervention selectIntervention (SessionEvent e) throws Exception {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
-        boolean isFirstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId());
+        boolean isFirstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId(),smgr.getSessionNum());
         if (!isFirstLogin || shownTime > 0)
             return null;
         else {
             super.selectIntervention(e);
             // Shows the survey in an embedded iframe
+
             if (this.embed) {
-                servletInfo.getRequest().setAttribute("surveyIframe",url);
+                servletInfo.getRequest().setAttribute("iframeURL",url);
                 return new LoginIntervention(JSPI);
             }
             else {
             // A JSP will show nothing more than a "continue" button.
             // The URL comes up in a separate browser window.  When the user is done in the separate window
             // they close it and click the "continue" button.
-                servletInfo.getRequest().setAttribute("survey",url);
-                return new LoginIntervention(JSP,url,true);
+                servletInfo.getRequest().setAttribute("URL",url);
+                return new LoginIntervention(JSP);
             }
         }
     }

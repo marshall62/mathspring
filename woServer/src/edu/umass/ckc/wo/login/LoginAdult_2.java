@@ -8,10 +8,10 @@ package edu.umass.ckc.wo.login;
  * To change this template use File | Settings | File Templates.
  */
 public class LoginAdult_2 extends Login2 {
-    public static final String LOGIN_JSP = "woAdult/login.jsp";
+    public static final String LOGIN_JSP = "login/loginAdult.jsp";
 
     public LoginAdult_2() {
         this.login1_jsp = LOGIN_JSP;
-        this.login_existingSess_jsp= "woAdult/loginExistingSession.jsp";
+        this.login_existingSess_jsp= "login/loginExistingSessionAdult.jsp";
     }
 }

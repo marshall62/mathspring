@@ -173,7 +173,6 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -185,6 +184,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         </controlParameters>
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <package>pedModel2</package>
         <interventions>
 
@@ -234,7 +235,6 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -247,6 +247,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -296,7 +298,6 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -309,6 +310,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>SurveyPopupLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -357,7 +360,6 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -370,6 +372,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>SurveyLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -418,7 +422,6 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -431,6 +434,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
 
         <interventions>
 
@@ -476,7 +481,6 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -488,6 +492,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         </controlParameters>
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -550,6 +556,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -638,7 +645,6 @@ JaneForceSPP
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -651,6 +657,8 @@ JaneForceSPP
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -711,7 +719,6 @@ JaneForceSPP
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -724,6 +731,8 @@ JaneForceSPP
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -795,7 +804,6 @@ JakeYesSPPButton-->
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
-        <lesson>TopicWithIntroAndExample</lesson>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -808,6 +816,8 @@ JakeYesSPPButton-->
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -857,6 +867,7 @@ JakeYesSPPButton-->
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -923,6 +934,7 @@ JakeNoSPPButton-->
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -983,6 +995,7 @@ JakeNoSPPButton-->
         <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
         <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -1041,6 +1054,7 @@ JakeNoSPPButton-->
         <name>Jane Teach One topic for Assistments</name>
         <comment>for Assistments</comment>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -1071,6 +1085,7 @@ JakeNoSPPButton-->
         <name>Jane Teach a Common Core Lesson for Assistments With Jane</name>
         <comment>for Assistments</comment>
         <lesson>CommonCore</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -1101,6 +1116,7 @@ JakeNoSPPButton-->
         <name>No LC Teach One topic for Assistments</name>
         <comment>for Assistments</comment>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
@@ -1129,6 +1145,7 @@ JakeNoSPPButton-->
         <name>Highlight hint buttons, Ask about topic switch, ask emotions, warn about guessing</name>
         <name>Alpha Testing</name>
         <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
             <problemReuseIntervalSessions>6</problemReuseIntervalSessions>

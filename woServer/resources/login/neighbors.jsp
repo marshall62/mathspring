@@ -21,12 +21,16 @@
         <input type="hidden" name="interventionClass" value="${interventionClass}"/>
 
         <c:out value="${message}"/>
+        Your class has ${nstudents}
+        The first student is ${students[0].fname}<br>
+
+        The list len is ${students.size()}
         <p>Who is on your left?
             <select name="left">
-                <%--@elvariable id="students" type="java.util.List"--%>
-                <%--@elvariable id="u" type="edu.umass.ckc.wo.smgr.User"--%>
+
                 <option value="-1">No One</option>
                 <c:forEach var="u" items="${students}">
+
                     <option value="${u.id}">${u.uname} : ${u.fname} ${u.lname}</option>
                 </c:forEach>
             </select>

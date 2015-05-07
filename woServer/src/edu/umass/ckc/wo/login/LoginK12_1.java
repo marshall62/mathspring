@@ -36,12 +36,13 @@ public class LoginK12_1 implements LoginServletAction {
         req.setAttribute("preSurvey", Settings.preSurvey);
         req.setAttribute("postSurvey", Settings.postSurvey);
         req.setAttribute("clientType",LoginParams.K12);
+        req.setAttribute("startPage",this.getClass().getSimpleName());
         String name = getClass().getName();
         if (name.lastIndexOf('.') > 0)
             name = name.substring(name.lastIndexOf('.')+1);
         req.setAttribute(LoginParams.START_PAGE,name);  // must be name of this class
         req.setAttribute(LoginParams.MESSAGE,null);
-        String jsp= "woK12/login.jsp";
+        String jsp= "login/loginK12.jsp";
         req.getRequestDispatcher(jsp).forward(req, servletInfo.getResponse());
         LoginResult lr = new LoginResult(-1,null,LoginResult.NEW_SESSION,LoginResult.FORWARDED_TO_JSP);
         return lr;

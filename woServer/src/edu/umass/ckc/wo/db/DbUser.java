@@ -524,18 +524,19 @@ public class DbUser {
      * @return
      * @throws SQLException
      */
-    public static boolean isFirstLogin (Connection conn, int studId) throws SQLException {
+    public static boolean isFirstLogin (Connection conn, int studId, int curSessId) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select * from eventlog where studId=?";
+            String q = "select * from eventlog where studId=? and sessNum!=?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,studId);
+            stmt.setInt(2,curSessId);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
         finally {
             if (stmt != null)

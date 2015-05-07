@@ -15,11 +15,11 @@ package edu.umass.ckc.wo.login;
  */
 public class LoginK12_2 extends Login2 {
 
-    public static final String LOGIN_JSP = "woK12/login.jsp";
+    public static final String LOGIN_JSP = "login/loginK12.jsp";
 
     public LoginK12_2() {
         this.login1_jsp = LOGIN_JSP;
-        this.login_existingSess_jsp = "woK12/loginExistingSession.jsp";
+        this.login_existingSess_jsp = "login/loginExistingSessionK12.jsp";
     }
 
 

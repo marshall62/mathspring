@@ -65,16 +65,10 @@ public class LoginSequence {
         if (li != null) {
             String innerJSP = li.getView();
             String skin = params.getString("skin");
-            String loginJSP="login/logink12.jsp" ;
+            String loginJSP="login/logink12Outer.jsp" ;
             if (skin != null && skin.equalsIgnoreCase("adult"))
-                loginJSP = "login/loginAdult.jsp";
+                loginJSP = "login/loginAdultOuter.jsp";
             servletInfo.getRequest().setAttribute("innerjsp",innerJSP);
-            if (li.getURL() != null )  {
-                servletInfo.getRequest().setAttribute("openInSeparateWindow",li.openInSeparateWindow());
-                servletInfo.getRequest().setAttribute("URL",li.getURL());
-            }
-
-
             RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
             disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
         }
