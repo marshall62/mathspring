@@ -11,6 +11,7 @@ public class LoginResult {
     boolean forwardedToJSP=true;
 
     public static final int  NEW_SESSION = 1;
+    public static final int  PRE_LOGIN = 0;
     public static final int  ALREADY_LOGGED_IN = 2;
     public static final int  ERROR = -1;
     public static final boolean  FORWARDED_TO_JSP = true;
@@ -72,5 +73,9 @@ public class LoginResult {
 
     public void setForwardedToJSP(boolean forwardedToJSP) {
         this.forwardedToJSP = forwardedToJSP;
+    }
+
+    public boolean isNewSession () {
+        return status == NEW_SESSION;
     }
 }

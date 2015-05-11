@@ -69,6 +69,10 @@ public class LoginSequence {
             if (skin != null && skin.equalsIgnoreCase("adult"))
                 loginJSP = "login/loginAdultOuter.jsp";
             servletInfo.getRequest().setAttribute("innerjsp",innerJSP);
+            servletInfo.getRequest().setAttribute("servletContext",servletInfo.getServletContext().getContextPath());
+            servletInfo.getRequest().setAttribute("servletName",servletInfo.getServletName());
+
+
             RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
             disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
         }
@@ -80,7 +84,7 @@ public class LoginSequence {
         }
     }
 
-    private void clearInterventionState() throws SQLException {
+    public void clearInterventionState() throws SQLException {
         List<InterventionSelectorSpec> specs = interventionGroup.getInterventionsSpecs();
         for (InterventionSelectorSpec s: specs) {
             if (s.getRunFreq().equals(InterventionSelectorSpec.ONCE_PER_SESSION)) {

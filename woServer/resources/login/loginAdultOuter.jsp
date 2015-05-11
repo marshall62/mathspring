@@ -15,18 +15,15 @@
     <script type="text/javascript" src="login/js/p7EHCscripts.js"></script>
     <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="js/simple-slider.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
     <script type="text/javascript">
     // Unfortunately the back button will run this function too which means that it can generate a BeginExternalActivity
     $(document).ready(
         function () {
-            <%-- Open a new browser window if there is a URL for --%>
-            <c:choose>
-                <c:when test="${URL != null}">
-                    window.open('${URL}');
-                </c:when>
-            </c:choose>
-        }
-        );
+            surveyButton('${servletContext}', '${servletName}', '${URL}', '${skin}', ${sessionId}, '${interventionClass}');
+
+        });
+
     </script>
 
     <style type="text/css">

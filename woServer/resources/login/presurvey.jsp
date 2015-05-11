@@ -7,18 +7,18 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div>
-    <form method="post" name="login"
-          action="${pageContext.request.contextPath}/WoLoginServlet">
-        <input type="hidden" name="skin" value="${skin}"/>
-        <input type="hidden" name="sessionId" value="${sessionId}"/>
-        <input type="hidden" name="action" value="LoginInterventionInput"/>
-        <input type="hidden" name="interventionClass" value="${interventionClass}"/>
+    <%--<form method="post" name="login"--%>
+          <%--action="${pageContext.request.contextPath}/WoLoginServlet">--%>
+        <%--<input type="hidden" name="skin" value="${skin}"/>--%>
+        <%--<input type="hidden" name="sessionId" value="${sessionId}"/>--%>
+        <%--<input type="hidden" name="action" value="LoginInterventionInput"/>--%>
+        <%--<input type="hidden" name="interventionClass" value="${interventionClass}"/>--%>
         <p>&nbsp;
-        Please fill out the survey in the new browser window that should be showing (if not, check that your
-            browser is not blocking pop-up windows).   When you have completed the survey, close the window it is in and
-            click the continue button below.  <br><br>
-        &nbsp;&nbsp;&nbsp;<input type="submit" name="Continue" value="Continue"/>
+            Please click the button below to start a survey in another browser tab.  When you are done with the survey, click its
+            submit button, close the browser tab and return here.   You should then click the Continue button to proceed.
+  <br><br>
+        &nbsp;&nbsp;&nbsp;<input id="surveyButton" type="button" name="Start Survey" value="Start Survey"/>
         </p>
 
-    </form>
+    <%--</form>--%>
 </div>

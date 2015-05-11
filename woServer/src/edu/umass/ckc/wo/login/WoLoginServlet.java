@@ -68,9 +68,17 @@ public class WoLoginServlet extends BaseServlet {
         }
         else {  // processes the first login event which is the user id/pw
             LoginResult lr = action.process(servletInfo);
+            // state variables that prevent login interventions from running twice might
+            // be leftover from a previous login sequence that failed recently.  This
+            // will clean them out so that this sequence is fresh.
+            if (lr.isNewSession()) {
+                LoginSequence ls = new LoginSequence(servletInfo,lr.getSessId());
+                ls.clearInterventionState();
+            }
             // Sometimes the login is processed by forwarding to a JSP, so just return false because a page is already generated
-            if (lr.isForwardedToJSP())
+            if (lr.isForwardedToJSP()) {
                 return false;
+            }
             else {
                 LoginSequence ls = new LoginSequence(servletInfo,lr.getSessId());
                 ls.processAction(params);
