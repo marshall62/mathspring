@@ -96,6 +96,10 @@ public class InterventionSelectorSpec implements Comparable<InterventionSelector
         return runFreq;
     }
 
+    public boolean isRunOnce () {
+        return runFreq.equals(ONCE);
+    }
+
     public InterventionSelector buildIS (SessionManager smgr) throws Exception {
 
         InterventionSelector sel= (InterventionSelector) Class.forName(this.getFullyQualifiedClassname()).getConstructor(SessionManager.class).newInstance(smgr);

@@ -58,7 +58,13 @@
                 </config>
             </interventionSelector>
 
+            <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PostSurvey">
+                <config>
+                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?embedded=true</url>
+                    <embed>true</embed>
 
+                </config>
+            </interventionSelector>
 
         </interventions>
     </login>

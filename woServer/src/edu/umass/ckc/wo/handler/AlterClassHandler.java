@@ -267,7 +267,7 @@ public class AlterClassHandler {
                 boolean mr = ee.isMr();
                 boolean defRules = ee.isRestoreDefaults();
                 // the final 0 is to mark the class config as not following default hut activation rules
-                cc = new ClassConfig(pre?1:0,post?1:0,adv?1:0,mfr?1:0,mr?1:0,tutoring?1:0, defRules);
+                cc = new ClassConfig(pre?1:0,post?1:0,adv?1:0,mfr?1:0,mr?1:0,tutoring?1:0, defRules, false);
                 DbClass.setClassConfig(conn,ee.getClassId(),cc);
             }
             ClassInfo classInfo = DbClass.getClass(conn,ee.getClassId());

@@ -668,7 +668,12 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processBeginInterventionEvent(BeginInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logShowIntervention(e, r, smgr.getStudentState().getLastIntervention());
+        String intervType = e.getInterventionType();
+        String lastInterv =  smgr.getStudentState().getLastIntervention();
+        // Prefer an intervType passed by the client to one coming from memory state.
+        String interv;
+        interv = (intervType != null && !intervType.equals("")) ? intervType : lastInterv;
+        new TutorLogger(smgr).logShowIntervention(e, r, interv);
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
         return r;

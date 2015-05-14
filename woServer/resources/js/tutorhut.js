@@ -204,6 +204,18 @@ function showAnswer (ans) {
     $("#answer").text("Answer: " + ans);
 }
 
+function showVarBindings (varBindings) {
+    if (varBindings == undefined) {
+        $("#varBindings").text("No Var Bindings");
+    }
+    else {
+        var s='';
+        for (var k in varBindings)
+            s = s + k + ":" + varBindings[k] + ',';
+        $("#varBindings").text("Var Bindings: " + s);
+    }
+}
+
 function loadIframe (iframeId, url) {
     $(iframeId).attr("src", url);
 }
@@ -531,21 +543,34 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         var resource =activity.resource;
         var topic = activity.topicName;
         var standards = activity.standards;
+        var varBindings = activity.parameters;
         setGlobalProblemInfo(activity);
 
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
             // If server shuffles the answer to a different position, then newAnswer contains this position
-            if (activity.newAnswer != null && activity.newAnswer != 'undefined') {
+            if (activity.newAnswer != null && activity.newAnswer != undefined) {
                 globals.newAnswer = activity.newAnswer;
                 globals.answer = activity.answer
                 showAnswer(activity.newAnswer);
+                showVarBindings(varBindings);
             }
             else {
                 globals.newAnswer = activity.newAnswer;
                 globals.answer = activity.answer;
-                showAnswer(activity.answer);
+                // The answer may be in the var bindings  as  $Best_Answer
+                if (varBindings != undefined) {
+                    alert("Varbindings are:"+ varBindings);
+                    var bestAns = varBindings.$Best_Answer;
+                    alert("Best answer is: "+ bestAns);
+                    showAnswer(bestAns);
+                    showVarBindings(varBindings);
+                }
+                else {
+                    showAnswer(activity.answer);
+                    showVarBindings(varBindings);
+                }
             }
 
         }

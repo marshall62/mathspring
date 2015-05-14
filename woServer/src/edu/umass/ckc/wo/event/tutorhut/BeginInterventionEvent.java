@@ -10,7 +10,15 @@ import ckc.servlet.servbase.ServletParams;
  * To change this template use File | Settings | File Templates.
  */
 public class BeginInterventionEvent extends TutorHutEvent {
+
+   private String interventionType;
+
    public BeginInterventionEvent (ServletParams p) throws Exception {
        super(p);
+       interventionType = p.getString("interventionType");
    }
+
+    public String getInterventionType () {
+        return this.interventionType;
+    }
 }

@@ -25,7 +25,7 @@ function processNextProblemIntervention(activityJSON) {
         processMyProgressNavIntervention(activityJSON.html);
     else if (interventionType === "MyProgressNavigationAsk")
         processMyProgressNavAskIntervention(activityJSON.html);
-    sendBeginIntervention(globals);
+    sendBeginIntervention(globals, interventionType);
 
 }
 
@@ -41,7 +41,7 @@ function processAttemptIntervention (interv) {
             highlightHintButton();
         else if (type === 'RapidAttemptIntervention')
             processRapidAttemptIntervention(interv.html);
-        sendBeginIntervention(globals);
+        sendBeginIntervention(globals,type);
     }
 }
 
@@ -110,9 +110,9 @@ function sendInterventionDialogInputResponse (event, fn) {
 
 
 //send a BeginProblem event for HTMl5 problems.
-function sendBeginIntervention(globals) {
+function sendBeginIntervention(globals, intervType) {
     incrementTimers(globals);
-    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime});
+    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime, interventionType: intervType});
 
 }
 

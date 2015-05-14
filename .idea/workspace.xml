@@ -7,15 +7,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/js/login.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginAdult_1.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginAdult_1.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginK12_1.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginK12_1.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginResult.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginResult.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/login/loginAdultOuter.jsp" afterPath="$PROJECT_DIR$/woServer/resources/login/loginAdultOuter.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp" afterPath="$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/login/presurvey.jsp" afterPath="$PROJECT_DIR$/woServer/resources/login/presurvey.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PostSurvey.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AlterClassHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AlterClassHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/BeginInterventionEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/BeginInterventionEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/ClassConfig.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/ClassConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/InterventionGroup.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/InterventionGroup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel/InterventionState.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel/InterventionState.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/WorkspaceState.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/WorkspaceState.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/logins.xml" afterPath="$PROJECT_DIR$/woServer/resources/logins.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring.jsp" afterPath="$PROJECT_DIR$/woServer/resources/mathspring.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
@@ -23,9 +32,9 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1368816022243" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431040159333" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431623016040" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
-    <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431039643701" ignored="false" />
+    <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431630523231" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
     <file path="/StudentStatusEmail.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1375205200311" ignored="false" />
     <file path="U:/wo4/wo4.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355870660750" ignored="false" />
@@ -63,7 +72,7 @@
     <file path="/DbUser.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431024736894" ignored="false" />
     <file path="/Problem.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1414605331922" ignored="false" />
     <file path="/TopicLoader.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1412266767633" ignored="false" />
-    <file path="/DbClass.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1412788583892" ignored="false" />
+    <file path="/DbClass.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431623123153" ignored="false" />
     <file path="/DbSession.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1412856428477" ignored="false" />
     <file path="/DbFlashSessionState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1359486638943" ignored="false" />
     <file path="/TutorBrainHandler.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1413566629001" ignored="false" />
@@ -78,7 +87,7 @@
     <file path="/tutor2.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1374079877877" ignored="false" />
     <file path="/WoTutorServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1408118058831" ignored="false" />
     <file path="/CommonPedagogicalModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384455294684" ignored="false" />
-    <file path="/tutorhut.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1429194723232" ignored="false" />
+    <file path="/tutorhut.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431615101740" ignored="false" />
     <file path="U:/blee/src/A.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1360942376099" ignored="false" />
     <file path="U:/blee/.idea/modules.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1360940896235" ignored="false" />
     <file path="U:/blee/.idea/scopes/scope_settings.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1360940896235" ignored="false" />
@@ -109,7 +118,7 @@
     <file path="/TutorBrainEventFactory.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384959658124" ignored="false" />
     <file path="/DbTestEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1363036807455" ignored="false" />
     <file path="/TutorHutEventHandler.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1386958983944" ignored="false" />
-    <file path="/BasePedagogicalModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1415125550800" ignored="false" />
+    <file path="/BasePedagogicalModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431366359575" ignored="false" />
     <file path="/StudentModelMotivationalImpl.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1363718921578" ignored="false" />
     <file path="/DbBaseStudentModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1363184080458" ignored="false" />
     <file path="/BaseStudentModel2.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1364251062675" ignored="false" />
@@ -430,7 +439,7 @@
     <file path="U:/wpa/src/edu/umass/ckc/wo/wpa/db/MockDb.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1377537512133" ignored="false" />
     <file path="U:/wpa/src/edu/umass/ckc/wo/wpa/db/ProblemMgr.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1377624400536" ignored="false" />
     <file path="/PercentageHintSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1391611851905" ignored="false" />
-    <file path="/mathspring.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1415128226485" ignored="false" />
+    <file path="/mathspring.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431615325867" ignored="false" />
     <file path="/ProblemModeSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1377798579978" ignored="false" />
     <file path="/RandomProblemModeSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1383582677193" ignored="false" />
     <file path="/PracticeProblemModeSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1377798136869" ignored="false" />
@@ -602,7 +611,7 @@
     <file path="/ExtActTopicSwitchHintHighlightPM.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1388763332876" ignored="false" />
     <file path="/DbSessionRequestedProblems.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384531408984" ignored="false" />
     <file path="/Pedagogy.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430165758497" ignored="false" />
-    <file path="/tutorintervention.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1429200479715" ignored="false" />
+    <file path="/tutorintervention.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431366140044" ignored="false" />
     <file path="/AssistmentsBadInputException.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384955504702" ignored="false" />
     <file path="$PROJECT_DIR$/../msauthtool/src/edu/umass/ckc/wo/wpa/gui/ProblemEditor.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1417559234989" ignored="false" />
     <file path="$PROJECT_DIR$/../msauthtool/src/edu/umass/ckc/wo/wpa/model/Topic.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384966656292" ignored="false" />
@@ -641,7 +650,7 @@
     <file path="/AttemptListCombinerIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1396286089124" ignored="false" />
     <file path="/intervhandlers.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1409866241475" ignored="false" />
     <file path="/UnclassifiedState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1386622189175" ignored="false" />
-    <file path="/WorkspaceState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1411585291996" ignored="false" />
+    <file path="/WorkspaceState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431623894359" ignored="false" />
     <file path="/LessonState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1408023271528" ignored="false" />
     <file path="/ClickCharacterResponse.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1386959854438" ignored="false" />
     <file path="/InterventionWithCharacter.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1386785387487" ignored="false" />
@@ -719,7 +728,7 @@
     <file path="$PROJECT_DIR$/4mality/src/formality/html/GeneralHtml.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1391443443289" ignored="false" />
     <file path="/EndOfTopicInfo.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1403638257058" ignored="false" />
     <file path="/InterventionSelectorParam.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392050648580" ignored="false" />
-    <file path="/InterventionSelectorSpec.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392050732592" ignored="false" />
+    <file path="/InterventionSelectorSpec.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431629616073" ignored="false" />
     <file path="/farewell.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1398789970320" ignored="false" />
     <file path="/portK12.css" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392139432879" ignored="false" />
     <file path="/LoginParams.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1399567050399" ignored="false" />
@@ -738,7 +747,7 @@
     <file path="/challengeDone.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393961109919" ignored="false" />
     <file path="/reviewDone.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393961136617" ignored="false" />
     <file path="/JaneEmpathicLC.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393967679601" ignored="false" />
-    <file path="/InterventionState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1411587701340" ignored="false" />
+    <file path="/InterventionState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431629875001" ignored="false" />
     <file path="/tempSplash.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1394482943594" ignored="false" />
     <file path="/EnterTutorEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1394482576924" ignored="false" />
     <file path="/FullEmpathicLC.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1402611536679" ignored="false" />
@@ -882,10 +891,10 @@
     <file path="/LessonModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1424723621978" ignored="false" />
     <file path="/LearningCompanionModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1424723647884" ignored="false" />
     <file path="/SessionModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1424723747915" ignored="false" />
-    <file path="/logins.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431024287883" ignored="false" />
+    <file path="/logins.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431626449088" ignored="false" />
     <file path="/LoginIntervention.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430768035319" ignored="false" />
     <file path="/GetNeighbors.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431029874341" ignored="false" />
-    <file path="/StudentName.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430495375126" ignored="false" />
+    <file path="/StudentName.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431630912089" ignored="false" />
     <file path="/LoginSequence.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431361771959" ignored="false" />
     <file path="/ConfigXML.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430157404692" ignored="false" />
     <file path="/LoginServletAction.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430162028229" ignored="false" />
@@ -896,13 +905,13 @@
     <file path="/LoginXML.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430166172100" ignored="false" />
     <file path="/LoginInterventionSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430497828266" ignored="false" />
     <file path="/SessionEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430169532467" ignored="false" />
-    <file path="/MathAttitudes.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431024794452" ignored="false" />
+    <file path="/MathAttitudes.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431630763860" ignored="false" />
     <file path="/logink12.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430489880583" ignored="false" />
     <file path="/neighbors.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431039476654" ignored="false" />
     <file path="/LoginInterventionInputEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430493505061" ignored="false" />
     <file path="/mathAttitudes.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430499941672" ignored="false" />
     <file path="/studentName.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430499739431" ignored="false" />
-    <file path="/PreSurvey.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431022814019" ignored="false" />
+    <file path="/PreSurvey.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431630948681" ignored="false" />
     <file path="/presurvey.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431359337863" ignored="false" />
     <file path="/loginAdult.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431026922175" ignored="false" />
     <file path="/gform.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430772549373" ignored="false" />
@@ -910,6 +919,10 @@
     <file path="/loginAdultOuter.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431359713728" ignored="false" />
     <file path="/login.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431361949047" ignored="false" />
     <file path="/logink12Outer.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431361481560" ignored="false" />
+    <file path="/BeginInterventionEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431366188680" ignored="false" />
+    <file path="/PostSurvey.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431626651272" ignored="false" />
+    <file path="/ClassConfig.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431623058998" ignored="false" />
+    <file path="/InterventionGroup.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1431631177215" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -937,7 +950,40 @@
     <sortChildren value="false" />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/OldBaseTopicProblemSelector.java" line="603" class="OldBaseTopicProblemSelector.java" package="">
         <option name="ENABLED" value="false" />
@@ -1037,7 +1083,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/ProblemParameters.java" line="117" class="edu.umass.ckc.wo.content.ProblemParameters" package="edu.umass.ckc.wo.content">
+      <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" line="339" class="edu.umass.ckc.wo.log.TutorLogger" package="edu.umass.ckc.wo.log">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -1048,44 +1094,11 @@
         <option name="CONDITION_ENABLED" value="true" />
         <option name="CLASS_FILTERS_ENABLED" value="false" />
         <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
+        <option name="CONDITION" value="intervention.length() &lt; 5&#13;&#13;JAVA" />
+        <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
       </breakpoint>
     </line_breakpoints>
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -1096,66 +1109,64 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="LoginSequence.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java">
+      <file leaf-file-name="InterventionState.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel/InterventionState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="0" selection-start="2900" selection-end="2900" vertical-scroll-proportion="0.0">
+            <state line="40" column="0" selection-start="1730" selection-end="1730" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServletInfo.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/ServletInfo.java">
+      <file leaf-file-name="InterventionGroup.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/InterventionGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="0" selection-start="1264" selection-end="1264" vertical-scroll-proportion="0.0">
+            <state line="110" column="21" selection-start="4221" selection-end="4222" vertical-scroll-proportion="0.83495146">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WoLoginServlet.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java">
+      <file leaf-file-name="GetNeighbors.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/GetNeighbors.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="0" selection-start="1644" selection-end="1644" vertical-scroll-proportion="0.0">
+            <state line="23" column="13" selection-start="674" selection-end="674" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="presurvey.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/login/presurvey.jsp">
+      <file leaf-file-name="LoginIntervention.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginIntervention.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="53" selection-start="540" selection-end="540" vertical-scroll-proportion="-8.5">
+            <state line="12" column="13" selection-start="287" selection-end="287" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/js/login.js">
+      <file leaf-file-name="MathAttitudes.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="59" selection-start="1098" selection-end="1098" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#153#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tutorhut.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="261" column="26" selection-start="7955" selection-end="7959" vertical-scroll-proportion="-5.28">
+            <state line="24" column="17" selection-start="829" selection-end="829" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="loginAdultOuter.jsp" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/login/loginAdultOuter.jsp">
+      <file leaf-file-name="PostSurvey.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PostSurvey.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="10" selection-start="1329" selection-end="1329" vertical-scroll-proportion="0.77468354">
+            <state line="57" column="25" selection-start="2255" selection-end="2255" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SessionManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="516" column="0" selection-start="21168" selection-end="21168" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1164,25 +1175,25 @@
       <file leaf-file-name="PreSurvey.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="13" selection-start="760" selection-end="760" vertical-scroll-proportion="0.0">
+            <state line="53" column="50" selection-start="2102" selection-end="2102" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logink12Outer.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp">
+      <file leaf-file-name="StudentName.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="108" selection-start="1215" selection-end="1347" vertical-scroll-proportion="-9.153846">
+            <state line="28" column="98" selection-start="954" selection-end="954" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginAdult_1.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginAdult_1.java">
+      <file leaf-file-name="InterventionSelectorSpec.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="65" selection-start="1595" selection-end="1595" vertical-scroll-proportion="0.0">
+            <state line="65" column="0" selection-start="2362" selection-end="2362" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1213,22 +1224,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/woServer/resources/login/presurveyIframe.jsp" />
-        <option value="$PROJECT_DIR$/woServer/resources/login/loginAdult.jsp" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginAdult_2.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginK12_2.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/GetNeighbors.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/Login3.java" />
-        <option value="$PROJECT_DIR$/woServer/resources/login/neighbors.jsp" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginResult.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginK12_1.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginAdult_1.java" />
-        <option value="$PROJECT_DIR$/woServer/resources/login/presurvey.jsp" />
-        <option value="$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java" />
-        <option value="$PROJECT_DIR$/woServer/resources/js/login.js" />
-        <option value="$PROJECT_DIR$/woServer/resources/login/loginAdultOuter.jsp" />
+        <option value="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/BeginInterventionEvent.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java" />
+        <option value="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" />
+        <option value="$PROJECT_DIR$/woServer/resources/mathspring.jsp" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/ClassConfig.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/WorkspaceState.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PostSurvey.java" />
+        <option value="$PROJECT_DIR$/woServer/resources/logins.xml" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel/InterventionState.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/InterventionGroup.java" />
       </list>
     </option>
   </component>
@@ -1260,16 +1271,6 @@
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="woserver" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
           <option name="myItemId" value="emailer" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
@@ -1277,10 +1278,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="94" />
-    <option name="y" value="5" />
+    <option name="x" value="109" />
+    <option name="y" value="6" />
     <option name="width" value="1330" />
-    <option name="height" value="1005" />
+    <option name="height" value="1004" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -1319,6 +1320,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="All">
           <PATH>
@@ -1343,7 +1345,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1616,43 +1617,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="true" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="238" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="644" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="239" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="237" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="217" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="586" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="218" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="217" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="FullScreen" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="project.structure.side.proportion" value="0.2769409" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="project.structure.side.proportion" value="0.2769409" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="50" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="44" />
@@ -1669,17 +1648,17 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="205" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="221" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="170" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="183" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="51" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="51" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="51" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="51" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="224" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="186" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="699" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth5" value="463" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="708" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="51" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="51" />
     <property name="Database.TableEditor.Splitter" value="0.9" />
@@ -1688,8 +1667,8 @@
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth3" value="126" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth4" value="124" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth1" value="125" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth2" value="125" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth0" value="125" />
     <property name="Downloaded.Files.Path" value="U:\mathspring\java\mathTutor\woServer\libs" />
     <property name="GoToFile.includeJavaFiles" value="false" />
@@ -1742,8 +1721,8 @@
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder0" value="0" />
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -1766,8 +1745,9 @@
       <recent name="edu.umass.ckc.wo.tutormeta" />
       <recent name="edu.umass.ckc.wo.tutor.intervSel" />
     </key>
-    <key name="ImportMappingsDialog.RecentPackages">
-      <recent name="edu.umass.ckc.wo.beans" />
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="edu.umass.ckc.wo.tutor.pedModel" />
+      <recent name="edu.umass.ckc.wo.interventions" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\dev\mathspring\woServer\resources\login" />
@@ -1776,34 +1756,11 @@
       <recent name="U:\dev\mathspring\woServer\web\WEB-INF\cadmium" />
       <recent name="U:\dev\mathspring\woServer\src\main\edu\umass\ckc\wo\beans" />
     </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="edu.umass.ckc.wo.tutor.pedModel" />
-      <recent name="edu.umass.ckc.wo.interventions" />
+    <key name="ImportMappingsDialog.RecentPackages">
+      <recent name="edu.umass.ckc.wo.beans" />
     </key>
   </component>
   <component name="RunManager" selected="Tomcat Server.Wayang Tutor Login">
-    <configuration default="false" name="CCContentMgr" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="edu.umass.ckc.wo.content.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="edu.umass.ckc.wo.content.CCContentMgr" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="woServer" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
     <configuration default="false" name="TestTopicSelectorImpl" type="TestNG" factoryName="TestNG" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1956,22 +1913,34 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
+    <configuration default="false" name="CCContentMgr" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="edu.umass.ckc.wo.content.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="edu.umass.ckc.wo.content.CCContentMgr" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="woServer" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="#com.intellij.j2ee.web.jsr45.JSR45ConfigurationFactory" factoryName="Local">
-      <option name="PORT" value="80" />
-      <server-settings>
-        <option name="JSP_PACKAGE" value="org.apache.jsp" />
-        <option name="VM_OPTS" value="" />
-        <option name="USE_WEBSPHERE51_LINEMAPPING_MODEL" value="false" />
-        <option name="LOCAL_PORT" value="80" />
-      </server-settings>
       <method />
     </configuration>
     <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" output_log_level="null" package_name="" scope="Class">
@@ -1985,6 +1954,16 @@
       </option>
       <option name="moduleName" value="" />
       <option name="trusted" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.jsr45.JSR45ConfigurationFactory" factoryName="Local">
+      <option name="PORT" value="80" />
+      <server-settings>
+        <option name="JSP_PACKAGE" value="org.apache.jsp" />
+        <option name="VM_OPTS" value="" />
+        <option name="USE_WEBSPHERE51_LINEMAPPING_MODEL" value="false" />
+        <option name="LOCAL_PORT" value="80" />
+      </server-settings>
       <method />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
@@ -2022,6 +2001,13 @@
       </JSRemoteDebuggerConfigurationSettings>
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local" singleton="true">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
+      <method />
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -2043,18 +2029,10 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local" singleton="true">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" value="embedded" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method />
-    </configuration>
-    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
-      <deployment />
-      <server-settings />
-      <predefined_log_file id="Tomcat" enabled="true" />
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
       <method />
     </configuration>
     <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
@@ -2091,10 +2069,11 @@
       <option name="usbDebugPort" value="7936" />
       <method />
     </configuration>
-    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
-      <option name="VM_PARAMETERS" value="" />
-      <option name="USER_CFG_CLASS" />
-      <option name="CONTEXT_PROVIDER" />
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
+      <deployment />
+      <server-settings />
+      <predefined_log_file id="Tomcat" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <method />
     </configuration>
     <configuration default="false" name="woClient" type="FlashRunConfigurationType" factoryName="Flash App">
@@ -2430,13 +2409,13 @@
       </method>
     </configuration>
     <list size="7">
-      <item index="0" class="java.lang.String" itemvalue="Application.CCContentMgr" />
-      <item index="1" class="java.lang.String" itemvalue="Flash App.woClient" />
-      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.Wayang Tutor Login JavaScript" />
-      <item index="3" class="java.lang.String" itemvalue="Tomcat Server.Wayang Tutor Login" />
-      <item index="4" class="java.lang.String" itemvalue="Tomcat Server.TutorBrainSystemTest" />
-      <item index="5" class="java.lang.String" itemvalue="Tomcat Server.WoAdmin" />
-      <item index="6" class="java.lang.String" itemvalue="Tomcat Server.MathSpringTutorServlet" />
+      <item index="0" class="java.lang.String" itemvalue="Flash App.woClient" />
+      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.Wayang Tutor Login JavaScript" />
+      <item index="2" class="java.lang.String" itemvalue="Tomcat Server.Wayang Tutor Login" />
+      <item index="3" class="java.lang.String" itemvalue="Tomcat Server.TutorBrainSystemTest" />
+      <item index="4" class="java.lang.String" itemvalue="Tomcat Server.WoAdmin" />
+      <item index="5" class="java.lang.String" itemvalue="Tomcat Server.MathSpringTutorServlet" />
+      <item index="6" class="java.lang.String" itemvalue="Application.CCContentMgr" />
     </list>
     <recent_temporary>
       <list size="1">
@@ -2955,26 +2934,27 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="94" y="5" width="1330" height="1005" extended-state="0" />
+    <frame x="109" y="6" width="1330" height="1004" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22833724" sideWeight="0.47406808" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26061398" sideWeight="0.19129439" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23848878" sideWeight="0.99930555" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22776572" sideWeight="0.7664319" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19380404" sideWeight="0.82258064" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.432783" sideWeight="0.999185" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3211334" sideWeight="0.999185" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4187426" sideWeight="0.17053749" order="17" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20880681" sideWeight="0.4055944" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23356807" sideWeight="0.7504052" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40140846" sideWeight="0.45380875" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34019768" sideWeight="0.32349467" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2320377" sideWeight="0.7504052" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40023613" sideWeight="0.45380875" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34019768" sideWeight="0.32349467" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.326555" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.238128" sideWeight="0.39906102" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20689656" sideWeight="0.77526754" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20662461" sideWeight="0.6745283" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.108589955" sideWeight="0.70511293" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32254335" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27287066" sideWeight="0.567217" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27287066" sideWeight="0.67886657" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21070614" sideWeight="0.7313617" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2987,7 +2967,6 @@
       <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.49736643" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23943663" sideWeight="0.99930555" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32549942" sideWeight="0.49120122" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -3030,7 +3009,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed neighbor jsp bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Altered survey so that it has a button that user must click to launch it in a separate window.  Button then turns into a continue button." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -3043,7 +3022,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="fixed problem with login of existing session so that it correctly fails" />
     <MESSAGE value="Bugfix: Examples no longer cause server calls.&#10;Answer hint is now shown in examples.&#10;Play next step button now flashes until clicked the first time in examples.&#10;Characters now never speak during examples.&#10;Double clicks disabled on hints and on play next step for examples.&#10;&#10;Character canvas resized and new characters implemented.&#10;Exception fixed in teacher tools that was causing problem selection to no longer work." />
     <MESSAGE value="Project converted to use Maven and hibernate.   Have added features to pedagogies so that MPP is shown by conditions." />
     <MESSAGE value="removed libs" />
@@ -3068,6 +3046,7 @@
     <MESSAGE value="surveys added to login sequence" />
     <MESSAGE value="Finished login stuff except one bug in GetNeighbors not showing neighbors in JSP" />
     <MESSAGE value="fixed neighbor jsp bug" />
+    <MESSAGE value="Altered survey so that it has a button that user must click to launch it in a separate window.  Button then turns into a continue button." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3147,116 +3126,116 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/servletFramework/src/ckc/servlet/servbase/BaseServlet.java">
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/StudentState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="219" column="0" selection-start="9022" selection-end="9022" vertical-scroll-proportion="0.0">
+        <state line="46" column="16" selection-start="1495" selection-end="1495" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java">
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/WorkspaceState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="21" selection-start="2136" selection-end="2136" vertical-scroll-proportion="0.0">
+        <state line="179" column="44" selection-start="5771" selection-end="5771" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/logins.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="56" selection-start="2046" selection-end="2046" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginResult.java">
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="11" selection-start="838" selection-end="838" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginK12_1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="94" selection-start="673" selection-end="673" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/login/presurveyIframe.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="23" selection-start="409" selection-end="409" vertical-scroll-proportion="-5.8846154">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorutils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="255" selection-end="796" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="261" column="26" selection-start="7955" selection-end="7959" vertical-scroll-proportion="-5.28">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="0" selection-start="1644" selection-end="1644" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/login/presurvey.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="53" selection-start="540" selection-end="540" vertical-scroll-proportion="-8.5">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="760" selection-end="760" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginAdult_1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="65" selection-start="1595" selection-end="1595" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/ServletInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="0" selection-start="1264" selection-end="1264" vertical-scroll-proportion="0.0">
+        <state line="227" column="70" selection-start="9051" selection-end="9051" vertical-scroll-proportion="-4.04">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="2900" selection-end="2900" vertical-scroll-proportion="0.0">
+        <state line="63" column="81" selection-start="2471" selection-end="2471" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/login.js">
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="59" selection-start="1098" selection-end="1098" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#153#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="108" selection-start="1215" selection-end="1347" vertical-scroll-proportion="-9.153846">
+        <state line="130" column="0" selection-start="4553" selection-end="4553" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/login/loginAdultOuter.jsp">
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="10" selection-start="1329" selection-end="1329" vertical-scroll-proportion="0.77468354">
+        <state line="516" column="0" selection-start="21168" selection-end="21168" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="0" selection-start="2362" selection-end="2362" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginIntervention.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="287" selection-end="287" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="98" selection-start="954" selection-end="954" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="50" selection-start="2102" selection-end="2102" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="17" selection-start="829" selection-end="829" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PostSurvey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="25" selection-start="2255" selection-end="2255" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/GetNeighbors.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="13" selection-start="674" selection-end="674" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel/InterventionState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="0" selection-start="1730" selection-end="1730" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/InterventionGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="21" selection-start="4221" selection-end="4222" vertical-scroll-proportion="0.83495146">
           <folding />
         </state>
       </provider>

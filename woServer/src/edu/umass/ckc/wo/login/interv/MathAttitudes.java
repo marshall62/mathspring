@@ -21,16 +21,16 @@ import java.sql.SQLException;
 public class MathAttitudes extends LoginInterventionSelector {
     private static final String JSP = "mathAttitudes.jsp";
 
+    // This intervention is declared as run-once so it gets entered into the RunOnceInterventionLog once it plays for
+    // a student.
     public MathAttitudes(SessionManager smgr) throws SQLException {
         super(smgr);
     }
 
     public Intervention selectIntervention (SessionEvent e) throws Exception {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
-        boolean isFirstLogin = DbUser.isFirstLogin(smgr.getConnection(),smgr.getStudentId(),smgr.getSessionNum());
-        // isFirstLogin is checked so that we only show this the first time the student logs in.
         // shownTime is checked to make sure we don't show this more than once in that first login
-        if (!isFirstLogin || shownTime > 0)
+        if ( shownTime > 0)
             return null;
         else {
             super.selectIntervention(e);

@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor.model;
 
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.intervSel.InterventionState;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -99,13 +100,17 @@ public class InterventionGroup {
         List<InterventionSelectorSpec> candidates = getCandidateInterventionForEvent(onEvent);
         Collections.sort(candidates);   // sort into ascending order by weight
         for (InterventionSelectorSpec spec: candidates) {
-
+            if (spec.isRunOnce() && InterventionState.hasRun(smgr.getConnection(), smgr.getStudentId(), spec.getClassName()))
+                continue;
             InterventionSelector isel = spec.getSelector();
             isel.init(smgr,smgr.getPedagogicalModel());
             // will check to see if the selector wants to run an intervention
             Intervention interv= isel.selectIntervention(e);
-            if (interv != null)
+            if (interv != null) {
+                if (spec.isRunOnce())
+                    InterventionState.setRun(smgr.getConnection(),smgr.getStudentId(),spec.getClassName());
                 return interv;
+            }
         }
         return null;
     }

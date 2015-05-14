@@ -41,7 +41,9 @@ public class WorkspaceState extends State {
     public static final String TOTAL_PROBLEMS_SOLVED = "wkspcst.totalproblemsSolved";
     public static final String TOTAL_PROBLEMS_SEEN = "wkspcst.totalproblemsSeen";
     private static final String CUR_PROB_INDEX_IN_TOPIC = "wkspcst.curProbIndexInTopic";
+    private static final String POST_SURVEY_DONE = "wkspcst.postSurveyDone";
 
+    private boolean postSurveyDone;
     private int curTopic;
     private int curLesson;
     private int curCU;
@@ -65,10 +67,11 @@ public class WorkspaceState extends State {
         this.curLesson = mapGetPropInt(m,CUR_LESSON,-1);
         this.curCU = mapGetPropInt(m,CUR_CU,-1);
         this.curCluster = mapGetPropInt(m,CUR_CLUSTER,-1);
-        this.curStd = mapGetPropString(m,CUR_STD,null);
-        this.curProb = mapGetPropInt(m,CUR_PROB,-1);
-        this.prereqStd = mapGetPropString(m,PREREQ_STD,null);
-        this.prereqStdStack = mapGetPropList(m,PREREQ_STD_STACK);
+        this.curStd = mapGetPropString(m, CUR_STD, null);
+        this.curProb = mapGetPropInt(m, CUR_PROB, -1);
+        this.prereqStd = mapGetPropString(m, PREREQ_STD, null);
+        this.prereqStdStack = mapGetPropList(m, PREREQ_STD_STACK);
+        this.postSurveyDone = mapGetPropBoolean(m, POST_SURVEY_DONE, false);
     }
 
 
@@ -111,6 +114,7 @@ public class WorkspaceState extends State {
         clearProp(conn,id,CUR_STD);
         clearProp(conn,id,PREREQ_STD);
         clearProp(conn,id,PREREQ_STD_STACK);
+        clearProp(conn,id,POST_SURVEY_DONE);
     }
 
 
@@ -170,5 +174,14 @@ public class WorkspaceState extends State {
     public void setCurCU(int curCU) throws SQLException {
         this.curCU = curCU;
         setProp(this.objid,CUR_CU,curCU);
+    }
+
+    public boolean isPostSurveyDone() {
+        return postSurveyDone;
+    }
+
+    public void setPostSurveyDone(boolean postSurveyDone) throws SQLException {
+        this.postSurveyDone = postSurveyDone;
+        setProp(this.objid,POST_SURVEY_DONE,postSurveyDone);
     }
 }
