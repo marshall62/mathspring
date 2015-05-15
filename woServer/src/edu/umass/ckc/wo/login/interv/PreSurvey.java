@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
+import org.jdom.CDATA;
 import org.jdom.Element;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +42,9 @@ public class PreSurvey  extends LoginInterventionSelector {
             throw new UserException("PreSurvey expects config xml");
         Element e =this.configXML.getChild("url");
 
-        if (e != null)
+        if (e != null)   {
             this.url= e.getTextTrim();
+        }
         else throw new UserException("Must provide URL to config of PreSurvey LoginIntervention Selector in logins.xml");
         e =this.configXML.getChild("embed");
         if (e != null)
@@ -66,10 +68,13 @@ public class PreSurvey  extends LoginInterventionSelector {
                 return new LoginIntervention(JSPI);
             }
             else {
+                // URL has two fields that need to be passed in uName and uId
+                url = url.replaceFirst("uId",Integer.toString(smgr.getStudentId()));
+                url = url.replaceFirst("uName",smgr.getUserName());
             // A JSP will show nothing more than a "continue" button.
             // The URL comes up in a separate browser window.  When the user is done in the separate window
             // they close it and click the "continue" button.
-                servletInfo.getRequest().setAttribute("URL",url);
+                servletInfo.getRequest().setAttribute("URL", url);
                 return new LoginIntervention(JSP);
             }
         }

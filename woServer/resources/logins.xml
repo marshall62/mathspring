@@ -25,7 +25,8 @@
 
             <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PreSurvey">
                 <config>
-                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?usp=send_form</url>
+                    <!--https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?usp=send_form-->
+                    <url><![CDATA[https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?entry.1324523958=uName&entry.1477109510=uId&usp=send_form]]></url>
                     <embed>false</embed>
             </config>
             </interventionSelector>
@@ -53,15 +54,17 @@
 
             <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PreSurvey">
                 <config>
-                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?embedded=true</url>
-                    <embed>true</embed>
+                    <url>
+                        <![CDATA[https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?entry.1324523958=uName&entry.1477109510=uId&usp=send_form]]>
+                    </url>
+                    <embed>false</embed>
                 </config>
             </interventionSelector>
 
             <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PostSurvey">
                 <config>
-                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?embedded=true</url>
-                    <embed>true</embed>
+                    <url><![CDATA[https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?entry.1324523958=uName&entry.1477109510=uId&usp=send_form]]></url>
+                    <embed>false</embed>
 
                 </config>
             </interventionSelector>
@@ -86,7 +89,9 @@
 
             <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PreSurvey">
                 <config>
-                    <url>https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?usp=send_form</url>
+                    <url>
+                        <![CDATA[https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?entry.1324523958=uName&entry.1477109510=uId&usp=send_form]]>
+                    </url>
                     <embed>false</embed>
                 </config>
             </interventionSelector>
