@@ -51,7 +51,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
             //Random is used to make sure the collaboration is not triggered every time.
             double random = Math.random();
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .5) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < .1) {
                 rememberInterventionSelector(this);
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
