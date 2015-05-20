@@ -52,6 +52,9 @@ public abstract class NextProblemInterventionSelector extends InterventionSelect
     public abstract Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception;
     public abstract Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;
 
+    public Intervention processTimedInterventionEvent(TimedInterventionEvent e) throws Exception {
+        return null;
+    }
 
     @Override
     public void problemGiven(Problem p) throws SQLException {

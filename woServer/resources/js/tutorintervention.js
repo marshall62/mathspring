@@ -25,7 +25,19 @@ function processNextProblemIntervention(activityJSON) {
         processMyProgressNavIntervention(activityJSON.html);
     else if (interventionType === "MyProgressNavigationAsk")
         processMyProgressNavAskIntervention(activityJSON.html);
-    sendBeginIntervention(globals, interventionType);
+    else if(interventionType === "CollaborationPartnerIntervention")
+        processCollaborationPartnerIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationConfirmationIntervention")
+        processCollaborationConfirmationIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationOriginatorIntervention")
+        processCollaborationOriginatorIntervention(activityJSON.html);
+    else if(interventionType === "FinishCollaborationIntervention")
+        processCollaborationFinishedIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationTimeoutIntervention")
+        processCollaborationTimeoutIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationOptionIntervention")
+        processCollaborationOptionIntervention(activityJSON.html);
+    sendBeginIntervention(globals);
 
 }
 
@@ -41,7 +53,7 @@ function processAttemptIntervention (interv) {
             highlightHintButton();
         else if (type === 'RapidAttemptIntervention')
             processRapidAttemptIntervention(interv.html);
-        sendBeginIntervention(globals,type);
+        sendBeginIntervention(globals);
     }
 }
 
@@ -110,9 +122,9 @@ function sendInterventionDialogInputResponse (event, fn) {
 
 
 //send a BeginProblem event for HTMl5 problems.
-function sendBeginIntervention(globals, intervType) {
+function sendBeginIntervention(globals) {
     incrementTimers(globals);
-    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime, interventionType: intervType});
+    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime});
 
 }
 

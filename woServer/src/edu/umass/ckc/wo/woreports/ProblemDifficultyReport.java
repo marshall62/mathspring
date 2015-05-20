@@ -12,11 +12,13 @@ import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUtil;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.util.ProbPlayer;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * useless comment
  * Class summary per problem.  Which problems are challenging for your students.
  * User: marshall. Date: Mar 2, 2004
  * Modifications: Ivon. August 17, 2006.
@@ -95,6 +97,8 @@ public class ProblemDifficultyReport extends Report {
         double avgComprehensionTime;
         String mostFreqIncorrectAns;
         int rating;
+        String probType;
+        String animationResource;
 
     }
 
@@ -218,6 +222,10 @@ public class ProblemDifficultyReport extends Report {
             ProblemInfo probInf = new ProblemInfo();
 //            probs.add(probInf);
             int pid = rs.getInt("id");
+            String t = rs.getString("type");
+            probInf.probType = t;
+            String ar = rs.getString("animationResource");
+            probInf.animationResource = ar;
             probData.put(pid, probInf); // insert into hash map
             String probName = rs.getString("nickname");
             String flashProbName = rs.getString("name");
@@ -231,6 +239,11 @@ public class ProblemDifficultyReport extends Report {
             // TODO a Hack to fulfill a request by Ivon for using a different player to show problems in this report.
             probPlayerURL = probPlayerURL.replace("probplayer","problem_checker");
             String link = probPlayerURL + "?questionNum=" + probnumber;
+            if (probInf.probType.equalsIgnoreCase("html5")) {
+                String dir = "";
+                if (probInf.animationResource != null & probInf.animationResource.indexOf(".") >= 0)
+                    link = Settings.html5ProblemURI + probInf.animationResource.substring(0,probInf.animationResource.indexOf("."))+ "/" + probInf.animationResource;
+            }
             probInf.id = pid;
             if (this.topicName != null)
                 probInf.topic = topicName;

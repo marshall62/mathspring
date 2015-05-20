@@ -469,16 +469,18 @@ function showHTMLProblem (pid, solution, resource, mode) {
     var isDemo = mode === MODE_DEMO || mode == MODE_EXAMPLE;
     if (isDemo)
         openExampleDialog(solution);
-    var dir = resource.split(".")[0];
+
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
     if (!isDemo)  {
         if (globals.form!=="quickAuth")  {
+            var dir = resource.split(".")[0];
             loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
+            // uses Melissa's engine
 //            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
-            // TODO change this to point at Melissa's JSP version of this file in resources folder
-            loadIframe(PROBLEM_WINDOWID,  "problem_skeleton.jsp");
+            // commented out on 3/16/15 to move to Melissa's engine
+            loadIframe(PROBLEM_WINDOWID,  "problem_skeleton.jsp");  // uses Jess's engine
         }
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
@@ -491,12 +493,13 @@ function showHTMLProblem (pid, solution, resource, mode) {
     }
     else {
         if (globals.form!=="quickAuth") {
+            var dir = resource.split(".")[0];
             loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
 //            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
-            // TODO change this to point to Melissa's JSP file in resources
-            loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp");
+            // commented out on 3/16/15 to move to Melissa's engine
+            loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp");     // uses Jess's engine
         }
     }
 

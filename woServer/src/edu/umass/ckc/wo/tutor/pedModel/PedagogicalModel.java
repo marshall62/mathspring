@@ -314,6 +314,11 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
             studentModel.save();
             return r;
         }
+        else if (e instanceof TimedInterventionEvent){
+            r = processTimedInterventionEvent((TimedInterventionEvent) e);
+            studentModel.save();
+            return r;
+        }
         else if (e instanceof ContinueAttemptInterventionEvent) {
             r = processContinueAttemptInterventionEvent((ContinueAttemptInterventionEvent) e);
             studentModel.save();
@@ -397,6 +402,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
 
     public abstract Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception;
+    public abstract Response processTimedInterventionEvent(TimedInterventionEvent e) throws Exception;
     public abstract Response processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception;
     public abstract Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception;
     public abstract Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;

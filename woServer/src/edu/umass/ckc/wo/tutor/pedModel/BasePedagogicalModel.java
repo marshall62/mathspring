@@ -872,6 +872,29 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
 
     @Override
+    public Response processTimedInterventionEvent(TimedInterventionEvent e) throws Exception {
+        Response r;
+        smgr.getStudentState().setProblemIdleTime(0);
+        NextProblemInterventionSelector isel = (NextProblemInterventionSelector) getLastInterventionSelector();
+        Intervention intervention = isel.processTimedInterventionEvent(e);
+
+        if (intervention != null) {
+            r= new InterventionResponse(intervention);
+        }
+        // this does not want to generate another intervention.  So select a new prob
+        else {
+            StudentState state = smgr.getStudentState();
+            boolean isTopicDone = gradeProblem(e.getProbElapsedTime());
+            r = getTopicIntroDemoOrProblem(new NextProblemEvent(e.getElapsedTime(), e.getProbElapsedTime()), state, state.getCurTopic(), isTopicDone);
+            studentModel.newProblem(state, ((ProblemResponse) r).getProblem());
+        }
+        new TutorLogger(smgr).logTimedIntervention(e, r);
+        if (learningCompanion != null )
+            learningCompanion.processUncategorizedEvent(e,r);
+        return r;
+    }
+
+    @Override
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = lessonModel.processUserEvent(e) ; // give lesson model a chance to weigh in.

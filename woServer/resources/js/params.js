@@ -155,7 +155,12 @@ function plug(doc) {
             }
         }
 
-        doc.getElementById(getElementCorrespondingToHint(hints[0].label)+"Sound").load();
+        if(hints[0] == undefined){
+            doc.getElementById(getElementCorrespondingToHint(hints.label)+"Sound").load();
+        }
+        else if(hints[0].audioResource != undefined && hints[0].audioResource != ""){
+            doc.getElementById(getElementCorrespondingToHint(hints[0].label)+"Sound").load();
+        }
     }
 
     if (isMultiChoice()) {

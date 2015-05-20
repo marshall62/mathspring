@@ -63,7 +63,7 @@ public class StudentProblemHistory {
             params = state.getProblemBinding();
         }
         DbStudentProblemHistory.beginProblem(smgr.getConnection(), e.getSessionId(), smgr.getStudentId(), state.getCurProblem(), topicId,
-            now, smgr.getTimeInSession(), now - state.getTutorEntryTime(), state.getCurProblemMode(), params);
+            now, smgr.getTimeInSession(), now - state.getTutorEntryTime(), state.getCurProblemMode(), params, smgr.getCollaboratingWith());
 
         curProb = new StudentProblemData(state.getCurProblem(),state.getCurTopic(),e.getSessionId(),
                 now,smgr.getTimeInSession(), now-state.getTutorEntryTime(),state.getCurProblemMode());
