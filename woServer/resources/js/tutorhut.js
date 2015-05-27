@@ -457,10 +457,11 @@ function showHTMLProblem (pid, solution, resource, mode) {
     var isDemo = mode === MODE_DEMO || mode == MODE_EXAMPLE;
     if (isDemo)
         openExampleDialog(solution);
-    var dir = resource.split(".")[0];
+
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
     if (!isDemo)  {
         if (globals.form!=="quickAuth")  {
+            var dir = resource.split(".")[0];
             loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
@@ -480,6 +481,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
     }
     else {
         if (globals.form!=="quickAuth") {
+            var dir = resource.split(".")[0];
             loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
         }
         else {
