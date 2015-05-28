@@ -226,8 +226,9 @@ function format (rawText) {
                 break;
 
             case '{':
-                if(!escaped){
+                if(!escaped && rawText.charAt(j+1) == "["){
                     startIndex = j;
+                    j++;
                 }
                 else{
                     if(startIndex != undefined){
@@ -242,9 +243,10 @@ function format (rawText) {
                 }
                 break;
 
-            case '}':
-                if(!escaped){
+            case ']':
+                if(!escaped && rawText.charAt(j+1) == "}"){
                     if(startIndex != undefined){
+                        j++;
                         endIndex = j;
                         var toInsert  = replaceWithHTML(imgOrVid, extension);
                         rawText = rawText.substring(0, startIndex) + toInsert + rawText.substring(endIndex+1, rawText.length);
@@ -317,6 +319,9 @@ function replaceWithHTML(file, ext){
 
     //If it is not one of the above, it is probably an expression
     else{
+        if(ext != ""){
+            ext = "." + ext;
+        }
         toInsert = parseSimpleExp(file+ext);
     }
 
