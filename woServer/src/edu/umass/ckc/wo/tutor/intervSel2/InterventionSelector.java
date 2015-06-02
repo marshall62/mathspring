@@ -1,6 +1,10 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.content.Hint;
+import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
@@ -10,6 +14,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
+import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import org.jdom.Element;
 
@@ -27,7 +32,7 @@ import java.util.List;
  * Time: 12:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class InterventionSelector {
+public abstract class InterventionSelector implements PedagogicalMoveListener {
 
     protected SessionManager smgr;
     protected Connection conn;
@@ -153,6 +158,51 @@ public abstract class InterventionSelector {
         String ui = String.format("<interventionInput class=\"%s\">%s</interventionInput>",clname,userInputXML);
         this.userInputXML = ui;
     }
+
+    // PedagogicalMoveListener Methods
+
+    @Override
+    public void problemGiven(Problem p) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void exampleGiven(Problem ex) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void lessonIntroGiven(TopicIntro intro) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void attemptGraded(boolean isCorrect) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void hintGiven( Hint hint) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+
+    @Override
+    public void interventionGiven(Intervention intervention) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void newTopic(Topic t) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void newSession(int sessId) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 
 
 }

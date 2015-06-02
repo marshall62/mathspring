@@ -157,6 +157,11 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     <threshold>1</threshold>
                 </config>
             </interventionSelector>
+            <interventionSelector onEvent="NextProblem" weight="1" class="CollaborationIS">
+                <config>
+                </config>
+            </interventionSelector>
+
         </interventions>
 
         <learningCompanionClass>JakeEmpathicLC</learningCompanionClass>
@@ -1209,6 +1214,98 @@ JakeNoSPPButton-->
 
     </pedagogy>
 
+
+    <pedagogy default="true">
+        <id>44</id>
+        <active>true</active>
+        <name>Collaboration Testing with Jane Semi Empathy</name>
+        <comment>Collaboration Testing</comment>
+        <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <package>pedModel2</package>
+        <interventions>
+            <interventionSelector  onEvent="NextProblem" weight="1" class="CollaborationIS">
+                <config>
+                    <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
+                    <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                    <intervalCriteria type="random" frequency="3"/>
+                    <maxPartnerWaitMin>3</maxPartnerWaitMin>
+                    <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
+                </config>
+            </interventionSelector>
+                <interventionSelector onEvent="Attempt" weight="1"  class="HighlightHintButtonIS">
+                    <config>
+                        <threshold>1</threshold>
+                    </config>
+                </interventionSelector>
+                <interventionSelector onEvent="Attempt" weight="1"  class="GuessingAskAffectIS"/>
+        </interventions>
+        <learningCompanionClass>JaneSemiEmpathicLC</learningCompanionClass>
+
+
+    </pedagogy>
+
+    <pedagogy default="true">
+        <id>45</id>
+        <active>true</active>
+        <name>Collaboration Testing with Jake Semi Empathy</name>
+        <comment>Collaboration Testing</comment>
+        <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <lesson>TopicWithIntroAndExample</lesson>
+        <login>CollabLogin</login>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <package>pedModel2</package>
+        <interventions>
+            <interventionSelector  onEvent="NextProblem" weight="1" class="CollaborationIS">
+                <config>
+                    <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
+                    <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                    <intervalCriteria type="random" frequency="3"/>
+                    <maxPartnerWaitMin>3</maxPartnerWaitMin>
+                    <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
+                </config>
+            </interventionSelector>
+            <interventionSelector onEvent="Attempt" weight="1"  class="HighlightHintButtonIS">
+                <config>
+                    <threshold>1</threshold>
+                </config>
+            </interventionSelector>
+            <interventionSelector onEvent="Attempt" weight="1"  class="GuessingAskAffectIS"/>
+        </interventions>
+
+        <learningCompanionClass>JakeSemiEmpathicLC</learningCompanionClass>
+
+    </pedagogy>
 
 
 </pedagogies>

@@ -626,6 +626,7 @@ public class DbClass {
 
     }
 
+
     public static ClassConfig getClassConfig(Connection conn, int classId) throws SQLException {
         String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey from classconfig where classId=?";
         PreparedStatement ps = conn.prepareStatement(q);

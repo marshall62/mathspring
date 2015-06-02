@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.content.TopicIntro;
+import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
@@ -12,6 +13,7 @@ import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.jdom.Element;
 
 /**
@@ -21,7 +23,7 @@ import org.jdom.Element;
  * Time: 11:53 AM
  * To change this template use File | Settings | File Templates.
  */
-public class TopicIntroIS extends NextProblemInterventionSelector {
+public class TopicIntroIS extends InterventionSelector {
     TopicModel topicModel;
     TopicModelParameters.frequency freq;
 
@@ -47,7 +49,7 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
+    public Intervention selectIntervention(SessionEvent e) throws Exception {
         TopicIntro intro = getTopicIntro(studentState.getCurTopic());
         if (intro != null)  {
             TopicIntroIntervention tii = new TopicIntroIntervention(intro);
@@ -63,15 +65,6 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
 
 
 
-    @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
 
 }

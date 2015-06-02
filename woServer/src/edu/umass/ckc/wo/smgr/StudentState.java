@@ -43,18 +43,21 @@ public class StudentState extends State implements TutorEventHandler {
 
     private ProblemState problemState;
     private TopicState topicState;
+    private LessonState lessonState;
     private SessionState sessionState;
     private WorkspaceState workspaceState;
     private PrePostState ppState;
     private SessionManager smgr;
     private int curProblemIndexInTopic;
     private boolean curProblemIsTopicIntro;
+    private String pedagogicalModelInternalState;
 
     public StudentState(Connection conn, SessionManager smgr) {
         this.smgr = smgr;
         this.conn = conn;
         this.problemState = new ProblemState(conn);
         this.topicState = new TopicState(conn);
+        this.lessonState = new LessonState(conn);
         this.sessionState = new SessionState(conn);
         this.workspaceState = new WorkspaceState(conn);
         this.ppState = new PrePostState(conn);
@@ -66,6 +69,7 @@ public class StudentState extends State implements TutorEventHandler {
     public void extractProps(WoProps props) throws SQLException {
         problemState.extractProps(props);
         topicState.extractProps(props);
+        lessonState.extractProps(props);
         sessionState.extractProps(props);
         workspaceState.extractProps(props);
         ppState.extractProps(props);
@@ -77,6 +81,7 @@ public class StudentState extends State implements TutorEventHandler {
         super.setObjid(objid);
         problemState.setObjid(objid);
         topicState.setObjid(objid);
+        lessonState.setObjid(objid);
         sessionState.setObjid(objid);
         workspaceState.setObjid(objid);
         ppState.setObjid(objid);
@@ -87,42 +92,52 @@ public class StudentState extends State implements TutorEventHandler {
     /* Methods that are dealing with state during teaching a topic */
 
     public void setCurProblem(int curProblem) throws SQLException {
-        topicState.setCurProblem(curProblem);
+//        topicState.setCurProblem(curProblem);
+        lessonState.setCurProblem(curProblem);
     }
     public int getCurProblem() {
-        return topicState.getCurProblem();
+//        return topicState.getCurProblem();
+        return lessonState.getCurProblem();
     }
 
     public void setLastProblem (int lastProblem) throws SQLException {
-       topicState.setLastProblem(lastProblem);
+//       topicState.setLastProblem(lastProblem);
+       lessonState.setLastProblem(lastProblem);
     }
 
     public int getLastProblem () {
-        return topicState.getLastProblem();
+//        return topicState.getLastProblem();
+        return lessonState.getLastProblem();
     }
 
     public void setNextProblem (int nextProblem) throws SQLException {
-        topicState.setNextProblem(nextProblem);
+//        topicState.setNextProblem(nextProblem);
+        lessonState.setNextProblem(nextProblem);
     }
 
     public int getNextProblem () {
-        return topicState.getNextProblem();
+//        return topicState.getNextProblem();
+        return lessonState.getNextProblem();
     }
 
     public void setCurProblemMode(String curProblemMode) throws SQLException {
-        topicState.setCurProblemMode(curProblemMode);
+//        topicState.setCurProblemMode(curProblemMode);
+        lessonState.setCurProblemMode(curProblemMode);
     }
 
     public String getCurProblemMode() {
-        return topicState.getCurProblemMode();
+//        return topicState.getCurProblemMode();
+        return lessonState.getCurProblemMode();
     }
 
     public void setLastProblemMode(String mode) throws SQLException {
-        topicState.setLastProblemMode(mode);
+//        topicState.setLastProblemMode(mode);
+        lessonState.setLastProblemMode(mode);
     }
 
     public String getLastProblemMode() {
-        return topicState.getLastProblemMode();
+//        return topicState.getLastProblemMode();
+        return lessonState.getLastProblemMode();
     }
 
 
@@ -353,11 +368,13 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     private void setNextProblemMode(String mode) throws SQLException {
-        topicState.setNextProblemMode(mode);
+//        topicState.setNextProblemMode(mode);
+        lessonState.setNextProblemMode(mode);
     }
 
     private String getNextProblemMode () {
-        return topicState.getNextProblemMode();
+//        return topicState.getNextProblemMode();
+        return lessonState.getNextProblemMode();
     }
 
 
@@ -878,12 +895,15 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public void newTopic () throws SQLException {
+        lessonState.initializeState();
         topicState.initializeState();
+
     }
 
     public void newSession (SessionManager smgr) throws SQLException {
         InterventionState.clearState(conn, smgr.getStudentId());  // on new session interventions need to clear their states.
         sessionState.initializeState();
+        lessonState.initializeState();
         topicState.initializeState();
         problemState.initializeProblemState();
 
@@ -931,11 +951,11 @@ public class StudentState extends State implements TutorEventHandler {
     public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
         this.setInProblem(true);
         problemState.beginProblem(smgr, e);
-        this.setLastProblem(topicState.getCurProblem());
-        this.setCurProblem(topicState.getNextProblem());
+        this.setLastProblem(getCurProblem());
+        this.setCurProblem(getNextProblem());
 
 
-        this.setCurProblemMode(topicState.getNextProblemMode());
+        this.setCurProblemMode(getNextProblemMode());
         Problem prob = ProblemMgr.getProblem(topicState.getNextProblem());
         //  a TOpicIntro won't be found here.
         if (prob != null) {
@@ -958,7 +978,7 @@ public class StudentState extends State implements TutorEventHandler {
             problemState.setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
         }
         problemState.setLastEvent(END_PROBLEM_EVENT);
-        topicState.setLastProblemMode(topicState.getCurProblemMode());
+        setLastProblemMode(getCurProblemMode());
         // We save the current problem into the workspace state only when it is completed.   This means that the next time a user logs in (who is using
         // common core pedagogy) they will use the current problem to find a location in the lesson structure.
         if (this.getCurProblemMode().equals(Problem.PRACTICE))
@@ -1189,6 +1209,9 @@ public class StudentState extends State implements TutorEventHandler {
         return this.workspaceState;
     }
 
+    public LessonState getLessonState () {
+        return this.lessonState;
+    }
 
     public TopicState getTopicState() {
         return topicState;
@@ -1239,6 +1262,8 @@ public class StudentState extends State implements TutorEventHandler {
     public void setNumProbsSinceLastIntervention(int i) {
         //To change body of created methods use File | Settings | File Templates.
     }
+
+
 
 
 }

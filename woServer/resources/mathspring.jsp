@@ -81,7 +81,8 @@
             hints: null,
             answers: null ,
             numHintsSeen: 0,
-            numHints: 0
+            numHints: 0,
+            destinationInterventionSelector: null
         }
 
         var sysGlobals = {

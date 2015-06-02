@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
@@ -10,6 +11,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +20,7 @@ import edu.umass.ckc.wo.tutor.response.Response;
  * Time: 11:53 AM
  * To change this template use File | Settings | File Templates.
  */
-public class DemoProblemIS extends NextProblemInterventionSelector {
+public class DemoProblemIS extends InterventionSelector {
     TopicModel topicModel;
 
     public DemoProblemIS(SessionManager smgr) {
@@ -33,7 +35,7 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
+    public Intervention selectIntervention(SessionEvent e) throws Exception {
         Problem demo = getDemoProblem(studentState.getCurTopic());
         if (demo != null) {
             DemoProblemIntervention dpi = new DemoProblemIntervention(demo);
@@ -49,15 +51,7 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
 
 
 
-    @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
-    @Override
-    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
 
 }

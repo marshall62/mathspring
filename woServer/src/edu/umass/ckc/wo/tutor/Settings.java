@@ -47,7 +47,6 @@ public class Settings {
   public static PrePostProblemSelector prepostProblemSelectorTester= new FixedSequencePrePostProblemSelectorImpl() ;
   public static PrePostProblemSelector prepostProblemSelector = new PrePostProblemSelectorImpl();
 
-    // todo Ivon or Pippin needs to write a subclass for each of these that will behave predictably (i.e. no randomness)
 //  public static InterventionSelector bayesianInterventionSelectorTester= new BayesianMotivationalSelector() ;
 //  public static ProblemSelector mlProblemSelectorTester = new MLProblemSelector();
 

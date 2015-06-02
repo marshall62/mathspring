@@ -20,23 +20,32 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class PartnerManager {
-    private static HashMap<Integer, WaitingStudent> requesters = new HashMap<Integer, WaitingStudent>();
-    private static HashMap<Integer, HashSet<Integer>> requestees_requesters = new HashMap<Integer, HashSet<Integer>>();
+    private static HashMap<Integer, WaitingStudent> requesters = new HashMap<Integer, WaitingStudent>(); // students waiting for a partner to help them
+    private static HashMap<Integer, HashSet<Integer>> requestees_requesters = new HashMap<Integer, HashSet<Integer>>(); // students who have someone waiting for them
     private static HashMap<Integer, Integer> current_matches = new HashMap<Integer, Integer>();
 
 
-    public synchronized static void addRequest(Connection conn, int id, ArrayList<String> conditions) throws SQLException{
+    /**
+     * For an originator (a person that needs help) this adds a WaitingStudent object into the cache.   The object contains a
+     * list of his possible helpers (neighbors).   When the collaboration begins, the WaitingStudent object has its partner property set.
+     * When the collaboration ends, the WaitingStudent element is removed from the requesters hash map.
+     * @param conn
+     * @param studId
+     * @param conditions
+     * @throws SQLException
+     */
+    public synchronized static void addRequest(Connection conn, int studId, ArrayList<String> conditions) throws SQLException{
         WaitingStudent waiter = new WaitingStudent();
-        waiter.setPartners(conn, id, conditions);
+        waiter.setPartners(conn, studId, conditions);
         ArrayList<Integer> prospPartners = waiter.getPossiblePartners();
-        requesters.put(id, waiter);
-        for(Integer i : prospPartners){
-            if(requestees_requesters.containsKey(i)){
-                requestees_requesters.get(i).add(id);
+        requesters.put(studId, waiter);  // save the WaitingStudent object for this studID
+        for(Integer helperId : prospPartners){
+            if(requestees_requesters.containsKey(helperId)){
+                requestees_requesters.get(helperId).add(studId);  // the helper has this student added to its list of requestors
             }
             else{
-                requestees_requesters.put(i, new HashSet<Integer>());
-                requestees_requesters.get(i).add(id);
+                requestees_requesters.put(helperId, new HashSet<Integer>());
+                requestees_requesters.get(helperId).add(studId);
             }
         }
     }

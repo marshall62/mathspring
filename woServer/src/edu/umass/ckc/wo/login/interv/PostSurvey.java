@@ -28,6 +28,8 @@ public class PostSurvey extends LoginInterventionSelector {
 
     private String url;
     private boolean embed=true;
+    private String uidVar;
+    private String unameVar;
 
     public PostSurvey(SessionManager smgr) throws SQLException, UserException {
         super(smgr);
@@ -42,6 +44,17 @@ public class PostSurvey extends LoginInterventionSelector {
         if (e != null)
             this.url= e.getTextTrim();
         else throw new UserException("Must provide URL to config of PostSurvey LoginIntervention Selector in logins.xml");
+        e = configXML.getChild("studId");
+
+        if (e != null) {
+            uidVar = e.getTextTrim();
+        }
+        else throw new UserException("Must provide <studId> element in config and URL must contain <uid> to be replaced by studId");
+        e = configXML.getChild("userName");
+        if (e != null) {
+            unameVar = e.getTextTrim();
+        }
+
         e =this.configXML.getChild("embed");
         if (e != null)
             this.embed = Boolean.parseBoolean(e.getTextTrim());
@@ -49,7 +62,7 @@ public class PostSurvey extends LoginInterventionSelector {
     }
 
 
-
+    // TODO The post survey is available when the classconfig table for this student has its showPostSurvey field set to 1
     public Intervention selectIntervention (SessionEvent e) throws Exception {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
 
@@ -72,6 +85,9 @@ public class PostSurvey extends LoginInterventionSelector {
                 return new LoginIntervention(JSPI);
             }
             else {
+                // URL has two variables (e.g. <uid>) that need to be replaced with userName and studId
+                url = url.replaceFirst("<"+uidVar+">",Integer.toString(smgr.getStudentId()));
+                url = url.replaceFirst("<"+unameVar+">",smgr.getUserName());
             // A JSP will show nothing more than a "continue" button.
             // The URL comes up in a separate browser window.  When the user is done in the separate window
             // they close it and click the "continue" button.

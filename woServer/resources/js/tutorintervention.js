@@ -85,9 +85,9 @@ function checkIfInputIntervention (interv) {
 function interventionDialogClose () {
 
     if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
     else if (globals.interventionType === ATTEMPT_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
 
     // If closing down an intervention dialog for next problem we send the InputResponse event and ask processNextProblemResult
     // to handle what the server returns.   For attempts we send InputResponse event but, FOR NOW, we don't expect the server
@@ -117,7 +117,7 @@ function interventionDialogOpen (title, html, type) {
 function sendInterventionDialogInputResponse (event, fn) {
     var formInputs = $("#"+INPUT_RESPONSE_FORM).serialize() ;
     incrementTimers(globals);
-    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime,fn)
+    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime  + "&destination="+globals.destinationInterventionSelector,fn)
 }
 
 

@@ -16,7 +16,6 @@ import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.*;
-import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.model.*;
 import edu.umass.ckc.wo.tutor.probSel.ChallengeModeProblemSelector;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
@@ -27,7 +26,6 @@ import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
-import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.*;
 import org.apache.log4j.Logger;
 
@@ -315,7 +313,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
             return r;
         }
         else if (e instanceof TimedInterventionEvent){
-            r = processTimedInterventionEvent((TimedInterventionEvent) e);
+            r = processInterventionTimeoutEvent((TimedInterventionEvent) e);
             studentModel.save();
             return r;
         }
@@ -402,7 +400,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
 
     public abstract Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception;
-    public abstract Response processTimedInterventionEvent(TimedInterventionEvent e) throws Exception;
+    public abstract Response processInterventionTimeoutEvent(TimedInterventionEvent e) throws Exception;
     public abstract Response processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception;
     public abstract Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception;
     public abstract Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;
@@ -637,14 +635,10 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
      * @return
      */
     public boolean isShowMPP() {
-        if (this.nextProblemInterventionSelector != null) {
-            List<NextProblemInterventionSelector> l = this.nextProblemInterventionSelector.getSubSelectorList();
-            for (NextProblemInterventionSelector s: l) {
-                if (s instanceof MyProgressPageIS)
-                    return false;
-            }
-        }
-        return this.getParams().isShowMPP();
+        // note: this used to return false if there was an intervention in the pedagogical model that turned the MPP on and off.
+        // That behavior is no longer requested, so we simply return true so that MPP always shows.
+
+        return true;
     }
 
     public TutorModel getTutorModel() {
