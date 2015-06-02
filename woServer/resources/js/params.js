@@ -130,32 +130,43 @@ function addHintHandler(doc, hintLabel){
 }
 
 function plug(doc) {
-    if(getProblemStatement() != null && getProblemStatement() != undefined)
-        doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(getProblemStatement()));
-    if(getProblemFigure() != null && getProblemFigure() != undefined)
-        doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(getProblemFigure()));
-    if (getProblemSound() != undefined && getProblemSound() != "") {
-        doc.getElementById("QuestionSound").setAttribute("src", getURL(getProblemSound()+".ogg"));
-        doc.getElementById("QuestionSound").setAttribute("src", getURL(getProblemSound()+".mp3"));
+    var probStatement = getProblemStatement();
+    var probFigure = getProblemFigure();
+    var probSound = getProblemSound();
+    var probUnits = getUnits();
+    if(probStatement != null && probStatement != undefined && probStatement != "")
+        doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(probStatement));
+    if(probFigure != null && probFigure != undefined && probFigure != "")
+        doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure));
+    if(probSound != null && probSound != undefined && probSound != "") {
+        //TODO I don't think the below lines do what I want them to.
+        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound+".ogg"));
+        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound+".mp3"));
     }
-    if (getUnits() != null) {
+    if (probUnits != null && probUnits != undefined && probUnits != "") {
         doc.getElementById("Units").innerHTML = parametrizeText(format(getUnits()));
     }
     var hints = getHints();
     var hintID = "";
     if (hints != undefined && hints != null) {
         for (i=0; i<hints.length;++i)  {
+            if(hints[i] )
             hintID = getElementCorrespondingToHint(hints[i].label);
-
-            doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML));
+            if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
+                doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML));
+            }
+            else{
+                alert("text missing for hint: "+i);
+            }
             doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText)));
+            //TODO I don't think this does what I want
             if (hints[i].audioResource != undefined && hints[i].audioResource != "")  {
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".ogg"));
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".mp3"));
             }
         }
 
-        if(hints[0] == undefined){
+        if(hints[0] == undefined && hints.label != undefined && hints.label != ""){
             doc.getElementById(getElementCorrespondingToHint(hints.label)+"Sound").load();
         }
         else if(hints[0].audioResource != undefined && hints[0].audioResource != ""){
@@ -207,6 +218,10 @@ function format (rawText) {
     var maxLength = rawText.length;
     for(var j = 0; j < maxLength; ++j){
 
+        if(j == maxLength-1 && startIndex != undefined)
+            alert("unclosed '{['");
+
+        //TODO refactor this
         switch (rawText.charAt(j)) {
             case '\\':
                 if(!escaped){
@@ -325,9 +340,13 @@ function replaceWithHTML(file, ext){
         toInsert = parseSimpleExp(file+ext);
     }
 
+    if(toInsert == undefined || (typeof toInsert === 'number' && isNaN(toInsert))){
+        alert("invalid image, video, or expression detected");
+    }
     return toInsert;
 }
 
+//TODO test try catches
 //Parses correctly formatted expressions containing only operators from the set {+,-,/,*,^}
 function parseSimpleExp(expression){
     //Convert parameters to their values
@@ -340,7 +359,7 @@ function parseSimpleExp(expression){
 
     for(var j = 0, expLength = expression.length; j < expLength; j++){
         var currChar = expression.charAt(j);
-        //Add an operand to the opperand stack.  Remember it could have more than one digit.
+        //Add an operand to the operand stack.  Remember it could have more than one digit.
         if(((currChar >= '0' && currChar <= '9') || currChar == '.')){
             var buffer = ""
             while(j < expLength && ((currChar >= '0' && currChar <= '9') || currChar == '.')){
@@ -358,30 +377,50 @@ function parseSimpleExp(expression){
 
         //When a closing brace is found, solve the brace
         else if(currChar == ')'){
-            while(operators[operators.length -1] != '('){
-                operands.push(applyOperator(operators.pop(), operands.pop(), operands.pop()));
-            }
+            try{
+                while(operators[operators.length -1] != '('){
+                    operands.push(applyOperator(operators.pop(), operands.pop(), operands.pop()));
+                }
             operators.pop();
+            }
+            catch(err){
+                return undefined;
+            }
         }
 
         //If the token is an operator
         else if(currChar == '+' || currChar == '-' || currChar == '/' || currChar == '*' || currChar == '^'){
 
-            //Make sure order of operations is obeyed by performing operators on stack before current if they have higher precedence
-            while(operators.length != 0 && hasPrecedence(currChar, operators[operators.length -1])){
-                operands.push(applyOperator(operators.pop(), operands.pop(), operands.pop()));
+            try{
+                //Make sure order of operations is obeyed by performing operators on stack before current if they have higher precedence
+                while(operators.length != 0 && hasPrecedence(currChar, operators[operators.length -1])){
+                    operands.push(applyOperator(operators.pop(), operands.pop(), operands.pop()));
+                }
+                operators.push(currChar);
             }
-            operators.push(currChar);
+            catch(err){
+                return undefined;
+            }
         }
 
     }
 
     //compute what remains in the stacks after the expression has been parsed
     while(operators.length != 0){
-        operands.push(applyOperator(operators.pop(), operands.pop(), operands.pop()));
+        try{
+            operands.push(applyOperator(operators.pop(), operands.pop(), operands.pop()));
+        }
+        catch(err){
+            return undefined;
+        }
     }
 
-    return operands.pop();
+    try{
+        return operands.pop();
+    }
+    catch(err){
+        return undefined;
+    }
 }
 
 //Returns true if op2 has >= precedence to op1.  Note that false is returned when op2 is a paren.  This is because we process parens separately.
