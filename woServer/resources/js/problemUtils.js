@@ -86,7 +86,7 @@ function answerClicked (doc, buttonName) {
         oldAnswer = window.parent.getAnswer();
         newAnswer = window.parent.getNewAnswer();
         if (oldAnswer && newAnswer && buttonName.toUpperCase() === oldAnswer.toUpperCase()) {
-            buttonName = newAnswer.toUpperCase(); // TODO: This logic should maybe be in the server
+            buttonName = newAnswer.toUpperCase();
         }
     }
     debugAlert(buttonName + " was clicked. Calling parent.answerChosen.");
@@ -100,7 +100,7 @@ function prob_gradeAnswer (doc, answerChosen, isCorrect, showHint) {
             oldAnswer = window.parent.getAnswer();
             newAnswer = window.parent.getNewAnswer();
             if (oldAnswer && newAnswer && answerChosen.toUpperCase() === oldAnswer.toUpperCase()) {
-               answerChosen = newAnswer.toUpperCase(); // TODO: This logic should maybe be in the server
+               answerChosen = newAnswer.toUpperCase();
             }
         }
         answerChosen = answerChosen.toUpperCase();
@@ -196,6 +196,7 @@ function stopAudio(){
         document.getElementById("QuestionSound").currentTime = 0;
     }
     for(i = 1; i <= maxHints; ++i){
+        //TODO check that these will always all exist
         if(document.getElementById("Hint"+i+"Sound").readyState > 0){
             document.getElementById("Hint"+i+"Sound").pause();
             document.getElementById("Hint"+i+"Sound").currentTime = 0;
