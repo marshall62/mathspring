@@ -179,15 +179,16 @@ public class PartnerManager {
                 ps = conn.prepareStatement(q);
                 ps.setInt(1,id);
                 rs = ps.executeQuery();
-                rs.next();
-                Integer left = rs.getInt("leftStudId");
-                Integer right = rs.getInt("rightStudId");
-                //This will be a problem if a  studIds is ever 0.
-                if(left != 0){
-                    partners.add(left);
-                }
-                if(right != 0){
-                    partners.add(right);
+                if (rs.next() ) {
+                    Integer left = rs.getInt("leftStudId");
+                    Integer right = rs.getInt("rightStudId");
+                    //This will be a problem if a  studIds is ever 0.
+                    if(left != 0){
+                        partners.add(left);
+                    }
+                    if(right != 0){
+                        partners.add(right);
+                    }
                 }
             } finally {
                 if (rs != null)
