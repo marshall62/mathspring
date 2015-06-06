@@ -231,19 +231,19 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                 <param name="inputType">radio</param>
                 <param name="numVals">5</param>
                 <config>
-                    <emotion name="Frustration">
-                        <label val="1">Not at all Frustrated</label>
-                        <label val="2">A little Frustrated</label>
-                        <label val="3">Somewhat Frustrated</label>
-                        <label val="4">Quite a bit Frustrated</label>
-                        <label val="5">Extremely Frustrated</label>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
                     </emotion>
-                    <emotion name="Confidence">
-                        <label val="1">Not at all Confident</label>
-                        <label val="2">A little Confident</label>
-                        <label val="3">Somewhat Confident</label>
-                        <label val="4">Quite a bit Confident</label>
-                        <label val="5">Extremely Confident</label>
+                    <emotion name="Excitement">
+                        <label val="1">Not at all Excited</label>
+                        <label val="2">A little Excited</label>
+                        <label val="3">Somewhat Excited</label>
+                        <label val="4">Quite a bit Excited</label>
+                        <label val="5">Extremely Excited</label>
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
@@ -302,19 +302,19 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                 <param name="inputType">radio</param>
                 <param name="numVals">5</param>
                 <config>
-                    <emotion name="Frustration">
-                        <label val="1">Not at all Frustrated</label>
-                        <label val="2">A little Frustrated</label>
-                        <label val="3">Somewhat Frustrated</label>
-                        <label val="4">Quite a bit Frustrated</label>
-                        <label val="5">Extremely Frustrated</label>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
                     </emotion>
-                    <emotion name="Confidence">
-                        <label val="1">Not at all Confident</label>
-                        <label val="2">A little Confident</label>
-                        <label val="3">Somewhat Confident</label>
-                        <label val="4">Quite a bit Confident</label>
-                        <label val="5">Extremely Confident</label>
+                    <emotion name="Excitement">
+                        <label val="1">Not at all Excited</label>
+                        <label val="2">A little Excited</label>
+                        <label val="3">Somewhat Excited</label>
+                        <label val="4">Quite a bit Excited</label>
+                        <label val="5">Extremely Excited</label>
                     </emotion>
                     <askWhy>true</askWhy>
                 </config>
@@ -1397,7 +1397,7 @@ JakeNoSPPButton-->
         <nextProblemInterventionSelector class="CollaborationIS">
             <config>
                 <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
-                <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                <intervalCriteria type="affect" emotion="Interested" lowerBound="3" upperBound="3"/>
                 <intervalCriteria type="random" frequency="3"/>
                 <maxPartnerWaitMin>3</maxPartnerWaitMin>
                 <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
@@ -1452,7 +1452,7 @@ JakeNoSPPButton-->
         <nextProblemInterventionSelector class="CollaborationIS">
             <config>
                 <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
-                <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                <intervalCriteria type="affect" emotion="Interested" lowerBound="3" upperBound="3"/>
                 <intervalCriteria type="random" frequency="3"/>
                 <maxPartnerWaitMin>3</maxPartnerWaitMin>
                 <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
