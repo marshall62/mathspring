@@ -1149,7 +1149,7 @@ JakeNoSPPButton-->
         <active>true</active>
         <name>Highlight hint buttons, Ask about topic switch, ask emotions, warn about guessing</name>
         <name>Alpha Testing</name>
-        <lesson>TopicWithIntroAndExample</lesson>
+        <lesson>TopicWithIntro</lesson>
         <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
@@ -1204,7 +1204,7 @@ JakeNoSPPButton-->
             </interventionSelector>
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
-                    <threshold>1</threshold>
+                    <threshold>2</threshold>
                 </config>
 
             </interventionSelector>

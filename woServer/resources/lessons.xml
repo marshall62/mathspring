@@ -1,5 +1,36 @@
 <lessons>
 
+    <lesson name="TopicWithIntro" style="topics">
+        <controlParameters>
+
+            <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
+            <contentFailureThreshold>1</contentFailureThreshold>
+            <topicMastery>1.2</topicMastery>
+            <minNumberProbs>3</minNumberProbs>
+            <maxNumberProbs>10</maxNumberProbs>
+            <minTimeInTopicSecs>120</minTimeInTopicSecs>
+            <difficultyRate>3</difficultyRate>
+            <!-- legal values never, oncePerSession, always-->
+            <topicIntroFrequency>oncePerSession</topicIntroFrequency>
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+        </controlParameters>
+
+        <interventions>
+            <interventionSelector onEvent="EndOfTopic" weight="1" class="TopicSwitchAskIS">
+                <config>
+                    <ask val="false"></ask>
+                </config>
+            </interventionSelector>
+            <interventionSelector onEvent="BeginningOfTopic" weight="1" class="TopicIntroIS">
+                <config>
+                    <!-- legal values never, oncePerSession, always-->
+                    <topicIntroFrequency>always</topicIntroFrequency>
+                </config>
+            </interventionSelector>
+        </interventions>
+    </lesson>
+
     <lesson name="TopicWithIntroAndExample" style="topics">
         <controlParameters>
 
