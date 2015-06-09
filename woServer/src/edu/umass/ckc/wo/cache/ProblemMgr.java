@@ -130,7 +130,9 @@ public class ProblemMgr {
         ArrayList<String> vals = null;
         try {
             while (rs.next()) {
-                name = "$"+rs.getString("name");
+                // prepend the variable name with $#.   Later plugging values into the problem will use $# to indicate where
+                // variables are located.
+                name = "$#"+rs.getString("name");    // DM 6/2/15 changed per Toms request
                 vals = new ArrayList<String>(Arrays.asList(rs.getString("values").split(",")));
                 vars.put(name, vals);
             }
