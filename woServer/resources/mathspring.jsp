@@ -81,7 +81,8 @@
             hints: null,
             answers: null ,
             numHintsSeen: 0,
-            numHints: 0
+            numHints: 0,
+            destinationInterventionSelector: null
         }
 
         var sysGlobals = {
@@ -243,6 +244,7 @@
                     <li class="elb_pid">
                             <div id="answer">${globals.answer}</div>
                          </li>
+
                 </ul>
                 <p>&nbsp;
 
@@ -251,7 +253,8 @@
 
             <%-- This div contains information about the current problem (its topic and standard)--%>
             <div id="problemTopicAndStandards" style="position:absolute; top:650px; right:400px">Topic:<br/>Standards:</div>
-
+           <%-- Only shown to test users--%>
+            <div id="varBindings" style="position:absolute; top:690px; left:200px"></div>
 
             <div id="flashContainer1" >
                 <div id="flashContainer2"></div>

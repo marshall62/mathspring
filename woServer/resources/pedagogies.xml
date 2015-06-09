@@ -1318,6 +1318,7 @@ JakeNoSPPButton-->
             <topicExampleFrequency>oncePerSession</topicExampleFrequency>
         </controlParameters>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
         <!--Required student model if asking student to report affect -->
         <studentModelClass>AffectStudentModel</studentModelClass>
         <nextProblemInterventionSelector class="NextProblemListCombinerIS">

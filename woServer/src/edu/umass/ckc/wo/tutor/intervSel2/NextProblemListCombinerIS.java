@@ -33,9 +33,11 @@ public class NextProblemListCombinerIS extends NextProblemInterventionSelector {
         for (NextProblemInterventionSelector sel: this.subSelectorList) {
             NextProblemIntervention intervention = sel.selectIntervention(e);
             if (intervention != null) {
-                // TODO :   Must record in student state the intervention selector that is returning the intervention
-                //
-                rememberInterventionSelector(sel);
+                // TODO :   A GIANT HACK that is here because CollaborationIS has its delegates setting the lastInterventionSelector
+                // if the studentState in order for it to work.   This overwrites what it does, so we have a temporary hack to avoid doing that.
+                if (sel instanceof CollaborationIS)
+                    ;
+                else rememberInterventionSelector(sel);
                 return intervention;
             }
         }
