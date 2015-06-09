@@ -47,6 +47,10 @@ function processMyProgressNavAskIntervention (html) {
 
 }
 
+// This sets up an intervention on the helpers screen that freezes their input until the collaboration with
+// a partner (on the partners computer) is done.   This checks every 3 seconds to see if this intervention
+// is complete.   The server keeps returning the same intervention/learningCompanion when it's not complete and a different
+// intervention when it is complete
 function processCollaborationPartnerIntervention(html) {
     interventionDialogOpen("Work with a partner", html, NEXT_PROBLEM_INTERVENTION);
     $("#ok_button").hide();
@@ -54,13 +58,15 @@ function processCollaborationPartnerIntervention(html) {
         servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
         globals.interventionType = null;
         globals.isInputIntervention= false;
-    }, 1000);
+    }, 3000);
 }
 
 function processCollaborationConfirmationIntervention(html) {
     interventionDialogOpen("Work with a partner", html, NEXT_PROBLEM_INTERVENTION);
 }
 
+// When the originator is waiting for a partner this checks the server every 5 seconds to see if the partner is available to work
+// with.   Every 60 seconds it asks if they want to continue waiting for a partner.
 function processCollaborationOriginatorIntervention(html) {
     interventionDialogOpen("Waiting for a partner", html, NEXT_PROBLEM_INTERVENTION);
     $("#ok_button").hide();
@@ -70,12 +76,12 @@ function processCollaborationOriginatorIntervention(html) {
                 servletGet("TimedIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
             }
             else{
-                timeout = timeout + 1000;
+                timeout = timeout + 5000;
                 servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
             }
             globals.interventionType = null;
             globals.isInputIntervention= false;}
-        , 1000);
+        , 5000);
 }
 
 function processCollaborationFinishedIntervention(html) {

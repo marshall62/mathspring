@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
     private static Logger logger = Logger.getLogger(CollaborationIS.class);
-    int minIntervalBetweenCollabInterventions = 60 * 1000;
+    int minIntervalBetweenCollabInterventions = 60 * 1000 * 5; // wait 5 minutes between collab offers.
 
     public CollaborationOriginatorIS(SessionManager smgr, PedagogicalModel pedagogicalModel) throws SQLException {
         super(smgr, pedagogicalModel);
