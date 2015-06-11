@@ -11,7 +11,7 @@
             <minTimeInTopicSecs>120</minTimeInTopicSecs>
             <difficultyRate>3</difficultyRate>
             <!-- legal values never, oncePerSession, always-->
-            <topicIntroFrequency>oncePerSession</topicIntroFrequency>
+            <!--<topicIntroFrequency>oncePerSession</topicIntroFrequency>-->
             <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
             turns it on.   If false, intervention selector has no effect - it is always off-->
         </controlParameters>
@@ -31,7 +31,7 @@
         </interventions>
     </lesson>
 
-    <lesson name="TopicWithIntroAndExample" style="topics">
+    <lesson name="TopicWithIntroAndDemo" style="topics">
         <controlParameters>
 
             <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
@@ -42,8 +42,8 @@
             <minTimeInTopicSecs>120</minTimeInTopicSecs>
             <difficultyRate>3</difficultyRate>
             <!-- legal values never, oncePerSession, always-->
-            <topicIntroFrequency>oncePerSession</topicIntroFrequency>
-            <topicExampleFrequency>oncePerSession</topicExampleFrequency>
+            <!--<topicIntroFrequency>oncePerSession</topicIntroFrequency>-->
+            <!--<topicExampleFrequency>oncePerSession</topicExampleFrequency>-->
             <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
             turns it on.   If false, intervention selector has no effect - it is always off-->
         </controlParameters>
@@ -57,13 +57,13 @@
             <interventionSelector onEvent="BeginningOfTopic" weight="1" class="TopicIntroIS">
                 <config>
                     <!-- legal values never, oncePerSession, always-->
-                    <topicIntroFrequency>always</topicIntroFrequency>
+                    <topicIntroFrequency>oncePerSession</topicIntroFrequency>
                 </config>
             </interventionSelector>
             <interventionSelector onEvent="BeginningOfTopic" weight="2" class="DemoProblemIS">
                 <config>
                     <!-- legal values never, oncePerSession, always-->
-                    <topicExampleFrequency>always</topicExampleFrequency>
+                    <demoFrequency>always</demoFrequency>
                 </config>
             </interventionSelector>
 

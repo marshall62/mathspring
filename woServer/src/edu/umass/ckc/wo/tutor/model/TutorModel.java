@@ -1,9 +1,11 @@
 package edu.umass.ckc.wo.tutor.model;
 
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
-import edu.umass.ckc.wo.tutor.response.BeginningOfTopicEvent;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
-import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.response.*;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,8 +16,11 @@ import edu.umass.ckc.wo.tutor.response.Response;
  */
 public class TutorModel implements TutorEventProcessor {
     private LessonModel lessonModel;
+    private SessionManager smgr;
 
-
+    public TutorModel(SessionManager smgr) {
+        this.smgr = smgr;
+    }
 
     @Override
     public Response processUserEvent(TutorHutEvent e) throws Exception {
@@ -24,11 +29,30 @@ public class TutorModel implements TutorEventProcessor {
 
     @Override
     public Response processInternalEvent(InternalEvent e) throws Exception {
+        Response r;
+        StudentState state = smgr.getStudentState();
+        int lastProbId =  state.getCurProblem();  // must do this before processing the event because it might clear curProb
         if (e instanceof BeginningOfTopicEvent)
-            return ((TopicModel) lessonModel).processInternalEvent(e);
-        else return new Response();
+            r = ((TopicModel) lessonModel).processInternalEvent(e);
+        else r=  new Response();
+        if (r instanceof ProblemResponse) {
+            ProblemResponse pr = (ProblemResponse) r;
+            Problem p = pr.getProblem();
+            smgr.getStudentModel().newProblem(state,p);  // this does not set curProb = new prob id,
+            smgr.getStudentState().setCurProblem(lastProbId);  // must make curProb be lastProb id so EndProblem event that comes in next has the id of last problem
+            smgr.getStudentModel().save();
+        }
+        else if (r instanceof InterventionResponse) {
+            Intervention i = ((InterventionResponse) r).getIntervention();
+            smgr.getStudentModel().interventionGiven(state,i);
+            smgr.getStudentModel().save();
+        }
+        return r;
 
     }
+
+
+
 
     public LessonModel getLessonModel() {
         return lessonModel;

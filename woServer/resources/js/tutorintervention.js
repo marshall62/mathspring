@@ -14,6 +14,8 @@ function processNextProblemIntervention(activityJSON) {
     if (interventionType === "TopicSwitch") {
         processTopicSwitchIntervention(activityJSON.html)
     }
+    else if (interventionType === "TopicIntro")
+        processTopicIntroIntervention(activityJSON);
     else if (interventionType === "ExternalActivity") {
        processExternalActivityIntervention(pid, resource);
     }
@@ -37,12 +39,42 @@ function processNextProblemIntervention(activityJSON) {
         processCollaborationTimeoutIntervention(activityJSON.html);
     else if(interventionType === "CollaborationOptionIntervention")
         processCollaborationOptionIntervention(activityJSON.html);
-    sendBeginIntervention(globals);
+    sendBeginIntervention(globals,interventionType);
 
 }
 
 
 
+
+function processTopicIntroIntervention (interv) {
+    globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
+
+    // send EndEvent  to end the previous problem
+    sendEndEvent(globals);
+//            showProblemInfo(pid,resource);
+    globals.probElapsedTime = 0;
+//    sendBeginEvent(globals);
+    showTopicIntro(interv.resource,interv.topicName);
+    if (interv.resourceType === 'swf')
+        showFlashProblem(interv.resource,null,null,FLASH_CONTAINER_INNER,false);
+    else if (interv.resourceType === 'html')
+        showHTMLProblem(null,null,interv.resource,false);
+    else
+        alert("Beginning topic: "  + topic + ".  No Flash movie to show");
+    globals.topicId = interv.topicId;
+    globals.probId = 999;  // a dummy indicator that this "problem" is a topic intro
+}
+
+
+function showTopicIntro (resource, topic) {
+
+    // TODO assumption is that TOpicIntro is built in Flash.   Other possibilities: nothing, HTML5
+    // if nothing pop up an alert
+    if (typeof(resource) != 'undefined' && resource != '')
+        showFlashProblem(resource,null,null,FLASH_CONTAINER_INNER, false);
+
+    else alert("Beginning topic: "  + topic + ".  No Flash movie to show")
+}
 
 
 function processAttemptIntervention (interv) {
@@ -53,7 +85,7 @@ function processAttemptIntervention (interv) {
             highlightHintButton();
         else if (type === 'RapidAttemptIntervention')
             processRapidAttemptIntervention(interv.html);
-        sendBeginIntervention(globals);
+        sendBeginIntervention(globals,type);
     }
 }
 
@@ -122,9 +154,9 @@ function sendInterventionDialogInputResponse (event, fn) {
 
 
 //send a BeginProblem event for HTMl5 problems.
-function sendBeginIntervention(globals) {
+function sendBeginIntervention(globals, intervType) {
     incrementTimers(globals);
-    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime});
+    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime, interventionType: intervType});
 
 }
 

@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class TutorModelUtils {
 
+    // Put the hints into a problem which is being used for a demo
     public void setupDemoProblem(Problem problem, SessionManager smgr, HintSelector hintSelector) throws Exception {
         hintSelector.init(smgr);
         // need to put in the solution since its an example

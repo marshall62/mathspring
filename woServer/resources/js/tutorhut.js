@@ -506,15 +506,6 @@ function showHTMLProblem (pid, solution, resource, mode) {
 
 }
 
-function showTopicIntro (resource, topic) {
-
-    // TODO assumption is that TOpicIntro is built in Flash.   Other possibilities: nothing, HTML5
-    // if nothing pop up an alert
-    if (typeof(resource) != 'undefined' && resource != '')
-        showFlashProblem(resource,null,null,FLASH_CONTAINER_INNER, false);
-
-    else alert("Beginning topic: "  + topic + ".  No Flash movie to show")
-}
 
 // On EndProblem event we know the effort of the last problem so we get it and display it.
 function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
@@ -649,20 +640,20 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             globals.topicId = activity.topicId;
             globals.probId = pid;
         }
+        // DM 6/11/15 topic intros are now interventions
 
-        else if (activityType === TOPIC_INTRO_PROB_TYPE) {
-            globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
-
-            // send EndEvent for previous problem
-            sendEndEvent(globals);
-//            showProblemInfo(pid,resource);
-            globals.probElapsedTime = 0;
-            sendBeginEvent(globals);
-            showTopicIntro(resource,activity.topicName);
-            globals.topicId = activity.topicId;
-            globals.probId = pid;
-
-        }
+//        else if (activityType === TOPIC_INTRO_PROB_TYPE) {
+//            globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
+//
+//            // send EndEvent for previous problem
+//            sendEndEvent(globals);
+//            globals.probElapsedTime = 0;
+//            sendBeginEvent(globals);
+//            showTopicIntro(resource,activity.topicName);
+//            globals.topicId = activity.topicId;
+//            globals.probId = pid;
+//
+//        }
         // We got XML that we don't understand so it must be an intervention.   We call Flash and pass it the XML
         else {
             globals.lastProbType = FLASH_PROB_TYPE;
@@ -1032,7 +1023,8 @@ function showHTMLProblemAtStart () {
 // This came up after being in a problem and attempting it (correctly), going to MPP, then return to hut.
 function showInterventionAtStart () {
     if (sysGlobals.isDevEnv)
-        alert("Returning to Mathspring and playing intervention: " + globals.activityJSON);
+        ;
+//        alert("Returning to Mathspring and playing intervention: " + globals.activityJSON);
 
 //        var ajson = globals.activityJSON;
 //        var qt = '\\"';
@@ -1040,7 +1032,8 @@ function showInterventionAtStart () {
 //        var cleanJSON = ajson.replace(re,'\\\"');
         var activity = globals.activityJSON;
         if (sysGlobals.isDevEnv)
-            alert("Activity is " + activity);
+            ;
+//            alert("Activity is " + activity);
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
         processNextProblemIntervention(activity);

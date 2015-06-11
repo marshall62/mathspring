@@ -3,17 +3,13 @@ package edu.umass.ckc.wo.tutor.pedModel;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
-import edu.umass.ckc.wo.tutormeta.HintSelector;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import org.apache.log4j.Logger;
 
@@ -98,10 +94,6 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
 
-    public TopicIntro getIntro(int curTopic) throws SQLException {
-        TopicIntro intro = DbTopics.getTopicIntro(conn,curTopic);
-        return intro;
-    }
 
 
     // This is a very dumb way of doing this.   We are taking the middle problem from the topics list.  This problem
@@ -109,7 +101,7 @@ public class TopicSelectorImpl implements TopicSelector {
     // Better alternative:   the topic has a defined "demo"  which is hard-wired and is custom built to represent
     // the topic and is built in HTML5 so that it can play without clicking a "next step" button which was imposed
     // by the way Flash problems (being used as demos) work
-    public Problem getExample(int curTopic, HintSelector hintSelector) throws Exception {
+    public Problem getDemoProblem(int curTopic) throws Exception {
         List<Integer> probs = getClassTopicProblems(curTopic, classID, smgr.isTestUser());
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);

@@ -18,11 +18,11 @@ public class TopicIntroResponse extends ProblemResponse implements NextProblemIn
 
 
     public TopicIntroResponse(TopicIntro intro, List<TopicMastery> topicMasteryLevels, int curTopic) {
-        super(intro,topicMasteryLevels,curTopic);
+//        super(intro,topicMasteryLevels,curTopic);
     }
 
     public TopicIntroResponse(TopicIntro intro) {
-        super(intro );
+//        super(intro );
     }
 
     @Override

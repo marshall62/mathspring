@@ -72,8 +72,6 @@ public class ProblemResponse extends Response {
     public String logEventName() {
         if (prob == null)
             return "NoProblem";
-        else if (prob instanceof TopicIntro)
-            return Problem.TOPIC_INTRO_PROB_TYPE;
         else if (prob.isPractice())
            return "PracticeProblem";
         else return "ExampleProblem";

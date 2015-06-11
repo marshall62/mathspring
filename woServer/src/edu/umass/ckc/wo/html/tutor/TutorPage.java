@@ -8,6 +8,7 @@ import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 import edu.umass.ckc.wo.woserver.ServletInfo;
 import org.apache.log4j.Logger;
@@ -252,6 +253,26 @@ public class TutorPage {
         disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
         logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
+    }
+
+    // This builds a tutor page for a Response by dispatching to the correct helper.
+    public void createTutorPageForResponse(long elapsedTime, long probElapsedTime, int topicId,
+                                           Response r, String chalRevOrPracticeMode, String lastProbType,
+                                           boolean solved, String answer, boolean isBeginningOfSession, int lastProbId, boolean showMPP) throws Exception {
+        if (r instanceof InterventionResponse)
+        {
+            InterventionResponse ir = (InterventionResponse)  r;
+            Intervention i = ir.getIntervention();
+
+            createTutorPageFromState(elapsedTime, probElapsedTime, topicId, ir, chalRevOrPracticeMode, lastProbType, solved, i.getResource(), answer, isBeginningOfSession, lastProbId, showMPP);
+        }
+        else if (r instanceof ProblemResponse) {
+            ProblemResponse pr = (ProblemResponse) r;
+            Problem p = pr.getProblem();
+            createTutorPageFromState(elapsedTime,probElapsedTime,topicId,pr,chalRevOrPracticeMode,lastProbType,solved,p.getResource(),answer,isBeginningOfSession,lastProbId,showMPP);
+
+        }
+
     }
 
     private void setJavascriptVars (long elapsedTime, long probElapsedTime, int topicId,

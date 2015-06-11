@@ -135,5 +135,7 @@ public class LessonModel implements TutorEventProcessor {
         else return new InterventionResponse(interv);
     }
 
-
+    public PedagogicalMoveListener getPedagogicalMoveListener() {
+        return pedagogicalMoveListener;
+    }
 }

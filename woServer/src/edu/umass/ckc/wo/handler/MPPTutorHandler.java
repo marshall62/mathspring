@@ -7,7 +7,6 @@ import edu.umass.ckc.wo.html.tutor.TutorPage;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.*;
@@ -83,17 +82,13 @@ public class MPPTutorHandler {
             int lastProbId =  smgr.getStudentState().getCurProblem(); // must do before next line because it clears curProb
             // problem:  this wipes out the student problemstate so that state.curProb = -1
 
-            // TODO We shouldn't be assuming a ProblemEvent comes back.  What if an Intervention were selected to begin a topic?
             InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
             TutorModel tutMod = pedMod.getTutorModel();
-            ProblemResponse r = (ProblemResponse) tutMod.processInternalEvent(beginningOfTopicEvent);
+            Response r =  tutMod.processInternalEvent(beginningOfTopicEvent);
 
-            Problem p = r.getProblem();
-            smgr.getStudentModel().newProblem(state,p);  // this does not set curProb = new prob id,
-            smgr.getStudentState().setCurProblem(lastProbId);  // must make curProb be lastProb id so EndProblem event that comes in next has the id of last problem
-            smgr.getStudentModel().save();
+
             int temp = smgr.getStudentState().getCurProblem();
-            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), r, "practice",  typ, true, p.getResource(), null, false, lastProbId, this.showMPP);
+            new TutorPage(info,smgr).createTutorPageForResponse(e.getElapsedTime(), 0, e.getTopicId(), r, "practice", typ, true, null, false, lastProbId, this.showMPP);
             new TutorLogger(smgr).logMPPEvent(e,lastProbId);
 //            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), -1, "practice", Problem.PRACTICE, state.getCurProbType(), true, null, null, false);
 

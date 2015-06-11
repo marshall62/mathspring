@@ -139,7 +139,7 @@ public class TutorBrainHandler {
             boolean showMPP = smgr.getPedagogicalModel().isShowMPP();
             smgr.getPedagogicalModel().newSession(smgr.getSessionNum());
             new TutorPage(servletInfo,smgr).createTutorPageFromState(ee.getElapsedTime(), 0, -1, -1,
-                    "practice", Problem.PRACTICE, Problem.PRACTICE, true, null, null, true, showMPP);
+                    Problem.PRACTICE, Problem.PRACTICE, null, true, null, null, true, showMPP);
             return false;
         }
         else if (e instanceof HomeEvent) {

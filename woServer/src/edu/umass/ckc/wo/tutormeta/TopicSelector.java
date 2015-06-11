@@ -28,13 +28,10 @@ public interface TopicSelector {
 
     public  void initializeTopic (int topicId, StudentState state)  throws Exception ;
 
-    //  TopicIntro should be renamed to something else (e.g. Intro)  so that each implementation of this can return an appropriate Intro
-    // means defining Intro interface.
-    public  TopicIntro getIntro (int topicId) throws Exception;
 
-    //  Passing the HintSelector is not wonderful.  The reason it is here is because it returns a sequence of hints which is what allows
-    // the example to "play" as a problem being solved (i.e. its hints are played in sequence).
-    public  Problem getExample (int topicId, HintSelector hs) throws Exception;
+
+
+    public  Problem getDemoProblem (int topicId) throws Exception;
 
     // we're done with the current topic,  figure out what topic to give next.    Seems that this will need a StudentModel input
     // to support intelligent selection.

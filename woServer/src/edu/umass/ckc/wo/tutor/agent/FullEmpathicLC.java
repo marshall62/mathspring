@@ -58,7 +58,7 @@ public abstract class FullEmpathicLC extends EmotionalLC {
 
         // TopicIntros tend to have audio.   We can't return a clip that also has audio or there will be double audio.  Must return idle
         // When we are doing an intervention we don't want the character acting up either.
-        if (r instanceof TopicIntroResponse || r instanceof InterventionResponse) {
+        if (r instanceof InterventionResponse) {
             clips.add("idle");
             return clips;
         }

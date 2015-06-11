@@ -58,7 +58,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         this.pedagogy = pedagogy;
         setSmgr(smgr);
         smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
-        setTutorModel(new TutorModel());
+        setTutorModel(new TutorModel(smgr));
         pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
         params = getPedagogicalModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
         lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
@@ -614,7 +614,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        }
 //        // maybe we need to show an example
 //        if (r == null) {
-//            Problem ex = getTopicExample(curTopic);
+//            Problem ex = getTopicDemo(curTopic);
 //            if (ex != null) {
 //                r=  new DemoResponse(ex);
 //                exampleGiven(ex);  // inform pedagogical move listeners of example being given
@@ -813,7 +813,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 // The last intervention selector will either return an InternalEvent or null
                 // if an internal state is returned, then process it
                 if (r instanceof InternalEvent)
-                    processInternalEvent((InternalEvent) r);
+                    r=processInternalEvent((InternalEvent) r);
                 // if null comes back, see if the pedagogical model has an intervention
                 else if (r == null)
                     r =  getNextProblemIntervention(new NextProblemEvent(e.getServletParams()));
