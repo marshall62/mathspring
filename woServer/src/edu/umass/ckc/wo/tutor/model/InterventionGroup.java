@@ -109,6 +109,8 @@ public class InterventionGroup {
             if (interv != null) {
                 if (spec.isRunOnce())
                     InterventionState.setRun(smgr.getConnection(),smgr.getStudentId(),spec.getClassName());
+                // This is the only place where we need to remember the intervention selector
+                smgr.getStudentState().setLastIntervention(spec.getFullyQualifiedClassname());
                 return interv;
             }
         }

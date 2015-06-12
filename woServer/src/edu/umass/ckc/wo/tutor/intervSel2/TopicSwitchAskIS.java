@@ -111,7 +111,6 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
                 // just inform that we are moving to next topic
             else intervention = new TopicSwitchIntervention(expl,seen,solved);
         }
-        rememberInterventionSelector(this);
         return intervention;
     }
 

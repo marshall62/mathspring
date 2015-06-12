@@ -42,7 +42,7 @@ var INPUT_RESPONSE_FORM = "inputResponseForm";
 var FLASH_PROB_TYPE = "flash";
 var SWF_TYPE = "swf";
 var HTML_PROB_TYPE = "html5";
-var EXTERNAL_PROB_TYPE = "ExternalActivity";
+var EXTERNAL_PROB_TYPE = "EexternalActivity";
 var TOPIC_INTRO_PROB_TYPE = "TopicIntro";
 var INTERVENTION = "intervention";
 var NEXT_PROBLEM_INTERVENTION = "NextProblemIntervention";
@@ -235,7 +235,16 @@ function nextProb(globals) {
     incrementTimers(globals);
     // call the server with a nextProblem event and the callback fn processNextProblemResult will deal with result
     showHourglassCursor(true);
-    servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode}, processNextProblemResult);
+    // A HACK.  Because the Topic Intro is an intervention but it doesn't show in a dialog, it is ended by clicking on New Problem button
+    // which comes in here.  We want to send back an InputResponse though becuase thats what TopicIntros should get back.
+    // TODO:  Probably should replace NewProblem button when a topic intro shows.  It could have the correct handler on it.
+    if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
+        servletGet("InputResponseNextProblemIntervention",
+            {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode, destination:globals.destinationInterventionSelector},
+            processNextProblemResult) ;
+    // Normal Processing
+    else
+        servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode}, processNextProblemResult);
 }
 
 // This function can only be called if the button is showing
@@ -575,7 +584,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         updateTimers();
         globals.probType = activityType;
 
-        // If its an external problem
+        // If its an intervention
         if (isIntervention()) {
             processNextProblemIntervention(activity);
 

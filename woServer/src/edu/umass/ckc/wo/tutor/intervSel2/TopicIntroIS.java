@@ -25,7 +25,7 @@ import org.jdom.Element;
  * Time: 11:53 AM
  * To change this template use File | Settings | File Templates.
  */
-public class TopicIntroIS extends InterventionSelector {
+public class TopicIntroIS extends NextProblemInterventionSelector {
     TopicModel topicModel;
     TopicModelParameters tmParams;
     TopicModelParameters.frequency freq;
@@ -61,13 +61,17 @@ public class TopicIntroIS extends InterventionSelector {
 
     @Override
     // This makes sure the topic intro hasn't been seen
-    public Intervention selectIntervention(SessionEvent e) throws Exception {
+    public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         TopicIntro intro=null;
         // Note additional conditions are checked and set in the TopicModel's TopicSelector class which knows
         // how to find a topic intro for a given topic.
         if  (!studentState.isTopicIntroShown())  {
             // additional conditions checked in method below
             intro = getTopicIntro(studentState.getCurTopic());
+            // Because the TopicIntro is not played like other interventions (in a dialog with a form that can send inputs such as
+            // the destinationIS)  we have to put it in the JSON.  Then we have a hack in the client when the new problem button click
+            // is handled it sends back an InputResponse which has a destination obtained from the JSON.
+            intro.setInterventionSelector(this.getClass().getName());
             studentState.setTopicIntroShown(true);
         }
         return intro;
@@ -105,7 +109,13 @@ public class TopicIntroIS extends InterventionSelector {
 
 
 
+    @Override
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-
-
+    @Override
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

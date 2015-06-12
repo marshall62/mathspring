@@ -120,7 +120,6 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
                 intervention = new AskEmotionRadioIntervention(emotionToQuery, this.askWhy);
             state.setTimeOfLastIntervention(now);
             state.setNumProblemsSinceLastIntervention(0);
-            rememberInterventionSelector(this);
             return intervention;
         }
 

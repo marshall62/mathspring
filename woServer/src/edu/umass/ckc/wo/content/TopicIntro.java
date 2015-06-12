@@ -19,6 +19,8 @@ public class TopicIntro extends InputResponseIntervention implements NextProblem
     private int topicId;
     private String type;    // either swf or html
 
+    private String interventionSelector;  // Here because the topic intro has no HTML form to put the destination in .  So we pass it to javascript so it can pass it back
+
 
 
     public TopicIntro(String resource, String type, String topic, int topicId) {
@@ -59,6 +61,14 @@ public class TopicIntro extends InputResponseIntervention implements NextProblem
         return this.resource;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public String getInterventionSelector() {
+        return interventionSelector;
+    }
+
+    public void setInterventionSelector(String interventionSelector) {
+        this.interventionSelector = interventionSelector;
+    }
+
     public JSONObject buildJSON(JSONObject jo) {
         super.buildJSON(jo);
 
@@ -69,6 +79,7 @@ public class TopicIntro extends InputResponseIntervention implements NextProblem
         jo.element("resourceType",this.type);
         jo.element("topicId",this.topicId);
         jo.element("topicName",this.topicName);
+        jo.element("destinationInterventionSelector",this.interventionSelector);
         return jo;
     }
 

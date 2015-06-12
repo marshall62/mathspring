@@ -44,7 +44,6 @@ public class CollaborationIS extends NextProblemInterventionSelector {
             ii.init(smgr,pedagogicalModel);
             // tells the helper to work with the person next to them (on the other computer)
             // and locks their screen until they complete the problem together.
-            rememberInterventionSelector(this);
             return ii.selectInterventionWithId(e, partner);
         }
         //If eligible partners exist for a student that (may) need help (the originator), we may put the originator into a collab situation
@@ -53,7 +52,6 @@ public class CollaborationIS extends NextProblemInterventionSelector {
             if(smgr.getStudentState().getLessonState().getNextProblemMode().equals(Problem.PRACTICE)){
               CollaborationOriginatorIS ii = new CollaborationOriginatorIS(smgr);
                ii.init(smgr,pedagogicalModel);
-               rememberInterventionSelector(this);
                return ii.selectIntervention(e);
             }
             else{

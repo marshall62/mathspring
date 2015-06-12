@@ -211,6 +211,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     @Override
     public Response processEndProblemEvent(EndProblemEvent e) throws Exception {
         Response r = new Response();
+
         // at the end of a problem the emotional state of the student model is updated
 //        this.studentModel.updateEmotionalState(this.smgr,e.getProbElapsedTime(),e.getElapsedTime());
         this.studentModel.endProblem(smgr, smgr.getStudentId(),e.getProbElapsedTime(),e.getElapsedTime());
@@ -224,6 +225,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 AssistmentsHandler.logToAssistmentsProblemEnd(smgr, (EndProblemEvent) e);
             }
         }
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
         return r;

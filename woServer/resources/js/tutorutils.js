@@ -82,10 +82,13 @@ function sendEndEvent(globals) {
     updateTimers();
     if (globals.lastProbType == '')
         return;
-    else if (globals.lastProbType == HTML_PROB_TYPE || globals.lastProbType == FLASH_PROB_TYPE || globals.lastProbType == TOPIC_INTRO_PROB_TYPE)
+    else if (globals.lastProbType == HTML_PROB_TYPE || globals.lastProbType == FLASH_PROB_TYPE )
     {
-        servletGetWait("EndProblem",{probId: globals.lastProbId, probElapsedTime: globals.probElapsedTime},processEndProblem);
+        isExample = isDemoOrExampleMode()
+        servletGetWait("EndProblem",{probId: globals.lastProbId, probElapsedTime: globals.probElapsedTime,  isExample: isExample},processEndProblem);
     }
+    else if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
+        ; // Topic Intros are no longer problems and thus we don't need to end them
     else
         servletGetWait("EndExternalActivity", {xactId: globals.lastProbId,probElapsedTime: globals.probElapsedTime});
 

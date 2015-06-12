@@ -139,7 +139,6 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
         if (intervention != null) {
             state.setTimeOfLastIntervention(now);
             state.setNumProblemsSinceLastIntervention(0);
-            rememberInterventionSelector(this);
         }
 
         return intervention;

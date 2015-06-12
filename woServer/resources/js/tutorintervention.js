@@ -48,32 +48,30 @@ function processNextProblemIntervention(activityJSON) {
 
 function processTopicIntroIntervention (interv) {
     globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
-
+    globals.destinationInterventionSelector = interv.destinationInterventionSelector;  // needs this so we can send back to IS when topic intro ends
     // send EndEvent  to end the previous problem
     sendEndEvent(globals);
 //            showProblemInfo(pid,resource);
     globals.probElapsedTime = 0;
 //    sendBeginEvent(globals);
     showTopicIntro(interv.resource,interv.topicName);
-    if (interv.resourceType === 'swf')
-        showFlashProblem(interv.resource,null,null,FLASH_CONTAINER_INNER,false);
-    else if (interv.resourceType === 'html')
-        showHTMLProblem(null,null,interv.resource,false);
-    else
-        alert("Beginning topic: "  + topic + ".  No Flash movie to show");
     globals.topicId = interv.topicId;
     globals.probId = 999;  // a dummy indicator that this "problem" is a topic intro
+    globals.lastProbType=TOPIC_INTRO_PROB_TYPE; // needed so that nextproblem button knows that its ending a topic intro
 }
 
 
 function showTopicIntro (resource, topic) {
 
-    // TODO assumption is that TOpicIntro is built in Flash.   Other possibilities: nothing, HTML5
     // if nothing pop up an alert
     if (typeof(resource) != 'undefined' && resource != '')
         showFlashProblem(resource,null,null,FLASH_CONTAINER_INNER, false);
+    else if (interv.resourceType === 'html')
+        showHTMLProblem(null,null,resource,false);
 
     else alert("Beginning topic: "  + topic + ".  No Flash movie to show")
+
+
 }
 
 

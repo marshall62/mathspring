@@ -136,9 +136,7 @@ public class MyProgressNavigationAskIS extends NextProblemInterventionSelector {
                 }
             }
         }
-        if (intervention != null) {
-            rememberInterventionSelector(this);
-        }
+
 
         return intervention;
     }
