@@ -619,7 +619,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.hints = null;
                 globals.answers = null;
             }
-            sendBeginEvent(globals);
+            sendBeginEvent(globals,pid);
             showHTMLProblem(pid,solution,resource,mode);
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
@@ -641,7 +641,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             else {
                 container =FLASH_CONTAINER_INNER;
             }
-            sendBeginEvent(globals) ;
+            sendBeginEvent(globals,pid) ;
             showFlashProblem(resource,ans,solution,container,mode);
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
@@ -976,7 +976,7 @@ function showFlashProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
-        sendBeginEvent(globals) ;
+        sendBeginEvent(globals,pid) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
     if (globals.showAnswer)
@@ -1019,7 +1019,7 @@ function showHTMLProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
-        sendBeginEvent(globals) ;
+        sendBeginEvent(globals,pid) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
 

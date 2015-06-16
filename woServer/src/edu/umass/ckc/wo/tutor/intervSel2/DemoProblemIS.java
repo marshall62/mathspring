@@ -4,8 +4,10 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.model.TutorModelUtils;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -67,6 +69,7 @@ public class DemoProblemIS extends InterventionSelector {
 
     public Problem getTopicDemoProblem (int curTopic) throws Exception {
         Problem problem = null;
+        StudentState state = smgr.getStudentState();
         if (!smgr.getStudentState().isExampleShown()) {
             if (freq == TopicModelParameters.frequency.always) {
                 if (!smgr.getStudentState().isExampleSeen(curTopic))
@@ -79,7 +82,6 @@ public class DemoProblemIS extends InterventionSelector {
                 else problem = ProblemMgr.getProblem(bestDemoProbId);
                 if (problem == null)
                     return null;
-
                 //  gets the solution to the problem from the hint selector and adds into the problem
                 new TutorModelUtils().setupDemoProblem(problem,smgr,topicModel.getHintSelector());
                 return problem;
@@ -93,7 +95,6 @@ public class DemoProblemIS extends InterventionSelector {
                 else problem = ProblemMgr.getProblem(bestDemoProbId);
 
                 if (problem == null) return null;
-
                 //  gets the solution to the problem from the hint selector and adds into the problem
                 new TutorModelUtils().setupDemoProblem(problem,smgr,topicModel.getHintSelector());
                 return problem;

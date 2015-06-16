@@ -302,6 +302,8 @@ public class TopicModel extends LessonModel {
                 return null;
             NextProblemInterventionSelector intSel = (NextProblemInterventionSelector) spec.buildIS(smgr);
 //            NextProblemInterventionSelector intSel = (NextProblemInterventionSelector) new TutorModelUtils().getLastInterventionSelector(smgr);
+            // The IS builds an XML string that represents the user's input to the intervention.  This is saved in the IS when it gets the input.
+            // Now we transfer that XML to the event so that the logger can get it from the event and put it into the userInput field of eventlog
             ((InputResponseNextProblemInterventionEvent) e).setUserInput(intSel.getUserInputXML());
 
             intSel.init(smgr,pedagogicalModel);

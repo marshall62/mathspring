@@ -891,6 +891,9 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 intSel.init(smgr,this);
                 // N.B. Assumption is that we no longer get Interventions back
                 r = intSel.processInputResponseNextProblemInterventionEvent( e);
+                // XML created to represent user input is retrieved from the IS and put in the event for logger to stick in eventlog.userinput
+                e.setUserInput(intSel.getUserInputXML());
+
                 // I don't understand why we are adding stuff to the event after its been sent to the npis
 //                e.setUserInput(intSel.getUserInputXML());
                 // The last intervention selector will either return an InternalEvent or null
@@ -960,7 +963,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         StudentState st = smgr.getStudentState();
         st.setNumRealProblemsThisTutorSession(st.getNumRealProblemsThisTutorSession()+1);
         st.setNumProblemsThisTutorSession(st.getNumProblemsThisTutorSession()+1);
-        st.setCurProblem(p.getId());
+        // 6/15/15 DM comment out below.  StudentState.beginProblem is what sets this.  This was making it happen too early
+//        st.setCurProblem(p.getId());
         setProblemTopic(p, st.getCurTopic());
         if (p.getMode().equals(Problem.PRACTICE))
             st.setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);

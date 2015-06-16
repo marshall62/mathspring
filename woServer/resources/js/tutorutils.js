@@ -96,10 +96,10 @@ function sendEndEvent(globals) {
 }
 
 //send a BeginProblem event for HTMl5 problems.
-function sendBeginEvent(globals) {
+function sendBeginEvent(globals, probId) {
     incrementTimers(globals);
     globals.probElapsedTime=0;
-    servletGetWait("BeginProblem", {probElapsedTime: globals.probElapsedTime});
+    servletGetWait("BeginProblem", {probElapsedTime: globals.probElapsedTime, probId: probId});
 
 }
 

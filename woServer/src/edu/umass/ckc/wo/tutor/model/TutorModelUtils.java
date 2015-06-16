@@ -27,6 +27,8 @@ public class TutorModelUtils {
         List<Hint> soln = hintSelector.selectFullHintPath(smgr, problem.getId());
         problem.setSolution(soln);
         problem.setMode(Problem.DEMO);
+        smgr.getStudentState().setNextProblemMode(Problem.DEMO);
+        smgr.getStudentState().setNextProblem(problem.getId()); // so that the ensuing BeginProblemEvent will move forward to the correct prob ID and log it
     }
 
     public InterventionSelector getLastInterventionSelector (SessionManager smgr) throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {

@@ -367,7 +367,7 @@ public class StudentState extends State implements TutorEventHandler {
         return topicState.getCurProblemIndexInTopic();
     }
 
-    private void setNextProblemMode(String mode) throws SQLException {
+    public void setNextProblemMode(String mode) throws SQLException {
 //        topicState.setNextProblemMode(mode);
         lessonState.setNextProblemMode(mode);
     }

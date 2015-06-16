@@ -164,7 +164,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
             level = "-1";
         int levelInt = Integer.parseInt(level);
         logger.debug("User reports emotion " + emotion + " level is " + level);
-        setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\"/>", e);
+
         StudentModel sm = smgr.getStudentModel();
         // The AffectStudentModel is the place where this emotion data is being kept.   It only keeps the last reported emotion.
         // The emotionInterventionResponse table keeps
@@ -172,6 +172,8 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
             ((AffectStudentModel) sm).setLastReportedEmotion(emotion,levelInt,e.getElapsedTime());
 
         String reason = params.getString(AskEmotionSliderIntervention.REASON);
+        // build XML like <interventionInput class="%AskEmotionIS"> <emotion> .... </emotion> </interventionInput>
+        setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\"><![CDATA[" + reason + "]]></emotion>", e);
         DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId());
         return null;  // no more interventions to return.
     }

@@ -89,10 +89,18 @@ public class TutorLogger {
     }
 
     public int insertLogEntry(String action, int probId, String userInput, boolean isCorrect, long elapsedTime,
-                              long probElapsed, String hintStep, int hintId, String emotion, String activityName, int curTopicId) throws Exception {
+                                   long probElapsed, String hintStep, int hintId, String emotion, String activityName, int curTopicId) throws Exception {
 
         return insertLogEntryWorker(smgr.getStudentId(), smgr.getSessionNum(), action, userInput, isCorrect, elapsedTime, probElapsed,
                 probId, hintStep, hintId, emotion, activityName, -1, null, curTopicId);
+    }
+
+    public int insertLogEntry(String action, int probId, String userInput, boolean isCorrect, long elapsedTime,
+                              long probElapsed, String hintStep, int hintId, String emotion, String activityName,
+                              int auxId, String auxTable, int curTopicId) throws Exception {
+
+        return insertLogEntryWorker(smgr.getStudentId(), smgr.getSessionNum(), action, userInput, isCorrect, elapsedTime, probElapsed,
+                probId, hintStep, hintId, emotion, activityName, auxId, auxTable, curTopicId);
     }
 
     private int getDummyProbId() throws SQLException {
@@ -263,7 +271,7 @@ public class TutorLogger {
     }
 
     public void logBeginProblem(BeginProblemEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.BEGIN_PROBLEM,null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
+        insertLogEntry(RequestActions.BEGIN_PROBLEM,e.getProbId(),null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }
 
     public void logResumeProblem(ResumeProblemEvent e, Response r) throws Exception {
@@ -288,7 +296,11 @@ public class TutorLogger {
         insertLogEntry(RequestActions.CONTINUE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }
     public void logContinueNextProblemIntervention (ContinueNextProblemInterventionEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.CONTINUE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
+        int probId = smgr.getStudentState().getCurProblem();
+        // if the continue is processed and returns a new problem, we want to log the continue with the LAST probID
+        if (r instanceof ProblemResponse)
+            probId = smgr.getStudentState().getLastProblem();
+        insertLogEntry(RequestActions.CONTINUE,probId,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }
     public void logTimedIntervention (TimedInterventionEvent e, Response r) throws Exception {
         insertLogEntry(RequestActions.CONTINUE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
@@ -299,6 +311,10 @@ public class TutorLogger {
 
     public void logInputResponse(InputResponseEvent e, Response r) throws Exception {
         AuxilaryEventLogger auxLogger = e.getAuxInfo();
+        int probId = smgr.getStudentState().getCurProblem();
+        // if the input response is processed and returns a new problem, we want to log the inputResponse with the LAST probID
+        if (r instanceof ProblemResponse)
+            probId = smgr.getStudentState().getLastProblem();
 
         int auxId= -1;
         String auxTable=null;
@@ -306,7 +322,8 @@ public class TutorLogger {
             auxId=auxLogger.logEntry(conn);
             auxTable = auxLogger.getAuxTable();
         }
-        insertLogEntry(RequestActions.INPUT_RESPONSE,e.getUserInput(),false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,
+        String userInput= e.getUserInput();
+        insertLogEntry(RequestActions.INPUT_RESPONSE,probId,userInput,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,
                 r.getCharacterControl(),r.logEventName(),auxId,auxTable, getTopic());
     }
 
