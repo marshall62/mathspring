@@ -1,9 +1,20 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
+import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.content.Hint;
+import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.content.TopicIntro;
+import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
+import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutormeta.Intervention;
+import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import org.jdom.Element;
 
@@ -21,7 +32,7 @@ import java.util.List;
  * Time: 12:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class InterventionSelector {
+public abstract class InterventionSelector implements PedagogicalMoveListener {
 
     protected SessionManager smgr;
     protected Connection conn;
@@ -35,16 +46,37 @@ public abstract class InterventionSelector {
     protected String userInputXML;
 
 
-    public InterventionSelector(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+    public InterventionSelector(SessionManager smgr) {
 //        init(smgr, pedagogicalModel);
         this.smgr = smgr;
         this.conn = smgr.getConnection();
         this.studentState = smgr.getStudentState();
         this.studentModel = smgr.getStudentModel();
-        this.pedagogicalModel= pedagogicalModel;
     }
 
-    public abstract void init(SessionManager smgr, PedagogicalModel pedagogicalModel);
+    public Intervention selectIntervention(SessionEvent e) throws Exception {
+        if (this instanceof NextProblemInterventionSelector)          {
+            //  e could be a continueNextProblemInterventionEvent or InputResponseNextProb...
+            if (! (e instanceof NextProblemEvent)) {
+                e = new NextProblemEvent(e.getServletParams());
+                e.setSessionId(e.getSessionId());
+            }
+            return ((NextProblemInterventionSelector) this).selectIntervention((NextProblemEvent) e);
+        }
+        else if (this instanceof AttemptInterventionSelector)
+            return ((AttemptInterventionSelector) this).selectIntervention((AttemptEvent) e);
+        else return null;
+    }
+
+    /**
+     * The init method of the InterventionSelector is called at a time later than the constructor.  This is necessary because
+     * some of the objects necessary to the InterventinoSelector are not available at the time of its construction (e.g. the PedagogicalModel).
+     * So we wait until just before we really need the InterventionSelector and then call its init method passing it the stuff it has to have at that point
+     *
+     * @param smgr
+     * @param pedagogicalModel
+     */
+    public abstract void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws Exception;
 
     /**
      * Returns a JDOM XML Element that is the <config> ... </config> for the intervention selector
@@ -83,21 +115,32 @@ public abstract class InterventionSelector {
 
     }
 
-    public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public InterventionSelector getInterventionSelectorThatGeneratedIntervention () throws Exception {
         String classname = smgr.getStudentState().getLastIntervention();
         Class c = Class.forName(classname);
-        Constructor constructor = c.getConstructor(SessionManager.class,PedagogicalModel.class);
-        InterventionSelector is =(InterventionSelector) constructor.newInstance(smgr,pedagogicalModel);
+        Constructor constructor = c.getConstructor(SessionManager.class);
+        InterventionSelector is =(InterventionSelector) constructor.newInstance(smgr);
+        is.init(smgr,pedagogicalModel);
         return is;
     }
 
     protected String getParameter (String name, List<InterventionSelectorParam> params) {
+        if (params == null)
+            return null;
         for (InterventionSelectorParam param: params) {
             if (param.getName().equals(name))
                 return param.getValue();
         }
         return null;
 
+    }
+
+
+    protected String getConfigParameter (String name) {
+        Element x = configXML.getChild(name);
+        if (x != null)
+            return x.getTextTrim();
+        else return null;
     }
 
     protected List<String> getParameters (String name, List<InterventionSelectorParam> params) {
@@ -115,6 +158,51 @@ public abstract class InterventionSelector {
         String ui = String.format("<interventionInput class=\"%s\">%s</interventionInput>",clname,userInputXML);
         this.userInputXML = ui;
     }
+
+    // PedagogicalMoveListener Methods
+
+    @Override
+    public void problemGiven(Problem p) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void exampleGiven(Problem ex) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void lessonIntroGiven(TopicIntro intro) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void attemptGraded(boolean isCorrect) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void hintGiven( Hint hint) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+
+    @Override
+    public void interventionGiven(Intervention intervention) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void newTopic(Topic t) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void newSession(int sessId) throws SQLException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 
 
 }

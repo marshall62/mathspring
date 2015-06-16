@@ -2,11 +2,9 @@ package edu.umass.ckc.wo.smgr;
 
 import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
-import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
 import edu.umass.ckc.wo.event.tutorhut.LogoutEvent;
-import edu.umass.ckc.wo.event.SystemTestLoginEvent;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.NavigationHandler;
@@ -87,48 +85,6 @@ public class SessionManager {
         return attemptSessionCreation(uname, password, sessBeginTime, logoutExistingSession);
     }
 
-    public String flashDebugLogin (String uname, String password, String flashClient ) throws Exception {
-        return flashLoginSessionCreation(uname, password, flashClient);
-
-    }
-
-    public String flashLoginSessionCreation(String uname, String password, String flashClient) throws Exception {
-
-        StringBuffer result = new StringBuffer();
-        int sessId = -1;
-        int studId = -1;
-        LearningCompanion lc;
-        // given a password so use uname/pwd
-        if (password != null) {
-            studId = DbUser.getStudent(this.getConnection(), uname, password);
-
-            if (studId == -1)
-                return getLoginView(LOGIN_USER_PASS,NavigationHandler.FALSE,"Invalid user name/password combination",-1,studId,null);
-
-            else {
-
-                int oldSessId = DbSession.findActiveSession(getConnection(), studId);
-                if (oldSessId != -1)  {
-                    inactivateAllUserSessions();
-
-                    this.sessionId = DbSession.newSession(getConnection(), studId, System.currentTimeMillis(), false);
-
-                }
-                else {
-                    this.sessionId = DbSession.newSession(getConnection(), studId, System.currentTimeMillis(), false);
-                }
-                buildSession(connection,this.sessionId );
-                studState.getSessionState().initializeState();
-                DbSession.setClientType(connection, this.sessionId, flashClient);
-                lc = this.pedagogicalModel.getLearningCompanion();
-                return getLoginView(LOGIN_USER_PASS,NavigationHandler.TRUE,null,sessionId,studId,lc);
-
-            }
-
-        } else {
-            return getLoginView(LOGIN_USER_PASS,NavigationHandler.FALSE,"Invalid user name/password combination",-1,studId,null);
-        }
-    }
 
     /**
      * Constructor only used when the user is logging in from Assistments
@@ -235,35 +191,28 @@ public class SessionManager {
 
         Pedagogy ped = PedagogyRetriever.getPedagogy(connection, studId);
         // these are the parameters as dfined in the XML file pedagogies.xml
-        PedagogicalModelParameters defaultParams = ped.getParams();
+
         this.pedagogyId = Integer.parseInt(ped.getId());
         // pedagogical model needs to be instantiated as last thing because its constructor takes the smgr instance (this)
         // and makes calls to get stuff so we want this as fully constructed as possible before the call to instantiate
         // so that the smgr is fully functional except for its ped model.
+//        PedagogicalModelParameters pedModelParams = getPedagogicalModelParametersForUser(connection, ped);
+       // build the Pedagogical model for the student.  The PedagogicalModel constructor is responsible for
+       // creating the StudentModel which also gets set in the below method
+       instantiatePedagogicalModel(ped);
 
-        // build the Pedagogical model for the student.  The PedagogicalModel constructor is responsible for
-        // creating the StudentModel which also gets set in the below method
-        instantiatePedagogicalModel(ped);
 
-        // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
-        // see if this user has a set of parameters and if so use them to configure the pedagogy.
-        // these params come from settings in the WoAdmin tool for the class.
-        PedagogicalModelParameters classParams = DbClass.getPedagogicalModelParameters(connection,classId);
-        // overload the defaults with stuff defined for the class.
-        defaultParams.overload(classParams);
-//       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
-        // these params are the ones that were passed in by Assistments and saved for the user
-        PedagogyParams userParams = DbUserPedagogyParams.getPedagogyParams(connection,studId);
-        // overload the params with anything provided for the user.
-        defaultParams.overload(userParams);
+
         // set theparams on the ped model
-        pedagogicalModel.setParams(defaultParams);
+//        pedagogicalModel.setParams(pedModelParams);
 
 //            if (userParams != null)
 //                ((ConfigurablePedagogy) pedagogicalModel).configure(userParams);
 //       }
-        this.learningCompanion = this.pedagogicalModel.getLearningCompanion();
+       this.learningCompanion = this.pedagogicalModel.getLearningCompanion();
     }
+
+
 
 
     // only used by test driver
@@ -426,7 +375,7 @@ public class SessionManager {
             }
         }
 
-        return ped;
+       return ped;
     }
 
     /**
@@ -447,17 +396,17 @@ public class SessionManager {
             studId = DbUser.getStudent(this.getConnection(), uname, password);
 
             if (studId == -1) {
-                return new LoginResult(-1,"Invalid user name/password combination",LoginResult.ERROR);
+               return new LoginResult(-1,"Invalid user name/password combination",LoginResult.ERROR);
             }
             else {
-                this.user = DbUser.getStudent(this.getConnection(),studId);
-                int classId = DbUser.getStudentClass(this.getConnection(),studId);
-                this.classId = classId;
+              this.user = DbUser.getStudent(this.getConnection(),studId);
+              int classId = DbUser.getStudentClass(this.getConnection(),studId);
+              this.classId = classId;
                 // We delete a student that does not have a classID because we expect them to re-register with
-                // the same user/passwd and need to get this old bogus user out of the way.
+                    // the same user/passwd and need to get this old bogus user out of the way.
                 if (classId == -1) {
                     DbUser.deleteStudent(connection, studId);
-                    return new LoginResult(-1, "This user is invalid because it is not in a class.   You need to re-register and select a class", LoginResult.ERROR);
+                     return new LoginResult(-1, "This user is invalid because it is not in a class.   You need to re-register and select a class", LoginResult.ERROR);
                 }
                 //Remove collaboration requests and pairings for students who have just logged in, as any such data is erroneous.
                 PartnerManager.clearOldData(studId);
@@ -653,17 +602,6 @@ public class SessionManager {
     }
 
 
-    public String loginSystemTester(SystemTestLoginEvent event) throws SQLException {
-        PreparedStatement ps = null;
-        try {
-            String q = "update session set isActive=1 where id=1";
-            ps = this.connection.prepareStatement(q);
-            int n = ps.executeUpdate();
-            return getLoginView(LOGIN_USER_PASS, NavigationHandler.TRUE, null, 1, 1, null);
-        } finally {
-            ps.close();
-        }
-    }
 
     // To remove all evidence of a student in the system, delete the eventlog for his session, delete the studentproblemhistory for his session
     // delete the session
@@ -833,27 +771,17 @@ public class SessionManager {
         return pedagogicalModel;
     }
 
+    public void setPedagogicalModel (PedagogicalModel pm) {
+        this.pedagogicalModel = pm;
+    }
+
     public void clearUserProperties() {
         int studId = this.getStudentId();
 
     }
 
-    // I tried making this just return the sessions pedagogical model params rather than going to classes, etc but it fails.
-    // I think the problem is that the Guest user class has some parameters set (but not the new one showMPP) so the row is found
-    // and then it builds a set of params with the default value of showMPP of true which then overloads the value set in the pedagogy.
-    public PedagogicalModelParameters getPedagogicalModelParameters() throws SQLException {
-//        return this.pedagogicalModel.getParams();
-        PedagogicalModelParameters params= DbClass.getPedagogicalModelParameters(connection, this.classId);
-        // If parameters are not stored for this particular class, a default set should be stored
-        // in classconfig table for classId=1.   If nothing there, then use the defaults created
-        // in the default PedagogicalModelParameters constructor
-        if (params == null) {
-            params = DbClass.getPedagogicalModelParameters(connection, 1);
-            if (params == null)
-                params = new PedagogicalModelParameters();
-        }
-        return params;
-    }
+
+
 
     public long getTimeInSession() {
         return timeInSession;
@@ -886,11 +814,7 @@ public class SessionManager {
 //    }
 
     public String getClassTeacher() throws SQLException {
-        int id = this.getStudentId();
-        int classy = this.getStudentClass(id);
-        Connection conny = getConnection();
-        ClassInfo dbclass = DbClass.getClass(conny,classy);
-        return dbclass.getTeacherName();
+        return DbClass.getClass(getConnection(),this.getStudentClass(this.getStudentId())).getTeacherName();
     }
 
 
@@ -913,7 +837,7 @@ public class SessionManager {
     }
 
     public boolean isTestUser() throws SQLException {
-        return DbUser.isTestUser(this.connection,this.studId);
+       return DbUser.isTestUser(this.connection,this.studId);
     }
 
     public void setPedagogyId(int pedagogyId) {

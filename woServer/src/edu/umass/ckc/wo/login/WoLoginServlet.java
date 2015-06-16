@@ -6,10 +6,13 @@ import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCContentMgr;
 import edu.umass.ckc.wo.content.LessonMgr;
+import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
 import edu.umass.ckc.wo.mrcommon.Names;
+import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
+import edu.umass.ckc.wo.woserver.ServletInfo;
 import edu.umass.ckc.wo.woserver.ServletUtil;
 import org.apache.log4j.Logger;
 
@@ -36,17 +39,53 @@ public class WoLoginServlet extends BaseServlet {
 
     protected boolean handleRequest(ServletContext servletContext, Connection conn, HttpServletRequest request,
                                     HttpServletResponse response, ServletParams params, StringBuffer servletOutput) throws Exception {
-        ServletAction action = ActionFactory.buildAction(params);
-        Settings.getSurveys(conn); // makes sure the latest survey URLS from the DB are used.
+        LoginServletAction action = ActionFactory.buildAction(params);
+        ServletInfo servletInfo = new ServletInfo(servletContext,conn,request,response,params,servletOutput,hostPath,contextPath,this.getServletName());
+
         logger.info(">>" + params.toString());
-        String viewName = action.process(conn, servletContext,params, request,response, servletOutput);
-        logger.info("<< JSP: " + viewName);
-        if (viewName != null) {
-            RequestDispatcher disp = request.getRequestDispatcher(viewName);
-            disp.forward(request,response);
-            return false; // tells the superclass servlet not to write to the output stream because the request has been forwarded.
+        // after the user/pw has been accepted all the other actions are LoginEvent or LoginInterventionInput
+//        if (action instanceof LoginEvent)   {
+//            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
+//            ls.processAction(params);
+//            return false;
+//        }
+//        // When an intervention is complete, the form is submitted with an action=LoginInterventionInput and interventionClass=InterventionSelector
+//        // so that we can send the form inputs to the intervention selector that generated the intervention.
+//        else
+        // All actions are either inputs to a Login intervention or the first login screen with user/pw
+        if (action instanceof LoginInterventionInput) {
+            String cl = params.getString("interventionClass");
+            int sessId = params.getInt("sessionId");
+            Class c = Class.forName(cl);
+            SessionManager smgr = new SessionManager(conn,sessId,servletInfo.getHostPath(),servletInfo.getContextPath()).buildExistingSession();
+            LoginInterventionSelector is = (LoginInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
+            is.init(servletInfo);
+            is.processInput(params);
+            // Now find the next intervention
+            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
+            ls.processAction(params);
+            return false;
         }
-        else return true; // the action just wrote some stuff into servletOutput so the servlet should flush it out
+        else {  // processes the first login event which is the user id/pw
+            LoginResult lr = action.process(servletInfo);
+            // state variables that prevent login interventions from running twice might
+            // be leftover from a previous login sequence that failed recently.  This
+            // will clean them out so that this sequence is fresh.
+            if (lr.isNewSession()) {
+                LoginSequence ls = new LoginSequence(servletInfo,lr.getSessId());
+                ls.clearInterventionState();
+            }
+            // Sometimes the login is processed by forwarding to a JSP, so just return false because a page is already generated
+            if (lr.isForwardedToJSP()) {
+                return false;
+            }
+            else {
+                LoginSequence ls = new LoginSequence(servletInfo,lr.getSessId());
+                ls.processAction(params);
+                return false;
+            }
+
+        }
     }
 
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
@@ -61,6 +100,7 @@ public class WoLoginServlet extends BaseServlet {
             problemMgr.loadProbs(connection);
             CCContentMgr.getInstance().loadContent(connection);
             LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
+
         }
         logger.debug("end init of WOLoginServlet");
 

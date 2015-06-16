@@ -14,6 +14,8 @@ function processNextProblemIntervention(activityJSON) {
     if (interventionType === "TopicSwitch") {
         processTopicSwitchIntervention(activityJSON.html)
     }
+    else if (interventionType === "TopicIntro")
+        processTopicIntroIntervention(activityJSON);
     else if (interventionType === "ExternalActivity") {
        processExternalActivityIntervention(pid, resource);
     }
@@ -37,12 +39,40 @@ function processNextProblemIntervention(activityJSON) {
         processCollaborationTimeoutIntervention(activityJSON.html);
     else if(interventionType === "CollaborationOptionIntervention")
         processCollaborationOptionIntervention(activityJSON.html);
-    sendBeginIntervention(globals);
+    sendBeginIntervention(globals,interventionType);
 
 }
 
 
 
+
+function processTopicIntroIntervention (interv) {
+    globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
+    globals.destinationInterventionSelector = interv.destinationInterventionSelector;  // needs this so we can send back to IS when topic intro ends
+    // send EndEvent  to end the previous problem
+    sendEndEvent(globals);
+//            showProblemInfo(pid,resource);
+    globals.probElapsedTime = 0;
+//    sendBeginEvent(globals);
+    showTopicIntro(interv.resource,interv.topicName);
+    globals.topicId = interv.topicId;
+    globals.probId = 999;  // a dummy indicator that this "problem" is a topic intro
+    globals.lastProbType=TOPIC_INTRO_PROB_TYPE; // needed so that nextproblem button knows that its ending a topic intro
+}
+
+
+function showTopicIntro (resource, topic) {
+
+    // if nothing pop up an alert
+    if (typeof(resource) != 'undefined' && resource != '')
+        showFlashProblem(resource,null,null,FLASH_CONTAINER_INNER, false);
+    else if (interv.resourceType === 'html')
+        showHTMLProblem(null,null,resource,false);
+
+    else alert("Beginning topic: "  + topic + ".  No Flash movie to show")
+
+
+}
 
 
 function processAttemptIntervention (interv) {
@@ -53,7 +83,7 @@ function processAttemptIntervention (interv) {
             highlightHintButton();
         else if (type === 'RapidAttemptIntervention')
             processRapidAttemptIntervention(interv.html);
-        sendBeginIntervention(globals);
+        sendBeginIntervention(globals,type);
     }
 }
 
@@ -85,9 +115,9 @@ function checkIfInputIntervention (interv) {
 function interventionDialogClose () {
 
     if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
     else if (globals.interventionType === ATTEMPT_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime}, processNextProblemResult);
+        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
 
     // If closing down an intervention dialog for next problem we send the InputResponse event and ask processNextProblemResult
     // to handle what the server returns.   For attempts we send InputResponse event but, FOR NOW, we don't expect the server
@@ -117,14 +147,14 @@ function interventionDialogOpen (title, html, type) {
 function sendInterventionDialogInputResponse (event, fn) {
     var formInputs = $("#"+INPUT_RESPONSE_FORM).serialize() ;
     incrementTimers(globals);
-    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime,fn)
+    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime  + "&destination="+globals.destinationInterventionSelector,fn)
 }
 
 
 //send a BeginProblem event for HTMl5 problems.
-function sendBeginIntervention(globals) {
+function sendBeginIntervention(globals, intervType) {
     incrementTimers(globals);
-    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime});
+    servletGetWait("BeginIntervention", {probElapsedTime: globals.probElapsedTime, interventionType: intervType});
 
 }
 

@@ -9,8 +9,8 @@ import edu.umass.ckc.wo.interventions.AskEmotionSliderIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
@@ -39,12 +39,18 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private boolean askWhy=false;
     private MyState state;
 
-    public AskEmotionIS(SessionManager smgr, PedagogicalModel pedagogicalModel) throws SQLException {
-        super(smgr, pedagogicalModel);
+    private String timeInterval ;
+    private String probInterval ;
+    private String numVals ;
+    private String inputType ;
+
+    public AskEmotionIS(SessionManager smgr) throws SQLException {
+        super(smgr);
         state = new MyState(smgr);
     }
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+        this.pedagogicalModel=pedagogicalModel;
 //        super.init(smgr,pedagogicalModel);
         configure();
     }
@@ -52,6 +58,10 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private void configure() {
         emotions = new ArrayList<Emotion>();
         Element config = this.getConfigXML();
+        timeInterval = getConfigParameter("interruptIntervalMin");
+        probInterval = getConfigParameter("interruptIntervalProblems");
+        numVals = getConfigParameter("numVals");
+        inputType = getConfigParameter("inputType");
         if (config != null) {
             List<Element> emotElts = config.getChildren("emotion");
             for (Element em: emotElts) {
@@ -94,10 +104,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         int problemsSinceLastQuery =  state.getNumProblemsSinceLastIntervention();
 
         NextProblemIntervention intervention=null;
-        String timeInterval = getParameter("interruptIntervalMin",this.params);
-        String probInterval = getParameter("interruptIntervalProblems",this.params);
-        String numVals = getParameter("numVals",this.params);
-        String inputType = getParameter("inputType",this.params);
+
         int timeIntervalMin = timeInterval  != null ? Integer.parseInt(timeInterval) : -1;
         int numProbsInterval = probInterval != null ? Integer.parseInt(probInterval) : -1;
         // If the period of time between interventions is exceeded OR num problems exceeded (whichever comes first) , ask
@@ -113,7 +120,6 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
                 intervention = new AskEmotionRadioIntervention(emotionToQuery, this.askWhy);
             state.setTimeOfLastIntervention(now);
             state.setNumProblemsSinceLastIntervention(0);
-            rememberInterventionSelector(this);
             return intervention;
         }
 
@@ -137,7 +143,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
 
 
     @Override
-    public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -150,7 +156,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
      * next one.   The parameters will be inside the event and will need to be retrieved.  Value of wantSwitch will either be
      *
      */
-    public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
         String emotion = params.getString(AskEmotionSliderIntervention.EMOTION);
         String level = params.getString(AskEmotionSliderIntervention.LEVEL);
@@ -158,7 +164,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
             level = "-1";
         int levelInt = Integer.parseInt(level);
         logger.debug("User reports emotion " + emotion + " level is " + level);
-        setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\"/>", e);
+
         StudentModel sm = smgr.getStudentModel();
         // The AffectStudentModel is the place where this emotion data is being kept.   It only keeps the last reported emotion.
         // The emotionInterventionResponse table keeps
@@ -166,6 +172,8 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
             ((AffectStudentModel) sm).setLastReportedEmotion(emotion,levelInt,e.getElapsedTime());
 
         String reason = params.getString(AskEmotionSliderIntervention.REASON);
+        // build XML like <interventionInput class="%AskEmotionIS"> <emotion> .... </emotion> </interventionInput>
+        setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\"><![CDATA[" + reason + "]]></emotion>", e);
         DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId());
         return null;  // no more interventions to return.
     }

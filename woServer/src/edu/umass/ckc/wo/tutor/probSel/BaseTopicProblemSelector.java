@@ -4,8 +4,7 @@ import edu.umass.ckc.wo.content.Problem;
 //import edu.umass.ckc.wo.content.ProblemImpl;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.Settings;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
+import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.BaseProblemSelectorOld;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.interventions.SelectProblemSpecs;
@@ -149,7 +148,7 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
     }
 
     @Override
-    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception {
+    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -701,12 +700,14 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
         // if forcing an intro in a different topic, sideline the cur topic and return the intro for the new topic
         if (e != null && e.isForceIntro() && e.getTopicToForce() != state.getCurTopic())   {
             sidelineTopic(e.getTopicToForce(),state);
-            p = DbTopics.getTopicIntro(conn,this.topicID);
+//            p = DbTopics.getTopicIntro(conn,this.topicID); // 6/11/15 TopicIntro no longer subclass of Problem
+            p=null;
             state.setTopicIntroShown(true);
         }
         // forcing a topic intro for the current topic return the intro
         else if (e != null && e.isForceIntro() && e.getTopicToForce() == state.getCurTopic() )   {
-            p = DbTopics.getTopicIntro(conn,this.topicID);
+//            p = DbTopics.getTopicIntro(conn,this.topicID);     // 6/11/15 TopicIntro no longer subclass of Problem
+            p=null;
             state.setTopicIntroShown(true);
         }
         // 9/11/13 wants only a topic : if topic is new, sidelines cur topic - returns the requested problem
@@ -784,9 +785,10 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
             if ( myForcedTopicEvent !=null && myForcedTopicEvent.getTopicToForce() > 0 && this.topicID != myForcedTopicEvent.getTopicToForce())
                 return null ;     //return noMoreProblems=true
 
-            Problem intro = DbTopics.getTopicIntro(conn,this.topicID);
+//            Problem intro = DbTopics.getTopicIntro(conn,this.topicID);  // 6/11/15 TopicIntro no longer subclass of Problem
+            Problem intro = null;
             state.setTopicIntroShown(true);
-            logger.debug("Selecting intro " + intro.getId() );
+//            logger.debug("Selecting intro " + intro.getId() );
             return intro;
         }
         else return null;
@@ -817,9 +819,10 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
 //            return intro;
 //        }
         if ( showTopicIntroFirst && !state.isTopicIntroShown()) {
-            Problem intro = DbTopics.getTopicIntro(conn,this.topicID);
+//            Problem intro = DbTopics.getTopicIntro(conn,this.topicID); // 6/11/15 TopicIntro no longer subclass of Problem
+            Problem intro = null;
             state.setTopicIntroShown(true);
-            logger.debug("Selecting intro " + intro.getId() );
+//            logger.debug("Selecting intro " + intro.getId() );
             return intro;
         }
         p = getNextProblemInTopic(state);

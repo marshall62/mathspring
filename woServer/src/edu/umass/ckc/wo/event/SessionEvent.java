@@ -25,6 +25,11 @@ public class SessionEvent extends ActionEvent {
 
     }
 
+    public SessionEvent (ServletParams p, int sessId) throws Exception {
+        super(p);
+        setSessionId(sessId);
+    }
+
     public SessionEvent (ServletParams p, boolean noGripe) throws Exception {
         super(p);
         try {

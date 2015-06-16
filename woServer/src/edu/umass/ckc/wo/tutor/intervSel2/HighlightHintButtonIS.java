@@ -16,20 +16,20 @@ import edu.umass.ckc.wo.tutormeta.Intervention;
  */
 public class HighlightHintButtonIS extends AttemptInterventionSelector {
 
-    public HighlightHintButtonIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public HighlightHintButtonIS(SessionManager smgr) {
+        super(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.pedagogicalModel=pedagogicalModel;
     }
 
     @Override
     public Intervention selectIntervention(AttemptEvent e) throws Exception {
         StudentState st = smgr.getStudentState();
         boolean isSolved= pedagogicalModel.isAttemptCorrect(st.getCurProblem(),e.getUserInput());
-        String threshold= getParameter("threshold",this.params);
+        String threshold= getConfigParameter("threshold");
         int numMistakesAllowedBeforeHighlight=2;
         if (threshold!=null)
             numMistakesAllowedBeforeHighlight= Integer.parseInt(threshold);

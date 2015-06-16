@@ -1,7 +1,10 @@
 package edu.umass.ckc.wo.tutor;
 
+import edu.umass.ckc.wo.config.LessonXML;
+import edu.umass.ckc.wo.config.LoginXML;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import org.jdom.Element;
 
 import java.util.List;
 
@@ -13,7 +16,7 @@ import java.util.List;
  */
 public class Pedagogy implements Comparable {
 
-    private static final String defaultClasspath = "edu.umass.ckc.wo.tutor";
+    public static final String defaultClasspath = "edu.umass.ckc.wo.tutor";
     private String problemSelectorClass;
     private String hintSelectorClass;
     private String studentModelClass;
@@ -35,6 +38,12 @@ public class Pedagogy implements Comparable {
     private List<InterventionSelectorSpec> subAttemptInterventionSelectors;
     private String reviewModeProblemSelectorClass;
     private String challengeModeProblemSelectorClass;
+
+    private Element interventionsElement;
+    private String lessonName;
+    private String loginXMLName;
+    private LessonXML lessonXML;
+    private LoginXML loginXML;
 
 
     public Pedagogy() {
@@ -148,7 +157,7 @@ public class Pedagogy implements Comparable {
      * @param classname
      * @return  the fully qualified classname
      */
-    private String getFullyQualifiedClassname (String defaultClasspath, String classname) {
+    public static String getFullyQualifiedClassname (String defaultClasspath, String classname) {
         if (classname == null)
             return null;
         if (classname.indexOf('.') == -1)
@@ -164,7 +173,7 @@ public class Pedagogy implements Comparable {
     }
 
     public void setAttemptInterventionSelector(InterventionSelectorSpec attemptInterventionSelector) {
-        String className =   getFullyQualifiedClassname(defaultClasspath + ".intervSel2", attemptInterventionSelector.getClassName());
+        String className =   attemptInterventionSelector.getFullyQualifiedClassname();
         attemptInterventionSelector.setClassName(className);
         this.attemptInterventionSelector = attemptInterventionSelector;
     }
@@ -174,7 +183,7 @@ public class Pedagogy implements Comparable {
     }
 
     public void setNextProblemInterventionSelector(InterventionSelectorSpec nextProblemInterventionSelector) {
-        String className =   getFullyQualifiedClassname(defaultClasspath + ".intervSel2", nextProblemInterventionSelector.getClassName());
+        String className =  nextProblemInterventionSelector.getFullyQualifiedClassname();
         nextProblemInterventionSelector.setClassName(className);
         this.nextProblemInterventionSelector =  nextProblemInterventionSelector;
     }
@@ -243,5 +252,57 @@ public class Pedagogy implements Comparable {
 
     public String getChallengeModeProblemSelectorClass() {
         return challengeModeProblemSelectorClass;
+    }
+
+    /* An XML element of the form
+    *        <lessonControl>
+            <interventions>
+                <interventionSelector onEvent="EndOfTopic" class="TopicSwitchAskIS">
+                    <param name="ask">false</param>
+                </interventionSelector>
+            </interventions>
+        </lessonControl>
+     */
+
+
+    public Element getInterventionsElement() {
+        return interventionsElement;
+    }
+
+    public void setInterventionsElement(Element interventionsElement) {
+        this.interventionsElement = interventionsElement;
+    }
+
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
+    }
+
+    public String getLessonName() {
+        return lessonName;
+    }
+
+    public void setLoginXMLName(String loginXMLName) {
+        this.loginXMLName = loginXMLName;
+    }
+
+    public String getLoginXMLName() {
+        return loginXMLName;
+    }
+
+    public LessonXML getLessonXML() {
+        return lessonXML;
+    }
+
+
+    public void setLessonXML(LessonXML lessonXML) {
+        this.lessonXML = lessonXML;
+    }
+
+    public LoginXML getLoginXML() {
+        return loginXML;
+    }
+
+    public void setLoginXML(LoginXML loginXML) {
+        this.loginXML = loginXML;
     }
 }

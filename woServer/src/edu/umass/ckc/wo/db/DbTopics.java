@@ -3,9 +3,7 @@ package edu.umass.ckc.wo.db;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCStandard;
-import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
-import edu.umass.ckc.wo.tutor.Settings;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -417,9 +415,23 @@ public class DbTopics {
             String intro = rs.getString(1);
             String type = rs.getString(2);
             String descr = rs.getString(3);
-            return new TopicIntro(intro,type, descr);
+            return new TopicIntro(intro,type, descr, topicID);
         }
         return null;
+    }
+
+    public static int getTopicDemoProblem(Connection conn, int topicID) throws SQLException {
+        String q = "select demoProblem from problemGroup where id = ?";
+        PreparedStatement ps = conn.prepareStatement(q);
+        ps.setInt(1,topicID);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            int demoProbId = rs.getInt(1);
+            if (rs.wasNull())
+                return -1;
+            else return demoProbId;
+        }
+        return -1;
     }
 
     public static void insertClassInactiveTopic(Connection conn, int classId, Topic t) throws SQLException {

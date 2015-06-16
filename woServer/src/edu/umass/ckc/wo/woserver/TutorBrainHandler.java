@@ -105,9 +105,7 @@ public class TutorBrainHandler {
             tutorPage.handleRequest((TutorHomeEvent) e);
             return false;
         }
-        else if (e instanceof SystemTestLoginEvent) {
-            servletInfo.getOutput().append("<systemTest>working</systemTest>");
-        }
+
         else if (e instanceof DbTestEvent) {
             SessionManager smgr = new SessionManager(servletInfo.getConn(),((DbTestEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession();
             StudentState state = smgr.getStudentState();
@@ -141,7 +139,7 @@ public class TutorBrainHandler {
             boolean showMPP = smgr.getPedagogicalModel().isShowMPP();
             smgr.getPedagogicalModel().newSession(smgr.getSessionNum());
             new TutorPage(servletInfo,smgr).createTutorPageFromState(ee.getElapsedTime(), 0, -1, -1,
-                    "practice", Problem.PRACTICE, Problem.PRACTICE, true, null, null, true, showMPP);
+                    Problem.PRACTICE, Problem.PRACTICE, null, true, null, null, true, showMPP);
             return false;
         }
         else if (e instanceof HomeEvent) {
@@ -235,23 +233,7 @@ public class TutorBrainHandler {
             servletInfo.getOutput().append(v.getView());
 
         }
-        else if (e instanceof FlashDebugLoginEvent) {
-            FlashDebugLoginEvent le = (FlashDebugLoginEvent) e;
-            String ipAddr = null;
-            // should be provided by Flash, but in case it isn't we'll just use the one that
-            // is sent with the servlet request (which may be a proxy server)
-            if (ipAddr == null)
-                ipAddr = servletInfo.getRequest().getRemoteAddr();
 
-            SessionManager smgr = new SessionManager(servletInfo.getConn());
-            String response = smgr.flashDebugLogin(le.getUname(), le.getPassword(), le.getFlashClient());
-            servletInfo.getOutput().append(response);
-        }
-        else if (e instanceof SystemTestLoginEvent) {
-            SessionManager smgr = new SessionManager(servletInfo.getConn());
-            servletInfo.getOutput().append(smgr.loginSystemTester((SystemTestLoginEvent) e));
-
-        }
 
         else if (e instanceof KillSessionsEvent) {
             SessionManager smgr = new SessionManager(servletInfo.getConn(),((KillSessionsEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession();

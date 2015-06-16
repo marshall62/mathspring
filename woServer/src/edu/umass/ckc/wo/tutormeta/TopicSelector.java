@@ -3,8 +3,8 @@ package edu.umass.ckc.wo.tutormeta;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,13 +28,10 @@ public interface TopicSelector {
 
     public  void initializeTopic (int topicId, StudentState state)  throws Exception ;
 
-    //  TopicIntro should be renamed to something else (e.g. Intro)  so that each implementation of this can return an appropriate Intro
-    // means defining Intro interface.
-    public  TopicIntro getIntro (int topicId) throws Exception;
 
-    //  Passing the HintSelector is not wonderful.  The reason it is here is because it returns a sequence of hints which is what allows
-    // the example to "play" as a problem being solved (i.e. its hints are played in sequence).
-    public  Problem getExample (int topicId, HintSelector hs) throws Exception;
+
+
+    public  Problem getDemoProblem (int topicId) throws Exception;
 
     // we're done with the current topic,  figure out what topic to give next.    Seems that this will need a StudentModel input
     // to support intelligent selection.
@@ -48,7 +45,7 @@ public interface TopicSelector {
     // not sure this signature looks right for a general purpose interface.  It is too specific to our current topic system.
     // Currently these arguments are because the TopicSelector determines if the topic is over based on how long the student has been in
     // the topic and whether we are trying to find an easier/harder/same difficulty problem.
-    public  EndOfTopicInfo isEndOfTopic(long probElapsedTime, ProblemGrader.difficulty nextDiff)  throws Exception ;
+    public  EndOfTopicInfo isEndOfTopic(long probElapsedTime, TopicModel.difficulty nextDiff)  throws Exception ;
 
     /**
      * Return all the problems in a topic for a given class.   This means removing the classOmittedProblems for this topic.
@@ -60,8 +57,7 @@ public interface TopicSelector {
      */
     public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws Exception;
 
-    // return a list of ids of problems that have been given to the student
-    public List<Integer> getPracticeProblemsSeen (int topicId) throws  Exception;
+
 
     // return a list of problems that have not been solved or given as examples or omitted for this class
     public List<Integer> getUnsolvedProblems(int topicId, int classId, boolean includeTestProblems) throws Exception ;

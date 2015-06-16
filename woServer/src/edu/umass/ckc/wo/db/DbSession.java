@@ -2,7 +2,7 @@ package edu.umass.ckc.wo.db;
 
 
 import edu.umass.ckc.wo.exc.NoSessionException;
-import edu.umass.ckc.wo.smgr.LessonState;
+import edu.umass.ckc.wo.smgr.TopicState;
 import edu.umass.ckc.wo.smgr.ProblemState;
 import edu.umass.ckc.wo.smgr.Session;
 import edu.umass.ckc.wo.smgr.SessionState;
@@ -344,7 +344,7 @@ public class DbSession {
 
     private static void removeTransientState(Connection conn, int studId) throws SQLException {
         ProblemState.clearState(conn,studId);
-        LessonState.clearState(conn, studId);
+        TopicState.clearState(conn, studId);
         SessionState.clearState(conn, studId);
         InterventionState.clearState(conn, studId);
     }

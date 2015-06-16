@@ -81,7 +81,7 @@
             hints: null,
             answers: null ,
             numHintsSeen: 0,
-            numHints: 0,
+            numHints: 0 ,
             destinationInterventionSelector: null
         }
 
@@ -244,7 +244,6 @@
                     <li class="elb_pid">
                             <div id="answer">${globals.answer}</div>
                          </li>
-
                 </ul>
                 <p>&nbsp;
 

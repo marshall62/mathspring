@@ -299,7 +299,7 @@ public class Problem implements Activity {
     }
 
     public boolean isProblemToSolve() {
-        if ( !(this instanceof TopicIntro) && ! isIntervention() )
+        if (  ! isIntervention() )
             return true ;
 
         return false ;

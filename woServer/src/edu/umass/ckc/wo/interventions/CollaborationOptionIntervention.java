@@ -24,6 +24,7 @@ public class CollaborationOptionIntervention extends InputResponseIntervention i
         str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"Yes\" checked=\"checked\">Yes; there is someone next to me.</input><br>";
         str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"No_alone\">No; there is no one next to me.</input><br>";
         str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"No_decline\">No; I don't want to.</input><br>";
+        str += "<input type=\"hidden\" name=\"destination\" value=\"edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS\">";
         str+="</form></div>";
         return str;
     }

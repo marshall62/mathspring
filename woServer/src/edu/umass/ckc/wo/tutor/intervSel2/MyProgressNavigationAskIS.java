@@ -2,7 +2,6 @@ package edu.umass.ckc.wo.tutor.intervSel2;
 
 
 
-import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
@@ -10,15 +9,14 @@ import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
 import org.jdom.Element;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +38,13 @@ public class MyProgressNavigationAskIS extends NextProblemInterventionSelector {
 
     int minIntervalBetweenMPPQueriesBasedOnAffect = 5 * 60 * 1000;  // default: we wait 5 minutes before we ask again about MPP after we show a dialog about it.
                                                                                          // assuming that the affect does not change.
-    public MyProgressNavigationAskIS(SessionManager smgr, PedagogicalModel pedagogicalModel) throws SQLException {
-        super(smgr, pedagogicalModel);
+    public MyProgressNavigationAskIS(SessionManager smgr) throws SQLException {
+        super(smgr);
         state = new MyState(smgr);
     }
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel)  {
+        this.pedagogicalModel=pedagogicalModel;
         configure();
 
     }
@@ -137,20 +136,18 @@ public class MyProgressNavigationAskIS extends NextProblemInterventionSelector {
                 }
             }
         }
-        if (intervention != null) {
-            rememberInterventionSelector(this);
-        }
+
 
         return intervention;
     }
 
     @Override
-    public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor.intervSel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -26,6 +27,44 @@ public class InterventionState {
         } finally {
             if (stmt != null)
                 stmt.close();
+        }
+    }
+
+    public static void setRun (Connection conn, int studId, String interventionName) throws SQLException {
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into RunOnceInterventionLog (studid, name,value) values (?,?,?)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            stmt.setString(2, interventionName);
+            stmt.setString(3, "Shown");
+            stmt.execute();
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
+    public static boolean hasRun (Connection conn, int studId, String interventionName) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select value from RunOnceInterventionLog where studId=? and name=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            stmt.setString(2, interventionName);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+            return false;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
         }
     }
 }

@@ -1,6 +1,6 @@
 package edu.umass.ckc.wo.interventions;
 
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.xml.JDOMUtils;
 import net.sf.json.JSONObject;
@@ -67,12 +67,12 @@ public class SelectProblemSpecs implements Intervention {
     }
 
 
-    public ProblemGrader.difficulty getDesiredDifficulty () {
+    public TopicModel.difficulty getDesiredDifficulty () {
         if (name.equalsIgnoreCase(HARDER_PROBLEM))
-            return ProblemGrader.difficulty.HARDER;
+            return TopicModel.difficulty.HARDER;
         else if (name.equalsIgnoreCase(EASIER_PROBLEM))
-            return ProblemGrader.difficulty.EASIER;
-        else return ProblemGrader.difficulty.SAME;
+            return TopicModel.difficulty.EASIER;
+        else return TopicModel.difficulty.SAME;
     }
 
 

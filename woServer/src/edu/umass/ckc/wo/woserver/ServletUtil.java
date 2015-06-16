@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.woserver;
 
+import edu.umass.ckc.wo.admin.LessonMap;
+import edu.umass.ckc.wo.admin.LoginMap;
 import edu.umass.ckc.wo.admin.PedMap;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.smgr.SessionDemon;
@@ -92,6 +94,10 @@ public class ServletUtil {
         String pedagogiesFile = servletContext.getInitParameter(Names.PEDAGOGIES_FILE);
         if (Settings.pedagogyGroups == null) {
             InputStream str = servletContext.getResourceAsStream(pedagogiesFile);
+            InputStream lstr = servletContext.getResourceAsStream("lessons.xml");
+            InputStream loginstr = servletContext.getResourceAsStream("logins.xml");
+            Settings.lessonMap = new LessonMap(lstr);
+            Settings.loginMap = new LoginMap(loginstr);
             Settings.pedagogyGroups = new PedMap(str);
         }
 

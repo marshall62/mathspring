@@ -13,8 +13,15 @@ import ckc.servlet.servbase.ServletParams;
  */
 
 public class EndProblemEvent extends IntraProblemEvent {
+    boolean isExample =false;  // NextProblem event is sent example/demo ends.  This indicates it.
 
     public EndProblemEvent(ServletParams p) throws Exception {
         super(p);
+        isExample = p.getBoolean("isExample",false);
+    }
+
+
+    public boolean isExample() {
+        return isExample;
     }
 }

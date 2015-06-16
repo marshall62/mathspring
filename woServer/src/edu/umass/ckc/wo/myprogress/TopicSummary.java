@@ -1,10 +1,14 @@
 package edu.umass.ckc.wo.myprogress;
 
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
@@ -88,20 +92,22 @@ public class TopicSummary {
         classId = smgr.getClassID();
         conn = smgr.getConnection();
         sessionId = smgr.getSessionNum();
-        curTopicLoader = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters(),smgr.getPedagogicalModel());
+        curTopicLoader = new TopicSelectorImpl(smgr, (TopicModelParameters) DbClass.getClassLessonModelParameters(conn, classId));
         ProblemSelector psel = smgr.getPedagogicalModel().getProblemSelector();
+
 //        this.hasAvailableContent = psel.topicHasRemainingContent(smgr, topicId);
-        this.hasAvailableContent = smgr.getPedagogicalModel().isTopicContentAvailable(topicId);
-        if (!this.hasAvailableContent)  {
-            totalProblems =0;
-            this.problemsDone=0;
-            this.problemsDoneWithEffort=0;
-            this.numProbsSolved=0;
-            topicState = "topicEmpty";
-            return;
+        LessonModel lm = smgr.getPedagogicalModel().getLessonModel();
+        try {
+            this.hasAvailableContent = lm.hasReadyContent(topicId);
+        } catch (UserException ue) {
+            this.hasAvailableContent = false;
         }
-        List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
-        totalProblems = l.size();
+        try {
+            List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
+            totalProblems = l.size();
+        } catch (UserException ue) {
+            totalProblems=0;
+        }
         StudentProblemHistory h = smgr.getStudentModel().getStudentProblemHistory();
         List<StudentProblemData> probHist = h.getTopicHistory(topicId);
 

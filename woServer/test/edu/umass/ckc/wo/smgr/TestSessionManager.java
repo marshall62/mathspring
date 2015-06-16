@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.smgr;
 
+import edu.umass.ckc.wo.admin.LessonMap;
 import edu.umass.ckc.wo.admin.PedMap;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.db.DbUtil;
@@ -11,7 +12,6 @@ import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,7 +40,9 @@ public class TestSessionManager {
     public SessionManager setUpTestSession () throws Exception {
         Settings.useHybridTutor = true;
         FileInputStream str = new FileInputStream(UnitTestSettings.PROJECT_RESOURCES + "pedagogies.xml");
+        FileInputStream str2 = new FileInputStream(UnitTestSettings.PROJECT_RESOURCES + "lessons.xml");
         Settings.pedagogyGroups = new PedMap(str);
+        Settings.lessonMap = new LessonMap(str2);
         Connection conn = DbUtil.getAConnection(UnitTestSettings.DBHOST);
         if (!ProblemMgr.isLoaded())  {
             ProblemMgr pmgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());

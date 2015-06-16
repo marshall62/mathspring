@@ -1,24 +1,16 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
-import edu.umass.ckc.wo.admin.PedMap;
-import edu.umass.ckc.wo.cache.ProblemMgr;
-import edu.umass.ckc.wo.db.DbUtil;
-import edu.umass.ckc.wo.settings.UnitTestSettings;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.smgr.TestSessionManager;
-import edu.umass.ckc.wo.tutor.Settings;
-import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
-import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,9 +32,10 @@ import java.sql.SQLException;
             TestSessionManager tsmgr = new TestSessionManager();
             smgr = tsmgr.setUpTestSession();
             conn = smgr.getConnection();
-            params = smgr.getPedagogicalModelParameters();
+            params = smgr.getPedagogicalModel().getParams();
             studState = smgr.getStudentState();
-            topicSelector = new TopicSelectorImpl(smgr,smgr.getPedagogicalModelParameters(),smgr.getPedagogicalModel());
+            // TODO need to create some TopicModelParameters instead of null
+            topicSelector = new TopicSelectorImpl(smgr,null);
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -64,7 +57,7 @@ import java.sql.SQLException;
         int maxNumProbs = params.getMaxNumberProbs();
         studState.setTopicNumPracticeProbsSeen(maxNumProbs -1 );  // seen less than max num problems
         studState.setTimeInTopic(maxTime-1000); // been in topic for 1 sec less than max time
-        ProblemGrader.difficulty nextDiff = ProblemGrader.difficulty.HARDER;
+        TopicModel.difficulty nextDiff = TopicModel.difficulty.HARDER;
 
         EndOfTopicInfo info = topicSelector.isEndOfTopic(1000,nextDiff);  // see if its time to switch at probElapsed=1 sec
         Assert.assertTrue(info.isMaxTimeReached(), "End of topic when time in topic == MAXTIME");
@@ -83,7 +76,7 @@ import java.sql.SQLException;
         long maxTime = params.getMaxTimeInTopic();
         int maxNumProbs = params.getMaxNumberProbs();
         studState.setTimeInTopic(maxTime-1000); // been in topic for 1 sec less than max time
-        ProblemGrader.difficulty nextDiff = ProblemGrader.difficulty.HARDER;
+        TopicModel.difficulty nextDiff = TopicModel.difficulty.HARDER;
 
         studState.setTopicNumPracticeProbsSeen(maxNumProbs -1 );  // seen 1 less than max num problems
         EndOfTopicInfo info = topicSelector.isEndOfTopic(0,nextDiff);  // see if its time to switch at probElapsed=1 sec
@@ -111,30 +104,30 @@ import java.sql.SQLException;
 
         smgr.getStudentState().setCurTopicHasEasierProblem(true);
         smgr.getStudentState().setCurTopicHasHarderProblem(true);
-        EndOfTopicInfo info = topicSelector.isEndOfTopic(0,ProblemGrader.difficulty.HARDER);  // want harder prob
+        EndOfTopicInfo info = topicSelector.isEndOfTopic(0, TopicModel.difficulty.HARDER);  // want harder prob
         Assert.assertFalse(info.isContentFailure(), "test content failure: has easier & harder, want harder");
         Assert.assertFalse(info.isFailToFindHarder(), "test failToFindHarder: has easier & harder, want harder");
 
-        info = topicSelector.isEndOfTopic(0,ProblemGrader.difficulty.EASIER);  // want easier prob
+        info = topicSelector.isEndOfTopic(0, TopicModel.difficulty.EASIER);  // want easier prob
         Assert.assertFalse(info.isContentFailure(), "test content failure: has easier & harder, want easier");
         Assert.assertFalse(info.isFailToFindEasier(), "test failToFindHarder: has easier & harder, want easier");
 
-        info = topicSelector.isEndOfTopic(0,ProblemGrader.difficulty.SAME);  // want same diff prob
+        info = topicSelector.isEndOfTopic(0, TopicModel.difficulty.SAME);  // want same diff prob
         Assert.assertFalse(info.isContentFailure(), "test content failure: has easier & harder, want same");
         Assert.assertFalse(info.isFailToFindSame(), "test failToFindHarder: has easier & harder, want same");
 
         smgr.getStudentState().setCurTopicHasEasierProblem(false);
         smgr.getStudentState().setCurTopicHasHarderProblem(false);
 
-        info = topicSelector.isEndOfTopic(0,ProblemGrader.difficulty.HARDER);  // want harder prob
+        info = topicSelector.isEndOfTopic(0, TopicModel.difficulty.HARDER);  // want harder prob
         Assert.assertTrue(info.isContentFailure(), "test content failure: no easier & harder, want harder");
         Assert.assertTrue(info.isFailToFindHarder(), "test failToFindHarder: no easier & harder, want harder");
 
-        info = topicSelector.isEndOfTopic(0,ProblemGrader.difficulty.EASIER);  // want easier prob
+        info = topicSelector.isEndOfTopic(0, TopicModel.difficulty.EASIER);  // want easier prob
         Assert.assertTrue(info.isContentFailure(), "test content failure: no easier & harder, want easier");
         Assert.assertTrue(info.isFailToFindEasier(), "test failToFindHarder: no easier & harder, want easier");
 
-        info = topicSelector.isEndOfTopic(0,ProblemGrader.difficulty.SAME);  // want same diff prob
+        info = topicSelector.isEndOfTopic(0, TopicModel.difficulty.SAME);  // want same diff prob
         Assert.assertTrue(info.isContentFailure(), "test content failure: no easier & harder, want same");
         Assert.assertTrue(info.isFailToFindSame(), "test failToFindHarder: no easier & harder, want same");
 

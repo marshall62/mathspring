@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor.response;
 
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
+import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.TopicMastery;
@@ -71,8 +72,6 @@ public class ProblemResponse extends Response {
     public String logEventName() {
         if (prob == null)
             return "NoProblem";
-        else if (prob instanceof TopicIntro)
-            return Problem.TOPIC_INTRO_PROB_TYPE;
         else if (prob.isPractice())
            return "PracticeProblem";
         else return "ExampleProblem";
@@ -104,6 +103,10 @@ public class ProblemResponse extends Response {
 
     public Problem getProblem() {
         return prob;
+    }
+
+    public boolean isNoMoreProblems () {
+        return this.noMoreProblems;
     }
 
     // In multiple choice problems, we would like the answer slot to be chosen randomly, so that the answer
@@ -168,5 +171,16 @@ public class ProblemResponse extends Response {
 
     public String getParams() {
         return params;
+    }
+
+    public void setProblemBindings(SessionManager smgr) throws SQLException {
+        Problem problem = this.getProblem();
+        if (problem != null && problem.isParametrized()) {
+            problem.getParams().addBindings( this, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
+            if (problem.isMultiChoice())
+                this.shuffleAnswers(smgr.getStudentState());
+            // parameterized short answer problems need to save the possible answers in the student state
+
+        }
     }
 }

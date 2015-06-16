@@ -24,8 +24,8 @@ public abstract class AttemptInterventionSelector extends InterventionSelector  
 
     protected List<AttemptInterventionSelector> subSelectors;
 
-    public AttemptInterventionSelector(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public AttemptInterventionSelector(SessionManager smgr) {
+        super(smgr);
     }
 
     public void setSubSelectors (List<AttemptInterventionSelector> subSelectors) {

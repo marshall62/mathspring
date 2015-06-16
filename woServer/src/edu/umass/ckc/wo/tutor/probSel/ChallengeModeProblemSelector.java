@@ -5,8 +5,8 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
-import edu.umass.ckc.wo.tutormeta.TopicSelector;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
+import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -31,8 +31,8 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
 
 
 
-    public ChallengeModeProblemSelector(SessionManager smgr, TopicSelector topicSelector, PedagogicalModelParameters params) {
-        super(smgr,topicSelector,params);
+    public ChallengeModeProblemSelector(SessionManager smgr, LessonModel lessonModel, PedagogicalModelParameters params) {
+        super(smgr,lessonModel,params);
     }
 
 
@@ -46,9 +46,9 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
     }
 
     @Override
-    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception {
+    public Problem selectProblem(SessionManager smgr, NextProblemEvent eIgnored, ProblemScore lastProblemScoreIgnored) throws Exception {
         StudentState state = smgr.getStudentState();
-        List<Integer> topicProbIds = topicSelector.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), false);
+        List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), false);
         int nextIx = state.getCurProblemIndexInTopic();
         // THIS IS FAILING BECUASE IF They solve then you don't want to increase the index because the solved problem is thrown out
         // if they don't solve we want to increase the index.
@@ -56,14 +56,22 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
            nextIx = topicProbIds.size()/2;
            state.setCurProblemIndexInTopic(nextIx);
         }
+        if (nextIx >= topicProbIds.size()) {
+            state.setInChallengeMode(false);
+            return null;
+        }
         // If the last problem given is the same as this one,  then the user must have got it wrong because it wasn't removed in the
         // prepare step above.   So we increase the index
         if (state.getCurProblem() == topicProbIds.get(nextIx)) {
             nextIx++;
-            state.setCurProblemIndexInTopic(nextIx);
+            if (nextIx >= topicProbIds.size() )
+            {
+                state.setInChallengeMode(false);
+                return null;
+            }
+            else  state.setCurProblemIndexInTopic(nextIx);
         }
-        if (nextIx >= topicProbIds.size())
-            return null;
+
         int nextProbId = topicProbIds.get(nextIx);
         Problem p = ProblemMgr.getProblem(nextProbId);
         p.setMode(Problem.PRACTICE);

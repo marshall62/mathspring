@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.tutor;
 
+import edu.umass.ckc.wo.admin.LessonMap;
+import edu.umass.ckc.wo.admin.LoginMap;
 import edu.umass.ckc.wo.tutormeta.*;
 import edu.umass.ckc.wo.admin.PedMap;
 import edu.umass.ckc.wo.tutor.probSel.AdventureProblemSelector;
@@ -45,7 +47,6 @@ public class Settings {
   public static PrePostProblemSelector prepostProblemSelectorTester= new FixedSequencePrePostProblemSelectorImpl() ;
   public static PrePostProblemSelector prepostProblemSelector = new PrePostProblemSelectorImpl();
 
-    // todo Ivon or Pippin needs to write a subclass for each of these that will behave predictably (i.e. no randomness)
 //  public static InterventionSelector bayesianInterventionSelectorTester= new BayesianMotivationalSelector() ;
 //  public static ProblemSelector mlProblemSelectorTester = new MLProblemSelector();
 
@@ -77,6 +78,8 @@ public class Settings {
     public static String mlLogFile = "";
 
     public static PedMap pedagogyGroups; // maps pedagogy id to Pedagogy objects
+    public static LessonMap lessonMap; // maps lesson name to LessonXML objects
+    public static LoginMap loginMap; // maps login name to LoginXML objects
 
     public static String FORMALITY_URL_FIRST_PART = "http://cadmium.cs.umass.edu/formality/FormalityServlet?fxn=wayang&mode=viewq&qID=" ;
     public static String FORMALITY_URL_LAST_PART = "&un=1864&wayangStudId=11501&wayangSessId=35151&elapsedTime=10000" ;

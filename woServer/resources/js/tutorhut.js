@@ -42,7 +42,7 @@ var INPUT_RESPONSE_FORM = "inputResponseForm";
 var FLASH_PROB_TYPE = "flash";
 var SWF_TYPE = "swf";
 var HTML_PROB_TYPE = "html5";
-var EXTERNAL_PROB_TYPE = "ExternalActivity";
+var EXTERNAL_PROB_TYPE = "EexternalActivity";
 var TOPIC_INTRO_PROB_TYPE = "TopicIntro";
 var INTERVENTION = "intervention";
 var NEXT_PROBLEM_INTERVENTION = "NextProblemIntervention";
@@ -204,6 +204,18 @@ function showAnswer (ans) {
     $("#answer").text("Answer: " + ans);
 }
 
+function showVarBindings (varBindings) {
+    if (varBindings == undefined) {
+        $("#varBindings").text("No Var Bindings");
+    }
+    else {
+        var s='';
+        for (var k in varBindings)
+            s = s + k + ":" + varBindings[k] + ',';
+        $("#varBindings").text("Var Bindings: " + s);
+    }
+}
+
 function loadIframe (iframeId, url) {
     $(iframeId).attr("src", url);
 }
@@ -223,7 +235,16 @@ function nextProb(globals) {
     incrementTimers(globals);
     // call the server with a nextProblem event and the callback fn processNextProblemResult will deal with result
     showHourglassCursor(true);
-    servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode}, processNextProblemResult);
+    // A HACK.  Because the Topic Intro is an intervention but it doesn't show in a dialog, it is ended by clicking on New Problem button
+    // which comes in here.  We want to send back an InputResponse though becuase thats what TopicIntros should get back.
+    // TODO:  Probably should replace NewProblem button when a topic intro shows.  It could have the correct handler on it.
+    if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
+        servletGet("InputResponseNextProblemIntervention",
+            {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode, destination:globals.destinationInterventionSelector},
+            processNextProblemResult) ;
+    // Normal Processing
+    else
+        servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode}, processNextProblemResult);
 }
 
 // This function can only be called if the button is showing
@@ -494,15 +515,6 @@ function showHTMLProblem (pid, solution, resource, mode) {
 
 }
 
-function showTopicIntro (resource, topic) {
-
-    // TODO assumption is that TOpicIntro is built in Flash.   Other possibilities: nothing, HTML5
-    // if nothing pop up an alert
-    if (typeof(resource) != 'undefined' && resource != '')
-        showFlashProblem(resource,null,null,FLASH_CONTAINER_INNER, false);
-
-    else alert("Beginning topic: "  + topic + ".  No Flash movie to show")
-}
 
 // On EndProblem event we know the effort of the last problem so we get it and display it.
 function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
@@ -534,21 +546,34 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         var resource =activity.resource;
         var topic = activity.topicName;
         var standards = activity.standards;
+        var varBindings = activity.parameters;
         setGlobalProblemInfo(activity);
 
         showProblemInfo(pid,resource,topic,standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
             // If server shuffles the answer to a different position, then newAnswer contains this position
-            if (activity.newAnswer != null && activity.newAnswer != 'undefined') {
+            if (activity.newAnswer != null && activity.newAnswer != undefined) {
                 globals.newAnswer = activity.newAnswer;
                 globals.answer = activity.answer
                 showAnswer(activity.newAnswer);
+                showVarBindings(varBindings);
             }
             else {
                 globals.newAnswer = activity.newAnswer;
                 globals.answer = activity.answer;
-                showAnswer(activity.answer);
+                // The answer may be in the var bindings  as  $Best_Answer
+                if (varBindings != undefined) {
+                    alert("Varbindings are:"+ varBindings);
+                    var bestAns = varBindings.$Best_Answer;
+                    alert("Best answer is: "+ bestAns);
+                    showAnswer(bestAns);
+                    showVarBindings(varBindings);
+                }
+                else {
+                    showAnswer(activity.answer);
+                    showVarBindings(varBindings);
+                }
             }
 
         }
@@ -559,7 +584,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         updateTimers();
         globals.probType = activityType;
 
-        // If its an external problem
+        // If its an intervention
         if (isIntervention()) {
             processNextProblemIntervention(activity);
 
@@ -594,7 +619,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.hints = null;
                 globals.answers = null;
             }
-            sendBeginEvent(globals);
+            sendBeginEvent(globals,pid);
             showHTMLProblem(pid,solution,resource,mode);
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
@@ -616,7 +641,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             else {
                 container =FLASH_CONTAINER_INNER;
             }
-            sendBeginEvent(globals) ;
+            sendBeginEvent(globals,pid) ;
             showFlashProblem(resource,ans,solution,container,mode);
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
@@ -624,20 +649,20 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             globals.topicId = activity.topicId;
             globals.probId = pid;
         }
+        // DM 6/11/15 topic intros are now interventions
 
-        else if (activityType === TOPIC_INTRO_PROB_TYPE) {
-            globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
-
-            // send EndEvent for previous problem
-            sendEndEvent(globals);
-//            showProblemInfo(pid,resource);
-            globals.probElapsedTime = 0;
-            sendBeginEvent(globals);
-            showTopicIntro(resource,activity.topicName);
-            globals.topicId = activity.topicId;
-            globals.probId = pid;
-
-        }
+//        else if (activityType === TOPIC_INTRO_PROB_TYPE) {
+//            globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
+//
+//            // send EndEvent for previous problem
+//            sendEndEvent(globals);
+//            globals.probElapsedTime = 0;
+//            sendBeginEvent(globals);
+//            showTopicIntro(resource,activity.topicName);
+//            globals.topicId = activity.topicId;
+//            globals.probId = pid;
+//
+//        }
         // We got XML that we don't understand so it must be an intervention.   We call Flash and pass it the XML
         else {
             globals.lastProbType = FLASH_PROB_TYPE;
@@ -951,7 +976,7 @@ function showFlashProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
-        sendBeginEvent(globals) ;
+        sendBeginEvent(globals,pid) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
     if (globals.showAnswer)
@@ -994,7 +1019,7 @@ function showHTMLProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
-        sendBeginEvent(globals) ;
+        sendBeginEvent(globals,pid) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
 
@@ -1007,7 +1032,8 @@ function showHTMLProblemAtStart () {
 // This came up after being in a problem and attempting it (correctly), going to MPP, then return to hut.
 function showInterventionAtStart () {
     if (sysGlobals.isDevEnv)
-        alert("Returning to Mathspring and playing intervention: " + globals.activityJSON);
+        ;
+//        alert("Returning to Mathspring and playing intervention: " + globals.activityJSON);
 
 //        var ajson = globals.activityJSON;
 //        var qt = '\\"';
@@ -1015,7 +1041,8 @@ function showInterventionAtStart () {
 //        var cleanJSON = ajson.replace(re,'\\\"');
         var activity = globals.activityJSON;
         if (sysGlobals.isDevEnv)
-            alert("Activity is " + activity);
+            ;
+//            alert("Activity is " + activity);
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
         processNextProblemIntervention(activity);

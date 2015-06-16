@@ -11,9 +11,21 @@ import ckc.servlet.servbase.ServletParams;
  * Event action: beginProblem
  * Event params:  sessId , elapsedTime (both handled by inheritance)
  */
+
 public class BeginProblemEvent extends TutorHutEvent {
+    int probId;
 
     public BeginProblemEvent(ServletParams p) throws Exception {
         super(p);
+        probId = p.getInt("probId");
+    }
+
+    public int getProbId() {
+        return probId;
+    }
+
+
+    public void setProbId(int probId) {
+        this.probId = probId;
     }
 }

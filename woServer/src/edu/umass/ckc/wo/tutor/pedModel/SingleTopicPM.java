@@ -38,7 +38,7 @@ public class SingleTopicPM extends BasePedagogicalModel {
 //        this.smgr = smgr;
 //        this.studentModel = new BaseStudentModel(smgr.getConnection());
 //        this.smgr.setStudentModel(this.studentModel);
-//        PedagogicalModelParameters params = smgr.getPedagogicalModelParameters();
+//        PedagogicalModelParameters params = smgr.getClassPedagogicalModelParameters();
 //        reviewModeSelector = new ReviewModeProblemSelector();
 //        challengeModeSelector = new ChallengeModeProblemSelector();
 //        hintSelector = new PercentageHintSelector();

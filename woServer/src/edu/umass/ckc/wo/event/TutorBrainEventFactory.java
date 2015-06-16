@@ -33,8 +33,7 @@ public class TutorBrainEventFactory {
             a = new KillSessionsEvent(p,false);
         else if (action.equals(Actions.killAllSessions))
             a = new KillSessionsEvent(p,true);
-        else if (action.equals(Actions.mrlogin))
-            a = new MRLoginEvent(p);
+
         else if (action.equals(Actions.logout))
             a = new LogoutEvent(p);
         else if (action.equals(Actions.endActivity))
@@ -45,12 +44,9 @@ public class TutorBrainEventFactory {
             a = new AdventurePSolvedEvent(p);
         else if (action.equals(Actions.replay))
             a = new ReplayHintEvent(p);
-        else if (action.equals(Actions.getVitals))
-            a = new GetVitalsEvent(p);
-        else if (action.equals(Actions.setVitals))
-            a = new SetVitalsEvent(p);
-        else if (action.equals(Actions.setResults))
-            a = new SetResultsEvent(p);
+
+
+
         else if (action.equals(Actions.getClasses))
             a = new GetClassesEvent(p);
         else if (action.equals(Actions.navigation))
@@ -65,8 +61,6 @@ public class TutorBrainEventFactory {
             a = new SetPrePostResultEvent(p);
         else if (action.equals(Actions.removeSystemTestSessionData))
             a = new CleanOutSystemTestDataEvent(p);
-        else if (action.equals(Actions.systemTestLogin))
-            a = new SystemTestLoginEvent(p);
         else if (action.equals(Actions.changeGroup))
             a = new ChangeGroupEvent(p);
         else if (action.equals(Actions.topicDetail))

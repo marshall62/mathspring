@@ -32,13 +32,14 @@ public class SessionState extends State {
     private static final String NEXT_PROB_DESIRED_DIFFICULTY = "st.nextProbDesiredDifficulty";
     private static final String LC_CLIP_COUNTS = "st.lcClipCounts";
     private static final String LC_CLIPS_SEEN = "st.lcClipsSeen";
+    private static final String PED_MOD_INTERNAL_STATE = "st.pedModelInternalState";
 
 
 
 
     private static String[] ALL_PROPS = new String[] {CUR_LOCATION,TIME,NUM_PROBS_THIS_TUTOR_SESSION, NUM_REAL_PROBS_THIS_TUTOR_SESSION,
             TUTOR_ENTRY_TIME,EXTERNAL_ACTS_GIVEN,EXAMPLE_PROBLEMS_GIVEN, TEMP_PROBLEM_INDEX, TOPIC_INTROS_SEEN, TOPIC_EXAMPLES_SEEN,LAST_INTERVENTION_TIME,
-            NEXT_PROB_DESIRED_DIFFICULTY, LC_CLIP_COUNTS, LC_CLIPS_SEEN} ;
+            NEXT_PROB_DESIRED_DIFFICULTY, LC_CLIP_COUNTS, LC_CLIPS_SEEN,PED_MOD_INTERNAL_STATE} ;
     private String curLocation;
     private long time;
     private long lastInterventionTime;
@@ -55,6 +56,7 @@ public class SessionState extends State {
     private List<String> lcClipCounts;
     private int curLesson;
     protected Map m;
+    private String pedagogicalModelInternalState;
 
 
     public SessionState(Connection conn) {
@@ -83,6 +85,7 @@ public class SessionState extends State {
         nextProblemDesiredDifficulty = mapGetPropString(m, NEXT_PROB_DESIRED_DIFFICULTY);
         this.lcClipsSeen = mapGetPropList(m, LC_CLIPS_SEEN);
         this.lcClipCounts = mapGetPropList(m,LC_CLIP_COUNTS);
+        this.pedagogicalModelInternalState = mapGetPropString(m,PED_MOD_INTERNAL_STATE);
 
 
     }
@@ -121,6 +124,7 @@ public class SessionState extends State {
         clearTopicExamplesSeen();
         clearLCClipData();
         setTutorEntryTime(System.currentTimeMillis());
+        clearProp(this.objid,PED_MOD_INTERNAL_STATE);
     }
 
     public String getCurLocation() {
@@ -300,4 +304,12 @@ public class SessionState extends State {
     }
 
 
+    public void setPedagogicalModelInternalState(String pedagogicalModelInternalState) throws SQLException {
+        this.pedagogicalModelInternalState = pedagogicalModelInternalState;
+        setProp(objid,PED_MOD_INTERNAL_STATE,pedagogicalModelInternalState);
+    }
+
+    public String getPedagogicalModelInternalState() {
+        return pedagogicalModelInternalState;
+    }
 }

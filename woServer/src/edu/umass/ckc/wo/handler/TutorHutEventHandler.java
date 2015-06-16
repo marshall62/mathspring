@@ -35,7 +35,7 @@ public class TutorHutEventHandler {
         String curLoc = smgr.getStudentState().getCurLocation();  // find out where the student is in the GUI
         PedagogicalModel pm = smgr.getPedagogicalModel();
 
-        final Response r = pm.processEvent(e);
+        final Response r = pm.processUserEvent(e);
         // If the pedagogy forwards to a JSP the Activity will be null and we just return null
         if (r != null)
             return new View() {

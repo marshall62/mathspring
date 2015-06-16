@@ -7,10 +7,9 @@ import edu.umass.ckc.wo.html.tutor.TutorPage;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.response.InterventionResponse;
-import edu.umass.ckc.wo.tutor.response.ProblemResponse;
-import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.woserver.ServletInfo;
 
 import java.sql.SQLException;
@@ -82,13 +81,14 @@ public class MPPTutorHandler {
             String typ = smgr.getStudentState().getCurProbType();
             int lastProbId =  smgr.getStudentState().getCurProblem(); // must do before next line because it clears curProb
             // problem:  this wipes out the student problemstate so that state.curProb = -1
-            ProblemResponse r = pedMod.getProblemInTopicSelectedByStudent(npe);
-            Problem p = r.getProblem();
-            smgr.getStudentModel().newProblem(state,p);  // this does not set curProb = new prob id,
-            smgr.getStudentState().setCurProblem(lastProbId);  // must make curProb be lastProb id so EndProblem event that comes in next has the id of last problem
-            smgr.getStudentModel().save();
+
+            InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
+            TutorModel tutMod = pedMod.getTutorModel();
+            Response r =  tutMod.processInternalEvent(beginningOfTopicEvent);
+
+
             int temp = smgr.getStudentState().getCurProblem();
-            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), r, "practice",  typ, true, p.getResource(), null, false, lastProbId, this.showMPP);
+            new TutorPage(info,smgr).createTutorPageForResponse(e.getElapsedTime(), 0, e.getTopicId(), r, "practice", typ, true, null, false, lastProbId, this.showMPP);
             new TutorLogger(smgr).logMPPEvent(e,lastProbId);
 //            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), -1, "practice", Problem.PRACTICE, state.getCurProbType(), true, null, null, false);
 
@@ -101,7 +101,7 @@ public class MPPTutorHandler {
             npe.setMode(PedagogicalModel.REVIEW_MODE);
             int lastProbId =  smgr.getStudentState().getCurProblem();
             String typ = smgr.getStudentState().getCurProbType();
-            ProblemResponse r = pedMod.getReviewProblem(npe);
+            ProblemResponse r = (ProblemResponse) pedMod.processReviewModeNextProblemRequest(npe);
             Problem p = r.getProblem();
             if (e.getTopicId() != smgr.getStudentState().getCurTopic())
                 smgr.getStudentState().newTopic();
@@ -119,7 +119,8 @@ public class MPPTutorHandler {
             npe.setMode(PedagogicalModel.CHALLENGE_MODE);
             int lastProbId =  smgr.getStudentState().getCurProblem();
             String typ = smgr.getStudentState().getCurProbType();
-            ProblemResponse r = pedMod.getChallengingProblem(npe);
+            ProblemResponse r = (ProblemResponse) pedMod.processChallengeModeNextProblemRequest(npe);
+
             Problem p = r.getProblem();
             if (e.getTopicId() != smgr.getStudentState().getCurTopic())
                 smgr.getStudentState().newTopic();

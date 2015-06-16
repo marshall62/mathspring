@@ -41,7 +41,7 @@ public class SemiEmpathicLC extends EmotionalLC {
 
 
         public List<String> selectEmotions(AffectStudentModel m, Response r, SessionManager smgr) throws Exception {
-            if (r instanceof TopicIntroResponse || r instanceof InterventionResponse) {
+            if (r instanceof InterventionResponse) {
                 clips.add("idle");
                 return clips;
             }

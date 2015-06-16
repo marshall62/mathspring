@@ -14,6 +14,7 @@ public class ClassConfig {
     private int spatial;
     private int tutoring;
     private boolean useDefaults;
+    private boolean showPostSurvey;
 
     public static final int OFF=0;
     public static final int ON=1;
@@ -21,10 +22,10 @@ public class ClassConfig {
     public static final int ON_AFTER_POSTTEST=3;
 
     public static ClassConfig getDefaultConfig () {
-        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true);
+        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false);
     }
 
-    public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults) {
+    public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults, boolean showPostSurvey) {
         this.pretest = pretest;
         this.posttest = posttest;
         this.fantasy = fantasy;
@@ -32,6 +33,7 @@ public class ClassConfig {
         this.spatial = spatial;
         this.tutoring = tutoring;
         this.useDefaults = useDefaults;
+        this.showPostSurvey=showPostSurvey;
     }
 
     public int getPretest() {
@@ -61,6 +63,11 @@ public class ClassConfig {
     public boolean getUseDefaults () {
         return useDefaults;
     }
+
+    public boolean isShowPostSurvey () {
+        return this.showPostSurvey;
+    }
+
 
 
 

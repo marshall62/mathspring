@@ -7,7 +7,7 @@ import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutormeta.Intervention;
+import edu.umass.ckc.wo.tutor.response.Response;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,13 +23,13 @@ import java.util.Random;
 public class ExternalActivityIS extends NextProblemInterventionSelector {
     private double PERCENT_TIME_TO_SELECT_EXTERNAL_ACT = Settings.externalActivityPercentage;
 
-    public ExternalActivityIS(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        super(smgr, pedagogicalModel);
+    public ExternalActivityIS(SessionManager smgr) {
+        super(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.pedagogicalModel=pedagogicalModel;
     }
 
 
@@ -97,12 +97,12 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public Intervention processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public Intervention processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

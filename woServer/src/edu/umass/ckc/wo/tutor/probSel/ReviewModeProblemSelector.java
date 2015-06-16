@@ -5,10 +5,10 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.pedModel.ProblemGrader;
-import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
+import edu.umass.ckc.wo.tutor.model.TopicModel;
+import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
-import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -26,12 +26,13 @@ public class ReviewModeProblemSelector  implements ProblemSelector {
     private static Logger logger = Logger.getLogger(ReviewModeProblemSelector.class);
 
     PedagogicalModelParameters parameters;
-    TopicSelector topicSelector;
+    private TopicModel topicModel;
+
     private SessionManager smgr;
 
-    public ReviewModeProblemSelector(SessionManager smgr, TopicSelectorImpl topicSelector, PedagogicalModelParameters params) {
+    public ReviewModeProblemSelector(SessionManager smgr, LessonModel lessonModel, PedagogicalModelParameters params) {
         this.smgr = smgr;
-        this.topicSelector = topicSelector;
+        this.topicModel = (TopicModel) lessonModel;
         this.parameters=params;
     }
 
@@ -47,12 +48,16 @@ public class ReviewModeProblemSelector  implements ProblemSelector {
     }
 
     @Override
-    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemGrader.difficulty nextProblemDesiredDifficulty) throws Exception {
+    public Problem selectProblem(SessionManager smgr, NextProblemEvent eIgnored, ProblemScore lastProblemScoreIgnored) throws Exception {
         StudentState state = smgr.getStudentState();
-        List<Integer> topicProbIds = topicSelector.getClassTopicProblems(state.getCurTopic(), smgr.getClassID(), smgr.isTestUser());
+        List<Integer> topicProbIds = topicModel.getClassTopicProblems(state.getCurTopic(), smgr.getClassID(), smgr.isTestUser());
 //        List<Problem> topicProblems = xx;
         int nextIx = state.getCurProblemIndexInTopic();
         nextIx++;
+        if (nextIx >= topicProbIds.size()) {
+            state.setInReviewMode(false);
+            return null;
+        }
         state.setCurProblemIndexInTopic(nextIx);
         int nextProbId = topicProbIds.get(nextIx);
         Problem p = ProblemMgr.getProblem(nextProbId);
