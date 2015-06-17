@@ -388,6 +388,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             }
             else smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
         if (p != null)
+            studentModel.newProblem(state,p);
             problemGiven(p);
 
         r = new ProblemResponse(p);

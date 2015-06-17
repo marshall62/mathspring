@@ -681,6 +681,7 @@ function showLearningCompanion (json) {
     var files = json.learningCompanionFiles;
     if (files != undefined && files != null)
         $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+    else return;
 //    alert("learning companion file: " + files);
     if (files instanceof Array)    {
         if (files[0] != globals.learningCompanionClip) {
