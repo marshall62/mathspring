@@ -254,6 +254,7 @@ function selectProblemDialog () {
     loadIframe("#selectProblemDialogIframe",url)
 }
 
+// only used by test-users from a special dialog that allows selecting problems.
 function forceNextProblem (id) {
     $("#"+SELECT_PROBLEM_DIALOG).dialog('close');
      // send a NextProblemEvent that forces a particular problem

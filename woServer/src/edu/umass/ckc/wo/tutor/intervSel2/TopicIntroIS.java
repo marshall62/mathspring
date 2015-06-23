@@ -68,6 +68,9 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
         if  (!studentState.isTopicIntroShown())  {
             // additional conditions checked in method below
             intro = getTopicIntro(studentState.getCurTopic());
+            // other conditions (e.g. topic intro already shown for this topic) may result in no intro
+            if (intro == null)
+                return null;
             // Because the TopicIntro is not played like other interventions (in a dialog with a form that can send inputs such as
             // the destinationIS)  we have to put it in the JSON.  Then we have a hack in the client when the new problem button click
             // is handled it sends back an InputResponse which has a destination obtained from the JSON.

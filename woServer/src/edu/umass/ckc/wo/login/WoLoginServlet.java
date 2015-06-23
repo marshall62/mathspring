@@ -74,6 +74,7 @@ public class WoLoginServlet extends BaseServlet {
             if (lr.isNewSession()) {
                 LoginSequence ls = new LoginSequence(servletInfo,lr.getSessId());
                 ls.clearInterventionState();
+
             }
             // Sometimes the login is processed by forwarding to a JSP, so just return false because a page is already generated
             if (lr.isForwardedToJSP()) {

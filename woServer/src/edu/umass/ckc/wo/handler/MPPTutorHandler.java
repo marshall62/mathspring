@@ -81,7 +81,9 @@ public class MPPTutorHandler {
             String typ = smgr.getStudentState().getCurProbType();
             int lastProbId =  smgr.getStudentState().getCurProblem(); // must do before next line because it clears curProb
             // problem:  this wipes out the student problemstate so that state.curProb = -1
-
+            // MPP is used to switch topics, reset the state for a new topic
+            if (e.getTopicId() != smgr.getStudentState().getCurTopic())
+                smgr.getStudentState().newTopic(); // resets all the variables that track a topic for a student
             InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
             TutorModel tutMod = pedMod.getTutorModel();
             Response r =  tutMod.processInternalEvent(beginningOfTopicEvent);
@@ -146,7 +148,7 @@ public class MPPTutorHandler {
             // When user was in topicIntro prior to going to MPP this isn't correct.
             String typ = smgr.getStudentState().getCurProbType();
             //ProblemResponse r = pedMod.getProblemSelectedByStudent(npe);
-            ProblemResponse r = (ProblemResponse) pedMod.processNextProblemRequest(npe);
+            ProblemResponse r = (ProblemResponse) pedMod.processMPPSelectProblemRequest(npe);
             Problem p = r.getProblem();
             smgr.getStudentModel().newProblem(state,r.getProblem());
 

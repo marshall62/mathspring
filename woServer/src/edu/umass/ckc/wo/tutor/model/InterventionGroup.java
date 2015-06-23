@@ -100,18 +100,24 @@ public class InterventionGroup {
         List<InterventionSelectorSpec> candidates = getCandidateInterventionForEvent(onEvent);
         Collections.sort(candidates);   // sort into ascending order by weight
         for (InterventionSelectorSpec spec: candidates) {
-            if (spec.isRunOnce() && InterventionState.hasRun(smgr.getConnection(), smgr.getStudentId(), spec.getClassName()))
-                continue;
-            InterventionSelector isel = spec.getSelector();
-            isel.init(smgr,smgr.getPedagogicalModel());
-            // will check to see if the selector wants to run an intervention
-            Intervention interv= isel.selectIntervention(e);
-            if (interv != null) {
-                if (spec.isRunOnce())
-                    InterventionState.setRun(smgr.getConnection(),smgr.getStudentId(),spec.getClassName());
-                // This is the only place where we need to remember the intervention selector
-                smgr.getStudentState().setLastIntervention(spec.getFullyQualifiedClassname());
-                return interv;
+            // skip it if its a run-once intervention that has already been run
+            if (!(spec.isRunOnce() && InterventionState.hasRun(smgr.getConnection(), smgr.getStudentId(), spec.getClassName()))) {
+                InterventionSelector isel = spec.getSelector();
+                isel.init(smgr,smgr.getPedagogicalModel());
+                // will check to see if the selector wants to run an intervention
+                Intervention interv= isel.selectIntervention(e);
+                if (interv != null) {
+                    if (spec.isRunOnce()) {
+                        boolean success = InterventionState.setRun(smgr.getConnection(),smgr.getStudentId(),spec.getClassName());
+                        // if for some reason it fails to set the status of this intervention selector as having run (e.g. primary
+                        // key violation) this will abort using that intervention a second time.
+                        if (!success)
+                            continue;
+                    }
+                    // This is the only place where we need to remember the intervention selector
+                    smgr.getStudentState().setLastIntervention(spec.getFullyQualifiedClassname());
+                    return interv;
+                }
             }
         }
         return null;

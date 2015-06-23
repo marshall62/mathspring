@@ -175,6 +175,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
         else if (e instanceof NextProblemEvent)  {
             NextProblemEvent ee = (NextProblemEvent)  e;
+            //  I think the only way we arrive at this with forceProblem=true is from the tool for test-users that allows problem selection from dialog
             if (ee.isForceProblem())
                 r = processStudentSelectsProblemRequest(ee);
             else if (ee.getMode().equalsIgnoreCase(CHALLENGE_MODE) || state.isInChallengeMode())
@@ -369,6 +370,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     // results: ProblemResponse | InterventionResponse
     public abstract Response processNextProblemRequest (NextProblemEvent e) throws Exception;
     public abstract Response processStudentSelectsProblemRequest (NextProblemEvent e) throws Exception;
+    public abstract Response processMPPSelectProblemRequest (NextProblemEvent e) throws Exception;
     public abstract Response processChallengeModeNextProblemRequest (NextProblemEvent e) throws Exception;
     public abstract Response processReviewModeNextProblemRequest (NextProblemEvent e) throws Exception;
 

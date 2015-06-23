@@ -68,7 +68,7 @@ public class TopicModel extends LessonModel {
     }
 
 
-    private EndOfTopicInfo checkForEOT(InTopicEvent e) throws Exception {
+    private EndOfTopicInfo checkForEOT(long probElapsedTime) throws Exception {
         // No interventions, so grade the last problem and if EOT, send an internal event for that
         ProblemGrader grader = pedagogicalModel.getProblemGrader();
         Problem lastProb = ProblemMgr.getProblem(smgr.getStudentState().getCurProblem());
@@ -81,12 +81,11 @@ public class TopicModel extends LessonModel {
         }
         else nextDiff = difficulty.SAME;
         smgr.getStudentState().setNextProblemDesiredDifficulty(nextDiff.name());
-        // Have to convert the SessionEvent to IntraProblemEvent because we're in the middle of a problem in a topic and need the probElapsed to grade it.
-        IntraProblemEvent ipe = (IntraProblemEvent) e.getSessionEvent();
+
         // now we need to use the score to find the desired difficulty of the next problem
 
         //we save this info so that interventions (TopicSwitchAskIS) can get it to determine if they are applicable
-        eotInfo = isEndOfTopic(ipe.getProbElapsedTime(),nextDiff);
+        eotInfo = isEndOfTopic(probElapsedTime,nextDiff);
         return eotInfo;
     }
 
@@ -140,6 +139,7 @@ public class TopicModel extends LessonModel {
         studentState.setTopicInternalState(TopicState.BEGINNING_OF_TOPIC);
         int curTopic = studentState.getCurTopic();
         int nextTopic = e.getTopicId();
+
         if (curTopic == -1)  {
 
             curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
@@ -151,6 +151,16 @@ public class TopicModel extends LessonModel {
         else if (nextTopic != -1 && curTopic != nextTopic) {
             curTopic = switchTopics(nextTopic);
         }
+        else {
+            // Prevent starting a topic that has no problems.  This can happen if a student logs out after solving all problems in a topic because
+            // we attempt to resume the last topic a student was in.
+            List<Integer> probs = getUnsolvedProblems(curTopic,smgr.getClassID(),smgr.isTestUser());
+            if (probs == null || probs.size() < 1)  {
+                curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
+                curTopic = switchTopics(curTopic);
+            }
+        }
+
         // if there is no current topic we must be at the beginning of the session so get a new topic and switch to it.
         Response r;
         //// See if there are interventions applicable for BeginningOfTopic
@@ -185,7 +195,9 @@ public class TopicModel extends LessonModel {
         if (r != null) {
             return r;
         }
-        EndOfTopicInfo eot = checkForEOT(e);
+        IntraProblemEvent ipe = (IntraProblemEvent) e.getSessionEvent();
+        long probElapsed = ipe.getProbElapsedTime();
+        EndOfTopicInfo eot = checkForEOT(probElapsed);
 
         if (eot.isTopicDone())   {
             // So we need send ourselves an EndOfTopicEvent
@@ -235,10 +247,15 @@ public class TopicModel extends LessonModel {
     private Response processNextProblemEvent (NextProblemEvent e) throws Exception {
         Response r;
         // a students first session will not have a topic in the student state so grab the first one
+        // TODO If a student has been in a topic in a previous session and it had no more problems,  this will
+        // resume in that topic and then fail to get beyond the initial Topic intro.   Need to switch topics.
         if (studentState.getCurTopic() == -1) {
             int nextTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), -1, smgr.getStudentState());
             switchTopics(nextTopic);
         }
+        // if this is a new session with a topic left from the last session
+        else if (studentState.getCurTopic() != -1 && studentState.getNumProblemsThisTutorSession() < 1)
+            System.out.println("Going to resume a topic from last session");
         // If the current state is BeginningOfTopic, then send an BOT internal event to get interventions for that if any
         if (studentState.getTopicInternalState().equals(TopicState.BEGINNING_OF_TOPIC))  {
             return processInternalEvent(new BeginningOfTopicEvent(e,studentState.getCurTopic()));

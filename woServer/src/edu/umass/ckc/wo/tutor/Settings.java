@@ -107,7 +107,7 @@ public class Settings {
     public static double externalActivityPercentage=5.0; // controls the intervention selector that picks external acts
     public static String problemContentPath;
     public static boolean loggingBackToAssistments=true;
-    public static boolean usingAssistments=true;
+    public static boolean usingAssistments=false;
 
     public static boolean sendClassStatusEmail = false;
     public static boolean sendStudentStatusEmail = false;

@@ -101,6 +101,8 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         }
         // THis is the mode of the problem asked just prior to the nextProblem button being clicked (so its still the current prob).
         String curProbMode = smgr.getStudentState().getCurProblemMode();
+        if (curProbMode == null)
+            return null;
         int problemsSinceLastQuery =  state.getNumProblemsSinceLastIntervention();
 
         NextProblemIntervention intervention=null;

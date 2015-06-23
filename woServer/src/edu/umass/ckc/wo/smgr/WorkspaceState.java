@@ -33,14 +33,7 @@ public class WorkspaceState extends State {
     private static final String PREREQ_STD = "wkspcst.prereqStd";
     private static final String PREREQ_STD_STACK = "wkspcst.prereqStdStack";
 
-    public static final String SAT_HUT_PROBLEMS_GIVEN = "wkspcst.satHutProblemsGiven";
-    public static final String SAT_HUT_PROBLEMS_SOLVED = "wkspcst.satHutProblemsSolved";
-    public static final String SAT_HUT_PROBLEMS_SOLVED_INCORRECTLY = "wkspcst.satHutProblemsSolvedIncorrectly";
-    public static final String SAT_HUT_PROBLEMS_SOLVED_ON_FIRST = "wkspcst.satHutProblemsSolvedOnFirst";
 
-    public static final String TOTAL_PROBLEMS_SOLVED = "wkspcst.totalproblemsSolved";
-    public static final String TOTAL_PROBLEMS_SEEN = "wkspcst.totalproblemsSeen";
-    private static final String CUR_PROB_INDEX_IN_TOPIC = "wkspcst.curProbIndexInTopic";
     private static final String POST_SURVEY_DONE = "wkspcst.postSurveyDone";
 
     private boolean postSurveyDone;
@@ -101,13 +94,7 @@ public class WorkspaceState extends State {
 
 
     public static void clearState(Connection conn, int id) throws SQLException {
-       clearProp(conn,id,SAT_HUT_PROBLEMS_GIVEN);
-       clearProp(conn,id,SAT_HUT_PROBLEMS_SOLVED);
-       clearProp(conn,id,SAT_HUT_PROBLEMS_SOLVED_INCORRECTLY);
-       clearProp(conn,id,SAT_HUT_PROBLEMS_SOLVED_ON_FIRST);
-       clearProp(conn,id,TOTAL_PROBLEMS_SOLVED);
-       clearProp(conn,id,TOTAL_PROBLEMS_SEEN);
-       clearProp(conn,id,CUR_PROB_INDEX_IN_TOPIC);
+
        clearProp(conn,id,CUR_LESSON);
        clearProp(conn,id,CUR_CU);
         clearProp(conn,id,CUR_CLUSTER);

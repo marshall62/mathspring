@@ -14,14 +14,12 @@ import java.util.List;
  * Time: 12:24:50 PM
  */
 public class AttemptResponse extends Response {
-    private boolean doGrade;
     private boolean isCorrect;
     private Intervention intervention;
     private String logEventName;
 
 
-    public AttemptResponse(boolean doGrade, boolean isCorrect, List<TopicMastery> topicMasteryLevels, int curTopic) {
-        this.doGrade=doGrade;
+    public AttemptResponse(boolean isCorrect, List<TopicMastery> topicMasteryLevels, int curTopic) {
         this.isCorrect=isCorrect;
         logEventName = "attempt";
         this.topicMasteryLevels = topicMasteryLevels;
@@ -29,15 +27,13 @@ public class AttemptResponse extends Response {
         buildJSON();
     }
 
-    public AttemptResponse(boolean doGrade, boolean correct, String logEventName) {
-        this.doGrade = doGrade;
+    public AttemptResponse(boolean correct, String logEventName) {
         isCorrect = correct;
         this.logEventName = logEventName;
         buildJSON();
     }
 
-    public AttemptResponse(boolean doGrade, boolean isCorrect, Intervention i, List<TopicMastery> topicMasteryLevels, int curTopic) {
-        this.doGrade=doGrade;
+    public AttemptResponse(boolean isCorrect, Intervention i, List<TopicMastery> topicMasteryLevels, int curTopic) {
         this.isCorrect=isCorrect;
         this.intervention=i;
         this.topicMasteryLevels = topicMasteryLevels;

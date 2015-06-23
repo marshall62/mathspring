@@ -5,7 +5,11 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
+import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
+import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
+import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
+import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
@@ -13,6 +17,7 @@ import edu.umass.ckc.wo.tutor.model.TutorModelUtils;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import org.jdom.Element;
@@ -24,7 +29,7 @@ import org.jdom.Element;
  * Time: 11:53 AM
  * To change this template use File | Settings | File Templates.
  */
-public class DemoProblemIS extends InterventionSelector {
+public class DemoProblemIS extends NextProblemInterventionSelector {
     TopicModel topicModel;
     TopicModelParameters.frequency freq;
     TopicSelector topicSelector;
@@ -56,10 +61,12 @@ public class DemoProblemIS extends InterventionSelector {
     }
 
     @Override
-    public Intervention selectIntervention(SessionEvent e) throws Exception {
+    public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
 
         if (!smgr.getStudentState().isExampleShown()) {
             Problem demo = getTopicDemoProblem(studentState.getCurTopic());
+            if (demo == null)
+                return null;
             DemoProblemIntervention dpi = new DemoProblemIntervention(demo);
             smgr.getStudentState().setIsExampleShown(true);
             return dpi;
@@ -103,9 +110,13 @@ public class DemoProblemIS extends InterventionSelector {
         return null;
     }
 
+    @Override
+    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-
-
-
-
+    @Override
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

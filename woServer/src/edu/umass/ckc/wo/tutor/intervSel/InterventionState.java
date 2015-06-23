@@ -30,7 +30,7 @@ public class InterventionState {
         }
     }
 
-    public static void setRun (Connection conn, int studId, String interventionName) throws SQLException {
+    public static boolean setRun (Connection conn, int studId, String interventionName) throws SQLException {
         PreparedStatement stmt=null;
         try {
             String q = "insert into RunOnceInterventionLog (studid, name,value) values (?,?,?)";
@@ -40,9 +40,16 @@ public class InterventionState {
             stmt.setString(3, "Shown");
             stmt.execute();
         }
+        catch (Exception e) {
+            // In case it tries to run a run-once intervention a second time the primary key will be violated but we don't really care
+            e.printStackTrace();
+            return false;
+        }
         finally {
-            if (stmt != null)
+            if (stmt != null) {
                 stmt.close();
+            }
+            return true;
         }
     }
 

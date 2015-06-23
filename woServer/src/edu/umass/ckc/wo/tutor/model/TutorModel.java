@@ -30,23 +30,8 @@ public class TutorModel implements TutorEventProcessor {
     @Override
     public Response processInternalEvent(InternalEvent e) throws Exception {
         Response r;
-        StudentState state = smgr.getStudentState();
-        int lastProbId =  state.getCurProblem();  // must do this before processing the event because it might clear curProb
-        if (e instanceof BeginningOfTopicEvent)
-            r = ((TopicModel) lessonModel).processInternalEvent(e);
-        else r=  new Response();
-        if (r instanceof ProblemResponse) {
-            ProblemResponse pr = (ProblemResponse) r;
-            Problem p = pr.getProblem();
-            smgr.getStudentModel().newProblem(state,p);  // this does not set curProb = new prob id,
-            smgr.getStudentState().setCurProblem(lastProbId);  // must make curProb be lastProb id so EndProblem event that comes in next has the id of last problem
-            smgr.getStudentModel().save();
-        }
-        else if (r instanceof InterventionResponse) {
-            Intervention i = ((InterventionResponse) r).getIntervention();
-            smgr.getStudentModel().interventionGiven(state,i);
-            smgr.getStudentModel().save();
-        }
+        r = smgr.getPedagogicalModel().processInternalEvent(e);
+        smgr.getStudentModel().save();
         return r;
 
     }
