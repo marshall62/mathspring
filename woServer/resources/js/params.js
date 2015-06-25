@@ -514,10 +514,15 @@ function parametrizeText(rawText) {
     if (constraints == null) {
         return rawText;
     }
+
+    var pastVars = "";
     var parametrizedText = rawText;
     for (var key in constraints) {
-        var regex = new RegExp("(\\W|^)\\"+key+"(?=\\W|$)", "gi");
-        parametrizedText = parametrizedText.replace(regex, "$1" + constraints[key] + " ");
+        var regex = new RegExp("\\"+key+"((?=\\W|$"+pastVars+"))", "gi");
+        pastVars = pastVars + "|" + constraints[key];
+    //    while(parametrizedText.search(regex)!= -1){
+            parametrizedText = parametrizedText.replace(regex,constraints[key] + "$1");
+      //  }
     }
     return parametrizedText;
 }
