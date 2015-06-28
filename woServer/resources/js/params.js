@@ -213,13 +213,14 @@ function format (rawText) {
     var imgOrVid = "";
     var extension = "";
     var isExtension = false;
+    var isImgOrVid = false;
     var startIndex = undefined;
     var endIndex = undefined;
     var maxLength = rawText.length;
     for(var j = 0; j < maxLength; ++j){
 
         if(j == maxLength-1 && startIndex != undefined)
-            alert("unclosed '{['");
+            alert("unclosed '{[' or '{#'");
 
         //TODO refactor this
         switch (rawText.charAt(j)) {
@@ -244,6 +245,11 @@ function format (rawText) {
                 if(!escaped && rawText.charAt(j+1) == "["){
                     startIndex = j;
                     j++;
+                    isImgOrVid = true;
+                }
+                else if(!escaped && rawText.charAt(j+1) == "#"){
+                    startIndex = j;
+                    j++;
                 }
                 else{
                     if(startIndex != undefined){
@@ -260,10 +266,59 @@ function format (rawText) {
 
             case ']':
                 if(!escaped && rawText.charAt(j+1) == "}"){
-                    if(startIndex != undefined){
+                    if(!isImgOrVid){
+                        alert("end image or video tag present without start tag");
+                        startIndex = undefined;
+                        endIndex = undefined;
+                        isExtension = false;
+                        extension = "";
+                        imgOrVid = "";
+                    }
+                    else if(startIndex != undefined){
                         j++;
                         endIndex = j;
                         var toInsert  = replaceWithHTML(imgOrVid, extension);
+                        rawText = rawText.substring(0, startIndex) + toInsert + rawText.substring(endIndex+1, rawText.length);
+                        var newLen = toInsert.toString().length;
+                        j = startIndex + newLen;
+                        maxLength = maxLength + newLen - (endIndex - startIndex + 1);
+                        startIndex = undefined;
+                        endIndex = undefined;
+                        isExtension = false;
+                        extension = "";
+                        imgOrVid = "";
+                        isImgOrVid = false;
+                    }
+                }
+                else{
+                    if(startIndex != undefined){
+                        if(isExtension){
+                            extension = extension + ']';
+                        }
+                        else{
+                            imgOrVid = imgOrVid + ']';
+                        }
+                    }
+                    escaped = false;
+                }
+                break;
+            case '#':
+                if(!escaped && rawText.charAt(j+1) == "}"){
+                    if(isImgOrVid){
+                        alert("Cannot have an equation inside of an image or video");
+                        startIndex = undefined;
+                        endIndex = undefined;
+                        isExtension = false;
+                        extension = "";
+                        imgOrVid = "";
+                    }
+                    else if(startIndex != undefined){
+                        j++;
+                        endIndex = j;
+                        var toInsert  = parseSimpleExp(imgOrVid+"."+extension);
+                        if(typeof toInsert === 'number' && isNaN(toInsert)){
+                            alert("invalid expression detected");
+                        }
                         rawText = rawText.substring(0, startIndex) + toInsert + rawText.substring(endIndex+1, rawText.length);
                         var newLen = toInsert.toString().length;
                         j = startIndex + newLen;
@@ -278,10 +333,10 @@ function format (rawText) {
                 else{
                     if(startIndex != undefined){
                         if(isExtension){
-                            extension = extension + '{';
+                            extension = extension + '#';
                         }
                         else{
-                            imgOrVid = imgOrVid + '{';
+                            imgOrVid = imgOrVid + '#';
                         }
                     }
                     escaped = false;
@@ -332,16 +387,8 @@ function replaceWithHTML(file, ext){
        toInsert = "<video src=\""+getURL(file+"."+ext)+" controls preload=\"auto\"></video>";
     }
 
-    //If it is not one of the above, it is probably an expression
     else{
-        if(ext != ""){
-            ext = "." + ext;
-        }
-        toInsert = parseSimpleExp(file+ext);
-    }
-
-    if(toInsert == undefined || (typeof toInsert === 'number' && isNaN(toInsert))){
-        alert("invalid image, video, or expression detected");
+        alert("invalid image or video");
     }
     return toInsert;
 }
@@ -467,10 +514,15 @@ function parametrizeText(rawText) {
     if (constraints == null) {
         return rawText;
     }
+
+    var pastVars = "";
     var parametrizedText = rawText;
     for (var key in constraints) {
-        var regex = new RegExp("(\\W|^)\\"+key+"(?=\\W|$)", "gi");
-        parametrizedText = parametrizedText.replace(regex, "$1" + constraints[key] + " ");
+        var regex = new RegExp("\\"+key+"((?=\\W|$"+pastVars+"))", "gi");
+        pastVars = pastVars + "|" + constraints[key];
+    //    while(parametrizedText.search(regex)!= -1){
+            parametrizedText = parametrizedText.replace(regex,constraints[key] + "$1");
+      //  }
     }
     return parametrizedText;
 }
