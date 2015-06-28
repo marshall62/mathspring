@@ -1,10 +1,12 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
+
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.interventions.MyProgressNavigationIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
-import edu.umass.ckc.wo.interventions.ShowMPPIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
@@ -22,28 +24,32 @@ import java.util.Map;
 /**
  * Created with IntelliJ IDEA.
  * User: marshall
- * Date: 6/2/14
- * Time: 12:03 PM
+ * Date: 9/3/14
+ * Time: 11:42 AM
  * To change this template use File | Settings | File Templates.
  */
-public class MyProgressPageIS extends NextProblemInterventionSelector {
+public class MyProgressNavigationForceIS extends NextProblemInterventionSelector {
     MyState state;
-    int interruptIntervalMin=-1;
-    int interruptIntervalProblems = -1;
     Map<String,Bounds> emotionSettings = new HashMap<String, Bounds>(11);
     boolean checkEmotions=false;
     String emLowerBound=null;
     String emUpperBound=null;
+    boolean isNotify;
+    String when;
+    String notifyHTML;
+    String component;
+    String action;
 
-    public MyProgressPageIS(SessionManager smgr) throws SQLException {
+
+    int minIntervalBetweenMPPQueriesBasedOnAffect = 5 * 60 * 1000;  // default: we wait 5 minutes before we ask again about MPP after we show a dialog about it.
+                                                                                         // assuming that the affect does not change.
+    public MyProgressNavigationForceIS(SessionManager smgr) throws SQLException {
         super(smgr);
         state = new MyState(smgr);
     }
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel)  {
         this.pedagogicalModel=pedagogicalModel;
-        if (getParameter("selectProblem", this.params) != null)
-            this.setBuildProblem(Boolean.parseBoolean(getParameter("selectProblem",this.params)));
         configure();
 
     }
@@ -56,11 +62,7 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
                 String t = elt.getAttributeValue("type");
                 String v = elt.getAttributeValue("val");
 
-                if (t.equals("numProblems"))
-                    interruptIntervalProblems = Integer.parseInt(v);
-                else if (t.equals("time"))
-                    interruptIntervalMin = Integer.parseInt(v);
-                else if (t.equals("affect")) {
+                if (t.equals("affect")) {
                     checkEmotions=true;
                     String em = elt.getAttributeValue("emotion");
                     String lb = elt.getAttributeValue("lowerBound");
@@ -70,6 +72,24 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
                 }
 
             }
+            Element elt = config.getChild("minIntervalBetweenMPPQueriesBasedOnAffect");
+            if (elt != null) {
+                String minutes = elt.getText();
+                this.minIntervalBetweenMPPQueriesBasedOnAffect = Integer.parseInt(minutes) * 60 * 1000;
+            }
+            elt = config.getChild("notifyDialog") ;
+            if (elt != null) {
+                when = elt.getAttributeValue("when");
+                notifyHTML = elt.getTextTrim();
+                isNotify=true;
+            }
+            elt = config.getChild("component");
+            if (elt != null) {
+                component = elt.getTextTrim() ;
+                action = elt.getAttributeValue("action");
+            }
+            else isNotify = false;
+
         }
     }
 
@@ -91,28 +111,30 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
      will keep showing the MPP until the user is again queried about confidence AND he raises his confidence level.   So there is an interrelationship
      between the use of this intervention and the AskEmotion intervention (and presumably the tutor which would attempt to ameliorate the emotion that
      is out of whack)
+
+
+     The below is an abstraction of ChangeGUIIntervention:
+     What I want to have happen:  This will return the intervention.  The client will process it by seeing that it has notify-before and some dialog html.
+     It should then pop up the dialog with the given text.  When the continue button is clicked, the interface is changed by performing the change action
+     which is one of Show | Hide | Highlight on the specified GUI component (one of MPP, Hint, ReadProblem, Example, Video, etc)
+
+     This provides a way to change the GUI and to notify the user that it is happening with a customized message either before or after the change happens.
+
+
      */
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         long now = System.currentTimeMillis();
-        long timeSinceLastMPPDisplay = (now - state.getTimeOfLastIntervention())/(1000*60); // convert ms to min
-        if (state.getTimeOfLastIntervention() <= 0) {
-            timeSinceLastMPPDisplay = 0;
-            state.setTimeOfLastIntervention(now);
-        }
-        int problemsSinceLastQuery =  state.getNumProblemsSinceLastIntervention();
-        state.setNumProblemsSinceLastIntervention(problemsSinceLastQuery+1);
 
-
+        // We only want this intervention to come up after a practice problem because the MPP return-to-hut will break unless the problem was originally practice.
+        if (!smgr.getStudentState().getCurProblemMode().equals(Problem.PRACTICE))
+            return null;
         NextProblemIntervention intervention=null;
 
-        if ((this.interruptIntervalMin > -1 && timeSinceLastMPPDisplay >= this.interruptIntervalMin) ||
-                (this.interruptIntervalProblems > -1 && problemsSinceLastQuery >= this.interruptIntervalProblems)) {
-            intervention = new ShowMPPIntervention(this.isBuildProblem());
-        }
         long lastInterventionForEmotions = state.getTimeOfLastInterventionForEmotions();
-        int threshold = 2 * 60 * 1000;  // period of time to wait before showing MPP based on emotions again.
         long timeSinceLastEmotionMPPIntervention = now - lastInterventionForEmotions;
-        if (checkEmotions && timeSinceLastEmotionMPPIntervention>= threshold) {
+        boolean c1,c2;
+        c1 = checkEmotions && timeSinceLastEmotionMPPIntervention>= minIntervalBetweenMPPQueriesBasedOnAffect;
+        if (c1) {
             StudentModel sm = smgr.getStudentModel();
 
             if (sm instanceof AffectStudentModel  ) {
@@ -128,26 +150,19 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
                     else if (emotion.equals(AffectStudentModel.EXCITED))
                         emVal = asm.getReportedExcitement();
                     Bounds b = emotionSettings.get(emotion);
-                    if (emVal != 0 && b.within(emVal)) {
+                    c2 =  emVal != 0 && b.within(emVal);
+                    if (c2) {
                         state.setTimeOfLastInterventionForEmotions(now);
-                        intervention = new ShowMPPIntervention(this.isBuildProblem());
+                         intervention =new MyProgressNavigationIntervention(isNotify, when,notifyHTML, false, component, action);
                         break;
                     }
                 }
             }
         }
-        if (intervention != null) {
-            state.setTimeOfLastIntervention(now);
-            state.setNumProblemsSinceLastIntervention(0);
-        }
+
 
         return intervention;
     }
-
-    //   This intervention selector is an exception to how they should work.  It returns an intervention that asks the student if they want to see
-    // the MPP (or it may just force them to).  Either way, the students input response or continue button, does not cause an event to be sent back to this
-    // for processing.   The client code handles the input and pops up the MPP with no call to the server.  This means an anomaly in the log file because
-    // MPP events will follow the ShowIntervention.
 
     @Override
     public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
@@ -162,13 +177,10 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
 
 
     private class MyState extends State {
-        private final String NUM_PROBS_SINCE_LAST_INTERVENTION =  MyProgressPageIS.this.getClass().getSimpleName() + ".NumProbsSinceLastIntervention";
-        private final String TIME_OF_LAST_INTERVENTION =  MyProgressPageIS.this.getClass().getSimpleName() + ".TimeOfLastIntervention";
-        private final String TIME_OF_LAST_INTERVENTION_FOR_EMOTIONS =  MyProgressPageIS.this.getClass().getSimpleName() + ".TimeOfLastInterventionForEmotions";
-        private final String LAST_INTERVENTION_INDEX =  MyProgressPageIS.this.getClass().getSimpleName() + ".LastInterventionIndex";
-        int numProblemsSinceLastIntervention;
+        private final String TIME_OF_LAST_INTERVENTION_FOR_EMOTIONS =  MyProgressNavigationForceIS.this.getClass().getSimpleName() + ".TimeOfLastInterventionForEmotions";
+        private final String LAST_INTERVENTION_INDEX =  MyProgressNavigationForceIS.this.getClass().getSimpleName() + ".LastInterventionIndex";
+
         int lastInterventionIndex; // keeps track of the index of the last Affect we asked about
-        long timeOfLastIntervention;
         long timeOfLastInterventionForEmotions;
 
         MyState (SessionManager smgr) throws SQLException {
@@ -177,31 +189,11 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
             this.objid = smgr.getStudentId();
             WoProps props = smgr.getStudentProperties();
             Map m = props.getMap();
-            numProblemsSinceLastIntervention =  mapGetPropInt(m,NUM_PROBS_SINCE_LAST_INTERVENTION,0);
             lastInterventionIndex =  mapGetPropInt(m, LAST_INTERVENTION_INDEX, -1);
-            timeOfLastIntervention =  mapGetPropLong(m, TIME_OF_LAST_INTERVENTION, 0);
             timeOfLastInterventionForEmotions =  mapGetPropLong(m, TIME_OF_LAST_INTERVENTION_FOR_EMOTIONS, 0);
 //            if (timeOfLastIntervention ==0)
 //                setTimeOfLastIntervention(System.currentTimeMillis());
 
-        }
-
-        void setNumProblemsSinceLastIntervention (int n) throws SQLException {
-            this.numProblemsSinceLastIntervention = n;
-            setProp(this.objid,NUM_PROBS_SINCE_LAST_INTERVENTION,n);
-        }
-
-        int getNumProblemsSinceLastIntervention () {
-            return this.numProblemsSinceLastIntervention;
-        }
-
-        private long getTimeOfLastIntervention() {
-            return timeOfLastIntervention;
-        }
-
-        private void setTimeOfLastIntervention(long timeOfLastIntervention) throws SQLException {
-            this.timeOfLastIntervention = timeOfLastIntervention;
-            setProp(this.objid,TIME_OF_LAST_INTERVENTION,timeOfLastIntervention);
         }
 
         private int getLastInterventionIndex() {

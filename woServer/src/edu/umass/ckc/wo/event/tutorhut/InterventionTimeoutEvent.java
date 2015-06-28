@@ -11,14 +11,14 @@ import ckc.servlet.servbase.ServletParams;
  * should continue or be removed in favor of something else.
  */
 public class InterventionTimeoutEvent extends IntraProblemEvent {
-    private long timeSinceStart;
+    private long timeWaiting;
 
     public InterventionTimeoutEvent(ServletParams p) throws Exception {
         super(p);
-        this.timeSinceStart = p.getLong("timeSinceStart",0);
+        this.timeWaiting = p.getLong("timeWaiting",0);
     }
 
-    public long getTimeSinceStart() {
-        return timeSinceStart;
+    public long getTimeWaiting() {
+        return timeWaiting;
     }
 }

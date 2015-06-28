@@ -284,6 +284,15 @@ function myprogress(globals) {
     document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId;
 }
 
+// A newer version of the above. Arg has been removed so this function can easily be passed as an argument to other functions (the interventionDialog buttons
+// click handlers)
+function myprogress() {
+    debugAlert("in myprogress");
+    globals.lastProbType = globals.probType;
+    globals.lastProbId = globals.probId;
+    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId;
+}
+
 
 ///////////////////////////////////////////////////////////////////////
 ////  Buttons on left menu (read prob, hint, replay hint, solve prob, show ex, show vid, formulas, glossary
@@ -523,6 +532,21 @@ function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
     showEffortInfo(activity.effort);
 }
 
+// When a TimeoutIntervention gets a result from the server, this processes it.
+// It can either be an intervention, a problem, or an indication to keep running the current TimeoutIntervention
+//   6/15 DM - Not doing anything with this yet.  Melissa will need to complete this.
+function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequest) {
+    var activity = JSON.parse(responseText);
+    var activityType = activity.activityType;
+    if (activityType == INTERVENTION)
+        processNextProblemIntervention(activity);
+    else if (activityType == FLASH_PROB_TYPE || activityType == HTML_PROB_TYPE)
+        processNextProblemResult(responseText,textStatus,XMLHttpRequest);
+    // it must be that the server wants the TimeoutIntervention to keep going.  So we do nothing.
+    else
+        ;
+}
+
 function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     debugAlert("Server returns " + responseText);
     // empty out the flashContainer div of any swfobjects and clear the iframe of any problems
@@ -702,13 +726,6 @@ function showLearningCompanion (json) {
 }
 
 
-function hideNonDefaultInterventionDialogButtons () {
-    $("#ok_button").show();
-    $("#no_thanks_button").hide();
-    $("#see_progress_button").hide();
-
-}
-
 function showMPP () {
     $("#mppButton").show();
 }
@@ -844,19 +861,19 @@ function clickHandling () {
         height:500,
         buttons: [
             {
-                id: "see_progress_button",
-                text: "See Progress",
-                click: function () { myprogress(globals)  ;}
+                id: "yesButton",
+                text: "Yes",
+                click: interventionDialogYesClick
             },
             {
-                id: "no_thanks_button",
-                text: "No thanks",
-                click: function() { interventionDialogClose() ;}
+                id: "noButton",
+                text: "No",
+                click: interventionDialogNoClick
             },
             {
                 id: "ok_button",
                 text: "OK",
-                click: function() { interventionDialogClose() ;}
+                click: interventionDialogOKClick
             }
         ]
     });

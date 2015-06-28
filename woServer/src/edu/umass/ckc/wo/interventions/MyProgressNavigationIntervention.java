@@ -7,23 +7,21 @@ package edu.umass.ckc.wo.interventions;
  * Time: 11:41 AM
  * To change this template use File | Settings | File Templates.
  */
-public class MyProgressNavigationIntervention extends InformationIntervention implements NextProblemIntervention {
+public class MyProgressNavigationIntervention extends ChangeGUIIntervention implements NextProblemIntervention {
+    private boolean buildProb;
+
+    public MyProgressNavigationIntervention(boolean isNotify, String when, String notifyHTML, boolean buildProblem, String component, String action) {
+        super(when,notifyHTML,isNotify,component,action);
+    }
+
     public String getType () {
         return "MyProgressNavigation";
     }
 
 
-    public String getDialogHTML () {
-        String str = "<div><p>Let's see how much progress we are making!<br>";
-
-        str+="</div>";
-        return str;
-    }
-
-
     @Override
     public boolean isBuildProblem() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.buildProb;
     }
 }
 

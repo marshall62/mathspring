@@ -61,6 +61,8 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
     }
 
     @Override
+    // Demo Problems are returned as Problem objects to the client.  This means that it won't send back any events when the
+    // demo problem is done.
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
 
         if (!smgr.getStudentState().isExampleShown()) {

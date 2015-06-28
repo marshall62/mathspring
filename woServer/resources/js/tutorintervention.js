@@ -11,9 +11,13 @@ function processNextProblemIntervention(activityJSON) {
     checkIfInputIntervention(activityJSON);
     var resource = activityJSON.resource;
     var pid = activityJSON.id;
+    var changeGUIIntervention = activityJSON.changeGUI==true;
+
     if (interventionType === "TopicSwitch") {
         processTopicSwitchIntervention(activityJSON.html)
     }
+    else if (changeGUIIntervention)
+        processChangeGUIIntervention(activityJSON);
     else if (interventionType === "TopicIntro")
         processTopicIntroIntervention(activityJSON);
     else if (interventionType === "ExternalActivity") {
@@ -78,8 +82,12 @@ function showTopicIntro (resource, topic) {
 function processAttemptIntervention (interv) {
     if (interv != null) {
         var type = interv.interventionType;
+        var changeGUIIntervention = interv.changeGUI==true;
+
         checkIfInputIntervention(interv);
-        if (type === 'HighlightHintButton')
+        if (changeGUIIntervention)
+            processChangeGUIIntervention(interv);
+        else if (type === 'HighlightHintButton')
             highlightHintButton();
         else if (type === 'RapidAttemptIntervention')
             processRapidAttemptIntervention(interv.html);
@@ -109,11 +117,27 @@ function checkIfInputIntervention (interv) {
     return globals.isInputIntervention;
 }
 
+//  The intervention dialog can be opened with either an OK button or a Yes-No buttons.  When those buttons are clicked, one of the three buttons below is
+// called.
+// At the time the intervention dialog is opened (say with Yes-No buttons), two function names are also provided - one for handling yes, one for no.
+// These function names are stored inside click attribute of the button part of the dialog
+
+function interventionDialogYesClick () {
+    myprogress(globals)  ;
+}
+
+function interventionDialogNoClick () {
+    interventionDialogClose();
+}
+
+function interventionDialogOKClick () {
+    interventionDialogClose();
+}
+
 
 
 
 function interventionDialogClose () {
-
     if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && !globals.isInputIntervention)
         servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
     else if (globals.interventionType === ATTEMPT_INTERVENTION && !globals.isInputIntervention)
@@ -136,13 +160,47 @@ function interventionDialogClose () {
     $("#"+INTERVENTION_DIALOG).dialog("close");
 }
 
-function interventionDialogOpen (title, html, type) {
-    hideNonDefaultInterventionDialogButtons();
+// Presumably this is being used as a message that stays up until a timeout delay and then the timeoutFunction gets called.
+function interventionDialogOpenNoButtons (title, html, type, delay, timeoutFunction) {
+    $("#ok_button").hide();
+    $("#noButton").hide();
+    $("#yesButton").hide();
+    openInterventionDialog(title,html,type);
+    setTimeout(timeoutFunction, delay)
+}
+
+function interventionDialogOpenAsConfirm (title, html, type, confirmFunction) {
+    $("#ok_button").show();
+    $("#noButton").hide();
+    $("#yesButton").hide();
+    setInterventionDialogButtonHandlerFunction("#ok_button",confirmFunction) ;
+    openInterventionDialog(title,html,type);
+}
+
+function interventionDialogOpenAsYesNo (title, html, type, yesFunction, noFunction) {
+    $("#ok_button").hide();
+    $("#noButton").show();
+    $("#yesButton").show();
+    setInterventionDialogButtonHandlerFunction("#noButton",noFunction);
+    setInterventionDialogButtonHandlerFunction("#yesButton",yesFunction);
+    openInterventionDialog(title,html,type);
+}
+
+function setInterventionDialogButtonHandlerFunction (buttonId, buttonHandlerFunction)  {
+    // get the button by its id  and replace its click attribute with the given function
+   var button = $(buttonId)
+   button.unbind("click");  // get rid of previous handlers attached to the button
+   button.click(buttonHandlerFunction);
+}
+
+function openInterventionDialog (title, html, type) {
     globals.interventionType = type;
     $("#"+INTERVENTION_DIALOG).attr("title", title);
     $("#"+INTERVENTION_DIALOG_CONTENT).html(html);
     $("#"+INTERVENTION_DIALOG).dialog("open");
 }
+
+
 
 function sendInterventionDialogInputResponse (event, fn) {
     var formInputs = $("#"+INPUT_RESPONSE_FORM).serialize() ;

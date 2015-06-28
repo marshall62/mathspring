@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 4:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TopicSwitchIntervention extends InformationIntervention implements NextProblemIntervention {
+public class TopicSwitchIntervention extends InputResponseIntervention implements NextProblemIntervention {
     protected String reasons;
     private int solved;
     private int seen;

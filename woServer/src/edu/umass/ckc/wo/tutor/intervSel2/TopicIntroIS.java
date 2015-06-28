@@ -60,7 +60,10 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    // This makes sure the topic intro hasn't been seen
+    // This makes sure the topic intro hasn't been seen   .
+    // The TopicIntro is an InputResponseIntervention.   It doesn't play in a dialog that allows us to get the input normally.
+    // Instead we have special-case code on the New-Problem button that checks to see if its a TopicIntro.  If it is, it sends an
+    // input response event which then comes bach to this IS and is ignored so that we move on to the next thing.
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception {
         TopicIntro intro=null;
         // Note additional conditions are checked and set in the TopicModel's TopicSelector class which knows

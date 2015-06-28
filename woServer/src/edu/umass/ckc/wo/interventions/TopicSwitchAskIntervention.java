@@ -11,7 +11,8 @@ import java.util.List;
  * User: marshall
  * Date: 11/7/13
  * Time: 4:00 PM
- * To change this template use File | Settings | File Templates.
+ * This intervention informs the user that they are about to switch topics.   It no longer is set to ask them if they
+ * want to because it is difficult to show problems in a topic that has just been found to be exhausted.
  */
 public class TopicSwitchAskIntervention extends InputResponseIntervention implements NextProblemIntervention {
 

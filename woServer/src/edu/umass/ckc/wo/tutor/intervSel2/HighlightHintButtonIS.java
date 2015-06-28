@@ -34,7 +34,7 @@ public class HighlightHintButtonIS extends AttemptInterventionSelector {
         if (threshold!=null)
             numMistakesAllowedBeforeHighlight= Integer.parseInt(threshold);
         if (!isSolved && st.getNumMistakesOnCurProblem()==numMistakesAllowedBeforeHighlight && st.getNumHintsGivenOnCurProblem()==0)
-            return new HighlightHintButtonIntervention();
+            return new HighlightHintButtonIntervention(null,null,false,"Hint","highlight");
         else return null;
     }
 

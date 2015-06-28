@@ -102,7 +102,9 @@
             answerChoice: null  ,
             selectedButton: null ,
             answersChosenSoFar: [] ,
-            sym: null
+            sym: null,
+            component: null,
+            componentAction: null
         }
 
 

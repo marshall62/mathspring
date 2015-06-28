@@ -9,23 +9,24 @@ import net.sf.json.JSONObject;
  * Time: 1:53 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HighlightHintButtonIntervention extends SimpleBaseIntervention implements AttemptIntervention {
+public class HighlightHintButtonIntervention extends ChangeGUIIntervention implements AttemptIntervention {
 
 
-    @Override
-    public String logEventName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public HighlightHintButtonIntervention(String when, String dialogHTML, boolean notify, String component, String action) {
+        super(when, dialogHTML, notify, component, action);
     }
+
+    public String getType () {
+        return "HighlightHintButton";
+    }
+
 
     @Override
     public boolean isShowGrade() {
         return true;     // note that Flash problems grade themselves, so this will only work for HTML problems.
     }
 
-    public JSONObject buildJSON(JSONObject jo) {
-        jo.element("interventionType","HighlightHintButton");
-        return jo;
-    }
+
 
 
 }

@@ -59,11 +59,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
 
             </interventionSelector>
 
-            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationAskIS">
+            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationForceIS">
                 <config>
-                    <!--  This IS will tell the student they are going to the MPP on certain conditions being true-->
-
-                    <dialogType ask="false"/>
                     <minIntervalBetweenMPPQueriesBasedOnAffect>10</minIntervalBetweenMPPQueriesBasedOnAffect>
                     <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
                     <!-- If confidence is <= 2 show the MPP-->
@@ -71,8 +68,11 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     <intervalCriteria type="affect" emotion="Excitement" upperBound="3"/>
                     <!-- If confidence is <= 2 show the MPP-->
                     <intervalCriteria type="affect" emotion="Interested" upperBound="3"/>
+                    <notifyDialog when="before"><![CDATA[<p>Let's see how much progress we are making!<br>]]></notifyDialog>
+                    <component action="show">MPP</component>
                 </config>
             </interventionSelector>
+
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
                     <threshold>1</threshold>
@@ -138,11 +138,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
 
             </interventionSelector>
 
-            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationAskIS">
+            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationForceIS">
                 <config>
-                    <!--  This IS will tell the student they are going to the MPP on certain conditions being true-->
-
-                    <dialogType ask="false"/>
                     <minIntervalBetweenMPPQueriesBasedOnAffect>10</minIntervalBetweenMPPQueriesBasedOnAffect>
                     <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
                     <!-- If confidence is <= 2 show the MPP-->
@@ -150,8 +147,11 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                     <intervalCriteria type="affect" emotion="Excitement" upperBound="3"/>
                     <!-- If confidence is <= 2 show the MPP-->
                     <intervalCriteria type="affect" emotion="Interested" upperBound="3"/>
+                    <notifyDialog when="before"><![CDATA[<p>Let's see how much progress we are making!<br>]]></notifyDialog>
+                    <component action="show">MPP</component>
                 </config>
             </interventionSelector>
+
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
                     <threshold>1</threshold>
@@ -691,18 +691,18 @@ JaneForceSPP
                 </config>
 
             </interventionSelector>
-
-            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationAskIS">
+            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationForceIS">
                 <config>
-                    <!--  This IS will tell the student they are going to the MPP on certain conditions being true-->
-                    <dialogType ask="false"/>
-                    <minIntervalBetweenMPPQueriesBasedOnAffect>5</minIntervalBetweenMPPQueriesBasedOnAffect>
+                    <minIntervalBetweenMPPQueriesBasedOnAffect>10</minIntervalBetweenMPPQueriesBasedOnAffect>
                     <!-- If excitement is low-neutral (<= 3) ask to show the MPP-->
                     <intervalCriteria type="affect" emotion="Excitement" upperBound="3"/>
                     <!-- If interest is (low-neutral) <= 3 ask to show the MPP-->
                     <intervalCriteria type="affect" emotion="Interest" upperBound="3"/>
+                    <notifyDialog when="before"><![CDATA[<p>Let's see how much progress we are making!<br>]]></notifyDialog>
+                    <component action="show">MPP</component>
                 </config>
             </interventionSelector>
+
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
                     <threshold>1</threshold>
@@ -766,17 +766,18 @@ JaneForceSPP
 
             </interventionSelector>
 
-            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationAskIS">
+            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationForceIS">
                 <config>
-                    <!--  This IS will tell the student they are going to the MPP on certain conditions being true-->
-                    <dialogType ask="false"/>
-                    <minIntervalBetweenMPPQueriesBasedOnAffect>5</minIntervalBetweenMPPQueriesBasedOnAffect>
+                    <minIntervalBetweenMPPQueriesBasedOnAffect>10</minIntervalBetweenMPPQueriesBasedOnAffect>
                     <!-- If excitement is low-neutral (<= 3) ask to show the MPP-->
                     <intervalCriteria type="affect" emotion="Excitement" upperBound="3"/>
                     <!-- If interest is (low-neutral) <= 3 ask to show the MPP-->
                     <intervalCriteria type="affect" emotion="Interest" upperBound="3"/>
+                    <notifyDialog when="before"><![CDATA[<p>Let's see how much progress we are making!<br>]]></notifyDialog>
+                    <component action="show">MPP</component>
                 </config>
             </interventionSelector>
+
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
                     <threshold>1</threshold>

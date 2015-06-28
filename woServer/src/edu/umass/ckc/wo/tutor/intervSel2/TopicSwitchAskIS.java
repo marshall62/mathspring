@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import ckc.servlet.servbase.ServletParams;
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
@@ -35,16 +36,17 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws Exception {
         this.pedagogicalModel=pedagogicalModel;
         configure(this.getConfigXML());
     }
 
-    private void configure (Element configElt) {
+    private void configure (Element configElt) throws Exception {
         if (configElt != null) {
             Element ask = configElt.getChild("ask");
             this.ask = Boolean.parseBoolean(ask.getTextTrim());
-
+            if (this.ask)
+                throw new UserException("TopicSwitchAsk cannot function with ask=true because we can't stay in an exhausted topic if student does want to switch");
         }
     }
 
@@ -117,8 +119,10 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 
     @Override
     public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
-        TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
-        tm.clearEndOfTopicInfo();
+//        TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
+//        tm.clearEndOfTopicInfo();
+        if (true)
+            throw new UserException("Should not be getting a continue event in topic switch");
         return null;
     }
 
@@ -133,7 +137,8 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
      */
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
-        String wantSwitch = params.getString(TopicSwitchAskIntervention.WANT_TO_SWITCH);
+        // default is to switch
+        String wantSwitch = params.getString(TopicSwitchAskIntervention.WANT_TO_SWITCH,TopicSwitchAskIntervention.SWITCH);
         // if they want to stay in the topic for either reason,  then we reset these counters/timers so they
         // can be in until content failure or mastery
         if (wantSwitch != null && wantSwitch.equals(TopicSwitchAskIntervention.STAY)) {
@@ -145,8 +150,11 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
             return null;  // no interventions - TODO we were in EndOfTopic and need to do something to return
         }
         else  {
-            logger.debug("Topic Switch: Student elects to SWITCH to new topic.");
-            return new BeginningOfTopicEvent(e,smgr.getStudentState().getCurTopic());
+//            logger.debug("Topic Switch: Student elects to SWITCH to new topic.");
+//            return new BeginningOfTopicEvent(e,smgr.getStudentState().getCurTopic());
+            TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
+            tm.clearEndOfTopicInfo();
+            return null;
         }
 
 

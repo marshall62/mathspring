@@ -130,7 +130,8 @@ public class MyProgressNavigationAskIS extends NextProblemInterventionSelector {
                         state.setTimeOfLastInterventionForEmotions(now);
                         if (this.isAskDialog)
                             intervention = new MyProgressNavigationAskIntervention();
-                        else intervention =new MyProgressNavigationIntervention();
+                        else intervention =new MyProgressNavigationIntervention(true, MyProgressNavigationIntervention.BEFORE,
+                                "<p>Let's see how much progress we are making!<br>", false, null, null);
                         break;
                     }
                 }
