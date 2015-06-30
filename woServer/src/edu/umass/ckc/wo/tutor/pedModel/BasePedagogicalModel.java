@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.assistments.AssistmentsHandler;
 import edu.umass.ckc.wo.assistments.AssistmentsUser;
 import edu.umass.ckc.wo.beans.Topic;
@@ -17,6 +18,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
@@ -1028,21 +1030,29 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     @Override
     public Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
-        Response r;
-        Intervention intervention = attemptInterventionSelector.processInputResponseAttemptInterventionEvent(e);
-        e.setUserInput(attemptInterventionSelector.getUserInputXML());
-        if (intervention != null && intervention instanceof SelectHintSpecs) {
-            r= doSelectHint((SelectHintSpecs) intervention);
-        }
-        else if (intervention != null) {
-            r= new InterventionResponse(intervention);
-        }
-        else {
-            // we are done with post-attempt interventions.  Its now time to grade the problem.
-            if (smgr.getStudentState().isProblemSolved())
-                r= new Response("&grade=true&isCorrect=true");
-            else
-                r= new Response("&grade=true&isCorrect=false");
+        Response r=null;
+        String lastInterventionClass = smgr.getStudentState().getLastIntervention();
+        InterventionSelectorSpec spec= interventionGroup.getInterventionSelectorSpec(lastInterventionClass);
+        if (spec != null) {
+            AttemptInterventionSelector intSel = (AttemptInterventionSelector) spec.buildIS(smgr);
+            intSel.init(smgr,this);
+            Intervention intervention = intSel.processInputResponseAttemptInterventionEvent(e);
+            if (true)
+                throw new UserException("This isn't finished yet.  Not sure what to do after sending to the IS");
+            e.setUserInput(intSel.getUserInputXML());
+            if (intervention != null && intervention instanceof SelectHintSpecs) {
+                r= doSelectHint((SelectHintSpecs) intervention);
+            }
+            else if (intervention != null) {
+                r= new InterventionResponse(intervention);
+            }
+            else {
+                // we are done with post-attempt interventions.  Its now time to grade the problem.
+                if (smgr.getStudentState().isProblemSolved())
+                    r= new Response("&grade=true&isCorrect=true");
+                else
+                    r= new Response("&grade=true&isCorrect=false");
+            }
         }
         new TutorLogger(smgr).logInputResponseAttemptIntervention( e, r);
         if (learningCompanion != null )

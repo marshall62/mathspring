@@ -121,7 +121,7 @@ function processCollaborationOptionIntervention(html) {
 
 function processRapidAttemptIntervention (html) {
 //    interventionDialogOpen("Answering Rapidly", html, ATTEMPT_INTERVENTION );
-    interventionDialogOpenAsConfirm("Answering Rapidly", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
+    interventionDialogOpenAsConfirm("Answering Rapidly", html, ATTEMPT_INTERVENTION,interventionDialogOKClick );
 
 }
 

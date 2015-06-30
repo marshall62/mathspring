@@ -161,7 +161,7 @@ function interventionDialogClose () {
 }
 
 // Presumably this is being used as a message that stays up until a timeout delay and then the timeoutFunction gets called.
-function interventionDialogOpenNoButtons (title, html, type, delay, timeoutFunction) {
+function interventionDialogOpenNoButtons (title, html, type, timeoutFunction,delay) {
     $("#ok_button").hide();
     $("#noButton").hide();
     $("#yesButton").hide();

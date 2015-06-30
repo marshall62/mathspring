@@ -28,9 +28,7 @@ public abstract class AttemptInterventionSelector extends InterventionSelector  
         super(smgr);
     }
 
-    public void setSubSelectors (List<AttemptInterventionSelector> subSelectors) {
-        this.subSelectors = subSelectors;
-    }
+
     /**
      * Subclasses that select intervention at the time of attempt event must override this.
      *
