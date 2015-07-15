@@ -104,7 +104,7 @@ function processExternalActivityIntervention(pid, resource, instructions) {
     globals.lastProbType = EXTERNAL_PROB_TYPE;
     globals.instructions= instructions;
     showInstructionsDialog(instructions);
-    window.open(resource,'_blank');
+    window.open(resource,'External Activity', "height=600,width=800");
 //    $("#" + PROBLEM_WINDOW).attr("src", resource);
 }
 
