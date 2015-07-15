@@ -143,7 +143,7 @@ public class AlterClassHandler {
         else if (e instanceof AdminAlterClassSubmitInfoEvent) {
             AdminAlterClassSubmitInfoEvent e2= (AdminAlterClassSubmitInfoEvent) e;
             DbClass.updateClass(conn,e2.getClassId(),e2.getClassName(),e2.getSchool(),e2.getSchoolYear(),
-                    e2.getTown(),e2.getSection(),e2.getPropGroupId());
+                    e2.getTown(),e2.getSection(), e2.getGrade());
             ClassInfo classInfo = DbClass.getClass(conn,((AdminAlterClassSubmitInfoEvent) e).getClassId());
             List<Pedagogy> pedsInUse = DbClassPedagogies.getClassPedagogies(conn, ((AdminAlterClassSubmitInfoEvent) e).getClassId());
             PretestPool pool = DbPrePost.getPretestPool(conn,e2.getClassId());
@@ -175,14 +175,29 @@ public class AlterClassHandler {
             ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
             Classes bean1 = new Classes(classes1);
             ClassInfo classInfo = DbClass.getClass(conn,classId);
-            PedagogyBean[] pedagogies = DbClassPedagogies.getClassPedagogyBeans(conn,classId);
-            req.setAttribute("action", "AdminAlterClassPedagogies");
+            req.setAttribute("pedagogies", DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn,classId));
             req.setAttribute("classId", classId);
-             req.setAttribute("pedagogies", pedagogies);
             req.setAttribute("teacherId",((AdminAlterClassPedagogiesEvent) e).getTeacherId());
             req.setAttribute("classInfo", classInfo);
             req.setAttribute("bean", bean1);
+            req.setAttribute("action","AdminAlterClassAdvancedPedagogySelection");
+            req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
+        }
+        else if (e instanceof AdminAlterClassAdvancedPedagogySelectionEvent )    {
+            int classId = e.getClassId();
+
+            req.setAttribute("formSubmissionEvent","AdminAlterClassSubmitSelectedPedagogies");
+            req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,classId));
+            req.setAttribute("classId",classId);
+            req.setAttribute("teacherId",e.getTeacherId());
+            ClassInfo info = DbClass.getClass(conn,classId);
+            ClassInfo[] classes = DbClass.getClasses(conn,info.getTeachid());
+            Classes bean = new Classes(classes);
+            req.setAttribute("bean", bean);
+            req.setAttribute("classInfo", info);
+
             req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
+
         }
         // Alter Class's pretest pool Event coming in from either classInfo.jsp or editClass.jsp
         // Produce a new list of pretest pools to choose from
@@ -224,64 +239,16 @@ public class AlterClassHandler {
                     req, resp, EDIT_CLASS_JSP, e2.isGivePretest());
         }
         // Pedagogies submitted.  Error check the submission and regenerate page if errors.  Otherwise
-        // overwrite the class's pedagogies with those submitted and then generate the next page
-        // as editClass.jsp (which does not need its form submission event set - hence the null)
+        // overwrite the class's pedagogies with those submitted and then generate the page again to show the edits
         else if (e instanceof AdminAlterClassSubmitSelectedPedagogiesEvent) {
             AdminAlterClassSubmitSelectedPedagogiesEvent e2 = (AdminAlterClassSubmitSelectedPedagogiesEvent) e;
             if (!ClassAdminHelper.errorCheckSelectedPedagogySubmission(e2.getClassId(),e2.getPedagogyIds(),req,resp,
-                    "AdminAlterClassSubmitSelectedPedagogies", e2.getTeacherId(), conn)) {
+                    "AdminAlterClassSubmitSelectedPedagogies", e2.getTeacherId(), conn, e2.isSimplePage())) {
                 ClassAdminHelper.saveSelectedPedagogies(conn,e2.getClassId(),e2.getPedagogyIds());
-                generateValidPedagogySubmissionNextPage(conn,e2.getClassId(),req,resp);
+                generateValidPedagogySubmissionNextPage(conn,e2.getClassId(),req,resp, e2.isSimplePage());
             }
         }
-        else if (e instanceof AdminAlterClassActivateHutsEvent) {
-            ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
-            Classes bean1 = new Classes(classes1);
-            ClassInfo classInfo = DbClass.getClass(conn,((AdminAlterClassActivateHutsEvent) e).getClassId());
 
-            req.setAttribute("action","AdminAlterClassActivateHuts");
-            req.setAttribute("formSubmissionEvent","AdminAlterClassSubmitActivatedHuts");
-            req.setAttribute("teacherId",((AdminAlterClassActivateHutsEvent) e).getTeacherId());
-            ClassConfig cc = DbClass.getClassConfig(conn,((AdminAlterClassActivateHutsEvent) e).getClassId());
-            req.setAttribute("activeHuts",cc);
-            req.setAttribute("classId",((AdminAlterClassActivateHutsEvent) e).getClassId()); 
-            req.setAttribute("classInfo", classInfo);
-            req.setAttribute("bean", bean1);
-            
-            req.getRequestDispatcher(CreateClassHandler.ACTIVATE_HUTS_JSP).forward(req,resp);
-        }
-        else if (e instanceof AdminAlterClassSubmitActivatedHutsEvent) {
-            AdminAlterClassSubmitActivatedHutsEvent ee = (AdminAlterClassSubmitActivatedHutsEvent) e;
-            req.setAttribute("formSubmissionEvent","AdminAlterClassSubmitActivatedHuts");
-            ClassConfig cc;
-            if (ee.isRestoreDefaults()) {
-                cc=ClassConfig.getDefaultConfig();
-                DbClass.setClassConfig(conn,ee.getClassId(),cc);   
-            }
-            else {
-                boolean pre = ee.isPretest();
-                boolean tutoring = ee.isTutor();
-                boolean post = ee.isPosttest();
-                boolean adv = ee.isAdv();
-                boolean mfr = ee.isMfr();
-                boolean mr = ee.isMr();
-                boolean defRules = ee.isRestoreDefaults();
-                // the final 0 is to mark the class config as not following default hut activation rules
-                cc = new ClassConfig(pre?1:0,post?1:0,adv?1:0,mfr?1:0,mr?1:0,tutoring?1:0, defRules, false);
-                DbClass.setClassConfig(conn,ee.getClassId(),cc);
-            }
-            ClassInfo classInfo = DbClass.getClass(conn,ee.getClassId());
-            ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
-            Classes bean1 = new Classes(classes1);
-            req.setAttribute("action","AdminAlterClassSubmitActivatedHuts");
-            req.setAttribute("classId",ee.getClassId());
-            req.setAttribute("teacherId",ee.getTeacherId());
-            req.setAttribute("classInfo", classInfo);
-            req.setAttribute("bean", bean1);
-
-            req.setAttribute("activeHuts",cc);
-            req.getRequestDispatcher(CreateClassHandler.ACTIVATE_HUTS_JSP).forward(req,resp);
-        }
         else if (e instanceof AdminOtherClassConfigEvent) {
             AdminOtherClassConfigEvent e2 = (AdminOtherClassConfigEvent) e;
             ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
@@ -302,8 +269,8 @@ public class AlterClassHandler {
             AdminUpdateClassIdEvent e2 = (AdminUpdateClassIdEvent) e;
             int newteachId = e2.getTeacherId();
             int classId1 = e2.getClassId();
-            System.out.println("***********  new classId: "+classId1);
-            System.out.println("***********  teacherId "+ newteachId);
+            System.out.println("***********  new classId: " + classId1);
+            System.out.println("***********  teacherId " + newteachId);
             ClassInfo classInfo = DbClass.getClass(conn, classId1);
             req.setAttribute("action","AdminUpdateClassId");
             req.setAttribute("bean", bean1);
@@ -320,9 +287,9 @@ public class AlterClassHandler {
             DbClass.updateClassEmailSettings(conn,classId,e2.studentEmailInterval,e2.studentReportPeriod,e2.teacherEmailInterval,e2.teacherReportPeriod);
             ClassInfo classInfo = DbClass.getClass(conn,classId);
             List<Pedagogy> pedsInUse = DbClassPedagogies.getClassPedagogies(conn, classId);
-            PretestPool pool = DbPrePost.getPretestPool(conn,classId);
-            req.setAttribute("action","AdminAlterClassOtherConfigSubmitInfo");
-            req.setAttribute("pedagogies",pedsInUse);
+            PretestPool pool = DbPrePost.getPretestPool(conn, classId);
+            req.setAttribute("action", "AdminAlterClassOtherConfigSubmitInfo");
+            req.setAttribute("pedagogies", pedsInUse);
             req.setAttribute("pool",pool);
             req.setAttribute("classInfo",classInfo);
             ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
@@ -374,7 +341,7 @@ public class AlterClassHandler {
                     else errMessage =  "Class already has students.   Cannot generate new ones.";
                     req.setAttribute("action","AdminAlterClassCreateStudents");
                     req.setAttribute("message",errMessage);
-                    req.setAttribute("classInfo",classInfo);
+                    req.setAttribute("classInfo", classInfo);
                     req.setAttribute("classId", classId);
                     req.setAttribute("teacherId",teacherId);
                     req.setAttribute("bean", bean1);
@@ -392,22 +359,34 @@ public class AlterClassHandler {
      * This is called after the pedagogy selections have been validated and the selected pedagogies have been
      * saved as part of this class.   This just generates the next JSP page which is the editClass.jsp
      */
- public void generateValidPedagogySubmissionNextPage (Connection conn, int classId,
-                                                           HttpServletRequest req,
-                                                           HttpServletResponse resp
-                                                           ) throws SQLException, IOException, ServletException, DeveloperException {
-     ClassInfo info = DbClass.getClass(conn,classId);
+ public void generateValidPedagogySubmissionNextPage(Connection conn, int classId,
+                                                     HttpServletRequest req,
+                                                     HttpServletResponse resp,
+                                                     boolean isSimpleConfig) throws SQLException, IOException, ServletException, DeveloperException {
+
+
+
+     req.setAttribute("formSubmissionEvent","AdminAlterClassSubmitSelectedPedagogies");
+
      ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
      Classes bean1 = new Classes(classes1);
-     req.setAttribute("action", "AdminUpdateClassId");
-     req.setAttribute("classInfo",info);
-     req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogies(conn, classId));
-     req.setAttribute("classId",classId);
-     PretestPool pool = DbPrePost.getPretestPool(conn,classId);
-     req.setAttribute("pool",pool);
+     ClassInfo classInfo = DbClass.getClass(conn,classId);
+     if (isSimpleConfig)
+        req.setAttribute("pedagogies", DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn,classId));
+     else
+         req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,classId));
+     req.setAttribute("action", "AdminAlterClassPedagogies");
+     req.setAttribute("classId", classId);
+     req.setAttribute("teacherId",teacherId);
+     req.setAttribute("classInfo", classInfo);
      req.setAttribute("bean", bean1);
-     req.setAttribute("teacherId", teacherId);
-     req.getRequestDispatcher(MAIN_WAYANG_JSP).forward(req,resp);
+     req.setAttribute("message", "Your changes have been accepted.");
+     req.setAttribute("action","AdminAdvancedPedagogySelection");
+     if (isSimpleConfig)
+        req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
+     else
+         req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
+
     }
 
 

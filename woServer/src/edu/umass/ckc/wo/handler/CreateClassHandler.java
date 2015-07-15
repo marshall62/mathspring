@@ -38,6 +38,7 @@ public class CreateClassHandler  {
     public static final String JSP = "/teacherTools/createClass.jsp";
     public static final String NOCLASS_JSP="/teacherTools/noClassCreateClass.jsp";
     public static final String SELECT_PEDAGOGIES_JSP = "/teacherTools/selectPedagogies.jsp";
+    public static final String SIMPLE_SELECT_PEDAGOGIES_JSP = "/teacherTools/simplePedagogySelect.jsp";
     public static final String SELECT_PRETEST_POOL_JSP = "/teacherTools/selectPretest.jsp";
     public static final String ACTIVATE_HUTS_JSP = "/teacherTools/activatehuts.jsp";
     public static final String CLASS_INFO_JSP = "/teacherTools/classInfo.jsp";
@@ -73,11 +74,14 @@ public class CreateClassHandler  {
         // Creates the class in the db.
         //  Generates the next page as selectPedagogies.jsp
         else if (e instanceof AdminSubmitClassFormEvent) // class created/  Now show select pedagogies page
-
-
-
-
             return processClass(conn, (AdminSubmitClassFormEvent) e, req, resp);
+
+        // The result of processClass (above) is a simple pedagogy selection page (simplePedagogySelect.jsp).  That page has a link
+        // that allows the user to ask for an "advanced selection" page which is a more detailed list of all pedagogies.
+        else if (e instanceof AdminAdvancedPedagogySelectionEvent)
+            return advancedPedagogySelectionPage(conn, (AdminAdvancedPedagogySelectionEvent) e, req,resp);
+
+
         // State 3: Process submitted form generated from the selectPedagogies.jsp page.   Check selections and regenerate
         // pedagogy selection page if there are errors.  If no errors errors, save selections and
         // Generate the next page as selectPretest.jsp (n.b. this JSP page requires that we set
@@ -89,7 +93,7 @@ public class CreateClassHandler  {
         else if (e instanceof AdminSubmitSelectedPedagogiesEvent) {
             AdminSubmitSelectedPedagogiesEvent e2 = (AdminSubmitSelectedPedagogiesEvent) e;
             if (!ClassAdminHelper.errorCheckSelectedPedagogySubmission(e2.getClassId(),e2.getPedagogyIds(),req,resp,
-                    "AdminSubmitSelectedPedagogies", e2.getTeacherId(), conn)) {
+                    "AdminSubmitSelectedPedagogies", e2.getTeacherId(), conn, true)) {
                 ClassAdminHelper.saveSelectedPedagogies(conn,e2.getClassId(),e2.getPedagogyIds());
 
                 ClassInfo info = DbClass.getClass(conn,((AdminSubmitSelectedPedagogiesEvent) e).getClassId());
@@ -161,6 +165,7 @@ public class CreateClassHandler  {
         String schoolYear = e.getSchoolYear();
         String town = e.getTown();
         String section = e.getSection();
+        String grade = e.getGrade();
         int newid;
         if (className.trim().equals("") || school.trim().equals("") || schoolYear.trim().equals("")
                 || town.trim().equals("")) {
@@ -182,7 +187,7 @@ public class CreateClassHandler  {
             // When a class is first created, we use the default prop group.
             // We'll allow it to be altered in the page that allows the user to edit the class fields.
             newid = DbClass.insertClass(conn,className, school, schoolYear, town, section,tid,
-                    defaultPropGroup, 0);
+                    defaultPropGroup, 0, grade);
             if (newid != -1) {
 
                 ClassInfo info = DbClass.getClass(conn,newid);
@@ -190,12 +195,14 @@ public class CreateClassHandler  {
                 Classes bean = new Classes(classes);
 
                 req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPedagogies");
-                req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,newid));
+                // TODO get only the pedagogies for a teacher (not the full list that an admin would want).
+                req.setAttribute("pedagogies", DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn, newid));
                 req.setAttribute("bean",bean);
                 req.setAttribute("classInfo",info);
                 req.setAttribute("classId", newid);
                 req.setAttribute("teacherId",e.getTeacherId());
-                req.getRequestDispatcher(SELECT_PEDAGOGIES_JSP).forward(req,resp);
+                req.setAttribute("action","AdminAdvancedPedagogySelection");
+                req.getRequestDispatcher(SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
                 return null;
             }
             else {
@@ -214,6 +221,7 @@ public class CreateClassHandler  {
         String schoolYear = e.getSchoolYear();
         String town = e.getTown();
         String section = e.getSection();
+        String grade = e.getGrade();
         int newid;
         if (className.trim().equals("") || school.trim().equals("") || schoolYear.trim().equals("")
                 || town.trim().equals("")) {
@@ -235,7 +243,7 @@ public class CreateClassHandler  {
             // When a class is first created, we use the default prop group.
             // We'll allow it to be altered in the page that allows the user to edit the class fields.
             newid = DbClass.insertClass(conn,className, school, schoolYear, town, section,tid,
-                    defaultPropGroup, 0);
+                    defaultPropGroup, 0, grade);
             if (newid != -1) {
                 req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPedagogies");
                 req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,newid));
@@ -286,8 +294,32 @@ public class CreateClassHandler  {
             req.setAttribute("selectedPool",-1); // on new class no pool is selected
             List<PretestPool> pools = DbPrePost.getAllPretestPools(conn);
             req.setAttribute("pools", pools);
-            req.getRequestDispatcher(SELECT_PRETEST_POOL_JSP).forward(req,resp);
+//            req.getRequestDispatcher(SELECT_PRETEST_POOL_JSP).forward(req,resp);
+
+            req.setAttribute("action", "AdminUpdateClassId");
+
+            req.getRequestDispatcher(MAINPAGE_JSP).forward(req,resp);
        }
+
+    private View advancedPedagogySelectionPage (Connection conn, AdminAdvancedPedagogySelectionEvent e, HttpServletRequest req,
+                                                HttpServletResponse resp) throws Exception {
+
+        int classId = e.getClassId();
+        ClassInfo info = DbClass.getClass(conn,classId);
+        ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
+        Classes bean = new Classes(classes);
+
+        req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPedagogies");
+        req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,classId));
+        req.setAttribute("bean",bean);
+        req.setAttribute("classInfo",info);
+        req.setAttribute("classId", classId);
+        req.setAttribute("teacherId",e.getTeacherId());
+
+        req.getRequestDispatcher(SELECT_PEDAGOGIES_JSP).forward(req,resp);
+        return null;
+
+    }
 
  
 

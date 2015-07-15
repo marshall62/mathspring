@@ -65,12 +65,14 @@ public class ClassAdminHelper {
      *  Checks the selected pedagogies to make sure that inputs are valid.   If something is
      * wrong, the next JSP page is created with the appropriate error message and true is returned.
      * If no error occurs, then false is returned.
+     *
      * @param classId
      * @param pedagogyIds
      * @param req
      * @param resp
      * @param submissionEventName
      * @param teacherId
+     * @param isSimpleConfig
      * @return  true if there is an error, false otherwise
      * @throws IOException
      * @throws ServletException
@@ -80,7 +82,7 @@ public class ClassAdminHelper {
                                                                List<String> pedagogyIds,
                                                                HttpServletRequest req,
                                                                HttpServletResponse resp,
-                                                               String submissionEventName, int teacherId, Connection conn) throws IOException, ServletException, SQLException {
+                                                               String submissionEventName, int teacherId, Connection conn, boolean isSimpleConfig) throws IOException, ServletException, SQLException {
         List<Pedagogy> selectedPedagogies = new ArrayList<Pedagogy>();
         // check to see if user selected Default pedagogy + some others - an error
         if (pedagogyIds.size() > 1 && defaultSelected(pedagogyIds)) {
@@ -119,6 +121,23 @@ public class ClassAdminHelper {
                 req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
                 return true;
             }
+        }
+        else if (pedagogyIds.size() == 0 && isSimpleConfig) {
+            // the URL to which the form is submitted is a parameter since this JSP is used to alter and create
+            ClassInfo info = DbClass.getClass(conn,classId);
+            ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
+            Classes bean1 = new Classes(classes1);
+            req.setAttribute("bean", bean1);
+            req.setAttribute("classInfo", info);
+            req.setAttribute("formSubmissionEvent",submissionEventName);
+            req.setAttribute("pedagogies", DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn,classId));
+            req.setAttribute("message","Pedagogies must be selected.  Restoring defaults");
+            req.setAttribute("classId",classId);
+            req.setAttribute("teacherId",teacherId);
+            req.setAttribute("action","AdminAlterClassAdvancedPedagogySelection");
+
+            req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
+            return true;
         }
          else if (pedagogyIds.size() == 0) {
             // the URL to which the form is submitted is a parameter since this JSP is used to alter and create

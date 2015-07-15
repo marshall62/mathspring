@@ -20,11 +20,12 @@ public class ClassInfo {
     private int studentEmailPeriodDays;
     private int studentEmailIntervalDays;
     private String flashClient;
+    private String grade;
 
     public ClassInfo(String school, int schoolYear, String name, String town, String section,
                      int classid, int teachid, String teacherName, int propGroupId, int pretestPoolId, String pretestPoolDescr,
                      int logType, int emailStatusInterval, int statusReportPeriodDays, int studentEmailIntervalDays,
-                     int studentReportPeriodDays) {
+                     int studentReportPeriodDays, String grade) {
         this.school = school;
         this.schoolYear = schoolYear;
         this.name = name;
@@ -41,6 +42,7 @@ public class ClassInfo {
         this.statusReportPeriodDays=statusReportPeriodDays;
         this.studentEmailIntervalDays=studentEmailIntervalDays;
         this.studentEmailPeriodDays =studentReportPeriodDays;
+        this.grade= grade;
 
     }
     
@@ -48,15 +50,15 @@ public class ClassInfo {
                      int classid, int teachid, String teacherName, int propGroupId, int logType, int pretestPoolId,
                      int emailStatusReportIntervalDays, int statusReportPeriodDays, int studentReportIntervalDays, int studentReportPeriodDays) {
         this(school,schoolYear,name,town,section,classid,teachid,teacherName,propGroupId, pretestPoolId, null,logType,
-                emailStatusReportIntervalDays, statusReportPeriodDays, studentReportIntervalDays, studentReportPeriodDays);
+                emailStatusReportIntervalDays, statusReportPeriodDays, studentReportIntervalDays, studentReportPeriodDays, "5");
     }
 
     public ClassInfo(String school, int schoolYear, String name, String town, String section,
                      int classid, int teachid, String teacherName, int propGroupId, int logType, int pretestPoolId,
                      int emailStatusReportIntervalDays, int statusReportPeriodDays, int studentReportIntervalDays,
-                     int studentReportPeriodDays, String flashClient) {
+                     int studentReportPeriodDays, String flashClient, String grade) {
         this(school,schoolYear,name,town,section,classid,teachid,teacherName,propGroupId, pretestPoolId, null,logType,
-                emailStatusReportIntervalDays, statusReportPeriodDays, studentReportIntervalDays, studentReportPeriodDays);
+                emailStatusReportIntervalDays, statusReportPeriodDays, studentReportIntervalDays, studentReportPeriodDays, grade);
         this.flashClient = flashClient;
     }
 
@@ -154,5 +156,13 @@ public class ClassInfo {
 
     public void setFlashClient(String flashClient) {
         this.flashClient = flashClient;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }

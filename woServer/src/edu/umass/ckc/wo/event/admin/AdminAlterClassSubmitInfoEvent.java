@@ -15,7 +15,9 @@ public class AdminAlterClassSubmitInfoEvent extends AdminClassEvent {
     private String schoolYear;
     private String className;
     private String section;
+    private String grade;
     public static final String PROP_GROUP_ID="propGroupId";
+    public static final String GRADE="grade";
     private static final String CLASS_NAME = "className";
     private static final String SCHOOL = "school";
     private static final String TOWN = "town";
@@ -30,7 +32,7 @@ public class AdminAlterClassSubmitInfoEvent extends AdminClassEvent {
         this.schoolYear = (p.getString(SCHOOL_YEAR));
         this.town = (p.getString(TOWN));
         this.section = p.getString(SECTION);
-        propGroupId = p.getInt(PROP_GROUP_ID);
+        grade = p.getString(GRADE);
     }
 
     public int getPropGroupId() {
@@ -57,5 +59,9 @@ public class AdminAlterClassSubmitInfoEvent extends AdminClassEvent {
 
     public String getSection() {
         return section;
+    }
+
+    public String getGrade() {
+        return grade;
     }
 }

@@ -21,7 +21,7 @@
     <div id="Layer1" align="center" style="width:400px; height:375px; z-index:1;">
         <p class="a2"><font color="#000000"><b><font face="Arial, Helvetica, sans-serif">Create
             a class</font></b></font></p>
-        <form name="form1" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSubmitClassForm">
+        <form name="form1" method="post" action="${pageContext.request.contextPath}/WoAdmin?action=AdminSubmitClassForm">
 
             <table width="334" border="0" height="98">
                 <tr>
@@ -31,6 +31,22 @@
                         <input type="text" name="className" size="30" value="">
                     </td>
                 </tr>
+                <tr>
+                    <td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">* Grade:</font></td>
+
+                    <td width="222">
+                        <select name="grade">
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="adult">adult</option>
+                        </select>
+                    </td>
+                </tr>
+
                 <tr>
                     <td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">* Town:</font></td>
 
