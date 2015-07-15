@@ -28,10 +28,10 @@ public class DbExternalActivity {
        PreparedStatement stmt=null;
        try {
            List<ExternalActivity> l = new ArrayList<ExternalActivity>();
-           String q = "select a.id,a.name,a.description,a.url,a.creator,a.lastModifier,a.ready,a.instructions,a.creationtime, d.diff_level " +
-                   "from externalactivity a, externalactivitytopic t, overallprobdifficulty d where a.id=t.xactid and d.problemId=a.id and t.topicId=? and a.ready=1 and " +
+           String q = "select a.id,a.name,a.description,a.url,a.creator,a.lastModifier,a.ready,a.instructions,a.creationtime " +
+                   "from externalactivity a, externalactivitytopic t where a.id=t.xactid and t.topicId=? and a.ready=1 and " +
                    "t.xactid not in (select problemid from eventlog where studid=? and " +
-                   "(action='BeginExternalActivity' or action='Formality_BeginProblem'))";
+                   "(action='BeginExternalActivity'))";
            stmt = conn.prepareStatement(q);
            stmt.setInt(1,topicId);
            stmt.setInt(2,studId);
@@ -46,7 +46,7 @@ public class DbExternalActivity {
                boolean isReady = rs.getBoolean(7);
                String instr = rs.getString(8);
                Timestamp ts = rs.getTimestamp(9);
-               double diff = rs.getDouble(10);
+               double diff = 0.5; // We don't care about External activity having a difficulty anymore.
                ExternalActivity a = new ExternalActivity(id,name,descr,url, instr, diff);
                l.add(a);
            }
