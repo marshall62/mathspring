@@ -21,7 +21,7 @@ function processNextProblemIntervention(activityJSON) {
     else if (interventionType === "TopicIntro")
         processTopicIntroIntervention(activityJSON);
     else if (interventionType === "ExternalActivity") {
-       processExternalActivityIntervention(pid, resource);
+       processExternalActivityIntervention(pid, resource,activityJSON.instructions);
     }
     else if (interventionType === "AskEmotionIntervention")
         processAskEmotionIntervention(activityJSON.html);
@@ -96,13 +96,16 @@ function processAttemptIntervention (interv) {
 }
 
 
-function processExternalActivityIntervention(pid, resource) {
+function processExternalActivityIntervention(pid, resource, instructions) {
     debugAlert("Its an external problem.   Changing problemWindow src attribute to " + resource);
     globals.probElapsedTime = 0;
     servletGet("BeginExternalActivity", {xactId: pid, probElapsedTime: globals.probElapsedTime});
     globals.lastProbId = pid;
     globals.lastProbType = EXTERNAL_PROB_TYPE;
-    $("#" + PROBLEM_WINDOW).attr("src", resource);
+    globals.instructions= instructions;
+    showInstructionsDialog(instructions);
+    window.open(resource,'_blank');
+//    $("#" + PROBLEM_WINDOW).attr("src", resource);
 }
 
 

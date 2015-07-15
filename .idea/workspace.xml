@@ -7,28 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAdvancedPedagogySelectionEvent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassAdvancedPedagogySelectionEvent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/simplePedagogySelect.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitInfoEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitInfoEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitSelectedPedagogiesEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitSelectedPedagogiesEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminNoClassSubmitClassFormEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminNoClassSubmitClassFormEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminSubmitClassFormEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminSubmitClassFormEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AlterClassHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AlterClassHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ClassAdminHelper.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ClassAdminHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/ClassCloner.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/ClassCloner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/ClassInfo.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/ClassInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/CreateClassHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/CreateClassHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClassPedagogies.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClassPedagogies.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/Pedagogy.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/Pedagogy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/PedagogyParser.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/PedagogyParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/createClass.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/createClass.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/editClass.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/editClass.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/pedagogies.xml" afterPath="$PROJECT_DIR$/woServer/resources/pedagogies.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/selectPedagogies.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/selectPedagogies.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tree.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tree.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/wayangTempHead.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/wayangTempHead.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbExternalActivity.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbExternalActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
@@ -37,14 +20,14 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1368816022243" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436967563740" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436985971570" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
-    <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436967574127" ignored="false" />
+    <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436990725482" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
     <file path="/StudentStatusEmail.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1375205200311" ignored="false" />
     <file path="U:/wo4/wo4.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355870660750" ignored="false" />
     <file path="U:/wo4/src/edu/umass/ckc/wo/log/TutorLogger.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355926887819" ignored="false" />
-    <file path="/TutorLogger.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1413566731550" ignored="false" />
+    <file path="/TutorLogger.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436989090790" ignored="false" />
     <file path="U:/wo4/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355927732983" ignored="false" />
     <file path="/PedagogicalModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1426542096388" ignored="false" />
     <file path="/indexCadmium.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355941849286" ignored="false" />
@@ -92,7 +75,7 @@
     <file path="/tutor2.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1374079877877" ignored="false" />
     <file path="/WoTutorServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1408118058831" ignored="false" />
     <file path="/CommonPedagogicalModel.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384455294684" ignored="false" />
-    <file path="/tutorhut.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1420665712366" ignored="false" />
+    <file path="/tutorhut.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436990076153" ignored="false" />
     <file path="U:/blee/src/A.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1360942376099" ignored="false" />
     <file path="U:/blee/.idea/modules.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1360940896235" ignored="false" />
     <file path="U:/blee/.idea/scopes/scope_settings.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1360940896235" ignored="false" />
@@ -607,14 +590,14 @@
     <file path="/AttemptInterventionSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1396285330041" ignored="false" />
     <file path="/NextProblemInterventionSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1401983767073" ignored="false" />
     <file path="/HighlightHintButtonIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392057100398" ignored="false" />
-    <file path="/ExternalActivityIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1401985839141" ignored="false" />
+    <file path="/ExternalActivityIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436984507623" ignored="false" />
     <file path="/TopicSwitchIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1391548129753" ignored="false" />
     <file path="/NextProblemListCombinerIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1433862520416" ignored="false" />
     <file path="/InputResponseNextProblemInterventionEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384462882258" ignored="false" />
     <file path="/ExtActTopicSwitchHintHighlightPM.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1388763332876" ignored="false" />
     <file path="/DbSessionRequestedProblems.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384531408984" ignored="false" />
     <file path="/Pedagogy.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1427139129492" ignored="false" />
-    <file path="/tutorintervention.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1435602963339" ignored="false" />
+    <file path="/tutorintervention.js" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436990215138" ignored="false" />
     <file path="/AssistmentsBadInputException.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384955504702" ignored="false" />
     <file path="U:/msauthtool/src/edu/umass/ckc/wo/wpa/model/Topic.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384966656292" ignored="false" />
     <file path="/HintEditor.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1384967516720" ignored="false" />
@@ -948,6 +931,7 @@
     <file path="/ClassAdminHelper.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436894594214" ignored="false" />
     <file path="/editClass.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436968148252" ignored="false" />
     <file path="/AdminAlterClassSubmitInfoEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436975364590" ignored="false" />
+    <file path="/DbExternalActivity.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1436988515762" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -978,6 +962,40 @@
     <sortChildren value="false" />
   </component>
   <component name="DebuggerManager">
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="&#13;&#13;JAVA" />
+        <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="&#13;&#13;JAVA" />
+        <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
+      </breakpoint>
+    </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/CurricUnit.java" line="44" class="edu.umass.ckc.wo.content.CurricUnit" package="edu.umass.ckc.wo.content">
         <option name="ENABLED" value="true" />
@@ -1077,7 +1095,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/ExternalActivityIS.java" line="37" class="edu.umass.ckc.wo.tutor.intervSel2.ExternalActivityIS" package="edu.umass.ckc.wo.tutor.intervSel2">
+      <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/ExternalActivityIS.java" line="51" class="edu.umass.ckc.wo.tutor.intervSel2.ExternalActivityIS" package="edu.umass.ckc.wo.tutor.intervSel2">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -1092,40 +1110,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="&#13;&#13;JAVA" />
-        <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
-      </breakpoint>
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="&#13;&#13;JAVA" />
-        <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
-      </breakpoint>
-    </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
@@ -1137,97 +1121,93 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AlterClassHandler.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AlterClassHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="150" column="77" selection-start="8116" selection-end="8116" vertical-scroll-proportion="-10.32">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wayangTempHead.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/teacherTools/wayangTempHead.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="88" column="52" selection-start="3949" selection-end="3951" vertical-scroll-proportion="-1.8815789">
-              <folding>
-                <marker date="1436975117707" expanded="true" signature="7222:7234" placeholder="{...}" />
-                <marker date="1436975117707" expanded="true" signature="7397:7428" placeholder="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activatehuts.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/teacherTools/activatehuts.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="129" selection-start="2809" selection-end="2809" vertical-scroll-proportion="-8.307693">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="editClass.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/teacherTools/editClass.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="116" selection-start="2436" selection-end="2436" vertical-scroll-proportion="-8.538462">
-              <folding>
-                <marker date="1436975222000" expanded="true" signature="2215:2457" placeholder="..." />
-                <marker date="1436975222000" expanded="true" signature="2470:3446" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WoAdminEventFactory.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/WoAdminEventFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="74" selection-start="515" selection-end="515" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pedagogies.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/pedagogies.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="224" column="92" selection-start="12548" selection-end="12566" vertical-scroll-proportion="-39.04">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ExternalActivityIS.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/ExternalActivityIS.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="0" selection-start="2349" selection-end="2349" vertical-scroll-proportion="0.33333334">
+            <state line="66" column="57" selection-start="2873" selection-end="2873" vertical-scroll-proportion="0.8330059">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Settings.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/Settings.java">
+      <file leaf-file-name="InterventionSelector.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="25" selection-start="5929" selection-end="5929" vertical-scroll-proportion="0.0">
+            <state line="63" column="0" selection-start="2310" selection-end="2310" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdminAlterClassSubmitInfoEvent.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitInfoEvent.java">
+      <file leaf-file-name="InterventionGroup.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/InterventionGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="20" selection-start="320" selection-end="320" vertical-scroll-proportion="0.0">
+            <state line="109" column="0" selection-start="4242" selection-end="4242" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WoAdminServlet.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
+      <file leaf-file-name="tutorhut.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="0" selection-start="3238" selection-end="3238" vertical-scroll-proportion="0.0">
+            <state line="269" column="0" selection-start="8629" selection-end="8629" vertical-scroll-proportion="-2.72">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tutorutils.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorutils.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="112" column="9" selection-start="3886" selection-end="3886" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tutorintervention.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="108" column="29" selection-start="4593" selection-end="4593" vertical-scroll-proportion="-13.24">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BasePedagogicalModel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="781" column="0" selection-start="37691" selection-end="37691" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TutorLogger.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="374" column="55" selection-start="19861" selection-end="19861" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DbExternalActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbExternalActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="58" column="0" selection-start="2280" selection-end="2280" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#893#911#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SessionManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="600" column="0" selection-start="24014" selection-end="24014" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1257,11 +1237,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAdvancedPedagogySelectionEvent.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/PedagogyParser.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/Pedagogy.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/CreateClassHandler.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClassPedagogies.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassAdvancedPedagogySelectionEvent.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitSelectedPedagogiesEvent.java" />
         <option value="$PROJECT_DIR$/woServer/resources/teacherTools/simplePedagogySelect.jsp" />
@@ -1273,6 +1248,11 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitInfoEvent.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AlterClassHandler.java" />
         <option value="$PROJECT_DIR$/woServer/resources/pedagogies.xml" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/ExternalActivityIS.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbExternalActivity.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" />
+        <option value="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" />
+        <option value="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" />
       </list>
     </option>
   </component>
@@ -1322,7 +1302,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="35" />
-    <option name="width" value="1577" />
+    <option name="width" value="1316" />
     <option name="height" value="1010" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -1362,7 +1342,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1561,7 +1540,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="teacherTools" />
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1609,6 +1588,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3141,27 +3121,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="35" y="0" width="1577" height="1010" extended-state="0" />
+    <frame x="35" y="0" width="1316" height="1010" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30057803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26061398" sideWeight="0.19129439" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34935522" sideWeight="0.7522996" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22032829" sideWeight="0.75179" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27908745" sideWeight="0.7699422" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3352872" sideWeight="0.9984985" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33294255" sideWeight="0.9984985" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4136646" sideWeight="0.17140661" order="16" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20880681" sideWeight="0.4055944" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28554913" sideWeight="0.8177305" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22977726" sideWeight="0.45251396" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34019768" sideWeight="0.32349467" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.326555" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2270627" sideWeight="0.22508793" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27432218" sideWeight="0.47245017" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20689656" sideWeight="0.77526754" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39973873" sideWeight="0.3344788" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3204969" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2270627" sideWeight="0.4314185" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27432218" sideWeight="0.66705745" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20857474" sideWeight="0.7313617" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962963" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -3175,6 +3154,7 @@
       <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.49736643" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34935522" sideWeight="0.7522996" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32549942" sideWeight="0.49120122" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -3217,7 +3197,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Replaced the buttons on intervention dialogs with Yes, No, OK.  This makes it more generally usable.&#10;&#10;Removed all the places in the javascript code where it was hiding/showing the buttons and made them arguments to functions&#10;that open the dialog.   The functions also take functions as arguments.  These get called when the different buttons are clicked.&#10;&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ExternalActivityIS to pedagogies 3 and 44.   Also have begun adding to teacher tools so that teacher can easily&#10;create a class for a grade and have content selected appropriately." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -3230,7 +3210,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Release 1/21/15.&#10;&#10;Bug fix for TeachTopic events with lessonIds pointing to content with problems in integrity.  Added some error checks.   Made it load the lessons at servlet init time just to check it and generate messages." />
     <MESSAGE value="Fixed bug with logback URL for assistments.   We went back to a fixed URL rather than trying to get it from the referer header which wasn't present on calls from Assistments." />
     <MESSAGE value="Fixed bug for TeachTopic&amp;problemId=XXX where XXX is a quickAuth problem.  We were not sending the form=quickAuth to the client so that it correctly use the skeleton .    Added in a form variable to instantiate globals.form in the mathspring.jsp" />
     <MESSAGE value="Added logging so I can see what happens when instantiating pedagogical models .&#10;Bug fix:  Assistments requires partnerSpecificData be included in JSON so I put it back in and tested with debugger and got back 201 status and from POSTMAN REST.   This JSON is GOOD!" />
@@ -3255,6 +3234,7 @@
     <MESSAGE value="added emotion questions to two collaboration pedagogies." />
     <MESSAGE value="Fixes the bugs with HACKS so that collaboration interventions can work with AskEmotionIS.   NextProblemListCombinerIS is where the hack is." />
     <MESSAGE value="Replaced the buttons on intervention dialogs with Yes, No, OK.  This makes it more generally usable.&#10;&#10;Removed all the places in the javascript code where it was hiding/showing the buttons and made them arguments to functions&#10;that open the dialog.   The functions also take functions as arguments.  These get called when the different buttons are clicked.&#10;&#10;" />
+    <MESSAGE value="Added ExternalActivityIS to pedagogies 3 and 44.   Also have begun adding to teacher tools so that teacher can easily&#10;create a class for a grade and have content selected appropriately." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3326,92 +3306,9 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitSelectedPedagogiesEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="0" selection-start="737" selection-end="737" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/CreateClassHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="203" column="73" selection-start="10430" selection-end="10460" vertical-scroll-proportion="-15.28">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ClassAdminHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="136" column="62" selection-start="6804" selection-end="6827" vertical-scroll-proportion="-10.44">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/teacherTools/createClass.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="22" selection-start="1265" selection-end="1960" vertical-scroll-proportion="-17.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/ClassInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="13" selection-start="89" selection-end="89" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="23" selection-start="921" selection-end="921" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/teacherTools/wayangTempHead.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="52" selection-start="3949" selection-end="3951" vertical-scroll-proportion="-1.8815789">
-          <folding>
-            <marker date="1436975117707" expanded="true" signature="7222:7234" placeholder="{...}" />
-            <marker date="1436975117707" expanded="true" signature="7397:7428" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/teacherTools/activatehuts.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="129" selection-start="2809" selection-end="2809" vertical-scroll-proportion="-8.307693">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/teacherTools/editClass.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="116" selection-start="2436" selection-end="2436" vertical-scroll-proportion="-8.538462">
-          <folding>
-            <marker date="1436975222000" expanded="true" signature="2215:2457" placeholder="..." />
-            <marker date="1436975222000" expanded="true" signature="2470:3446" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="0" selection-start="3238" selection-end="3238" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminAlterClassSubmitInfoEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="20" selection-start="320" selection-end="320" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AlterClassHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="150" column="77" selection-start="8116" selection-end="8116" vertical-scroll-proportion="-10.32">
+        <state line="150" column="77" selection-start="8116" selection-end="8116" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -3432,14 +3329,93 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/pedagogies.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="224" column="92" selection-start="12548" selection-end="12566" vertical-scroll-proportion="-39.04">
+        <state line="224" column="92" selection-start="12548" selection-end="12566" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="68" column="0" selection-start="3238" selection-end="3238" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/ExternalActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="13" selection-start="345" selection-end="345" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="600" column="0" selection-start="24014" selection-end="24014" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbExternalActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="0" selection-start="2280" selection-end="2280" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#893#911#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="781" column="0" selection-start="37691" selection-end="37691" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="374" column="55" selection-start="19861" selection-end="19861" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorutils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="9" selection-start="3886" selection-end="3886" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="269" column="0" selection-start="8629" selection-end="8629" vertical-scroll-proportion="-2.72">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="0" selection-start="2310" selection-end="2310" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/InterventionGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="109" column="0" selection-start="4242" selection-end="4242" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="108" column="29" selection-start="4593" selection-end="4593" vertical-scroll-proportion="-13.24">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/ExternalActivityIS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="0" selection-start="2349" selection-end="2349" vertical-scroll-proportion="0.33333334">
+        <state line="66" column="57" selection-start="2873" selection-end="2873" vertical-scroll-proportion="0.8330059">
           <folding />
         </state>
       </provider>

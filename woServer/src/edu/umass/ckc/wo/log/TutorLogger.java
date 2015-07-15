@@ -379,7 +379,7 @@ public class TutorLogger {
 
     public void logBeginExternalActivity(BeginExternalActivityEvent e, Response r) throws Exception {
         if (!hasOpenBegin(conn, e))
-            insertLogEntry(RequestActions.BEGIN_XACT,e.getXactId(),null,false,e.getElapsedTime(),0,null,-1,null,r.logEventName(), getTopic());
+            insertLogEntry(RequestActions.BEGIN_XACT,899,null,false,e.getElapsedTime(),0,null,-1,null,r.logEventName(),e.getXactId(),"externalactivity", getTopic());
     }
 
     /**
