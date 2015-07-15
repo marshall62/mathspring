@@ -44,6 +44,7 @@ public class Pedagogy implements Comparable {
     private String loginXMLName;
     private LessonXML lessonXML;
     private LoginXML loginXML;
+    private String simpleConfigName;
 
 
     public Pedagogy() {
@@ -304,5 +305,13 @@ public class Pedagogy implements Comparable {
 
     public void setLoginXML(LoginXML loginXML) {
         this.loginXML = loginXML;
+    }
+
+    public void setSimpleConfigName(String simpleConfigName) {
+        this.simpleConfigName = simpleConfigName;
+    }
+
+    public String getSimpleConfigName() {
+        return simpleConfigName;
     }
 }

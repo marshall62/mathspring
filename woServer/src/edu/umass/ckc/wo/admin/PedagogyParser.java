@@ -109,6 +109,11 @@ public class PedagogyParser {
             String comment = e.getValue();
             p.setComment(comment);
         }
+        e = pedElt.getChild("provideInSimpleConfig");
+        if (e != null) {
+            String n = e.getAttributeValue("name");
+            p.setSimpleConfigName(n);
+        }
 
         e = pedElt.getChild("studentModelClass");
         if (e != null) {

@@ -42,14 +42,29 @@
         <td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">Section:</font></td>
         <td width="222" class="whArial"><input name="section" type="text" value="<c:out value="${classInfo.section}"/>"/></td>
       </tr>
-	  <tr>
-        <td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">Prop Group*:</font></td>
-        <td width="222" class="whArial"><input name="propGroupId" type="text" value="<c:out value="${classInfo.propGroupId}"/>"/></td>
-      </tr>
         <tr>
-        <td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">Pretest Pool:</font></td>
-        <td width="222" class="whArial"><c:out value="${pool.description}"/></td>
-      </tr>
+            <td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">* Grade:</font></td>
+
+            <td width="222">
+                <select name="grade">
+                    <option <c:if test="${classInfo.grade == '5'}">selected</c:if> value="5">5</option>
+                    <option <c:if test="${classInfo.grade == '6'}">selected</c:if> value="6">6</option>
+                    <option <c:if test="${classInfo.grade == '7'}">selected</c:if> value="7">7</option>
+                    <option <c:if test="${classInfo.grade == '8'}">selected</c:if> value="8">8</option>
+                    <option <c:if test="${classInfo.grade == '9'}">selected</c:if> value="9">9</option>
+                    <option <c:if test="${classInfo.grade == '10'}">selected</c:if> value="10">10</option>
+                    <option <c:if test="${classInfo.grade == 'adult'}">selected</c:if> value="adult">adult</option>
+                </select>
+            </td>
+        </tr>
+	  <%--<tr>--%>
+        <%--<td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">Prop Group*:</font></td>--%>
+        <%--<td width="222" class="whArial"><input name="propGroupId" type="text" value="<c:out value="${classInfo.propGroupId}"/>"/></td>--%>
+      <%--</tr>--%>
+        <%--<tr>--%>
+        <%--<td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">Pretest Pool:</font></td>--%>
+        <%--<td width="222" class="whArial"><c:out value="${pool.description}"/></td>--%>
+      <%--</tr>--%>
     </table>
         <p class="whArial">
       * Do not edit this unless you know what you are doing

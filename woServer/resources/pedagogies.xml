@@ -11,7 +11,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <id>1</id>
         <active>true</active>
         <name>Jane Full Empathy</name>
-        <comment>highlight hint, warn about guessing, ask about topic switching</comment>
+        <provideInSimpleConfig name="Female Learning Companion">true</provideInSimpleConfig>
+        <comment>Fully empathic female learning companion</comment>
         <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
@@ -90,7 +91,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <id>2</id>
         <active>true</active>
         <name>Jake Full Empathy</name>
-        <comment>highlight hint, warn about guessing, ask about topic switching</comment>
+        <provideInSimpleConfig name="Male Learning Companion">true</provideInSimpleConfig>
+        <comment>Fully empathic male learning companion</comment>
         <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
@@ -168,7 +170,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
     </pedagogy>
 
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>3</id>
         <active>true</active>
         <name>Jane Semi Empathy</name>
@@ -193,6 +195,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <login>CollabLogin</login>
         <package>pedModel2</package>
         <interventions>
+
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
                 <config>
@@ -219,6 +222,10 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
                 </config>
 
             </interventionSelector>
+            <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
+                <config>
+                </config>
+            </interventionSelector>
 
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
@@ -230,7 +237,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <learningCompanionClass>JaneSemiEmpathicLC</learningCompanionClass>
     </pedagogy>
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>4</id>
         <active>true</active>
         <name>Jake Semi Empathy</name>
@@ -293,7 +300,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <learningCompanionClass>JakeSemiEmpathicLC</learningCompanionClass>
     </pedagogy>
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>5</id>
         <active>true</active>
         <name>Jane No Empathy</name>
@@ -355,7 +362,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
         <learningCompanionClass>JaneNoEmpathicLC</learningCompanionClass>
     </pedagogy>
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>6</id>
         <active>true</active>
         <name>Jake No Empathy</name>
@@ -475,7 +482,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
 
     DM - notes we have a 5 minute restriction rather than every 3 problems.
     -->
-    <pedagogy  default="true">
+    <pedagogy>
         <id>8</id>
         <active>true</active>
         <name>Jane Offer SPP</name>
@@ -549,7 +556,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
     </pedagogy>
 
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>9</id>
         <active>true</active>
         <name>Jake Offer SPP</name>
@@ -639,7 +646,7 @@ JaneForceSPP
     -->
 
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>10</id>
         <active>true</active>
         <name>Jane Force SPP</name>
@@ -713,7 +720,7 @@ JaneForceSPP
     </pedagogy>
 
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>11</id>
         <active>true</active>
         <name>Jake Force SPP</name>
@@ -800,7 +807,7 @@ You could create copies of these and call them:
 JaneYesSPPButton
 JakeYesSPPButton-->
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>12</id>
         <active>true</active>
         <name>Jane MPP-On No-Empathy</name>
@@ -862,7 +869,7 @@ JakeYesSPPButton-->
         <learningCompanionClass>JaneNoEmpathicLC</learningCompanionClass>
     </pedagogy>
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>13</id>
         <active>true</active>
         <name>Jake SPP-On No-Empathy</name>
@@ -929,7 +936,7 @@ JaneNoSPPButton
 JakeNoSPPButton-->
 
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>14</id>
         <active>true</active>
         <name>Jane MPP-OFF No-Empathy</name>
@@ -990,7 +997,7 @@ JakeNoSPPButton-->
         <learningCompanionClass>JaneNoEmpathicLC</learningCompanionClass>
     </pedagogy>
 
-    <pedagogy  default="true">
+    <pedagogy>
         <id>15</id>
         <active>true</active>
         <name>Jake SPP-OFF No-Empathy</name>
@@ -1144,13 +1151,18 @@ JakeNoSPPButton-->
         </interventions>
     </pedagogy>
 
-
-    <pedagogy default="false">
+    <pedagogy>
         <id>43</id>
         <active>true</active>
-        <name>Highlight hint buttons, ask emotions, ask MPP, warn about guessing, collaboration</name>
-        <name>Alpha Testing</name>
-        <lesson>TopicWithIntro</lesson>
+        <name>No Learning Companion</name>
+        <provideInSimpleConfig name="No Learning Companion">true</provideInSimpleConfig>
+        <comment>Similar to fully empathic tutoring but with no learning companion</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <lesson>TopicWithIntroAndDemo</lesson>
         <login>CollabLogin</login>
         <controlParameters>
             <!-- number of sessions that determines when solved problems and demos can be given again-->
@@ -1161,10 +1173,9 @@ JakeNoSPPButton-->
             turns it on.   If false, intervention selector has no effect - it is always off-->
             <displayMyProgressPage>true</displayMyProgressPage>
         </controlParameters>
-        <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
-        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
-        <!--Required student model if asking student to report affect -->
-        <studentModelClass>AffectStudentModel</studentModelClass>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <package>pedModel2</package>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
@@ -1192,44 +1203,41 @@ JakeNoSPPButton-->
                 </config>
 
             </interventionSelector>
-            <interventionSelector  onEvent="NextProblem" weight="1" class="CollaborationIS">
+
+            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationForceIS">
                 <config>
-                    <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
+                    <minIntervalBetweenMPPQueriesBasedOnAffect>10</minIntervalBetweenMPPQueriesBasedOnAffect>
                     <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
-                    <intervalCriteria type="random" frequency="3"/>
-                    <maxPartnerWaitMin>3</maxPartnerWaitMin>
-                    <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
-                </config>
-            </interventionSelector>
-            <interventionSelector onEvent="NextProblem" weight="2" class="MyProgressNavigationAskIS">
-                <config>
-                    <!--  This IS will tell the student they are going to the MPP on certain conditions being true-->
-                    <dialogType ask="true"/>
-                    <minIntervalBetweenMPPQueriesBasedOnAffect>5</minIntervalBetweenMPPQueriesBasedOnAffect>
-                    <!-- If excitement is low-neutral (<= 3) ask to show the MPP-->
+                    <!-- If confidence is <= 2 show the MPP-->
+                    <intervalCriteria type="affect" emotion="Confidence" lowerBound="3" upperBound="3"/>
                     <intervalCriteria type="affect" emotion="Excitement" upperBound="3"/>
-                    <!-- If interest is (low-neutral) <= 3 ask to show the MPP-->
-                    <intervalCriteria type="affect" emotion="Interest" upperBound="3"/>
+                    <!-- If confidence is <= 2 show the MPP-->
+                    <intervalCriteria type="affect" emotion="Interested" upperBound="3"/>
+                    <notifyDialog when="before"><![CDATA[<p>Let's see how much progress we are making!<br>]]></notifyDialog>
+                    <component action="show">MPP</component>
                 </config>
             </interventionSelector>
+
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
-                    <threshold>2</threshold>
+                    <threshold>1</threshold>
                 </config>
+            </interventionSelector>
+            <interventionSelector onEvent="NextProblem" weight="1" class="CollaborationIS">
+                <config>
+                </config>
+            </interventionSelector>
 
-            </interventionSelector>
-            <interventionSelector onEvent="Attempt" weight="2" class="GuessingAskAffectIS">
-            </interventionSelector>
         </interventions>
 
     </pedagogy>
 
-
-    <pedagogy default="true">
+    <pedagogy>
         <id>44</id>
         <active>true</active>
         <name>Collaboration Testing with Jane Semi Empathy</name>
-        <comment>Collaboration Testing</comment>
+        <provideInSimpleConfig name="Student Collaboration and Female Learning Companion">true</provideInSimpleConfig>
+        <comment>Students Collaborate.   Also has moderately empathic female learning companion</comment>
         <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
@@ -1259,6 +1267,10 @@ JakeNoSPPButton-->
                     <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
                 </config>
             </interventionSelector>
+            <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
+                <config>
+                </config>
+            </interventionSelector>
 
             <interventionSelector onEvent="Attempt" weight="1"  class="HighlightHintButtonIS">
                 <config>
@@ -1273,11 +1285,12 @@ JakeNoSPPButton-->
 
     </pedagogy>
 
-    <pedagogy default="true">
+    <pedagogy>
         <id>45</id>
         <active>true</active>
         <name>Collaboration Testing with Jake Semi Empathy</name>
-        <comment>Collaboration Testing</comment>
+        <provideInSimpleConfig name="Student Collaboration and Male Learning Companion">true</provideInSimpleConfig>
+        <comment>Students Collaborate.   Also has moderately empathic male learning companion</comment>
         <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>

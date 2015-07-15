@@ -8,9 +8,6 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbUtil;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,7 +31,7 @@ public class ClassCloner {
         ClassInfo info = DbClass.getClass(conn,classId);
         int newClassId= DbClass.insertClass(conn,newClassName,info.getSchool(), Integer.toString(info.getSchoolYear()),
                         info.getTown(),newClassSection, Integer.toString(info.getTeachid()),
-                        info.getPropGroupId(), info.getPretestPoolId());
+                        info.getPropGroupId(), info.getPretestPoolId(), info.getGrade());
          DbClass.removeConfig(conn,newClassId);
         if (newClassId != -1) {
             // clone the lesson plan (if there is one)
