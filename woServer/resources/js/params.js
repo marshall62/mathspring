@@ -515,13 +515,17 @@ function parametrizeText(rawText) {
         return rawText;
     }
 
+    var keys = Object.keys(constraints);
+    var len = keys.length;
+    keys.sort().reverse();
+
     var pastVars = "";
     var parametrizedText = rawText;
-    for (var key in constraints) {
-        var regex = new RegExp("\\"+key+"((?=\\W|$"+pastVars+"))", "gi");
-        pastVars = pastVars + "|" + constraints[key];
+    for (k = 0; k < len; k++){
+        var key = keys[k];
+        var regex = new RegExp("\\"+key, "gi");
     //    while(parametrizedText.search(regex)!= -1){
-            parametrizedText = parametrizedText.replace(regex,constraints[key] + "$1");
+            parametrizedText = parametrizedText.replace(regex,constraints[key]);
       //  }
     }
     return parametrizedText;
