@@ -866,14 +866,16 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception {
         Response r;
         smgr.getStudentState().setProblemIdleTime(0);
-        Intervention intervention = attemptInterventionSelector.processContinueAttemptInterventionEvent(e);
+        r = attemptInterventionSelector.processContinueAttemptInterventionEvent(e);
 
-        if (intervention != null) {
-            r= new InterventionResponse(intervention);
+        if (r != null && r instanceof Intervention) {
+            ;
         }
+        else if (r instanceof InternalEvent)
+            ;
         else {
-            // TODO make sure we don't need to do the below and that we have an analog for it
-            // we are done with post-attempt interventions.  Its now time to grade the problem.
+            //TODO.  When the attempt first came in the problem was graded and the isCorrect value went back with the intervention.
+            // The question is:  Does the client always show the grade or is displaying the grade controlled by another flag?
             if (smgr.getStudentState().isProblemSolved())
                 r= new Response("grade=true&isCorrect=true");
             else
@@ -1028,6 +1030,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     }
 
     @Override
+    /**
+     * An input response to an intervention on attempt will go back to the originating IS.  This
+     *  may return an intervention, internval event, or null.
+     */
     public Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r=null;
@@ -1036,16 +1042,21 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         if (spec != null) {
             AttemptInterventionSelector intSel = (AttemptInterventionSelector) spec.buildIS(smgr);
             intSel.init(smgr,this);
-            Intervention intervention = intSel.processInputResponseAttemptInterventionEvent(e);
+            r = intSel.processInputResponseAttemptInterventionEvent(e);
             if (true)
                 throw new UserException("This isn't finished yet.  Not sure what to do after sending to the IS");
             e.setUserInput(intSel.getUserInputXML());
-            if (intervention != null && intervention instanceof SelectHintSpecs) {
-                r= doSelectHint((SelectHintSpecs) intervention);
+            // old outdated idea that an intervention prompts for a hint and the user selects it ?
+//            if (r != null && r instanceof SelectHintSpecs) {
+//                r= doSelectHint((SelectHintSpecs) intervention);
+//            }
+            if (r != null) {
+                ;
             }
-            else if (intervention != null) {
-                r= new InterventionResponse(intervention);
+            else if (r instanceof InternalEvent) {
+
             }
+            // TODO failing anything unusual, we need to grade the attempt and return that.
             else {
                 // we are done with post-attempt interventions.  Its now time to grade the problem.
                 if (smgr.getStudentState().isProblemSolved())
