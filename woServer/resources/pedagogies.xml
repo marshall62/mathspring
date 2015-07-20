@@ -224,6 +224,7 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
             </interventionSelector>
             <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
                 <config>
+                    <frequencyPct>10</frequencyPct>
                 </config>
             </interventionSelector>
 
@@ -1269,6 +1270,7 @@ JakeNoSPPButton-->
             </interventionSelector>
             <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
                 <config>
+                    <frequencyPct>10</frequencyPct>
                 </config>
             </interventionSelector>
 

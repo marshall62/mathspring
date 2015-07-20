@@ -7,7 +7,7 @@ import edu.umass.ckc.wo.smgr.ProblemState;
 import edu.umass.ckc.wo.smgr.Session;
 import edu.umass.ckc.wo.smgr.SessionState;
 import edu.umass.ckc.wo.tutor.Settings;
-import edu.umass.ckc.wo.tutor.intervSel.InterventionState;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionState;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

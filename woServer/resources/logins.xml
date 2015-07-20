@@ -32,7 +32,8 @@
                     mathspring will replace at runtime with the correct values for the user.  Currently, uid is required and an error
                     is thrown if it is not given to prevent surveys that don't have this essential item.-->
                     <!--<url><![CDATA[https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?entry.1324523958=<uname>&entry.1477109510=<uid>&usp=send_form]]></url>-->
-                    <url><![CDATA[https://docs.google.com/forms/d/1HtfA7lG2eSLoW773rembahxnx6X0TSSH7riYVrRfTgc/viewform?entry.1832154154=<uname>&entry.423789753=<uid>&entry.1205130808&entry.230479360&entry.537654556&entry.1655462685]]></url>
+                    <!--<url><![CDATA[https://docs.google.com/forms/d/1HtfA7lG2eSLoW773rembahxnx6X0TSSH7riYVrRfTgc/viewform?entry.1832154154=<uname>&entry.423789753=<uid>&entry.1205130808&entry.230479360&entry.537654556&entry.1655462685]]></url>-->
+                    <url><![CDATA[https://docs.google.com/forms/d/1GE8vlA3ckNpX1QZ3R1Fd1tkyAtNEDCtbwjH0ElkjOLM/viewform?entry.514597846&entry.609465923=<uname>&entry.301405284=<uid>]]></url>
                     <studId>uid</studId>
                     <userName>uname</userName>
                     <!-- No longer useful.  Was here to allow embedding survey in an iframe inside mathspring but doesn't make sense with googles submit button in the form-->
