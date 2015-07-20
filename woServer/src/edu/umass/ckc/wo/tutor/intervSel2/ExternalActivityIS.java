@@ -89,11 +89,16 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
                 a.setTopicId(smgr.getStudentState().getCurTopic());
                 return a;
             }
+            boolean shown = false;
             for (String xid : shownIds) {
-                if (id != Integer.parseInt(xid))    {
-                    a.setTopicId(smgr.getStudentState().getCurTopic());
-                    return  a;
+                if (id == Integer.parseInt(xid))   {
+                    shown=true;
+                    break;
                 }
+            }
+            if (!shown){
+                a.setTopicId(smgr.getStudentState().getCurTopic());
+                return a;
             }
 
         }
@@ -103,7 +108,10 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
 
 
     private NextProblemIntervention getExternalActivity (double topicMastery) throws SQLException {
-        return selectExternalActivity();
+        ExternalActivity ea= selectExternalActivity();
+        if (ea != null)
+            studentState.addExternalActivityGiven(ea.getId());
+        return ea;
 
     }
 

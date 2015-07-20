@@ -12,7 +12,7 @@ function processNextProblemIntervention(activityJSON) {
     var resource = activityJSON.resource;
     var pid = activityJSON.id;
     var changeGUIIntervention = activityJSON.changeGUI==true;
-    var destinationIS = activityJSON.destinationIS;
+    var destinationIS = activityJSON.destinationIS;   // TODO only ExternalActivities use this.  All interventions should
 
     if (interventionType === "TopicSwitch") {
         processTopicSwitchIntervention(activityJSON.html)
