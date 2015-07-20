@@ -14,6 +14,8 @@ import net.sf.json.JSONObject;
 public class ExternalActivity extends Problem implements NextProblemIntervention {
     private static final String EXTERNAL_ACTIVITY = "ExternalActivity";
     private int topicId;
+    private String destinationIS; // necessary so that client can call back server and go back to the IS that selects this.
+
 
     public ExternalActivity() {
     }
@@ -23,6 +25,14 @@ public class ExternalActivity extends Problem implements NextProblemIntervention
         super(id, url, null, name, descr, false, 0, null, null, instructions, null, "ready", null, null, QuestType.multiChoice, null, null,null, null);
         setType("ExternalActivity");
         this.setDiff_level(difficultyRating);
+    }
+
+    public String getDestinationIS() {
+        return destinationIS;
+    }
+
+    public void setDestinationIS(String destinationIS) {
+        this.destinationIS = destinationIS;
     }
 
     @Override
@@ -38,6 +48,7 @@ public class ExternalActivity extends Problem implements NextProblemIntervention
         jo.element("topicId",this.getTopicId());
         jo.element("instructions",this.getInstructions());
         jo.element("mode", PRACTICE);
+        jo.element("destinationIS", this.getDestinationIS());
         return jo;
     }
 

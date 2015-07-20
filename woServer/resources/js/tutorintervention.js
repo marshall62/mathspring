@@ -12,6 +12,7 @@ function processNextProblemIntervention(activityJSON) {
     var resource = activityJSON.resource;
     var pid = activityJSON.id;
     var changeGUIIntervention = activityJSON.changeGUI==true;
+    var destinationIS = activityJSON.destinationIS;
 
     if (interventionType === "TopicSwitch") {
         processTopicSwitchIntervention(activityJSON.html)
@@ -21,7 +22,7 @@ function processNextProblemIntervention(activityJSON) {
     else if (interventionType === "TopicIntro")
         processTopicIntroIntervention(activityJSON);
     else if (interventionType === "ExternalActivity") {
-       processExternalActivityIntervention(pid, resource,activityJSON.instructions);
+       processExternalActivityIntervention(activityJSON);
     }
     else if (interventionType === "AskEmotionIntervention")
         processAskEmotionIntervention(activityJSON.html);
@@ -96,16 +97,27 @@ function processAttemptIntervention (interv) {
 }
 
 
-function processExternalActivityIntervention(pid, resource, instructions) {
+function processExternalActivityIntervention(activityJSON) {
+    var pid = activityJSON.id;
+    var resource = activityJSON.resource;
+    var instructions = activityJSON.instructions;
+    var destinationIS = activityJSON.destinationIS;
     debugAlert("Its an external problem.   Changing problemWindow src attribute to " + resource);
     globals.probElapsedTime = 0;
-    servletGet("BeginExternalActivity", {xactId: pid, probElapsedTime: globals.probElapsedTime});
+
     globals.lastProbId = pid;
     globals.lastProbType = EXTERNAL_PROB_TYPE;
     globals.instructions= instructions;
-    showInstructionsDialog(instructions);
-    window.open(resource,'External Activity', "height=600,width=800");
-//    $("#" + PROBLEM_WINDOW).attr("src", resource);
+    globals.destinationInterventionSelector = destinationIS;
+    globals.isInputIntervention = true;
+    //    showInstructionsDialog(instructions);
+    if (typeof instructions != 'undefined')
+        interventionDialogOpenAsConfirm("External Activity Instructions", instructions, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
+    else {
+        servletGet("BeginExternalActivity", {xactId: pid, probElapsedTime: globals.probElapsedTime});
+        window.open(resource,'External Activity', "height=600,width=800");
+    }
+//        $("#" + PROBLEM_WINDOW).attr("src", resource);    // shows it in the iframe
 }
 
 

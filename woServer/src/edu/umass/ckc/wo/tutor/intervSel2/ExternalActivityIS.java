@@ -7,10 +7,16 @@ import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.util.State;
+import edu.umass.ckc.wo.util.WoProps;
+import org.jdom.Element;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -21,15 +27,25 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class ExternalActivityIS extends NextProblemInterventionSelector {
-    private double PERCENT_TIME_TO_SELECT_EXTERNAL_ACT = Settings.externalActivityPercentage;
+    private double percentTimeToSelectXact = Settings.externalActivityPercentage;
+    private MyState state;
 
     public ExternalActivityIS(SessionManager smgr) {
         super(smgr);
     }
 
     @Override
-    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
+    public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws SQLException {
         this.pedagogicalModel=pedagogicalModel;
+        this.state = new MyState(smgr);
+        configure();
+    }
+
+    private void configure() {
+        // the percentage of times that it should choose an external act.
+        String freqpct = getConfigParameter("frequencyPct");
+        if (freqpct != null)
+            percentTimeToSelectXact = Double.parseDouble(freqpct);
     }
 
 
@@ -39,19 +55,14 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
         int curTopicId = studentState.getCurTopic();
         double m = studentModel.getTopicMastery(curTopicId);
         int curProbId = smgr.getStudentState().getCurProblem();
-        // a probId in the event means that the client is trying to force the server to pick a certain problem or external activity
-        // If isExternal is true, then return that given external activity.   If it is false, then return null, so the problem selector can return the requested problem.
-        if (e.getProbId() != null && !e.isExternal())
-            return null;
-        else if (e.getProbId() != null && e.isExternal())
-            return DbExternalActivity.getExternalActivity(conn, Integer.parseInt(e.getProbId()));
-        if (e instanceof NextProblemEvent &&
-                ((NextProblemEvent) e).isIntervene())
-            return getExternalActivity(m);
-            // randomly get an external activity 10% of the time.
-        else if (curProbId > 0 &&
-                (r < ( PERCENT_TIME_TO_SELECT_EXTERNAL_ACT / 100.0)))  {
-            return getExternalActivity(m);
+        if (curProbId > 0 &&
+                (r < ( percentTimeToSelectXact / 100.0)))  {
+            ExternalActivity ea = (ExternalActivity) getExternalActivity(m);
+            if (ea != null) {
+                ea.setDestinationIS(this.getClass().getName());
+                state.setExternalActivityId(ea.getId());
+            }
+            return ea;
         }
         else
             return null;
@@ -103,7 +114,40 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
 
     @Override
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        int xactId = state.getExternalActivityId();
+        ExternalActivity ea = DbExternalActivity.getExternalActivity(smgr.getConnection(),xactId);
+        ea.setInstructions(null);  // this will indicate to the client code that it should show the activity rather than instructions.
+        return new InterventionResponse(ea);
+    }
+
+
+
+    private class MyState extends State {
+        private final String XACTID =  ExternalActivityIS.this.getClass().getSimpleName() + ".currentExternalActivityId";
+
+        int externalActivityId; // the id of the xact that we are giving
+
+        MyState (SessionManager smgr) throws SQLException {
+
+            this.conn=smgr.getConnection();
+            this.objid = smgr.getStudentId();
+            WoProps props = smgr.getStudentProperties();
+            Map m = props.getMap();
+            externalActivityId =  mapGetPropInt(m, XACTID, -1);
+//            if (timeOfLastIntervention ==0)
+//                setTimeOfLastIntervention(System.currentTimeMillis());
+
+        }
+
+        private int getExternalActivityId() {
+            return externalActivityId;
+        }
+
+        private void setExternalActivityId(int xactId) throws SQLException {
+            this.externalActivityId = xactId;
+            setProp(this.objid,XACTID,xactId);
+        }
+
     }
 
 }
