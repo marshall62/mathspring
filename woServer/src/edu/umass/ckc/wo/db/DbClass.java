@@ -34,7 +34,7 @@ public class DbClass {
 
         try {
             String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
-                    "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient from class c, classconfig f" +
+                    "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade from class c, classconfig f" +
                     " where c.id=? and f.classid=c.id";
             s = conn.prepareStatement(q);
             s.setInt(1, classId);
@@ -55,8 +55,10 @@ public class DbClass {
                 int studentEmailPeriodDays = rs.getInt(13);
                 int studentEmailIntervalDays = rs.getInt(14);
                 String flashClient = rs.getString(15); // k12 or college
+                String grade = rs.getString(16); // grade
                 return new ClassInfo(sch, yr, name, town, sec, classId, teacherId, teacherName, propgroupid, logType,
-                        pretestPoolId, emailInterval, statusReportPeriodDays, studentEmailIntervalDays, studentEmailPeriodDays,flashClient);
+                        pretestPoolId, emailInterval, statusReportPeriodDays, studentEmailIntervalDays,
+                        studentEmailPeriodDays,flashClient,grade);
             }
             return null;
         } finally {
@@ -120,10 +122,10 @@ public class DbClass {
 
     public static int updateClass(Connection conn, int classId, String className,
                                   String school, String schoolYear,
-                                  String town, String section, int propGroupId) throws Exception {
+                                  String town, String section, String grade) throws Exception {
         PreparedStatement s = null;
         try {
-            String q = "update class set school=?, schoolYear=?, name=?, town=?, section=?, propGroupId=? " +
+            String q = "update class set school=?, schoolYear=?, name=?, town=?, section=?, grade=? " +
                     "where id=?";
             s = conn.prepareStatement(q);
             s.setString(1, school);
@@ -131,7 +133,7 @@ public class DbClass {
             s.setString(3, className);
             s.setString(4, town);
             s.setString(5, (section == null) ? "" : section);
-            s.setInt(6, propGroupId);
+            s.setString(6, grade);
             s.setInt(7, classId);
             return s.executeUpdate();
         } finally {
@@ -142,13 +144,14 @@ public class DbClass {
 
     public static int insertClass(Connection conn, String className,
                                   String school, String schoolYear,
-                                  String town, String section, String teacherId, int propGroupId, int pretestPool) throws Exception {
+                                  String town, String section, String teacherId, int propGroupId, int pretestPool, String grade) throws Exception {
         ResultSet newid = null;
         PreparedStatement s = null;
         try {
             String teacherName = getTeacherName(conn, Integer.parseInt(teacherId));
-            String q = "insert into Class (teacherId,school,schoolYear,name,town,section,isActive,teacher,propGroupId,logtype,pretestPoolId) " +
-                    "values (?,?,?,?,?,?,?,?,?,?,?)";
+            String q = "insert into Class (teacherId,school,schoolYear,name,town,section,isActive," +
+                    "teacher,propGroupId,logtype,pretestPoolId,grade) " +
+                    "values (?,?,?,?,?,?,?,?,?,?,?,?)";
             s = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
             s.setString(1, teacherId);
             s.setString(2, school);
@@ -165,6 +168,7 @@ public class DbClass {
             // want to know about student (e.g. gender,age,race)
             s.setInt(10, 2);  // default log type is 2 indicating the eventlog table is where we store events for this class
             s.setInt(11, pretestPool);
+            s.setString(12,grade);
             s.execute();
             newid = s.getGeneratedKeys();
             newid.next();
@@ -233,7 +237,7 @@ public class DbClass {
                 int studentEmailInterval = rs.getInt(14);
                 int studentEmailPeriod = rs.getInt(15);
                 classes.add(new ClassInfo(sch, yr, name, town, sec, id, teacherId, teacherName, propgroupid, pretestPoolId,
-                        pretestPoolDescr, logType, emailInterval, statusReportPeriod, studentEmailInterval, studentEmailPeriod));
+                        pretestPoolDescr, logType, emailInterval, statusReportPeriod, studentEmailInterval, studentEmailPeriod, "5"));
             }
             return classes.toArray(new ClassInfo[classes.size()]);
         } finally {
@@ -276,7 +280,7 @@ public class DbClass {
                 int teacherId = rs.getInt(12);
                 String cl = rs.getString(13);
                 ClassInfo c = new ClassInfo(sch, yr, name, town, sec, id, teacherId, teacherName, propgroupid, pretestPoolId,
-                        pretestPoolDescr, logType, 0, 7, 0, 7);
+                        pretestPoolDescr, logType, 0, 7, 0, 7, "5");
                 c.setFlashClient(cl);
                 return c;
             }

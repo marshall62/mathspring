@@ -264,14 +264,19 @@ function forceNextProblem (id) {
     servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode, probID: id}, processNextProblemResult);
 }
 
+function showInstructionsDialog (instructions) {
+    $(INSTRUCTIONS_TEXT_ELT).text(instructions);
+    $("#"+INSTRUCTIONS_DIALOG).dialog('open');
+}
 
 function instructions () {
     // probably want something slicker than this alert dialog.
     if (globals.instructions == "")
         alert("Sorry.  There are no instructions for this problem.");
     else {
-        $(INSTRUCTIONS_TEXT_ELT).text(globals.instructions);
-        $("#"+INSTRUCTIONS_DIALOG).dialog('open');
+        showInstructionsDialog(globals.instructions)
+//        $(INSTRUCTIONS_TEXT_ELT).text(globals.instructions);
+//        $("#"+INSTRUCTIONS_DIALOG).dialog('open');
     }
     sendSimpleNotificationEvent(globals,"ShowInstructions");
     return false;

@@ -29,6 +29,7 @@
         <input type="submit" name="Submit" value="Submit">
         <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
         <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
+        <input type="hidden" name="isSimpleConfig" value="false">
     </form>
 
       <p style="color: #FFFFFF"><font face="Arial, Helvetica, sans-serif">Select as many pedagogies as you wish. &nbsp;Students in the class will be evenly divided into groups which use the selected pedagogies.</font> 

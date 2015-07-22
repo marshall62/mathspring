@@ -16,13 +16,22 @@ import java.util.Map;
 public class AdminAlterClassSubmitSelectedPedagogiesEvent extends AdminClassEvent {
 
     private List<String> pedagogyIds;
+    private boolean isSimplePage=false;
 
     public AdminAlterClassSubmitSelectedPedagogiesEvent(ServletParams p) throws Exception {
         super(p);
         Map m = p.getMap();
         setSelectedPedagogies(m);
+        setSimplePage(p.getBoolean("isSimpleConfig",false));
     }
 
+    public boolean isSimplePage() {
+        return isSimplePage;
+    }
+
+    public void setSimplePage(boolean simplePage) {
+        isSimplePage = simplePage;
+    }
 
     private void setSelectedPedagogies(Map m) {
         pedagogyIds = new ArrayList<String>();

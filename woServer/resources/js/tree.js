@@ -1,4 +1,4 @@
-
+//////// javascript file to create mathspring tree based on student's performance (number of topics, number of problems) ////////////
 
 var s_x=new Array();
 var s_y=new Array();
@@ -10,6 +10,8 @@ var canvas;
 var ctx;
 var totalProblems;
 var numberOfSkills;
+
+//wrap topic text in branch
 
 function wrapText(context, text, x, y, maxWidth, lineHeight) {
     var words = text.split(' ');
@@ -39,6 +41,8 @@ function loadTreeParameters(problemsSolved,topicsDone){
 
     draw();
 }
+
+//**************create cutomized messages for students**************//
 
 function generateGreetings(studentFirstName,daysSinceLastSession,problemsSolved,topicsDone,problemsDoneInLastSession,totalMasteredTopics,topicsMasteredInLastSession){
 
@@ -95,6 +99,8 @@ function generateGreetings(studentFirstName,daysSinceLastSession,problemsSolved,
 
 
 
+//**************generate history buttons for students to observe their performance in different days**************//
+
 
 function generateDayHistoryButtons(dayList)
 {
@@ -135,6 +141,10 @@ function dayListClickEvents(){
 }
 
 
+
+//**************draw a sample tree to show students how their tree can grow over time**************//
+
+
 function drawSampleTree(){
 
     document.getElementById("dayDetailsText").innerHTML="<br/>You are given this baby tree. It will grow as you practice math problems and learn. There are hints, examples and videos to help you learn to solve the problems. <br/>Do you want to see how your tree may look like in future?";
@@ -160,15 +170,22 @@ function drawSampleTree(){
 
 }
 
+
+
+//**************start creating actual tree**************//
+
 var treeId;
 
 var treeGrow=new Array();
 treeGrow[0]=1;
-treeGrow[1]=2;
-treeGrow[2]=4;
-treeGrow[3]=10;
-treeGrow[4]=11;
+treeGrow[1]=3;
+treeGrow[2]=6;
+treeGrow[3]=9;
+treeGrow[4]=12;
 
+
+
+//************** there are six basic structure of trees. a structure is picked based on total problems**************//
 
 function identifyTree(){
     if (totalProblems<=treeGrow[0]){ treeId=1;}
@@ -181,16 +198,11 @@ function identifyTree(){
 }
 
 
-/*
- function identifyTree(){
- if (totalProblems<=3){ treeId=1;}
- else if (totalProblems>3 && totalProblems<=15 ){treeId=2;}
- else if (totalProblems>15 && totalProblems<=25 ){treeId=3;}
- else if (totalProblems>25 && totalProblems<35 ){treeId=4;}
- else if (totalProblems>35 && totalProblems<45 ){treeId=5;}
- else if (totalProblems>45  ){treeId=6;}
 
- */
+//**************start drawing tree**************//
+
+
+
 function draw(){
 
 
@@ -440,10 +452,13 @@ function draw(){
             s_h[0]=b_h[1]-50;
             s_h[1]=s_h[0]-10;
 
-
             drawTrunk();
 
+
         }
+
+
+//************************** define tree nodes ********************//
 
 
         var node = (function () {
@@ -554,6 +569,7 @@ function draw(){
 
         var nodes = [];
 
+//************************** define leaves  ********************//
 
         var leaf = (function () {
 
@@ -665,6 +681,8 @@ function draw(){
         var leaves = [];
 
 
+//************************** define skills ********************//
+
         var skill = (function () {
 
             // constructor
@@ -732,6 +750,9 @@ function draw(){
         var skills = [];
 
 
+//************** start drawing tree based on treeId **************//
+
+//tree1 starts here--------------------
 
         if (treeId==1){
 
@@ -1172,28 +1193,32 @@ function draw(){
             arrangeSkills();
 
         }
+
+    }
+
+
 //functions
 
-// trunk
-        function drawTrunk(){
+//**************** draw tree trunks based on the treeId ****************//
 
+    function drawTrunk(){
 
-            if (treeId<=4){
-                ctx.strokeStyle = '#4d8700';
-                ctx.beginPath();
+        if (treeId<=4){
+            ctx.strokeStyle = '#4d8700';
+            ctx.beginPath();
 
-                if (treeId>2){
-                    ctx.lineWidth   = 4;
-                    ctx.moveTo(center_x, bottom_y);
-                    ctx.bezierCurveTo(center_x+5, b_h[0]-10,center_x-2, b_h[0]-20,center_x, b_h[0]);
-                    ctx.stroke();
-                }
-                ctx.lineWidth   = 3;
+            if (treeId>2){
+                ctx.lineWidth   = 4;
                 ctx.moveTo(center_x, bottom_y);
-                ctx.bezierCurveTo(center_x+5, b_h[0]-10,center_x-2, b_h[0]-20,center_x, tree_h);
+                ctx.bezierCurveTo(center_x+5, b_h[0]-10,center_x-2, b_h[0]-20,center_x, b_h[0]);
                 ctx.stroke();
-
             }
+            ctx.lineWidth   = 3;
+            ctx.moveTo(center_x, bottom_y);
+            ctx.bezierCurveTo(center_x+5, b_h[0]-10,center_x-2, b_h[0]-20,center_x, tree_h);
+            ctx.stroke();
+
+        }
 
 
 
@@ -1271,13 +1296,13 @@ function draw(){
             ctx.fill();
 
 
-
-
-
         }
+
     }
 
+//**************complete drawing tree trunks**************//
 
+//**************start drawing skill texts on the tree**************//
 
 
     function drawSkills(){
@@ -1295,6 +1320,8 @@ function draw(){
         }
 
     }
+
+//**************draw the little leaves on top of sapling and tree**************//
 
     function drawTopLeaves(){
         ctx.lineWidth   = 2;
@@ -1358,10 +1385,10 @@ function draw(){
 
             nodes.push(new node(l1x+59,l1y+40,22,20,2,"right"));
             leaves.push(new leaf(n2x,n2y,30,10,-30,"regular","right"));
-}
+        }
     }
 
-
+//**************draw branches with lines**************//
 
     function drawBranch(x1,y1,l,h,t,o,s)
     {
@@ -1416,6 +1443,8 @@ function draw(){
 
     }
 
+
+//************** draw branches with lines and fill**************//
 
     function drawFullBranch(x1,y1,l,h,t,w,o,s)
     {
@@ -1525,6 +1554,7 @@ function draw(){
     }
 
 
+//**************arrange skill names on the tree**************//
 
     function arrangeSkills() {
 
@@ -1579,6 +1609,6 @@ function draw(){
 
 
 
-}
+
 
 

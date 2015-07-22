@@ -13,6 +13,7 @@ import net.sf.json.JSONObject;
 public abstract class InputResponseIntervention extends SimpleBaseIntervention {
 
     protected boolean isInputIntervention = true;
+    protected String destinationIS; // the intervention selector that selected this
 
     public String getFormOpen () {
         StringBuilder sb = new StringBuilder();
@@ -23,10 +24,20 @@ public abstract class InputResponseIntervention extends SimpleBaseIntervention {
     public abstract String getType ();
     public abstract String getDialogHTML ();
 
+    public String getDestinationIS() {
+        return destinationIS;
+    }
+
+    public void setDestinationIS(String destinationIS) {
+        this.destinationIS = destinationIS;
+    }
+
     public JSONObject buildJSON(JSONObject jo) {
         jo.element("activityType", Intervention.INTERVENTION);
+
         jo.element("isInputIntervention",this.isInputIntervention);
         jo.element("interventionType",getType());
+        jo.element("destinationIS",getDestinationIS());
         String html = "<!DOCTYPE html><html>"+getDialogHTML() + "</html>";
 //        String html = "<!DOCTYPE html><html></html>";
         jo.element("html", html);

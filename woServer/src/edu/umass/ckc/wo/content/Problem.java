@@ -158,6 +158,9 @@ public class Problem implements Activity {
     public String getForm() { return form; }
 
     public String getInstructions () { return instructions ; }
+    public void setInstructions (String instr) {
+        this.instructions = instr;
+    }
 
     public int[] getTopicIds() {
         return topicIds;

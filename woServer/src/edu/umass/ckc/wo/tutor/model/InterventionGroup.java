@@ -2,11 +2,10 @@ package edu.umass.ckc.wo.tutor.model;
 
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.tutor.intervSel.InterventionState;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionState;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 import org.jdom.Element;

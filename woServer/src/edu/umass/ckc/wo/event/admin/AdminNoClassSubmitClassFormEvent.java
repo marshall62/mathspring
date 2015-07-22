@@ -15,11 +15,13 @@ public class AdminNoClassSubmitClassFormEvent extends AdminCreateClassEvent{
     private static final String TOWN = "town";
     private static final String SCHOOL_YEAR = "year";
     private static final String SECTION = "section";
+    private static final String GRADE = "grade";
     private String school;
     private String town;
     private String schoolYear;
     private String className;
     private String section;
+    private String grade;
 
 
 
@@ -31,6 +33,7 @@ public class AdminNoClassSubmitClassFormEvent extends AdminCreateClassEvent{
         this.setSchoolYear(p.getString(SCHOOL_YEAR));
         this.setTown(p.getString(TOWN));
         this.section = p.getString(SECTION);
+        this.grade = p.getString(GRADE);
     }
 
 
@@ -72,5 +75,13 @@ public class AdminNoClassSubmitClassFormEvent extends AdminCreateClassEvent{
 
     public String getSection() {
         return this.section;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }

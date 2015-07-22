@@ -78,6 +78,37 @@ public class DbClassPedagogies {
 
     }
 
+    public static List<PedagogyBean> getClassSimpleConfigPedagogyBeans(Connection conn, int classId) throws SQLException {
+        // Goes through the pedagogies and takes the ones marked with a simpleConfigName tag
+        Pedagogy[] peds = Settings.pedagogyGroups.values().toArray(new Pedagogy[Settings.pedagogyGroups.values().size()]);
+        List<PedagogyBean> beans = new ArrayList<PedagogyBean>(peds.length);
+        List<String> pedIds = DbClassPedagogies.getClassPedagogyIds(conn,classId);
+
+        for (Pedagogy p: peds) {
+            String simpleConfigName = p.getSimpleConfigName();
+            boolean isDefault = p.isDefault();
+            if (simpleConfigName != null)  {
+                PedagogyBean b =new PedagogyBean(Integer.parseInt(p.getId()),simpleConfigName);
+                // If the class doesn't have pedagogies assigned, set pedagogies marked "default" as selected
+                if (pedIds.size() == 0)
+                    b.setSelected(isDefault);
+                // otherwise set the pedagogy to selected if its one of the ones assigned to the class
+                else if (Lists.inList(Integer.parseInt(p.getId()),pedIds))
+                    b.setSelected(true);
+                beans.add(b);
+            }
+
+        }
+        // Not sure about this part of things.  Its marking beans as selected if they are
+//        List<String> pedIds = DbClassPedagogies.getClassPedagogyIds(conn,classId);
+//        for (PedagogyBean b: beans) {
+//            if (Lists.inList(b.getId(),pedIds))
+//                b.setSelected(true);
+//        }
+        return beans;
+
+    }
+
 
 
     public static List<Pedagogy> getClassPedagogies (Connection conn, int classId) throws SQLException, DeveloperException {
