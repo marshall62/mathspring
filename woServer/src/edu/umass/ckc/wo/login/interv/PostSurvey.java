@@ -41,15 +41,17 @@ public class PostSurvey extends LoginInterventionSelector {
         if (configXML == null)
             throw new UserException("PostSurvey expects config xml");
         Element e =this.configXML.getChild("url");
-
-        if (e != null)
+        ClassConfig ci = DbClass.getClassConfig(smgr.getConnection(),smgr.getClassID());
+        // first choice to get the URL is the classconfig
+        if (ci.getPostSurveyURL() != null)
+            this.url=ci.getPostSurveyURL();
+            // see if provided in the XML
+        else if (e != null)
             this.url= e.getTextTrim();
-        else {
-            ClassConfig ci = DbClass.getClassConfig(smgr.getConnection(),smgr.getClassID());
-            if (ci.getPostSurveyURL() != null)
-                this.url=ci.getPostSurveyURL();
-            else this.url = Settings.postSurvey;
-        }
+            // get from db globalsettings.
+        else
+            this.url = Settings.postSurvey;
+
         e = configXML.getChild("studId");
 
         if (e != null) {

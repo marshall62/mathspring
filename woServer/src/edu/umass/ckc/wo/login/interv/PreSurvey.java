@@ -45,17 +45,16 @@ public class PreSurvey  extends LoginInterventionSelector {
         if (configXML == null)
             throw new UserException("PreSurvey expects config xml");
         Element e =this.configXML.getChild("url");
-
-        if (e != null)   {
+        ClassConfig ci = DbClass.getClassConfig(smgr.getConnection(),smgr.getClassID());
+        // first choice to get the URL is the classconfig
+        if (ci.getPreSurveyURL() != null)
+            this.url=ci.getPreSurveyURL();
+        // see if provided in the XML
+        else if (e != null)
             this.url= e.getTextTrim();
-        }
-        // no URL provided means we get it from the db.  First check classconfig and then globalsettings.
-        else {
-            ClassConfig ci = DbClass.getClassConfig(smgr.getConnection(),smgr.getClassID());
-            if (ci.getPreSurveyURL() != null)
-                this.url=ci.getPreSurveyURL();
-            else this.url = Settings.preSurvey;
-        }
+        // get from db globalsettings.
+        else
+           this.url = Settings.preSurvey;
         e = configXML.getChild("studId");
 
         if (e != null) {
