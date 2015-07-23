@@ -632,7 +632,8 @@ public class DbClass {
 
 
     public static ClassConfig getClassConfig(Connection conn, int classId) throws SQLException {
-        String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey from classconfig where classId=?";
+        String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey" +
+                ",presurveyurl,postsurveyurl from classconfig where classId=?";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classId);
         ResultSet rs = ps.executeQuery();
@@ -645,7 +646,9 @@ public class DbClass {
             int tut = rs.getInt("tutoring");
             boolean useDef = rs.getBoolean("useDefaultHutActivationRules");
             boolean showPostSurvey = rs.getBoolean("showPostSurvey");
-            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey);
+            String presurveyurl = rs.getString("presurveyurl");
+            String postsurveyurl = rs.getString("postsurveyurl");
+            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl, postsurveyurl);
         } else return null;
     }
 

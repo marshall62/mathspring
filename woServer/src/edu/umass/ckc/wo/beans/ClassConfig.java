@@ -15,6 +15,8 @@ public class ClassConfig {
     private int tutoring;
     private boolean useDefaults;
     private boolean showPostSurvey;
+    private String preSurveyURL;
+    private String postSurveyURL;
 
     public static final int OFF=0;
     public static final int ON=1;
@@ -22,10 +24,10 @@ public class ClassConfig {
     public static final int ON_AFTER_POSTTEST=3;
 
     public static ClassConfig getDefaultConfig () {
-        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false);
+        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false, null, null);
     }
 
-    public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults, boolean showPostSurvey) {
+    public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults, boolean showPostSurvey, String presurveyurl, String postsurveyurl) {
         this.pretest = pretest;
         this.posttest = posttest;
         this.fantasy = fantasy;
@@ -34,6 +36,8 @@ public class ClassConfig {
         this.tutoring = tutoring;
         this.useDefaults = useDefaults;
         this.showPostSurvey=showPostSurvey;
+        this.preSurveyURL=presurveyurl;
+        this.postSurveyURL=postsurveyurl;
     }
 
     public int getPretest() {
@@ -68,8 +72,21 @@ public class ClassConfig {
         return this.showPostSurvey;
     }
 
+    public String getPreSurveyURL() {
+        return preSurveyURL;
+    }
 
+    public void setPreSurveyURL(String preSurveyURL) {
+        this.preSurveyURL = preSurveyURL;
+    }
 
+    public String getPostSurveyURL() {
+        return postSurveyURL;
+    }
+
+    public void setPostSurveyURL(String postSurveyURL) {
+        this.postSurveyURL = postSurveyURL;
+    }
 
     public String toString () {
         return String.format("&pretest=%d&posttest=%d&fantasy=%d&mfr=%d&spatial=%d&tutoring=%d",
