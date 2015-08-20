@@ -13,7 +13,7 @@ March 23, 2012
 <head>
     <meta charset="utf-8">
 
-    <title>Wayang Outpost Teacher Tools   </title>
+    <title>Mathspring Teacher Tools   </title>
 
     <link href="css/wottMan.css" rel="stylesheet" type="text/css">
     <link href="css/p7ccm/p7ccm03.css" rel="stylesheet" type="text/css" media="all">
@@ -65,7 +65,7 @@ March 23, 2012
                         <table width="100%">
                             <tr>
                                 <td width=80%>
-                                    <p id="header">Wayang Outpost Teacher Tools </p>
+                                    <p id="header">Mathspring Teacher Tools </p>
                                 </td>
                                 <td width=20%>
                                     <p  align="right" width="200"><font color="#8BB42D" size="4" face="Arial, Helvetica, sans-serif">Limited Mode</font> </p>
@@ -92,7 +92,7 @@ March 23, 2012
                                     <li><a href="#">Class Reports</a></li>
 
 
-                                    <li><a href="http://wayangoutpost.com/">Wayang Outpost Website </a></li>
+                                    <li><a href="http://mathspring.org/">Mathspring Website </a></li>
 
                                 </ul>
                                 <!--[if lte IE 6]>

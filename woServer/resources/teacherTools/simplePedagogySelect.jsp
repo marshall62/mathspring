@@ -7,7 +7,7 @@
 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:include page="wayangTempHeadnoClass.jsp" />
+<jsp:include page="${sideMenu}" />
 <jsp:useBean id="bean" scope="request" type="edu.umass.ckc.wo.beans.Classes"/>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -29,7 +29,10 @@
 
                 </c:forEach>
             </table>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/WoAdmin?action=${action}&classId=${classId}&teacherId=${teacherId}">Advanced Pedagogy Selection</a></p>
+            <%-- only show the advanced pedagogy link to admins --%>
+            <c:if test="${sideMenu == 'adminSideMenu.jsp'}">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/WoAdmin?action=${action}&classId=${classId}&teacherId=${teacherId}">Advanced Pedagogy Selection</a></p>
+            </c:if>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="submit" name="Submit" value="Submit">
                 <input type="hidden" name="classId" value="<c:out value="${classId}"/>">

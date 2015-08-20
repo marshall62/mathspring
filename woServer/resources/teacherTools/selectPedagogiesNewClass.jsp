@@ -7,7 +7,7 @@
 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:include page="wayangTempHeadnoClass.jsp" />
+<jsp:include page="adminNoClassSideMenu.jsp" />
 <jsp:useBean id="bean" scope="request" type="edu.umass.ckc.wo.beans.Classes"/>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

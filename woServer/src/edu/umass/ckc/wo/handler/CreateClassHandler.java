@@ -2,11 +2,10 @@ package edu.umass.ckc.wo.handler;
 
 
 import edu.umass.ckc.wo.beans.Classes;
-import edu.umass.ckc.wo.db.DbClassPedagogies;
+import edu.umass.ckc.wo.beans.Teacher;
+import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.PretestPool;
-import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbPrePost;
 import edu.umass.ckc.wo.event.admin.*;
 import ckc.servlet.servbase.ServletEvent;
 import ckc.servlet.servbase.View;
@@ -39,6 +38,7 @@ public class CreateClassHandler  {
     public static final String NOCLASS_JSP="/teacherTools/noClassCreateClass.jsp";
     public static final String SELECT_PEDAGOGIES_JSP = "/teacherTools/selectPedagogies.jsp";
     public static final String SIMPLE_SELECT_PEDAGOGIES_JSP = "/teacherTools/simplePedagogySelect.jsp";
+    public static final String SIMPLE_CLASS_CONFIG_JSP = "/teacherTools/simpleClassConfig.jsp";
     public static final String SELECT_PRETEST_POOL_JSP = "/teacherTools/selectPretest.jsp";
     public static final String ACTIVATE_HUTS_JSP = "/teacherTools/activatehuts.jsp";
     public static final String CLASS_INFO_JSP = "/teacherTools/classInfo.jsp";
@@ -58,6 +58,11 @@ public class CreateClassHandler  {
             req.setAttribute("action","AdminCreateNewClass");
             req.setAttribute("message","");
             req.setAttribute("teacherId",((AdminCreateNewClassEvent) e).getTeacherId());
+            setTeacherName(conn,req,((AdminCreateNewClassEvent) e).getTeacherId());
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+
+            req.setAttribute("sideMenu",adminId != null ? "adminNoClassSideMenu.jsp" : "teacherNoClassSideMenu.jsp"); // set side menu for admin or teacher
+
             req.getRequestDispatcher(JSP).forward(req,resp);
             return null;
         }
@@ -66,6 +71,7 @@ public class CreateClassHandler  {
             req.setAttribute("action","AdminCreateNewClass");
             req.setAttribute("message","");
             req.setAttribute("teacherId",((AdminNoClassCreateNewClassEvent) e).getTeacherId());
+            setTeacherName(conn,req,((AdminCreateNewClassEvent) e).getTeacherId());
             req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
             return null;
 
@@ -110,42 +116,20 @@ public class CreateClassHandler  {
             }
             return null;
         }
-        // State 4: process submitted form with selected pretest pool.  Then show class info
-        // using classInfo.jsp
-        else if (e instanceof AdminSubmitSelectedPretestEvent) {
-            AdminSubmitSelectedPretestEvent e2 = (AdminSubmitSelectedPretestEvent) e;
-            ClassInfo info = DbClass.getClass(conn,((AdminSubmitSelectedPretestEvent) e).getClassId());
-            ClassInfo[] classes = DbClass.getClasses(conn, ((AdminSubmitSelectedPretestEvent) e).getTeacherId());
-            Classes bean = new Classes(classes);
-            req.setAttribute("action", "AdminUpdateClassId");
-            req.setAttribute("bean",bean);
-            req.setAttribute("classInfo",info);
-            req.setAttribute("classId", e2.getClassId());
-            req.setAttribute("teacherId", e2.getTeacherId());
 
-            ClassAdminHelper.processSelectedPretestSubmission(conn, e2.getClassId(),e2.getPoolId(),
-                    req,resp,MAINPAGE_JSP, e2.isGivePretest());
-            return null;
-        }
         // next state will be to select adventures stuff
 
 
-        // for debugging only
-         else if (e instanceof AdminCreateClassTestEvent) {
-            PretestPool apool = DbPrePost.getPretestPool(conn,((AdminCreateClassTestEvent) e).getClassId());
-            ClassInfo info = DbClass.getClass(conn,((AdminCreateClassTestEvent) e).getClassId());
-            req.setAttribute("action","AdminCreateClassTest");
-            req.setAttribute("pools",DbPrePost.getAllPretestPools(conn));
-            req.setAttribute("classId",((AdminCreateClassTestEvent) e).getClassId());
-            req.setAttribute("classInfo",info);
-            ClassInfo c2 = new ClassInfo("a",100,"hi","ch","s",161,3,"dkd",4,1,1, 0, 7, 0, 7);
-            PretestPool ppp = new PretestPool(1,"pool10");
-            req.setAttribute("ccc",c2);
-            req.setAttribute("aaa",ppp);
-            req.getRequestDispatcher("/teacherTools/test.jsp").forward(req,resp);
-            return null;
-        }
+
         else return null;
+    }
+
+    public static void setTeacherName(Connection conn, HttpServletRequest req, int teacherId) throws SQLException {
+        Teacher t = DbTeacher.getTeacher(conn,teacherId);
+        if (t != null) {
+            String n = t.getName();
+            req.setAttribute("teacherName",n);
+        }
     }
 
 
@@ -171,15 +155,20 @@ public class CreateClassHandler  {
                 || town.trim().equals("")) {
             req.setAttribute("message","You must correctly fill out all required fields in the form.");
             req.setAttribute("&teacherId",e.getTeacherId());
+            setTeacherName(conn,req,e.getTeacherId());
             req.getRequestDispatcher(JSP).forward(req,resp);
             return null;
         }
         else if (!validateYear(schoolYear)) {
+
             req.setAttribute("&teacherId",e.getTeacherId());
+            setTeacherName(conn,req,e.getTeacherId());
             req.setAttribute("message","That year is invalid. Please enter year as 2XXX");
             req.getRequestDispatcher(JSP).forward(req,resp);
             return null;
         }
+        // After the basic info of a class is successfully given, we go to a simple class config
+        // page where a teacher can quickly establish things they care about and then they are done.
         else {
             int defaultPropGroup = DbClass.getPropGroupWithName(conn,"default");
             String tid = Integer.toString(e.getTeacherId());
@@ -189,24 +178,33 @@ public class CreateClassHandler  {
             newid = DbClass.insertClass(conn,className, school, schoolYear, town, section,tid,
                     defaultPropGroup, 0, grade);
             if (newid != -1) {
-
+                DbTopics.insertLessonPlanWithDefaultTopicSequence(conn,newid);
                 ClassInfo info = DbClass.getClass(conn,newid);
+                info.setSimpleConfigDefaults();
                 ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
                 Classes bean = new Classes(classes);
-
-                req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPedagogies");
-                // TODO get only the pedagogies for a teacher (not the full list that an admin would want).
+                // The form submission event will go back to AlterClassHandler
+                Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+                req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+                // tells the JSP to include a hidden input with createClassSeq=true which means the submit buttons will
+                // take the user to the next page in a sequence of class creation which is create-class, simpleConfig, roster
+                req.setAttribute("createClassSeq",true);
+                req.setAttribute("formSubmissionEvent","AdminSubmitSimpleClassConfig");
                 req.setAttribute("pedagogies", DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn, newid));
                 req.setAttribute("bean",bean);
                 req.setAttribute("classInfo",info);
                 req.setAttribute("classId", newid);
                 req.setAttribute("teacherId",e.getTeacherId());
+                setTeacherName(conn,req,e.getTeacherId());
                 req.setAttribute("action","AdminAdvancedPedagogySelection");
-                req.getRequestDispatcher(SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
+//                req.getRequestDispatcher(SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
+                req.getRequestDispatcher(SIMPLE_CLASS_CONFIG_JSP).forward(req,resp);
                 return null;
             }
             else {
+
                 req.setAttribute("&teacherId",e.getTeacherId());
+                setTeacherName(conn,req,e.getTeacherId());
                 req.setAttribute("message","Failed to add class.  That class already exists");
                 req.getRequestDispatcher(JSP).forward(req,resp);
                 return null;
@@ -227,11 +225,13 @@ public class CreateClassHandler  {
                 || town.trim().equals("")) {
             req.setAttribute("message","You must correctly fill out all required fields in the form.");
             req.setAttribute("&teacherId",e.getTeacherId());
+            setTeacherName(conn,req,e.getTeacherId());
             req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
             return null;
         }
         else if (!validateYear(schoolYear)) {
             req.setAttribute("&teacherId",e.getTeacherId());
+            setTeacherName(conn,req,e.getTeacherId());
             req.setAttribute("message","That year is invalid. Please enter year as 2XXX");
             req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
             return null;
@@ -245,10 +245,14 @@ public class CreateClassHandler  {
             newid = DbClass.insertClass(conn,className, school, schoolYear, town, section,tid,
                     defaultPropGroup, 0, grade);
             if (newid != -1) {
+                Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+                req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
                 req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPedagogies");
                 req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,newid));
                 req.setAttribute("classId",newid);
                 req.setAttribute("teacherId",e.getTeacherId());
+                setTeacherName(conn,req,e.getTeacherId());
                 ClassInfo info = DbClass.getClass(conn,newid);
                 ClassInfo[] classes = DbClass.getClasses(conn,info.getTeachid());
                 Classes bean = new Classes(classes);
@@ -260,6 +264,7 @@ public class CreateClassHandler  {
             }
             else {
                 req.setAttribute("&teacherId",e.getTeacherId());
+                setTeacherName(conn,req,e.getTeacherId());
                 req.setAttribute("message","Failed to add class.  That class already exists");
                 req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
                 return null;
@@ -284,13 +289,17 @@ public class CreateClassHandler  {
                                                            HttpServletRequest req,
                                                            HttpServletResponse resp) throws SQLException, IOException, ServletException {
             ClassInfo info = DbClass.getClass(conn,classId);
-            req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPretest");
+        Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+        req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
+        req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPretest");
             req.setAttribute("classInfo",info);
             req.setAttribute("classId",classId);
             ClassInfo[] classes = DbClass.getClasses(conn,info.getTeachid());
             Classes bean = new Classes(classes);
             req.setAttribute("bean", bean);
             req.setAttribute("teacherId",info.getTeachid());
+            setTeacherName(conn,req,info.getTeachid());
             req.setAttribute("selectedPool",-1); // on new class no pool is selected
             List<PretestPool> pools = DbPrePost.getAllPretestPools(conn);
             req.setAttribute("pools", pools);
@@ -308,6 +317,8 @@ public class CreateClassHandler  {
         ClassInfo info = DbClass.getClass(conn,classId);
         ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
         Classes bean = new Classes(classes);
+        Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+        req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
 
         req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPedagogies");
         req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,classId));
@@ -315,7 +326,7 @@ public class CreateClassHandler  {
         req.setAttribute("classInfo",info);
         req.setAttribute("classId", classId);
         req.setAttribute("teacherId",e.getTeacherId());
-
+        setTeacherName(conn,req,e.getTeacherId());
         req.getRequestDispatcher(SELECT_PEDAGOGIES_JSP).forward(req,resp);
         return null;
 

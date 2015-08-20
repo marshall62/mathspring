@@ -26,9 +26,11 @@ public class Topic implements Comparable<Topic> {
     public static final String TYPE = "type";
     public static final String ACTIVE = "active";
 
-    public Topic () {}
+    public Topic () {
+    }
 
     public Topic (int id, String name) {
+        this();
         this.name = name;
         this.id = id;
     }

@@ -3,7 +3,10 @@ package edu.umass.ckc.wo.woserver;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Classes;
+import edu.umass.ckc.wo.beans.Teacher;
+import edu.umass.ckc.wo.db.DbAdmin;
 import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.db.DbTeacher;
 import edu.umass.ckc.wo.event.admin.*;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.*;
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
+import java.util.List;
 
 
 public class AdminHandler {
@@ -61,10 +65,20 @@ public class AdminHandler {
         if (e instanceof AdminTeacherLoginEvent) {
             if (Settings.useAdminServletSession) {
                 HttpSession sess = servletRequest.getSession();
-                sess.setMaxInactiveInterval(Settings.adminServletSessionTimeoutSeconds); // allow 30 minutes of inactive time before session expires
+                sess.setMaxInactiveInterval(Settings.adminServletSessionTimeoutSeconds); // allow 60 minutes of inactive time before session expires
             }
-            new AdminToolLoginHandler().handleEvent(conn,vv,(AdminTeacherLoginEvent) e, servletRequest, servletResponse);
+            new AdminToolLoginHandler().handleEvent(conn, vv, (AdminTeacherLoginEvent) e, servletRequest, servletResponse);
             return false;  // request forwarded to JSP, so tell caller not to write servlet output
+        }
+        // an admin can set a teacher id to narrow the classes they work with
+        else if (e instanceof AdminSetTeacherEvent) {
+            HttpSession sess = servletRequest.getSession();
+            sess.setAttribute("teacherId",((AdminSetTeacherEvent) e).getTeacherId());
+            Integer adminId = (Integer) sess.getAttribute("adminId");
+            Teacher t = DbTeacher.getTeacher(conn,((AdminSetTeacherEvent) e).getTeacherId());
+            Teacher a = DbAdmin.getAdmin(conn, adminId);
+            AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t);
+            return false;
         }
         if (Settings.useAdminServletSession && !(e instanceof UserRegistrationEvent)) {
             HttpSession sess = servletRequest.getSession(false);
@@ -82,6 +96,7 @@ public class AdminHandler {
             AdminChooseActivityEvent ee = (AdminChooseActivityEvent) e;
             int teacherId = ee.getTeacherId();
             servletRequest.setAttribute("teacherId",teacherId);
+            CreateClassHandler.setTeacherName(conn,servletRequest, ee.getTeacherId());
             servletRequest.getRequestDispatcher("/teacherTools/teacherActivities.jsp").forward(servletRequest,servletResponse);
             return false; // tell caller not to generate output
         }
@@ -109,6 +124,7 @@ public class AdminHandler {
 //            servletRequest.getSession().setAttribute(AdminHandler.CLASSID,ee.getClassId());
             servletRequest.setAttribute("classId",ee.getClassId());
             servletRequest.setAttribute("teacherId",ee.getTeacherId());
+            CreateClassHandler.setTeacherName(conn,servletRequest, ee.getTeacherId());
             servletRequest.getRequestDispatcher("/teacherTools/selectReport.jsp").forward(servletRequest,servletResponse);
             return false;
         }
@@ -119,6 +135,7 @@ public class AdminHandler {
         }
         else if (e instanceof AdminEditSurveysEvent && !((AdminEditSurveysEvent) e).isSaveMode()) {
             servletRequest.setAttribute("teacherId",((AdminEditSurveysEvent) e).getTeacherId());
+            CreateClassHandler.setTeacherName(conn,servletRequest, ((AdminEditSurveysEvent) e).getTeacherId());
             servletRequest.setAttribute("preSurvey",Settings.preSurvey);
             servletRequest.setAttribute("postSurvey",Settings.preSurvey);
             servletRequest.getRequestDispatcher(CreateClassHandler.EDIT_SURVEYS_JSP).forward(servletRequest,servletResponse);
@@ -126,6 +143,7 @@ public class AdminHandler {
         }
         else if (e instanceof AdminEditSurveysEvent && ((AdminEditSurveysEvent) e).isSaveMode()) {
             servletRequest.setAttribute("teacherId",((AdminEditSurveysEvent) e).getTeacherId());
+            CreateClassHandler.setTeacherName(conn,servletRequest, ((AdminEditSurveysEvent) e).getTeacherId());
             Settings.setSurveys(conn, ((AdminEditSurveysEvent) e).getPreSurvey(),((AdminEditSurveysEvent) e).getPostSurvey());
             Settings.preSurvey= ((AdminEditSurveysEvent) e).getPreSurvey();
             Settings.postSurvey= ((AdminEditSurveysEvent) e).getPostSurvey();
@@ -159,22 +177,28 @@ public class AdminHandler {
             ClassInfo[] classes1 = DbClass.getClasses(conn, e1.getTeacherId());
             Classes bean1 = new Classes(classes1);
 
-            int hasClasses =-1;
-            for (ClassInfo cl: classes1){
-                hasClasses = cl.getClassid();
+            Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
+            if (adminId != null) {
+                Teacher t = DbTeacher.getTeacher(conn,((AdminEvent) e).getTeacherId());
+                Teacher a = DbAdmin.getAdmin(conn,adminId);
+                AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t);
+                return false;
             }
-
-            if(hasClasses<0){
-                servletRequest.getRequestDispatcher("/teacherTools/mainNoClasses.jsp").forward(servletRequest,servletResponse);
+            if(classes1.length <= 0){
+                servletRequest.getRequestDispatcher("/teacherTools/mainNoClasses.jsp").forward(servletRequest, servletResponse);
+                return false;
             }
-            ClassInfo classInfo = DbClass.getClass(conn,hasClasses);
+            ClassInfo classInfo = classes1[classes1.length-1];
             servletRequest.setAttribute("classInfo",classInfo);
             servletRequest.setAttribute("action","AdminUpdateClassId");
             servletRequest.setAttribute("bean", bean1);
-
-            servletRequest.setAttribute("classId", Integer.toString(hasClasses));
+            servletRequest.setAttribute("classId", Integer.toString(classInfo.getClassid()));
             servletRequest.setAttribute("teacherId",e1.getTeacherId());
-
+            CreateClassHandler.setTeacherName(conn,servletRequest, e1.getTeacherId());
+            if (classes1.length < 1)
+                servletRequest.setAttribute("sideMenu", "teacherNoClassSideMenu.jsp");
+            else servletRequest.setAttribute("sideMenu", "teacherSideMenu.jsp");
+            servletRequest.setAttribute("classInfo", classInfo);
             servletRequest.getRequestDispatcher("/teacherTools/wayangMain.jsp").forward(servletRequest,servletResponse);
             return false;
         }

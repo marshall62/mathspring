@@ -87,7 +87,7 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
     private NextProblemEvent myForcedTopicEvent ;
 //    private boolean canShowExternalActivity;
 
-    protected int divisor =2;  // this value will be overwritten by the value coming out of the classConfig table for this students class
+    protected double divisor =2;  // this value will be overwritten by the value coming out of the classConfig table for this students class
 
     private long timeInTopic=0;
 
@@ -172,7 +172,7 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
         }
         assert(startIndex >= 0 && startIndex <= endIndex && endIndex < probsInTopic.size());
 
-        int offset = (endIndex - startIndex + 1) / divisor;
+        int offset = (int) Math.round((endIndex - startIndex + 1) / divisor);
         this.newIndex = startIndex + offset;
         logger.debug("want problem between indices: " + startIndex + " and " + endIndex + ": selected index is: " + newIndex);
         return probsInTopic.get(this.newIndex);

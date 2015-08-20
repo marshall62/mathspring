@@ -21,6 +21,11 @@ public class ClassInfo {
     private int studentEmailIntervalDays;
     private String flashClient;
     private String grade;
+    private String simpleLC;
+    private String simpleDiffRate;
+    private String simpleCollab;
+    private String simpleLowDiff;
+    private String simpleHighDiff;
 
     public ClassInfo(String school, int schoolYear, String name, String town, String section,
                      int classid, int teachid, String teacherName, int propGroupId, int pretestPoolId, String pretestPoolDescr,
@@ -164,5 +169,53 @@ public class ClassInfo {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public String getSimpleLC() {
+        return simpleLC;
+    }
+
+    public void setSimpleLC(String simpleLC) {
+        this.simpleLC = simpleLC;
+    }
+
+    public String getSimpleDiffRate() {
+        return simpleDiffRate;
+    }
+
+    public void setSimpleDiffRate(String simpleDiffRate) {
+        this.simpleDiffRate = simpleDiffRate;
+    }
+
+    public String getSimpleCollab() {
+        return simpleCollab;
+    }
+
+    public void setSimpleCollab(String simpleCollab) {
+        this.simpleCollab = simpleCollab;
+    }
+
+    public String getSimpleLowDiff() {
+        return simpleLowDiff;
+    }
+
+    public void setSimpleLowDiff(String simpleLowDiff) {
+        this.simpleLowDiff = simpleLowDiff;
+    }
+
+    public String getSimpleHighDiff() {
+        return simpleHighDiff;
+    }
+
+    public void setSimpleHighDiff(String simpleHighDiff) {
+        this.simpleHighDiff = simpleHighDiff;
+    }
+
+    public void setSimpleConfigDefaults() {
+        this.simpleCollab="none";
+        this.simpleDiffRate="normal";
+        this.simpleLC = "both";
+        this.simpleLowDiff="below2";
+        this.simpleHighDiff="above1";
     }
 }

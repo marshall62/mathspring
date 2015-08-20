@@ -57,6 +57,7 @@ public class WoAdminServlet extends BaseServlet {
     public boolean handleRequest(ServletContext servletContext, Connection conn, HttpServletRequest request,
                                  HttpServletResponse response, ServletParams params, StringBuffer servletOutput) throws Exception {
         try {
+            logger.info(">>" + params.toString());
             ServletContext sc = this.getServletContext();
             ServletEvent e;
             WoAdminEventFactory f = new WoAdminEventFactory();
@@ -64,6 +65,9 @@ public class WoAdminServlet extends BaseServlet {
 
             boolean wroteToBuffer;
             wroteToBuffer = new AdminHandler().handleEvent(request, response, servletContext, conn, e, servletOutput);
+            if (wroteToBuffer) {
+                logger.info("<<" + servletOutput.toString());
+            }
             return wroteToBuffer;
         } catch (Exception e1) {
             e1.printStackTrace();  //To change body of catch statement use Options | File Templates.

@@ -51,10 +51,14 @@ public class ProblemSelectionHandler {
             ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
             Classes bean1 = new Classes(classes1);
             ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
+            Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
+            servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
             servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("problems",satProbs);
             servletRequest.setAttribute("classId",event.getClassId());
             servletRequest.setAttribute("teacherId",event.getTeacherId());
+            CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
             servletRequest.setAttribute("topicId",topicId);
             servletRequest.setAttribute("bean", bean1);
             servletRequest.setAttribute("classInfo", classInfo);
@@ -94,10 +98,14 @@ public class ProblemSelectionHandler {
                 if (!prob.isActivated())
                     deactivatedIds.add(prob.getId());
             probMgr.updateOmittedProbsList(conn,classId,topicId,deactivatedIds);
+            Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
+            servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
             servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("problems",satProbs);
             servletRequest.setAttribute("classId",event.getClassId());
             servletRequest.setAttribute("teacherId",event.getTeacherId());
+            CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
             servletRequest.setAttribute("topicId",topicId);
             servletRequest.setAttribute("bean", bean1);
             servletRequest.setAttribute("classInfo", classInfo);
@@ -116,10 +124,14 @@ public class ProblemSelectionHandler {
             ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
             Classes bean1 = new Classes(classes1);
             ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
+            Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
+            servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
             servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("topics",topics);
             servletRequest.setAttribute("classId",event.getClassId());
             servletRequest.setAttribute("teacherId",event.getTeacherId());
+            CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
             servletRequest.setAttribute("bean",bean1);
             servletRequest.setAttribute("classInfo",classInfo);
             servletRequest.getRequestDispatcher(JSP).forward(servletRequest,servletResponse);
