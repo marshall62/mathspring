@@ -18,6 +18,7 @@ public class ClassConfig {
     private String preSurveyURL;
     private String postSurveyURL;
 
+
     public static final int OFF=0;
     public static final int ON=1;
     public static final int ON_AFTER_PRETEST=2;

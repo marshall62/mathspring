@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<jsp:include page="wayangTempHead.jsp" />
+<jsp:include page="${sideMenu}" />
 <div class="mainPageMargin">
 <p>Student List</p>
 </div>
@@ -54,6 +54,7 @@
       <input type="submit" name="submit" value="Create Students" />
       <input type="hidden" name="teacherId"  value="<c:out value="${classInfo.teachid}"/>"/>
       <input type="hidden" name="classId"  value="<c:out value="${classInfo.classid}"/>"/>
+      <c:if test="${createClassSeq}"> <input type="hidden" name="createClassSeq" value="true"/></c:if>
     </form>
  <br>
 

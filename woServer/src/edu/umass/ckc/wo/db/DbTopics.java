@@ -434,6 +434,8 @@ public class DbTopics {
         return -1;
     }
 
+
+
     public static void insertClassInactiveTopic(Connection conn, int classId, Topic t) throws SQLException {
         PreparedStatement stmt=null;
         try {
@@ -504,6 +506,20 @@ public class DbTopics {
             if (ps != null)
                 ps.close();
 
+        }
+    }
+
+    public static void clearClassLessonPlan(Connection conn, int classId) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q = "delete from classlessonplan where classId=?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1,classId);
+            ps.executeUpdate();
+        }  finally {
+            if (ps != null)
+                ps.close();
         }
     }
 }

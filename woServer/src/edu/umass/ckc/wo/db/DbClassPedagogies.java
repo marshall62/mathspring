@@ -46,7 +46,11 @@ public class DbClassPedagogies {
         }
     }
 
-    public static List<Pedagogy> getPedagogiesFromIds (List<String> pedagogyIds) throws DeveloperException {
+    /*
+    Given a list of pedagogy ids (which are what the class is set to be using), return the Pedagogy objects.
+    A fairly common error with older classes is that they reference a pedagogy that no longer exists.
+     */
+    public static List<Pedagogy> getPedagogiesFromIds(List<String> pedagogyIds) throws DeveloperException {
         List<Pedagogy> pedagogyList = new ArrayList<Pedagogy>();
         List<Pedagogy> defaultpeds = ClassAdminHelper.getDefaultPedagogies() ;
 
@@ -58,13 +62,21 @@ public class DbClassPedagogies {
                 break ;
             }
             else ped = Settings.pedagogyGroups.get(pid);
-            if (ped == null) {
-                throw new DeveloperException("Failed to find pedagogy for ID " + pid + ".  " +
-                        "You may need mark one pedagogy as the default.");
-            }
-            pedagogyList.add(ped);
+            // if we don't find the pedagogy, its likely to be one that has been deleted.  So
+            // skip over it.
+            if (ped != null)
+                pedagogyList.add(ped);
+
         }
         return pedagogyList;
+    }
+
+    public static void removeClassPedagogy(Connection conn, int classId, int pedId) throws SQLException {
+        String q = "delete from classpedagogies where classid=? and pedagogyid=?";
+        PreparedStatement ps = conn.prepareStatement(q);
+        ps.setInt(1,classId);
+        ps.setInt(2,pedId);
+        ps.executeUpdate();
     }
 
     public static PedagogyBean[] getClassPedagogyBeans(Connection conn, int classId) throws SQLException {
@@ -113,7 +125,7 @@ public class DbClassPedagogies {
 
     public static List<Pedagogy> getClassPedagogies (Connection conn, int classId) throws SQLException, DeveloperException {
 
-        List<String> pedagogyIds= getClassPedagogyIds(conn,classId);
+        List<String> pedagogyIds= getClassPedagogyIds(conn,classId); // note some of these may have been deleted if class is old.
         return getPedagogiesFromIds(pedagogyIds);
     }
 

@@ -79,6 +79,12 @@ public class Teacher implements Serializable {
         this.lname = lname;
     }
 
+    public String getName () {
+        if (fname != null && lname != null)
+            return fname + " " + lname;
+        else return userName;
+    }
+
     @Column(name = "userName", unique = true, nullable = false, length = 50)
     public String getUserName() {
         return userName;

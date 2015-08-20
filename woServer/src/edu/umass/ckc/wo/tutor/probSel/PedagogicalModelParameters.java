@@ -32,7 +32,7 @@ public class PedagogicalModelParameters {
     private TopicModelParameters.frequency topicIntroFrequency;
     private TopicModelParameters.frequency topicExampleFrequency;
     private String ccss;
-    private int difficultyRate ; // this is the divisor that the problem selector uses to find increase/decrease its index into the
+    private double difficultyRate ; // this is the divisor that the problem selector uses to find increase/decrease its index into the
     private int maxNumberProbs ;   // list of available problems
     private int minNumberProbs ;
     private long maxTimeInTopic;   // this is in milliseconds
@@ -135,7 +135,7 @@ public class PedagogicalModelParameters {
 
     // Called with parameters read from TeacherAdmin's class config
     public PedagogicalModelParameters(long maxTimeInTopic, int contentFailureThreshold, double topicMastery, int minNumberProbs,
-                                      long minTimeInTopic, int difficultyRate, int externalActivityTimeThreshold, int maxNumberProbs,
+                                      long minTimeInTopic, double difficultyRate, int externalActivityTimeThreshold, int maxNumberProbs,
                                       boolean showTopicIntro, boolean showExampleProblemFirst, TopicModelParameters.frequency topicIntroFreq, TopicModelParameters.frequency exampleFreq,
                                       int probReuseIntervalSessions, int probReuseIntervalDays, String lessonStyle) {
         this.maxNumberProbs = maxNumberProbs;
@@ -294,7 +294,7 @@ public class PedagogicalModelParameters {
         return minTimeInTopic/60000;
     }
 
-    public int getDifficultyRate() {
+    public double getDifficultyRate() {
         return difficultyRate;
     }
 

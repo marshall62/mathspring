@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<jsp:include page="teacherToolsHeader.jsp" /> --%>
 
-<jsp:include page="wayangTempHead.jsp"/>
+<jsp:include page="${sideMenu}"/>
 
 <jsp:useBean id="bean" scope="request" type="edu.umass.ckc.wo.beans.Classes"/>
 

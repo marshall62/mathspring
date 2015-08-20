@@ -76,8 +76,13 @@ public class AlterStudentInClassHandler {
             u.setPedagogyId(pedId);
            
             List<Pedagogy> pedsInUse = DbClassPedagogies.getClassPedagogies(conn,classId);
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
             req.setAttribute("classId",e2.getClassId());
             req.setAttribute("teacherId",e2.getTeacherId());
+            CreateClassHandler.setTeacherName(conn,req, e2.getTeacherId());
+
             req.setAttribute("action", "AdminEditStudent");
             req.setAttribute("pedagogies",pedsInUse);
             req.setAttribute("student",u);
@@ -94,18 +99,26 @@ public class AlterStudentInClassHandler {
             u.setPedagogyId(pedId);
 
             List<Pedagogy> pedsInUse = DbClassPedagogies.getClassPedagogies(conn,classId);
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
             req.setAttribute("action","AdminAlterStudent");
             req.setAttribute("pedagogies",pedsInUse);
             req.setAttribute("classId",e2.getClassId());
             req.setAttribute("teacherId",e2.getTeacherId());
+            CreateClassHandler.setTeacherName(conn,req, e2.getTeacherId());
             req.setAttribute("student",u);
             req.setAttribute("message","Edits have been saved successfully.");
             req.getRequestDispatcher(EDIT_STUDENT_JSP).forward(req,resp);
             return;
         }
         ClassInfo classInfo = DbClass.getClass(conn,classId);
+        Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+        req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+
         req.setAttribute("classInfo",classInfo);
         req.setAttribute("teacherId",teacherId);
+        CreateClassHandler.setTeacherName(conn,req,teacherId);
         req.setAttribute("classId",classId);
         req.setAttribute("students",DbClass.getClassStudents(conn,classId));
         req.setAttribute("message",message);

@@ -88,30 +88,24 @@ March 20, 2012
                                 <ul class="p7TMM">
                                     <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminUpdateClassId&teacherId=${teacherId}&classId=${classId}">Main</a></li>
                                     <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminCreateNewClass&teacherId=${teacherId}">Create Class</a></li>
-
-                                    <li><a href="#">Edit Classes/Topics</a>
+                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSimpleClassSetup&teacherId=${teacherId}&classId=${classId}">Content Settings</a></li>
+                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditClassList&teacherId=${teacherId}&classId=${classId}">Student Roster</a></li>
+                                    <li><a href="#">Alter Existing Class</a>
                                         <div>
                                             <ul>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics&teacherId=${teacherId}&classId=${classId}"> Topic Control </a></li>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}"> Problem Selection </a></li>
-                                                <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPretest&teacherId=${teacherId}&classId=${classId}">Pre and Post Tests</a></li>--%>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics&teacherId=${teacherId}&classId=${classId}">Topic Selection</a></li>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}">Problem Selection</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPedagogies&teacherId=${teacherId}&classId=${classId}">Pedagogy Selection</a></li>
-                                                <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassActivateHuts&teacherId=${teacherId}&classId=${classId}">Hut Activation</a></li>--%>
-
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditClassList&teacherId=${teacherId}&classId=${classId}">Student List </a></li>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditClassList&teacherId=${teacherId}&classId=${classId}">Student List</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassCloneClass&teacherId=${teacherId}&classId=${classId}">Clone a Class</a></li>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminOtherClassConfig&teacherId=${teacherId}&classId=${classId}">Class Email Settings</a></li>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassEdit&teacherId=${teacherId}&classId=${classId}">Class Information </a></li>
-
-
-
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassEdit&teacherId=${teacherId}&classId=${classId}">Class Information</a></li>
                                             </ul>
                                         </div>
                                     </li>
+
                                     <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminViewReport&state=chooseClass&teacherId=${teacherId}">Class Reports</a></li>
 
 
-                                    <li><a href="${pageContext.request.contextPath}/WoAdmin?action=AdminTutor&teacherId=${teacherId}">Administrate Tutor </a></li>
 
                                     <li><a href="http://wayangoutpost.com/">MathSpring Website </a></li>
 

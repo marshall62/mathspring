@@ -49,24 +49,24 @@ public class BaseProblemSelector implements ProblemSelector {
         int nextIx=-1;
         // lastIx is -1 when the topic is new.
         if (lastIx == -1)
-            nextIx = (topicProbIds.size()-1) / parameters.getDifficultyRate();
+            nextIx = (int) Math.round((topicProbIds.size()-1) / parameters.getDifficultyRate());
 
         if (nextIx == -1 && nextDiff == TopicModel.difficulty.EASIER) {
             if (lastIx <= 0)
                 throw new DeveloperException("Last problem index=0 and want easier problem.   Content failure NOT PREDICTED by TopicSelector");
-            nextIx = lastIx / parameters.getDifficultyRate();
+            nextIx =(int) Math.round(lastIx / parameters.getDifficultyRate());
         }
         else if (nextIx == -1 && nextDiff == TopicModel.difficulty.HARDER) {
             if (lastIx >= topicProbIds.size())
                 throw new DeveloperException("Last problem >= number of problems in topic.   Content failure NOT PREDICTED by TopicSelector");
-            nextIx = lastIx + ((topicProbIds.size()-1 - lastIx) / parameters.getDifficultyRate());
+            nextIx = lastIx + ((int) Math.round((topicProbIds.size()-1 - lastIx) / parameters.getDifficultyRate()));
 
         }
         else if (nextIx == -1 && nextDiff == TopicModel.difficulty.SAME) {
             nextIx = Math.min(lastIx, topicProbIds.size()-1);
         }
-        int nextProbId = topicProbIds.get(nextIx);
-        state.setCurProblemIndexInTopic(nextIx);
+        int nextProbId = topicProbIds.get( nextIx);
+        state.setCurProblemIndexInTopic( nextIx);
         state.setCurTopicHasEasierProblem(nextIx > 0);
         state.setCurTopicHasHarderProblem(nextIx < topicProbIds.size() - 1);
         Problem p = ProblemMgr.getProblem(nextProbId);

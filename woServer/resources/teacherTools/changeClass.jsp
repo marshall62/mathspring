@@ -3,11 +3,16 @@
 <jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>
 
 <div align="right">
-    <table width="348" border="0" height="72">
+    <table width="500" border="0" height="72">
         <tr>
             <td>
                 <a href="http://wayangoutpost.info/"><img src="images/lighbulb.png" width="100" height="100" alt="help"></a>
             </td>
+            <c:if test="${teacherName != null}">
+                <td>Teacher:</td>
+                <td>${teacherName}</td>
+            </c:if>
+
             <td>
 
     <select name="classList" id="classSelection" onchange="changeClass(this,${teacherId});">;
