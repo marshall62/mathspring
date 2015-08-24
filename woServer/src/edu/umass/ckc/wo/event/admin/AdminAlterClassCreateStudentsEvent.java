@@ -20,8 +20,8 @@ public class AdminAlterClassCreateStudentsEvent extends AdminClassEvent {
         this.prefix = p.getString("prefix");
         this.testUserPrefix = p.getString("testUserPrefix");
         this.password = p.getString("password");
-        this.beginNum = p.getInt("beginNumber");
-        this.endNum = p.getInt("endNumber");
+        this.beginNum = p.getInt("beginNumber",-1);
+        this.endNum = p.getInt("endNumber",-1);
         this.createClassSeq = p.getBoolean("createClassSeq",false);
 
     }

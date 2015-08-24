@@ -66,7 +66,7 @@ public class DbAdmin {
     }
 
     public static Teacher getAdmin (Connection conn, int adminId) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("select ID,fname,lname,username from administrator where id=?");
+        PreparedStatement ps = conn.prepareStatement("select fname,lname,username from administrator where id=?");
         ps.setInt(1, adminId);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {

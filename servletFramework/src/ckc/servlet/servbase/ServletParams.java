@@ -58,17 +58,17 @@ public class ServletParams {
 
     public long getLong (String key, long dflt) {
         String r = request.getParameter(key);
-        return (r == null) ? dflt : Long.parseLong(r.trim());
+        return (r == null || r.trim().equals("")) ? dflt : Long.parseLong(r.trim());
     }
 
     public int getInt (String key, int dflt) {
         String r = request.getParameter(key);
-        return (r == null) ? dflt : Integer.parseInt(r.trim());
+        return (r == null || r.trim().equals("")) ? dflt : Integer.parseInt(r.trim());
     }
 
     public float getFloat(String key, float dflt) {
         String r = request.getParameter(key);
-        return (r == null) ? dflt : Float.parseFloat(r.trim());
+        return (r == null || r.trim().equals("")) ? dflt : Float.parseFloat(r.trim());
     }
 
     public String[] getStrings (String key) {
