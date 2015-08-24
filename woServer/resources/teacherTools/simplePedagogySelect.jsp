@@ -31,7 +31,7 @@
             </table>
             <%-- only show the advanced pedagogy link to admins --%>
             <c:if test="${sideMenu == 'adminSideMenu.jsp'}">
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/WoAdmin?action=${action}&classId=${classId}&teacherId=${teacherId}">Advanced Pedagogy Selection</a></p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/WoAdmin?action=AdminAlterClassAdvancedPedagogySelection&classId=${classId}&teacherId=${teacherId}">Advanced Pedagogy Selection</a></p>
             </c:if>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="submit" name="Submit" value="Submit">

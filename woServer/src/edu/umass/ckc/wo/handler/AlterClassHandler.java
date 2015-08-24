@@ -129,11 +129,15 @@ public class AlterClassHandler {
                 PretestPool pool = DbPrePost.getPretestPool(conn,classId);
                 Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
                 req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-                req.setAttribute("action", "AdminAlterClassCloneSubmitInfo");
+                req.setAttribute("action", "AdminAlterClassCloneClass");
                 CreateClassHandler.setTeacherName(conn,req,teacherId);
+                req.setAttribute("classId",classId);
                 req.setAttribute("teacherId", teacherId);
                 req.setAttribute("pedagogies",pedsInUse);
                 req.setAttribute("classInfo",classInfo);
+                ClassInfo[] classes = DbClass.getClasses(conn,teacherId);
+                Classes bean = new Classes(classes);
+                req.setAttribute("bean",bean);
                 req.setAttribute("pool",pool);
                 req.setAttribute("message","Cloning the class failed.  For identification purposes you MUST give a new name and section to this class.");
                 req.getRequestDispatcher(CLONE_CLASS_JSP).forward(req,resp);
@@ -144,13 +148,18 @@ public class AlterClassHandler {
                 PretestPool pool = DbPrePost.getPretestPool(conn,classId);
                 Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
                 req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-                req.setAttribute("action", "AdminAlterClassCloneSubmitInfo" );
+                req.setAttribute("action", "AdminAlterClassCloneClass" );
+                req.setAttribute("classId",e2.getClassId());
                 CreateClassHandler.setTeacherName(conn,req,teacherId);
                 req.setAttribute("teacherId", teacherId);
+                req.setAttribute("classInfo",classInfo);
+                ClassInfo[] classes = DbClass.getClasses(conn,teacherId);
+                Classes bean = new Classes(classes);
+                req.setAttribute("bean",bean);
                 req.setAttribute("pedagogies",pedsInUse);
                 req.setAttribute("pool",pool);
-                req.setAttribute("classInfo",classInfo);
-                req.getRequestDispatcher(CreateClassHandler.CLASS_INFO_JSP).forward(req,resp);
+                req.setAttribute("message", "Successfuly created clone " + classInfo.getName() + " " + classInfo.getSection());
+                req.getRequestDispatcher(CLONE_CLASS_JSP).forward(req,resp);
             }
 
         }
@@ -206,7 +215,7 @@ public class AlterClassHandler {
             req.setAttribute("teacherId", teacherId);
             req.setAttribute("classInfo", classInfo);
             req.setAttribute("bean", bean1);
-            req.setAttribute("action","AdminAlterClassAdvancedPedagogySelection");
+            req.setAttribute("action","AdminAlterClassPedagogies");
             req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
         }
         else if (e instanceof AdminAlterClassAdvancedPedagogySelectionEvent )    {
@@ -332,6 +341,7 @@ public class AlterClassHandler {
             else if (students.size() == 0) {
                 try {
                     DbClass.createClassStudents(conn,classInfo,e2.getPrefix(),e2.getPassword(),e2.getBeginNum(),e2.getEndNum(),e2.getTestUserPrefix(), e2.getPassword());
+                    students = DbClass.getClassStudents(conn, classId);
                 } catch (UserException ue) {
                     errMessage = "Failure while creating class. " + ue.getMessage();
                 }
@@ -340,14 +350,16 @@ public class AlterClassHandler {
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
 
-            req.setAttribute("action","AdminAlterClassCreateStudents");
+
+            req.setAttribute("action","AdminEditClassList");
             req.setAttribute("message",errMessage);
             req.setAttribute("classInfo", classInfo);
             req.setAttribute("classId", classId);
             CreateClassHandler.setTeacherName(conn,req,teacherId);
             req.setAttribute("teacherId", teacherId);
             req.setAttribute("bean", bean1);
-            req.setAttribute("students", DbClass.getClassStudents(conn, classId));
+            req.setAttribute("students",students);
+            req.setAttribute("numStudents", students.size());
             if (e2.isCreateClassSeq())  {
                 req.setAttribute("message","Class successfully created!");
                 req.getRequestDispatcher(MAIN_WAYANG_JSP).forward(req, resp);
@@ -428,7 +440,9 @@ public class AlterClassHandler {
 
         req.setAttribute("action","AdminEditClassList");
         req.setAttribute("classInfo", classInfo);
-        req.setAttribute("students", DbClass.getClassStudents(conn, classId));
+        List<User> students = DbClass.getClassStudents(conn, classId);
+        req.setAttribute("students",students );
+        req.setAttribute("numStudents", students.size());
         req.setAttribute("bean", bean1);
         req.setAttribute("classId", classId);
         CreateClassHandler.setTeacherName(conn,req,teacherId);

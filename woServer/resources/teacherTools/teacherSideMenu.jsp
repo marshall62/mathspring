@@ -93,6 +93,7 @@ March 20, 2012
                                     <li><a href="#">Alter Existing Class</a>
                                         <div>
                                             <ul>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSimpleClassSetup&teacherId=${teacherId}&classId=${classId}">Simple Tutor Configuration</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics&teacherId=${teacherId}&classId=${classId}">Topic Selection</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}">Problem Selection</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPedagogies&teacherId=${teacherId}&classId=${classId}">Pedagogy Selection</a></li>

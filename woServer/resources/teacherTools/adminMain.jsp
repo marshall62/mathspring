@@ -35,6 +35,7 @@
         <input type="submit" name="submit" value="Set Teacher" />
     </form>
    <br><br>
+
     
     If you need help at anytime, feel free to consult the teacher tools handbook by clicking on the help icon <img src="images/lighbulb.png" width="100" height="100" alt="help">, in the top right corner of each page.
 

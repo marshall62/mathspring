@@ -120,6 +120,7 @@ public class AlterStudentInClassHandler {
         req.setAttribute("teacherId",teacherId);
         CreateClassHandler.setTeacherName(conn,req,teacherId);
         req.setAttribute("classId",classId);
+        req.setAttribute("action","AdminEditClassList");
         req.setAttribute("students",DbClass.getClassStudents(conn,classId));
         req.setAttribute("message",message);
         req.setAttribute("bean",bean1);

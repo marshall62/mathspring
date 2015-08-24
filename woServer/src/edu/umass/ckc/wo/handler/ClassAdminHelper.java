@@ -90,6 +90,7 @@ public class ClassAdminHelper {
             req.setAttribute("formSubmissionEvent",submissionEventName);
             req.setAttribute("pedagogies", DbClassPedagogies.getAllPedagogies());
             req.setAttribute("message","If you select default, you may not select other pedagogies.");
+            req.setAttribute("action","AdminAlterClassPedagogies");
             req.setAttribute("classId",classId);
             req.setAttribute("teacherId",teacherId);
             CreateClassHandler.setTeacherName(conn,req, teacherId);
@@ -112,6 +113,7 @@ public class ClassAdminHelper {
                 Classes bean1 = new Classes(classes1);
                 req.setAttribute("bean", bean1);
                 req.setAttribute("classInfo", info);
+                req.setAttribute("action","AdminAlterClassPedagogies");
                 req.setAttribute("formSubmissionEvent",submissionEventName);
                 req.setAttribute("pedagogies", DbClassPedagogies.getAllPedagogies());
                 req.setAttribute("message","No default pedagogies have been set up by an administrator of the system.<br/>" +

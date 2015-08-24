@@ -6,7 +6,7 @@ March 20, 2012
    --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%--<jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>--%>
+
 
 <!DOCTYPE HTML>
 <html>
@@ -94,7 +94,7 @@ March 20, 2012
                                     <li><a href="#">Edit Classes/Topics</a>
                                         <div>
                                             <ul>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSimpleClassSetup&teacherId=${teacherId}&classId=${classId}">Simple Class Set Up</a></li>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSimpleClassSetup&teacherId=${teacherId}&classId=${classId}">Simple Tutor Configuration</a></li>
 
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics&teacherId=${teacherId}&classId=${classId}"> Topic Control </a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}"> Problem Selection </a></li>

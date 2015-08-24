@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.admin;
 
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbClassPedagogies;
@@ -28,6 +29,8 @@ public class ClassCloner {
      * @return
      */
     public static int cloneClass (Connection conn, int classId, String newClassName, String newClassSection) throws Exception {
+        if (newClassName.trim().equals("") || newClassSection.trim().equals(""))
+            return -1;
         ClassInfo info = DbClass.getClass(conn,classId);
         int newClassId= DbClass.insertClass(conn,newClassName,info.getSchool(), Integer.toString(info.getSchoolYear()),
                         info.getTown(),newClassSection, Integer.toString(info.getTeachid()),

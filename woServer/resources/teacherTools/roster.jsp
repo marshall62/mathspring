@@ -11,96 +11,98 @@
 
 
 <jsp:include page="${sideMenu}" />
-<div class="mainPageMargin">
-<p>Student List</p>
-</div>
-
 
 <%--<jsp:useBean id="bean" scope="request" type="edu.umass.ckc.wo.beans.Classes"/>--%>
 <jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>
-
-
-<%--jsp:include page="teacherToolsHeader.jsp" /--%>
-<jsp:include page="classInfoHeader.jsp" />
 
 <div class="mainPageMargin">
     <div id="Layer2" align="center">
 
     <%--@elvariable id="classInfo" type="edu.umass.ckc.wo.beans.ClassInfo"--%>
+    <%--@elvariable id="students" type="java.util.List"--%>
+    <%--@elvariable id="u" type="edu.umass.ckc.wo.smgr.User"--%>
 
 <p class="whArial">
+
+    <c:choose>
+        <c:when test="${numStudents == 0}">
         <b>Generate Users for this Class</b><br><br>
 
-        You can generate for this class if the class has an empty roster (student list below should be empty).<br>
-        <b>NOTE WELL: Make sure that all pedagogies have been selected for this class prior to generating the students.</b>
-    <form name="form1" id="rosterForm" method="post"
-          action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassCreateStudents&teacherId=<c:out value="${classInfo.teachid}"/>&classId=<c:out value="${classInfo.classid}"/>">
+        <br>You should only generate students if you have completed step 2 in class creation (Simple Tutor Configuration) or pedagogy selection.<br><br>
+        User names are formed by taking the prefix you provide and then appending numbers starting with <i>begin number</i> and ending with <i>end number</i>.  All students are given the password you provide.  Test users will also be created if you provide a prefix for them.
+            <form name="form1" id="rosterForm" method="post"
+            action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassCreateStudents&teacherId=<c:out value="${classInfo.teachid}"/>&classId=<c:out value="${classInfo.classid}"/>">
 
-        <table width="600">
+            <table width="600">
             <tr> <td width="50"><span class="whArial">Prefix</span></td>
-                <td> <input name="prefix" type="text"> </td></tr>
+            <td> <input name="prefix" type="text"> </td></tr>
             <tr> <td width="50"><span class="whArial">Password</span></td>
-                <td> <input name="password" type="text"> </td></tr>
+            <td> <input name="password" type="text"> </td></tr>
             <tr> <td width="50"><span class="whArial">Begin Number</span></td>
-                <td> <input name="beginNumber" type="text"> </td></tr>
+            <td> <input name="beginNumber" type="text"> </td></tr>
             <tr> <td width="50"><span class="whArial">End Number</span></td>
-                <td> <input name="endNumber" type="text"> </td></tr>
+            <td> <input name="endNumber" type="text"> </td></tr>
             <tr> <td width="50"><span class="whArial">Test User Prefix</span></td>
-                <td> <input name="testUserPrefix" type="text"> </td></tr>
+            <td> <input name="testUserPrefix" type="text"> </td></tr>
 
-        </table>
+            </table>
 
 
-      <input type="submit" name="submit" value="Create Students" />
-      <input type="hidden" name="teacherId"  value="<c:out value="${classInfo.teachid}"/>"/>
-      <input type="hidden" name="classId"  value="<c:out value="${classInfo.classid}"/>"/>
-      <c:if test="${createClassSeq}"> <input type="hidden" name="createClassSeq" value="true"/></c:if>
-    </form>
- <br>
+            <input type="submit" name="submit" value="Create Students" />
+            <input type="hidden" name="teacherId"  value="<c:out value="${classInfo.teachid}"/>"/>
+            <input type="hidden" name="classId"  value="<c:out value="${classInfo.classid}"/>"/>
+            <c:if test="${createClassSeq}"> <input type="hidden" name="createClassSeq" value="true"/></c:if>
+            </form>
+        <p class="whArial">
+            <c:out value="${message}"/>
+        </p>
+        </c:when>
+        <c:otherwise>
 
-    <p class="whArial">
-    <c:out value="${message}"/>
-    </p>
 
- <b>Student List</b>
+
+            <p class="whArial"><b>Student Roster</b></p>
         
- <table width="600">
-      <tr>
-      <td width="50"><span class="whArial">Student ID</span></td>
-      <td width="180"><span class="whArial">First Name</span></td>
-      <td width="180"><span class="whArial">Last Name</span></td>
-      <td width="60"><span class="whArial">User Name</span></td>
-	  <td width="60"><span class="whArial"><a title="Removes all trace of student work in the system">Clear All Data</a></span></td>
-	  <td width="60"><span class="whArial"><a title="Removes all traces of the student ever being in the tutor hut">Clear Practice Hut Data</a></span></td>
-	  <td width="60"><span class="whArial"><a title="Allows re-entry to tutor hut while preserving past tutoring events">Reset Practice Hut</a></span></td>
-	  <td width="60"><span class="whArial"><a title="Remove Pretest data so student can retake.">Clear Pretest Data</a></span></td>
-	  <td width="60"><span class="whArial"><a title="Remove Posttest data so student can retake.">Clear Posttest Data</a></span></td>
-	  <td width="60"><span class="whArial"><a title="Remove the student and all trace of his work in the system">Delete Student</a></span></td>
-	  <td width="60"><span class="whArial"><a title="Edit this students properties">Edit Student</a></span></td>
-      </tr>
-        <%--@elvariable id="students" type="java.util.List"--%>
-        <%--@elvariable id="u" type="edu.umass.ckc.wo.smgr.User"--%>
-        <c:forEach var="u" items="${students}">
-            <tr>
+            <table width="600">
+                <tr>
+                    <td width="50"><span class="whArial">Student ID</span></td>
+                    <td width="180"><span class="whArial">First Name</span></td>
+                    <td width="180"><span class="whArial">Last Name</span></td>
+                    <td width="60"><span class="whArial">User Name</span></td>
+                    <td width="60"><span class="whArial"><a title="Removes all trace of student work in the system">Clear All Data</a></span></td>
+                    <td width="60"><span class="whArial"><a title="Removes all traces of the student ever being in the tutor hut">Clear Practice Hut Data</a></span></td>
+                    <td width="60"><span class="whArial"><a title="Allows re-entry to tutor hut while preserving past tutoring events">Reset Practice Hut</a></span></td>
+                    <td width="60"><span class="whArial"><a title="Remove Pretest data so student can retake.">Clear Pretest Data</a></span></td>
+                    <td width="60"><span class="whArial"><a title="Remove Posttest data so student can retake.">Clear Posttest Data</a></span></td>
+                    <td width="60"><span class="whArial"><a title="Remove the student and all trace of his work in the system">Delete Student</a></span></td>
+                    <td width="60"><span class="whArial"><a title="Edit this students properties">Edit Student</a></span></td>
+                </tr>
+                    <%--@elvariable id="students" type="java.util.List"--%>
+                    <%--@elvariable id="u" type="edu.umass.ckc.wo.smgr.User"--%>
+                <c:forEach var="u" items="${students}">
+                    <tr>
 
-                <td><span class="whArial"><c:out value="${u.id}"/></span></td>
-                <td><span class="whArial"><c:out value="${u.fname}"/></span></td>
-            <td><span class="whArial"><c:out value="${u.lname}"/></span></td>
-            <td><span class="whArial"><c:out value="${u.uname}"/></span></td>
+                        <td><span class="whArial"><c:out value="${u.id}"/></span></td>
+                        <td><span class="whArial"><c:out value="${u.fname}"/></span></td>
+                        <td><span class="whArial"><c:out value="${u.lname}"/></span></td>
+                        <td><span class="whArial"><c:out value="${u.uname}"/></span></td>
 
-            <%--<td><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassEdit&classId=<c:out value="${cl.classid}"/>&teacherId=<c:out value="${cl.teachid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/edit.gif' alt="Edit Class"></a></td>--%>
-            <td><a onclick="return confirm('Are you sure you want to clear ALL data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentAllData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
-            <td><a onclick="return confirm('Are you sure you want to clear PRACTICE HUT data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentPracticeData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
-            <td><a onclick="return confirm('Are you sure you want to reset PRACTICE HUT data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminResetStudentPracticeData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
-            <td><a onclick="return confirm('Are you sure you want to clear PRETEST data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentPretestData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
-            <td><a onclick="return confirm('Are you sure you want to clear POSTTEST data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentPosttestData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
-            <td><a onclick="return confirm('Are you sure you want to DELETE <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminDeleteStudentFromRoster&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
-            <td><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditStudent&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/edit.gif' alt="Edit Student"></a></td>
-            </tr>
-        </c:forEach>
-    </table>
+                            <%--<td><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassEdit&classId=<c:out value="${cl.classid}"/>&teacherId=<c:out value="${cl.teachid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/edit.gif' alt="Edit Class"></a></td>--%>
+                        <td><a onclick="return confirm('Are you sure you want to clear ALL data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentAllData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
+                        <td><a onclick="return confirm('Are you sure you want to clear PRACTICE HUT data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentPracticeData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
+                        <td><a onclick="return confirm('Are you sure you want to reset PRACTICE HUT data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminResetStudentPracticeData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
+                        <td><a onclick="return confirm('Are you sure you want to clear PRETEST data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentPretestData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
+                        <td><a onclick="return confirm('Are you sure you want to clear POSTTEST data for <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminClearStudentPosttestData&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
+                        <td><a onclick="return confirm('Are you sure you want to DELETE <c:out value="${u.uname}"/>?');" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminDeleteStudentFromRoster&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Delete Student"></a></td>
+                        <td><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditStudent&teacherId=<c:out value="${classInfo.teachid}"/>&studId=<c:out value="${u.id}"/>&classId=<c:out value="${classInfo.classid}"/>"><img  src='<c:out value="${pageContext.request.contextPath}"/>/images/edit.gif' alt="Edit Student"></a></td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </c:otherwise>
+        </c:choose>
 
-    <p>
+        <p>
+
 
 
     </div>

@@ -879,6 +879,8 @@ public class DbClass {
 
 
     private static boolean buildStudents(Connection conn, ClassInfo classInfo, String prefix, String password, int beginNum, int endNum, List<String> pedIds) throws Exception {
+        if (beginNum < 0 || endNum < 1 || endNum <= beginNum)
+            throw new UserException("Begin/End numbers are invalid");
         for (int thisUser = beginNum, counterGroups = 0; thisUser <= endNum; thisUser++, counterGroups++) {
             if (counterGroups == pedIds.size())
                 counterGroups = 0;
