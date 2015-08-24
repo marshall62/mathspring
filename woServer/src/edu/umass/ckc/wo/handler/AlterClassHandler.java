@@ -482,7 +482,7 @@ public class AlterClassHandler {
      req.setAttribute("classInfo", classInfo);
      req.setAttribute("bean", bean1);
      req.setAttribute("message", "Your changes have been accepted.");
-     req.setAttribute("action","AdminAdvancedPedagogySelection");
+     req.setAttribute("action","AdminAlterClassPedagogies");
      if (isSimpleConfig)
         req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
      else
