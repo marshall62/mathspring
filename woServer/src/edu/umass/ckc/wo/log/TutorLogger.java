@@ -302,7 +302,7 @@ public class TutorLogger {
             probId = smgr.getStudentState().getLastProblem();
         insertLogEntry(RequestActions.CONTINUE,probId,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }
-    public void logTimedIntervention (TimedInterventionEvent e, Response r) throws Exception {
+    public void logTimedIntervention (InterventionTimeoutEvent e, Response r) throws Exception {
         insertLogEntry(RequestActions.CONTINUE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
     }
     public void logContinueAttemptIntervention(ContinueAttemptInterventionEvent e, Response r) throws Exception {
