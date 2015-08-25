@@ -49,6 +49,7 @@ function processMyProgressNavAskIntervention (html) {
 
 //This function continues the wait on a TimeoutIntervention
 function continueInterventionTimeout(){
+    timewaited = timewaited+tmoutwait;
     servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited+tmoutwait}, processInterventionTimeoutResult);
 }
 
@@ -58,10 +59,11 @@ function continueInterventionTimeout(){
 // intervention when it is complete
 function processCollaborationPartnerIntervention(html, timeoutwait) {
     globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationPartnerIS";
-    tmoutWait = timeoutwait;
+    timewaited = 0;
+    tmoutwait = timeoutwait;
     // Open the dialog with no buttons and a timeout function
     interventionDialogOpenNoButtons("Work with a partner", html, NEXT_PROBLEM_INTERVENTION, function(){
-            servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited+tmoutwait}, processInterventionTimeoutResult);}
+            servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited + tmoutwait}, processInterventionTimeoutResult);}
             , timeoutwait);
         }
 
@@ -78,10 +80,11 @@ function processCollaborationConfirmationIntervention(html) {
 // with.   Every 60 seconds it asks if they want to continue waiting for a partner.
 function processCollaborationOriginatorIntervention(html, timeoutwait) {
     globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS";
-    tmoutWait = timeoutwait;
+    timewaited = 0;
+    tmoutwait = timeoutwait;
     // Open the intervention dialog with no buttons and timeout handling
         interventionDialogOpenNoButtons("Waiting for a partner", html, NEXT_PROBLEM_INTERVENTION, function(){
-            servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited+timeoutwait}, processInterventionTimeoutResult);}
+            servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited+tmoutwait}, processInterventionTimeoutResult);}
             , timeoutwait);
 }
 
@@ -94,7 +97,7 @@ function processCollaborationFinishedIntervention(html) {
     interventionDialogOpenAsConfirm("Collaboration over", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
 }
 
-function processCollaborationTimeoutIntervention(html) {
+function processCollaborationTimedoutIntervention(html) {
     globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS";
 //    interventionDialogOpen("Continue Waiting?", html, NEXT_PROBLEM_INTERVENTION );
     //  TODO This could be turned into a Yes/No dialog call

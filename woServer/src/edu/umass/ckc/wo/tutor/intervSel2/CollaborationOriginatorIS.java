@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
     private static Logger logger = Logger.getLogger(CollaborationIS.class);
-    int minIntervalBetweenCollabInterventions = 60 * 1000;// * 5; // wait 5 minutes between collab offers.
+    int minIntervalBetweenCollabInterventions = 60 * 1000 * 5; // wait 5 minutes between collab offers.
 
     public CollaborationOriginatorIS(SessionManager smgr) throws SQLException {
         super(smgr);
@@ -61,7 +61,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             double random = Math.random();
             // Based on nothing other than time a student is offered help from a neighbor.  This intervention has
             // inputs so that the student may accept for decline.
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.5) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.1) {
 //                rememberInterventionSelector(this);   // can't do it this way in the new intervention model (must have interventions provide class name of IS so that this class is used)
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
