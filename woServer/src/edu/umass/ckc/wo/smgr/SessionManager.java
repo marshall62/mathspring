@@ -709,16 +709,6 @@ public class SessionManager {
         }
     }
 
-    /**
-     *   Difficulty rating is the divisor that the problem selector uses to compute its next index.  The divisor is
-     * used to increase or decrease the difficulty of the problem.   If the divisor is 2 and the student got the last problem correct,
-     * the index will be 1/2 the way into the list of harder problems.   If the divisor is 3, we'd go 1/3 of the way.
-     * @return
-     * @throws SQLException
-     */
-    public int getClassDifficultyRate () throws SQLException {
-        return DbClass.getDifficultyRate(connection, this.classId);
-    }
 
     public double getClassMasteryThreshold () throws SQLException {
         return DbClass.getClassMastery(connection, this.classId);

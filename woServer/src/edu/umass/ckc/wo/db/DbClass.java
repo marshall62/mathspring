@@ -34,7 +34,8 @@ public class DbClass {
 
         try {
             String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
-                    "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade from class c, classconfig f" +
+                    "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade," +
+                    "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate from class c, classconfig f" +
                     " where c.id=? and f.classid=c.id";
             s = conn.prepareStatement(q);
             s.setInt(1, classId);
@@ -56,9 +57,20 @@ public class DbClass {
                 int studentEmailIntervalDays = rs.getInt(14);
                 String flashClient = rs.getString(15); // k12 or college
                 String grade = rs.getString(16); // grade
-                return new ClassInfo(sch, yr, name, town, sec, classId, teacherId, teacherName, propgroupid, logType,
+                String simpleLc = rs.getString(17);
+                String simpleCollab = rs.getString(18);
+                String simpleLowDiff = rs.getString(19);
+                String simpleHighDiff = rs.getString(20);
+                String simpleDiffRate = rs.getString(21);
+                ClassInfo ci = new ClassInfo(sch, yr, name, town, sec, classId, teacherId, teacherName, propgroupid, logType,
                         pretestPoolId, emailInterval, statusReportPeriodDays, studentEmailIntervalDays,
                         studentEmailPeriodDays,flashClient,grade);
+                ci.setSimpleLC(simpleLc);
+                ci.setSimpleCollab(simpleCollab);
+                ci.setSimpleLowDiff(simpleLowDiff);
+                ci.setSimpleHighDiff(simpleHighDiff);
+                ci.setSimpleDiffRate(simpleDiffRate);
+                return ci;
             }
             return null;
         } finally {
@@ -209,44 +221,93 @@ public class DbClass {
         }
     }
 
-    public static ClassInfo[] getClasses(Connection conn, int teacherId) throws SQLException {
-        ResultSet rs = null;
-        PreparedStatement s = null;
-
+    public static ClassInfo[] getAllClasses (Connection conn) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
         try {
-            List<ClassInfo> classes = new ArrayList<ClassInfo>();
-            String q = "select c.id,teacher,school,schoolYear,name,town,section,propgroupid,pretestPoolId, pool.description, " +
-                    "logType,f.statusReportIntervalDays,f.statusReportPeriodDays, f.studentEmailIntervalDays, f.studentEmailPeriodDays from class c, prepostpool pool, classconfig f where teacherId=? and pretestPoolId=pool.id and f.classid=c.id";
-            s = conn.prepareStatement(q);
-            s.setInt(1, teacherId);
-            rs = s.executeQuery();
+            List<ClassInfo> result = new ArrayList<ClassInfo>();
+            String q = "select id from class";
+            stmt = conn.prepareStatement(q);
+            rs = stmt.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt(1);
-                String teacherName = rs.getString(2);
-                String sch = rs.getString(3);
-                int yr = rs.getInt(4);
-                String name = rs.getString(5);
-                String town = rs.getString(6);
-                String sec = rs.getString(7);
-                int propgroupid = rs.getInt(8);
-                int pretestPoolId = rs.getInt(9);
-                String pretestPoolDescr = rs.getString(10);
-                int logType = rs.getInt(11);
-                int emailInterval = rs.getInt(12);
-                int statusReportPeriod = rs.getInt(13);
-                int studentEmailInterval = rs.getInt(14);
-                int studentEmailPeriod = rs.getInt(15);
-                classes.add(new ClassInfo(sch, yr, name, town, sec, id, teacherId, teacherName, propgroupid, pretestPoolId,
-                        pretestPoolDescr, logType, emailInterval, statusReportPeriod, studentEmailInterval, studentEmailPeriod, "5"));
+                int classId= rs.getInt(1);
+                ClassInfo ci = getClass(conn,classId);
+                result.add(ci);
             }
-            return classes.toArray(new ClassInfo[classes.size()]);
-        } finally {
-            if (s != null)
-                s.close();
+            return result.toArray(new ClassInfo[result.size()]);
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
             if (rs != null)
                 rs.close();
         }
     }
+
+    // rewrote the method below so that it uses the getClass method to get each ClassInfo object.
+    // This makes this method compatible with the ClassInfo objects built by getClass.
+    public static ClassInfo[] getClasses (Connection conn, int teacherId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            List<ClassInfo> result = new ArrayList<ClassInfo>();
+            String q = "select id from class where teacherid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,teacherId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int classId= rs.getInt(1);
+                ClassInfo ci = getClass(conn,classId);
+                result.add(ci);
+            }
+            return result.toArray(new ClassInfo[result.size()]);
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+//    public static ClassInfo[] getClasses(Connection conn, int teacherId) throws SQLException {
+//        ResultSet rs = null;
+//        PreparedStatement s = null;
+//
+//        try {
+//            List<ClassInfo> classes = new ArrayList<ClassInfo>();
+//            String q = "select c.id,teacher,school,schoolYear,name,town,section,propgroupid,pretestPoolId, pool.description, " +
+//                    "logType,f.statusReportIntervalDays,f.statusReportPeriodDays, f.studentEmailIntervalDays, f.studentEmailPeriodDays from class c, prepostpool pool, classconfig f where teacherId=? and pretestPoolId=pool.id and f.classid=c.id";
+//            s = conn.prepareStatement(q);
+//            s.setInt(1, teacherId);
+//            rs = s.executeQuery();
+//            while (rs.next()) {
+//                int id = rs.getInt(1);
+//                String teacherName = rs.getString(2);
+//                String sch = rs.getString(3);
+//                int yr = rs.getInt(4);
+//                String name = rs.getString(5);
+//                String town = rs.getString(6);
+//                String sec = rs.getString(7);
+//                int propgroupid = rs.getInt(8);
+//                int pretestPoolId = rs.getInt(9);
+//                String pretestPoolDescr = rs.getString(10);
+//                int logType = rs.getInt(11);
+//                int emailInterval = rs.getInt(12);
+//                int statusReportPeriod = rs.getInt(13);
+//                int studentEmailInterval = rs.getInt(14);
+//                int studentEmailPeriod = rs.getInt(15);
+//                classes.add(new ClassInfo(sch, yr, name, town, sec, id, teacherId, teacherName, propgroupid, pretestPoolId,
+//                        pretestPoolDescr, logType, emailInterval, statusReportPeriod, studentEmailInterval, studentEmailPeriod, "5"));
+//            }
+//            return classes.toArray(new ClassInfo[classes.size()]);
+//        } finally {
+//            if (s != null)
+//                s.close();
+//            if (rs != null)
+//                rs.close();
+//        }
+//    }
 
     /**
      *
@@ -476,7 +537,7 @@ public class DbClass {
                 double mastery = rs.getDouble("topicMastery");
                 int minProbsInTopic = rs.getInt("minNumberProbsToShowPerTopic");
                 long minTimeInTopic = rs.getLong("minTimeInTopic");
-                int difficultyRate = rs.getInt("difficultyRate");
+                double difficultyRate = rs.getDouble("difficultyRate");
                 String topicIntroFreq= rs.getString("topicIntroFrequency");
                 if (rs.wasNull())
                     topicIntroFreq = null;
@@ -525,7 +586,7 @@ public class DbClass {
                 double mastery = rs.getDouble(4);
                 int minProbsInTopic = rs.getInt(5);
                 long minTimeInTopic = rs.getLong(6);
-                int difficultyRate = rs.getInt(7);
+                double difficultyRate = rs.getDouble(7);
                 int externalActivityTimeThresh = rs.getInt(8);
                 String topicIntroFreq= rs.getString(9);
                 if (rs.wasNull())
@@ -632,7 +693,8 @@ public class DbClass {
 
 
     public static ClassConfig getClassConfig(Connection conn, int classId) throws SQLException {
-        String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey from classconfig where classId=?";
+        String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey" +
+                ",presurveyurl,postsurveyurl from classconfig where classId=?";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classId);
         ResultSet rs = ps.executeQuery();
@@ -645,7 +707,9 @@ public class DbClass {
             int tut = rs.getInt("tutoring");
             boolean useDef = rs.getBoolean("useDefaultHutActivationRules");
             boolean showPostSurvey = rs.getBoolean("showPostSurvey");
-            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey);
+            String presurveyurl = rs.getString("presurveyurl");
+            String postsurveyurl = rs.getString("postsurveyurl");
+            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl, postsurveyurl);
         } else return null;
     }
 
@@ -815,6 +879,8 @@ public class DbClass {
 
 
     private static boolean buildStudents(Connection conn, ClassInfo classInfo, String prefix, String password, int beginNum, int endNum, List<String> pedIds) throws Exception {
+        if (beginNum < 0 || endNum < 1 || endNum <= beginNum)
+            throw new UserException("Begin/End numbers are invalid");
         for (int thisUser = beginNum, counterGroups = 0; thisUser <= endNum; thisUser++, counterGroups++) {
             if (counterGroups == pedIds.size())
                 counterGroups = 0;
@@ -838,59 +904,8 @@ public class DbClass {
         return true;
     }
 
-    /**
-     * Difficulty rate is the divisor that the problem selector uses to compute its next index.  The divisor is
-     * used to increase or decrease the difficulty of the problem.   If the divisor is 2 and the student got the last problem correct,
-     * the index will be 1/2 the way into the list of harder problems.   If the divisor is 3, we'd go 1/3 of the way.
-     *
-     * @param conn
-     * @param classId
-     * @return
-     * @throws SQLException
-     */
 
-    public static int getDifficultyRate(Connection conn, int classId) throws SQLException {
-        ResultSet rs = null;
-        PreparedStatement stmt = null;
-        try {
-            String q = "select difficultyRate from classConfig where classId=?";
-            stmt = conn.prepareStatement(q);
-            stmt.setInt(1, classId);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                int c = rs.getInt(1);
-                return c;
-            }
-        } finally {
-            if (stmt != null)
-                stmt.close();
-            if (rs != null)
-                rs.close();
-        }
-        return 2; // in case of a failure this value will work.
-    }
 
-    // Return the time (in minutes) that a student must spend in a topic before external activities are allowed to be shown
-    public static int getClassExternalActivityThreshold(Connection conn, int classID) throws SQLException {
-        ResultSet rs = null;
-        PreparedStatement stmt = null;
-        try {
-            String q = "select externalActivityTimeThreshold from classConfig where classId=?";
-            stmt = conn.prepareStatement(q);
-            stmt.setInt(1, classID);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                int c = rs.getInt(1);
-                return c;
-            }
-        } finally {
-            if (stmt != null)
-                stmt.close();
-            if (rs != null)
-                rs.close();
-        }
-        return 10; // in case of a failure this value will work.
-    }
 
     public static void updateClassEmailSettings(Connection conn, int classId, int studentEmailInterval, int studentReportPeriod, int teacherEmailInterval, int teacherReportPeriod) throws SQLException {
         PreparedStatement stmt = null;
@@ -986,6 +1001,26 @@ public class DbClass {
         return 0.85; // in case of a failure this default value will work.
     }
 
+
+    public static void setSimpleConfig(Connection conn, int classId, String lc, String collab, String diffRate, String lowDiff, String highDiff) throws SQLException {
+        PreparedStatement s = null;
+        try {
+            String q = "update classconfig set simplelc=?, simplecollab=?, simpleLowDiff=?, simpleHighDiff=?, simpleDiffRate=? " +
+                    "where classid=?";
+            s = conn.prepareStatement(q);
+            s.setString(1, lc);
+            s.setString(2, collab);
+            s.setString(3, lowDiff);
+            s.setString(4, highDiff);
+            s.setString(5, diffRate);
+            s.setInt(6, classId);
+            s.executeUpdate();
+        } finally {
+            if (s != null)
+                s.close();
+        }
+    }
+
     public static void main( String[] args )
     {
 
@@ -1003,4 +1038,21 @@ public class DbClass {
 //        session.getTransaction().commit();
     }
 
+
+    public static void setClassConfigDiffRate(Connection conn, int classId, double diffRate, double masteryThresh, int contentFailureThresh) throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            String q = "update classconfig set difficultyRate=?, topicMastery=?, contentFailureThreshold=? where classid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setDouble(1, diffRate);
+            stmt.setDouble(2, masteryThresh);
+            stmt.setInt(3, contentFailureThresh);
+            stmt.setInt(4, classId);
+            stmt.executeUpdate();
+        } finally {
+            if (stmt != null)
+                stmt.close();
+        }
+
+    }
 }

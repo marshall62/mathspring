@@ -408,7 +408,7 @@ public class DbProblem extends BaseMgr {
      * @param deactivatedIds
      * @throws SQLException
      */
-    private void insertActiveTopicProblemsForClass (Connection conn, int classId, int topicId, List<Integer> deactivatedIds) throws SQLException {
+    public void setClassTopicOmittedProblems(Connection conn, int classId, int topicId, List<Integer> deactivatedIds) throws SQLException {
         PreparedStatement ps=null;
         try {
             String q = "insert into ClassOmittedProblems (classId,topicId,probId) values (?,?,?)";
@@ -419,6 +419,20 @@ public class DbProblem extends BaseMgr {
                 ps.setInt(3,probId);
                 int n = ps.executeUpdate();
             }
+        } finally {
+            closeQuery(ps);
+        }
+    }
+
+    public  void clearClassOmittedProblems (Connection conn, int classId) throws SQLException {
+        PreparedStatement ps=null;
+        try {
+            String q = "delete from ClassOmittedProblems where classId=?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1,classId);
+            int n = ps.executeUpdate();
+
+
         } finally {
             closeQuery(ps);
         }
@@ -456,7 +470,7 @@ public class DbProblem extends BaseMgr {
      */
     public void updateOmittedProbsList(Connection conn, int classId, int topicId, List<Integer> deactivatedIds) throws SQLException {
         removeActiveTopicProblemsForClass(conn,classId,topicId);
-        insertActiveTopicProblemsForClass(conn,classId,topicId,deactivatedIds);
+        setClassTopicOmittedProblems(conn, classId, topicId, deactivatedIds);
     }
 
     public List<Skill> getProblemSkills(Connection conn, int probId) throws java.sql.SQLException {
@@ -687,7 +701,7 @@ public class DbProblem extends BaseMgr {
         PreparedStatement stmt=null;
         try {
             // the type indicates we want problems that relate to the standard (P means prereq)
-            String q = "select s.id,s.description,s.category from probstdmap m, standard s where m.probid=? and s.id=m.stdid";
+            String q = "select s.id,s.description,s.category,s.grade from probstdmap m, standard s where m.probid=? and s.id=m.stdid";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,id);
             rs = stmt.executeQuery();
@@ -695,7 +709,8 @@ public class DbProblem extends BaseMgr {
                 String code= rs.getString(1);
                 String descr= rs.getString(2);
                 String category= rs.getString(3);
-                result.add(new CCStandard(code,descr,category));
+                String grade = rs.getString(4);
+                result.add(new CCStandard(code,descr,category, grade));
             }
             return result;
         }

@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.jdom.Element;
@@ -40,16 +41,22 @@ public class PostSurvey extends LoginInterventionSelector {
         if (configXML == null)
             throw new UserException("PostSurvey expects config xml");
         Element e =this.configXML.getChild("url");
-
-        if (e != null)
+        ClassConfig ci = DbClass.getClassConfig(smgr.getConnection(),smgr.getClassID());
+        // first choice to get the URL is the classconfig
+        if (ci.getPostSurveyURL() != null)
+            this.url=ci.getPostSurveyURL();
+            // see if provided in the XML
+        else if (e != null)
             this.url= e.getTextTrim();
-        else throw new UserException("Must provide URL to config of PostSurvey LoginIntervention Selector in logins.xml");
+            // get from db globalsettings.
+        else
+            this.url = Settings.postSurvey;
+
         e = configXML.getChild("studId");
 
         if (e != null) {
             uidVar = e.getTextTrim();
         }
-        else throw new UserException("Must provide <studId> element in config and URL must contain <uid> to be replaced by studId");
         e = configXML.getChild("userName");
         if (e != null) {
             unameVar = e.getTextTrim();

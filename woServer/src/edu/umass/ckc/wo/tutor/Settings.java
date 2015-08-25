@@ -93,7 +93,7 @@ public class Settings {
     public static String mailServer="mail.cs.umass.edu";
     public static boolean useAdminServletSession = true; // controls whether servlet sessions are used in the WoAdminServlet
                                                 // They should be on in normal use.   For debugging the servlet I turn off
-    public static int adminServletSessionTimeoutSeconds= 60 * 30; // default is 30 min.
+    public static int adminServletSessionTimeoutSeconds= 60 * 60; // default is 60 min.
 
     public static File emailLogFile;
 

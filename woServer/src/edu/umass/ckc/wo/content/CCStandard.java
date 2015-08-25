@@ -28,11 +28,12 @@ public class CCStandard implements Comparable<CCStandard> {
         problems = new ArrayList<Problem>();
     }
 
-    public CCStandard(String code, String description, String category) {
+    public CCStandard(String code, String description, String category, String grade) {
         this();
         this.code = code;
         this.description = description;
         this.category = category;
+        this.grade = grade;
 
     }
 
@@ -119,5 +120,7 @@ public class CCStandard implements Comparable<CCStandard> {
         return this.code.compareTo(o.getCode());
     }
 
-
+    public String getGrade() {
+        return grade;
+    }
 }

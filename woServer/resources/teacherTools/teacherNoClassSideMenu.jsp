@@ -1,19 +1,19 @@
-<%-- Wayang Template Header for Each page
+<%-- Wayang Template Header for main page when teacher has no classes
 
 Elizabeth Do
-March 20, 2012
+March 23, 2012
 
    --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>
+
 
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8">
 
-    <title>MathSpring Teacher Tools   </title>
+    <title>Mathspring Teacher Tools   </title>
 
     <link href="css/wottMan.css" rel="stylesheet" type="text/css">
     <link href="css/p7ccm/p7ccm03.css" rel="stylesheet" type="text/css" media="all">
@@ -28,7 +28,6 @@ March 20, 2012
     <link href="css/p7ccm/p7ccm01.css" rel="stylesheet" type="text/css" media="all">
     <script type="text/javascript" src="css/p7ttm/p7TTMscripts.js"></script>
     <link href="css/p7ttm/p7TTM01.css" rel="stylesheet" type="text/css" media="all">
-    <link href="css/p7ttm/sample.css" rel="stylesheet" type="text/css" media="all">
     <script type="text/javascript">
         <!--
         P7_opTTM('id:p7Tooltip_1','id:dBar','p7TTM01',8,465,1,1,0,0,35,1,300,2,1,1,0,0,0,0);
@@ -66,55 +65,34 @@ March 20, 2012
                         <table width="100%">
                             <tr>
                                 <td width=80%>
-                        <p id="header">MathSpring Teacher Tools </p>
+                                    <p id="header">Mathspring Teacher Tools </p>
                                 </td>
                                 <td width=20%>
-                        <p  align="right" width="200"><font color="#8BB42D" size="4" face="Arial, Helvetica, sans-serif">Class #: ${classId} </font> </p>
+                                    <p  align="right" width="200"><font color="#8BB42D" size="4" face="Arial, Helvetica, sans-serif">Limited Mode</font> </p>
                                 </td>
+
                             </tr>
                         </table>
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
             <div class="p7ccm03-content-row p7ccm03-dyn-img p7ccm03-RGBA p7ccm-row">
                 <div class="p7ccm03-2col-sidebar-fixed-left-column1 p7ccm-col">
-
                     <div class="p7ccm03-2col-sidebar-fixed-left-column1-cnt p7ccm03-content p7ccm03-content-inner-shadow p7ehc-1">
                         <div class="nestl">
                         <p><img src="images/EDwoTreeCurved.png" width="180" height="195" alt="logo image Tree"></p>
                         <div class="leftNav">
                             <div id="p7TMM_1" class="p7TMM10">
                                 <ul class="p7TMM">
-                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminUpdateClassId&teacherId=${teacherId}&classId=${classId}">Main</a></li>
-                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminCreateNewClass&teacherId=${teacherId}">Create Class</a></li>
-
-                                    <li><a href="#">Edit Classes/Topics</a>
-                                        <div>
-                                            <ul>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics&teacherId=${teacherId}&classId=${classId}"> Topic Control </a></li>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}"> Problem Selection </a></li>
-                                                <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPretest&teacherId=${teacherId}&classId=${classId}">Pre and Post Tests</a></li>--%>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPedagogies&teacherId=${teacherId}&classId=${classId}">Pedagogy Selection</a></li>
-                                                <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassActivateHuts&teacherId=${teacherId}&classId=${classId}">Hut Activation</a></li>--%>
-
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditClassList&teacherId=${teacherId}&classId=${classId}">Student List </a></li>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassCloneClass&teacherId=${teacherId}&classId=${classId}">Clone a Class</a></li>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminOtherClassConfig&teacherId=${teacherId}&classId=${classId}">Class Email Settings</a></li>
-                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassEdit&teacherId=${teacherId}&classId=${classId}">Class Information </a></li>
+                                    <li><a href="#">Main</a></li>
+                                    <li><a href= "<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminNoClassCreateNewClass&teacherId=<c:out value="${teacherId}"/>">Create Class</a></li>
 
 
-
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminViewReport&state=chooseClass&teacherId=${teacherId}">Class Reports</a></li>
+                                    <li><a href="#">Class Reports</a></li>
 
 
-                                    <li><a href="${pageContext.request.contextPath}/WoAdmin?action=AdminTutor&teacherId=${teacherId}">Administrate Tutor </a></li>
-
-                                    <li><a href="http://wayangoutpost.com/">MathSpring Website </a></li>
-
+                                    <li><a href="http://mathspring.org/">Mathspring Website </a></li>
 
                                 </ul>
                                 <!--[if lte IE 6]>
@@ -149,6 +127,10 @@ March 20, 2012
                 </div>
                 <div class="p7ccm03-2col-sidebar-fixed-left-column2 p7ccm-col">
                     <div class="p7ccm03-2col-sidebar-fixed-left-column2-cnt p7ccm03-content p7ccm03-content-inner-shadow p7ehc-1">
+                        <div align="right">
+                            <a href="http://wayangoutpost.info/"><img src="images/lighbulb.png" width="100" height="100" alt="help"></a>
+                        </div>
 
 
-<jsp:include page="changeClass.jsp" />
+
+

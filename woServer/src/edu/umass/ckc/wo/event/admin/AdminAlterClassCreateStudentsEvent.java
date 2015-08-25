@@ -12,6 +12,7 @@ public class AdminAlterClassCreateStudentsEvent extends AdminClassEvent {
     private String password;
     private int beginNum;
     private int endNum;
+    private boolean createClassSeq;
 
 
     public AdminAlterClassCreateStudentsEvent(ServletParams p) throws Exception {
@@ -19,8 +20,10 @@ public class AdminAlterClassCreateStudentsEvent extends AdminClassEvent {
         this.prefix = p.getString("prefix");
         this.testUserPrefix = p.getString("testUserPrefix");
         this.password = p.getString("password");
-        this.beginNum = p.getInt("beginNumber");
-        this.endNum = p.getInt("endNumber");
+        this.beginNum = p.getInt("beginNumber",-1);
+        this.endNum = p.getInt("endNumber",-1);
+        this.createClassSeq = p.getBoolean("createClassSeq",false);
+
     }
 
     public String getPrefix() {
@@ -41,5 +44,9 @@ public class AdminAlterClassCreateStudentsEvent extends AdminClassEvent {
 
     public int getEndNum() {
         return endNum;
+    }
+
+    public boolean isCreateClassSeq() {
+        return createClassSeq;
     }
 }

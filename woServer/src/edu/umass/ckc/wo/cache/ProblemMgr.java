@@ -67,6 +67,15 @@ public class ProblemMgr {
         }
     }
 
+    public static int getTopicProblemCount (int topicId) {
+        ArrayList<Problem> probs = probsByTopic.get(topicId);
+        if (probs != null)
+            return probs.size();
+        else return -1;
+    }
+
+
+
     public static void dumpCache () {
         loaded = false;
     }
@@ -468,6 +477,10 @@ public class ProblemMgr {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
+    }
+
+    public static List<Topic> getAllTopics () {
+        return allTopics;
     }
 
 

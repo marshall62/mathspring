@@ -90,8 +90,10 @@ public class ClassAdminHelper {
             req.setAttribute("formSubmissionEvent",submissionEventName);
             req.setAttribute("pedagogies", DbClassPedagogies.getAllPedagogies());
             req.setAttribute("message","If you select default, you may not select other pedagogies.");
+            req.setAttribute("action","AdminAlterClassPedagogies");
             req.setAttribute("classId",classId);
             req.setAttribute("teacherId",teacherId);
+            CreateClassHandler.setTeacherName(conn,req, teacherId);
             ClassInfo info = DbClass.getClass(conn,classId);
             ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
             Classes bean1 = new Classes(classes1);
@@ -111,13 +113,14 @@ public class ClassAdminHelper {
                 Classes bean1 = new Classes(classes1);
                 req.setAttribute("bean", bean1);
                 req.setAttribute("classInfo", info);
+                req.setAttribute("action","AdminAlterClassPedagogies");
                 req.setAttribute("formSubmissionEvent",submissionEventName);
                 req.setAttribute("pedagogies", DbClassPedagogies.getAllPedagogies());
                 req.setAttribute("message","No default pedagogies have been set up by an administrator of the system.<br/>" +
                         "Please notify an administrator and choose a pedagogy which you can change later.");
                 req.setAttribute("classId",classId);
                 req.setAttribute("teacherId",teacherId);
-
+                CreateClassHandler.setTeacherName(conn,req, teacherId);
                 req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
                 return true;
             }
@@ -134,6 +137,7 @@ public class ClassAdminHelper {
             req.setAttribute("message","Pedagogies must be selected.  Restoring defaults");
             req.setAttribute("classId",classId);
             req.setAttribute("teacherId",teacherId);
+            CreateClassHandler.setTeacherName(conn,req, teacherId);
             req.setAttribute("action","AdminAlterClassAdvancedPedagogySelection");
 
             req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
@@ -151,8 +155,8 @@ public class ClassAdminHelper {
             req.setAttribute("message","You must select at least one pedagogy");
                 req.setAttribute("classId",classId);
             req.setAttribute("teacherId",teacherId);
-            
-                req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
+            CreateClassHandler.setTeacherName(conn,req, teacherId);
+            req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
             return true;
         }
         return false; // no errors
@@ -161,9 +165,9 @@ public class ClassAdminHelper {
     public static void saveSelectedPedagogies (Connection conn, int classId, List<String> pedagogyIds) throws SQLException, DeveloperException {
          List<Pedagogy> selectedPedagogies = DbClassPedagogies.getPedagogiesFromIds(pedagogyIds);
         // eliminate any old pedagogy settings
-            DbClassPedagogies.removeClassPedagogies(conn, classId);
-            for (Pedagogy ped: selectedPedagogies)
-                DbClassPedagogies.setClassPedagogy(conn, classId, ped.getId());
+        DbClassPedagogies.removeClassPedagogies(conn, classId);
+        for (Pedagogy ped: selectedPedagogies)
+            DbClassPedagogies.setClassPedagogy(conn, classId, ped.getId());
     }
 
 

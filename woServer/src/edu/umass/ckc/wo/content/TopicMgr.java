@@ -23,9 +23,23 @@ import java.util.List;
 public class TopicMgr {
 
 
-    public List<Topic> omitTopic (Connection conn,  AdminReorderTopicsEvent e) throws SQLException {
-        int classId= e.getClassId();
-        int topicId= e.getTopicId();
+    public void removeTopicFromLessonPlan (Connection conn, int classId, int topicId) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q = "delete from classlessonplan where classId=? and probgroupid=?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1,classId);
+            ps.setInt(2,topicId);
+            ps.executeUpdate();
+        }  finally {
+            if (ps != null)
+                ps.close();
+        }
+
+    }
+
+    public List<Topic> omitTopic (Connection conn,  int classId, int topicId) throws SQLException {
         List<Topic> topics = DbTopics.getClassActiveTopics(conn,classId);
         DbTopics.removeClassActiveTopics(conn,classId);
 

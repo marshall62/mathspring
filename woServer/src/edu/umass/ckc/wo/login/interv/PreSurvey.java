@@ -2,12 +2,14 @@ package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
 import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.beans.ClassConfig;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.jdom.CDATA;
@@ -43,17 +45,21 @@ public class PreSurvey  extends LoginInterventionSelector {
         if (configXML == null)
             throw new UserException("PreSurvey expects config xml");
         Element e =this.configXML.getChild("url");
-
-        if (e != null)   {
+        ClassConfig ci = DbClass.getClassConfig(smgr.getConnection(),smgr.getClassID());
+        // first choice to get the URL is the classconfig
+        if (ci.getPreSurveyURL() != null)
+            this.url=ci.getPreSurveyURL();
+        // see if provided in the XML
+        else if (e != null)
             this.url= e.getTextTrim();
-        }
-        else throw new UserException("Must provide URL to config of PreSurvey LoginIntervention Selector in logins.xml");
+        // get from db globalsettings.
+        else
+           this.url = Settings.preSurvey;
         e = configXML.getChild("studId");
 
         if (e != null) {
             uidVar = e.getTextTrim();
         }
-        else throw new UserException("Must provide <studId> element in config and URL must contain <uid> to be replaced by studId");
         e = configXML.getChild("userName");
         if (e != null) {
             unameVar = e.getTextTrim();
@@ -61,6 +67,7 @@ public class PreSurvey  extends LoginInterventionSelector {
         e =this.configXML.getChild("embed");
         if (e != null)
             this.embed = Boolean.parseBoolean(e.getTextTrim());
+
     }
 
 
