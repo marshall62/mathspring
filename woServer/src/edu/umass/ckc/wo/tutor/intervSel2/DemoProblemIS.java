@@ -113,7 +113,7 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
