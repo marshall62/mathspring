@@ -894,7 +894,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return is;
     }
 
-
+                                                                                                            /*
     @Override
     public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
         Response r;
@@ -950,11 +950,11 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     // working by themselves.    The wait loop in the originator (waiting for helper to become available) also uses this.  When
     // the helper becomes available, this gets back a different intervention telling the person they are now going to have a partner
     // helping them.
-    public Response processInterventionTimeoutEvent(TimedInterventionEvent e) throws Exception {
+    public Response processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
         Response r;
         smgr.getStudentState().setProblemIdleTime(0);
         NextProblemInterventionSelector isel = (NextProblemInterventionSelector) getLastInterventionSelector();
-        Intervention intervention = isel.processTimedInterventionEvent(e);
+        Intervention intervention = isel.processInterventionTimeoutEvent(e);
 
         if (intervention != null) {
             r= new InterventionResponse(intervention);
@@ -1071,7 +1071,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         st.setNumProblemsThisTutorSession(st.getNumProblemsThisTutorSession()+1);
         // 6/15/15 DM comment out below.  StudentState.beginProblem is what sets this.  This was making it happen too early
 //        st.setCurProblem(p.getId());
-        setProblemTopic(p, st.getCurTopic());
+            setProblemTopic(p, st.getCurTopic());
         if (p.getMode().equals(Problem.PRACTICE))
             st.setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
         for (PedagogicalMoveListener l : this.pedagogicalMoveListeners)

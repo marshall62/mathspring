@@ -16,10 +16,12 @@ import net.sf.json.JSONObject;
 public abstract class TimeoutIntervention extends InputResponseIntervention{
 
     public long waitTime;
+    public long waited;
 
     public void setWaitTime(int i){
         waitTime = i;
     }
+
 
     @Override
     public JSONObject buildJSON(JSONObject jo) {
