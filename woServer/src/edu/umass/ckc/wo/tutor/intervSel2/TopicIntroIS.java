@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
+import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.TopicIntroIntervention;
@@ -116,7 +117,7 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
 
 
     @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
