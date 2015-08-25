@@ -7,7 +7,7 @@ package edu.umass.ckc.wo.interventions;
  * Time: 3:06 AM
  * To change this template use File | Settings | File Templates.
  */
-public class CollaborationPartnerIntervention extends InformationIntervention implements NextProblemIntervention{
+public class CollaborationPartnerIntervention extends TimeoutIntervention implements NextProblemIntervention{
 
     private String name = null;
 

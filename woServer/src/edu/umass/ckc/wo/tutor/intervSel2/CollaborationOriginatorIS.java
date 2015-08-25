@@ -6,12 +6,8 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
-import edu.umass.ckc.wo.event.tutorhut.TimedInterventionEvent;
-import edu.umass.ckc.wo.interventions.CollaborationConfirmationIntervention;
-import edu.umass.ckc.wo.interventions.CollaborationOriginatorIntervention;
-import edu.umass.ckc.wo.interventions.CollaborationTimeoutIntervention;
-import edu.umass.ckc.wo.interventions.CollaborationOptionIntervention;
-import edu.umass.ckc.wo.interventions.NextProblemIntervention;
+import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
+import edu.umass.ckc.wo.interventions.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -33,7 +29,7 @@ import java.util.ArrayList;
 public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
     private static Logger logger = Logger.getLogger(CollaborationIS.class);
-    int minIntervalBetweenCollabInterventions = 60 * 1000 * 5; // wait 5 minutes between collab offers.
+    int minIntervalBetweenCollabInterventions = 60 * 1000;// * 5; // wait 5 minutes between collab offers.
 
     public CollaborationOriginatorIS(SessionManager smgr) throws SQLException {
         super(smgr);
@@ -65,7 +61,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             double random = Math.random();
             // Based on nothing other than time a student is offered help from a neighbor.  This intervention has
             // inputs so that the student may accept for decline.
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.1) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.5) {
 //                rememberInterventionSelector(this);   // can't do it this way in the new intervention model (must have interventions provide class name of IS so that this class is used)
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
@@ -78,36 +74,8 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         }
     }
 
-      // TODO Returning interventions in these methods not allowed.   Must return an InternalEvent
-
-    //  Send one of these when the thing closes
-    //  Select 2nd intervention that does wait
-    // The originators wait loop sends this ContinueEvent every second.   If the partner is still unavailable,
-    // this sends the same intervention
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
-        Integer partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
-
-        // returns message to originator saying that they are waiting for partner
-        if(partner == null){
-//            rememberInterventionSelector(this);
-            //Do not log the intervention this time or the database will become cluttered
-            Intervention interv = new CollaborationOriginatorIntervention();
-            return new InterventionResponse(interv);       // DM Had to modify this to return an interventionResponse and not intervention
-        }
-        // helper is now available, originator is told to work with them and click OK button to start
-        else{
-//            rememberInterventionSelector(this);
-            User u = DbUser.getStudent(smgr.getConnection(),partner);
-            String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationIntervention");
-            Intervention interv = new CollaborationConfirmationIntervention(name);
-            return new InterventionResponse(interv);  // DM had modify to return an InterventionResponse rather than intervention
-        }
-    }
-
-
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
-        String option = e.getServletParams().getString(CollaborationTimeoutIntervention.OPTION);
+        String option = e.getServletParams().getString(CollaborationTimedoutIntervention.OPTION);
         // Do you want to work with someone OR do you want to continue waiting  Answer of YES handled here:  keeps the user waiting
         if(option != null && option.equals("Yes")){
 //            rememberInterventionSelector(this);
@@ -132,9 +100,28 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
     // asks the originator if they want to continue to wait for the partner (helper).   This happens every 60 seconds and is triggered
     // by code in intervhandlers.js processCollaborationOriginatorIntervention
-    public Intervention processTimedInterventionEvent(TimedInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
+        Integer partner = PartnerManager.getRequestedPartner(smgr.getStudentId());
+
+        // returns message to originator saying that they are waiting for partner
+        if(partner == null){
+            if(e.getTimeWaiting()>= 60000){
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimedoutIntervention");
+                return new CollaborationTimedoutIntervention();
+            }
+            else{
+                return new SameIntervention();
+            }
+        }
+        else{
+            User u = DbUser.getStudent(smgr.getConnection(),partner);
+            String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationIntervention");
+            Intervention interv = new CollaborationConfirmationIntervention(name);
+            return interv;
+        }
+
+
 //        rememberInterventionSelector(this);
-        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimeoutIntervention");
-        return new CollaborationTimeoutIntervention();
     }
 }

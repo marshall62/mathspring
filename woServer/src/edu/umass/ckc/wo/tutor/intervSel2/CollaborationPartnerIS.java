@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.db.DbCollaborationLogging;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
+import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -56,35 +57,30 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
         return selectIntervention(e);
     }
 
-    // TODO This cannot return interventions.  It must return internal events.
+    //  THis handles the input from the last intervention saying they are done and then clicking OK
+    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
+        return null;
+    }
 
-
-    // What intervention generates the continue input for a helper?
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
+    @Override
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
         // while the helper is working with the originator this is true and this returns the intervention that tells the helper
         // he must work with the originator.  Happens every second.    This partnership ends when they click the nextproblem button
         // and is cleaned out by the CollaborationOrignatorIS
         if(PartnerManager.isPartner(smgr.getStudentId())){
-//            rememberInterventionSelector(this);
-            CollaborationPartnerIntervention interv = new CollaborationPartnerIntervention();
-            Integer partnerId = PartnerManager.getRequestingPartner(smgr.getStudentId());
+            SameIntervention interv = new SameIntervention();
+        //    CollaborationPartnerIntervention interv = new CollaborationPartnerIntervention();
+        //    Integer partnerId = PartnerManager.getRequestingPartner(smgr.getStudentId());
             // this breaks the originator out of their wait loop
-            interv.setPartner(PartnerManager.getPartnerName(conn, partnerId));
-            return new InterventionResponse( interv); // DM had modify to return an InterventionResponse rather than intervention
+          //  interv.setPartner(PartnerManager.getPartnerName(conn, partnerId));
+            return interv;
         }
-
         // this happens when the collaboration is done.  THe reason they are not partners anymore (above condition of if)
         // is because the originator clicks NextProblem button which then sends an event to CollaborationIS which removes the partnership.
         //  So we tell the helper he is done.
-//        rememberInterventionSelector(this);
         DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationPartnerIntervention");
         Intervention interv= new FinishCollaborationIntervention();
-        return new InterventionResponse( interv); // DM had modify to return an InterventionResponse rather than intervention
-    }
-
-    //  THis handles the input from the last intervention saying they are done and then clicking OK
-    public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
-        return null;
+        return interv;
     }
 
 }
