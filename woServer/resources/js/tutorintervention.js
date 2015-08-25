@@ -33,21 +33,20 @@ function processNextProblemIntervention(activityJSON) {
     else if (interventionType === "MyProgressNavigationAsk")
         processMyProgressNavAskIntervention(activityJSON.html);
     else if(interventionType === "CollaborationPartnerIntervention")
-        processCollaborationPartnerIntervention(activityJSON.html);
+        processCollaborationPartnerIntervention(activityJSON.html, activityJSON.timeoutwait);
     else if(interventionType === "CollaborationConfirmationIntervention")
         processCollaborationConfirmationIntervention(activityJSON.html);
     else if(interventionType === "CollaborationOriginatorIntervention")
-        processCollaborationOriginatorIntervention(activityJSON.html);
+        processCollaborationOriginatorIntervention(activityJSON.html, activityJSON.timeoutwait);
     else if(interventionType === "FinishCollaborationIntervention")
         processCollaborationFinishedIntervention(activityJSON.html);
-    else if(interventionType === "CollaborationTimeoutIntervention")
-        processCollaborationTimeoutIntervention(activityJSON.html);
+    else if(interventionType === "CollaborationTimedoutIntervention")
+        processCollaborationTimedoutIntervention(activityJSON.html);
     else if(interventionType === "CollaborationOptionIntervention")
         processCollaborationOptionIntervention(activityJSON.html);
     sendBeginIntervention(globals,interventionType);
 
 }
-
 
 
 

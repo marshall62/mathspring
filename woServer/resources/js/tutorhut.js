@@ -48,6 +48,7 @@ var INTERVENTION = "intervention";
 var NEXT_PROBLEM_INTERVENTION = "NextProblemIntervention";
 var IS_INPUT_INTERVENTION ="isInputIntervention";
 var ATTEMPT_INTERVENTION = "AttemptIntervention";
+var SAME_INTERVENTION = "SameIntervention"
 
 var DELAY = 700, clicks = 0, timer = null; //Variables required for determining the difference between single and double clicks
 
@@ -543,13 +544,18 @@ function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
 function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     var activityType = activity.activityType;
-    if (activityType == INTERVENTION)
-        processNextProblemIntervention(activity);
-    else if (activityType == FLASH_PROB_TYPE || activityType == HTML_PROB_TYPE)
+
+    if (activityType == INTERVENTION){
+        if(activity.interventionType == SAME_INTERVENTION){
+            continueInterventionTimeout();
+        }
+        else{
+            processNextProblemIntervention(activity);
+        }
+    }
+    else{
         processNextProblemResult(responseText,textStatus,XMLHttpRequest);
-    // it must be that the server wants the TimeoutIntervention to keep going.  So we do nothing.
-    else
-        ;
+    }
 }
 
 function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
