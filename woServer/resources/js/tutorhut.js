@@ -251,7 +251,7 @@ function nextProb(globals) {
 // This function can only be called if the button is showing
 function selectProblemDialog () {
     $("#"+SELECT_PROBLEM_DIALOG).dialog('open');
-    var url = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=GetProblemListForTester&sessionId=" + globals.sessionId +"&elapsedTime="+ globals.elapsedTime;
+    var url = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=GetProblemListForTester&sessionId=" + globals.sessionId +"&elapsedTime="+ globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++;
     loadIframe("#selectProblemDialogIframe",url)
 }
 
@@ -287,7 +287,7 @@ function myprogress(globals) {
     debugAlert("in myprogress");
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId;
+    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId + "&eventCounter="+ sysGlobals.eventCounter++;
 }
 
 // A newer version of the above. Arg has been removed so this function can easily be passed as an argument to other functions (the interventionDialog buttons
@@ -296,7 +296,7 @@ function myprogress() {
     debugAlert("in myprogress");
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId;
+    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId + "&eventCounter="+ sysGlobals.eventCounter++;
 }
 
 
@@ -371,7 +371,7 @@ function showDashboard () {
     sendEndEvent(globals);
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=Home&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&probId="+ globals.probId + "&learningCompanion=" + globals.learningCompanion;
+    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=Home&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&probId="+ globals.probId + "&learningCompanion=" + globals.learningCompanion + "&eventCounter="+ sysGlobals.eventCounter++;
 
 }
 

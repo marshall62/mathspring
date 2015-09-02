@@ -22,7 +22,7 @@ function servletGet (action, args, callbackFn) {
     }
     debugAlert("The action is: <" + action +">");
     $.get("/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + extraArgs,
+        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + extraArgs,
         callbackFn);
 }
 
@@ -33,13 +33,13 @@ function servletPost(action, args, callbackFn) {
         extraArgs += "&" + p + "=" + value;
     }
     $.post("/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + extraArgs,
+        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + extraArgs,
         callbackFn)
 }
 
 function servletFormPost (action, args, callbackFn) {
     $.post("/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + "&"+ args,
+        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + "&"+ args,
         callbackFn)
 }
 
@@ -52,7 +52,7 @@ function servletGetWait (action, args, callbackFn) {
     }
     debugAlert("The action is: <" + action +">");
     $.ajax({url: "/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-                + globals.elapsedTime + extraArgs,
+                + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + extraArgs,
            success: callbackFn,
            async: false});
 }
