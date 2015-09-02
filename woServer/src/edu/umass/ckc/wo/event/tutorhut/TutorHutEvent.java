@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class TutorHutEvent extends SessionEvent {
     protected long elapsedTime;
     protected static String ELAPSED_TIME = "elapsedTime";
+    protected int eventCounter;
 
     protected HttpServletResponse servletResponse;  // THis is so the Tutor can forward to JSPs
     protected HttpServletRequest servletRequest;  // THis is so the Tutor can forward to JSPs
@@ -26,6 +27,7 @@ public abstract class TutorHutEvent extends SessionEvent {
     TutorHutEvent(ServletParams p) throws Exception {
         super(p);
         String et = p.getString(ELAPSED_TIME,"0");
+        this.eventCounter = p.getInt("eventCounter",-1);
         long etl=0;
         try {
             etl = Long.parseLong(et);
@@ -57,5 +59,9 @@ public abstract class TutorHutEvent extends SessionEvent {
 
     public void setServletRequest(HttpServletRequest servletRequest) {
         this.servletRequest = servletRequest;
+    }
+
+    public int getEventCounter() {
+        return eventCounter;
     }
 }

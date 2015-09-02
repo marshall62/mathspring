@@ -40,11 +40,8 @@ public abstract class NextProblemInterventionSelector extends InterventionSelect
      */
     public abstract NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception;
 
-    public abstract Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception;
     public abstract Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;
-//    public abstract Response processTimeoutNextProblemInterventionEvent (InterventionTimeoutEvent e) throws Exception;
-
-    public Intervention processTimedInterventionEvent(TimedInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception{
         return null;
     }
 

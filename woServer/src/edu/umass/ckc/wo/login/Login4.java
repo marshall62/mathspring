@@ -35,7 +35,7 @@ public class Login4 implements ServletAction {
 
         int sessionId = params.getInt(LoginParams.SESSION_ID);
         // Make a DB call to save this info   TODO might want a full servlet path rather than ""
-        SessionManager smgr = new SessionManager(conn, sessionId, "", "").buildExistingSession();
+        SessionManager smgr = new SessionManager(conn, sessionId).buildExistingSession();
         DbUser.setFlankingUsers(conn,smgr.getStudentId(),left,right);
         LearningCompanion lc = smgr.getLearningCompanion();
         req.setAttribute("sessionId", sessionId);

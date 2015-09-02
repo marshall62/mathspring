@@ -2,10 +2,9 @@ package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
-import edu.umass.ckc.wo.event.tutorhut.TimedInterventionEvent;
+import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -64,15 +63,6 @@ public class CollaborationIS extends NextProblemInterventionSelector {
         }
     }
 
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception{
-        String dest = e.getServletParams().getString("destination");
-        Class c = Class.forName(dest);
-        NextProblemInterventionSelector is =  (NextProblemInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
-        is.init(smgr,pedagogicalModel);
-        return is.processContinueNextProblemInterventionEvent(e);
-//        return ((NextProblemInterventionSelector) getInterventionSelectorThatGeneratedIntervention()).processContinueNextProblemInterventionEvent(e);
-    }
-
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
         // The new intervention model does not allow one intervention selector to delegate to another intervention selector as done by this
         // implementation (because constructing the intervention selector using the name of the last intervention selector needs an intervention spec
@@ -88,12 +78,12 @@ public class CollaborationIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public Intervention processTimedInterventionEvent(TimedInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
         String dest = e.getServletParams().getString("destination");
         Class c = Class.forName(dest);
         NextProblemInterventionSelector is =  (NextProblemInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
         is.init(smgr,pedagogicalModel);
-        return is.processTimedInterventionEvent(e);
+        return is.processInterventionTimeoutEvent(e);
 //        return ((NextProblemInterventionSelector) getInterventionSelectorThatGeneratedIntervention()).processTimedInterventionEvent(e);
     }
 

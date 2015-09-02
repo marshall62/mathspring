@@ -37,7 +37,7 @@ public class Login3 implements ServletAction {
          int frustration = params.getInt(LoginParams.FRUSTRATION,0);
          int interest = params.getInt(LoginParams.INTEREST,0);
          // TODO might want to put in a correct servlet path rather than ""
-         SessionManager smgr = new SessionManager(conn,sessId, "", "").buildExistingSession();
+         SessionManager smgr = new SessionManager(conn,sessId).buildExistingSession();
          DbUser.setUserNames(conn,smgr.getStudentId(),fname,lini);
          DbUserProfile.deleteProfile(conn, smgr.getStudentId())  ;
          DbUserProfile.setValues(conn, smgr.getStudentId(), confidence, excitement, interest, frustration);

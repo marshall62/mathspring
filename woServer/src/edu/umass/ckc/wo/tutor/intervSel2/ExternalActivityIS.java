@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
 import org.jdom.Element;
@@ -116,7 +117,7 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

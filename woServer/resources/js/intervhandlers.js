@@ -1,4 +1,5 @@
-var timeout = 0;
+var tmoutwait = 0;
+var timewaited = 0;
 
 // This is for an attempt event that asks to highlight the hint button
 // its a shame this function has to know the image files that are defined in the CSS rather than fetching them from it.
@@ -46,26 +47,30 @@ function processMyProgressNavAskIntervention (html) {
     interventionDialogOpenAsYesNo("Let's see our progress!", html, NEXT_PROBLEM_INTERVENTION,myprogress,interventionDialogNoClick );
 }
 
+//This function continues the wait on a TimeoutIntervention
+function continueInterventionTimeout(){
+    timewaited = timewaited+tmoutwait;
+    servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited+tmoutwait}, processInterventionTimeoutResult);
+}
+
 // This sets up an intervention on the helpers screen that freezes their input until the collaboration with
 // a partner (on the partners computer) is done.   This checks every 3 seconds to see if this intervention
 // is complete.   The server keeps returning the same intervention/learningCompanion when it's not complete and a different
 // intervention when it is complete
-function processCollaborationPartnerIntervention(html) {
+function processCollaborationPartnerIntervention(html, timeoutwait) {
     globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationPartnerIS";
+    timewaited = 0;
+    tmoutwait = timeoutwait;
     // Open the dialog with no buttons and a timeout function
-    interventionDialogOpenNoButtons("Work with a partner", html, NEXT_PROBLEM_INTERVENTION,
-        function(){
-            // must provide destination because delegate intervention selectors no longer work
-            servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
-            globals.interventionType = null;
-            globals.isInputIntervention= false;
-        }, 3000);
-}
+    interventionDialogOpenNoButtons("Work with a partner", html, NEXT_PROBLEM_INTERVENTION, function(){
+            servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited + tmoutwait}, processInterventionTimeoutResult);}
+            , timeoutwait);
+        }
 
 function processCollaborationConfirmationIntervention(html) {
     globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS";
 //    interventionDialogOpen("Work with a partner", html, NEXT_PROBLEM_INTERVENTION);
-    // TODO this could be changed to ...OpenAsYesNo funtion call instead of Confirm.  We'd have to change the html so it doesn't have inputs and
+    // TODO this could be changed to ...OpenAsYesNo function call instead of Confirm.  We'd have to change the html so it doesn't have inputs and
     // just says "Do you want to work with a partner?".  The yes/no buttons would then be all that needed to be clicked and functions would send back
     // those responses to the server
     interventionDialogOpenAsConfirm("Work with a partner", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
@@ -73,27 +78,14 @@ function processCollaborationConfirmationIntervention(html) {
 
 // When the originator is waiting for a partner this checks the server every 5 seconds to see if the partner is available to work
 // with.   Every 60 seconds it asks if they want to continue waiting for a partner.
-function processCollaborationOriginatorIntervention(html) {
+function processCollaborationOriginatorIntervention(html, timeoutwait) {
     globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS";
+    timewaited = 0;
+    tmoutwait = timeoutwait;
     // Open the intervention dialog with no buttons and timeout handling
-    interventionDialogOpenNoButtons("Waiting for a partner", html, NEXT_PROBLEM_INTERVENTION,
-        // every minute it makes a request that results in an intervention that asks if they want to continue waiting for a partner
-        // every 5 seconds it makes a request to see if the partner is available which results in the same intervention being put up if not
-        // and a different intervention if the partner is available.
-        function(){
-                if(timeout >= 60000){
-                    timeout = 0;
-                    // must provide destination because delegate intervention selectors no longer work
-                    servletGet("TimedIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
-                }
-                else{
-                    timeout = timeout + 5000;
-                    // must provide destination because delegate intervention selectors no longer work
-                    servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
-                }
-                globals.interventionType = null;
-                globals.isInputIntervention= false;}
-            , 5000);
+        interventionDialogOpenNoButtons("Waiting for a partner", html, NEXT_PROBLEM_INTERVENTION, function(){
+            servletGet("InterventionTimeout", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector, timeWaiting: timewaited+tmoutwait}, processInterventionTimeoutResult);}
+            , timeoutwait);
 }
 
 
@@ -105,7 +97,7 @@ function processCollaborationFinishedIntervention(html) {
     interventionDialogOpenAsConfirm("Collaboration over", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
 }
 
-function processCollaborationTimeoutIntervention(html) {
+function processCollaborationTimedoutIntervention(html) {
     globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS";
 //    interventionDialogOpen("Continue Waiting?", html, NEXT_PROBLEM_INTERVENTION );
     //  TODO This could be turned into a Yes/No dialog call

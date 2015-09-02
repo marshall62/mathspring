@@ -100,7 +100,7 @@ public class ServerTestMgr {
     public int loginTestUser() throws Exception {
         smgr.serverTester_LoginStudent(testUserName, "", testUserPassword, System.currentTimeMillis(), null);
         sessionId = smgr.getSessionNum();
-        smgr = new SessionManager(conn, sessionId, "", "");
+        smgr = new SessionManager(conn, sessionId);
         return sessionId;
 
     }
