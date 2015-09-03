@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.charts;
 
+import org.apache.log4j.Logger;
 import org.jCharts.axisChart.AxisChart;
 import org.jCharts.axisChart.customRenderers.axisValue.renderers.ValueLabelPosition;
 import org.jCharts.axisChart.customRenderers.axisValue.renderers.ValueLabelRenderer;
@@ -19,7 +20,9 @@ import java.io.IOException;
 
 
 public class LineGraphServlet extends HttpServlet
+
 {
+    private static Logger logger = Logger.getLogger(LineGraphServlet.class);
 	//---all of my charts serviced by this Servlet will have the same properties.
 	private LineChartProperties lineChartProperties;
 
@@ -81,7 +84,7 @@ public class LineGraphServlet extends HttpServlet
 	/**********************************************************************************************
 	 *
 	 **********************************************************************************************/
-	public void service( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException
+	public void service( HttpServletRequest req, HttpServletResponse resp )
 	{
 		try
 		{
@@ -91,25 +94,41 @@ public class LineGraphServlet extends HttpServlet
             String[] legendLabels = (String[]) sess.getAttribute("legendLabels");
             Stroke[] strokes = new Stroke[legendLabels.length];
             Shape[] shapes = new Shape[legendLabels.length];
+            logger.debug("data size: " + data.length);
+            logger.debug("dataSeries size: " + dataSeries.size());
+            logger.debug("legendLabels size: " + legendLabels.length);
+            logger.debug("strokes size: " + strokes.length);
+            logger.debug("shapes size: " + shapes.length);
+
             for (int i=0;i<legendLabels.length;i++) {
                 strokes[i]=LineChartProperties.DEFAULT_LINE_STROKE;
                 shapes[i]= PointChartProperties.SHAPE_CIRCLE;
             }
             lineChartProperties= new LineChartProperties( strokes, shapes );
             width = data[0].length * 38;
-
+            if (width == 0) {
+                logger.error("No data is given to build chart.");
+                return;
+            }
             Paint[] paints =  TestDataGenerator.getRandomPaints( legendLabels.length );
+            logger.debug("building AxisChartDataSet");
 
             dataSeries.addIAxisPlotDataSet( new AxisChartDataSet( data, legendLabels, paints, ChartType.LINE, this.lineChartProperties ) );
-
+            logger.debug("building AxisChart");
 			AxisChart axisChart = new AxisChart( dataSeries, this.chartProperties, this.axisProperties, this.legendProperties, this.width, this.height );
-			ServletEncoderHelper.encodeJPEG13( axisChart, 1.0f, resp );
+			logger.debug("encoding JPEG");
+            ServletEncoderHelper.encodeJPEG13( axisChart, 1.0f, resp );
+            logger.debug("completed JPEG encoding");
 
-
-        } catch (PropertyException e1) {
-            e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (ChartDataException e1) {
-            e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Throwable e1) {
+            logger.error("Exception generated");
+            logger.error(e1.getMessage());
+            try {
+                e1.printStackTrace(resp.getWriter());
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            e1.printStackTrace();
         }
 
     }

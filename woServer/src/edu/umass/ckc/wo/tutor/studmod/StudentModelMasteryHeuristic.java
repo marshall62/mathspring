@@ -226,7 +226,7 @@ public class StudentModelMasteryHeuristic implements MasteryHeuristic {
             oldThreshold = 0.1;
         }
         else oldThreshold = 0.05; //if we haven't reached a milestone, stay at 0.05
-        System.out.println("threshold updated to " + oldThreshold);
+//        System.out.println("threshold updated to " + oldThreshold);
         return oldThreshold;
     }
 }

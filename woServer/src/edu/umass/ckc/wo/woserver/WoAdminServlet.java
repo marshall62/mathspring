@@ -66,7 +66,7 @@ public class WoAdminServlet extends BaseServlet {
             boolean wroteToBuffer;
             wroteToBuffer = new AdminHandler().handleEvent(request, response, servletContext, conn, e, servletOutput);
             if (wroteToBuffer) {
-                logger.info("<<" + servletOutput.toString().substring(160));
+                logger.info("<<");
             }
             return wroteToBuffer;
         } catch (Exception e1) {
