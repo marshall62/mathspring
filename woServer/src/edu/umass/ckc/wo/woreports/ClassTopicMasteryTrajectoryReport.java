@@ -290,7 +290,7 @@ public class ClassTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
             rs = stmt.executeQuery();
             if (rs.next()) {
                 String s = rs.getString(1);
-                if (s!= null && s.equals("ExampleProblem")) {
+                if (s != null && s.equals("ExampleProblem")) {
                     int pid= rs.getInt(2);
                     return true;
                 }

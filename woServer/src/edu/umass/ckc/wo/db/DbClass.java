@@ -258,7 +258,8 @@ public class DbClass {
             while (rs.next()) {
                 int classId= rs.getInt(1);
                 ClassInfo ci = getClass(conn,classId);
-                result.add(ci);
+                if (ci != null)
+                    result.add(ci);
             }
             return result.toArray(new ClassInfo[result.size()]);
         }
