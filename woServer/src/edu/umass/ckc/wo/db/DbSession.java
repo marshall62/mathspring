@@ -416,12 +416,12 @@ public class DbSession {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select eventCounter from session where id=?";
+            String q = "select id, eventCounter from session where id=?";
             stmt = conn.prepareStatement(q, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             stmt.setInt(1,sessId);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                int lastCount= rs.getInt(1);
+                int lastCount= rs.getInt(2);
                 if (lastCount + 1 == c || forceOverwrite) {
                     rs.updateInt("eventCounter",c);
                     rs.updateRow();

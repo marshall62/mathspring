@@ -106,7 +106,7 @@ public class DashboardHandler {
         request.setAttribute("dayDetailsList", dayDetailsList);
         request.setAttribute("masteryThreshold", masteryThreshold);
         request.setAttribute("newSession", newSession);
-
+        request.setAttribute("eventCounter",smgr.getEventCounter());
         request.getRequestDispatcher(jsp).forward(request, response);
         smgr.getStudentState().setTutorEntryTime(System.currentTimeMillis());
 

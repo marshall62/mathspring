@@ -53,7 +53,7 @@ public class LineGraphServlet extends HttpServlet
 		axisProperties.getYAxisProperties().setTitleChartFont( axisTitleFont );
 
 		DataAxisProperties dataAxisProperties = (DataAxisProperties) axisProperties.getYAxisProperties();
-
+        System.setProperty("java.awt.headless","true"); // this is to get it to generate images on a Linux box
 		try
 		{
 			dataAxisProperties.setUserDefinedScale( 0, 1 );
