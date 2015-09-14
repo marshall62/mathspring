@@ -18,28 +18,29 @@
           <tr>
                 <td width="40"><font  face="Arial, Helvetica, sans-serif">ID</font></td>
                 <td width="305"><font face="Arial, Helvetica, sans-serif">Topic</font></td>
+                <td width="305"><font face="Arial, Helvetica, sans-serif">Number of Problems</font></td>
           </tr>
 
           <%--@elvariable id="topics" type="edu.umass.ckc.wo.tutor.Topic[]"--%>
 
           <c:forEach var="topic" items="${topics}">
 
-                 <tr>
-                     <td  width="40"><font  face="Arial, Helvetica, sans-serif"><c:out value="${topic.id}"/></font></td>
-                   <td class="a2" width="305">
-                       <c:choose>
-                       <c:when test="${topic.seqPos > 0}">
+              <tr>
+                  <c:if test="${topic.seqPos > 0 && topic.numProbs > 0}">
+                      <td  width="40"><font  face="Arial, Helvetica, sans-serif"><c:out value="${topic.id}"/></font></td>
 
-                           <a  href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSelectTopicProblems&topicId=<c:out value="${topic.id}"/>&classId=<c:out value="${classId}"/>&teacherId=<c:out value="${teacherId}"/>" >
-                               <c:out value="${topic.name}"/>
-                           </a>
-                       </c:when>
-                       <c:otherwise>
-                             <font  face="Arial, Helvetica, sans-serif"><c:out value="${topic.name}"/></font>
-                       </c:otherwise>
-                       </c:choose>
-                   </td>
-                 </tr>
+                      <td class="a2" width="305">
+                          <a  href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSelectTopicProblems&topicId=<c:out value="${topic.id}"/>&classId=<c:out value="${classId}"/>&teacherId=<c:out value="${teacherId}"/>" >
+                              <c:out value="${topic.name}"/>
+                          </a>
+                      </td>
+                      <td width="40">
+                          <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
+                              <font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.numProbs}"/></font>
+                          </a>
+                      </td>
+                  </c:if>
+              </tr>
 
 
           </c:forEach>

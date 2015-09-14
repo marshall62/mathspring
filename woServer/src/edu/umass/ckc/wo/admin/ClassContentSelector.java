@@ -159,7 +159,7 @@ public class ClassContentSelector {
         int myGrade = gradeToNum(grade);
         int lowDecr = getLevelBelow(lowDiff);
         int highIncr = getLevelAbove(highDiff);
-        return (myGrade >= (stdGrade-lowDecr)) && (myGrade <= (stdGrade+highIncr));
+        return (stdGrade >= (myGrade-lowDecr)) && (stdGrade <= (myGrade+highIncr));
     }
 
     /**

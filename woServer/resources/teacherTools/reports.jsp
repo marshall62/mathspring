@@ -76,6 +76,22 @@
                     trouble with
                 </td>
             </tr>
+            <tr><td colspan="3"><font  face="Arial, Helvetica, sans-serif">Pre/Post test Reports</font></td>
+            </tr>
+            <tr>
+                <td></td><td  ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=10&state=showReport">Pre/Posttest scores per Student</a></td>
+                <td><font face="Arial, Helvetica, sans-serif"/>The scores of each student on a test before and after getting tutoring</td>
+            </tr>
+            <%--<tr>--%>
+                <%--<td></td>--%>
+                <%--<td  ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=15&state=showReport">Pre/Posttest problem summaries per class</a></td>--%>
+                <%--<td><font  face="Arial, Helvetica, sans-serif"/>Individual problems in the pre/posttest reported on the class</td>--%>
+            <%--</tr>--%>
+            <%--<tr>--%>
+                <%--<td></td>--%>
+                <%--<td><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=18&state=showReport">Pre/Posttest problem detail per student</a></td>--%>
+                <%--<td><font  face="Arial, Helvetica, sans-serif"/>Shows individual pre/post test problem scoring data per student</td>--%>
+            <%--</tr>--%>
             <%-- For Researchers only Reports --%>
             <tr>
                 <td colspan="3"><font  face="Arial, Helvetica, sans-serif">For Researchers only</font>

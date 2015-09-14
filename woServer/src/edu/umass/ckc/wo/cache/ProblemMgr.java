@@ -358,7 +358,11 @@ public class ProblemMgr {
     // returns a clone of the List because the caller may destroy the
     // contents of the list.
     public static List<Problem> getTopicProblems (int topicId) {
-        return (List<Problem>) probsByTopic.get(topicId).clone();
+        List<Problem> l = probsByTopic.get(topicId);
+        if (l == null)
+            return null;
+        else
+            return (List<Problem>) probsByTopic.get(topicId).clone();
     }
 
     public static List<Integer> getTopicProblemIds (int topicId) {

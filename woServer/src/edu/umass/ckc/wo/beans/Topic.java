@@ -18,6 +18,7 @@ public class Topic implements Comparable<Topic> {
     private int seqPos;
     private int oldSeqPos;
     private Set<CCStandard> ccStandards;
+    private int numProbs;
 
     public static final String ID = "id";
     public static final String INTRO = "intro";
@@ -102,6 +103,13 @@ public class Topic implements Comparable<Topic> {
         return sb.toString();
     }
 
+    public int getNumProbs() {
+        return numProbs;
+    }
+
+    public void setNumProbs(int numProbs) {
+        this.numProbs = numProbs;
+    }
 
     // sort based on the previous indices set on the topics
     public int compareTo (Topic other) {
