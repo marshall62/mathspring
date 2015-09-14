@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Classes;
 import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.content.TopicMgr;
+import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.admin.AdminEditTopicsEvent;
 import edu.umass.ckc.wo.event.admin.AdminReorderTopicsEvent;
 import edu.umass.ckc.wo.event.admin.AdminTopicControlEvent;
@@ -60,14 +61,16 @@ public class TopicEditorHandler {
                 topicMgr.reactivateTopic(conn,(AdminReorderTopicsEvent) e);
                 topics = DbTopics.getClassActiveTopics(conn,ee.getClassId());
             }
-            List<Topic> activetopics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn,ee.getClassId(), activetopics);
+//            List<Topic> activetopics = DbTopics.getClassActiveTopics(conn,e.getClassId());
+            DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), topics);
+            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
+
             ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
             ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
             Classes bean = new Classes(classes);
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-
+            req.setAttribute("isAdmin",adminId != null);
             req.setAttribute("action","AdminEditTopics");
             req.setAttribute("topics",topics);
             req.setAttribute("inactiveTopics",inactiveTopics);
@@ -84,13 +87,14 @@ public class TopicEditorHandler {
         else if (e instanceof AdminTopicControlEvent) {
             AdminTopicControlEvent ee = (AdminTopicControlEvent) e;
             List<Topic> topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn,ee.getClassId(), topics);
+            DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), topics);
+            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
             ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
             ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
             Classes bean = new Classes(classes);
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-
+            req.setAttribute("isAdmin",adminId != null);
             req.setAttribute("action","AdminEditTopics");
             req.setAttribute("topics",topics);
             req.setAttribute("classId",e.getClassId());
@@ -111,13 +115,15 @@ public class TopicEditorHandler {
         else {
             // fetch a list of topics for the class sorted in the order they will be presented
             List<Topic> topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn,e.getClassId(), topics);
+            DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), topics);
+
+            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
             ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
             Classes bean = new Classes(classes);
             ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-
+            req.setAttribute("isAdmin",adminId != null);
             // forward to the JSP page that allows reordering the list and omitting topics.
             req.setAttribute("action","AdminEditTopics");
             req.setAttribute("bean",bean);
