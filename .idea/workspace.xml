@@ -7,8 +7,76 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/SameIntervention.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/reports.jsp" />
+      <change type="DELETED" beforePath="U:\mathspring\woServer\src\edu\umass\ckc\wo\event\tutorhut\TimedInterventionEvent.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/ClassContentSelector.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/ClassContentSelector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicMasteryTrajectoryReport.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicMasteryTrajectoryReport.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationOriginatorIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationOriginatorIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/CollaborationOriginatorIntervention.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/CollaborationOriginatorIntervention.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationPartnerIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationPartnerIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/CollaborationPartnerIntervention.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/CollaborationPartnerIntervention.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/Dashboard.jsp" afterPath="$PROJECT_DIR$/woServer/resources/Dashboard.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/DashboardHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/DashboardHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbProblem.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbProblem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbSession.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbSession.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbTopics.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbTopics.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/DemoProblemIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/DemoProblemIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servertest/EpisodicLogDriver.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servertest/EpisodicLogDriver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/ExternalActivityIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/ExternalActivityIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/InterventionTimeoutEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/InterventionTimeoutEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/charts/LineGraphServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/charts/LineGraphServlet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/Login3.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/Login3.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/Login4.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/Login4.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/MyProgressNavigationAskIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/MyProgressNavigationAskIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/MyProgressNavigationForceIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/MyProgressNavigationForceIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/MyProgressPageIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/MyProgressPageIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/NextProblemInterventionSelector.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/NextProblemInterventionSelector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ProblemSelectionHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ProblemSelectionHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/Report.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/Report.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servertest/ServerTestMgr.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servertest/ServerTestMgr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/StudentAllTopicsMasteryTrajectoryReport.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/StudentAllTopicsMasteryTrajectoryReport.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentModelMasteryHeuristic.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentModelMasteryHeuristic.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemData.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/TimeoutIntervention.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/TimeoutIntervention.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/Topic.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/beans/Topic.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/TopicEditorHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/TopicEditorHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/TopicIntroIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/TopicIntroIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/TopicModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/TopicModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/TopicSwitchAskIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/TopicSwitchAskIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/TutorBrainHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/TutorBrainHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/TutorHutEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/TutorHutEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/WasExampleHelpfulIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/WasExampleHelpfulIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/adminSideMenu.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/adminSideMenu.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/intervhandlers.js" afterPath="$PROJECT_DIR$/woServer/resources/js/intervhandlers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/classes/log4j.properties" afterPath="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/classes/log4j.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/web/WEB-INF/rose/log4j.properties" afterPath="$PROJECT_DIR$/woServer/web/WEB-INF/rose/log4j.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring.jsp" afterPath="$PROJECT_DIR$/woServer/resources/mathspring.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/orderTopics.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/orderTopics.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/problemSelectionTopicsList.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/problemSelectionTopicsList.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/teacherTools/teacherSideMenu.jsp" afterPath="$PROJECT_DIR$/woServer/resources/teacherTools/teacherSideMenu.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorintervention.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorutils.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorutils.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/.idea/workspace.xml" afterPath="$PROJECT_DIR$/woServer/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="U:\mathspring\woServer\src\edu\umass\ckc\wo\interventions\CollaborationTimeoutIntervention.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/CollaborationTimedoutIntervention.java" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -16,7 +84,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1368816022243" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1442257590311" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1442257960934" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
     <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1430841242801" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
@@ -903,17 +971,9 @@
     <file path="/CollaborationPartnerIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1432065812818" ignored="false" />
     <file path="/WasExampleHelpfulIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1434564344593" ignored="false" />
     <file path="/InterventionGroup.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1435071062738" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbTopics.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1440440836424" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbProblem.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1440440836424" ignored="false" />
     <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClassPedagogies.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1440440836424" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1440440836424" ignored="false" />
     <file path="/LineGraphServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1441293832602" ignored="false" />
     <file path="/ClassTopicMasteryTrajectoryReport.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1441292481591" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbSession.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1442257837570" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1442257837570" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/Report.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1442257837571" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/.idea/workspace.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1442257837571" ignored="false" />
-    <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/TutorBrainHandler.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1442257837571" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1131,7 +1191,7 @@
       <file leaf-file-name="WoAdminServlet.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="74" selection-start="788" selection-end="858" vertical-scroll-proportion="0.0">
+            <state line="22" column="74" selection-start="788" selection-end="858" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1140,7 +1200,7 @@
       <file leaf-file-name="LineGraphServlet.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/charts/LineGraphServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="91" column="0" selection-start="3801" selection-end="3801" vertical-scroll-proportion="0.0">
+            <state line="100" column="0" selection-start="4363" selection-end="4363" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1149,7 +1209,7 @@
       <file leaf-file-name="ReportHandler.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="87" selection-start="4032" selection-end="4032" vertical-scroll-proportion="0.64693445">
+            <state line="132" column="87" selection-start="5600" selection-end="5600" vertical-scroll-proportion="0.64693445">
               <folding />
             </state>
           </provider>
@@ -1158,7 +1218,7 @@
       <file leaf-file-name="StudentAllTopicsMasteryTrajectoryReport.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/StudentAllTopicsMasteryTrajectoryReport.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="468" column="22" selection-start="19400" selection-end="19400" vertical-scroll-proportion="0.0">
+            <state line="402" column="22" selection-start="16476" selection-end="16476" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1176,7 +1236,7 @@
       <file leaf-file-name="ClassTopicMasteryTrajectoryReport.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicMasteryTrajectoryReport.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="321" column="35" selection-start="13567" selection-end="13567" vertical-scroll-proportion="0.0">
+            <state line="321" column="35" selection-start="13580" selection-end="13580" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1194,7 +1254,7 @@
       <file leaf-file-name="log4j.properties" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/classes/log4j.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="339" selection-end="339" vertical-scroll-proportion="0.0">
+            <state line="9" column="0" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1203,7 +1263,7 @@
       <file leaf-file-name="log4j.properties" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/rose/log4j.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="126" selection-start="1650" selection-end="1650" vertical-scroll-proportion="0.0">
+            <state line="31" column="126" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -3290,7 +3350,11 @@
       <created>1441296443542</created>
       <updated>1441296443542</updated>
     </task>
-    <option name="localTasksCounter" value="184" />
+    <task id="LOCAL-00184" summary="Some debugging statements and small fixes to get jcharts reports working">
+      <created>1442257972754</created>
+      <updated>1442257972754</updated>
+    </task>
+    <option name="localTasksCounter" value="185" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -3560,49 +3624,49 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/StudentAllTopicsMasteryTrajectoryReport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="468" column="22" selection-start="19400" selection-end="19400" vertical-scroll-proportion="0.0">
+        <state line="402" column="22" selection-start="16476" selection-end="16476" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="74" selection-start="788" selection-end="858" vertical-scroll-proportion="0.0">
+        <state line="22" column="74" selection-start="788" selection-end="858" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/charts/LineGraphServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="0" selection-start="3801" selection-end="3801" vertical-scroll-proportion="0.0">
+        <state line="100" column="0" selection-start="4363" selection-end="4363" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicMasteryTrajectoryReport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="321" column="35" selection-start="13567" selection-end="13567" vertical-scroll-proportion="0.0">
+        <state line="321" column="35" selection-start="13580" selection-end="13580" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/classes/log4j.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="339" selection-end="339" vertical-scroll-proportion="0.0">
+        <state line="9" column="0" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/rose/log4j.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="126" selection-start="1650" selection-end="1650" vertical-scroll-proportion="0.0">
+        <state line="31" column="126" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="87" selection-start="4032" selection-end="4032" vertical-scroll-proportion="0.64693445">
+        <state line="132" column="87" selection-start="5600" selection-end="5600" vertical-scroll-proportion="0.64693445">
           <folding />
         </state>
       </provider>

@@ -48,6 +48,7 @@ var INTERVENTION = "intervention";
 var NEXT_PROBLEM_INTERVENTION = "NextProblemIntervention";
 var IS_INPUT_INTERVENTION ="isInputIntervention";
 var ATTEMPT_INTERVENTION = "AttemptIntervention";
+var SAME_INTERVENTION = "SameIntervention"
 
 var DELAY = 700, clicks = 0, timer = null; //Variables required for determining the difference between single and double clicks
 
@@ -250,7 +251,7 @@ function nextProb(globals) {
 // This function can only be called if the button is showing
 function selectProblemDialog () {
     $("#"+SELECT_PROBLEM_DIALOG).dialog('open');
-    var url = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=GetProblemListForTester&sessionId=" + globals.sessionId +"&elapsedTime="+ globals.elapsedTime;
+    var url = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=GetProblemListForTester&sessionId=" + globals.sessionId +"&elapsedTime="+ globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++;
     loadIframe("#selectProblemDialogIframe",url)
 }
 
@@ -286,7 +287,7 @@ function myprogress(globals) {
     debugAlert("in myprogress");
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId;
+    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId + "&eventCounter="+ sysGlobals.eventCounter++;
 }
 
 // A newer version of the above. Arg has been removed so this function can easily be passed as an argument to other functions (the interventionDialog buttons
@@ -295,7 +296,7 @@ function myprogress() {
     debugAlert("in myprogress");
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId;
+    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId + "&eventCounter="+ sysGlobals.eventCounter++;
 }
 
 
@@ -370,7 +371,7 @@ function showDashboard () {
     sendEndEvent(globals);
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=Home&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&probId="+ globals.probId + "&learningCompanion=" + globals.learningCompanion;
+    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=Home&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&probId="+ globals.probId + "&learningCompanion=" + globals.learningCompanion + "&eventCounter="+ sysGlobals.eventCounter++;
 
 }
 
@@ -543,13 +544,18 @@ function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
 function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     var activityType = activity.activityType;
-    if (activityType == INTERVENTION)
-        processNextProblemIntervention(activity);
-    else if (activityType == FLASH_PROB_TYPE || activityType == HTML_PROB_TYPE)
+
+    if (activityType == INTERVENTION){
+        if(activity.interventionType == SAME_INTERVENTION){
+            continueInterventionTimeout();
+        }
+        else{
+            processNextProblemIntervention(activity);
+        }
+    }
+    else{
         processNextProblemResult(responseText,textStatus,XMLHttpRequest);
-    // it must be that the server wants the TimeoutIntervention to keep going.  So we do nothing.
-    else
-        ;
+    }
 }
 
 function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {

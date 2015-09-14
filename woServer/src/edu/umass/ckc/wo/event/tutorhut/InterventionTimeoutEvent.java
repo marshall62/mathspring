@@ -3,14 +3,14 @@ package edu.umass.ckc.wo.event.tutorhut;
 import ckc.servlet.servbase.ServletParams;
 
 /**
- * Created by IntelliJ IDEA.
- * User: marshall
- * Date: May 21, 2015
- * Time: 9:59:59 AM
- * Sent by a timer that is part of an intervention that runs in the client.   Typically used to see if the intervention
- * should continue or be removed in favor of something else.
+ * Created with IntelliJ IDEA.
+ * User: Melissa
+ * Date: 5/4/15
+ * Time: 5:17 PM
+ * To change this template use File | Settings | File Templates.
  */
 public class InterventionTimeoutEvent extends IntraProblemEvent {
+
     private long timeWaiting;
 
     public InterventionTimeoutEvent(ServletParams p) throws Exception {

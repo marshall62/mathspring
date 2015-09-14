@@ -279,7 +279,7 @@ public class TopicModel extends LessonModel {
             return processNextProblemEvent( (NextProblemEvent) e);
 
         }
-
+                                                            /*
         // If this model didn't generate the intervention, return null so the pedagogical model can process it.
         // If this model did generate it, process it and if that results in an internal event, process the internal event
         // If it results in nothing, then let this model process this event as if it were a nextProblemEvent
@@ -293,7 +293,7 @@ public class TopicModel extends LessonModel {
             NextProblemInterventionSelector intSel = (NextProblemInterventionSelector) spec.buildIS(smgr);
             intSel.init(smgr,pedagogicalModel);
             // N.B. Assumption is that we no longer get Interventions back
-            Response r = intSel.processContinueNextProblemInterventionEvent((ContinueNextProblemInterventionEvent) e);
+            Response r = intSel.processInterventionTimeoutEvent(e);
             // no state change (InternalState returned) means process it just like a NextProblemEvent
             if (r == null) {
                 // N.B. This can return null if no interventions and internal state = IN_TOPIC
@@ -306,7 +306,7 @@ public class TopicModel extends LessonModel {
             }
             else if (r instanceof InternalEvent)
                 return this.processInternalEvent((InternalEvent) r);
-        }
+        }                                                     */
         // If this model didn't generate the intervention, return null so the pedagogical model can process it.
         // If this model did generate it, process it and if that results in an internal event, process the internal event
         // If it results in nothing, then let this model process this event as if it were a nextProblemEvent

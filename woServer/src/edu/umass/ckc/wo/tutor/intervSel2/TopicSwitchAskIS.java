@@ -4,6 +4,7 @@ import ckc.servlet.servbase.ServletParams;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
+import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.TopicSwitchAskIntervention;
@@ -15,6 +16,7 @@ import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutor.response.BeginningOfTopicEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 
@@ -118,11 +120,11 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 
 
     @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
 //        TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
 //        tm.clearEndOfTopicInfo();
         if (true)
-            throw new UserException("Should not be getting a continue event in topic switch");
+            throw new UserException("Should not be getting a timeout event in topic switch");
         return null;
     }
 

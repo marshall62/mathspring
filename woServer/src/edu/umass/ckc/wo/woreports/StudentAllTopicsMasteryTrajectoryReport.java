@@ -169,70 +169,6 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
 
 
 
-    /**
-     * Goes through a given students eventlog entries.
-     * The data is saved in the servlet session and then an HTML page with an <img href > makes a call to LineGraphServlet to fetch
-     * data out of the HttpSession and build a graph which is returned as the image.
-     * @param conn
-     * @param studId
-     * @param req @throws SQLException
-     */
-    private void collectStudentMasteryHistory(Connection conn, int studId, HttpServletRequest req) throws Exception {
-         topicMasteryTracker = new TopicMasterySimulator(conn, new StudentModelMasteryHeuristic(conn));
-        // cycle through the event log for the student and the topic
-
-        ResultSet rs=null;
-        PreparedStatement stmt=null;
-        try {
-            
-            String q ="SELECT l.*, s.username FROM eventlog l, Student s WHERE l.studid=? and l.studId=s.id ORDER BY l.sessnum, l.elapsedTime ";
-            stmt = conn.prepareStatement(q);
-            stmt.setInt(1, studId);
-            rs = stmt.executeQuery();
-            int lastSess=-1;
-            int lastProbId=-1;
-            int lastTopicId=-1;
-            int probId=-1;
-            int lastStudId=-1;
-            isFirstProbOfSess = true;
-            while (rs.next()) {
-                String username = rs.getString("username");
-//                int pedId = rs.getInt("pedagogyId");
-                int sessNum = rs.getInt("sessnum");
-                if (sessNum != lastSess)   {
-                    isFirstProbOfSess = true;
-                    lastSess = sessNum;
-                }
-                else isFirstProbOfSess = false;
-                int topicId = rs.getInt("curtopicId");  // for older events this will be null
-                if (rs.wasNull())
-                    topicId = -1;
-                // When topic changes let the topic updater know
-                if (topicId != -1 && topicId != lastTopicId) {
-                    this.topicMasteryTracker.newTopic(topicId);
-                    // add a new topic data record to the list
-                    curTopicData = new TopicData(topicId);
-                    this.data.add(curTopicData);
-                    lastTopicId = topicId;
-                }
-                String action = rs.getString("action");
-                String userInput = rs.getString("userInput");
-                if (rs.getString("problemId") != null) {
-                    probId = Integer.parseInt(rs.getString("problemId"));
-                    processProblem(conn, studId, username, sessNum, probId, topicId, action, rs, req);
-
-                }
-            } //while
-
-        }
-        finally {
-            if (stmt != null)
-                stmt.close();
-            if (rs != null)
-                rs.close();
-        }
-
-    }
 
 
     // Walk over the buffer (userEvents) and use the masteryTrackers to create a set of records.
@@ -272,8 +208,7 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
     // The other major change is that this strictly ignores counting anything other than practice problems because only
     // practice problems affect mastery.
 
-    // N.B.  Formality problems are not processed because the eventlog has problems with these events not having correct elapsed times
-    // and other anomolies.
+
     private void processEvent(EventLogEntry entry) throws SQLException {
         String type = TrajectoryUtil.getProblemType(userEvents,entry.id);
         boolean isExample = type.equals("ExampleProblem");

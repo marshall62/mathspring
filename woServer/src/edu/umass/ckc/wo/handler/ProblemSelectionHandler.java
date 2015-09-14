@@ -45,7 +45,7 @@ public class ProblemSelectionHandler {
             int topicId = ((AdminSelectTopicProblemsEvent) event).getTopicId();
             DbProblem probMgr = new DbProblem();
             Topic topic = ProblemMgr.getTopic(topicId);
-            List<Problem> problems = probMgr.getProblemsInTopic(conn, topicId);
+            List<Problem> problems = probMgr.getProblemsInTopic(topicId);
             // get the problems omitted for this topic
             List<SATProb> satProbs = probMgr.getTopicOmittedProblems(conn,event.getClassId(),problems, topicId);
             ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
@@ -88,7 +88,7 @@ public class ProblemSelectionHandler {
                 activatedIds[i] = Integer.parseInt(activeProblemIds[i]);
             ProblemMgr.getAllProblems();
             DbProblem probMgr = new DbProblem();
-            List<Problem> problemsInTopic = probMgr.getProblemsInTopic(conn, topicId);
+            List<Problem> problemsInTopic = probMgr.getProblemsInTopic(topicId);
             List<SATProb> satProbs = probMgr.activateTopicProblems(conn, problemsInTopic,activatedIds);
             List<Integer> deactivatedIds = new ArrayList<Integer>();
             ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
@@ -126,7 +126,7 @@ public class ProblemSelectionHandler {
             ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
             Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
             servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-
+            DbProblem.setTopicNumProbsForClass(conn, event.getClassId(), topics);
             servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("topics",topics);
             servletRequest.setAttribute("classId",event.getClassId());

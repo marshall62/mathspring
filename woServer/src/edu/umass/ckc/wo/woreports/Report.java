@@ -163,8 +163,7 @@ public abstract class Report implements View {
 
     public void addNavLinks (int classId, int teacherId) {
         this.src.append("<h5>" +
-                "<a href='?action=" + AdminActions.SELECT_CLASS+ "&classId=" + classId + "&teacherId=" + teacherId + "'>Choose another report</a> | " +
-                "<a href='?action=" + AdminActions.CHOOSE_ANOTHER_CLASS + "&teacherId=" + teacherId + "'>Choose another class</a>" +
+                "<a href='?action=" + "AdminViewReport" + "&teacherId=" + teacherId + "&classId=" + classId + "'>Choose another report</a>" +
                 "</h5>\n");
     }
 

@@ -110,7 +110,7 @@ public class TutorPage {
         info.getRequest().setAttribute("activityJSON", "null");
         info.getRequest().setAttribute("showMPP", true);
         info.getRequest().setAttribute("resumeProblem",false);
-
+        info.getRequest().setAttribute("eventCounter",smgr.getEventCounter());
         if (smgr.showTestUserControls()) {
             info.getRequest().setAttribute("showProblemSelector", true);
             info.getRequest().setAttribute("showAnswer", true);

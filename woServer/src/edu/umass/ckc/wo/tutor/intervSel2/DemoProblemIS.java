@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
+import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
@@ -113,7 +114,7 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
     }
 
     @Override
-    public Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception {
+    public Intervention processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

@@ -7,9 +7,10 @@ package edu.umass.ckc.wo.interventions;
  * Time: 11:29 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CollaborationOriginatorIntervention extends InformationIntervention implements NextProblemIntervention{
+public class CollaborationOriginatorIntervention extends TimeoutIntervention implements NextProblemIntervention{
 
     public String getType () {
+        this.setWaitTime(30);
         return "CollaborationOriginatorIntervention";
     }
 

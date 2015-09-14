@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCStandard;
 import edu.umass.ckc.wo.content.TopicIntro;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.Connection;
@@ -77,26 +78,37 @@ public class DbTopics {
         }
     }
 
- public static List<Topic> getClassInactiveTopics(Connection conn, int classId, List<Topic> activeTopics) throws SQLException {
+ public static List<Topic> getClassInactiveTopics(Connection conn, List<Topic> activeTopics) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
+            List<Topic> inactiveTopics = new ArrayList<Topic>();
             StringBuilder sb = new StringBuilder();
-            for (Topic t: activeTopics)
-                sb.append(t.getId() + ",");
+            Iterator itr = activeTopics.iterator();
+            while (itr.hasNext()) {
+                Topic t = (Topic) itr.next();
+                // topics with no problems should not be considered active
+                if (t.getNumProbs() > 0)
+                    sb.append(t.getId() + ",");
+                else {
+                    inactiveTopics.add(t);  // remove empty topics from active list
+                    itr.remove();
+                }
+            }
+
             String ids = sb.substring(0,sb.toString().length()-1);
             String q = "select id, description from problemgroup where active=1 and " +
                      "id not in (" + ids + ")";
 
             stmt = conn.prepareStatement(q);
             rs = stmt.executeQuery();
-            List<Topic> topics = new ArrayList<Topic>();
+
 
             while (rs.next()) {
                 Topic t = new Topic(rs.getInt(1),rs.getString(2));
-                topics.add(t);
+                inactiveTopics.add(t);
             }
-            return topics;
+            return inactiveTopics;
         }
         finally {
             if (stmt != null)

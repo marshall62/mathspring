@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.smgr;
 
+import ckc.servlet.servbase.ServletEvent;
+import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.db.*;
@@ -72,12 +74,100 @@ public class SessionManager {
     private boolean testUser;
     private User user;
     private int collaboratingWith;
+    private int eventCounter; // a counter that gets incremented on every tutor event (used to keep events ordered)
 
     public SessionManager(Connection connection) {
         this.connection = connection;
         timeInSession=0;
     }
 
+    public SessionManager (Connection conn, int sessionId) {
+        this.connection = conn;
+        this.sessionId = sessionId;
+    }
+
+    /**
+     * Build a SessionManager which is a container for all student information for this student's request.
+     * <p/>
+     * Recent addition: Using the group number a student is assigned to, a Pedagogy object is retrieved.
+     * From that we can get the name of the StudentModel class that is appropriate for the student.
+     * We then can construct the StudentModel now and have it ready thoughout the life of this HTTP request.
+     *
+     * The hostPath is a partial URL to the servlet (just through the host and port).   This is necessary for
+     * calls that will eventually come from a JSP client page to find the Flash client.   It is presumed to be running on the same host.
+     *
+     *
+     *
+     * @param connection
+     * @param sessionId
+     * @param hostPath
+     * @param contextPath
+     * @throws Exception
+     */
+    public SessionManager(Connection connection,
+                          int sessionId, String hostPath, String contextPath) throws Exception {
+        this(connection,sessionId);
+        this.hostPath = hostPath;
+        this.contextPath = contextPath;
+    }
+
+    // Each event coming in from a session has an eventCounter param.  This counter is incremented each time the client sends
+    // an event so that each call from the client can be put into the correct sequence.  This is to protect against events
+    // arriving out of order because of network lag.  The server verifies that each event coming in has a counter one greater
+    // than the last event (the last event's counter is stored in the session table).
+    // Possible situations:
+    // o  the eventCounter is 1 greater than the last one - what we want
+    // o  the eventCounter is more than 1 greater than the last one -  we must have missed an event or not received it yet.
+    //      It's not clear what the best solution to this is:
+    //         FOR NOW:  we will print an error in the output log so we can at least know that this happened
+    //         Maybe its possible to wait a short time for the missing event(s) by sleeping.  If events come in within the waiting period
+    //         we can put them in a list in the correct order and then process them one at a time in sequence.
+    // o  the eventCounter is not included - a programming mistake.  We'll print a warning
+    // Returns the event counter that is set into the Session in the db or -1 when the event counter sent in the event
+    // is erroneous.
+    private int checkEventCounter(Connection conn, ServletParams params) throws SQLException {
+        int c = params.getInt("eventCounter", -1);
+        if (c == -1)
+            logger.warn("Got an event that did not have an eventCounter " + params);
+        else {
+            int sessId = params.getInt("sessionId");
+            int lc = DbSession.updateEventCounter(conn,sessId,c,false); // bump the counter only if this event is 1 greater than last
+            if (lc == c)
+                return c; // the only non-error. what is expected when the events are received in correct sequence. return the counter
+            else if (lc == -1)
+                logger.error("Failed to find session id " + sessId + " when trying to update event counter");
+                // Now we have to figure out how to recover.
+                // Case 1: c is greater than lc by more than 1 (c > lc).  This means we haven't received events with counters between lc+1 and c-1 (inclusive)
+            else if (c > lc) {
+                logger.error("Events out of sequence: Event received TOO SOON. Last event counter was " + lc + ". This event counter is " + c);
+                // jump the counter forward so that when we get the event with counter c+1 we can resume without errors
+                DbSession.updateEventCounter(conn,sessId,c,true);
+                return c; // return the counter even though its an error because we need to have it in the session mgr.
+            }
+            // Case 2: This event was received after we processed an event with higher counter (the result of a previous case 1 jump-ahead)
+            else if (c < lc) {
+                // NOte that we will almost always generate a Case 2 error after a Case 1 error because Case 1 jumps the counter ahead
+                // and when we receive the event that we were missing it is now considered late.
+                logger.error("Events out of sequence: Event received TOO LATE. Last event counter was " + lc + ". This event counter is " + c);
+            }
+
+        }
+        return -1;  // error cases return -1
+    }
+
+
+    public SessionManager buildExistingSession (ServletParams params) throws Exception {
+        int lc = checkEventCounter(connection,params);
+        if (lc != -1)
+            this.setEventCounter(lc);
+        return buildExistingSession();
+    }
+
+    public SessionManager buildExistingSession () throws Exception {
+
+        buildSession(connection, sessionId);
+        return this;
+    }
 
 
 
@@ -114,36 +204,8 @@ public class SessionManager {
         return this;
     }
 
-    /**
-     * Build a SessionManager which is a container for all student information for this student's request.
-     * <p/>
-     * Recent addition: Using the group number a student is assigned to, a Pedagogy object is retrieved.
-     * From that we can get the name of the StudentModel class that is appropriate for the student.
-     * We then can construct the StudentModel now and have it ready thoughout the life of this HTTP request.
-     *
-     * The hostPath is a partial URL to the servlet (just through the host and port).   This is necessary for
-     * calls that will eventually come from a JSP client page to find the Flash client.   It is presumed to be running on the same host.
-     *
-     *
-     *
-     * @param connection
-     * @param sessionId
-     * @param hostPath
-     * @param contextPath
-     * @throws Exception
-     */
-    public SessionManager(Connection connection,
-                          int sessionId, String hostPath, String contextPath) throws Exception {
-        this.connection = connection;
-        this.sessionId = sessionId;
-        this.hostPath = hostPath;
-        this.contextPath = contextPath;
-    }
 
-    public SessionManager buildExistingSession () throws Exception {
-        buildSession(connection, sessionId);
-        return this;
-    }
+
 
     // will look something like http://cadmium.cs.umass.edu/  or http://localhost/  (port removed)
     public String getHostPath () {
@@ -840,5 +902,13 @@ public class SessionManager {
 
     public void setCollaboratingWith(int collaboratingWith) {
         this.collaboratingWith = collaboratingWith;
+    }
+
+    public void setEventCounter(int eventCounter) {
+        this.eventCounter = eventCounter;
+    }
+
+    public int getEventCounter() {
+        return this.eventCounter;  //To change body of created methods use File | Settings | File Templates.
     }
 }
