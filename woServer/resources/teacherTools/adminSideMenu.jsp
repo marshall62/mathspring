@@ -112,7 +112,7 @@ March 20, 2012
                                             </ul>
                                         </div>
                                     </li>
-                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminViewReport&state=chooseClass&teacherId=${teacherId}">Class Reports</a></li>
+                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminViewReport&teacherId=${teacherId}&classId=${classId}">Class Reports</a></li>
 
 
                                     <li><a href="${pageContext.request.contextPath}/WoAdmin?action=AdminTutor&teacherId=${teacherId}">Administrate Tutor </a></li>

@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
 
@@ -46,8 +47,8 @@ public abstract class AttemptInterventionSelector extends InterventionSelector  
      * @param e
      * @return
      */
-    public abstract Intervention processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception;
-    public abstract Intervention processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception;
+    public abstract Response processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception;
+    public abstract Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception;
 
     @Override
     public void problemGiven(Problem p) throws SQLException {

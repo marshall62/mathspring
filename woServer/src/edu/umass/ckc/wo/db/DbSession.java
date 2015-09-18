@@ -400,4 +400,42 @@ public class DbSession {
         }
 
     }
+
+    /**
+     * Update the sessions event counter.  Only does it if the provided counter value (c) is one greater than
+     * the value we have stored for this session.
+     * @param conn
+     * @param sessId
+     * @param c
+     * @param forceOverwrite if true will overwrite the eventCounter even if c is not greater than the last value by 1.
+     * @return   On successful update, it returns c.  Will return -1 if it can't find the session and will return the last counter
+     * if the new value isn't one greater than the last.
+     * @throws SQLException
+     */
+    public static int updateEventCounter(Connection conn, int sessId, int c, boolean forceOverwrite) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id, eventCounter from session where id=?";
+            stmt = conn.prepareStatement(q, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmt.setInt(1,sessId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int lastCount= rs.getInt(2);
+                if (lastCount + 1 == c || forceOverwrite) {
+                    rs.updateInt("eventCounter",c);
+                    rs.updateRow();
+                    return c;
+                }
+                else return lastCount;
+            }
+            return -1;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 }

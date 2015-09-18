@@ -131,7 +131,11 @@ public class AdminHandler {
 
         else if (e instanceof AdminViewReportEvent) {
             int teacherId = ((AdminViewReportEvent) e).getTeacherId();
-            v =  new ReportHandler(teacherId).handleEvent(sc, e, conn, servletRequest);
+            v =  new ReportHandler(teacherId).handleEvent(sc, e, conn, servletRequest,servletResponse);
+            // If ReportHandler forward to a JSP we get back a null View, so return false, o/w fall out and return the HTML produced.
+            if (v == null)
+                return false;
+
         }
         else if (e instanceof AdminEditSurveysEvent && !((AdminEditSurveysEvent) e).isSaveMode()) {
             servletRequest.setAttribute("teacherId",((AdminEditSurveysEvent) e).getTeacherId());

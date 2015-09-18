@@ -237,18 +237,18 @@
                         <ul id="dashboard_nav_big">
 
                             <li id="bigSize"><a href="#"
-                                                onclick="window.location='TutorBrain?action=navigation&from=sat_Hut&to=my_progress&elapsedTime=0&sessionId=${sessionId}'+'&topicId=-1&probId=${probId}&probElapsedTime=0'"><span
+                                                onclick="window.location='TutorBrain?action=navigation&from=sat_Hut&to=my_progress&elapsedTime=0&sessionId=${sessionId}'+ '&eventCounter=${eventCounter}' + '&topicId=-1&probId=${probId}&probElapsedTime=0'"><span
                                     class="colorGreen">My Progress</span></a></li>
                             <li>
                                 <c:choose>
                                 <c:when test="${newSession}">
                                 <a href="#"
-                                   onclick="window.location='TutorBrain?action=EnterTutor&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}'"><span
+                                   onclick="window.location='TutorBrain?action=EnterTutor&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&eventCounter=0'"><span
                                     class="colorOrange"><b>Start Working</b></span></a>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="#"
-                                       onclick="window.location='TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&probId=${probId}&topicId=-1' + '&learningCompanion=${learningCompanion}'"><span
+                                       onclick="window.location='TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&eventCounter=${eventCounter}' + '&probId=${probId}&topicId=-1' + '&learningCompanion=${learningCompanion}'"><span
                                             class="colorOrange"><b>Resume tutoring</b></span></a>
                                 </c:otherwise>
                                 </c:choose>

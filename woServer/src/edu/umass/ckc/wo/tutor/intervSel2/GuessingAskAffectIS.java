@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 
+import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -48,12 +49,12 @@ public class GuessingAskAffectIS extends AttemptInterventionSelector {
     }
 
     @Override
-    public Intervention processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception {
+    public Response processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public Intervention processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception {
+    public Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
         String affect = params.getString(RapidAttemptIntervention.AFFECT);
         System.out.println("Student is " + affect);

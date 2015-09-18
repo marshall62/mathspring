@@ -1,6 +1,13 @@
 package edu.umass.ckc.wo.handler;
 
 
+import edu.umass.ckc.wo.beans.ClassInfo;
+import edu.umass.ckc.wo.beans.Classes;
+import edu.umass.ckc.wo.beans.Teacher;
+import edu.umass.ckc.wo.db.DbAdmin;
+import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.db.DbTeacher;
+import edu.umass.ckc.wo.event.admin.AdminEvent;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.html.admin.SelectClassPage;
 import edu.umass.ckc.wo.woreports.*;
@@ -10,6 +17,7 @@ import ckc.servlet.servbase.UserException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -63,21 +71,42 @@ public class ReportHandler {
         this.teacherId = teacherId;
     }
 
-    public View handleEvent(ServletContext sc, ServletEvent se, Connection conn, HttpServletRequest req) throws Exception {
+    public View handleEvent(ServletContext sc, ServletEvent se, Connection conn, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         AdminViewReportEvent e = (AdminViewReportEvent) se;
 
-        if (e.getState().equals(AdminViewReportEvent.CHOOSE_REPORT))
-            return new ChooseReportPage();
 
-        else if (e.getState().equals(AdminViewReportEvent.CHOOSE_CLASS))
-            return buildChooseClassPage(e, conn);
+        // e.getState() will be null
+        if (e.getState() == null)  {
+            ClassInfo[] classes1 = DbClass.getClasses(conn, e.getTeacherId());
+            Classes bean1 = new Classes(classes1);
 
-        else if (e.getState().equals(AdminViewReportEvent.CHOOSE_STUDENT)) {
-            String nextState = AdminViewReportEvent.SHOW_REPORT;
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
 
-            return new ChooseStudentPage(conn, nextState, e.getReportId(), e.getClassId());
+            ClassInfo classInfo = classes1[classes1.length-1];
+            req.setAttribute("classInfo",classInfo);
+            req.setAttribute("action","AdminViewReport");
+            req.setAttribute("bean", bean1);
+            req.setAttribute("classId", Integer.toString(classInfo.getClassid()));
+            req.setAttribute("teacherId",e.getTeacherId());
+            CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
+            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
 
+            req.setAttribute("classInfo", classInfo);
+
+            req.setAttribute("classId",e.getClassId());
+            req.setAttribute("teacherId",e.getTeacherId());
+            req.getRequestDispatcher("/teacherTools/reports.jsp").forward(req,resp);
+            return null;
+//            return buildChooseClassPage(e, conn);
         }
+//        else if (e.getState().equals(AdminViewReportEvent.CHOOSE_REPORT))
+//            return new ChooseReportPage();
+//        else if (e.getState().equals(AdminViewReportEvent.CHOOSE_STUDENT)) {
+//            String nextState = AdminViewReportEvent.SHOW_REPORT;
+//
+//            return new ChooseStudentPage(conn, nextState, e.getReportId(), e.getClassId());
+//
+//        }
         else if (e.getState().equals(AdminViewReportEvent.SHOW_REPORT))
             return buildReport(e, conn, req);
 
@@ -86,7 +115,7 @@ public class ReportHandler {
     }
 
  public List<TeachersClass> getClasses (Connection conn, int teacherId)  throws Exception {
-
+    // comment
     String SQL = "SELECT id,school,town,section,name,schoolYear "+
                  "FROM class where teacherId=? order by schoolYear DESC, name ASC";
 

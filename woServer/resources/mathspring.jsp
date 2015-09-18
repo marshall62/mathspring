@@ -83,6 +83,7 @@
             numHintsSeen: 0,
             numHints: 0 ,
             destinationInterventionSelector: null
+
         }
 
         var sysGlobals = {
@@ -94,7 +95,8 @@
             <%--servletContextPath : '${pageContext.request.contextPath}',--%>
             servletName : '${servletName}',
             probplayerPath : '${probplayerPath}',
-            wait: false
+            wait: false,
+            eventCounter: ${eventCounter}
 
         }
 

@@ -108,7 +108,7 @@ public class EpisodicLogDriver {
      */
     public View interpretLogEntry (EpiLogEntry e) throws Exception {
         // TODO passing an empty servlet path - this may cause problems
-        SessionManager smgr = new SessionManager(this.conn,this.sessionId, "", "").buildExistingSession();
+        SessionManager smgr = new SessionManager(this.conn,this.sessionId).buildExistingSession();
         NavigationEvent ne = getImplicitNavEvent(e);
         System.out.println(e);
         // first we need to tell the server of navigation events that may be implicit in the log entry.

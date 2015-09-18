@@ -328,7 +328,7 @@ public class DbProblem extends BaseMgr {
 
     /**
      *
-     * @param conn
+     *
      * @param topicID
      * @return  a List of ProblemImpl objects that are members of the given problem group ordered by difficulty
      * @throws SQLException
@@ -359,13 +359,13 @@ public class DbProblem extends BaseMgr {
     }
      */
 
-    public List<Problem> getProblemsInTopic (Connection conn, int topicID) throws SQLException {
+    public List<Problem> getProblemsInTopic(int topicID) throws SQLException {
         return ProblemMgr.getTopicProblems(topicID);
     }
 
 
     public List<Problem> getActivatedTopicProblems(Connection conn, int classId, int topicId) throws SQLException {
-        List<Problem> topicProbs = getProblemsInTopic(conn,topicId);
+        List<Problem> topicProbs = getProblemsInTopic(topicId);
         topicProbs = excludeProblemsOmittedForClass(conn,classId,topicProbs);
         return topicProbs;
     }
@@ -817,6 +817,27 @@ public class DbProblem extends BaseMgr {
                 rs.close();
             if (s != null)
                 s.close();
+        }
+    }
+
+    /**
+     * Given the Topics for a class, modify each Topic object so that it contains the number of problems that are activated for the topic
+     * and the class.
+     * @param conn
+     * @param classId
+     * @param activetopics
+     * @throws SQLException
+     */
+    public static void setTopicNumProbsForClass(Connection conn, int classId, List<Topic> activetopics) throws SQLException {
+        for (Topic t: activetopics) {
+
+            DbProblem probMgr = new DbProblem();
+            List<Problem> problems = probMgr.getProblemsInTopic(t.getId());
+            // get the problems omitted for this topic
+            List<String> ids = probMgr.getClassOmittedTopicProblemIds(conn,classId,t.getId());
+            if (problems == null)
+                t.setNumProbs(0);
+            else t.setNumProbs(problems.size() - (ids != null ? ids.size() : 0));
         }
     }
 }

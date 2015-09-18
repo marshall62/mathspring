@@ -272,7 +272,7 @@ public class StudentProblemData {
     }
 
     public boolean isPracticeProblem() {
-        return this.mode.equals(Problem.PRACTICE) ;
+        return this.mode != null && this.mode.equals(Problem.PRACTICE) ;
     }
 
     public boolean isTopicIntro () {
