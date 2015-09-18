@@ -51,6 +51,7 @@ public class StudentState extends State implements TutorEventHandler {
     private int curProblemIndexInTopic;
     private boolean curProblemIsTopicIntro;
     private String pedagogicalModelInternalState;
+    private long timeLastChange;
 
     public StudentState(Connection conn, SessionManager smgr) {
         this.smgr = smgr;
@@ -437,6 +438,16 @@ public class StudentState extends State implements TutorEventHandler {
 
     public long getLastInterventionTime() {
         return sessionState.getLastInterventionTime();
+    }
+
+
+
+    public long getTimeLastChange() {
+        return timeLastChange;
+    }
+
+    public void setTimeLastChange(long timeLastChange) {
+        this.timeLastChange = timeLastChange;
     }
 
 

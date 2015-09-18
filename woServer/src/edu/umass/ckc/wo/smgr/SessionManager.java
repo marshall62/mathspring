@@ -72,6 +72,7 @@ public class SessionManager {
     private boolean testUser;
     private User user;
     private int collaboratingWith;
+    private long timeLastChange;
 
     public SessionManager(Connection connection) {
         this.connection = connection;

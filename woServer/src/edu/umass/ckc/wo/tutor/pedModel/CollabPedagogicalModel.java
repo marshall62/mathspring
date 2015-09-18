@@ -25,6 +25,10 @@ import java.sql.SQLException;
  */
 public class CollabPedagogicalModel extends BasePedagogicalModel {
 
+    public CollabPedagogicalModel(){
+        super();
+    }
+
     public CollabPedagogicalModel(SessionManager smgr, Pedagogy pedagogy) throws SQLException {
         super(smgr, pedagogy);
     }

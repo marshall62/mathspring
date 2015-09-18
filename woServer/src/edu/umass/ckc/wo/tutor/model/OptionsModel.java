@@ -1,0 +1,82 @@
+package edu.umass.ckc.wo.tutor.model;
+
+import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
+import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.DynamicPedagogy;
+import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.pedModel.BasePedagogicalModel;
+import edu.umass.ckc.wo.tutor.pedModel.DynamicPedagogicalModel;
+import edu.umass.ckc.wo.tutor.response.InternalEvent;
+import edu.umass.ckc.wo.tutor.response.Response;
+import java.util.Random;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: Melissa
+ * Date: 9/18/15
+ * Time: 1:56 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class OptionsModel{
+
+    SessionManager smgr;
+    Pedagogy pedagogy;
+    BasePedagogicalModel pedagogicalModel;
+
+    public OptionsModel(SessionManager smgr, Pedagogy pedagogy, BasePedagogicalModel pedagogicalModel){
+        this.smgr = smgr;
+        this.pedagogy = pedagogy;
+        this.pedagogicalModel = pedagogicalModel;
+    }
+
+    public Response processChanges() throws Exception {
+        if(smgr.getTimeInSession() - smgr.getStudentState().getTimeLastChange() > 60000 && pedagogy instanceof DynamicPedagogy){
+            smgr.getStudentState().setTimeLastChange(smgr.getTimeInSession());
+            changeRandElt();
+            //TODO give popup
+        }
+        return null;
+    }
+
+    private void changeRandElt(){
+        DynamicPedagogy dynPedagogy = (DynamicPedagogy) pedagogy;
+        Random rand = new Random();
+        boolean elementSwitched = false;
+        String eltChanged = "None";
+        while(elementSwitched == false){
+            //TODO Compatibility checking: ask for list of dependencies and send them as parameters to the change methods
+            switch (rand.nextInt(7)){
+                case 1:
+                    elementSwitched = dynPedagogy.changeChallengeModeProblemSelectorClass();
+                    eltChanged = "ChallengeModeSelector";
+                    break;
+                case 2:
+                    elementSwitched = dynPedagogy.changeHintSelectorClass();
+                    eltChanged = "HintSelector";
+                    break;
+                case 3:
+                    elementSwitched = dynPedagogy.changeLearningCompanionClass();
+                    eltChanged = "LearningCompanion";
+                    break;
+                case 4:
+                    elementSwitched = dynPedagogy.changeReviewModeProblemSelectorClass();
+                    eltChanged = "ReviewModeProblemSelector";
+                    break;
+                case 5:
+                    elementSwitched = dynPedagogy.changeProblemSelectorClass();
+                    eltChanged = "ProblemSelector";
+                    break;
+                case 6:
+                    elementSwitched = dynPedagogy.changeStudentModelClass();
+                    eltChanged = "StudentModel";
+                    break;
+                default:
+                    eltChanged = "Intervention";
+                    break;
+            }
+
+        }
+        System.out.println(eltChanged + " was changed.");
+        //TODO log which element was changed
+    }
+}

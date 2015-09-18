@@ -69,6 +69,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     private void buildComponents (SessionManager smgr, Pedagogy pedagogy) {
         try {
+            new OptionsModel(smgr, pedagogy, this).processChanges();
             problemGrader = new ProblemGrader(smgr);
             setExampleSelector(new BaseExampleSelector());
             setVideoSelector(new BaseVideoSelector());

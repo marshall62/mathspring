@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.admin;
 
+import edu.umass.ckc.wo.tutor.DynamicPedagogy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorParam;
@@ -84,36 +85,94 @@ public class PedagogyParser {
 
     private Pedagogy readPed(Element pedElt) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, DataConversionException {
         Element e;
-        Pedagogy p = new Pedagogy();
-        boolean isDefault=false;
-        Attribute defaultAttr = pedElt.getAttribute("default");
-        if (defaultAttr != null)
-            p.setDefault(defaultAttr.getBooleanValue());
+
         e = pedElt.getChild("pedagogicalModelClass");
         // by default we build a BasePedagogicalModel unless a class is provided.
         String pedModClass = DEFAULT_PEDAGOGICAL_MODEL;
         if (e != null)
             pedModClass = e.getValue();
-        p.setPedagogicalModelClass(pedModClass);
 
-        e = pedElt.getChild("id");
-        String id = e.getValue();
-        p.setId(id);
+        if(pedModClass.equals("DynamicPedagogicalModel"))
+            return initDynamicPedagogy(pedElt, pedModClass);
+        else
+            return initStaticPedagogy(pedElt, pedModClass);
 
-        e = pedElt.getChild("name");
-        String name = e.getValue();
-        p.setName(name);
+    }
 
-        e = pedElt.getChild("comment");
-        if (e != null)  {
-            String comment = e.getValue();
-            p.setComment(comment);
-        }
-        e = pedElt.getChild("provideInSimpleConfig");
+    private DynamicPedagogy initDynamicPedagogy(Element pedElt, String pedModClass) throws DataConversionException {
+        Element e;
+        DynamicPedagogy p = new DynamicPedagogy();
+
+        setCommonElements(pedElt, pedModClass, p);
+
+        e = pedElt.getChild("studentModels");
         if (e != null) {
-            String n = e.getAttributeValue("name");
-            p.setSimpleConfigName(n);
+            List<Element> studentModelClasses = e.getChildren("studentModelClass");
+            for(Element elem : studentModelClasses){
+                String smClass = elem.getValue();
+                p.addStudentModelClass(smClass);
+            }
         }
+        else p.addStudentModelClass(DEFAULT_STUDENT_MODEL);
+
+        e = pedElt.getChild("problemSelectors");
+        if (e != null) {
+            List<Element> problemSelectorClasses = e.getChildren("problemSelectorClass");
+            for(Element elem : problemSelectorClasses){
+                String smClass = elem.getValue();
+                p.addProblemSelectorClass(smClass);
+            }
+        }
+        else p.addProblemSelectorClass(DEFAULT_PROBLEM_SELECTOR);
+
+        e = pedElt.getChild("reviewModeProblemSelectors");
+        if (e != null) {
+            List<Element> reviewModeProblemSelectorClasses = e.getChildren("reviewModeProblemSelectorClass");
+            for(Element elem : reviewModeProblemSelectorClasses){
+                String smClass = elem.getValue();
+                p.addReviewModeProblemSelectorClass(smClass);
+            }
+        }
+        else p.addReviewModeProblemSelectorClass(DEFAULT_REVIEW_MODE_PROBLEM_SELECTOR);
+
+        e = pedElt.getChild("challengeModeProblemSelectors");
+        if (e != null) {
+            List<Element> challengeModeProblemSelectorClasses = e.getChildren("challengeModeProblemSelectorClass");
+            for(Element elem : challengeModeProblemSelectorClasses){
+                String smClass = elem.getValue();
+                p.addChallengeModeProblemSelectorClass(smClass);
+            }
+        }
+        else p.addChallengeModeProblemSelectorClass(DEFAULT_CHALLENGE_MODE_PROBLEM_SELECTOR);
+
+        e = pedElt.getChild("hintSelectors");
+        if (e != null) {
+            List<Element> hintSelectorClasses = e.getChildren("hintSelectorClass");
+            for(Element elem : hintSelectorClasses){
+                String smClass = elem.getValue();
+                p.addHintSelectorClass(smClass);
+            }
+        }
+        else p.addHintSelectorClass(DEFAULT_HINT_SELECTOR);
+
+        e = pedElt.getChild("learningCompanions");
+        if ( e != null ) {
+            List<Element> learningCompanionClasses = e.getChildren("learningCompanionClass");
+            for(Element elem : learningCompanionClasses){
+                String smClass = elem.getValue();
+                p.addLearningCompanionClass(smClass);
+            }
+        }
+
+        return p;
+
+    }
+
+    private Pedagogy initStaticPedagogy(Element pedElt, String pedModClass) throws DataConversionException {
+        Element e;
+        Pedagogy p = new Pedagogy();
+
+        setCommonElements(pedElt, pedModClass, p);
 
         e = pedElt.getChild("studentModelClass");
         if (e != null) {
@@ -149,16 +208,40 @@ public class PedagogyParser {
             p.setHintSelectorClass(hClass);
         }
         else p.setHintSelectorClass(DEFAULT_HINT_SELECTOR);
-        e = pedElt.getChild("interventions");
-        if (e != null) {
-            p.setInterventionsElement(e);
-        }
 
-        e = pedElt.getChild("lesson");
-        if (e != null) {
-            p.setLessonName(e.getTextTrim());
+        e = pedElt.getChild("learningCompanionClass");
+        if ( e != null )
+            p.setLearningCompanionClass(e.getValue());
+
+        return p;
+    }
+
+    private void setCommonElements(Element pedElt, String pedModClass, Pedagogy p) throws DataConversionException {
+        Element e;
+        p.setPedagogicalModelClass(pedModClass);
+
+        Attribute defaultAttr = pedElt.getAttribute("default");
+        if (defaultAttr != null)
+            p.setDefault(defaultAttr.getBooleanValue());
+
+        e = pedElt.getChild("id");
+        String id = e.getValue();
+        p.setId(id);
+
+        e = pedElt.getChild("name");
+        String name = e.getValue();
+        p.setName(name);
+
+        e = pedElt.getChild("comment");
+        if (e != null)  {
+            String comment = e.getValue();
+            p.setComment(comment);
         }
-        p.setLessonXML(Settings.lessonMap.get(p.getLessonName()));
+        e = pedElt.getChild("provideInSimpleConfig");
+        if (e != null) {
+            String n = e.getAttributeValue("name");
+            p.setSimpleConfigName(n);
+        }
 
         e = pedElt.getChild("login");
         if (e != null) {
@@ -166,6 +249,17 @@ public class PedagogyParser {
             p.setLoginXML(Settings.loginMap.get(p.getLoginXMLName()));
         }
         else p.setLoginXML(null);
+
+        e = pedElt.getChild("lesson");
+        if (e != null) {
+            p.setLessonName(e.getTextTrim());
+        }
+        p.setLessonXML(Settings.lessonMap.get(p.getLessonName()));
+
+        e = pedElt.getChild("interventions");
+        if (e != null) {
+            p.setInterventionsElement(e);
+        }
 
         e = pedElt.getChild("controlParameters");
         // get the default params
@@ -179,12 +273,6 @@ public class PedagogyParser {
         if ( e != null )
             packg = e.getValue();
         p.setPackg(packg);
-
-        e = pedElt.getChild("learningCompanionClass");
-        if ( e != null )
-            p.setLearningCompanionClass(e.getValue());
-
-        return p;
 
     }
 
