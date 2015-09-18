@@ -69,7 +69,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     private void buildComponents (SessionManager smgr, Pedagogy pedagogy) {
         try {
-            new OptionsModel(smgr, pedagogy, this).processChanges();
             problemGrader = new ProblemGrader(smgr);
             setExampleSelector(new BaseExampleSelector());
             setVideoSelector(new BaseVideoSelector());
@@ -97,7 +96,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 buildInterventions(pedagogy.getInterventionsElement());
             else interventionGroup = new InterventionGroup();
             lessonModel.init(smgr,lessonModelParameters,pedagogy,this,this);
-
+            //Sets the pedagogy options for the NEXT time
+            new OptionsModel(smgr, pedagogy, interventionGroup).processChanges();
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {

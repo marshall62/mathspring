@@ -4,10 +4,13 @@ import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.DynamicPedagogy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.pedModel.BasePedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.DynamicPedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
+
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,12 +24,12 @@ public class OptionsModel{
 
     SessionManager smgr;
     Pedagogy pedagogy;
-    BasePedagogicalModel pedagogicalModel;
+    InterventionGroup intervs;
 
-    public OptionsModel(SessionManager smgr, Pedagogy pedagogy, BasePedagogicalModel pedagogicalModel){
+    public OptionsModel(SessionManager smgr, Pedagogy pedagogy, InterventionGroup intervs){
         this.smgr = smgr;
         this.pedagogy = pedagogy;
-        this.pedagogicalModel = pedagogicalModel;
+        this.intervs = intervs;
     }
 
     public Response processChanges() throws Exception {
@@ -71,7 +74,22 @@ public class OptionsModel{
                     eltChanged = "StudentModel";
                     break;
                 default:
-                    eltChanged = "Intervention";
+                    if (intervs != null){
+                        List<InterventionSelectorSpec> specs = intervs.getInterventionsSpecs();
+                        int toSwitch = rand.nextInt(specs.size());
+                        InterventionSelectorSpec candidate = specs.get(toSwitch);
+                        if(candidate.getTurnedOn()){
+                            candidate.setTurnedOn(false);
+                        }
+                        else{
+                            candidate.setTurnedOn(true);
+                        }
+                        elementSwitched = true;
+                        eltChanged = "Intervention:"+ candidate.getClassName()+" originally, "+ !candidate.getTurnedOn();
+                    }
+                    else{
+                        elementSwitched = false;
+                    }
                     break;
             }
 
