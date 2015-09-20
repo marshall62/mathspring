@@ -8,10 +8,12 @@ import java.sql.Statement;
 
 //import edu.umass.ckc.wo.event.admin.AdminActions;
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminActions;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: mbaldwin
@@ -29,7 +31,7 @@ public class Report7 extends Report  {
 	public Report7() {
 	}
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
     	String outputLine = "";
 
@@ -213,5 +215,6 @@ public class Report7 extends Report  {
 			this.src.append("</tr>\n\n");
 		} // per student while
 		this.src.append(foot);
+        return this;
     }
 }

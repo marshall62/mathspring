@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.woreports;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
@@ -15,6 +16,7 @@ import edu.umass.ckc.wo.woreports.js.JSFunction;
 import edu.umass.ckc.wo.tutor.studmod.StudentModelMasteryHeuristic;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -91,7 +93,7 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
 //    List<Double> masteryHistory;
 
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
         this.classId =classId;
         this.studId = e.getStudId();
         this.pidList = new ArrayList<Integer>();
@@ -116,7 +118,7 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
         saveLineChartDataInSession(req);
         this.src.append("<p><img src=\"LineGraphServlet\">"); // inserts an image that calls BarChartServlet which gens a jpeg from data in HttpSession
         insertProbLister(req,conn,pidList);
-
+        return this;
     }
 
     private void getTopicNames(Connection conn) throws SQLException {

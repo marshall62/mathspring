@@ -5,6 +5,7 @@ import java.util.*;
 
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import edu.umass.ckc.wo.util.ProbPlayer;
@@ -17,9 +18,9 @@ import edu.umass.ckc.wo.woreports.js.JSFile;
 import edu.umass.ckc.wo.woreports.js.JSFunction;
 import edu.umass.ckc.wo.woreports.js.DataTable;
 import edu.umass.ckc.wo.tutor.studmod.StudentModelMasteryHeuristic;
-import edu.umass.ckc.wo.smgr.StudentState;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jdom.Element;
 import org.jdom.Attribute;
@@ -189,7 +190,7 @@ public class ReportCollaborativeLearning extends Report {
 
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         this.conn = conn ;
         ClassInfo cl = DbClass.getClass(conn, classId);
@@ -311,6 +312,7 @@ public class ReportCollaborativeLearning extends Report {
             }
         }
 
+        return this;
     }
 
     private void addLegend() {

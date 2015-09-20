@@ -3,9 +3,11 @@ package edu.umass.ckc.wo.woreports;
 import java.sql.*;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: mbaldwin
@@ -22,12 +24,16 @@ public class Report9 extends Report {
     /**
      * Build up the text of the report by appending to the src StringBuffer
      *
+     *
+     *
+     *
      * @param conn
      * @param classId
      * @param req
+     * @param response
      * @throws Exception
      */
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
       probsToReport = new boolean[200];
 
@@ -220,5 +226,6 @@ public class Report9 extends Report {
           }
         } // per student while
       }
+        return this;
     }
 }

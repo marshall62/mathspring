@@ -3,11 +3,7 @@ package edu.umass.ckc.wo.handler;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Classes;
-import edu.umass.ckc.wo.beans.Teacher;
-import edu.umass.ckc.wo.db.DbAdmin;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbTeacher;
-import edu.umass.ckc.wo.event.admin.AdminEvent;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.html.admin.SelectClassPage;
 import edu.umass.ckc.wo.woreports.*;
@@ -63,6 +59,8 @@ public class ReportHandler {
     public static final int PER_STUD_PREPOST_CSV = 100;
     public static final int PER_EMOTION_CSV = 160 ;
 
+    public static final String STUDENT_TOPIC_MASTERY_TRAJECTORY_JSP = "/teacherTools/reports/studTopicMasteryTrajectory.jsp";
+
     public ReportHandler () {
 
     }
@@ -108,7 +106,7 @@ public class ReportHandler {
 //
 //        }
         else if (e.getState().equals(AdminViewReportEvent.SHOW_REPORT))
-            return buildReport(e, conn, req);
+            return buildReport(e, conn, req, resp);
 
        throw new UserException("Event state unknown: " + e.getState());
 
@@ -161,7 +159,7 @@ public class ReportHandler {
 //        return repPage;
     }
 
-    private View buildReport(AdminViewReportEvent e, Connection conn, HttpServletRequest req) throws Exception {
+    private View buildReport(AdminViewReportEvent e, Connection conn, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Report r=null;
         int id=-1;
         switch (e.getReportId()) {
@@ -186,7 +184,7 @@ public class ReportHandler {
                 if ( skillid != null ) {
 //                    PerProbClassSummaryReport2 rep = new PerProbClassSummaryReport2();
                     ProblemDifficultyReport rep = new ProblemDifficultyReport();
-                    rep.createReport(conn, classid, (new Integer(skillid)).intValue(), e,req);
+                    rep.createReport(conn, classid, (new Integer(skillid)).intValue(), e,req, resp);
                     return rep ;
                 }
                 id = classid ;
@@ -203,7 +201,7 @@ public class ReportHandler {
 
                 if ( classid > 0 && studid > 0 ) {
                     PerStudClassSummaryReport rep = new PerStudClassSummaryReport() ;
-                    rep.createReport(conn, classid, studid, gain, e,req);
+                    rep.createReport(conn, classid, studid, gain, e,req, resp);
                     return rep ;
                 }
                 id = classid ;
@@ -294,8 +292,8 @@ public class ReportHandler {
 
 
         }
-        r.createReport(conn, id, e, req);
-        return r;
+        View v = r.createReport(conn, id, e, req, resp);
+        return v;
     }
 
 }

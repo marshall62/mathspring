@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jCharts.chartData.interfaces.IAxisDataSeries;
@@ -55,7 +57,7 @@ public class PerProblemDifficultyAttemptsReport extends Report {
     }
 
     
-    public void createReport(Connection conn, int classid, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classid, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         //Header to the printout
         System.out.println("Slice, MedianIncAttempts, MedianHints, MedianTime, MeanIncAttempts, MeanHints, MeanTime") ;
@@ -64,6 +66,7 @@ public class PerProblemDifficultyAttemptsReport extends Report {
         createReportUsingDB("wayangoutpostdb", conn, e, req) ;
 
         emitTables(e.getExtraParam(), req) ;
+        return this;
     }
 
     private void createReportUsingDB(String DB, Connection conn, AdminViewReportEvent e, HttpServletRequest req) throws Exception {

@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.woreports;
 
 import java.sql.*;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
@@ -9,6 +10,7 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Class summary per student.  How many problems and hints each student has seen
@@ -34,7 +36,7 @@ public class PerStudClassSummaryReport extends Report {
     public PerStudClassSummaryReport() {
     }
 
-    public void createReport(Connection conn, int classId, int _studId, String _gain, AdminViewReportEvent e, HttpServletRequest req)
+    public View createReport(Connection conn, int classId, int _studId, String _gain, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp)
                             throws Exception {
         studId = _studId ;
 
@@ -42,7 +44,7 @@ public class PerStudClassSummaryReport extends Report {
             gain_str = _gain ;
             intgain = (new Double(gain_str.substring(0,gain_str.length()-1))).intValue();
         }
-        createReport(conn, classId, e, req) ;
+        return createReport(conn, classId, e, req, resp) ;
     }
 
     /*
@@ -57,7 +59,7 @@ public class PerStudClassSummaryReport extends Report {
                 "  <th class=\"table-sortable:default\">First Day</th>\n" +
      */
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         String neck = "<table border=1 cellspacing=1 cellpadding=1 class=\"example altstripe sort02 table-autostripe table-autosort:2 table-stripeclass:alternate2\">\n" +
                 "<thead>\n"+
@@ -229,6 +231,7 @@ public class PerStudClassSummaryReport extends Report {
 
         printLegend()  ;
         this.src.append(foot);
+        return this;
     }  //report 5
 
     /**
