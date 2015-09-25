@@ -1391,7 +1391,7 @@ JakeNoSPPButton-->
         <studentModels>
             <studentModelClass>AffectStudentModel</studentModelClass>
             <studentModelClass>BaseStudentModel</studentModelClass>
-            <studentModelClass> StudentModelMotivational</studentModelClass>
+            <studentModelClass>StudentModelMotivational</studentModelClass>
         </studentModels>
         <problemSelectors>
             <problemSelectorClass>BaseProblemSelector</problemSelectorClass>

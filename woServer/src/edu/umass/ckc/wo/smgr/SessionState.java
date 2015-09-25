@@ -57,6 +57,7 @@ public class SessionState extends State {
     private int curLesson;
     protected Map m;
     private String pedagogicalModelInternalState;
+    private long timeLastChange;
 
 
     public SessionState(Connection conn) {
@@ -311,5 +312,13 @@ public class SessionState extends State {
 
     public String getPedagogicalModelInternalState() {
         return pedagogicalModelInternalState;
+    }
+
+    public long getTimeLastChange() {
+        return timeLastChange;
+    }
+
+    public void setTimeLastChange(long timeLastChange) {
+        this.timeLastChange = timeLastChange;
     }
 }

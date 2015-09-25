@@ -75,7 +75,6 @@ public class SessionManager {
     private User user;
     private int collaboratingWith;
     private int eventCounter; // a counter that gets incremented on every tutor event (used to keep events ordered)
-    private long timeLastChange;
 
     public SessionManager(Connection connection) {
         this.connection = connection;
