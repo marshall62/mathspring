@@ -443,7 +443,7 @@ public class StudentState extends State implements TutorEventHandler {
         return sessionState.getTimeLastChange();
     }
 
-    public void setTimeLastChange(long timeLastChange) {
+    public void setTimeLastChange(long timeLastChange) throws SQLException{
         sessionState.setTimeLastChange(timeLastChange);
     }
 
