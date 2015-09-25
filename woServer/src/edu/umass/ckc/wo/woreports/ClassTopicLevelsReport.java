@@ -1,9 +1,9 @@
 package edu.umass.ckc.wo.woreports;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
@@ -11,10 +11,10 @@ import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.TopicMastery;
 import edu.umass.ckc.wo.util.WoProps;
-import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.handler.ReportHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,7 +123,7 @@ public class ClassTopicLevelsReport extends DirectReport {
         return topicOrder;
     }
 
-    public void createReport (Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
         this.classId = classId;
         ClassInfo cl = DbClass.getClass(conn,classId);
         this.teacherId = cl.getTeachid();
@@ -166,7 +166,7 @@ public class ClassTopicLevelsReport extends DirectReport {
 
         getTopicData(conn,classId);
         this.src.append(foot);
-
+        return this;
     }
 
     private String getLinkToClassTopicMasteryTrajectoryReport (String label, int topicId) {

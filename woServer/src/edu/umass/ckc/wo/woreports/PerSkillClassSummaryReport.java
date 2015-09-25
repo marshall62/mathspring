@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Vector;
 
 
@@ -31,7 +33,7 @@ public class PerSkillClassSummaryReport extends Report {
     private String[] skillIDs_str;
     private int teacherId;
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
 
         String neck = "<table class=\"example sort02 table-autosort:2\" border=1 cellspacing=1 cellpadding=1>\n" +
@@ -183,6 +185,7 @@ public class PerSkillClassSummaryReport extends Report {
         }
 
         this.src.append(foot);
+        return this;
 
     } //report 2
 

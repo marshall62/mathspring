@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminActions;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.util.ProbPlayer;
@@ -14,6 +15,7 @@ import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Class summary per problem.  Which problems are challenging for your students.
@@ -29,12 +31,12 @@ public class PerProbClassSummaryReport extends Report {
     public PerProbClassSummaryReport() {
     }
 
-    public void createReport (Connection conn, int classid, int semiabsskillid, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classid, int semiabsskillid, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         semiabsskillId = semiabsskillid ;
-        createReport(conn, classid, e, req) ;
+        return createReport(conn, classid, e, req, resp) ;
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         Hashtable probHash = new Hashtable();
 
@@ -201,5 +203,6 @@ public class PerProbClassSummaryReport extends Report {
         }//for
 
         this.src.append(foot);
+        return this;
     }//report 4
 }

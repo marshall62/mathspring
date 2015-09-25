@@ -5,9 +5,11 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Problem Report Across All valid students
@@ -43,7 +45,7 @@ public class PerProblemDifficultyReport extends Report {
     }
 
     
-    public void createReport(Connection conn, int classid, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classid, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
  
         String probNumber_XXX = e.getExtraParam() ;
         String q;
@@ -111,7 +113,7 @@ public class PerProblemDifficultyReport extends Report {
 
         }
         emitTables(probNumber_XXX, numObs, skipped);
-
+        return this;
     }
 
     private void countInstance(long t, int h, int i) {

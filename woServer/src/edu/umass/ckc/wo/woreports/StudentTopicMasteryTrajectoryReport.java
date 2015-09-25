@@ -1,13 +1,16 @@
 package edu.umass.ckc.wo.woreports;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.handler.ReportHandler;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.woreports.js.JSFile;
 import edu.umass.ckc.wo.woreports.js.JSFunction;
@@ -16,6 +19,7 @@ import edu.umass.ckc.wo.tutor.studmod.RawMasteryHeuristic;
 import edu.umass.ckc.wo.tutor.studmod.BaseStudentModel;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -70,7 +74,7 @@ public class StudentTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
     List<Double> rawMasteryHistory;
 
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public void createReportOld (Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
         this.classId = classId;
         this.studId = e.getStudId();
         probIds = new ArrayList<Integer>();
@@ -101,8 +105,63 @@ public class StudentTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
 
 
     }
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        this.classId = classId;
+        this.studId = e.getStudId();
+        probIds = new ArrayList<Integer>();
+        masteryHistory = new ArrayList<Double>();
+        rawMasteryHistory = new ArrayList<Double>();
+        userEvents =  new ArrayList<EventLogEntry>(); // query results stored here for ease of processing
+        ClassInfo cl = DbClass.getClass(conn, classId);
+        int studId = e.getStudId();
+        String topicX = e.getExtraParam();
+        this.topicId = Integer.parseInt(topicX);
+        topicName = DbTopics.getTopicName(conn, topicId);
+        User u = DbUser.getStudent(conn, studId);
+        String className = getClassName(cl);
+        collectStudentEventHistory(conn,this.studId,this.topicId);
+        processEventHistory(conn);
+        List<Problem> problems = new ArrayList<Problem>(probIds.size());
+        for (int pid: probIds) {
+            Problem prob = new DbProblem().getProblem(conn,pid);
+            if (prob != null)
+                problems.add(prob);
+        }
+        req.setAttribute("xLabels",getLabelSequence(probIds));
+        req.setAttribute("rawMasterySequence",getFloatSequence(probIds,rawMasteryHistory));
+        req.setAttribute("masterySequence",getFloatSequence(probIds, masteryHistory));
+        req.setAttribute("teacherId",cl.getTeachid());
+        req.setAttribute("classId",classId);
+        req.setAttribute("problems",problems);
 
 
+        req.getRequestDispatcher(ReportHandler.STUDENT_TOPIC_MASTERY_TRAJECTORY_JSP).forward(req,resp);
+        return null;
+    }
+
+    private String getLabelSequence(List<Integer>pids) {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i<pids.size();i++) {
+            int pid = pids.get(i);
+            // 899 is a dummy problem and should be eliminated from the report
+            if (pid != 899)
+                sb.append("[" + i + ", '" + pid + "'],");
+//            sb.append("[" + i+1 + " , " + d.toString() + "],");
+        }
+        String s = sb.toString();
+        return s.substring(0,s.length()-1);
+    }
+
+    private String getFloatSequence(List<Integer>pids, List<Double> floatSeq) {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i<pids.size();i++) {
+            Double d = floatSeq.get(i);
+            int pid = pids.get(i);
+            sb.append("[" + i + "," + d.toString() + "],");
+        }
+        String s = sb.toString();
+        return s.substring(0,s.length()-1);
+    }
 
 
     // This is given the id of the entry in the eventHistory.   We then go into the userEvents list (which is sorted in order of

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
@@ -16,6 +17,7 @@ import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.util.ProbPlayer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * useless comment
@@ -107,9 +109,9 @@ public class ProblemDifficultyReport extends Report {
     public ProblemDifficultyReport() {
     }
 
-    public void createReport(Connection conn, int classid, int semiabsskillid, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classid, int semiabsskillid, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         semiabsskillId = semiabsskillid;
-        createReport(conn, classid, e, req);
+        return createReport(conn, classid, e, req, resp);
     }
 
     public String getTopicName(Connection conn, int semiAbsSkillID) throws SQLException {
@@ -161,7 +163,7 @@ public class ProblemDifficultyReport extends Report {
         return tabColHeader;
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
 
         String rept = getColumnHeaders();
@@ -203,6 +205,7 @@ public class ProblemDifficultyReport extends Report {
         generateTableBody(conn, classId, req, table, ps);
 
         this.src.append(foot);
+        return this;
     }//report 4
 
     /*

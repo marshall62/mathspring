@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 //import edu.umass.ckc.wo.event.admin.AdminActions;
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminActions;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
@@ -18,6 +19,7 @@ import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.tutor.Settings;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: marshall
@@ -29,7 +31,7 @@ public class Report19 extends Report {
     public Report19() {
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         String SQL = "SELECT * " +
                 "FROM Class " +
@@ -62,6 +64,7 @@ public class Report19 extends Report {
             showMultipleChoiceStats(conn,classId,probId, testType,p);
         else showOpenResponseStats(conn,classId,probId, testType, p);
         this.src.append("</body></html>");
+        return this;
     }
 
     private int getNumCorrect (Connection conn, int classId, String testType, int probId) throws SQLException {

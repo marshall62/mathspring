@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.woreports;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
@@ -13,6 +14,7 @@ import edu.umass.ckc.wo.tutor.studmod.RawMasteryHeuristic;
 import edu.umass.ckc.wo.tutor.studmod.BaseStudentModel;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -77,7 +79,7 @@ public class ClassTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
     private List<StudentMasteryHistory> classData;
 
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
         this.classId = classId;
         classData = new ArrayList<StudentMasteryHistory>();
 //        probIds = new ArrayList<Integer>();
@@ -121,7 +123,7 @@ public class ClassTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
         computeClassMasteries(classData);
         saveLineChartDataInSession(req);
 //        insertProbLister(req, conn, probIds);
-
+        return this;
 
     }
 

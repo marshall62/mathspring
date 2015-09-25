@@ -16,6 +16,7 @@ import edu.umass.ckc.wo.woreports.js.JSFile;
 import edu.umass.ckc.wo.woreports.js.JSFunction;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public abstract class Report implements View {
 
@@ -30,8 +31,19 @@ public abstract class Report implements View {
     public static final int EPI_DATA2_LOG = 1;
     public static final int EVENT_LOG = 2;
 
+    /**
+     * All subclass must override this to return a View that is some HTML.  If not, then it is assumed that a null View means
+     * the Report forwarded to a JSP.
+     * @param conn
+     * @param classId
+     * @param e
+     * @param req
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public abstract View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception ;
 
-    public abstract void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception;
 
     protected String doubleToString(double d) {
         String str = Double.toString(d);

@@ -2,12 +2,14 @@ package edu.umass.ckc.wo.woreports;
 
 import java.sql.*;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Start and Stop times of students with associated sensors.
@@ -32,7 +34,7 @@ public class StartStopTimeSensorReport extends Report {
     public StartStopTimeSensorReport() {
     }
 
-    public void createReport(Connection conn, int classId, int _studId, String _gain, AdminViewReportEvent e, HttpServletRequest req)
+    public View createReport(Connection conn, int classId, int _studId, String _gain, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp)
                             throws Exception {
         studId = _studId ;
 
@@ -40,10 +42,10 @@ public class StartStopTimeSensorReport extends Report {
             gain_str = _gain ;
             intgain = (new Double(gain_str.substring(0,gain_str.length()-1))).intValue();
         }
-        createReport(conn, classId, e, req) ;
+        return createReport(conn, classId, e, req, resp) ;
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         String neck = "<table border=1 cellspacing=1 cellpadding=1>\n" +
                 " <tr>\n" +
@@ -119,6 +121,7 @@ public class StartStopTimeSensorReport extends Report {
         } //each student
 
         this.src.append(foot);
+        return this;
     }  //report 13
 
 

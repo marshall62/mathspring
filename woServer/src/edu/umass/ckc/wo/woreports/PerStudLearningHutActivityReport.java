@@ -4,13 +4,14 @@ import java.sql.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
-import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -39,7 +40,7 @@ public class PerStudLearningHutActivityReport extends Report {
     public PerStudLearningHutActivityReport() {
     }
 
-    public void createReport(Connection conn, int classId, int _studId, String _gain, AdminViewReportEvent e, HttpServletRequest req)
+    public View createReport(Connection conn, int classId, int _studId, String _gain, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp)
             throws Exception {
         studId = _studId;
 
@@ -47,10 +48,10 @@ public class PerStudLearningHutActivityReport extends Report {
             gain_str = _gain;
             intgain = (new Double(gain_str.substring(0, gain_str.length() - 1))).intValue();
         }
-        createReport(conn, classId, e, req);
+        return createReport(conn, classId, e, req, resp);
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         String neck = "<table border=1 cellspacing=1 cellpadding=1 class=\"example altstripe sort02 table-autostripe table-autosort:2 table-stripeclass:alternate2\">\n" +
                 "<thead>\n"+
@@ -114,6 +115,7 @@ public class PerStudLearningHutActivityReport extends Report {
         } //each student
         this.src.append("</table>");
         this.src.append(foot);
+        return this;
     }
 
      private void writeStudentData(Connection conn, int studId, String fname, String lname, String uname) throws SQLException {
