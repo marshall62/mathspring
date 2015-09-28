@@ -446,4 +446,8 @@ public class TutorLogger {
     public void logHomeEvent(HomeEvent e) throws Exception {
         insertLogEntry(RequestActions.HOME,null,false,e.getElapsedTime(),0,null,-1,null,null,-1,null,-1);
     }
+
+    public void logDynamicChange(TutorHutEvent e, String change) throws Exception {
+        insertLogEntry("DynamicChange", null, false, e.getElapsedTime(), 0, null, -1, null, change, smgr.getStudentState().getCurTopic());
+    }
 }

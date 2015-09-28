@@ -1417,7 +1417,6 @@ JakeNoSPPButton-->
 
         <hintSelectors>
             <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
-            <hintSelectorClass>RandomHintSelector</hintSelectorClass>
         </hintSelectors>
         <package>pedModel2</package>
         <interventions>

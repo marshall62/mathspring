@@ -20,13 +20,14 @@ public class DynamicPedagogy extends Pedagogy{
     private ArrayList<String> challengeModeSelectors = new ArrayList<String>();
     private Random switcher = new Random();
 
-    public boolean changeProblemSelectorClass() {
+    public String changeProblemSelectorClass() {
         if(problemSelectors.size() <= 1)
-            return false;
+            return null;
         else{
             boolean sameElement = true;
+            int target = 0;
             while(sameElement){
-                int target = switcher.nextInt(problemSelectors.size());
+                target = switcher.nextInt(problemSelectors.size());
                 String candidate = getFullyQualifiedClassname(defaultClasspath+".probSel",problemSelectors.get(target));
                 if(candidate.equals(this.getProblemSelectorClass())){
                     sameElement = true;
@@ -36,7 +37,7 @@ public class DynamicPedagogy extends Pedagogy{
                     sameElement = false;
                 }
             }
-            return true;
+            return problemSelectors.get(target);
         }
     }
 
@@ -47,13 +48,14 @@ public class DynamicPedagogy extends Pedagogy{
         }
     }
 
-    public boolean changeLearningCompanionClass() {
+    public String changeLearningCompanionClass() {
         if(learningCompanions.size() <= 1)
-            return false;
+            return null;
         else{
             boolean sameElement = true;
+            int target = 0;
             while(sameElement){
-                int target = switcher.nextInt(learningCompanions.size());
+                target = switcher.nextInt(learningCompanions.size());
                 String candidate = getFullyQualifiedClassname(defaultClasspath + ".probSel", learningCompanions.get(target));
                 if(candidate.equals(this.getLearningCompanionClass())){
                     sameElement = true;
@@ -63,7 +65,7 @@ public class DynamicPedagogy extends Pedagogy{
                     sameElement = false;
                 }
             }
-            return true;
+            return learningCompanions.get(target);
         }
     }
 
@@ -74,13 +76,14 @@ public class DynamicPedagogy extends Pedagogy{
         }
     }
 
-    public boolean changeHintSelectorClass() {
+    public String changeHintSelectorClass() {
         if(hintSelectors.size() <= 1)
-            return false;
+            return null;
         else{
             boolean sameElement = true;
+            int target = 0;
             while(sameElement){
-                int target = switcher.nextInt(hintSelectors.size());
+                target = switcher.nextInt(hintSelectors.size());
                 String candidate = getFullyQualifiedClassname(defaultClasspath+".probSel",hintSelectors.get(target));
                 if(candidate.equals(this.getHintSelectorClass())){
                     sameElement = true;
@@ -90,7 +93,7 @@ public class DynamicPedagogy extends Pedagogy{
                     sameElement = false;
                 }
             }
-            return true;
+            return hintSelectors.get(target);
         }
     }
 
@@ -101,13 +104,14 @@ public class DynamicPedagogy extends Pedagogy{
         }
     }
 
-    public boolean changeStudentModelClass() {
+    public String changeStudentModelClass() {
         if(studentModels.size() <= 1)
-            return false;
+            return null;
         else{
             boolean sameElement = true;
+            int target = 0;
             while(sameElement){
-                int target = switcher.nextInt(studentModels.size());
+                target = switcher.nextInt(studentModels.size());
                 String candidate = getFullyQualifiedClassname(defaultClasspath + ".probSel", studentModels.get(target));
                 if(candidate.equals(this.getStudentModelClass())){
                     sameElement = true;
@@ -117,7 +121,7 @@ public class DynamicPedagogy extends Pedagogy{
                     sameElement = false;
                 }
             }
-            return true;
+            return studentModels.get(target);
         }
     }
 
@@ -135,14 +139,15 @@ public class DynamicPedagogy extends Pedagogy{
         }
     }
 
-    public boolean changeReviewModeProblemSelectorClass() {
+    public String changeReviewModeProblemSelectorClass() {
         if(reviewModeSelectors.size() <=1){
-            return false;
+            return null;
         }
         else{
             boolean sameElement = true;
+            int target = 0;
             while(sameElement){
-                int target = switcher.nextInt(reviewModeSelectors.size());
+                target = switcher.nextInt(reviewModeSelectors.size());
                 String candidate = getFullyQualifiedClassname(defaultClasspath + ".probSel", reviewModeSelectors.get(target));
                 if(candidate.equals(this.getReviewModeProblemSelectorClass())){
                     sameElement = true;
@@ -152,7 +157,7 @@ public class DynamicPedagogy extends Pedagogy{
                     sameElement = false;
                 }
             }
-            return true;
+            return reviewModeSelectors.get(target);
         }
     }
 
@@ -163,13 +168,14 @@ public class DynamicPedagogy extends Pedagogy{
         }
     }
 
-    public boolean changeChallengeModeProblemSelectorClass() {
+    public String changeChallengeModeProblemSelectorClass() {
         if(challengeModeSelectors.size() <= 1)
-            return false;
+            return null;
         else{
             boolean sameElement = true;
+            int target = 0;
             while(sameElement){
-                int target = switcher.nextInt(challengeModeSelectors.size());
+                target = switcher.nextInt(challengeModeSelectors.size());
                 String candidate = getFullyQualifiedClassname(defaultClasspath + ".probSel", challengeModeSelectors.get(target));
                 if(candidate.equals(this.getChallengeModeProblemSelectorClass())){
                     sameElement = true;
@@ -179,7 +185,7 @@ public class DynamicPedagogy extends Pedagogy{
                     sameElement = false;
                 }
             }
-            return true;
+            return challengeModeSelectors.get(target);
         }
     }
 }
