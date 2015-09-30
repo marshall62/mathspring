@@ -8,6 +8,7 @@ import java.util.Hashtable;
 
 //import edu.umass.ckc.wo.event.admin.AdminActions;
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminActions;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
@@ -17,6 +18,7 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Class summary per problem.  Which problems are challenging for your students.
@@ -33,12 +35,12 @@ public class PerProbClassSummaryReport2 extends Report {
     public PerProbClassSummaryReport2() {
     }
 
-    public void createReport (Connection conn, int classid, int semiabsskillid, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classid, int semiabsskillid, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         semiabsskillId = semiabsskillid ;
-        createReport(conn, classid, e, req) ;
+        return createReport(conn, classid, e, req, resp) ;
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         Hashtable probHash = new Hashtable();
 
@@ -125,7 +127,7 @@ public class PerProbClassSummaryReport2 extends Report {
                 probnumber= flashProbName.substring(8) ;
             else
                 System.out.println("Warning: Problem name " + probName + " is badly formed");
-            String link = ProbPlayer.getURLToProbPlayer(req) + "?questionNum=" + probnumber ;
+            String link = ProbPlayer.getURLToProbPlayer() + "?questionNum=" + probnumber ;
             //Change the color of the row depending on performance
             ReportProblem rp = new ReportProblem(1);
             String bgcolor = new String("#FFFFFF") ;
@@ -154,6 +156,7 @@ public class PerProbClassSummaryReport2 extends Report {
         }//for
 
         this.src.append(foot);
+        return this;
     }//report 4
 
 

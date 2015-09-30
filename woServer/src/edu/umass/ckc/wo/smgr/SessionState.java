@@ -22,6 +22,7 @@ public class SessionState extends State {
     private static final String NUM_PROBS_THIS_TUTOR_SESSION = "st.numProbsThisTutorSession";  // includes topicIntros
     private static final String NUM_REAL_PROBS_THIS_TUTOR_SESSION = "st.numRealProbsThisTutorSession";
     private static final String LAST_INTERVENTION_TIME = "st.lastInterventionTime";
+    private static final String TIME_LAST_CHANGE = "st.timeLastChange";
     private static final String TUTOR_ENTRY_TIME = "st.tutorHutEntryTime";
     private static final String TEMP_PROBLEM_INDEX = "st.tempProblemIndex";
     // not sure how used
@@ -39,10 +40,11 @@ public class SessionState extends State {
 
     private static String[] ALL_PROPS = new String[] {CUR_LOCATION,TIME,NUM_PROBS_THIS_TUTOR_SESSION, NUM_REAL_PROBS_THIS_TUTOR_SESSION,
             TUTOR_ENTRY_TIME,EXTERNAL_ACTS_GIVEN,EXAMPLE_PROBLEMS_GIVEN, TEMP_PROBLEM_INDEX, TOPIC_INTROS_SEEN, TOPIC_EXAMPLES_SEEN,LAST_INTERVENTION_TIME,
-            NEXT_PROB_DESIRED_DIFFICULTY, LC_CLIP_COUNTS, LC_CLIPS_SEEN,PED_MOD_INTERNAL_STATE} ;
+            TIME_LAST_CHANGE, NEXT_PROB_DESIRED_DIFFICULTY, LC_CLIP_COUNTS, LC_CLIPS_SEEN,PED_MOD_INTERNAL_STATE} ;
     private String curLocation;
     private long time;
     private long lastInterventionTime;
+    private long timeLastChange;
     private int numProblemsThisTutorSession;
     private int numRealProblemsThisTutorSession;
     private long tutorEntryTime;
@@ -76,6 +78,7 @@ public class SessionState extends State {
         this.numProblemsThisTutorSession = mapGetPropInt(m, NUM_PROBS_THIS_TUTOR_SESSION, 0);
         numRealProblemsThisTutorSession = mapGetPropInt(m, NUM_REAL_PROBS_THIS_TUTOR_SESSION, 0);
         lastInterventionTime = mapGetPropLong(m, LAST_INTERVENTION_TIME, 0);
+        timeLastChange = mapGetPropLong(m, TIME_LAST_CHANGE, 0);
         tutorEntryTime = mapGetPropLong(m, TUTOR_ENTRY_TIME, 0);
         externalActivitiesGiven = mapGetPropList(m, EXTERNAL_ACTS_GIVEN);
         satHutExampleProblemsGiven = mapGetPropList(m, EXAMPLE_PROBLEMS_GIVEN);
@@ -118,6 +121,7 @@ public class SessionState extends State {
         setNumProblemsThisTutorSession(0);
         setNumRealProblemsThisTutorSession(0);
         setLastInterventionTime(0);
+        setTimeLastChange(0);
         clearExternalActivitiesGiven();
         clearExamplesGiven();
         clearTopicIntrosSeen();
@@ -311,5 +315,14 @@ public class SessionState extends State {
 
     public String getPedagogicalModelInternalState() {
         return pedagogicalModelInternalState;
+    }
+
+    public long getTimeLastChange() {
+        return timeLastChange;
+    }
+
+    public void setTimeLastChange(long timeLastChange) throws SQLException {
+        this.timeLastChange = timeLastChange;
+        setProp(this.objid,TIME_LAST_CHANGE,this.timeLastChange);
     }
 }

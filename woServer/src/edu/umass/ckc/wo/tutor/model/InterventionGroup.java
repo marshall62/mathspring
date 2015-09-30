@@ -97,6 +97,12 @@ public class InterventionGroup {
     // means each selector is responsible for shutting itself off after it runs.
     public Intervention selectIntervention (SessionManager smgr, SessionEvent e, String onEvent) throws Exception {
         List<InterventionSelectorSpec> candidates = getCandidateInterventionForEvent(onEvent);
+        List<InterventionSelectorSpec> candidatesToCheck = getCandidateInterventionForEvent(onEvent);
+        for(InterventionSelectorSpec spec : candidatesToCheck) {
+            if(!spec.getTurnedOn()){
+                candidates.remove(spec);
+            }
+        }
         Collections.sort(candidates);   // sort into ascending order by weight
         for (InterventionSelectorSpec spec: candidates) {
             // skip it if its a run-once intervention that has already been run

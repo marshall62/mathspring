@@ -2,9 +2,11 @@ package edu.umass.ckc.wo.woreports;
 
 import java.sql.*;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This is a report of the Interventions. What happened before and after the intervention
@@ -51,12 +53,16 @@ public class Report11 extends DirectReport {
     /**
      * Build up the text of the report by appending to the src StringBuffer
      *
+     *
+     *
+     *
      * @param conn
      * @param classId
      * @param req
+     * @param response
      * @throws Exception
      */
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
     // write column headers containing problem names
       this.src.append(
@@ -184,6 +190,7 @@ public class Report11 extends DirectReport {
       } // end while
 
       System.out.print(this.src);
+        return this;
     } // end createReport
 
 

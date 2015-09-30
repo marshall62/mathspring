@@ -25,6 +25,7 @@ public class InterventionSelectorSpec implements Comparable<InterventionSelector
     private int weight;
     private String runFreq;
     private InterventionSelector selector;
+    private boolean turnedOn = true;
 
     public static final String ALWAYS="always";
     public static final String ONCE="once";
@@ -126,4 +127,13 @@ public class InterventionSelectorSpec implements Comparable<InterventionSelector
     public InterventionSelector getSelector() {
         return selector;
     }
+
+    public void setTurnedOn(boolean on){
+        turnedOn = on;
+    }
+
+    public boolean getTurnedOn(){
+        return turnedOn;
+    }
+
 }

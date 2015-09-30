@@ -3,9 +3,12 @@ package edu.umass.ckc.wo.woreports;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: marshall
@@ -20,12 +23,16 @@ public class Report1 extends Report {
 
     /**
      * Build up the text of the report by appending to the src StringBuffer
+     *
+     *
+     *
      * @param conn
      * @param studId
      * @param req
+     * @param response
      * @throws Exception
      */
-    public void createReport(Connection conn, int studId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int studId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         String neck = "<table border=1 cellspacing=1 cellpadding=1>\n" +
                 " <tr>\n" +
@@ -146,5 +153,6 @@ public class Report1 extends Report {
 
         } //while
         this.src.append(foot);
+        return this;
     }
 }

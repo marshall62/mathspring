@@ -31,4 +31,8 @@ public class EventLogEntry {
         this.activityName = activityName;
         this.curTopicId = curTopicId;
     }
+
+    public String toString () {
+        return String.format("%d: %s %s, %d",id,action,activityName, sessNum);
+    }
 }

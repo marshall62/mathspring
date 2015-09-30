@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
-import java.util.List;
 
 
 public class AdminHandler {
@@ -77,7 +76,7 @@ public class AdminHandler {
             Integer adminId = (Integer) sess.getAttribute("adminId");
             Teacher t = DbTeacher.getTeacher(conn,((AdminSetTeacherEvent) e).getTeacherId());
             Teacher a = DbAdmin.getAdmin(conn, adminId);
-            AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t);
+            AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t, -1);
             return false;
         }
         if (Settings.useAdminServletSession && !(e instanceof UserRegistrationEvent)) {
@@ -185,7 +184,7 @@ public class AdminHandler {
             if (adminId != null) {
                 Teacher t = DbTeacher.getTeacher(conn,((AdminEvent) e).getTeacherId());
                 Teacher a = DbAdmin.getAdmin(conn,adminId);
-                AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t);
+                AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t, -1);
                 return false;
             }
             if(classes1.length <= 0){

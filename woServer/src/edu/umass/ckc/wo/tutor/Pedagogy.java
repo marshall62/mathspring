@@ -78,6 +78,10 @@ public class Pedagogy implements Comparable {
     }
 
     public void setPedagogicalModelClass(String pedagogicalModelClass) {
+        if(pedagogicalModelClass == null){
+            this.pedagogicalModelClass = null;
+            return;
+        }
         this.pedagogicalModelClass = getFullyQualifiedClassname(defaultClasspath+".pedModel",pedagogicalModelClass);
     }
 
@@ -87,6 +91,10 @@ public class Pedagogy implements Comparable {
 
 
     public void setProblemSelectorClass(String problemSelectorClass) {
+        if(problemSelectorClass == null){
+            this.problemSelectorClass = null;
+            return;
+        }
         this.problemSelectorClass = getFullyQualifiedClassname(defaultClasspath+".probSel",problemSelectorClass);
     }
 
@@ -97,6 +105,10 @@ public class Pedagogy implements Comparable {
     }
 
     public void setLearningCompanionClass(String learningCompanionClass) {
+        if(learningCompanionClass == null || learningCompanionClass.equals("null")){
+            this.learningCompanionClass = null;
+            return;
+        }
         this.learningCompanionClass = getFullyQualifiedClassname(defaultClasspath+".agent",learningCompanionClass);
     }
 
@@ -105,6 +117,10 @@ public class Pedagogy implements Comparable {
     }
 
     public void setHintSelectorClass(String hintSelectorClass) {
+        if(hintSelectorClass == null){
+            this.hintSelectorClass = null;
+            return;
+        }
         this.hintSelectorClass = getFullyQualifiedClassname(defaultClasspath+".hintSel",hintSelectorClass);
     }
 
@@ -113,6 +129,10 @@ public class Pedagogy implements Comparable {
     }
 
     public void setStudentModelClass(String studentModelClass) {
+        if(studentModelClass == null){
+            this.studentModelClass = null;
+            return;
+        }
         this.studentModelClass = getFullyQualifiedClassname(defaultClasspath+".studmod",studentModelClass);
     }
 
@@ -240,6 +260,10 @@ public class Pedagogy implements Comparable {
     }
 
     public void setReviewModeProblemSelectorClass(String reviewModeProblemSelectorClass) {
+        if(reviewModeProblemSelectorClass == null){
+            this.reviewModeProblemSelectorClass = null;
+            return;
+        }
         this.reviewModeProblemSelectorClass = getFullyQualifiedClassname(defaultClasspath+".probSel",reviewModeProblemSelectorClass);
     }
 
@@ -248,6 +272,10 @@ public class Pedagogy implements Comparable {
     }
 
     public void setChallengeModeProblemSelectorClass(String challengeModeProblemSelectorClass) {
+        if(challengeModeProblemSelectorClass == null){
+            this.challengeModeProblemSelectorClass = null;
+            return;
+        }
         this.challengeModeProblemSelectorClass = getFullyQualifiedClassname(defaultClasspath+".probSel",challengeModeProblemSelectorClass);
     }
 

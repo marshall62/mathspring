@@ -5,12 +5,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User names and passwords
@@ -23,7 +25,7 @@ public class ReportUserNamesAndPasswords extends Report {
     public ReportUserNamesAndPasswords() {
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         String neck = "<table border=1 cellspacing=1 cellpadding=1>\n" +
             " <tr>\n" +
@@ -63,5 +65,6 @@ public class ReportUserNamesAndPasswords extends Report {
          this.src.append(neck);
          this.src.append(rows);
          this.src.append(foot) ;
+        return this;
     }
 }

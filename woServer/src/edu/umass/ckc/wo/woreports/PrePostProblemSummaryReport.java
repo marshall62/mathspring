@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *  Pre/Post test problem summaries per class.
@@ -48,7 +50,7 @@ public class PrePostProblemSummaryReport extends Report {
     }
 
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         ClassInfo cl = DbClass.getClass(conn,classId);
         String className = getClassName(cl);
@@ -67,6 +69,7 @@ public class PrePostProblemSummaryReport extends Report {
         createTable(conn,classId,"posttestProblem");
         this.src.append("</td></tr></table>");
         this.src.append("</body></html>");
+        return this;
     }
 
     private void createTable (Connection conn, int classId, String testType) throws Exception {

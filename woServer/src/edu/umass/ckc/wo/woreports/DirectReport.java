@@ -1,9 +1,11 @@
 package edu.umass.ckc.wo.woreports;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
@@ -60,7 +62,8 @@ public class DirectReport extends Report {
         }
     }
 
-    public void createReport(Connection conn, int id, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int id, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
         //To change body of implemented methods use File | Settings | File Templates.
+        return this;
     }
 }

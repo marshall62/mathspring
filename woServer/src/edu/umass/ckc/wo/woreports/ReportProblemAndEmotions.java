@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.woreports;
 import java.sql.* ;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import edu.umass.ckc.wo.util.ProbPlayer;
@@ -10,14 +11,11 @@ import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.xml.JDOMUtils;
-import edu.umass.ckc.wo.woreports.js.CSSFile;
-import edu.umass.ckc.wo.woreports.js.JSFile;
-import edu.umass.ckc.wo.woreports.js.JSFunction;
 import edu.umass.ckc.wo.woreports.js.DataTable;
 import edu.umass.ckc.wo.tutor.studmod.StudentModelMasteryHeuristic;
-import edu.umass.ckc.wo.smgr.StudentState;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jdom.Element;
 import org.jdom.Attribute;
@@ -129,7 +127,7 @@ public class ReportProblemAndEmotions extends Report {
 
 
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         ClassInfo cl = DbClass.getClass(conn, classId);
         teacherId = cl.getTeachid();
@@ -175,6 +173,7 @@ public class ReportProblemAndEmotions extends Report {
         }
 
         this.src.append("</table></div></div></body></html>");
+        return this;
     }
 
     /*
@@ -877,7 +876,7 @@ public class ReportProblemAndEmotions extends Report {
             // DAM 11/19/08 patch repair because problems with bad names are included in the result list.
             if (gifName.startsWith("problem_") ) {
                 probNumber = gifName.substring(8);
-                link = ProbPlayer.getURLToProbPlayer(req) + "?questionNum=" + probNumber;
+                link = ProbPlayer.getURLToProbPlayer() + "?questionNum=" + probNumber;
             }
             else if (rs2.getString("form")!= null && rs2.getString("form").equalsIgnoreCase("ExternalURL")) {
                 probNumber = gifName ;

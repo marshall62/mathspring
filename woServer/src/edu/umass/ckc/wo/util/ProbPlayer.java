@@ -32,7 +32,7 @@ public class ProbPlayer {
         return uri;
     }
 
-    public static String getURLToProbPlayer(HttpServletRequest servletRequest) {
+    public static String getURLToProbPlayer() {
         return Settings.probplayerPath;
 
     }

@@ -1,6 +1,10 @@
 package edu.umass.ckc.wo.woreports;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+
+import ckc.servlet.servbase.View;
+import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
@@ -8,13 +12,16 @@ import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.handler.ReportHandler;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.studmod.BaseStudentModel;
+import edu.umass.ckc.wo.util.ProbPlayer;
 import edu.umass.ckc.wo.woreports.js.JSFile;
 import edu.umass.ckc.wo.woreports.js.JSFunction;
 import edu.umass.ckc.wo.tutor.studmod.StudentModelMasteryHeuristic;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -52,9 +59,10 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
     private int solved;
     private int incAttempts;
     private boolean endProblem;
+    private String curProbMode;
     private List<EventLogEntry> userEvents;
     List<Integer> pidList;
-
+    private List<Problem> problems;
 
 
     class MasteryPoint {
@@ -66,8 +74,8 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
         int probId;     // not strictly necessary but putting in for verification that things are in synch as the data is gathered
         double mastery;
 
-        public String toString () {
-            return String.format("%d:%4.3f",probId,mastery);
+        public String toString() {
+            return String.format("%d:%4.3f", probId, mastery);
         }
     }
 
@@ -76,7 +84,7 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
         List<MasteryPoint> history;
         int rowIndex;
 
-        TopicData (int tid) {
+        TopicData(int tid) {
             topicId = tid;
             history = new ArrayList<MasteryPoint>();
         }
@@ -91,44 +99,112 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
 //    List<Double> masteryHistory;
 
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
-        this.classId =classId;
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req,
+                             HttpServletResponse resp) throws Exception {
+        this.classId = classId;
         this.studId = e.getStudId();
         this.pidList = new ArrayList<Integer>();
+        this.problems = new ArrayList<Problem>();
         data = new ArrayList<TopicData>();
         userEvents = new ArrayList<EventLogEntry>();
-        ClassInfo cl = DbClass.getClass(conn,classId);
+        ClassInfo cl = DbClass.getClass(conn, classId);
         int studId = e.getStudId();
-        User u =DbUser.getStudent(conn,studId);
+        User u = DbUser.getStudent(conn, studId);
         String className = getClassName(cl);
         this.src.append(generateHeaderWithJS("Topic Mastery history for student - " + u.getUname() + " in class " + className, new JSFile[]{},
-                new JSFunction[] {JSFunction.NAVIGATION_PULLDOWN_MENU}));
+                new JSFunction[]{JSFunction.NAVIGATION_PULLDOWN_MENU}));
         this.src.append("<h3>Topic Mastery history for student " + u.getUname() + "</h3>\n");
-        addNavLinks(classId,cl.getTeachid());
+        addNavLinks(classId, cl.getTeachid());
         // Similar to StudentTopicMasteryTrajectoryReport I've replaced this with a buffered approach.   See comments in that file for
         // details
         // Old call that processes each row
 //        collectStudentMasteryHistory(conn, this.studId, req);
         // new calls that fill buffer and then process it
-        collectStudentEventHistory(conn,this.studId);
+        int nEvents = collectStudentEventHistory(conn, this.studId);
         processEventHistory(conn);
-        getTopicNames(conn);
-        saveLineChartDataInSession(req);
+        int nProbs = 0;
+        for (TopicData d : this.data)
+            nProbs += d.history.size();
+        String xLabels = getXLabels();
+        int nrows = determineRowIndices(); // marks TopicData records with rowNumber
+        this.topicNames = new ArrayList<String>();
+        JQPlotLine[] lines = createJQPlotMultipleTopicLines(nrows);
+        String outString = getJQPlotLines(lines) ;
+//        saveLineChartDataInSession(req);
         this.src.append("<p><img src=\"LineGraphServlet\">"); // inserts an image that calls BarChartServlet which gens a jpeg from data in HttpSession
-        insertProbLister(req,conn,pidList);
+        insertProbLister(req, conn, pidList);
+        req.setAttribute("numTopics", this.topicNames.size());
+        req.setAttribute("problems", problems);
+        req.setAttribute("xLabels", xLabels);
+        req.setAttribute("masterySequence", outString);
+        req.setAttribute("topicNames",this.topicNames);
+        req.setAttribute("teacherId", cl.getTeachid());
+        req.setAttribute("classId", classId);
+        req.setAttribute("className", className);
+        req.setAttribute("flashProblemPreviewer", ProbPlayer.getURLToProbPlayer());
 
+        req.setAttribute("studentName", u.toString());
+        req.setAttribute("message", nEvents == 0 ? "No events can be found for this user and topic." : "");
+        req.setAttribute("width", nProbs * 50); // about 50pixels per data point will be a good width for the chart
+        req.getRequestDispatcher(ReportHandler.STUDENT_ALL_TOPICS_MASTERY_TRAJECTORY_JSP).forward(req, resp);
+        return null;
     }
 
-    private void getTopicNames(Connection conn) throws SQLException {
-        topicNames = new ArrayList<String>();
-        for (TopicData d: data) {
-            topicNames.add(DbTopics.getTopicName(conn,d.topicId));
+    /**
+     * Does all the work of getting data out of this.data and putting it into an array.  It also gathers
+     * the names of topics and the problems.  this.data is a list of TopicData objects that come in the order of the
+     * topics a student saw.  Each of these holds a history of the problems seen within that topic (history is a list of MasteryPoints).
+     * The trick is that some topics are seen more than once and the graph needs to show these mastery points with the same color marker
+     * So we mark each TopicData with a row number.   When a topic A is first seen we give it the next rowNumber.  If topic A is seen
+     * again, we use the previously assigned row number.  This can then be used when we produce JQPlotLines so that one line for topic A
+     * can have all these histories.
+     * @param nrows  The number of unique topics
+     * @return
+     * @throws SQLException
+     */
+    private JQPlotLine[] createJQPlotMultipleTopicLines(int nrows) throws SQLException {
+        int i = 0; // an overall index for what problem we are on
+
+        JQPlotLine[] a;   // An array of lines - one for each topic
+        a = new JQPlotLine[nrows];
+        for (TopicData d : data) {
+            int topicIx = d.rowIndex; // a number that identifies a topic uniquely for this chart
+            // Add a new line if the topic has not been seen before
+            // if we've already seen some problems in this topic, there will be a line, so use it
+            if (a[topicIx] == null) {
+                a[topicIx] = new JQPlotLine();
+                Topic t = ProblemMgr.getTopic(d.topicId);
+                if (t != null)
+                    this.topicNames.add(t.getName());
+            }
+            // go through the history adding points to the line
+            for (MasteryPoint p : d.history) {
+                JQPlotPoint jp = new JQPlotPoint(i,p.mastery); // creates a single point in the chart for a given topic
+                a[topicIx].addPoint(jp);
+                this.problems.add(ProblemMgr.getProblem(p.probId));
+                i++; // move to the next problem number
+            }
+
         }
-
+        return a;
     }
 
 
-    private void collectStudentEventHistory (Connection conn, int studId) throws Exception {
+
+    //
+    private String getXLabels() {
+        List<Integer> pids = new ArrayList<Integer>();
+        for (TopicData d : this.data) {
+            for (MasteryPoint p : d.history)
+                pids.add(p.probId);
+        }
+        return getLabelSequence(pids);
+    }
+
+
+
+
+    private int collectStudentEventHistory(Connection conn, int studId) throws Exception {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
@@ -138,23 +214,26 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
             rs = stmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt(1);
-                int sessNum = rs.getInt(2); String action=rs.getString(3); boolean isCorrect=rs.getBoolean(4); long elapsedTime=rs.getLong(5);
-                long probElapsed= rs.getLong(6);
-                int problemId=rs.getInt(7);
+                int sessNum = rs.getInt(2);
+                String action = rs.getString(3);
+                boolean isCorrect = rs.getBoolean(4);
+                long elapsedTime = rs.getLong(5);
+                long probElapsed = rs.getLong(6);
+                int problemId = rs.getInt(7);
                 if (rs.wasNull())
-                    problemId=-1;
-                int hintId=rs.getInt(8);
-                String activityName=rs.getString(9);
+                    problemId = -1;
+                int hintId = rs.getInt(8);
+                String activityName = rs.getString(9);
                 if (rs.wasNull())
-                    activityName="";
-                int curTopicId=rs.getInt(10);
+                    activityName = "";
+                int curTopicId = rs.getInt(10);
                 if (rs.wasNull())
-                    curTopicId=-1;
-                EventLogEntry ee = new EventLogEntry(id,sessNum,action,isCorrect,elapsedTime,probElapsed,problemId,hintId,activityName,curTopicId);
+                    curTopicId = -1;
+                EventLogEntry ee = new EventLogEntry(id, sessNum, action, isCorrect, elapsedTime, probElapsed, problemId, hintId, activityName, curTopicId);
                 userEvents.add(ee);
             }
-        }
-        finally {
+            return userEvents.size();
+        } finally {
             if (stmt != null)
                 stmt.close();
             if (rs != null)
@@ -164,38 +243,32 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
     }
 
 
-
-
-
-
-
-
-
     // Walk over the buffer (userEvents) and use the masteryTrackers to create a set of records.
-    private void processEventHistory (Connection conn) throws SQLException {
-        topicMasteryTracker = new TopicMasterySimulator(conn,new StudentModelMasteryHeuristic(conn), BaseStudentModel.INITIAL_TOPIC_MASTERY_ESTIMATE_FL);
+    private void processEventHistory(Connection conn) throws SQLException {
+        topicMasteryTracker = new TopicMasterySimulator(conn, new StudentModelMasteryHeuristic(conn), BaseStudentModel.INITIAL_TOPIC_MASTERY_ESTIMATE_FL);
         // cycle through the event log for the student and the topic
-        int lastSess = -1,lastTopicId = -1;
+        int lastSess = -1, lastTopicId = -1;
         isFirstProbOfSess = true;
-        for (EventLogEntry entry: userEvents) {
-                if (entry.sessNum != lastSess) {
-                    isFirstProbOfSess = true;
-                    lastSess = entry.sessNum;
-                } else isFirstProbOfSess = false;
-                topicId = entry.curTopicId;
-                // When topic changes let the topic updater know
-                if (topicId != -1 && topicId != lastTopicId) {
-                    this.topicMasteryTracker.newTopic(topicId);
-                    // add a new topic data record to the list
-                    curTopicData = new TopicData(topicId);
-                    this.data.add(curTopicData);
-                    lastTopicId = topicId;
-                }
-                if (entry.problemId != -1)
-                    processEvent(entry);
+        for (EventLogEntry entry : userEvents) {
+            if (entry.problemId == 899)
+                continue;
+            if (entry.sessNum != lastSess) {
+                isFirstProbOfSess = true;
+                lastSess = entry.sessNum;
+            } else isFirstProbOfSess = false;
+            topicId = entry.curTopicId;
+            // When topic changes let the topic updater know
+            if (topicId != -1 && topicId != lastTopicId) {
+                this.topicMasteryTracker.newTopic(topicId);
+                // add a new topic data record to the list
+                curTopicData = new TopicData(topicId);
+                this.data.add(curTopicData);
+                lastTopicId = topicId;
+            }
+            if (entry.problemId != -1)
+                processEvent(entry);
         }
     }
-    
 
 
     // This is a revised processor based on using events saved in the userEvents list rather than working directly off
@@ -210,35 +283,45 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
 
 
     private void processEvent(EventLogEntry entry) throws SQLException {
-        String type = TrajectoryUtil.getProblemType(userEvents,entry.id);
-        boolean isExample = type.equals("ExampleProblem");
-        boolean isPractice = type.equals("PracticeProblem");
-        boolean topicIntro = type.equals(Problem.TOPIC_INTRO_PROB_TYPE);
+
+        // If beginProblem doesn't have a mode, then these are events prior to a format change on the event log (instituted
+        // 9/24/15) and we have to try to locate the mode of the problem by searching back through previous events using
+        //  TrajectoryUtil.getProblemType(userEvents,entry.id) .  Typically the type is on the preceding NextProblem event.
+        // We are only interested in practice problems so this will not do anything if it sees that the current problem
+        // is a demo, example, topicIntro
+        if (entry.action.equalsIgnoreCase("beginProblem")) {
+            curProbMode = entry.activityName;
+            if (curProbMode == null || curProbMode.equals("")) {
+                String type = TrajectoryUtil.getProblemType(userEvents, entry.id); // searches backward for type
+                if (type.equals("PracticeProblem"))
+                    curProbMode = Problem.PRACTICE;
+            }
+        }
+
         // We've just hit a different problem.  Process the last one (if this isn't the first prob in the session)
-        if (isPractice && entry.action.equalsIgnoreCase("beginProblem")) {
+        if (Problem.isPracticeProblem(curProbMode) && entry.action.equalsIgnoreCase("beginProblem")) {
             this.pidList.add(entry.problemId);
             beginProblemTime = entry.elapsedTime;
-            endProblem=false;
+            endProblem = false;
             timeToChoose = 0;
             timeToAnswer = 0;
             timeToHint = 0;
             numHints = 0;
             solved = 0;
             incAttempts = 0;
-            timeToFirstAttempt=0;
-        }
-         else if (isPractice && entry.action.equalsIgnoreCase("endProblem")) {
+            timeToFirstAttempt = 0;
+        } else if (Problem.isPracticeProblem(curProbMode) && entry.action.equalsIgnoreCase("endProblem")) {
 
-            endProblem=true;
+            endProblem = true;
             // update the topic Mastery based on whats happened in this problem.
-            topicMasteryTracker.updateMastery(entry.problemId, numHints,solved,incAttempts, timeToFirstAttempt, 0, "practice");   //!!!!Check mode and number of practice problems
+            topicMasteryTracker.updateMastery(entry.problemId, numHints, solved, incAttempts, timeToFirstAttempt, 0, "practice");   //!!!!Check mode and number of practice problems
 
-            if ( topicMasteryTracker.getMastery() > 0 )
-            curTopicData.history.add(new MasteryPoint(entry.problemId,topicMasteryTracker.getMastery()));
+            if (topicMasteryTracker.getMastery() > 0)
+                curTopicData.history.add(new MasteryPoint(entry.problemId, topicMasteryTracker.getMastery()));
 
 
         }  // end endProblem
-        else if (isPractice && entry.action.equalsIgnoreCase("attempt")) {
+        else if (Problem.isPracticeProblem(curProbMode) && entry.action.equalsIgnoreCase("attempt")) {
             if (entry.isCorrect && (timeToAnswer == 0)) {
                 timeToAnswer = entry.probElapsed;
 
@@ -253,8 +336,7 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
             }
             if (!entry.isCorrect && incAttempts < 4)  // A hack because somehow students could get more than 4 incorrect answers
                 incAttempts++;
-        }
-        else if (isPractice && entry.action.toLowerCase().startsWith("hint")  ) {
+        } else if (Problem.isPracticeProblem(curProbMode) && entry.action.toLowerCase().startsWith("hint")) {
             if (timeToHint == 0)
                 timeToHint = entry.probElapsed;
 
@@ -264,10 +346,9 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
     }
 
 
-
     // process the event and save the topicMastery updates whenever and endProblem is hit.
- private void processProblem(Connection conn, int studId, String username, int sessNum, int probId, int topicId, String action,
-                              ResultSet rs, HttpServletRequest req) throws Exception {
+    private void processProblem(Connection conn, int studId, String username, int sessNum, int probId, int topicId, String action,
+                                ResultSet rs, HttpServletRequest req) throws Exception {
 
 
         // We've just hit a different problem.  Process the last one (if this isn't the first prob in the session)
@@ -275,14 +356,14 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
 
             this.pidList.add(probId);
             beginProblemTime = rs.getLong("elapsedTime");
-            endProblem=false;
+            endProblem = false;
             timeToChoose = 0;
             timeToAnswer = 0;
             timeToHint = 0;
             numHints = 0;
             solved = 0;
             incAttempts = 0;
-            timeToFirstAttempt=0;
+            timeToFirstAttempt = 0;
 
         }
         // don't do anything with events after endProblem and before next beginProblem
@@ -312,103 +393,29 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
             if (numHints < 7)   // A threshold just in case students make hectic choose_a clicks
                 numHints++;
         } else if (action.equalsIgnoreCase("endProblem")) {
-            endProblem=true;
+            endProblem = true;
             // update the topic Mastery based on whats happened in this problem.
-            topicMasteryTracker.updateMastery(probId, numHints,solved,incAttempts, timeToFirstAttempt, 0, "practice");   //!!!!Check mode and number of practice problems
+            topicMasteryTracker.updateMastery(probId, numHints, solved, incAttempts, timeToFirstAttempt, 0, "practice");   //!!!!Check mode and number of practice problems
 
-            if ( topicMasteryTracker.getMastery() > 0 )
-            curTopicData.history.add(new MasteryPoint(probId,topicMasteryTracker.getMastery()));
+            if (topicMasteryTracker.getMastery() > 0)
+                curTopicData.history.add(new MasteryPoint(probId, topicMasteryTracker.getMastery()));
 
         }  // end endProblem
     }
 
 
 
-
-
-    private void saveLineChartDataInSession(HttpServletRequest req) {
-
-        String xAxisTitle = "Problem Ids";
-        String yAxisTitle = "Topic Mastery";
-
-        String title = "Full Topic Mastery History";
-        int nProbs=0;
-        for (TopicData d: this.data)
-            nProbs += d.history.size();
-        String[] xAxisLabels = new String[nProbs];
-        int nrows = determineRowIndices();
-        int i = 0;
-
-//        for (Integer pid: this.pidList) {
-//           xAxisLabels[i++] = Integer.toString(pid);
-//        }
-
-        for (TopicData d: this.data) {
-            for (MasteryPoint p: d.history)
-                xAxisLabels[i++] = Integer.toString(p.probId);
-        }
-
-
-
-        //  I think I can stick in nulls for each label that doesn't need a value as I go through the data.
-        // Not that simple.
-        // Each topic needs to create a point for each label in the x-axis.   There are problems that repeated many times
-        // so we can't just use the pid in the x-axis to find a mastery level in the history.
-        // I think it will either be the first one in the history and we can pop it OR it won't be there and then we just use NULL.
-        
-        Random rand = new Random();
-        IAxisDataSeries dataSeries = new DataSeries( xAxisLabels, xAxisTitle, yAxisTitle, title );
-
-        double[][] masteryData = new double[nrows][nProbs];
-        int j = 0;  // indexs through PIDs
-        for (TopicData d: this.data) {
-            int curRowIx = d.rowIndex;
-            for (MasteryPoint p: d.history) {
-                assert(p.probId == this.pidList.get(j));
-                // first put in all NaNs for every row at column j
-                for (int k=0;k<nrows;k++)
-                    masteryData[k][j] = Double.NaN;
-                // now set the value in column j to the correct mastery
-                masteryData[curRowIx][j] = p.mastery;
-                j++;
-            }
-
-        }
-
-//        System.out.println("data is");
-//        for (int ii=0;ii<nrows;ii++)  {
-//            this.src.append("<tr>");
-//                for (int jj=0;jj<nProbs;jj++)
-//                    this.src.append("<td>" + String.format("%3.3f",data[ii][jj]) + "</td>");
-//                this.src.append("</tr>");
-//        }
-//        this.src.append("</table>");
-
-//        double[][] data = new double[][]{{.4, .45, .53, .845, .3, .25, .654, .768, .81, .99}};
-//        double[][] data = new double[][]{avgGain_per_category};
-//        String[] legendLabels = {"topic 10", "topic 1"};  // TODO compute list of labels
-        String[] legendLabels = new String[topicNames.size()];
-        int kk=0;
-        for (String n: topicNames)
-            legendLabels[kk++] = n;   
-        HttpSession sess = req.getSession();
-        sess.setAttribute("dataSeries",dataSeries);
-        sess.setAttribute("data",masteryData);
-        sess.setAttribute("legendLabels",legendLabels);
-    }
-
     // for each TopicData store a rowIndex which is the row in the table that will represent this topic in the output
     // graph that is sent to the LineGraphServlet. Returns the number of rows
     private int determineRowIndices() {
-        int count=0;
+        int count = 0;
         List<Integer[]> alist = new ArrayList<Integer[]>();
         int ix;
-        for (TopicData d: this.data) {
-            if ( (ix = getIxinAlist(d.topicId, alist)) == -1) {
+        for (TopicData d : this.data) {
+            if ((ix = getIxinAlist(d.topicId, alist)) == -1) {
                 d.rowIndex = count++;
-                alist.add(new Integer[] {d.topicId,count-1});
-            }
-            else d.rowIndex = ix;
+                alist.add(new Integer[]{d.topicId, count - 1});
+            } else d.rowIndex = ix;
 
         }
         return count;
@@ -417,7 +424,7 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
     // the alist stores pairs of ints <topicId, rowIndex>
     // Return the rowIndex of the given topicId or -1
     private int getIxinAlist(int topicId, List<Integer[]> alist) {
-        for (Integer[] pair: alist) {
+        for (Integer[] pair : alist) {
             if (pair[0] == topicId)
                 return pair[1];
 

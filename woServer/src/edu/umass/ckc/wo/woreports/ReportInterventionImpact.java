@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import edu.umass.ckc.wo.util.ProblemActivityRecord;
@@ -13,6 +14,7 @@ import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Impact of interventions
@@ -30,7 +32,7 @@ public class ReportInterventionImpact extends Report {
     public ReportInterventionImpact() {
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
 
         int nprobsbefore = 0 ;
@@ -121,6 +123,7 @@ public class ReportInterventionImpact extends Report {
         }
 
         generateFoot() ;
+        return this;
     }
 
 

@@ -6,12 +6,14 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.ArrayList;
 
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.xml.JDOMUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jdom.Element;
 
@@ -103,7 +105,7 @@ public class PerStudPerEmotionClassSummaryReport extends Report {
         }
     }
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         ClassInfo cl = DbClass.getClass(conn, classId);
         String className = getClassName(cl);
@@ -155,7 +157,7 @@ public class PerStudPerEmotionClassSummaryReport extends Report {
             reportStudentData(curStudId, pedId, numObs, interested, confident, excited, frustrated, curUserName);
 
         emitTable2();
-
+        return this;
     }
 
 

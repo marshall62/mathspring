@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.*;
 import java.text.DecimalFormat;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.beans.ClassInfo;
@@ -18,6 +18,7 @@ import org.jCharts.chartData.DataSeries;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.lang.*;
 
@@ -111,7 +112,7 @@ public class PerStudPrePostReport extends Report {
 
 
 
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
         this.conn =conn;
         double count_casesWithin =0 ;
         double count_casesQuiz =0 ;
@@ -404,6 +405,7 @@ public class PerStudPrePostReport extends Report {
         this.src.append("</table>") ;
         buildBarChartData(req, avgGain_per_category); // puts some data into the HttpSession
         this.src.append("<p><img src=\"BarChartServlet\">"); // inserts an image that calls BarChartServlet which gens a jpeg from data in HttpSession
+        return this;
     }
 
     private void setRunningAvg (int i, double[] avgGain_per_category, int[] num_per_category,  double gain) {

@@ -3,11 +3,13 @@ package edu.umass.ckc.wo.woreports;
 import java.sql.*;
 
 //import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 
 import edu.umass.ckc.wo.util.ProbPlayer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: mbaldwin
@@ -24,12 +26,16 @@ public class Report6 extends Report {
     /**
      * Build up the text of the report by appending to the src StringBuffer
      *
+     *
+     *
+     *
      * @param conn
      * @param classId
      * @param req
+     * @param response
      * @throws Exception
      */
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         probsToReport = new boolean[200] ;
         // html page header
@@ -208,7 +214,7 @@ public class Report6 extends Report {
                         str = "Yes";
 
                     String probnumber = gifName.substring(8) ;
-                    String link = ProbPlayer.getURLToProbPlayer(req) + "?questionNum=" + probnumber ;
+                    String link = ProbPlayer.getURLToProbPlayer() + "?questionNum=" + probnumber ;
 
 
                     String time_attempt = doubleToString((double) (timeToChoose / (double) 1000.0));
@@ -258,6 +264,7 @@ public class Report6 extends Report {
         } // per student while
 
         this.src.append(foot);
+        return this;
     }
 
 }

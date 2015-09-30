@@ -14,10 +14,12 @@ import ckc.servlet.servbase.ServletParams;
 
 public class BeginProblemEvent extends TutorHutEvent {
     int probId;
+    String mode;
 
     public BeginProblemEvent(ServletParams p) throws Exception {
         super(p);
         probId = p.getInt("probId");
+        mode = p.getString("mode");
     }
 
     public int getProbId() {
@@ -27,5 +29,9 @@ public class BeginProblemEvent extends TutorHutEvent {
 
     public void setProbId(int probId) {
         this.probId = probId;
+    }
+
+    public String getMode() {
+        return mode;
     }
 }

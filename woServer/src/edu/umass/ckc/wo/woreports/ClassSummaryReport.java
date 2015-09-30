@@ -3,11 +3,14 @@ package edu.umass.ckc.wo.woreports;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.db.DbClass;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Class summary: What your students have done overall
@@ -25,7 +28,7 @@ public class ClassSummaryReport extends Report {
     // are all compatible between the two logs for the purposes of this report.
     // Tested on Steven Blinder class (v1 system).
     // Tested on Henderson/Henderson classes (v2 system)
-    public void createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req) throws Exception {
+    public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
         boolean solvedNoHelp = true;
         int numStud = 0;
@@ -109,7 +112,7 @@ public class ClassSummaryReport extends Report {
        if ( numStud == 0 ) {
            this.src.append(" <b> No students from this class saw problems. </b>") ;
            this.src.append(foot);
-           return ;
+           return this;
        }
 
        int probs =  totProbs /  numStud ;
@@ -145,6 +148,7 @@ public class ClassSummaryReport extends Report {
             this.src.append(" <b> We think that your students are using the help properly. </b>") ;
 
         this.src.append(foot);
+        return this;
     }
 
 

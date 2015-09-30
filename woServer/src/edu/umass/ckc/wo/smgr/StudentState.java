@@ -439,6 +439,14 @@ public class StudentState extends State implements TutorEventHandler {
         return sessionState.getLastInterventionTime();
     }
 
+    public long getTimeLastChange() {
+        return sessionState.getTimeLastChange();
+    }
+
+    public void setTimeLastChange(long timeLastChange) throws SQLException{
+        sessionState.setTimeLastChange(timeLastChange);
+    }
+
 
     // Given a 1-based clip-number, update the woproperty at this position number (clipNumber) to
     // be count.
