@@ -684,7 +684,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             smgr.getStudentModel().newProblem(state,curProb);
         if (r instanceof InterventionResponse)
             new TutorLogger(smgr).logNextProblemIntervention(e,(InterventionResponse) r);
-        else new TutorLogger(smgr).logNextProblem(e, r.getCharacterControl());
+        else new TutorLogger(smgr).logNextProblem(e, r.getCharacterControl(), "PracticeProblem");
         StudentEffort eff = studentModel.getEffort();
         r.setEffort(eff);
         return r;

@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.beans.Classes;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.html.admin.SelectClassPage;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.woreports.*;
 import ckc.servlet.servbase.View;
 import ckc.servlet.servbase.ServletEvent;
@@ -60,6 +61,8 @@ public class ReportHandler {
     public static final int PER_EMOTION_CSV = 160 ;
 
     public static final String STUDENT_TOPIC_MASTERY_TRAJECTORY_JSP = "/teacherTools/reports/studTopicMasteryTrajectory.jsp";
+    public static final String STUDENT_ALL_TOPICS_MASTERY_TRAJECTORY_JSP = "/teacherTools/reports/studAllTopicsMasteryTrajectory.jsp";
+    public static final String CLASS_TOPICS_MASTERY_TRAJECTORY_JSP = "/teacherTools/reports/classTopicMasteryTrajectory.jsp";
 
     public ReportHandler () {
 
@@ -71,7 +74,6 @@ public class ReportHandler {
 
     public View handleEvent(ServletContext sc, ServletEvent se, Connection conn, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         AdminViewReportEvent e = (AdminViewReportEvent) se;
-
 
         // e.getState() will be null
         if (e.getState() == null)  {

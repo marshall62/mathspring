@@ -8,7 +8,6 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTeacher;
 import edu.umass.ckc.wo.event.admin.AdminTeacherLoginEvent;
 import edu.umass.ckc.wo.html.admin.Variables;
-import edu.umass.ckc.wo.tutor.Settings;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,7 @@ public class AdminToolLoginHandler {
         }
         // admin logins
         else if (event.isLogin() && (user = DbAdmin.getAdminSession(conn, event.getUname(), event.getPw())) != null) {
-            showAdminMain(conn, servletRequest, servletResponse, user,null);
+            showAdminMain(conn, servletRequest, servletResponse, user,null, -1);
 
         }
         // teacher logins
@@ -93,7 +92,7 @@ public class AdminToolLoginHandler {
     }
 
     public static void showAdminMain(Connection conn, HttpServletRequest servletRequest,
-                                     HttpServletResponse servletResponse, Teacher admin, Teacher teacher) throws SQLException, ServletException, IOException {
+                                     HttpServletResponse servletResponse, Teacher admin, Teacher teacher, int classId) throws SQLException, ServletException, IOException {
         int sessId;
         sessId = DbAdmin.getNewSession(conn, admin.getId());
         int adminId = admin.getId();
@@ -107,12 +106,14 @@ public class AdminToolLoginHandler {
         ClassInfo[] classes1 = teacher != null ? DbClass.getClasses(conn,teacher.getId()) : DbClass.getAllClasses(conn);
         Classes bean1 = new Classes(classes1);
         List<Teacher> teachers = DbTeacher.getAllTeachers(conn);
-        int classId = -1;
         ClassInfo classInfo = null;
-        if (classes1.length > 0) {
-            classId = classes1[classes1.length-1].getClassid();
-            classInfo= DbClass.getClass(conn,classId);
+        if (classId == -1) {
+            if (classes1.length > 0) {
+                classId = classes1[classes1.length-1].getClassid();
+                classInfo= DbClass.getClass(conn,classId);
+            }
         }
+        else classInfo = DbClass.getClass(conn,classId);
         //if hasClasses, pass in teacherid, classid, teacherName
         servletRequest.setAttribute("action","AdminUpdateClassId");
         servletRequest.setAttribute("bean", bean1);

@@ -9,7 +9,6 @@ import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
-import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutormeta.StudentEffort;
 import org.apache.log4j.Logger;
@@ -118,7 +117,7 @@ public class CCPedagogicalModel extends BasePedagogicalModel {
             smgr.getStudentModel().newProblem(state,curProb);
         if (r instanceof InterventionResponse)
             new TutorLogger(smgr).logNextProblemIntervention(e,(InterventionResponse) r);
-        else new TutorLogger(smgr).logNextProblem(e, r.getCharacterControl());
+        else new TutorLogger(smgr).logNextProblem(e, r.getCharacterControl(), "PracticeProblem");
         StudentEffort eff = studentModel.getEffort();
         r.setEffort(eff);
         return r;

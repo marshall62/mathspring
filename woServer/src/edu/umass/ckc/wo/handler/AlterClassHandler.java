@@ -271,7 +271,7 @@ public class AlterClassHandler {
             if (adminId != null)  {
                 Teacher t = DbTeacher.getTeacher(conn, e.getTeacherId());
                 Teacher a = DbAdmin.getAdmin(conn, adminId);
-                AdminToolLoginHandler.showAdminMain(conn,req,resp,a,t);
+                AdminToolLoginHandler.showAdminMain(conn,req,resp,a,t, e.getClassId());
             }
             else {
                 //Opens ups new page with updated classID

@@ -2,7 +2,9 @@ package edu.umass.ckc.wo.content;
 
 
 import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutormeta.Activity;
+import edu.umass.ckc.wo.util.ProbPlayer;
 import net.sf.json.JSONObject;
 
 import java.util.HashMap;
@@ -479,7 +481,7 @@ public class Problem implements Activity {
     }
 
     public static boolean isPracticeProblem (String mode) {
-        return mode.equals(PRACTICE) ;
+        return mode != null && mode.equals(PRACTICE) ;
     }
 
     public static boolean isExampleOrDemo (String mode) {
@@ -544,6 +546,15 @@ public class Problem implements Activity {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public String getPreviewerURL () {
+        if (this.isFlash())
+            return ProbPlayer.getURLToProbPlayer() + "?questionNum=" + this.getProbNumber();
+        else if (this.isHTML())
+            // the global var has a trailing /   , then we put in the directory, finally the filename
+            return Settings.html5ProblemURI + this.getHTMLDir() + "/" + this.getResource();
+        else return "";
     }
 
     public static void main(String[] args) {
