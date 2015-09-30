@@ -105,7 +105,7 @@ public class Pedagogy implements Comparable {
     }
 
     public void setLearningCompanionClass(String learningCompanionClass) {
-        if(learningCompanionClass == null){
+        if(learningCompanionClass == null || learningCompanionClass.equals("null")){
             this.learningCompanionClass = null;
             return;
         }

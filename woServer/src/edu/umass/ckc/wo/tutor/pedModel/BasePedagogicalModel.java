@@ -49,6 +49,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //    protected TopicSelector topicSelector;
 //    TopicModel.difficulty nextDiff;
     List<PedagogicalMoveListener> pedagogicalMoveListeners;
+    private OptionsModel optionsModel;
 
 
     public BasePedagogicalModel() {
@@ -96,8 +97,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 buildInterventions(pedagogy.getInterventionsElement());
             else interventionGroup = new InterventionGroup();
             lessonModel.init(smgr,lessonModelParameters,pedagogy,this,this);
-            //Sets the pedagogy options for the NEXT time
-            new OptionsModel(smgr, pedagogy, interventionGroup).processChanges();
+            optionsModel = new OptionsModel(smgr, pedagogy, interventionGroup);
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {
@@ -254,6 +254,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         // at the end of a problem the emotional state of the student model is updated
 //        this.studentModel.updateEmotionalState(this.smgr,e.getProbElapsedTime(),e.getElapsedTime());
+        optionsModel.processChanges(e);
         this.studentModel.endProblem(smgr, smgr.getStudentId(),e.getProbElapsedTime(),e.getElapsedTime());
         r.setEffort(this.studentModel.getEffort());
         new TutorLogger(smgr).logEndProblem(e, r);

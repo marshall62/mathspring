@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.model;
 
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
+import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.DynamicPedagogy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
@@ -32,21 +33,21 @@ public class OptionsModel{
         this.intervs = intervs;
     }
 
-    public Response processChanges() throws Exception {
+    public Response processChanges(TutorHutEvent e) throws Exception {
         if(smgr.getTimeInSession() - smgr.getStudentState().getTimeLastChange() > 60000 && pedagogy instanceof DynamicPedagogy){
             smgr.getStudentState().setTimeLastChange(smgr.getTimeInSession());
-            changeRandElt();
-            //TODO give popup
+            String change = changeRandElt(e);
+            new TutorLogger(smgr).logDynamicChange(e, change);
         }
         return null;
     }
 
-    private void changeRandElt(){
+    private String changeRandElt(TutorHutEvent e) throws Exception {
         DynamicPedagogy dynPedagogy = (DynamicPedagogy) pedagogy;
         Random rand = new Random();
-        boolean elementSwitched = false;
+        String elementSwitched = null;
         String eltChanged = "None";
-        while(elementSwitched == false){
+        while(elementSwitched == null){
             //TODO Compatibility checking: ask for list of dependencies and send them as parameters to the change methods
             switch (rand.nextInt(7)){
                 case 1:
@@ -84,17 +85,17 @@ public class OptionsModel{
                         else{
                             candidate.setTurnedOn(true);
                         }
-                        elementSwitched = true;
+                        elementSwitched = candidate.getClassName();
                         eltChanged = "Intervention:"+ candidate.getClassName()+" originally, "+ !candidate.getTurnedOn();
                     }
                     else{
-                        elementSwitched = false;
+                        elementSwitched = null;
                     }
                     break;
             }
 
         }
-        System.out.println(eltChanged + " was changed.");
-        //TODO log which element was changed
+      //  System.out.println(eltChanged + " was changed to: " + elementSwitched);
+        return eltChanged + " was changed to: " + elementSwitched;
     }
 }
