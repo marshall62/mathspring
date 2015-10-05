@@ -47,6 +47,8 @@ function processMyProgressNavAskIntervention (html) {
     interventionDialogOpenAsYesNo("Let's see our progress!", html, NEXT_PROBLEM_INTERVENTION,myprogress,interventionDialogNoClick );
 }
 
+
+
 //This function continues the wait on a TimeoutIntervention
 function continueInterventionTimeout(){
     timewaited = timewaited+tmoutwait;

@@ -876,7 +876,7 @@ public class ReportProblemAndEmotions extends Report {
             // DAM 11/19/08 patch repair because problems with bad names are included in the result list.
             if (gifName.startsWith("problem_") ) {
                 probNumber = gifName.substring(8);
-                link = ProbPlayer.getURLToProbPlayer() + "?questionNum=" + probNumber;
+                link = ProbPlayer.getURLToProbPreviewer() + "?questionNum=" + probNumber;
             }
             else if (rs2.getString("form")!= null && rs2.getString("form").equalsIgnoreCase("ExternalURL")) {
                 probNumber = gifName ;

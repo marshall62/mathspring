@@ -37,7 +37,10 @@ public class ProbPlayer {
 
     }
 
-    public static String getURLToProbPreviewer () {
-        return Settings.problemPreviewerPath();
+    public static String getURLToProbPreviewer() {
+        return Settings.probPreviewerPath;
+
     }
+
+
 }

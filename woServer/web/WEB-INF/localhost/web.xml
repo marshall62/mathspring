@@ -75,6 +75,10 @@ The results of this go into out/artifacts/MathSpring_exploded
     </context-param>
     <context-param>
         <param-name>probplayerPath</param-name>
+        <param-value>mathspring/mscontent/Problems/probplayer.swf</param-value>
+    </context-param>
+    <context-param>
+        <param-name>probPreviewerPath</param-name>
         <param-value>mathspring/mscontent/Problems/problem_checker.swf</param-value>
     </context-param>
     <!--Relative to the webContentPath setting-->

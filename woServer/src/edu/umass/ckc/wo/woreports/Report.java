@@ -147,7 +147,7 @@ public abstract class Report implements View {
     protected static String getLinkURL(String gifName, HttpServletRequest req) {
 
         String probnumber = gifName.substring(8) ;
-        String link = ProbPlayer.getURLToProbPlayer()+ "?questionNum=" + probnumber ;
+        String link = ProbPlayer.getURLToProbPreviewer()+ "?questionNum=" + probnumber ;
     	return link;
     }
 

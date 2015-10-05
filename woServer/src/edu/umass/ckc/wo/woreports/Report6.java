@@ -214,7 +214,7 @@ public class Report6 extends Report {
                         str = "Yes";
 
                     String probnumber = gifName.substring(8) ;
-                    String link = ProbPlayer.getURLToProbPlayer() + "?questionNum=" + probnumber ;
+                    String link = ProbPlayer.getURLToProbPreviewer() + "?questionNum=" + probnumber ;
 
 
                     String time_attempt = doubleToString((double) (timeToChoose / (double) 1000.0));
