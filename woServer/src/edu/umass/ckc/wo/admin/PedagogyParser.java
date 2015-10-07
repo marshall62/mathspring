@@ -164,6 +164,11 @@ public class PedagogyParser {
             }
         }
 
+        e = pedElt.getChild("switchers");
+        if (e != null) {
+            p.setSwitchersElement(e);
+        }
+
         return p;
 
     }
