@@ -62,7 +62,7 @@ public class ProblemSelectionHandler {
             servletRequest.setAttribute("topicId",topicId);
             servletRequest.setAttribute("bean", bean1);
             servletRequest.setAttribute("classInfo", classInfo);
-            String uri = Settings.problemPreviewerPath();
+            String uri = Settings.probPreviewerPath;
             servletRequest.setAttribute("probPlayerHost", uri);
             servletRequest.setAttribute("html5ProblemURI",Settings.html5ProblemURI );
             servletRequest.setAttribute("topicName",topic.getName());

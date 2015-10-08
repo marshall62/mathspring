@@ -238,7 +238,7 @@ public class ProblemDifficultyReport extends Report {
                 probnumber = flashProbName.substring(8);
             else
                 System.out.println("Warning: Problem name " + probName + " is badly formed");
-            String probPlayerURL = ProbPlayer.getURLToProbPlayer();
+            String probPlayerURL = ProbPlayer.getURLToProbPreviewer();
             // TODO a Hack to fulfill a request by Ivon for using a different player to show problems in this report.
             probPlayerURL = probPlayerURL.replace("probplayer","problem_checker");
             String link = probPlayerURL + "?questionNum=" + probnumber;

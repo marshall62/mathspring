@@ -57,7 +57,7 @@ public abstract class TopicTrajectoryReport extends Report {
         for (int pid: probIds) {
             Problem prob = new DbProblem().getProblem(conn,pid);
             if (prob != null) {
-                String url = ProbPlayer.getURLToProbPlayer() + "?questionNum=" + prob.getProbNumber();
+                String url = ProbPlayer.getURLToProbPreviewer() + "?questionNum=" + prob.getProbNumber();
                 sb.append( "<option value=\"" +url+ "\">" + pid + ": " + prob.getName() + ": " + prob.getNickname() + "\n");
             }
         }
