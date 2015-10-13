@@ -19,7 +19,7 @@ public class User {
 
 
     public enum UserType {
-        test, guest, student, assistmentStudent, assistmentTest, externalTest, externalTempTest, externalTempNonTest
+        test, guest, student, assistmentStudent, assistmentTest, externalTest, externalTempTest, externalTempNonTest, testStudent
     }
 
     public User(String fname, String lname, String uname, String email, String password, int id) {
@@ -36,6 +36,8 @@ public class User {
         // four fields in order are KEEP_USER, KEEP_DATA, UPDATE_STATS, SHOW_TEST_CONTROLS
         if (userType == UserType.test)
             return new boolean[] {true,true,false,true} ;
+        else if (userType == UserType.testStudent)
+            return new boolean[] {true,true,false,false};
         else if (userType == UserType.guest)
             return new boolean[] {false,false,false,false} ;
         else if (userType == UserType.student)
