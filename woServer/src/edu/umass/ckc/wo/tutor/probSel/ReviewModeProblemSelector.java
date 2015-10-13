@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
@@ -50,7 +51,7 @@ public class ReviewModeProblemSelector  implements ProblemSelector {
     @Override
     public Problem selectProblem(SessionManager smgr, NextProblemEvent eIgnored, ProblemScore lastProblemScoreIgnored) throws Exception {
         StudentState state = smgr.getStudentState();
-        List<Integer> topicProbIds = topicModel.getClassTopicProblems(state.getCurTopic(), smgr.getClassID(), smgr.isTestUser());
+        List<Integer> topicProbIds = topicModel.getClassTopicProblems(state.getCurTopic(), smgr.getClassID(), DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()));
 //        List<Problem> topicProblems = xx;
         int nextIx = state.getCurProblemIndexInTopic();
         nextIx++;

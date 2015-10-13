@@ -165,8 +165,11 @@ public class AdminHandler {
 //            new TeacherRegistrationHandler().handleEvent(conn,(AdminTeacherRegistrationEvent) e, servletRequest, servletResponse);
 //            return false; // forward to JSP , tell caller not to generate servlet output
 //        }
-        else if (e instanceof UserRegistrationEvent)
-            v = new UserRegistrationHandler().handleEvent(sc, servletRequest, conn, e);
+        else if (e instanceof UserRegistrationEvent)   {
+            v = new UserRegistrationHandler().handleEvent(sc, servletRequest, conn, e, servletResponse);
+            if (v == null)
+                return false;
+        }
 
 
         else if (e instanceof AdminGetPrePostProblemPreviewEvent) {

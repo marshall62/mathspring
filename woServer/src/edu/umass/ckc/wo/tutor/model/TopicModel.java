@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 
 import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -154,7 +155,7 @@ public class TopicModel extends LessonModel {
         else {
             // Prevent starting a topic that has no problems.  This can happen if a student logs out after solving all problems in a topic because
             // we attempt to resume the last topic a student was in.
-            List<Integer> probs = getUnsolvedProblems(curTopic,smgr.getClassID(),smgr.isTestUser());
+            List<Integer> probs = getUnsolvedProblems(curTopic,smgr.getClassID(), DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()));
             if (probs == null || probs.size() < 1)  {
                 curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
                 curTopic = switchTopics(curTopic);

@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.html.tutor;
 
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.MPPTopicEvent;
 import edu.umass.ckc.wo.event.tutorhut.TutorHomeEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -111,7 +112,7 @@ public class TutorPage {
         info.getRequest().setAttribute("showMPP", true);
         info.getRequest().setAttribute("resumeProblem",false);
         info.getRequest().setAttribute("eventCounter",smgr.getEventCounter());
-        if (smgr.showTestUserControls()) {
+        if (DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId())) {
             info.getRequest().setAttribute("showProblemSelector", true);
             info.getRequest().setAttribute("showAnswer", true);
         }

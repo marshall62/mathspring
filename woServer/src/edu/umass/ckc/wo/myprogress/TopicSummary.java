@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
@@ -103,7 +104,7 @@ public class TopicSummary {
             this.hasAvailableContent = false;
         }
         try {
-            List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
+            List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, DbUser.isShowTestControls(conn, smgr.getStudentId()));
             totalProblems = l.size();
         } catch (UserException ue) {
             totalProblems=0;

@@ -201,6 +201,8 @@ public class DbUser {
         else return false;
     }
 
+
+
     public static boolean[] getUserFlags (Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -227,6 +229,16 @@ public class DbUser {
 
 
         }
+    }
+
+    public static int getStudent(Connection conn, String userName) throws Exception {
+        String q = "select id from Student where userName=?";
+        PreparedStatement ps = conn.prepareStatement(q);
+        ps.setString(1, userName);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next())
+            return rs.getInt(1);
+        else return -1;
     }
 
 
