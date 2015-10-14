@@ -7,7 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/pedagogies.xml" afterPath="$PROJECT_DIR$/woServer/resources/pedagogies.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
@@ -16,7 +17,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1368816022243" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444770568257" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444822896265" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
     <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444755359801" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
@@ -126,7 +127,7 @@
     <file path="/ReportCollaborativeLearning.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1364221689388" ignored="false" />
     <file path="/DbUtil.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1364227040765" ignored="false" />
     <file path="/TeachTopicPM.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1388763571465" ignored="false" />
-    <file path="/pedagogies.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444067804838" ignored="false" />
+    <file path="/pedagogies.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444825066948" ignored="false" />
     <file path="/SingleTopicProblemSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1388763530970" ignored="false" />
     <file path="/StudentState.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1427145871539" ignored="false" />
     <file path="U:/../flash/adventure2_problem1_grade_6.swf" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1365447675825" ignored="false" />
@@ -711,7 +712,7 @@
     <file path="/LoginParams.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1399567050399" ignored="false" />
     <file path="/EmotionAskIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392416567117" ignored="false" />
     <file path="/AskEmotionIntervention.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392417595119" ignored="false" />
-    <file path="/AskEmotionIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1416506700110" ignored="false" />
+    <file path="/AskEmotionIS.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444824143060" ignored="false" />
     <file path="/TutorEventListener.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393002781388" ignored="false" />
     <file path="/DefaultTutorEventListener.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392997379687" ignored="false" />
     <file path="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutormeta/DefaultTutorEventListener.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1392997392015" ignored="false" />
@@ -1192,19 +1193,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TutorPage.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TutorPage.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="123" column="13" selection-start="6571" selection-end="6571" vertical-scroll-proportion="1.1053283">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LessonMgr.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/LessonMgr.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="53" selection-start="1259" selection-end="1259" vertical-scroll-proportion="0.0">
+            <state line="83" column="106" selection-start="3743" selection-end="3743" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1228,19 +1220,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pedagogies.xml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="pedagogies.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/resources/pedagogies.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="1579" column="104" selection-start="84926" selection-end="84926" vertical-scroll-proportion="0.8946716">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdminHandler.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java">
+      <file leaf-file-name="AskEmotionIS.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="225" column="0" selection-start="12301" selection-end="12301" vertical-scroll-proportion="0.0">
+            <state line="39" column="65" selection-start="1490" selection-end="1490" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AffectStudentModel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/AffectStudentModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="31" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -1270,8 +1271,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/TopicDetails.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/myprogress/TopicSummary.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/TopicModel.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/TopicSelectorImpl.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/ReviewModeProblemSelector.java" />
@@ -1286,6 +1285,8 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/CurricUnit.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/User.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
+        <option value="$PROJECT_DIR$/woServer/resources/pedagogies.xml" />
       </list>
     </option>
   </component>
@@ -1334,8 +1335,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="193" />
-    <option name="y" value="16" />
+    <option name="x" value="464" />
+    <option name="y" value="-3" />
     <option name="width" value="1484" />
     <option name="height" value="1024" />
   </component>
@@ -3170,7 +3171,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="193" y="16" width="1484" height="1024" extended-state="0" />
+    <frame x="464" y="-3" width="1484" height="1024" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24413146" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -3246,7 +3247,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed integrity checking from CurricUnit so that problems that get disabled don't cause CurricUnits to fail to construct." />
+    <option name="LAST_COMMIT_MESSAGE" value="turned on the show-answer flag for all test users." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -3259,7 +3260,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="no-op commit" />
     <MESSAGE value="added emotion questions to two collaboration pedagogies." />
     <MESSAGE value="Fixes the bugs with HACKS so that collaboration interventions can work with AskEmotionIS.   NextProblemListCombinerIS is where the hack is." />
     <MESSAGE value="Replaced the buttons on intervention dialogs with Yes, No, OK.  This makes it more generally usable.&#10;&#10;Removed all the places in the javascript code where it was hiding/showing the buttons and made them arguments to functions&#10;that open the dialog.   The functions also take functions as arguments.  These get called when the different buttons are clicked.&#10;&#10;" />
@@ -3284,6 +3284,7 @@
     <MESSAGE value="Made External Activities show a yes/no dialog asking if the user wants to see it.  This is based on a &#10;&lt;mode&gt;ask|force&lt;/mode&gt; in the definition of the intervention.    Also made the problem player a separate entity&#10;from the problem previewer.   All the reports use the previewer." />
     <MESSAGE value="From the user login page there is a new JSP to register a new user.   The new user has 3 options: regular student, test student, and testDeveloper.   The two test users allow us to create a tester that sees the system exactly as a real student except we don't update stats." />
     <MESSAGE value="Removed integrity checking from CurricUnit so that problems that get disabled don't cause CurricUnits to fail to construct." />
+    <MESSAGE value="turned on the show-answer flag for all test users." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3355,20 +3356,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/UserRegistrationValidateUsernameEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="45" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="3338" selection-end="3338" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/UserRegistrationStartEvent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="59" selection-start="216" selection-end="216" vertical-scroll-proportion="0.0">
@@ -3400,13 +3387,6 @@
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="225" column="0" selection-start="12301" selection-end="12301" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/pedagogies.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -3462,7 +3442,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="123" column="13" selection-start="6571" selection-end="6571" vertical-scroll-proportion="1.1053283">
+        <state line="83" column="106" selection-start="3743" selection-end="3743" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="65" selection-start="1490" selection-end="1490" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/AffectStudentModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="31" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/pedagogies.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1579" column="104" selection-start="84926" selection-end="84926" vertical-scroll-proportion="0.8946716">
           <folding />
         </state>
       </provider>
