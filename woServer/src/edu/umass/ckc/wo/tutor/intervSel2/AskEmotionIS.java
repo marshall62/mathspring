@@ -34,6 +34,10 @@ import java.util.Random;
 public class AskEmotionIS extends NextProblemInterventionSelector  {
 
 
+    public static final String EXCITED = AffectStudentModel.EXCITED;
+    public static final String CONFIDENT = AffectStudentModel.CONFIDENT;
+    public static final String FRUSTRATED = AffectStudentModel.FRUSTRATED;
+    public static final String INTERESTED = AffectStudentModel.INTERESTED;
 
     private static Logger logger = Logger.getLogger(AskEmotionIS.class);
     private List<Emotion> emotions;
