@@ -1560,7 +1560,7 @@ JakeNoSPPButton-->
 
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <lesson>TopicWithIntroAndDemo</lesson>
-        <login>CollabLogin</login>
+        <login>IndividualLogin</login>
         <package>pedModel2</package>
         <interventions>
 
@@ -1625,7 +1625,7 @@ JakeNoSPPButton-->
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
         <lesson>TopicWithIntroAndDemo</lesson>
-        <login>CollabLogin</login>
+        <login>IndividualLogin</login>
         <interventions>
 
             <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
