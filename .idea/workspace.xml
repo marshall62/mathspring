@@ -7,7 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/User.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/User.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
@@ -16,7 +16,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1368816022243" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444769394978" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444770568257" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
     <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444755359801" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
@@ -387,7 +387,7 @@
     <file path="/TutorServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1371505098837" ignored="false" />
     <file path="/TutorHandler.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1371505922523" ignored="false" />
     <file path="/TutorHomeEvent.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1371664682791" ignored="false" />
-    <file path="/TutorPage.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444309166487" ignored="false" />
+    <file path="/TutorPage.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1444822856685" ignored="false" />
     <file path="/tutormain.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1371652607689" ignored="false" />
     <file path="/Names.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1443802403784" ignored="false" />
     <file path="/MathSpringTutorServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1400252942978" ignored="false" />
@@ -1168,16 +1168,34 @@
       <file leaf-file-name="DbUser.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="349" column="40" selection-start="11698" selection-end="11698" vertical-scroll-proportion="0.0">
+            <state line="189" column="33" selection-start="5740" selection-end="5740" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="User.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="154" selection-start="2331" selection-end="2331" vertical-scroll-proportion="0.35935563">
+            <state line="55" column="54" selection-start="2120" selection-end="2120" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mathspring.jsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="25.5">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TutorPage.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="123" column="13" selection-start="6571" selection-end="6571" vertical-scroll-proportion="1.1053283">
               <folding />
             </state>
           </provider>
@@ -1228,24 +1246,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserRegistrationAuthenticationInfoEvent.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/UserRegistrationAuthenticationInfoEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="10" selection-start="1406" selection-end="1406" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="userregistration.jsp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/login/userregistration.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="60" selection-start="2279" selection-end="2279" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -1276,7 +1276,6 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/TopicSelectorImpl.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/ReviewModeProblemSelector.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/BaseProblemSelector.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUser.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/UserRegistrationAuthenticationInfoEvent.java" />
@@ -1286,6 +1285,7 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/UserRegistrationHandler.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/CurricUnit.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/User.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java" />
       </list>
     </option>
   </component>
@@ -1334,8 +1334,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="169" />
-    <option name="y" value="19" />
+    <option name="x" value="193" />
+    <option name="y" value="16" />
     <option name="width" value="1484" />
     <option name="height" value="1024" />
   </component>
@@ -1583,7 +1583,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="login" />
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mscontent" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1605,7 +1609,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mscontent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="html5Probs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -3158,7 +3170,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="169" y="19" width="1484" height="1024" extended-state="0" />
+    <frame x="193" y="16" width="1484" height="1024" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24413146" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -3343,20 +3355,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/servletFramework/src/ckc/servlet/servbase/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="17" selection-start="113" selection-end="113" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/servletFramework/servletFramework.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="54" selection-start="909" selection-end="909" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/UserRegistrationValidateUsernameEvent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="45" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
@@ -3441,16 +3439,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUser.java">
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="349" column="40" selection-start="11698" selection-end="11698" vertical-scroll-proportion="0.0">
+        <state line="55" column="54" selection-start="2120" selection-end="2120" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/User.java">
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="154" selection-start="2331" selection-end="2331" vertical-scroll-proportion="0.35935563">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="25.5">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="189" column="33" selection-start="5740" selection-end="5740" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="123" column="13" selection-start="6571" selection-end="6571" vertical-scroll-proportion="1.1053283">
           <folding />
         </state>
       </provider>

@@ -112,14 +112,15 @@ public class TutorPage {
         info.getRequest().setAttribute("showMPP", true);
         info.getRequest().setAttribute("resumeProblem",false);
         info.getRequest().setAttribute("eventCounter",smgr.getEventCounter());
-        if (DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId())) {
-            info.getRequest().setAttribute("showProblemSelector", true);
+        if (DbUser.isTestUser(smgr.getConnection(),smgr.getStudentId()))
             info.getRequest().setAttribute("showAnswer", true);
-        }
-        else {
-            info.getRequest().setAttribute("showProblemSelector", false);
+        else
             info.getRequest().setAttribute("showAnswer", false);
-        }
+
+        if (DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()))
+            info.getRequest().setAttribute("showProblemSelector", true);
+        else
+            info.getRequest().setAttribute("showProblemSelector", false);
 
     }
 
