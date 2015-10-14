@@ -1240,7 +1240,7 @@ JakeNoSPPButton-->
         <active>true</active>
         <name>Collaboration with Jane Semi Empathy</name>
         <provideInSimpleConfig name="Student Collaboration and Female Learning Companion">true</provideInSimpleConfig>
-        <comment>Students Collaborate on frustration/interest[3,3].   Also has moderately empathic female learning companion, asks about frustration/interest, external activities, highlights hint button</comment>
+        <comment>Students Collaborate on frustration/interest[3,3].   Also has moderately empathic female learning companion, asks about frustration/interest, highlights hint button</comment>
         <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
@@ -1266,8 +1266,8 @@ JakeNoSPPButton-->
                     <inputType>radio</inputType>
                     <numVals>5</numVals>
                     <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                    <interruptIntervalMin>5</interruptIntervalMin>
-                    <interruptIntervalProblems>8</interruptIntervalProblems>
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -1294,13 +1294,6 @@ JakeNoSPPButton-->
                     <intervalCriteria type="random" frequency="3"/>
                     <maxPartnerWaitMin>3</maxPartnerWaitMin>
                     <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
-                </config>
-            </interventionSelector>
-            <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
-                <config>
-                    <frequencyPct>10</frequencyPct>
-                    <!-- mode can be force or ask:  Ask will prompt to see if they want to-->
-                    <mode>force</mode>
                 </config>
             </interventionSelector>
 
@@ -1348,8 +1341,8 @@ JakeNoSPPButton-->
                     <inputType>radio</inputType>
                     <numVals>5</numVals>
                     <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                    <interruptIntervalMin>5</interruptIntervalMin>
-                    <interruptIntervalProblems>8</interruptIntervalProblems>
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -1549,7 +1542,7 @@ JakeNoSPPButton-->
         <id>49</id>
         <active>true</active>
         <name>Individual Jane Semi Empathy</name>
-        <comment>highlight hint, ask about frustration and interest, external activities, Jane semi-empathy lc</comment>
+        <comment>highlight hint, ask about frustration and interest, Jane semi-empathy lc</comment>
         <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
@@ -1577,8 +1570,8 @@ JakeNoSPPButton-->
                     <inputType>radio</inputType>
                     <numVals>5</numVals>
                     <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                    <interruptIntervalMin>5</interruptIntervalMin>
-                    <interruptIntervalProblems>8</interruptIntervalProblems>
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
@@ -1597,13 +1590,7 @@ JakeNoSPPButton-->
                 </config>
 
             </interventionSelector>
-            <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
-                <config>
-                    <frequencyPct>10</frequencyPct>
-                    <!-- mode can be force or ask:  Ask will prompt to see if they want to-->
-                    <mode>ask</mode>
-                </config>
-            </interventionSelector>
+
 
             <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
                 <config>
@@ -1646,8 +1633,8 @@ JakeNoSPPButton-->
                     <inputType>radio</inputType>
                     <numVals>5</numVals>
                     <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
-                    <interruptIntervalMin>5</interruptIntervalMin>
-                    <interruptIntervalProblems>8</interruptIntervalProblems>
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
                     <emotion name="Frustration">
                         <label val="1">Not at all Frustrated</label>
                         <label val="2">A little Frustrated</label>
