@@ -247,10 +247,10 @@ public class TutorLogger {
                 null,-1,r.getCharacterControl(),r.logEventName(), topicId);
     }
 
-    public void logNextProblem(NextProblemEvent e, String lcClip) throws Exception {
+    public void logNextProblem(NextProblemEvent e, String lcClip, String mode) throws Exception {
 
         insertLogEntry(RequestActions.NEXT_PROBLEM,smgr.getStudentState().getCurProblem(), null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),
-                null,-1,lcClip,null, smgr.getStudentState().getCurTopic());
+                null,-1,lcClip,mode, smgr.getStudentState().getCurTopic());
     }
 
     public void logNextProblemIntervention (NextProblemEvent e, InterventionResponse r) throws Exception {
@@ -271,7 +271,7 @@ public class TutorLogger {
     }
 
     public void logBeginProblem(BeginProblemEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.BEGIN_PROBLEM,e.getProbId(),null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),r.logEventName(), getTopic());
+        insertLogEntry(RequestActions.BEGIN_PROBLEM,e.getProbId(),null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),e.getMode(), getTopic());
     }
 
     public void logResumeProblem(ResumeProblemEvent e, Response r) throws Exception {

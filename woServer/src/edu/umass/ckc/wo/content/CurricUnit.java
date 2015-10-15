@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.content;
 
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.cache.ProblemMgr;
+import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class CurricUnit {
+    public static final Logger logger = Logger.getLogger(CurricUnit.class);
     public enum type {cluster, standard, problems}
     private int id;
     private type t;
@@ -50,10 +52,13 @@ public class CurricUnit {
                 throw new UserException("Curriculum Unit " + id + " has a standard (" + stdId + ") that can't be found " );
 
         }
+        // Because people go in and disable problems, it is possible to have an ID that is not found.
+        // In this case we do nothing and at runtime, we generate an error
         if (probId > 0) {
             Problem p = ProblemMgr.getProblem(probId);
             if (p == null)
-                throw new UserException("Curriculum Unit " + id + " has a problem (" + probId + ") that can't be found " );
+                logger.error("Curriculum Unit " + id + " has a problem (" + probId + ") that can't be found " );
+//                throw new UserException("Curriculum Unit " + id + " has a problem (" + probId + ") that can't be found " );
             this.setProblem(p);
         }
         this.lessonId=lessonId;

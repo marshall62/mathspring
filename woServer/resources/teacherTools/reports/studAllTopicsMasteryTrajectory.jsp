@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-    <title>Topic Mastery history for student - ${studentName} in class ${className}</title>
+    <title>All Topic Mastery history for student ${studentName} in class ${className}</title>
     <script src="js/jquery-1.10.2.js"></script>
     <%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>--%>
     <script type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
@@ -18,17 +18,22 @@
 
         $(document).ready(function(){
             var ticks = [${xLabels}] ;
-            var line1 = ${masterySequence};
-            var line2 = ${rawMasterySequence};
-            var plot1 = $.jqplot ('chart1', [line1,line2], {
+
+            var plot1 = $.jqplot ('chart1', ${masterySequence}, {
                 animate: true,
                 series: [
-                    {label: 'mastery'},
-                    {label: 'raw mastery'}
+                    <c:set var="c" value="${numTopics}"></c:set>
+                    <c:forEach var="topic" items="${topicNames}">
+                    {showLine: false,
+                    label : '${topic}'}
+                    <%--  We want a comma on every line except the last one--%>
+                    <c:if test="${c>1}"> , </c:if>
+                    <c:set var="c" value="${c - 1}"></c:set>
+                    </c:forEach>
                 ],
                 legend: {
                     show: true,
-                    location: 'e',
+                    location: 's',
                     placement: 'outside'
                 },
                 axes: {
@@ -50,7 +55,7 @@
     </script>
 
 </head>
-<h3>Topic Mastery history for student ${studentName} for topic ${topicName}</h3>
+<h3>All Topics Mastery history for student ${studentName}</h3>
 <h5><a href='?action=AdminViewReport&teacherId=${teacherId}&classId=${classId}'>Choose another report</a></h5>
 <br>
 

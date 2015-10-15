@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-    <title>Topic Mastery history for student - ${studentName} in class ${className}</title>
+    <title>Average Topic Mastery for class- ${className}</title>
     <script src="js/jquery-1.10.2.js"></script>
     <%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>--%>
     <script type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
@@ -18,13 +18,13 @@
 
         $(document).ready(function(){
             var ticks = [${xLabels}] ;
-            var line1 = ${masterySequence};
-            var line2 = ${rawMasterySequence};
+            var line1 = ${processMastery};
+            var line2 = ${answerMastery};
             var plot1 = $.jqplot ('chart1', [line1,line2], {
                 animate: true,
                 series: [
-                    {label: 'mastery'},
-                    {label: 'raw mastery'}
+                    {label: 'Average Process Mastery'},
+                    {label: 'Average Answer Mastery'}
                 ],
                 legend: {
                     show: true,
@@ -34,7 +34,7 @@
                 axes: {
                     xaxis: {
 
-                        label: 'Problems in order seen' ,
+                        label: 'Number of problems seen' ,
                         ticks: ticks
 
                     },
@@ -50,7 +50,7 @@
     </script>
 
 </head>
-<h3>Topic Mastery history for student ${studentName} for topic ${topicName}</h3>
+<h3>Topic Mastery history for class ${className} for topic ${topicName}</h3>
 <h5><a href='?action=AdminViewReport&teacherId=${teacherId}&classId=${classId}'>Choose another report</a></h5>
 <br>
 
@@ -61,13 +61,3 @@
 
 <h3>${message}</h3>
 
-
-<form name="form">
-    <%--@elvariable id="problems" type="edu.umass.ckc.wo.content.Problem[]"--%>
-    <select name="site" size=1>
-        <c:forEach var="problem" items="${problems}">
-            <option value="${problem.getPreviewerURL()}">${problem.id}:${problem.name}-${problem.nickname} : ${problem.type}</option>
-        </c:forEach>
-    </select>
-    <input type=button value="Preview" onClick="javascript:formHandler(this)">
-</form>

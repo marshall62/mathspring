@@ -225,6 +225,8 @@ to a pedagogy.  Currently,  there is only one pedagogy set as the default (pedag
             <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
                 <config>
                     <frequencyPct>10</frequencyPct>
+                    <!-- mode can be force or ask:  Ask will prompt to see if they want to-->
+                    <mode>ask</mode>
                 </config>
             </interventionSelector>
 
@@ -1238,7 +1240,7 @@ JakeNoSPPButton-->
         <active>true</active>
         <name>Collaboration with Jane Semi Empathy</name>
         <provideInSimpleConfig name="Student Collaboration and Female Learning Companion">true</provideInSimpleConfig>
-        <comment>Students Collaborate.   Also has moderately empathic female learning companion</comment>
+        <comment>Students Collaborate on frustration/interest[3,3].   Also has moderately empathic female learning companion, asks about frustration/interest, highlights hint button</comment>
         <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
@@ -1259,18 +1261,39 @@ JakeNoSPPButton-->
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
         <interventions>
+            <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
+                <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
+                    <emotion name="Frustration">
+                        <label val="1">Not at all Frustrated</label>
+                        <label val="2">A little Frustrated</label>
+                        <label val="3">Somewhat Frustrated</label>
+                        <label val="4">Quite a bit Frustrated</label>
+                        <label val="5">Extremely Frustrated</label>
+                    </emotion>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
+                    </emotion>
+                    <askWhy>true</askWhy>
+                </config>
+
+            </interventionSelector>
             <interventionSelector  onEvent="NextProblem" weight="1" class="CollaborationIS">
                 <config>
                     <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
                     <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                    <intervalCriteria type="affect" emotion="Interest" lowerBound="3" upperBound="3"/>
                     <intervalCriteria type="random" frequency="3"/>
                     <maxPartnerWaitMin>3</maxPartnerWaitMin>
                     <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
-                </config>
-            </interventionSelector>
-            <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
-                <config>
-                    <frequencyPct>10</frequencyPct>
                 </config>
             </interventionSelector>
 
@@ -1292,7 +1315,7 @@ JakeNoSPPButton-->
         <active>true</active>
         <name>Collaboration with Jake Semi Empathy</name>
         <provideInSimpleConfig name="Student Collaboration and Male Learning Companion">true</provideInSimpleConfig>
-        <comment>Students Collaborate.   Also has moderately empathic male learning companion</comment>
+        <comment>Students Collaborate on interest/frustration [3,3].   Also has moderately empathic male learning companion, asks about interest/frustration, highlight hint button</comment>
         <pedagogicalModelClass>CollabPedagogicalModel</pedagogicalModelClass>
         <studentModelClass>AffectStudentModel</studentModelClass>
         <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
@@ -1313,10 +1336,36 @@ JakeNoSPPButton-->
         <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
         <package>pedModel2</package>
         <interventions>
+            <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
+                <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
+                    <emotion name="Frustration">
+                        <label val="1">Not at all Frustrated</label>
+                        <label val="2">A little Frustrated</label>
+                        <label val="3">Somewhat Frustrated</label>
+                        <label val="4">Quite a bit Frustrated</label>
+                        <label val="5">Extremely Frustrated</label>
+                    </emotion>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
+                    </emotion>
+                    <askWhy>true</askWhy>
+                </config>
+
+            </interventionSelector>
             <interventionSelector  onEvent="NextProblem" weight="1" class="CollaborationIS">
                 <config>
                     <!-- The first of the below conditions is not yet used in the code, and is included as an example of criteria that could be included -->
                     <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
+                    <intervalCriteria type="affect" emotion="Interest" lowerBound="3" upperBound="3"/>
                     <intervalCriteria type="random" frequency="3"/>
                     <maxPartnerWaitMin>3</maxPartnerWaitMin>
                     <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
@@ -1327,7 +1376,7 @@ JakeNoSPPButton-->
                     <threshold>1</threshold>
                 </config>
             </interventionSelector>
-            <interventionSelector onEvent="Attempt" weight="1"  class="GuessingAskAffectIS"/>
+
         </interventions>
 
         <learningCompanionClass>JakeSemiEmpathicLC</learningCompanionClass>
@@ -1490,6 +1539,135 @@ JakeNoSPPButton-->
             <learningCompanionClass>null</learningCompanionClass>
         </learningCompanions>
     </pedagogy>
+
+<!--  Pedagogies for Fall 2015 -->
+    <pedagogy>
+        <id>49</id>
+        <active>true</active>
+        <name>Individual Jane Semi Empathy</name>
+        <comment>highlight hint, ask about frustration and interest, Jane semi-empathy lc</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <lesson>TopicWithIntroAndDemo</lesson>
+        <login>IndividualLogin</login>
+        <package>pedModel2</package>
+        <interventions>
+
+
+            <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
+                <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
+                    <emotion name="Frustration">
+                        <label val="1">Not at all Frustrated</label>
+                        <label val="2">A little Frustrated</label>
+                        <label val="3">Somewhat Frustrated</label>
+                        <label val="4">Quite a bit Frustrated</label>
+                        <label val="5">Extremely Frustrated</label>
+                    </emotion>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
+                    </emotion>
+                    <askWhy>true</askWhy>
+                </config>
+
+            </interventionSelector>
+
+
+            <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
+                <config>
+                    <threshold>1</threshold>
+                </config>
+            </interventionSelector>
+        </interventions>
+
+        <learningCompanionClass>JaneSemiEmpathicLC</learningCompanionClass>
+    </pedagogy>
+
+    <pedagogy>
+        <id>50</id>
+        <active>true</active>
+        <name>Individual Jake Semi Empathy</name>
+        <comment>highlight hint, ask about frustration and interest, Jake semi-empathy lc</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <package>pedModel2</package>
+        <lesson>TopicWithIntroAndDemo</lesson>
+        <login>IndividualLogin</login>
+        <interventions>
+
+            <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
+                <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                    <interruptIntervalMin>4</interruptIntervalMin>
+                    <interruptIntervalProblems>7</interruptIntervalProblems>
+                    <emotion name="Frustration">
+                        <label val="1">Not at all Frustrated</label>
+                        <label val="2">A little Frustrated</label>
+                        <label val="3">Somewhat Frustrated</label>
+                        <label val="4">Quite a bit Frustrated</label>
+                        <label val="5">Extremely Frustrated</label>
+                    </emotion>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
+                    </emotion>
+                    <askWhy>true</askWhy>
+                </config>
+
+            </interventionSelector>
+
+
+            <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
+                <config>
+                    <threshold>1</threshold>
+                </config>
+            </interventionSelector>
+        </interventions>
+
+        <learningCompanionClass>JakeSemiEmpathicLC</learningCompanionClass>
+    </pedagogy>
+
 
 
 

@@ -62,7 +62,7 @@ public class ProblemSelectionHandler {
             servletRequest.setAttribute("topicId",topicId);
             servletRequest.setAttribute("bean", bean1);
             servletRequest.setAttribute("classInfo", classInfo);
-            String uri = Settings.problemPreviewerPath();
+            String uri = Settings.probPreviewerPath;
             servletRequest.setAttribute("probPlayerHost", uri);
             servletRequest.setAttribute("html5ProblemURI",Settings.html5ProblemURI );
             servletRequest.setAttribute("topicName",topic.getName());
@@ -109,7 +109,7 @@ public class ProblemSelectionHandler {
             servletRequest.setAttribute("topicId",topicId);
             servletRequest.setAttribute("bean", bean1);
             servletRequest.setAttribute("classInfo", classInfo);
-            String uri = ProbPlayer.getURLToProbPlayer(servletRequest);
+            String uri = ProbPlayer.getURLToProbPlayer();
             servletRequest.setAttribute("probPlayerHost",uri);
             servletRequest.getRequestDispatcher(PROBLEMS_JSP).forward(servletRequest,servletResponse);
             // TODO fetch all ids of all problems within topic

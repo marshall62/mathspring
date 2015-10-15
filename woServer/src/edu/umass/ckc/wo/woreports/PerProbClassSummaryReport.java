@@ -178,7 +178,7 @@ public class PerProbClassSummaryReport extends Report {
                      probnumber= gifName.substring(8) ;
                 else
                     System.out.println("Warning: Problem name " + gifName + " is badly formed");
-                link = ProbPlayer.getURLToProbPlayer(req) + "?questionNum=" + probnumber ;
+                link = ProbPlayer.getURLToProbPreviewer() + "?questionNum=" + probnumber ;
                 probName = rs2.getString("nickname");
             }
 

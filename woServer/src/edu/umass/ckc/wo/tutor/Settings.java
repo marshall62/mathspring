@@ -59,6 +59,7 @@ public class Settings {
   public static String html5ProblemURI = "URI to html5 problem root dir"; // concat of above two
     // "cadmium.cs.umass.edu";
   public static String probplayerPath; // read from web.xml file
+  public static String probPreviewerPath; // read from web.xml file
 
   public static String videoURI = "http://chinacat.cs.umass.edu/wayang/video/";
   public static String emoteServletURI = "http://localhost:8082/emote/EmoteServlet";

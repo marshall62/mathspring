@@ -133,8 +133,7 @@ public class AssistmentsHandler {
     public boolean teachTopicExternalTempUser(TeachTopicEvent e) throws Exception, AssistmentsBadInputException {
         // This call is for testing the API only.   So we create a temp user that is allowed to test.
         UserRegistrationHandler.genName(conn, "externalCaller");
-        // TODO:  TeachTopicEvent currently treats absence of isTest as meaning isTest=true (per request of Tom).  This needs
-        // change so that absence of isTest means isTest=false.   Do this sometime after Feb 15, 2015
+        // absence of isTest has meaning isTest=false (a switch from Tom's original spec which was confusing).
         boolean isTest = e.isTestUser();
 
         int studId = -1;

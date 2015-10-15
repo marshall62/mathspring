@@ -40,8 +40,8 @@ public class TrajectoryUtil {
                 else if (activityName.equalsIgnoreCase(Problem.TOPIC_INTRO_PROB_TYPE))
                     return Problem.TOPIC_INTRO_PROB_TYPE;
             }
-            // We failed to find a previous event that says what kind of problem we are in so return PracticeProblem
-            return "PracticeProblem";
+            // if we get back to index 0 then we are probably at a topic intro so return that
+            return Problem.TOPIC_INTRO_PROB_TYPE;
         }
         else return "PracticeProblem";  // failing to find problem, assume its practice
     }

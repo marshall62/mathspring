@@ -4,6 +4,7 @@ import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
@@ -102,7 +103,7 @@ public class TopicSelectorImpl implements TopicSelector {
     // the topic and is built in HTML5 so that it can play without clicking a "next step" button which was imposed
     // by the way Flash problems (being used as demos) work
     public Problem getDemoProblem(int curTopic) throws Exception {
-        List<Integer> probs = getClassTopicProblems(curTopic, classID, smgr.isTestUser());
+        List<Integer> probs = getClassTopicProblems(curTopic, classID, DbUser.isShowTestControls(conn, smgr.getStudentId()));
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         probs.removeAll(recentProbs);
@@ -179,7 +180,7 @@ public class TopicSelectorImpl implements TopicSelector {
 
 
     public void initializeTopic(int curTopic, StudentState state) throws Exception {
-        List<Integer> probs = getClassTopicProblems(curTopic, classID, smgr.isTestUser());
+        List<Integer> probs = getClassTopicProblems(curTopic, classID, DbUser.isShowTestControls(conn,smgr.getStudentId()));
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         probs.removeAll(recentProbs);
@@ -274,7 +275,7 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
     public boolean hasReadyContent(int topicId) throws Exception {
-        List<Integer> topicProbs =getClassTopicProblems(topicId, classID, smgr.isTestUser());
+        List<Integer> topicProbs =getClassTopicProblems(topicId, classID, DbUser.isShowTestControls(conn,smgr.getStudentId()));
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, topicId);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         topicProbs.removeAll(recentProbs);

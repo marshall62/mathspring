@@ -32,12 +32,15 @@ public class ProbPlayer {
         return uri;
     }
 
-    public static String getURLToProbPlayer(HttpServletRequest servletRequest) {
+    public static String getURLToProbPlayer() {
         return Settings.probplayerPath;
 
     }
 
-    public static String getURLToProbPreviewer () {
-        return Settings.problemPreviewerPath();
+    public static String getURLToProbPreviewer() {
+        return Settings.probPreviewerPath;
+
     }
+
+
 }
