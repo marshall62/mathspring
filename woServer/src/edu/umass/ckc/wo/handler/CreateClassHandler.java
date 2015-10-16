@@ -73,13 +73,17 @@ public class CreateClassHandler  {
             req.setAttribute("message","");
             req.setAttribute("teacherId",((AdminNoClassCreateNewClassEvent) e).getTeacherId());
             setTeacherName(conn,req,((AdminNoClassCreateNewClassEvent) e).getTeacherId());
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+
+            req.setAttribute("sideMenu",adminId != null ? "adminNoClassSideMenu.jsp" : "teacherNoClassSideMenu.jsp"); // set side menu for admin or teacher
+
             req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
             return null;
 
         }
         // State 2: Process submit-event generated from the createClass.jsp form that requests class name, town, year.
         // Creates the class in the db.
-        //  Generates the next page as selectPedagogies.jsp
+        //  Generates the next page as simpleClassConfig.jsp
         else if (e instanceof AdminSubmitClassFormEvent) // class created/  Now show select pedagogies page
             return processClass(conn, (AdminSubmitClassFormEvent) e, req, resp);
 
@@ -255,18 +259,20 @@ public class CreateClassHandler  {
                 Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
                 req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
 
-                req.setAttribute("formSubmissionEvent","AdminSubmitSelectedPedagogies");
+                req.setAttribute("formSubmissionEvent","AdminSubmitSimpleClassConfig");
                 req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,newid));
                 req.setAttribute("classId",newid);
                 req.setAttribute("teacherId",e.getTeacherId());
+                req.setAttribute("createClassSeq",true);
                 setTeacherName(conn,req,e.getTeacherId());
                 ClassInfo info = DbClass.getClass(conn,newid);
                 ClassInfo[] classes = DbClass.getClasses(conn,info.getTeachid());
                 Classes bean = new Classes(classes);
                 req.setAttribute("bean", bean);
                 req.setAttribute("classInfo", info);
-                
-                req.getRequestDispatcher(SELECT_PEDAGOGIES_JSP).forward(req,resp);
+                req.setAttribute("action","AdminAdvancedPedagogySelection");
+                req.getRequestDispatcher(SIMPLE_CLASS_CONFIG_JSP).forward(req,resp);
+//                req.getRequestDispatcher(SELECT_PEDAGOGIES_JSP).forward(req,resp);
                 return null;
             }
             else {

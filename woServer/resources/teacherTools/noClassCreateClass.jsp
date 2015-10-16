@@ -7,7 +7,7 @@
 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:include page="adminNoClassSideMenu.jsp" />
+<jsp:include page="${sideMenu}" />
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="mainPageMargin">
@@ -30,6 +30,21 @@
                     Name:</font></td>
                 <td width="222">
                     <input type="text" name="className" size="30" value="">
+                </td>
+            </tr>
+            <tr>
+                <td width="102"><font color="#000000" face="Arial, Helvetica, sans-serif">* Grade:</font></td>
+
+                <td width="222">
+                    <select name="grade">
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="adult">adult</option>
+                    </select>
                 </td>
             </tr>
             <tr>
