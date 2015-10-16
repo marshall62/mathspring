@@ -378,7 +378,7 @@ function replaceWithHTML(file, ext){
     var toInsert = "";
 
     //Replace and image file name inside {} with the appropriate html
-    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg"){
+    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "svg"){
         toInsert = "<img src=\""+getURL(file+"."+ext)+"\"></img>";
     }
 

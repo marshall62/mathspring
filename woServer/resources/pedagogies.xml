@@ -1501,6 +1501,9 @@ JakeNoSPPButton-->
         <provideInSimpleConfig name="Dynamic Pedagogy for Testing">true</provideInSimpleConfig>
         <comment>Testing Dynamic Pedagogies</comment>
         <pedagogicalModelClass>DynamicPedagogicalModel</pedagogicalModelClass>
+        <switchers>
+            <switcher>RandomSwitcher</switcher>
+        </switchers>
         <studentModels>
             <studentModelClass>AffectStudentModel</studentModelClass>
         </studentModels>
