@@ -28,7 +28,7 @@
 
 <html id="default"><head>
     <meta charset="utf-8" />
-    <title>Wayang </title>
+    <title>MathSpring </title>
 
     <link rel="stylesheet" href="css/wayang.css" /><!-- Main Lar -->
    <!-- <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica|Acme|Asul' rel='stylesheet' type='text/css'>
@@ -117,6 +117,9 @@
             var problemsSolved = ${ts.numProbsSolved};
             var totalProblems= ${ts.totalProblems};
             var problemsDoneWithEffort= ${ts.problemsDoneWithEffort};
+            var SHINT_SOF_sequence= ${ts.SHINT_SOF_sequence};
+            var SOF_SOF_sequence= ${ts.SOF_SOF_sequence};
+            var neglectful_count= ${ts.neglectful_count};
 
 
 
@@ -129,8 +132,8 @@
 
             chart.renderMastery("masteryChart_"+topicId,topicMastery,problemsDone);
             chart.problemsDone("problemsDone_"+topicId,problemsDone,totalProblems,problemsSolved);
-            chart.giveFeedback("remarks_"+topicId,topicState,studentState_disengaged);
-            chart.givePlants("plant_"+topicId,topicMastery,problemsDoneWithEffort,problemsDone);
+            chart.giveFeedbackAndPlant ("remarks_"+topicId,"plant_"+topicId,topicState,studentState_disengaged,topicMastery,problemsDoneWithEffort,SHINT_SOF_sequence,SOF_SOF_sequence,neglectful_count,problemsDone,problemsSolved);
+
 
         </c:forEach>
 
@@ -596,7 +599,7 @@
 
     <!-- Start Header Middle --><div id="header_wrapper_small" ><!-- BEGIN HEADER MAIN -->
     <!--Start Logo--><header  id="wayang_logo_small">
-        <img src="img/mathspring_logo.png" height="34" alt="Wayang Outpost">
+        <img src="img/mathspring_logo.png" height="34" alt="MathSpring">
     </header>
 <!--End Logo-->
     <subheader id="subheader_small">My Progress</subheader><!--End Logo-->
