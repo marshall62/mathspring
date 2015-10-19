@@ -226,7 +226,7 @@ public class TopicModel extends LessonModel {
             // We get the next Topic ID and send it to the processBeginTopic method so that it can see that it was passed a different
             // topic than what is still the current topic.
             int curTopic=studentState.getCurTopic();
-            int nextTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState());
+            int nextTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, studentState);
             if (nextTopic == -1)
                 return ProblemResponse.NO_MORE_PROBLEMS;
 //            studentState.setCurTopic(nextTopic);
@@ -251,7 +251,7 @@ public class TopicModel extends LessonModel {
         // TODO If a student has been in a topic in a previous session and it had no more problems,  this will
         // resume in that topic and then fail to get beyond the initial Topic intro.   Need to switch topics.
         if (studentState.getCurTopic() == -1) {
-            int nextTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), -1, smgr.getStudentState());
+            int nextTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), -1, studentState);
             switchTopics(nextTopic);
         }
         // if this is a new session with a topic left from the last session

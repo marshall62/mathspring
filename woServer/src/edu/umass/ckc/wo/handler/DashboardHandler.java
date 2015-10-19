@@ -53,7 +53,7 @@ public class DashboardHandler {
     public void showSplashPage(String jsp, boolean newSession) throws Exception {
         String pid = null;
         String topid = null;
-        List<Topic> topics = DbTopics.getClassActiveTopics(smgr.getConnection(), smgr.getClassID());
+        List<Topic> topics = DbTopics.getClassPlayableTopics(smgr.getConnection(), smgr.getClassID(), smgr.showTestableContent());
 
 
         int problemsSolved;

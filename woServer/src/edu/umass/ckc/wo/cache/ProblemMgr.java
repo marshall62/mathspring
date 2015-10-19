@@ -464,6 +464,28 @@ public class ProblemMgr {
 
     }
 
+    /**
+     * Return whether the topic contains ready problems.   If the  includeTestableProblems is true,
+     * it will return true if there are no ready problems but some testables.
+     * @param topicId
+     * @param includeTestableProblems
+     * @return
+     * @throws SQLException
+     */
+    public static boolean isTopicPlayable(int topicId, boolean includeTestableProblems) throws SQLException {
+        List<Problem> probs = ProblemMgr.getTopicProblems(topicId);
+        if (probs == null)
+            return false;
+        for (Problem p : probs) {
+            // if a problems isn't testable it must be ready.
+            if (!p.isTestProblem())
+                return true;
+            else if (includeTestableProblems && p.isTestProblem())
+                return true;
+        }
+        return false;
+    }
+
 
 
 

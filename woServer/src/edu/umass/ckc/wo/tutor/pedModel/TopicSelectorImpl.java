@@ -1,9 +1,11 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
 import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
@@ -216,7 +218,10 @@ public class TopicSelectorImpl implements TopicSelector {
             logger.debug("getNextTopicWithAvailableProblems  next topic is : " + nextTopicId);
             return nextTopicId;
         }
+        // TODO Note:  We should be using the idea of a 'playable' topic as in the commented line below.  This is because
+        // we shouldn't be working with topics that have no ready problems which is possible with the method we are using.
         List<Integer> topics = DbClass.getClassLessonTopics(conn, classID);
+//        List<Topic> topics = DbTopics.getClassPlayableTopics(conn,classID,smgr.showTestableContent());
         // if -1 is passed as the current topic, then return the first topic in the list as this is presumably a session that hasn't been
         // assigned a topic
         if (topicID == -1)

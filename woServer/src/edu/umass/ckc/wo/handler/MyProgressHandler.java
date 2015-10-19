@@ -133,7 +133,7 @@ public class MyProgressHandler {
         // in the hybrid system problemId and topicId are passed as params with NavigationEvent when to the MPP
         String pid=null;
         String topid=null;
-        List<Topic> topics = DbTopics.getClassActiveTopics(smgr.getConnection(), smgr.getClassID());
+        List<Topic> topics = DbTopics.getClassPlayableTopics(smgr.getConnection(), smgr.getClassID(), smgr.showTestableContent());
 
         // We want to get the probId that should be passed on the Navigation event (to MPP) when launched from hybrid tutor
         // Similarly for the topicId.   If they aren't passed in, then its the old system and we get them from the student state.

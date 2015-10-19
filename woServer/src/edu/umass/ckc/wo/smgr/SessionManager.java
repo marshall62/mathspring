@@ -884,6 +884,12 @@ public class SessionManager {
         return this.woProps;
     }
 
+    // We don't have a separate flag for this, so we make it be connected to whether they are seeing
+    // controls for testing
+    public boolean showTestableContent ()  throws SQLException {
+        return DbUser.isShowTestControls(this.connection, this.studId);
+    }
+
     public boolean showTestUserControls() throws SQLException {
         return DbUser.isShowTestControls(this.connection, this.studId);
     }

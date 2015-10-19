@@ -3,6 +3,8 @@ package edu.umass.ckc.wo.db;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.ClassConfig;
+import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.TopicMgr;
 import edu.umass.ckc.wo.exc.AdminException;
 
 import edu.umass.ckc.wo.handler.UserRegistrationHandler;
@@ -947,9 +949,12 @@ public class DbClass {
         else return -1;
     }
 
+
     // get topics marked active and that have problems mapped to them
     public static List<Integer> getClassLessonTopics(Connection conn, int classID) throws SQLException {
-        String q = "select p.seqPos, p.probGroupId from ClassLessonPlan p, problemGroup t where p.seqpos >= 0 and p.classId=? and t.id=p.probGroupId and t.active=1 and t.id in (select distinct pgroupid from probprobgroup) order by p.seqPos";
+        String q = "select p.seqPos, p.probGroupId from ClassLessonPlan p, problemGroup t where p.seqpos >= 0 " +
+                "and p.classId=? and t.id=p.probGroupId and t.active=1 and t.id in" +
+                " (select distinct pgroupid from probprobgroup) order by p.seqPos";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classID);
         ResultSet rs = ps.executeQuery();
