@@ -716,7 +716,7 @@ public class TopicSummary {
 
     public static List<TopicSummary> getTopicSummaries(SessionManager smgr) throws Exception {
 
-        List<Topic> topics = DbTopics.getClassActiveTopics(smgr.getConnection(), smgr.getClassID());
+        List<Topic> topics = DbTopics.getClassPlayableTopics(smgr.getConnection(), smgr.getClassID(), smgr.showTestableContent());
         List<TopicSummary> topicSummaries = new ArrayList<TopicSummary>();
         for (Topic t : topics) {
             TopicSummary s = new TopicSummary(t);
