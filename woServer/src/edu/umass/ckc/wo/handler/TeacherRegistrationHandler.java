@@ -27,20 +27,25 @@ public class TeacherRegistrationHandler {
                 event.getFname().equals("") || event.getLname().equals("") || event.getPw1().equals("") || event.getPw2().equals("") || event.getEmail().equals(""))
         {
             req.setAttribute("message","You must supply values for required fields");
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+            req.setAttribute("isAdmin",adminId != null ? true : false);
             req.getRequestDispatcher("/teacherTools/teacherRegister.jsp").forward(req ,resp);
         }
         else if (!event.getPw1().equals(event.getPw2()))
         {
             req.setAttribute("message","Passwords must match");
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+            req.setAttribute("isAdmin",adminId != null ? true : false);
             req.getRequestDispatcher("/teacherTools/teacherRegister.jsp").forward(req ,resp);
         }
         // show userName created and give a button to proceed to class creation
         else {
             String userName = createUser(conn, event);
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,event.getUn(),event.getPw1(),event.getEmail());
             String msg =  "Created the user name: " + userName + ".  Please remember it (and your password). \n You will need it for" +
                     " creating classes and getting reports about how your students are doing." ;
-
+            req.setAttribute("isAdmin",adminId != null ? true : false);
             req.setAttribute("message",msg);
             req.getRequestDispatcher("/teacherTools/teacherLogin.jsp").forward(req ,resp);
         }

@@ -324,7 +324,7 @@ public class DbUser {
 
     public static int createUser(Connection conn, String fname, String lname, String userName,
                                  String password, String email,
-                                 User.UserType userType) throws Exception {
+                                 String age, String gender, User.UserType userType) throws Exception {
         boolean[] flags = User.getUserTypeFlags(userType);
         boolean keepUser = flags[0];
         boolean keepData = flags[1];
@@ -335,7 +335,8 @@ public class DbUser {
         if (id != -1)
             return -1;
         String q;
-        q = "insert into Student (fname,lname,userName,email,password,keepUser,keepData,updateStats,showTestControls, trialUser, isGuest) values (?,?,?,?,?,?,?,?,?,?,?)";
+        q = "insert into Student (fname,lname,userName,email,password,keepUser,keepData,updateStats,showTestControls, trialUser, isGuest,age,gender) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps;
         ps = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, fname);
@@ -350,6 +351,8 @@ public class DbUser {
         boolean isTrialUser = User.isTrialUser(userType);
         ps.setInt(10,isTrialUser?1:0);
         ps.setInt(11,userType== User.UserType.guest ? 1 : 0);
+        ps.setInt(12, Integer.parseInt(age));
+        ps.setString(13,gender);
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
         if (rs.next())

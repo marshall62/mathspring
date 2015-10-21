@@ -88,7 +88,7 @@ March 23, 2012
                                     <li><a href="#">Main</a></li>
                                     <li><a href= "<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminNoClassCreateNewClass&teacherId=<c:out value="${teacherId}"/>">Create Class</a></li>
 
-
+                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminTeacherRegistration">Create Teacher</a></li>
                                     <li><a href="#">Class Reports</a></li>
 
 

@@ -25,20 +25,24 @@ public class UserRegistrationAuthenticationInfoEvent extends UserRegistrationEve
     private String email;
     private String testUser;
     private String userType;
+    private String age;
+    private String gender;
 
-    public void init(String fname, String lname, String email, String password, String userName, String userType) {
+    public void init(String fname, String lname, String email, String password, String userName, String userType, String age,String gender) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
         this.password = password;
         this.userName = userName;
         this.userType = userType;
+        this.age = age;
+        this.gender=gender;
     }
 
     public UserRegistrationAuthenticationInfoEvent(ServletParams p) throws Exception {
         super(p);
         this.init(p.getString(FNAME),p.getString(LNAME),p.getString(EMAIL),p.getString(PASSWORD),p.getString(UNAME),
-                p.getString(USERTYPE));
+                p.getString(USERTYPE), p.getString("age"), p.getString("gender"));
     }
 
     public String getFname() {
@@ -95,5 +99,13 @@ public class UserRegistrationAuthenticationInfoEvent extends UserRegistrationEve
 
     public String getUserType() {
         return userType;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }

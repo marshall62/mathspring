@@ -15,45 +15,6 @@
     <script type="text/javascript">
 
 
-        // When the user clicks the "sign up" button this sends the username to the server to see if its in use.
-        //
-        function validateFields() {
-            $.ajax({url: "${pageContext.request.contextPath}/WoAdmin" + "?action=UserRegistrationValidateUsername" + "&userName=" + $('#userName').val(),
-                success: validateResult,
-                async: true});
-
-
-        }
-
-        // responseText will be empty if validateFields results in a legal inputs.   If not, an error message
-        // comes back and we show it in an alert.
-        function validateResult(responseText, textStatus, XMLHttpRequest) {
-            if ($('#password').val() === '') {
-                alert("Please provide a password");
-            }
-            else if (responseText === "") {
-                var userType = $( "input:radio[name=bar]:checked" ).val();
-                var fname= $('#fName').val();
-                var lname= $('#lName').val();
-                var uname= $('#userName').val();
-                var email= $('#email').val();
-                var age= $('#age').val();
-                var gender= $('#gender').val();
-                var password= $('#password').val();
-                var userType = $('input:radio[name=userType]:checked' ).val();
-                location.href = "${pageContext.request.contextPath}/WoAdmin?action=UserRegistrationAuthenticationInfo&fname=" +fname+ "&lname=" +lname+
-                        "&uname=" +uname+ "&email=" +email+ "&password=" + password +
-                        "&age=" +age + "&gender=" + gender +
-                        "&userType=" +userType + "&startPage=${startPage}";
-
-            }
-            else {
-                alert(responseText);
-            }
-        }
-
-
-
     </script>
 </head>
 
@@ -91,7 +52,7 @@
             <div class="p7ccm04-content-row p7ccm04-RGBA p7ccm-row">
                 <div class="p7ccm04-1col-column1 p7ccm-col">
                     <div class="p7ccm04-1col-column1-cnt p7ccm04-content">
-                        <p>Lets create a Mathspring user for you!</p>
+                        <p>Your Mathspring user has been created</p>
 
                         <p>&nbsp;</p>
 
@@ -99,43 +60,13 @@
                             <p></p>
 
                             <form id="form1" method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
-                                <input type="hidden" name="action" value="LoginK12_2"/>
-                                <input type="hidden" name="skin" value="k12"/>
+                                <input type="hidden" name="action" value="${startPage}"/>
 
-                                <p> First Name:
-                                    <input id="fName" type="text" name="fname" value="${fName}"/>
-                                    <br/>
-                                    Last Name:
-                                    <input id="lName" type="text" name="lname" value="${lName}"/>
-                                    <br/>
-                                    Email:
-                                    <input id="email" type="text" name="email" value="${email}"/>
-                                    <br/>
-                                    Age:
-                                    <input id="age" type="text" name="age" value="${age}"/>
-                                    <br/>
-                                    Gender:
-                                    <select id="gender" name="gender" form="form1">
-                                        <option value="male">male</option>
-                                        <option value="female">female</option>
-                                    </select>
-                                    <br/>
-                                    *User Name:
-                                    <input id="userName" type="text" name="uname" value="${userName}"/>
-                                    <br/>
-                                    *Password:
-                                    <input id="password" type="password" name="password" value="${password}"/>
-                                    <br/>
-                                    <br/>
-                                    <input id="regular" type="radio" name="userType" value="student" checked>Regular
-                                    Student</input> <br>
-                                    <input id="testStudent" type="radio" name="userType" value="testStudent">System
-                                    testing (student view)</input><br>
-                                    <input id="testDeveloper" type="radio" name="userType" value="testDeveloper">System
-                                    testing (developer view)</input><br>
-                                    <br><br>
-                                    *Required fields
-
+                                <p> First Name: ${fName}  <br>
+                                    Last Name: ${lName} <br>
+                                    Teacher: ${teacher} <br>
+                                    Class: ${className} <br><br>
+                                    User Name: ${userName}
                                 </p>
 
                                 <p>&nbsp;</p>
@@ -148,13 +79,9 @@
                                     <%--</p>--%>
 
                                     <!-- </form> -->
-                                    <form id="signupForm" action="${pageContext.request.contextPath}/WoAdmin">
 
-                                        <p>
-                                            <button type="button" onClick="javascript:validateFields();">Sign up
-                                            </button>
-                                        </p>
-                                    </form>
+                                <input type="submit" name="relogin" value="Return to Mathspring login">
+
 
 
                                     <p>&nbsp;</p>
