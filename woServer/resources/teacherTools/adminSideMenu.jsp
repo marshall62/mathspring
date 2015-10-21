@@ -100,6 +100,7 @@ March 20, 2012
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}"> Problem Selection </a></li>
                                                 <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPretest&teacherId=${teacherId}&classId=${classId}">Pre and Post Tests</a></li>--%>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPedagogies&teacherId=${teacherId}&classId=${classId}">Pedagogy Selection</a></li>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPrePost&teacherId=${teacherId}&classId=${classId}">Pre/Post Surveys</a></li>
                                                 <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassActivateHuts&teacherId=${teacherId}&classId=${classId}">Hut Activation</a></li>--%>
 
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditClassList&teacherId=${teacherId}&classId=${classId}">Student List </a></li>

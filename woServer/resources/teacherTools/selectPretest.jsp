@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- <jsp:include page="teacherToolsHeader.jsp" />  --%>
+<jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>
+<jsp:useBean id="bean" scope="request" type="edu.umass.ckc.wo.beans.Classes"/>
+
 <jsp:include page="${sideMenu}" />
 
-<jsp:useBean id="bean" scope="request" type="edu.umass.ckc.wo.beans.Classes"/>
 
 <script type="text/javascript">
     function isFormValid (thisform) {
@@ -30,24 +32,23 @@
 
 <div class="mainPageMargin">
   <div id="Layer1" align = "center"><%-- width:400px; height:375px; z-index:1; left: 350px; top: 5px"--%>
-      <p><b>Pre/Posttest Selection</b></p>
-      <p style="color: #000000"><font face="Arial, Helvetica, sans-serif" size=".5">Select one pool from below, where a pool contains a set of pretests and posttests.
+      <p><b>Post Survey</b></p>
+      <p style="color: #000000"><font face="Arial, Helvetica, sans-serif" size=".5">Turn on/off a post survey.
           </font></p>
-      <p style="color: #000000"><font face="Arial, Helvetica, sans-serif" size=".5">>The Wayang system will select different pretest and posttest the chosen pool.</font>
+      <p style="color: #000000"><font face="Arial, Helvetica, sans-serif" size=".5">If the post survey is on, the
+          next time students in this class login, a survey will be shown.  It will only be shown to them once.
+          This will only happen if the class uses a pedagogy that has a post-survey login intervention (defined in logins.xml) </font>
 
-    <form name="form1" method="post" onsubmit="return isFormValid(form1);"
-          action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=<c:out value="${formSubmissionEvent}"/>" >
+    <%--<form name="form1" method="post" onsubmit="return isFormValid(form1);"--%>
+    <form name="form1" method="post"
+          action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassSubmitPrePost" >
 
-      <table width="334" border="0" height="98">
-         <tr><td><input type="radio" name="poolId" value="noPretest" <c:if test="${selectedPool==0}">checked="checked"</c:if> /> </td>
-              <td><font color="#000000" face="Arial, Helvetica, sans-serif">Do not give student a pretest</font></td> </tr>
-          <%--@elvariable id="pools" type="edu.umass.ckc.wo.beans.PretestPool[]"--%>
-          <c:forEach var="pool" items="${pools}">
-              <tr><td><input <c:if test="${selectedPool==pool.id}">checked="checked"</c:if> type="radio" name="poolId" value="<c:out value="${pool.id}"/>"/></td>
-                  <td><font color="#000000" face="Arial, Helvetica, sans-serif"><c:out value="${pool.description}"/></font></td></tr>
-
-          </c:forEach>
-      </table>
+      <input type="radio" name="postSurvey" value="off" <c:if test="${!classInfo.showPostSurvey}">checked</c:if>>Off</input>
+      <input type="radio" name="postSurvey" value="on" <c:if test="${classInfo.showPostSurvey}">checked</c:if>>On</input>
+      <br>
+      <br>
+      ${message}
+      <br>
       <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="submit" name="Submit" value="Submit">
         <input type="hidden" name="classId" value="<c:out value="${classId}"/>">

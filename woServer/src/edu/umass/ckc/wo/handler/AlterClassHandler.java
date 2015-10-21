@@ -426,6 +426,37 @@ public class AlterClassHandler {
                 req.getRequestDispatcher(CreateClassHandler.SIMPLE_CLASS_CONFIG_JSP).forward(req,resp);
             }
         }
+        else if (e instanceof AdminAlterClassPrePostEvent) {
+            int classId =  e.getClassId();
+            ClassInfo info = DbClass.getClass(conn, classId);
+            ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
+            Classes bean1 = new Classes(classes1);
+            req.setAttribute("classInfo",info);
+            req.setAttribute("classId", classId) ;
+            req.setAttribute("teacherId", teacherId);
+            req.setAttribute("bean", bean1) ;
+            req.setAttribute("action","AdminAlterClassPrePost");
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp");
+            req.getRequestDispatcher(CreateClassHandler.SELECT_PRETEST_POOL_JSP).forward(req,resp);
+        }
+        else if (e instanceof AdminAlterClassSubmitPrePostEvent) {
+            int classId =  e.getClassId();
+            req.setAttribute("classId", classId) ;
+            req.setAttribute("teacherId", teacherId);
+            ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
+            Classes bean1 = new Classes(classes1);
+            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp");
+            DbClass.setClassConfigShowPostSurvey(conn, classId, ((AdminAlterClassSubmitPrePostEvent) e).showPostSurvey());
+            ClassInfo info = DbClass.getClass(conn, classId);
+            req.setAttribute("classInfo",info);
+            req.setAttribute("action","AdminAlterClassPrePost");
+            req.setAttribute("bean", bean1) ;
+            String val = info.isShowPostSurvey() ? "ON" : "OFF";
+            req.setAttribute("message","The post survey is now " + val);
+            req.getRequestDispatcher(CreateClassHandler.SELECT_PRETEST_POOL_JSP).forward(req,resp);
+        }
 
 
        

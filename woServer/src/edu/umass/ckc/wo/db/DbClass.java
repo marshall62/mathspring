@@ -37,7 +37,7 @@ public class DbClass {
         try {
             String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
                     "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade," +
-                    "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate from class c, classconfig f" +
+                    "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate, f.showPostSurvey from class c, classconfig f" +
                     " where c.id=? and f.classid=c.id";
             s = conn.prepareStatement(q);
             s.setInt(1, classId);
@@ -64,6 +64,7 @@ public class DbClass {
                 String simpleLowDiff = rs.getString(19);
                 String simpleHighDiff = rs.getString(20);
                 String simpleDiffRate = rs.getString(21);
+                boolean showPostSurvey = rs.getBoolean(22);
                 ClassInfo ci = new ClassInfo(sch, yr, name, town, sec, classId, teacherId, teacherName, propgroupid, logType,
                         pretestPoolId, emailInterval, statusReportPeriodDays, studentEmailIntervalDays,
                         studentEmailPeriodDays,flashClient,grade);
@@ -72,6 +73,7 @@ public class DbClass {
                 ci.setSimpleLowDiff(simpleLowDiff);
                 ci.setSimpleHighDiff(simpleHighDiff);
                 ci.setSimpleDiffRate(simpleDiffRate);
+                ci.setShowPostSurvey(showPostSurvey);
                 return ci;
             }
             return null;
@@ -1060,5 +1062,19 @@ public class DbClass {
                 stmt.close();
         }
 
+    }
+
+    public static void setClassConfigShowPostSurvey(Connection conn, int classId, boolean showPostSurvey) throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            String q = "update classconfig set showPostSurvey=? where classid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setBoolean(1, showPostSurvey);
+            stmt.setInt(2, classId);
+            stmt.executeUpdate();
+        } finally {
+            if (stmt != null)
+                stmt.close();
+        }
     }
 }

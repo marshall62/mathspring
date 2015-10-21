@@ -26,6 +26,7 @@ public class ClassInfo {
     private String simpleCollab;
     private String simpleLowDiff;
     private String simpleHighDiff;
+    private boolean showPostSurvey;
 
     public ClassInfo(String school, int schoolYear, String name, String town, String section,
                      int classid, int teachid, String teacherName, int propGroupId, int pretestPoolId, String pretestPoolDescr,
@@ -217,5 +218,13 @@ public class ClassInfo {
         this.simpleLC = "both";
         this.simpleLowDiff="below2";
         this.simpleHighDiff="above1";
+    }
+
+    public boolean isShowPostSurvey() {
+        return showPostSurvey;
+    }
+
+    public void setShowPostSurvey(boolean showPostSurvey) {
+        this.showPostSurvey = showPostSurvey;
     }
 }
