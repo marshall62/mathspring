@@ -1669,6 +1669,203 @@ JakeNoSPPButton-->
     </pedagogy>
 
 
+    <!-- Pedagogies for Dovans experiment Oct 2015-->
 
+    <pedagogy>
+        <id>51</id>
+        <active>true</active>
+        <name>Mini Games (Ask)</name>
+        <comment>highlight hint, ask if want external activities, no LC, ask about interest/frustration</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <lesson>TopicWithIntroAndDemo</lesson>
+        <login>IndividualLogin</login>
+        <package>pedModel2</package>
+        <interventions>
+
+
+            <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
+                <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
+                    <emotion name="Frustration">
+                        <label val="1">Not at all Frustrated</label>
+                        <label val="2">A little Frustrated</label>
+                        <label val="3">Somewhat Frustrated</label>
+                        <label val="4">Quite a bit Frustrated</label>
+                        <label val="5">Extremely Frustrated</label>
+                    </emotion>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
+                    </emotion>
+                    <askWhy>true</askWhy>
+                </config>
+
+            </interventionSelector>
+            <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
+                <config>
+                    <frequencyPct>10</frequencyPct>
+                    <!-- mode can be force or ask:  Ask will prompt to see if they want to-->
+                    <mode>ask</mode>
+                </config>
+            </interventionSelector>
+
+            <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
+                <config>
+                    <threshold>1</threshold>
+                </config>
+            </interventionSelector>
+        </interventions>
+    </pedagogy>
+
+    <pedagogy>
+        <id>52</id>
+        <active>true</active>
+        <name>Mini Games (Force)</name>
+        <comment>highlight hint, force external activities, no LC, ask about interest/frustration</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <lesson>TopicWithIntroAndDemo</lesson>
+        <login>IndividualLogin</login>
+        <package>pedModel2</package>
+        <interventions>
+
+
+            <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
+                <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
+                    <emotion name="Frustration">
+                        <label val="1">Not at all Frustrated</label>
+                        <label val="2">A little Frustrated</label>
+                        <label val="3">Somewhat Frustrated</label>
+                        <label val="4">Quite a bit Frustrated</label>
+                        <label val="5">Extremely Frustrated</label>
+                    </emotion>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
+                    </emotion>
+                    <askWhy>true</askWhy>
+                </config>
+
+            </interventionSelector>
+            <interventionSelector onEvent="NextProblem" weight="2" class="ExternalActivityIS">
+                <config>
+                    <frequencyPct>10</frequencyPct>
+                    <!-- mode can be force or ask:  Ask will prompt to see if they want to-->
+                    <mode>force</mode>
+                </config>
+            </interventionSelector>
+
+            <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
+                <config>
+                    <threshold>1</threshold>
+                </config>
+            </interventionSelector>
+        </interventions>
+    </pedagogy>
+
+    <pedagogy>
+        <id>53</id>
+        <active>true</active>
+        <name>Plain Pedagogy</name>
+        <comment>highlight hint, no LC, ask about interest/frustration</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <lesson>TopicWithIntroAndDemo</lesson>
+        <login>IndividualLogin</login>
+        <package>pedModel2</package>
+        <interventions>
+
+
+            <interventionSelector onEvent="NextProblem" weight="1" class="AskEmotionIS">
+                <config>
+                    <inputType>radio</inputType>
+                    <numVals>5</numVals>
+                    <!-- Will interrupt to ask every 5 min or every 8 problems whichever comes first.  Omit one of these parameters for it not to be considered-->
+                    <interruptIntervalMin>5</interruptIntervalMin>
+                    <interruptIntervalProblems>8</interruptIntervalProblems>
+                    <emotion name="Frustration">
+                        <label val="1">Not at all Frustrated</label>
+                        <label val="2">A little Frustrated</label>
+                        <label val="3">Somewhat Frustrated</label>
+                        <label val="4">Quite a bit Frustrated</label>
+                        <label val="5">Extremely Frustrated</label>
+                    </emotion>
+                    <emotion name="Interest">
+                        <label val="1">Not at all Interested</label>
+                        <label val="2">A little Interested</label>
+                        <label val="3">Somewhat Interested</label>
+                        <label val="4">Quite a bit Interested</label>
+                        <label val="5">Extremely Interested</label>
+                    </emotion>
+                    <askWhy>true</askWhy>
+                </config>
+
+            </interventionSelector>
+
+            <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
+                <config>
+                    <threshold>1</threshold>
+                </config>
+            </interventionSelector>
+        </interventions>
+    </pedagogy>
 
 </pedagogies>
