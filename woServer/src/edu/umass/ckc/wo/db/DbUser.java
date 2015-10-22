@@ -351,7 +351,7 @@ public class DbUser {
         boolean isTrialUser = User.isTrialUser(userType);
         ps.setInt(10,isTrialUser?1:0);
         ps.setInt(11,userType== User.UserType.guest ? 1 : 0);
-        ps.setInt(12, Integer.parseInt(age));
+        ps.setInt(12, age.length() > 0 ? Integer.parseInt(age) : 0);
         ps.setString(13,gender);
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
