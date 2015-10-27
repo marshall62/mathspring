@@ -31,6 +31,7 @@ public class PostSurvey extends LoginInterventionSelector {
     private boolean embed=true;
     private String uidVar;
     private String unameVar;
+    private int minutesToWait;  // show the post survey if the user has been in the system this many minutes or more
 
     public PostSurvey(SessionManager smgr) throws SQLException, UserException {
         super(smgr);
@@ -65,42 +66,56 @@ public class PostSurvey extends LoginInterventionSelector {
         e =this.configXML.getChild("embed");
         if (e != null)
             this.embed = Boolean.parseBoolean(e.getTextTrim());
-
+        e =this.configXML.getChild("minutesToWait");
+        if (e != null)
+            this.minutesToWait = Integer.parseInt(e.getTextTrim());
+        else this.minutesToWait =0;
     }
 
 
-    // TODO The post survey is available when the classconfig table for this student has its showPostSurvey field set to 1
+    // The post survey is available when the classconfig table for this student has its showPostSurvey field set to 1
+    // or if the minutesToWait value has been exceeded by the number of minutes the user has spent in the system
     public Intervention selectIntervention (SessionEvent e) throws Exception {
         long shownTime = this.interventionState.getTimeOfLastIntervention();
 
         int classId = smgr.getClassID();
         ClassConfig cc = DbClass.getClassConfig(smgr.getConnection(),classId);
         boolean showSurvey = cc.isShowPostSurvey();
+        int postSurveyWaitTimeMin = cc.getPostSurveyWaitTimeMin();
+        // If a post survey wait time is defined in the classconfig, use it instead of the value in the XML config parameters.
+        if (postSurveyWaitTimeMin > 0)
+            this.minutesToWait = postSurveyWaitTimeMin;
         // We show the survey when the ClassConfig.showPostSurvey is set to 1 and student hasn't done it yet.
         boolean surveyDone =  smgr.getStudentState().getWorkspaceState().isPostSurveyDone();
 
-        if (!showSurvey || shownTime > 0 || surveyDone)
+        if (this.minutesToWait > 0 && DbUser.getLoggedInTimeInMinutes(smgr.getConnection(), smgr.getStudentId()) >= this.minutesToWait)
+            return showSurvey(e);
+        else if (!showSurvey || shownTime > 0 || surveyDone)
             return null;
-        else {
-            super.selectIntervention(e);
-            // set the student state so we know its been done
-            smgr.getStudentState().getWorkspaceState().setPostSurveyDone(true);
+        else
+            return showSurvey(e);
 
-            // Shows the survey in an embedded iframe
-            if (this.embed) {
-                servletInfo.getRequest().setAttribute("iframeURL",url);
-                return new LoginIntervention(JSPI);
-            }
-            else {
-                // URL has two variables (e.g. <uid>) that need to be replaced with userName and studId
-                url = url.replaceFirst("<"+uidVar+">",Integer.toString(smgr.getStudentId()));
-                url = url.replaceFirst("<"+unameVar+">",smgr.getUserName());
-            // A JSP will show nothing more than a "continue" button.
-            // The URL comes up in a separate browser window.  When the user is done in the separate window
-            // they close it and click the "continue" button.
-                servletInfo.getRequest().setAttribute("URL",url);
-                return new LoginIntervention(JSP);
-            }
+    }
+
+    private Intervention showSurvey(SessionEvent e) throws Exception {
+        super.selectIntervention(e);
+        // set the student state so we know its been done
+        smgr.getStudentState().getWorkspaceState().setPostSurveyDone(true);
+
+        // Shows the survey in an embedded iframe
+        if (this.embed) {
+            servletInfo.getRequest().setAttribute("iframeURL",url);
+            return new LoginIntervention(JSPI);
+        }
+        else {
+            // URL has two variables (e.g. <uid>) that need to be replaced with userName and studId
+            url = url.replaceFirst("<"+uidVar+">",Integer.toString(smgr.getStudentId()));
+            url = url.replaceFirst("<"+unameVar+">",smgr.getUserName());
+        // A JSP will show nothing more than a "continue" button.
+        // The URL comes up in a separate browser window.  When the user is done in the separate window
+        // they close it and click the "continue" button.
+            servletInfo.getRequest().setAttribute("URL",url);
+            return new LoginIntervention(JSP);
         }
     }
 

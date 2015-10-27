@@ -3,8 +3,6 @@ package edu.umass.ckc.wo.db;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.ClassConfig;
-import edu.umass.ckc.wo.cache.ProblemMgr;
-import edu.umass.ckc.wo.content.TopicMgr;
 import edu.umass.ckc.wo.exc.AdminException;
 
 import edu.umass.ckc.wo.handler.UserRegistrationHandler;
@@ -755,7 +753,7 @@ public class DbClass {
 
     public static ClassConfig getClassConfig(Connection conn, int classId) throws SQLException {
         String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey" +
-                ",presurveyurl,postsurveyurl from classconfig where classId=?";
+                ",presurveyurl,postsurveyurl,postsurveywaittime from classconfig where classId=?";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classId);
         ResultSet rs = ps.executeQuery();
@@ -770,7 +768,8 @@ public class DbClass {
             boolean showPostSurvey = rs.getBoolean("showPostSurvey");
             String presurveyurl = rs.getString("presurveyurl");
             String postsurveyurl = rs.getString("postsurveyurl");
-            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl, postsurveyurl);
+            int postsurveyWaitTime = rs.getInt("postSurveyWaitTime");
+            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl, postsurveyurl, postsurveyWaitTime);
         } else return null;
     }
 

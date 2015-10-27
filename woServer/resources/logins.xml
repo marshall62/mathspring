@@ -46,9 +46,13 @@
             login.  -->
             <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PostSurvey">
                 <config>
+                    <!-- If a URL is in the classconfig, that will be used, otherwise the url below is used, finally: globalsettings url is used if
+                    nothing is present in the XML -->
                     <url><![CDATA[https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?entry.1324523958=<uname>&entry.1477109510=<uid>&usp=send_form]]></url>
                     <studId>uid</studId>
                     <userName>uname</userName>
+                    <!-- If a student has been in the system for 80+ min, when he logs in, he will get the post test.-->
+                    <minutesToWait>80</minutesToWait>
                     <embed>false</embed>
 
                 </config>
@@ -99,11 +103,14 @@
             login.  -->
             <interventionSelector onEvent="Login" weight="1" runFreq="once" class="edu.umass.ckc.wo.login.interv.PostSurvey">
                 <config>
+                    <!-- If a URL is in the classconfig, that will be used, otherwise the url below is used, finally: globalsettings url is used if
+                    nothing is present in the XML -->
                     <url><![CDATA[https://docs.google.com/forms/d/1ailDyQ9tChd9Abh6TEUsCoyALYJSLi8mWoIiHzMZcpA/viewform?entry.1324523958=<uname>&entry.1477109510=<uid>&usp=send_form]]></url>
                     <studId>uid</studId>
                     <userName>uname</userName>
                     <embed>false</embed>
-
+                    <!-- If a student has been in the system for 80+ min, when he logs in, he will get the post test.-->
+                    <minutesToWait>80</minutesToWait>
                 </config>
             </interventionSelector>
 

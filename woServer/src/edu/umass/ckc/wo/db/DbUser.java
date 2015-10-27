@@ -965,4 +965,34 @@ public class DbUser {
         }
     }
 
+    /**
+     * Go through all users sessions and figure out how much time they've been logged into the tutor for and return that number in minutes.
+     * @param conn
+     * @param studId
+     * @return
+     */
+    public static int getLoggedInTimeInMinutes(Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            long totalLoggedTime = 0;
+            String q = "select beginTime, lastAccessTime from session where studId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Timestamp bt = rs.getTimestamp(1);
+                Timestamp lt = rs.getTimestamp(2);
+                long sessLen = lt.getTime() - bt.getTime();
+                totalLoggedTime += sessLen;
+            }
+            return (int) totalLoggedTime / 60000 ;  // converts from ms to min
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 }

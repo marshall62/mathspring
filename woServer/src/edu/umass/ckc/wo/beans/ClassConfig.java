@@ -17,6 +17,7 @@ public class ClassConfig {
     private boolean showPostSurvey;
     private String preSurveyURL;
     private String postSurveyURL;
+    private int postSurveyWaitTimeMin;
 
 
     public static final int OFF=0;
@@ -25,10 +26,11 @@ public class ClassConfig {
     public static final int ON_AFTER_POSTTEST=3;
 
     public static ClassConfig getDefaultConfig () {
-        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false, null, null);
+        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false, null, null, 0);
     }
 
-    public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults, boolean showPostSurvey, String presurveyurl, String postsurveyurl) {
+    public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults,
+                       boolean showPostSurvey, String presurveyurl, String postsurveyurl, int postSurveyWaitTime) {
         this.pretest = pretest;
         this.posttest = posttest;
         this.fantasy = fantasy;
@@ -39,6 +41,7 @@ public class ClassConfig {
         this.showPostSurvey=showPostSurvey;
         this.preSurveyURL=presurveyurl;
         this.postSurveyURL=postsurveyurl;
+        this.postSurveyWaitTimeMin = postSurveyWaitTime;
     }
 
     public int getPretest() {
@@ -87,6 +90,10 @@ public class ClassConfig {
 
     public void setPostSurveyURL(String postSurveyURL) {
         this.postSurveyURL = postSurveyURL;
+    }
+
+    public int getPostSurveyWaitTimeMin() {
+        return postSurveyWaitTimeMin;
     }
 
     public String toString () {
