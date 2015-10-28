@@ -180,7 +180,7 @@ public class MyProgressHandler {
         request.setAttribute("backToVillageURL", backToVillageURL);
         request.setAttribute("learningCompanion", learningCompanion);
         request.setAttribute("useHybridTutor", Settings.useHybridTutor);
-
+        request.setAttribute("eventCounter", smgr.getEventCounter());
         logger.info("<< JSP: MyProgress.jsp");
         request.getRequestDispatcher("MyProgress.jsp").forward(request, response);
     }

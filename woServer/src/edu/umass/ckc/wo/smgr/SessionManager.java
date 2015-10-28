@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
 import edu.umass.ckc.wo.event.tutorhut.LogoutEvent;
+import edu.umass.ckc.wo.exc.AdminException;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.NavigationHandler;
@@ -56,7 +57,7 @@ public class SessionManager {
     private int classId = -1;
     private int sessionId = -1;
     private int pedagogyId = -1;
-    private String client = null ; // the name of the Flash client that the user should use
+    private String client = null; // the name of the Flash client that the user should use
     private WoProps woProps;
     private StudentState studState; // state variables about student stored in db
     //    private StudentProfile profile; // contains satv,satm, gender, and group
@@ -64,13 +65,13 @@ public class SessionManager {
     private StudentModel studentModel = null;
     private PedagogicalModel pedagogicalModel = null;
     private String loginResponse = null;
-    private LearningCompanion learningCompanion=null;
+    private LearningCompanion learningCompanion = null;
     private LoginResult loginResult;
     private long timeInSession;
     private String hostPath; // The piece of the request URL that gives http://chinacat.../
     private String contextPath; // The full URL up to /TutorBrain (e.g.  http://localhost:8082/wo4
-    private boolean assistmentsUser= false;
-    private long elapsedTime =0;
+    private boolean assistmentsUser = false;
+    private long elapsedTime = 0;
     private boolean testUser;
     private User user;
     private int collaboratingWith;
@@ -78,10 +79,10 @@ public class SessionManager {
 
     public SessionManager(Connection connection) {
         this.connection = connection;
-        timeInSession=0;
+        timeInSession = 0;
     }
 
-    public SessionManager (Connection conn, int sessionId) {
+    public SessionManager(Connection conn, int sessionId) {
         this.connection = conn;
         this.sessionId = sessionId;
     }
@@ -92,11 +93,9 @@ public class SessionManager {
      * Recent addition: Using the group number a student is assigned to, a Pedagogy object is retrieved.
      * From that we can get the name of the StudentModel class that is appropriate for the student.
      * We then can construct the StudentModel now and have it ready thoughout the life of this HTTP request.
-     *
+     * <p/>
      * The hostPath is a partial URL to the servlet (just through the host and port).   This is necessary for
      * calls that will eventually come from a JSP client page to find the Flash client.   It is presumed to be running on the same host.
-     *
-     *
      *
      * @param connection
      * @param sessionId
@@ -106,7 +105,7 @@ public class SessionManager {
      */
     public SessionManager(Connection connection,
                           int sessionId, String hostPath, String contextPath) throws Exception {
-        this(connection,sessionId);
+        this(connection, sessionId);
         this.hostPath = hostPath;
         this.contextPath = contextPath;
     }
@@ -131,7 +130,7 @@ public class SessionManager {
             logger.warn("Got an event that did not have an eventCounter " + params);
         else {
             int sessId = params.getInt("sessionId");
-            int lc = DbSession.updateEventCounter(conn,sessId,c,false); // bump the counter only if this event is 1 greater than last
+            int lc = DbSession.updateEventCounter(conn, sessId, c, false); // bump the counter only if this event is 1 greater than last
             if (lc == c)
                 return c; // the only non-error. what is expected when the events are received in correct sequence. return the counter
             else if (lc == -1)
@@ -141,7 +140,7 @@ public class SessionManager {
             else if (c > lc) {
                 logger.error("Events out of sequence: Event received TOO SOON. Last event counter was " + lc + ". This event counter is " + c);
                 // jump the counter forward so that when we get the event with counter c+1 we can resume without errors
-                DbSession.updateEventCounter(conn,sessId,c,true);
+                DbSession.updateEventCounter(conn, sessId, c, true);
                 return c; // return the counter even though its an error because we need to have it in the session mgr.
             }
             // Case 2: This event was received after we processed an event with higher counter (the result of a previous case 1 jump-ahead)
@@ -156,19 +155,18 @@ public class SessionManager {
     }
 
 
-    public SessionManager buildExistingSession (ServletParams params) throws Exception {
-        int lc = checkEventCounter(connection,params);
+    public SessionManager buildExistingSession(ServletParams params) throws Exception {
+        int lc = checkEventCounter(connection, params);
         if (lc != -1)
             this.setEventCounter(lc);
         return buildExistingSession();
     }
 
-    public SessionManager buildExistingSession () throws Exception {
+    public SessionManager buildExistingSession() throws Exception {
 
         buildSession(connection, sessionId);
         return this;
     }
-
 
 
     public LoginResult login(String uname, String password, long sessBeginTime, boolean logoutExistingSession) throws Exception {
@@ -178,11 +176,10 @@ public class SessionManager {
 
     /**
      * Constructor only used when the user is logging in from Assistments
-     *
      */
     public SessionManager assistmentsLoginSession(int studId) throws Exception {
         int newSessId = DbSession.newSession(connection, studId, System.currentTimeMillis(), true);
-        timeInSession=0;
+        timeInSession = 0;
         loginResult = new LoginResult(newSessId, null);
         sessionId = loginResult.getSessId();
         buildSession(connection, loginResult.getSessId());
@@ -192,11 +189,10 @@ public class SessionManager {
 
     /**
      * Constructor only used when the user is logging in as guest.
-     *
      */
-    public SessionManager guestLoginSession (int studId) throws Exception {
+    public SessionManager guestLoginSession(int studId) throws Exception {
         int newSessId = DbSession.newSession(connection, studId, System.currentTimeMillis(), false);
-        timeInSession=0;
+        timeInSession = 0;
         loginResult = new LoginResult(newSessId, null);
         sessionId = loginResult.getSessId();
         buildSession(connection, loginResult.getSessId());
@@ -205,24 +201,22 @@ public class SessionManager {
     }
 
 
-
-
     // will look something like http://cadmium.cs.umass.edu/  or http://localhost/  (port removed)
-    public String getHostPath () {
+    public String getHostPath() {
         return this.hostPath;
     }
 
     // returns something like http://localhost:8082/wo4
-    public String getContextPath () {
+    public String getContextPath() {
         return this.contextPath;
     }
 
 
-    public void createSessionForStudent (int studId) {
+    public void createSessionForStudent(int studId) {
 
     }
 
-    public LearningCompanion getLearningCompanion () {
+    public LearningCompanion getLearningCompanion() {
         return learningCompanion;
     }
 
@@ -230,24 +224,23 @@ public class SessionManager {
         return loginResponse;
     }
 
-    public LoginResult getLoginResult () {
+    public LoginResult getLoginResult() {
         return loginResult;
     }
-
 
 
     private void buildSession(Connection connection, int sessionId) throws Exception {
         DbSession.updateSessionLastAccessTime(connection, sessionId);
         int[] ids = DbSession.setSessionInfo(connection, sessionId);
-        this.studId=ids[0];
-        this.classId=ids[1];
-        this.user = DbUser.getStudent(connection,this.studId);
+        this.studId = ids[0];
+        this.classId = ids[1];
+        this.user = DbUser.getStudent(connection, this.studId);
         this.setClient(DbSession.getClientType(connection, sessionId));
         woProps = new WoProps(connection);
         woProps.load(studId);   // get all properties for studId
-        Timestamp lastLoginTime= DbSession.getLastLogin(connection,studId);
+        Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
         if (lastLoginTime != null)
-            this.timeInSession = System.currentTimeMillis()- lastLoginTime.getTime();
+            this.timeInSession = System.currentTimeMillis() - lastLoginTime.getTime();
 
         setStudentState(woProps);   // pull out student state props from all properties
 
@@ -259,10 +252,9 @@ public class SessionManager {
         // and makes calls to get stuff so we want this as fully constructed as possible before the call to instantiate
         // so that the smgr is fully functional except for its ped model.
 //        PedagogicalModelParameters pedModelParams = getPedagogicalModelParametersForUser(connection, ped);
-       // build the Pedagogical model for the student.  The PedagogicalModel constructor is responsible for
-       // creating the StudentModel which also gets set in the below method
-       instantiatePedagogicalModel(ped);
-
+        // build the Pedagogical model for the student.  The PedagogicalModel constructor is responsible for
+        // creating the StudentModel which also gets set in the below method
+        instantiatePedagogicalModel(ped);
 
 
         // set theparams on the ped model
@@ -271,10 +263,8 @@ public class SessionManager {
 //            if (userParams != null)
 //                ((ConfigurablePedagogy) pedagogicalModel).configure(userParams);
 //       }
-       this.learningCompanion = this.pedagogicalModel.getLearningCompanion();
+        this.learningCompanion = this.pedagogicalModel.getLearningCompanion();
     }
-
-
 
 
     // only used by test driver
@@ -302,10 +292,6 @@ public class SessionManager {
     }
 
 
-
-
-
-
     private String getXML(boolean success) {
         return Names.XML_HEADER + (success ? Names.LOGIN_SUCCESS : Names.LOGIN_FAILURE);
 
@@ -327,18 +313,13 @@ public class SessionManager {
     }
 
 
-
     public int getStudentClass(int studId) throws SQLException {
         return DbUser.getStudentClass(this.getConnection(), studId);
     }
 
-    public int getClassID () {
+    public int getClassID() {
         return this.classId;
     }
-
-
-
-
 
 
     public int findMaxActiveSession(int studId) throws SQLException {
@@ -401,9 +382,6 @@ public class SessionManager {
     }
 
 
-
-
-
     public String getLoginView(String check, String checkVal, String message, int sessionId, int studentId, LearningCompanion learningCompanion) {
         StringBuffer result = new StringBuffer();
         result.append(NavigationHandler.ACK + "=" + NavigationHandler.TRUE + "\n");
@@ -424,20 +402,16 @@ public class SessionManager {
         else return "";
     }
 
-    private Pedagogy getPedagogy(int studentId) {
+    private Pedagogy getPedagogy(int studentId) throws SQLException, AdminException {
 
         Pedagogy ped = null;
 
         if (studentId > -1) {
-            try {
-                ped = PedagogyRetriever.getPedagogy(connection, studentId);
-                this.pedagogyId = Integer.parseInt(ped.getId());
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            ped = PedagogyRetriever.getPedagogy(connection, studentId);
+            this.pedagogyId = Integer.parseInt(ped.getId());
         }
 
-       return ped;
+        return ped;
     }
 
     /**
@@ -453,54 +427,53 @@ public class SessionManager {
      */
     public LoginResult attemptSessionCreation(String uname, String password, long sessBeginTime, boolean logoutExistingSession) throws Exception {
         if (uname.trim().length() == 0 || password.trim().length() == 0)
-            return new LoginResult(-1,"Invalid user name/password combination",LoginResult.ERROR);
+            return new LoginResult(-1, "Invalid user name/password combination", LoginResult.ERROR);
         else {
             studId = DbUser.getStudent(this.getConnection(), uname, password);
 
             if (studId == -1) {
-               return new LoginResult(-1,"Invalid user name/password combination",LoginResult.ERROR);
-            }
-            else {
-              this.user = DbUser.getStudent(this.getConnection(),studId);
-              int classId = DbUser.getStudentClass(this.getConnection(),studId);
-              this.classId = classId;
+                return new LoginResult(-1, "Invalid user name/password combination", LoginResult.ERROR);
+            } else {
+                this.user = DbUser.getStudent(this.getConnection(), studId);
+                int classId = DbUser.getStudentClass(this.getConnection(), studId);
+                this.classId = classId;
                 // We delete a student that does not have a classID because we expect them to re-register with
-                    // the same user/passwd and need to get this old bogus user out of the way.
+                // the same user/passwd and need to get this old bogus user out of the way.
                 if (classId == -1) {
                     DbUser.deleteStudent(connection, studId);
-                     return new LoginResult(-1, "This user is invalid because it is not in a class.   You need to re-register and select a class", LoginResult.ERROR);
+                    return new LoginResult(-1, "This user is invalid because it is not in a class.   You need to re-register and select a class", LoginResult.ERROR);
                 }
                 //Remove collaboration requests and pairings for students who have just logged in, as any such data is erroneous.
                 PartnerManager.clearOldData(studId);
                 int oldSessId = DbSession.findActiveSession(getConnection(), studId);
                 Pedagogy ped;
-                if (oldSessId != -1)  {
-                    String msg = String.format("The user name <b>%s</b> whose name is <b>%s %s</b> is already logged into the system.  If you are not this person, please check with your teacher or double check that you are using the correct user name",user.getUname(),user.getFname(),user.getLname());
+                if (oldSessId != -1) {
+                    String msg = String.format("The user name <b>%s</b> whose name is <b>%s %s</b> is already logged into the system.  If you are not this person, please check with your teacher or double check that you are using the correct user name", user.getUname(), user.getFname(), user.getLname());
                     if (!logoutExistingSession)
-                        return new LoginResult(-1,msg, LoginResult.ALREADY_LOGGED_IN);
+                        return new LoginResult(-1, msg, LoginResult.ALREADY_LOGGED_IN);
                     else {
                         inactivateAllUserSessions();
                         this.sessionId = DbSession.newSession(getConnection(), studId, sessBeginTime, false);
                         ped = getPedagogy(studId);
                         woProps = new WoProps(connection);
                         woProps.load(studId);   // get all properties for studId
-                        Timestamp lastLoginTime= DbSession.getLastLogin(connection,studId);
+                        Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
                         if (lastLoginTime != null)
-                            this.timeInSession = System.currentTimeMillis()- lastLoginTime.getTime();
+                            this.timeInSession = System.currentTimeMillis() - lastLoginTime.getTime();
                         setStudentState(woProps);   // pull out student state props from all properties
                         studState.getSessionState().initializeState();
+
                         instantiatePedagogicalModel(ped);
                         pedagogicalModel.newSession(sessionId); // tells the pedagogical that its a new session so it can initialize.
-                        return new LoginResult(sessionId, null,LoginResult.NEW_SESSION);
+                        return new LoginResult(sessionId, null, LoginResult.NEW_SESSION);
                     }
-                }
-                else {
+                } else {
                     ped = getPedagogy(studId);
                     woProps = new WoProps(connection);
                     woProps.load(studId);   // get all properties for studId
-                    Timestamp lastLoginTime= DbSession.getLastLogin(connection,studId);
+                    Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
                     if (lastLoginTime != null)
-                        this.timeInSession = System.currentTimeMillis()- lastLoginTime.getTime();
+                        this.timeInSession = System.currentTimeMillis() - lastLoginTime.getTime();
 
                     setStudentState(woProps);   // pull out student state props from all properties
                     this.sessionId = DbSession.newSession(getConnection(), studId, sessBeginTime, false);
@@ -512,8 +485,6 @@ public class SessionManager {
             }
         }
     }
-
-
 
 
     /**
@@ -570,7 +541,6 @@ public class SessionManager {
     }
 
 
-
     public String logoutStudent(LogoutEvent logoutEvent, String ipAddr) throws Exception {
 
         DbSession.inactivateSession(getConnection(), logoutEvent.getSessionId());
@@ -583,7 +553,7 @@ public class SessionManager {
         return this.studId;
     }
 
-    public String getUserName () {
+    public String getUserName() {
         return this.user.getUname();
     }
 
@@ -595,7 +565,7 @@ public class SessionManager {
             throw new UserException("Attempt to get a session failed.  Make sure you are logged in");
     }
 
-    public long getElapsedTime(){
+    public long getElapsedTime() {
         return elapsedTime;
     }
 
@@ -664,7 +634,6 @@ public class SessionManager {
     }
 
 
-
     // To remove all evidence of a student in the system, delete the eventlog for his session, delete the studentproblemhistory for his session
     // delete the session
     public void removeTestSessionData() throws Exception {
@@ -684,7 +653,6 @@ public class SessionManager {
             ps.close();
         }
     }
-
 
 
     public void inactivateTempUserSessions(int sessionId) throws SQLException {
@@ -723,9 +691,6 @@ public class SessionManager {
     }
 
 
-
-
-
     public static void loadDbDriver() {
         String dbDriver = "com.mysql.jdbc.Driver";
         try {
@@ -751,7 +716,7 @@ public class SessionManager {
 //        url = "jdbc:mysql://localhost:3306/test";
 //        url = "jdbc:mysql://localhost/rashidb"; // this works
         try {
-            logger.info("connecting to db on url " + url);
+            logger.debug("connecting to db on url " + url);
             return DriverManager.getConnection(url, dbUser, dbPassword);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -772,7 +737,7 @@ public class SessionManager {
     }
 
 
-    public double getClassMasteryThreshold () throws SQLException {
+    public double getClassMasteryThreshold() throws SQLException {
         return DbClass.getClassMastery(connection, this.classId);
     }
 
@@ -823,7 +788,7 @@ public class SessionManager {
         return pedagogicalModel;
     }
 
-    public void setPedagogicalModel (PedagogicalModel pm) {
+    public void setPedagogicalModel(PedagogicalModel pm) {
         this.pedagogicalModel = pm;
     }
 
@@ -833,14 +798,12 @@ public class SessionManager {
     }
 
 
-
-
     public long getTimeInSession() {
         return timeInSession;
     }
 
     public boolean isFirstLogin() throws SQLException {
-        return DbSession.getStudentSessions(connection,this.getStudentId()).size() == 1;
+        return DbSession.getStudentSessions(connection, this.getStudentId()).size() == 1;
     }
 
     public void setAssistmentsUser(boolean assistmentsUser) {
@@ -866,27 +829,25 @@ public class SessionManager {
 //    }
 
     public String getClassTeacher() throws SQLException {
-        return DbClass.getClass(getConnection(),this.getStudentClass(this.getStudentId())).getTeacherName();
+        return DbClass.getClass(getConnection(), this.getStudentClass(this.getStudentId())).getTeacherName();
     }
 
 
-
-
     public String getClient() {
-        return client+".swf";
+        return client + ".swf";
     }
 
     public void setClient(String client) {
         this.client = client;
     }
 
-    public WoProps getStudentProperties () {
+    public WoProps getStudentProperties() {
         return this.woProps;
     }
 
     // We don't have a separate flag for this, so we make it be connected to whether they are seeing
     // controls for testing
-    public boolean showTestableContent ()  throws SQLException {
+    public boolean showTestableContent() throws SQLException {
         return DbUser.isShowTestControls(this.connection, this.studId);
     }
 
@@ -895,7 +856,7 @@ public class SessionManager {
     }
 
     public boolean isTestUser() throws SQLException {
-       return DbUser.isTestUser(this.connection,this.studId);
+        return DbUser.isTestUser(this.connection, this.studId);
     }
 
     public void setPedagogyId(int pedagogyId) {

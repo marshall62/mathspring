@@ -63,7 +63,7 @@ public class PedagogyRetriever {
                 // Not sure what to do: so throw exception
             else {
                 throw new AdminException("This user has been assigned the pedagogy " + pedagogyId + " but " +
-                        "not Pedagogy can be found in the pedagogy.xml that matches this.");
+                        "no Pedagogy can be found in the pedagogy.xml that matches this.");
             }
 
         }
