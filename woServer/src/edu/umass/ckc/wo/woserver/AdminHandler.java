@@ -220,6 +220,10 @@ public class AdminHandler {
             new TutorAdminHandler().processEvent(servletRequest, servletResponse, e, conn);
             return false;
         }
+        else if (e instanceof AdminDeleteTeachersEvent || e instanceof AdminDeleteClassesEvent || e instanceof AdminDeleteStudentsEvent) {
+            new TutorAdminHandler().processEvent(servletRequest, servletResponse, e, conn);
+            return false;
+        }
         else
             throw new UserException("Unknown event " + e);
         servletOutput.append(v.getView());

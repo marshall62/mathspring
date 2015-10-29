@@ -1,10 +1,10 @@
 package edu.umass.ckc.wo.handler;
 
 import ckc.servlet.servbase.ServletEvent;
+import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.cache.ProblemMgr;
-import edu.umass.ckc.wo.event.admin.AdminDeactivateLiveProblemEvent;
-import edu.umass.ckc.wo.event.admin.AdminReloadProblemsEvent;
-import edu.umass.ckc.wo.event.admin.AdminTutorEvent;
+import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.event.admin.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +34,20 @@ public class TutorAdminHandler {
         else if (e instanceof AdminTutorEvent) {
             servletRequest.setAttribute("teacherId", ((AdminTutorEvent) e).getTeacherId());
             servletRequest.getRequestDispatcher("/teacherTools/adminTutor.jsp").forward(servletRequest, servletResponse);
+        }
+        else if (e instanceof AdminDeleteTeachersEvent) {
+            servletRequest.setAttribute("sideMenu", "adminSideMenu.jsp");
+            servletRequest.getRequestDispatcher("/teacherTools/deleteTeachers.jsp").forward(servletRequest, servletResponse);
+        }
+        else if (e instanceof AdminDeleteClassesEvent) {
+            ClassInfo[] classes = DbClass.getAllClasses(conn);
+            servletRequest.setAttribute("classes",classes);
+            servletRequest.setAttribute("sideMenu", "adminSideMenu.jsp");
+            servletRequest.getRequestDispatcher("/teacherTools/deleteClasses.jsp").forward(servletRequest, servletResponse);
+        }
+        else if (e instanceof AdminDeleteStudentsEvent) {
+            servletRequest.setAttribute("sideMenu", "adminSideMenu.jsp");
+            servletRequest.getRequestDispatcher("/teacherTools/deleteStudents.jsp").forward(servletRequest, servletResponse);
         }
     }
 }
