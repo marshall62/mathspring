@@ -78,7 +78,7 @@ Main.prototype.clickHandling = function() {
         width: 500,
         height:500,
         buttons: {
-            "OK": function () { interventionDialogClose() ; }
+            "OK": function () { interventionDialogClose("ok") ; }
         }
     });
 

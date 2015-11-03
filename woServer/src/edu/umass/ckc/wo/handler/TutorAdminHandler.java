@@ -42,6 +42,16 @@ public class TutorAdminHandler {
         else if (e instanceof AdminDeleteClassesEvent) {
             ClassInfo[] classes = DbClass.getAllClasses(conn);
             servletRequest.setAttribute("classes",classes);
+            servletRequest.setAttribute("teacherId",-1);    // not needed for this operation
+            servletRequest.setAttribute("sideMenu", "adminSideMenu.jsp");
+            servletRequest.getRequestDispatcher("/teacherTools/deleteClasses.jsp").forward(servletRequest, servletResponse);
+        }
+        else if (e instanceof AdminDeleteClassesSubmitEvent) {
+            ClassInfo[] classes = DbClass.getAllClasses(conn);
+            int[] classesToDelete = ((AdminDeleteClassesSubmitEvent) e).getClassIds();
+            DbClass.deleteClasses(conn,classesToDelete);
+            servletRequest.setAttribute("classes",classes);
+            servletRequest.setAttribute("teacherId",-1);    // not needed for this operation
             servletRequest.setAttribute("sideMenu", "adminSideMenu.jsp");
             servletRequest.getRequestDispatcher("/teacherTools/deleteClasses.jsp").forward(servletRequest, servletResponse);
         }

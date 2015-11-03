@@ -35,7 +35,7 @@
                     <td height="22">${c.school}</td>
                     <td height="22">${c.name}</td>
                     <td height="22">${c.town}</td>
-                    <td height="22"><input type="checkbox" name="class" value="${c.classid}"></td>
+                    <td height="22"><input type="checkbox" name="classToDelete" value="${c.classid}"></td>
                 </tr>
             </c:forEach>
         </table>
@@ -44,7 +44,7 @@
 
 
 
-
+      <input type="hidden" name="teacherId" value="${teacherId}"/>
       <input type="submit" name="delete" value="Do the Delete" />
       <input type="submit" name="clear" value="Clear" />
       <input type="submit" name="Cancel" value="Cancel" />

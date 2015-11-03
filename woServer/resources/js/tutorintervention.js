@@ -184,40 +184,50 @@ function interventionDialogYesClickOld () {
 // This function is used by a Yes/No dialog which should have no HTML form.   The yes button was clicked so we
 // just need to send 'yes' back to the server as userInput
 function interventionDialogYesClick () {
-    sendInterventionDialogYesNoConfirmInputResponse("InputResponseNextProblemIntervention",processNextProblemResult,"yes");
+    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION)
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseNextProblemIntervention",processNextProblemResult,"yes");
+    else
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseAttemptIntervention",processNextProblemResult,"yes");
     doCloseInterventionDialog();
 }
 
 // This function is used by a Yes/No dialog which should have no HTML form.   The no button was clicked so we
 // just need to send 'no' back to the server as userInput
 function interventionDialogNoClick () {
-    sendInterventionDialogYesNoConfirmInputResponse("InputResponseNextProblemIntervention",processNextProblemResult,"no");
+    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION)
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseNextProblemIntervention",processNextProblemResult,"no");
+    else
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseAttemptIntervention",processNextProblemResult,"no");
     doCloseInterventionDialog();
 }
 
+
+// An confirm dialog may or may not have other inputs to send back (e.g. gather some emotion data and click OK)
+// So it must send back all the inputs including the OK
 function interventionDialogOKClick () {
-    interventionDialogClose();
+    interventionDialogClose("ok");
 }
 
 
 
 
-function interventionDialogClose () {
-    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
-    else if (globals.interventionType === ATTEMPT_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
+function interventionDialogClose (userInput) {
+    // NO LONGER HAVE Continue events
+//    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && !globals.isInputIntervention)
+//        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
+//    else if (globals.interventionType === ATTEMPT_INTERVENTION && !globals.isInputIntervention)
+//        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
 
     // If closing down an intervention dialog for next problem we send the InputResponse event and ask processNextProblemResult
     // to handle what the server returns.   For attempts we send InputResponse event but, FOR NOW, we don't expect the server
     // to return anything so no callback is given.
     // TODO We may want to actually do something based on an input response intervention dialog on attempts so we'd need some
     // kind of handler in place that can react to what the server returns.
-    else if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && globals.isInputIntervention)
-        sendInterventionDialogInputResponse("InputResponseNextProblemIntervention",processNextProblemResult);
+    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && globals.isInputIntervention)
+        sendInterventionDialogInputResponse("InputResponseNextProblemIntervention",userInput, processNextProblemResult);
 
     else if (globals.interventionType === ATTEMPT_INTERVENTION && globals.isInputIntervention)
-        sendInterventionDialogInputResponse("InputResponseAttemptIntervention");
+        sendInterventionDialogInputResponse("InputResponseAttemptIntervention", userInput);
     doCloseInterventionDialog();
 
 }
@@ -270,11 +280,14 @@ function openInterventionDialog (title, html, type) {
 }
 
 
-
-function sendInterventionDialogInputResponse (event, fn) {
+// The userInput will be what the user did to close the dialog (e.g. "ok") so that if form-inputs are not present
+// this value is what matters to the server.
+function sendInterventionDialogInputResponse (event, userInput, fn) {
+    // If the dialog contains an HTML form, this gets the values of the form inputs and creates the URL parameters for them
     var formInputs = $("#"+INPUT_RESPONSE_FORM).serialize() ;
     incrementTimers(globals);
-    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime  + "&destination="+globals.destinationInterventionSelector,fn)
+    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime  +
+        "&destination="+globals.destinationInterventionSelector + "&userInput="+userInput, fn)
 }
 
 /**

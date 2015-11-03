@@ -1132,4 +1132,10 @@ public class DbClass {
                 stmt.close();
         }
     }
+
+    public static void deleteClasses(Connection conn, int[] classesToDelete) throws SQLException {
+        for (int c : classesToDelete) {
+            DbClass.deleteClass(conn,c);
+        }
+    }
 }
