@@ -1,18 +1,18 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
 import edu.umass.ckc.wo.PartnerManager;
+import edu.umass.ckc.wo.db.DbCollaborationLogging;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.interventions.FinishCollaborationIntervention;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
-import edu.umass.ckc.wo.tutor.response.InterventionInputProcessed;
-import edu.umass.ckc.wo.tutor.response.ProblemResponse;
-import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutor.response.*;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 
 import java.sql.SQLException;
 
@@ -41,6 +41,11 @@ public class CollabPedagogicalModel extends BasePedagogicalModel {
         int studId = smgr.getStudentId();
         if(isCollaborating(studId)){
             PartnerManager.removeRequest(studId);
+            DbCollaborationLogging.saveEvent(smgr.getConnection(), smgr.getStudentId(), 0, null, "FinishCollaborationIntervention");
+            //TODO This is a little odd because it sends the response to the CollaborationPartnerIS instead of the CollaborationOriginatorIS, which works fine, and avoids code duplication, but seems inconsistent.
+            //TODO If we want to change it later, the weirdness happens in the intervhandles.js file
+            Intervention interv = new FinishCollaborationIntervention();
+            return new InterventionResponse(interv);
         }
         return super.processNextProblemRequest(e);
     }

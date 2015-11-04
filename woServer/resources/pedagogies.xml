@@ -1437,6 +1437,9 @@ JakeNoSPPButton-->
         <provideInSimpleConfig name="Dynamic Pedagogy for Testing">true</provideInSimpleConfig>
         <comment>Testing Dynamic Pedagogies</comment>
         <pedagogicalModelClass>DynamicPedagogicalModel</pedagogicalModelClass>
+        <switchers>
+            <switcher class="RandomSwitcher"/>
+        </switchers>
         <studentModels>
             <studentModelClass>AffectStudentModel</studentModelClass>
             <studentModelClass>BaseStudentModel</studentModelClass>
@@ -1501,12 +1504,12 @@ JakeNoSPPButton-->
         <provideInSimpleConfig name="Dynamic Pedagogy for Testing">true</provideInSimpleConfig>
         <comment>Testing Dynamic Pedagogies</comment>
         <pedagogicalModelClass>DynamicPedagogicalModel</pedagogicalModelClass>
-        <switchers>
-            <switcher>RandomSwitcher</switcher>
-        </switchers>
         <studentModels>
             <studentModelClass>AffectStudentModel</studentModelClass>
         </studentModels>
+        <switchers>
+            <switcher>RandomSwitcher</switcher>
+        </switchers>
         <problemSelectors>
             <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
         </problemSelectors>
