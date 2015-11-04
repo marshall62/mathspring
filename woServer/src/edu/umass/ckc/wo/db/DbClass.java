@@ -35,7 +35,7 @@ public class DbClass {
         try {
             String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
                     "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade," +
-                    "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate from class c, classconfig f" +
+                    "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate, f.showPostSurvey from class c, classconfig f" +
                     " where c.id=? and f.classid=c.id";
             s = conn.prepareStatement(q);
             s.setInt(1, classId);
@@ -62,6 +62,7 @@ public class DbClass {
                 String simpleLowDiff = rs.getString(19);
                 String simpleHighDiff = rs.getString(20);
                 String simpleDiffRate = rs.getString(21);
+                boolean showPostSurvey = rs.getBoolean(22);
                 ClassInfo ci = new ClassInfo(sch, yr, name, town, sec, classId, teacherId, teacherName, propgroupid, logType,
                         pretestPoolId, emailInterval, statusReportPeriodDays, studentEmailIntervalDays,
                         studentEmailPeriodDays,flashClient,grade);
@@ -70,9 +71,66 @@ public class DbClass {
                 ci.setSimpleLowDiff(simpleLowDiff);
                 ci.setSimpleHighDiff(simpleHighDiff);
                 ci.setSimpleDiffRate(simpleDiffRate);
+                ci.setShowPostSurvey(showPostSurvey);
                 return ci;
             }
             return null;
+        } finally {
+            if (s != null)
+                s.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static ClassInfo[] getAllClasses(Connection conn) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement s = null;
+
+        try {
+            List<ClassInfo> classes = new ArrayList<ClassInfo>();
+            String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
+                    "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade," +
+                    "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate, f.showPostSurvey, c.id from class c, classconfig f" +
+                    " where f.classid=c.id order by c.teacher";
+            s = conn.prepareStatement(q);
+            rs = s.executeQuery();
+            while (rs.next()) {
+                int teacherId = rs.getInt(1);
+                String sch = rs.getString(2);
+                int yr = rs.getInt(3);
+                String name = rs.getString(4);
+                String town = rs.getString(5);
+                String sec = rs.getString(6);
+                String teacherName = rs.getString(7);
+                int propgroupid = rs.getInt(8);
+                int logType = rs.getInt(9);
+                int pretestPoolId = rs.getInt(10);
+                int emailInterval = rs.getInt(11);
+                int statusReportPeriodDays = rs.getInt(12);
+                int studentEmailPeriodDays = rs.getInt(13);
+                int studentEmailIntervalDays = rs.getInt(14);
+                String flashClient = rs.getString(15); // k12 or college
+                String grade = rs.getString(16); // grade
+                String simpleLc = rs.getString(17);
+                String simpleCollab = rs.getString(18);
+                String simpleLowDiff = rs.getString(19);
+                String simpleHighDiff = rs.getString(20);
+                String simpleDiffRate = rs.getString(21);
+                boolean showPostSurvey = rs.getBoolean(22);
+                int classId = rs.getInt(23);
+                ClassInfo ci = new ClassInfo(sch, yr, name, town, sec, classId, teacherId, teacherName, propgroupid, logType,
+                        pretestPoolId, emailInterval, statusReportPeriodDays, studentEmailIntervalDays,
+                        studentEmailPeriodDays,flashClient,grade);
+                ci.setSimpleLC(simpleLc);
+                ci.setSimpleCollab(simpleCollab);
+                ci.setSimpleLowDiff(simpleLowDiff);
+                ci.setSimpleHighDiff(simpleHighDiff);
+                ci.setSimpleDiffRate(simpleDiffRate);
+                ci.setShowPostSurvey(showPostSurvey);
+                classes.add(ci);
+            }
+            return classes.toArray(new ClassInfo[classes.size()]);
         } finally {
             if (s != null)
                 s.close();
@@ -221,28 +279,28 @@ public class DbClass {
         }
     }
 
-    public static ClassInfo[] getAllClasses (Connection conn) throws SQLException {
-        ResultSet rs=null;
-        PreparedStatement stmt=null;
-        try {
-            List<ClassInfo> result = new ArrayList<ClassInfo>();
-            String q = "select id from class";
-            stmt = conn.prepareStatement(q);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                int classId= rs.getInt(1);
-                ClassInfo ci = getClass(conn,classId);
-                result.add(ci);
-            }
-            return result.toArray(new ClassInfo[result.size()]);
-        }
-        finally {
-            if (stmt != null)
-                stmt.close();
-            if (rs != null)
-                rs.close();
-        }
-    }
+//    public static ClassInfo[] getAllClasses (Connection conn) throws SQLException {
+//        ResultSet rs=null;
+//        PreparedStatement stmt=null;
+//        try {
+//            List<ClassInfo> result = new ArrayList<ClassInfo>();
+//            String q = "select id from class";
+//            stmt = conn.prepareStatement(q);
+//            rs = stmt.executeQuery();
+//            while (rs.next()) {
+//                int classId= rs.getInt(1);
+//                ClassInfo ci = getClass(conn,classId);
+//                result.add(ci);
+//            }
+//            return result.toArray(new ClassInfo[result.size()]);
+//        }
+//        finally {
+//            if (stmt != null)
+//                stmt.close();
+//            if (rs != null)
+//                rs.close();
+//        }
+//    }
 
     // rewrote the method below so that it uses the getClass method to get each ClassInfo object.
     // This makes this method compatible with the ClassInfo objects built by getClass.
@@ -695,7 +753,7 @@ public class DbClass {
 
     public static ClassConfig getClassConfig(Connection conn, int classId) throws SQLException {
         String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey" +
-                ",presurveyurl,postsurveyurl from classconfig where classId=?";
+                ",presurveyurl,postsurveyurl,postsurveywaittime from classconfig where classId=?";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classId);
         ResultSet rs = ps.executeQuery();
@@ -710,7 +768,8 @@ public class DbClass {
             boolean showPostSurvey = rs.getBoolean("showPostSurvey");
             String presurveyurl = rs.getString("presurveyurl");
             String postsurveyurl = rs.getString("postsurveyurl");
-            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl, postsurveyurl);
+            int postsurveyWaitTime = rs.getInt("postSurveyWaitTime");
+            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl, postsurveyurl, postsurveyWaitTime);
         } else return null;
     }
 
@@ -947,9 +1006,12 @@ public class DbClass {
         else return -1;
     }
 
+
     // get topics marked active and that have problems mapped to them
     public static List<Integer> getClassLessonTopics(Connection conn, int classID) throws SQLException {
-        String q = "select p.seqPos, p.probGroupId from ClassLessonPlan p, problemGroup t where p.seqpos >= 0 and p.classId=? and t.id=p.probGroupId and t.active=1 and t.id in (select distinct pgroupid from probprobgroup) order by p.seqPos";
+        String q = "select p.seqPos, p.probGroupId from ClassLessonPlan p, problemGroup t where p.seqpos >= 0 " +
+                "and p.classId=? and t.id=p.probGroupId and t.active=1 and t.id in" +
+                " (select distinct pgroupid from probprobgroup) order by p.seqPos";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classID);
         ResultSet rs = ps.executeQuery();
@@ -1055,5 +1117,25 @@ public class DbClass {
                 stmt.close();
         }
 
+    }
+
+    public static void setClassConfigShowPostSurvey(Connection conn, int classId, boolean showPostSurvey) throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            String q = "update classconfig set showPostSurvey=? where classid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setBoolean(1, showPostSurvey);
+            stmt.setInt(2, classId);
+            stmt.executeUpdate();
+        } finally {
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
+    public static void deleteClasses(Connection conn, int[] classesToDelete) throws SQLException {
+        for (int c : classesToDelete) {
+            DbClass.deleteClass(conn,c);
+        }
     }
 }

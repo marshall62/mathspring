@@ -155,11 +155,19 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
         if ( (this.mode.equals(ASK) && input != null && input.equalsIgnoreCase("yes")) || this.mode.equals(FORCE) ) {
             int xactId = state.getExternalActivityId();
             ExternalActivity ea = DbExternalActivity.getExternalActivity(smgr.getConnection(),xactId);
+            // Sets userInput XML in the intervention so that the logger can put it into the userInput field of the eventlog
+            if (input.equalsIgnoreCase("yes"))
+                setUserInput(this, "<userResponse><![CDATA[yes]]></userResponse>", e);
+            else
+                setUserInput(this, "<userResponse><![CDATA[ok]]></userResponse>", e);
             ea.setInstructions(null);  // this will indicate to the client code that it should show the activity rather than instructions.
             return new InterventionResponse(ea); }
-        else
+        else  {
+            setUserInput(this, "<userResponse><![CDATA[no]]></userResponse>", e);
             return null;
+        }
     }
+
 
 
 

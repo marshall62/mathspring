@@ -574,6 +574,8 @@ public class Problem implements Activity {
         return status.equals(TESTABLE_STATUS);
     }
 
+
+
     public boolean isShortAnswer () {
         return this.questType == QuestType.shortAnswer;
     }

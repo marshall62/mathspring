@@ -141,20 +141,20 @@
 
 
         function challengeComplete (topicId) {
-            window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&mode=challenge&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
+            window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&eventCounter=${eventCounter + 1}&mode=challenge&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
 
         }
 
         function tryThisComplete (topicId) {
-            window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&mode=continue&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
+            window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&eventCounter=${eventCounter + 1}&mode=continue&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
         }
 
         function continueComplete (topicId) {
-            window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&mode=continue&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
+            window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&eventCounter=${eventCounter + 1}&mode=continue&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
         }
 
         function reviewComplete (topicId) {
-           window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&mode=review&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
+           window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=' +topicId+ '&eventCounter=${eventCounter + 1}&mode=review&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';
 
         }
 
@@ -193,7 +193,7 @@
 
             $("#plantLink_${ts.topicId}").click(function(){
 
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId="+currentTopicId+"&studentAction=plantClicked&comment=");
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId="+currentTopicId+"&studentAction=plantClicked&comment=");
 
                 problemsDoneWithEffort=${ts.problemsDoneWithEffort};
 
@@ -216,7 +216,7 @@
 
             $("#masteryBar_${ts.topicId}").click(function(){
 
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId="+currentTopicId+"&studentAction=masteryBarClicked&comment=");
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId="+currentTopicId+"&studentAction=masteryBarClicked&comment=");
 
                var position = $("#masteryBar_${ts.topicId}").position();
 
@@ -238,30 +238,30 @@
 
             $("#continue_${ts.topicId}").click(function(){
                 if (useHybridTutor)
-                    window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=continue&comment=";
-                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=continue&comment=",continueComplete(${ts.topicId}));
+                    window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=continue&comment=";
+                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=continue&comment=",continueComplete(${ts.topicId}));
 
             });
 
             $("#review_${ts.topicId}").click(function(){
                 if (useHybridTutor)
-                     window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=review&comment=";
-                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=review&comment=",reviewComplete(${ts.topicId}));
+                     window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&comment=";
+                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&comment=",reviewComplete(${ts.topicId}));
                 <%--window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=${ts.topicId}&mode=review&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';--%>
             });
 
             $("#challenge_${ts.topicId}").click(function(){
                 if (useHybridTutor)
-                    window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=challenge&comment=";
-                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=challenge&comment=", challengeComplete(${ts.topicId}));
+                    window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&comment=";
+                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&comment=", challengeComplete(${ts.topicId}));
                 <%--window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=${ts.topicId}&mode=challenge&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';--%>
             });
 
             $("#tryThis_${ts.topicId}").click(function(){
                 if (useHybridTutor)
-                     window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=tryThis&comment=";
+                     window.location = "${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=tryThis&comment=";
 
-                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&topicId=${ts.topicId}&studentAction=tryThis&comment=",tryThisComplete(${ts.topicId}));
+                else $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=tryThis&comment=",tryThisComplete(${ts.topicId}));
                 <%--window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&topicId=${ts.topicId}&mode=continue&elapsedTime='+updateElapsedTime()+'&learningChoice=true&learningCompanion=${learningCompanion}';--%>
             });
 
@@ -296,7 +296,7 @@
             $("#submitCommentButton").click(function(){
 
                 var comment = document.commentForm.commentTextArea.value;
-                $.get("TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId="+currentTopicId+"&studentAction=saveComment&comment="+comment);
+                $.get("TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId="+currentTopicId+"&eventCounter=${eventCounter + 1}&studentAction=saveComment&comment="+comment);
                 $("#commentHolder").slideUp("fast");
 
 
@@ -321,7 +321,7 @@
 
             $("#submitPlantCommentButton").click(function(){
                 var comment = document.plantCommentForm.commentTextArea.value;
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId="+currentTopicId+"&studentAction=savePlantComment&comment="+comment);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId="+currentTopicId+"&studentAction=savePlantComment&comment="+comment);
                 $("#plantCommentHolder").fadeOut("slow");
 
                 if (comment!="" ) {
@@ -371,10 +371,10 @@
                 updateElapsedTime();
                 <%--window.location =  "${pageContext.request.contextPath}/mathspring.jsp";--%>
                 if (useHybridTutor)
-                    window.location =  "${pageContext.request.contextPath}/TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}&topicId=" +currentTopicId+"&probId=" + currentProblemId +
+                    window.location =  "${pageContext.request.contextPath}/TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=" +currentTopicId+"&probId=" + currentProblemId +
                         "&studentAction=backToSatHut&elapsedTime="+elapsedTime+ "&probElapsedTime="+probElapsedTime+"&learningCompanion=${learningCompanion}";
                 else
-                    $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}&topicId="+currentTopicId+"&studentAction=backToSatHut&comment=",returnToHutComplete);
+                    $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId="+currentTopicId+"&studentAction=backToSatHut&comment=",returnToHutComplete);
 
             });
 
@@ -453,8 +453,8 @@
 
                 var comment = document.performanceFeedbackForm.commentTextArea.value;
 
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=savePerformanceUserChoice&comment="+userChoice);
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=savePerformanceComment&comment="+comment);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=0&studentAction=savePerformanceUserChoice&comment="+userChoice);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=0&studentAction=savePerformanceComment&comment="+comment);
 
                  $("#performanceReadMore").fadeOut("slow").slideUp(300);
 
@@ -486,8 +486,8 @@
 
                 var comment = document.progressFeedbackForm.commentTextArea.value;
 
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=saveProgressUserChoice&comment="+userChoice);
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=saveProgressComment&comment="+comment);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&eventCounter=${eventCounter + 1}&studentAction=saveProgressUserChoice&comment="+userChoice);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&eventCounter=${eventCounter + 1}&studentAction=saveProgressComment&comment="+comment);
 
                 $("#progressReadMore").fadeOut("slow").slideUp(300);
 
@@ -518,8 +518,8 @@
 
                 var comment = document.remarksFeedbackForm.commentTextArea.value;
 
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=saveRemarksUserChoice&comment="+userChoice);
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=saveRemarksComment&comment="+comment);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&eventCounter=${eventCounter + 1}&studentAction=saveRemarksUserChoice&comment="+userChoice);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&eventCounter=${eventCounter + 1}&studentAction=saveRemarksComment&comment="+comment);
 
                 $("#remarksReadMore").fadeOut("slow").slideUp(300);
 
@@ -551,8 +551,8 @@
                 var comment = document.masteryBarCommentForm.commentTextArea.value;
 
 
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=saveRemarksUserChoice&comment="+userChoice);
-                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&studentAction=saveRemarksComment&comment="+comment);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&eventCounter=${eventCounter + 1}&studentAction=saveRemarksUserChoice&comment="+userChoice);
+                $.get("${pageContext.request.contextPath}/TutorBrain?action=SaveComment&sessionId=${sessionId}&topicId=0&eventCounter=${eventCounter + 1}&studentAction=saveRemarksComment&comment="+comment);
 
 
                 if (comment!="" || userChoice!="" ) {
@@ -677,7 +677,7 @@
                         <td align="center" valign="bottom"  class="plant_wrapper"> <a href="#" id=${plantLink}><div id=${plantDiv}></div></a></td>
 
                         <td class="performance">Mastery Level<a href="#" id="masteryBar_${topicId}"><div id=${masteryChartDiv}></div></a><div id=${problemsDiv}></div>
-                            <a href="#" id="LearnMore" onclick="window.location='${pageContext.request.contextPath}/TutorBrain?action=TopicDetail&sessionId=${sessionId}&elapsedTime='+updateElapsedTime()+'&mastery=${ts.mastery}&topicId=${ts.topicId}&topicName=${topicName}&problemsDone=${ts.problemsDone}&totalProblems=${ts.totalProblems}'" class="littleLink"  >Learn More &gt;</a><!---<div id="problemCards"   rel="performanceDetails" style="height:70px;position:absolute;width:350px;" ><ul id="wrapperList"><li><table  ></table></li></ul></div> -->
+                            <a href="#" id="LearnMore" onclick="window.location='${pageContext.request.contextPath}/TutorBrain?action=TopicDetail&sessionId=${sessionId}&elapsedTime='+updateElapsedTime()+'&mastery=${ts.mastery}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&topicName=${topicName}&problemsDone=${ts.problemsDone}&totalProblems=${ts.totalProblems}'" class="littleLink"  >Learn More &gt;</a><!---<div id="problemCards"   rel="performanceDetails" style="height:70px;position:absolute;width:350px;" ><ul id="wrapperList"><li><table  ></table></li></ul></div> -->
                         </td>
 
                         <td valign="top" class="remarks"> <div id=${remarksDiv}  > </div> <a href="#" class="littleLink" id=${commentLink} ><img src="img/commentIcon.png"  height="14">Comment &gt;</a></td>

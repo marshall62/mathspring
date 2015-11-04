@@ -13,7 +13,11 @@
 <script type="text/javascript">
 
     function validateReload() {
-          confirm("You are about to reload all the problems in the tutor. Are you sure you want to proceed?")
+        return confirm("You are about to reload all the problems in the tutor. Are you sure you want to proceed?")
+    }
+
+    function validateDelete(thing) {
+        return confirm("Deleting " + thing + " can cause loss of research data. Are you sure you want to proceed?")
     }
 
 </script>
@@ -30,9 +34,12 @@
         <p class="a2"><font color="#000000"><b><font face="Arial, Helvetica, sans-serif">Administrate Tutor</font></b></font></p>
         <form name="form1" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSubmitClassForm">
 
-            <p/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminReloadProblems&teacherId=${teacherId}" onclick="return validateReload()">Reload Problems</a>
-            <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
+
+            <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>"><p/>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminReloadProblems&teacherId=${teacherId}" onclick="return validateReload()">Reload Problems...</a> <br>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteClasses&teacherId=${teacherId}" onclick="return validateDelete('classes')" >Delete Classes</a>    <br>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteTeachers&teacherId=${teacherId}" onclick="return validateDelete('teachers')">Delete Teachers</a>    <br>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteStudents&teacherId=${teacherId}" onclick="return validateDelete('students')" >Delete Students</a>    <br>
             <p><c:out value="${message}"/></p>
         </form>
         <form style="display:inline" name="form2" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminMainPage&teacherId=<c:out value="${teacherId}"/>">

@@ -20,7 +20,7 @@
 .a2 A:active {text-decoration: none} 
 .a2 A:hover {text-decoration: underline; color: blue;}
   </style>
-<title>MCAS Prep: Teacher Tools</title>
+<title>Mathspring: Teacher Tools</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <script language="JavaScript">
 <!--
@@ -37,8 +37,17 @@ MM_reloadPage(true);
 <script language="JavaScript" src="slider.js"></script>
 </head>
 
+
+<c:choose>
+<c:when test="${isAdmin}">
+<body bgcolor="#CECEFF" text="#FFFFFF">
+</c:when>
+<c:otherwise>
 <body bgcolor="#FFF0A3" text="#FFFFFF">
 <img alt="none" src='<c:out value="${pageContext.request.contextPath}"/>/images/EDcover-design.png'/>
+</c:otherwise>
+</c:choose>
+
 
 
 

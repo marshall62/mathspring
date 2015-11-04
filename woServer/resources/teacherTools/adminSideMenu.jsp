@@ -13,7 +13,7 @@ March 20, 2012
 <head>
     <meta charset="utf-8">
 
-    <title>Mathspring Administrator Tools   </title>
+    <title>Mathspring Administrator Tools</title>
 
     <link href="css/adminMan.css" rel="stylesheet" type="text/css">
     <link href="css/p7ccm/p7ccm03.css" rel="stylesheet" type="text/css" media="all">
@@ -91,6 +91,7 @@ March 20, 2012
                                     <c:if test="${teacherId > 0}">
                                         <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminCreateNewClass&teacherId=${teacherId}">Create Class</a></li>
                                     </c:if>
+                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminTeacherRegistration">Create Teacher</a></li>
                                     <li><a href="#">Edit Classes/Topics</a>
                                         <div>
                                             <ul>
@@ -100,6 +101,7 @@ March 20, 2012
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}"> Problem Selection </a></li>
                                                 <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPretest&teacherId=${teacherId}&classId=${classId}">Pre and Post Tests</a></li>--%>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPedagogies&teacherId=${teacherId}&classId=${classId}">Pedagogy Selection</a></li>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPrePost&teacherId=${teacherId}&classId=${classId}">Pre/Post Surveys</a></li>
                                                 <%--<li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassActivateHuts&teacherId=${teacherId}&classId=${classId}">Hut Activation</a></li>--%>
 
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditClassList&teacherId=${teacherId}&classId=${classId}">Student List </a></li>

@@ -137,13 +137,13 @@ public class WoTutorServlet extends BaseServlet {
     protected boolean handleRequest(ServletContext servletContext, Connection conn, HttpServletRequest request,
                                     HttpServletResponse response, ServletParams params, StringBuffer servletOutput) throws Exception {
         try {
-            logger.info(">>" + params.toString());
+            logger.debug(">>" + params.toString());
             setHostAndContextPath(this.getServletName(),servletContext,request);
             ServletInfo servletInfo = new ServletInfo(servletContext,conn, request, response, params, servletOutput, hostPath, contextPath, this.getServletName());
 //            boolean res = new TutorBrainHandler(servletContext, conn, request, response, params, servletOutput, this.hostPath, this.contextPath).handleRequest();
             boolean res = new TutorBrainHandler(servletInfo).handleRequest();
             if (res)
-                logger.info("<<" + servletOutput.toString());
+                logger.debug("<<" + servletOutput.toString());
             return res;
         }
         catch (AssistmentsBadInputException e) {
@@ -154,7 +154,7 @@ public class WoTutorServlet extends BaseServlet {
             return false;
         }
         catch (Throwable e) {
-            logger.info("", e);
+            logger.debug("Caught Throwable", e);
             e.printStackTrace();  //To change body of catch statement use Options | File Templates.
             servletOutput.append("ack=false&message=" + e.getMessage());
             return true;
