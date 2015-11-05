@@ -86,7 +86,7 @@ March 20, 2012
                         <div class="leftNav">
                             <div id="p7TMM_1" class="p7TMM10">
                                 <ul class="p7TMM">
-                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminUpdateClassId&teacherId=${teacherId}&classId=${classId}">Main</a></li>
+                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminMainPage&teacherId=${teacherId}&classId=${classId}">Main</a></li>
 
                                     <c:if test="${teacherId > 0}">
                                         <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminCreateNewClass&teacherId=${teacherId}">Create Class</a></li>

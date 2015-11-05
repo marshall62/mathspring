@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
     function validateDelete() {
-        return confirm("Deleting classes can cause loss of research data. Are you sure you want to proceed?")
+        return confirm("Deleting teachers can cause loss of research data. Are you sure you want to proceed?")
     }
 </script>
 
@@ -24,25 +24,25 @@
 
 
 <div id="Layer1" align="center">
-  <p class="a2"><b><font face="Arial, Helvetica, sans-serif">Class Deletion</font></b></p>
-    <form name="form1" method="post" onsubmit="return validateDelete();" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminDeleteClassesSubmit">
-        <p>Select the classes you want to delete:</p>
+  <p class="a2"><b><font face="Arial, Helvetica, sans-serif">Teacher Deletion</font></b></p>
+    <form name="form1" method="post" onsubmit="return validateDelete();"
+          action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminDeleteTeachersSubmit">
+        <p>Select the teachers you want to delete:</p>
         <table width="70%" border="1">
             <tr>
                 <td height="22">Teacher</td>
-                <td height="22">School</td>
-                <td height="22">Class</td>
-                <td height="22">Town</td>
+                <td height="22">ID</td>
+                <td height="22">Classes</td>
                 <td height="22">Choose</td>
             </tr>
             <%--@elvariable id="c" type="edu.umass.ckc.wo.beans.ClassInfo"--%>
-            <c:forEach var="c" items="${classes}">
+            <%--@elvariable id="t" type="edu.umass.ckc.wo.beans.Teacher"--%>
+            <c:forEach var="t" items="${teachers}">
                 <tr>
-                    <td height="22">${c.teacherName}</td>
-                    <td height="22">${c.school}</td>
-                    <td height="22">${c.name}</td>
-                    <td height="22">${c.town}</td>
-                    <td height="22"><input type="checkbox" name="classToDelete" value="${c.classid}"></td>
+                    <td height="22">${t.name}</td>
+                    <td height="22">${t.id}</td>
+                    <td height="22">${t.classes.size}</td>
+                    <td height="22"><input type="checkbox" name="teacherToDelete" value="${t.id}"></td>
                 </tr>
             </c:forEach>
         </table>

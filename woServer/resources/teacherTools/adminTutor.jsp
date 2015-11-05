@@ -37,9 +37,9 @@
 
             <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>"><p/>
             <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminReloadProblems&teacherId=${teacherId}" onclick="return validateReload()">Reload Problems...</a> <br>
-            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteClasses&teacherId=${teacherId}" onclick="return validateDelete('classes')" >Delete Classes</a>    <br>
-            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteTeachers&teacherId=${teacherId}" onclick="return validateDelete('teachers')">Delete Teachers</a>    <br>
-            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteStudents&teacherId=${teacherId}" onclick="return validateDelete('students')" >Delete Students</a>    <br>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteClasses&teacherId=${teacherId}"  >Delete Classes</a>    <br>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteTeachers&teacherId=${teacherId}" >Delete Teachers</a>    <br>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteStudents&teacherId=${teacherId}"  >Delete Students</a>    <br>
             <p><c:out value="${message}"/></p>
         </form>
         <form style="display:inline" name="form2" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminMainPage&teacherId=<c:out value="${teacherId}"/>">

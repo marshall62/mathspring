@@ -1138,4 +1138,38 @@ public class DbClass {
             DbClass.deleteClass(conn,c);
         }
     }
+
+    public static List<Integer> getTeacherClassIds(Connection conn, int teacherId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            List<Integer> result = new ArrayList<Integer>();
+            String q = "select id from class where teacherId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,teacherId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int classId= rs.getInt(1);
+                result.add(classId);
+            }
+            return result;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+
+    }
+
+    public static final List<ClassInfo> getTeacherClasses (Connection conn, int teacherId) throws SQLException {
+        List<Integer> cids = getTeacherClassIds(conn,teacherId);
+        List<ClassInfo> results = new ArrayList<ClassInfo>();
+        for (int cid: cids) {
+            ClassInfo ci = getClass(conn,cid);
+            results.add(ci);
+        }
+        return results;
+    }
 }

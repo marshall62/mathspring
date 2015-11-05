@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import java.io.Serializable;
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -29,6 +31,7 @@ public class Teacher implements Serializable {
     private String lname;
     private String userName;
     private String password;
+    private List<ClassInfo> classes;
 
     public Teacher() {
     }
@@ -101,5 +104,13 @@ public class Teacher implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setClasses (List<ClassInfo> classes) {
+        this.classes = classes;
+    }
+
+    public List<ClassInfo> getClasses () {
+        return this.classes;
     }
 }
