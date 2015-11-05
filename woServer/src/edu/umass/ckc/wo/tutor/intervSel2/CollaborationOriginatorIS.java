@@ -88,12 +88,13 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         else if(option != null && (option.equals("No") || option.equals("No_alone") || option.equals("No_decline"))){
             PartnerManager.decline(smgr.getStudentId());
 //            rememberInterventionSelector(this);
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationConfirmationIntervention");
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationDeclined");
             return null;
         }
         // When originator clicks the OK button to start working together with the partner this returns null so that next problem
         // is selected.
         else{
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "StartProblem");
             return null;
         }
     }

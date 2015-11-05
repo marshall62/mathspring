@@ -199,6 +199,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         e.setCorrect(isCorrect);
         // first update the student model so that intervention selectors have access to latest stats based on this attempt
         studentModel.studentAttempt(smgr.getStudentState(), e.getUserInput(), isCorrect, e.getProbElapsedTime());
+
         AttemptResponse r = (AttemptResponse) lessonModel.processUserEvent(e); // this should always return null
 
         Intervention intervention=null;
@@ -432,7 +433,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 if (showAsDemo) {
                     new TutorModelUtils().setupDemoProblem(p,smgr,hintSelector);
                 }
-                else smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
+                //elsesmgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
             }
         }
         if (p != null)
@@ -476,7 +477,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         // TODO We've got topic stuff built in here that is difficult to extract and move to the LessonModel.   It's figuring out
         // what mode the problem should be returned in (practice or demo) based on topicModel example frequency for the tutoring strategy
         setProblemTopic(p, topicId);
-        smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
+      //  smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
         if (p != null)
             studentModel.newProblem(state,p);
         problemGiven(p);
