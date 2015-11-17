@@ -21,8 +21,7 @@ function servletGet (action, args, callbackFn) {
         extraArgs += "&" + p + "=" + value;
     }
     debugAlert("The action is: <" + action +">");
-    $.get("/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + extraArgs,
+    $.get(getTutorServletURL(action,extraArgs),
         callbackFn);
 }
 
@@ -32,15 +31,18 @@ function servletPost(action, args, callbackFn) {
         value = args[p];
         extraArgs += "&" + p + "=" + value;
     }
-    $.post("/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + extraArgs,
+    $.post(getTutorServletURL(action,extraArgs),
         callbackFn)
 }
 
 function servletFormPost (action, args, callbackFn) {
-    $.post("/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + "&"+ args,
+    $.post(getTutorServletURL(action,args),
         callbackFn)
+}
+
+function getTutorServletURL (action, args) {
+    return "/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
+        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + "&"+ args ;
 }
 
 // Makes a synchronous call to the server.
@@ -51,8 +53,7 @@ function servletGetWait (action, args, callbackFn) {
         extraArgs += "&" + p + "=" + value;
     }
     debugAlert("The action is: <" + action +">");
-    $.ajax({url: "/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-                + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + extraArgs,
+    $.ajax({url: getTutorServletURL(action,extraArgs),
            success: callbackFn,
            async: false});
 }

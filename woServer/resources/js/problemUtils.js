@@ -3,6 +3,9 @@
  * User: Melissa
  * Date: 12/12/14
  * Time: 6:46 PM
+ *
+ * This file is used only with quickAuth problems.   There is another file with the same name that lives in the /html5/js folder that does a
+ * similar thing for Edge problems.
  * To change this template use File | Settings | File Templates.     s
  */
 
@@ -10,19 +13,20 @@ var debug=false;
 var isShortAnswer=false;
 var couldNotShuffle = false;
 var maxHints = 10;
+var answer;
+var newAnswer;
 
-function probUtilsInit(doc, multiChoice) {
-    if (typeof multiChoice !== 'undefined')
-        isShortAnswer = !multiChoice;
+function probUtilsInit(doc, components) {
+    isShortAnswer = components.questType === 'shortAnswer'
     if (!isShortAnswer)
-        shuffleAnswers(doc);
+        shuffleAnswers(doc,components);
 }
 
-function shuffleAnswers(doc) {
-    var oldAnswer = window.parent.getAnswer();
-    var newAnswer = window.parent.getNewAnswer();
+function shuffleAnswers(doc, components) {
+    answer = components.answer;
+    newAnswer = components.newAnswer;
 
-    var oldAnsText = getElementCorrespondingToAns(oldAnswer);
+    var oldAnsText = getElementCorrespondingToAns(answer);
     var newAnsText = getElementCorrespondingToAns(newAnswer);
     if (oldAnsText === "" || newAnsText === "" ) {
         couldNotShuffle = true;
@@ -47,7 +51,6 @@ function shuffleAnswers(doc) {
 }
 
 function getElementCorrespondingToAns(ans) {
-    if (window.parent.getForm() === "quickAuth") {
         switch (ans) {
             case "a":
                 return "AnswerA";
@@ -62,30 +65,12 @@ function getElementCorrespondingToAns(ans) {
             default:
                 return "";
         }
-    }
-    else {
-        switch (ans) {
-            case "a":
-                return "AnswerAText";
-            case "b":
-                return "AnswerBText";
-            case "c":
-                return "AnswerCText";
-            case "d":
-                return "AnswerDText";
-            case "e":
-                return "AnswerEText";
-            default:
-                return "";
-        }
-    }
+
 }
 
 function answerClicked (doc, buttonName) {
     if (couldNotShuffle) {
-        oldAnswer = window.parent.getAnswer();
-        newAnswer = window.parent.getNewAnswer();
-        if (oldAnswer && newAnswer && buttonName.toUpperCase() === oldAnswer.toUpperCase()) {
+        if (answer && newAnswer && buttonName.toUpperCase() === answer.toUpperCase()) {
             buttonName = newAnswer.toUpperCase();
         }
     }
@@ -97,9 +82,7 @@ function prob_gradeAnswer (doc, answerChosen, isCorrect, showHint) {
     debugAlert("gradeAnswer got " + isCorrect);
     if (!isShortAnswer) {
         if (couldNotShuffle) {
-            oldAnswer = window.parent.getAnswer();
-            newAnswer = window.parent.getNewAnswer();
-            if (oldAnswer && newAnswer && answerChosen.toUpperCase() === oldAnswer.toUpperCase()) {
+            if (answer && newAnswer && answerChosen.toUpperCase() === answer.toUpperCase()) {
                answerChosen = newAnswer.toUpperCase();
             }
         }
@@ -205,7 +188,6 @@ function stopAudio(){
 }
 
 function getElementCorrespondingToHint(hintLabel){
-    if (window.parent.getForm() === "quickAuth") {
         switch (hintLabel) {
             case "Hint 1":
                 return "Hint1";
@@ -230,14 +212,10 @@ function getElementCorrespondingToHint(hintLabel){
             default:
                 return "";
         }
-    }
-    else{
-        return hintLabel;
-    }
+
 }
 
 function getNextHint(hintLabel){
-    if (window.parent.getForm() === "quickAuth") {
         switch (hintLabel) {
             case "Hint 1":
                 return "Hint2";
@@ -260,8 +238,5 @@ function getNextHint(hintLabel){
             default:
                 return "";
         }
-    }
-    else{
-        return hintLabel;
-    }
+
 }

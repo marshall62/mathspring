@@ -445,7 +445,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        if (p != null && p.getType().equals(Problem.HTML_PROB_TYPE)) {
 //            r.shuffleAnswers(smgr.getStudentState());
 //        }
-        r.setProblemBindings(smgr);
+//        r.setProblemBindings(smgr);
         return r;
 
     }
@@ -483,7 +483,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         problemGiven(p);
 
         r = new ProblemResponse(p);
-        r.setProblemBindings(smgr);
+//        r.setProblemBindings(smgr);
         return r;
     }
 
@@ -606,7 +606,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
             problemGiven(curProb); // inform pedagogical move listeners that a problem is given.
             r = new ProblemResponse(curProb);
-            r.setProblemBindings(smgr);
+//            r.setProblemBindings(smgr);
         }
         else {
             r = ProblemResponse.NO_MORE_PROBLEMS;

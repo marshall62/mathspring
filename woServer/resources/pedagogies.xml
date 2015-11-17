@@ -1125,6 +1125,41 @@ JakeNoSPPButton-->
         <learningCompanionClass>JaneSemiEmpathicLC</learningCompanionClass>
     </pedagogy>
 
+    <pedagogy>
+        <id>18</id>
+        <active>true</active>
+        <name>Streamlined Pedagogy</name>
+        <comment>highlight hint, no LC, No emotion, No external, No topic intros or demos</comment>
+        <pedagogicalModelClass>BasePedagogicalModel</pedagogicalModelClass>
+        <studentModelClass>AffectStudentModel</studentModelClass>
+        <problemSelectorClass>BaseProblemSelector</problemSelectorClass>
+        <reviewModeProblemSelectorClass>ReviewModeProblemSelector</reviewModeProblemSelectorClass>
+        <challengeModeProblemSelectorClass>ChallengeModeProblemSelector</challengeModeProblemSelectorClass>
+        <controlParameters>
+            <!-- number of sessions that determines when solved problems and demos can be given again-->
+            <problemReuseIntervalSessions>6</problemReuseIntervalSessions>
+            <problemReuseIntervalDays>10</problemReuseIntervalDays>
+
+            <!--valid values for the below: true, false.   If true and a MPP nextProblemIntervention selector is present, then MPP is off until the intervention selector
+            turns it on.   If false, intervention selector has no effect - it is always off-->
+            <displayMyProgressPage>true</displayMyProgressPage>
+        </controlParameters>
+
+        <hintSelectorClass>PercentageHintSelector</hintSelectorClass>
+        <lesson>TopicNoIntroNoDemo</lesson>
+        <login>IndividualLogin</login>
+        <package>pedModel2</package>
+        <interventions>
+
+            <interventionSelector onEvent="Attempt" weight="1" class="HighlightHintButtonIS">
+                <config>
+                    <threshold>1</threshold>
+                </config>
+            </interventionSelector>
+        </interventions>
+    </pedagogy>
+
+
 
     <pedagogy default="false">
         <id>41</id>

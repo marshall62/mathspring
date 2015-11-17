@@ -70,6 +70,12 @@
                                             <font color='#000000' face="Arial, Helvetica, sans-serif"><u><c:out value="${problem.name}"/></u></font>
                                         </a>
                                     </c:when>
+                                    <c:when test="${(prob.form != null) && (prob.form=='quickAuth')}">
+                                        <a onclick="window.open('${pageContext.request.contextPath}/WoAdmin?action=AdminGetQuickAuthSkeleton&probId=${problem.id}&teacherId=${teacherId}',
+                                                'ProblemPreview','width=750,height=550,status=yes,resizable=yes');">
+                                            <font color='#000000' face="Arial, Helvetica, sans-serif"><u><c:out value="${problem.name}"/></u></font>
+                                        </a>
+                                    </c:when>
                                     <c:otherwise>
                                         <a onclick="window.open('${html5ProblemURI}${prob.getHTMLDir()}/${problem.resource}','ProblemPreview','width=750,height=550,status=yes,resizable=yes');">
                                             <font color='#000000' face="Arial, Helvetica, sans-serif"><u><c:out value="${problem.name}"/></u></font>

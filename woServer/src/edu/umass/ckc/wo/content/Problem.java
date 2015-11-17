@@ -4,6 +4,7 @@ package edu.umass.ckc.wo.content;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutormeta.Activity;
+import edu.umass.ckc.wo.util.JSONUtil;
 import edu.umass.ckc.wo.util.ProbPlayer;
 import net.sf.json.JSONObject;
 
@@ -25,8 +26,11 @@ public class Problem implements Activity {
         return QuestType.multiChoice;
     }
 
+
+
+
     public enum QuestType {
-        multiChoice,
+        multiChoice ,
         shortAnswer
     }
     public static final String DEMO = "demo";
@@ -56,6 +60,7 @@ public class Problem implements Activity {
     private int exampleID; // an example problem that is used to prepare for this one
     private int[] topicIds; // ids of the problem groups this problems is in
     private List<Topic> topics;
+
     public static final String SAT_PROBLEM="satProblem";
     public static final String ADV_PROBLEM="advProblem";
 
@@ -141,7 +146,8 @@ public class Problem implements Activity {
             this.params = new ProblemParameters(vars);
         this.ssURL = ssURL;
         this.questType = questType;
-        this.statementHTML = statementHTML;
+        // The statementHTML is placed into a JSP file and if there are line breaks it creates a string that is a syntax error.
+        this.statementHTML = JSONUtil.changeSpecialChars(statementHTML);
         this.imageURL = imageURL;
         this.questionAudio = audioResource;
         this.units = units;
@@ -186,6 +192,24 @@ public class Problem implements Activity {
         return "satProblem";
     }
 
+    public String getHintsJSONString () {
+        JSONObject jo = new JSONObject();
+        for (Hint hint : getHints()) {
+            jo.accumulate("hints", hint.getJSON(new JSONObject()));
+        }
+
+        return jo.toString();
+    }
+
+    public String getAnswersJSONString () {
+        JSONObject jo = new JSONObject();
+        for (ProblemAnswer ans : getAnswers()) {
+            jo.accumulate("answers", ans.getJSON(new JSONObject()));
+        }
+
+        return jo.toString();
+    }
+
 
 
     public JSONObject buildJSON(JSONObject jo) {
@@ -215,6 +239,7 @@ public class Problem implements Activity {
             jo.element("questionAudio", questionAudio);
             jo.element("questionImage", imageURL);
             jo.element("units", units);
+            jo.element("questType",this.questType.name());
             for (Hint hint : getHints()) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
@@ -237,6 +262,10 @@ public class Problem implements Activity {
 //        }
         return jo;
 
+    }
+
+    public String getUnits() {
+        return units;
     }
 
     private int getNumNonAnswerHints() {
@@ -536,6 +565,10 @@ public class Problem implements Activity {
         return questionAudio;
     }
 
+    public String getQuestType () {
+        return questType.name();
+    }
+
     public void setQuestionAudio(String questionAudio) {
         this.questionAudio = questionAudio;
     }
@@ -583,4 +616,6 @@ public class Problem implements Activity {
     public boolean isMultiChoice () {
         return this.questType == QuestType.multiChoice;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.content;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.util.JSONUtil;
 import net.sf.json.JSONObject;
 
 import java.sql.SQLException;
@@ -75,9 +76,10 @@ public class Hint  {
         }
 
         if (p != null && p.isQuickAuth()) {
+//            jo.element("statementHTML", JSONUtil.changeSpecialChars(statementHTML));
             jo.element("statementHTML", statementHTML);
             jo.element("audioResource", audioResource);
-            jo.element("hoverText", hoverText);
+            jo.element("hoverText",hoverText);
         }
 
         return jo;
