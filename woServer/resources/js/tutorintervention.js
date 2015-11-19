@@ -41,7 +41,7 @@ function processNextProblemIntervention(activityJSON) {
     else if(interventionType === "CollaborationOriginatorIntervention")
         processCollaborationOriginatorIntervention(activityJSON.html, activityJSON.timeoutwait);
     else if(interventionType === "FinishCollaborationIntervention")
-        processCollaborationFinishedIntervention(activityJSON.html);
+        processCollaborationFinishedIntervention(activityJSON.html, activityJSON.source);
     else if(interventionType === "CollaborationTimedoutIntervention")
         processCollaborationTimedoutIntervention(activityJSON.html);
     else if(interventionType === "CollaborationOptionIntervention")

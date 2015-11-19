@@ -41,10 +41,8 @@ public class CollabPedagogicalModel extends BasePedagogicalModel {
         int studId = smgr.getStudentId();
         if(isCollaborating(studId)){
             PartnerManager.removeRequest(studId);
-            DbCollaborationLogging.saveEvent(smgr.getConnection(), smgr.getStudentId(), 0, null, "FinishCollaborationIntervention");
-            //TODO This is a little odd because it sends the response to the CollaborationPartnerIS instead of the CollaborationOriginatorIS, which works fine, and avoids code duplication, but seems inconsistent.
-            //TODO If we want to change it later, the weirdness happens in the intervhandles.js file
-            Intervention interv = new FinishCollaborationIntervention();
+            DbCollaborationLogging.saveEvent(smgr.getConnection(), smgr.getStudentId(), 0, null, "CollaborationFinishedAlert_Originator");
+            Intervention interv = new FinishCollaborationIntervention("Originator");
             return new InterventionResponse(interv);
         }
         return super.processNextProblemRequest(e);
