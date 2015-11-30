@@ -1,6 +1,16 @@
 package edu.umass.ckc.wo.db;
 
+import edu.umass.ckc.wo.admin.LessonMap;
+import edu.umass.ckc.wo.admin.LoginMap;
+import edu.umass.ckc.wo.admin.PedMap;
+import edu.umass.ckc.wo.admin.PedagogyParser;
+import edu.umass.ckc.wo.config.LessonXML;
+import edu.umass.ckc.wo.config.LoginXML;
+import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.xml.JDOMUtils;
+import org.hibernate.cache.HashtableCache;
+import org.hibernate.property.Dom4jAccessor;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -10,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,16 +32,118 @@ import java.util.List;
  */
 public class DbPedagogy {
     private static Connection conn;
+    private static HashMap<String,Pedagogy> pedsByOldIdMap = new HashMap<String, Pedagogy>();
 
-    public static void main(String[] args) {
+    private static boolean buildMapOfOldIds = false;
+
+    public static LessonMap buildAllLessons (Connection conn) throws Exception {
+        LessonMap m = new LessonMap();
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
         try {
-            DbPedagogy p = new DbPedagogy();
-            DbPedagogy.conn = DbUtil.getAConnection("localhost");
-            readPedagogiesFromFile();
-        } catch (Exception e) {
-            e.printStackTrace();
+            String q = "select name,definition,style from lessonDefinition";
+            stmt = conn.prepareStatement(q);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                String name= rs.getString(1);
+                String xml= rs.getString(2);
+                String style= rs.getString(3);
+                buildLesson(name, style, xml, m);
+            }
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        } 
+        return m;
+    }
+
+    private static void buildLesson(String name, String style, String xml, LessonMap m) throws Exception {
+        Element e = JDOMUtils.getRoot(xml);
+        Element interventions = e.getChild("interventions");
+        Element control = e.getChild("controlParameters");
+        LessonXML lx = new LessonXML(interventions,control,name,style);
+        m.put(name,lx);
+    }
+
+    public static LoginMap buildAllLoginSequences (Connection conn) throws Exception {
+        LoginMap m = new LoginMap();
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select name,definition from loginbehavior";
+            stmt = conn.prepareStatement(q);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                String name= rs.getString(1);
+                String xml= rs.getString(2);
+                buildLogin(name, xml, m);
+            }
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+        return m;
+    }
+
+    private static void buildLogin(String name, String xml, LoginMap m) throws Exception {
+        Element e = JDOMUtils.getRoot(xml);
+        Element interventions = e.getChild("interventions");
+        Element control = e.getChild("controlParameters");
+        LoginXML lx = new LoginXML(interventions,control,name);
+        m.put(name,lx);
+    }
+
+
+    public static PedMap buildAllPedagogies(Connection conn) throws Exception {
+        
+        PedMap pedmap = new PedMap();
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id,isBasic,definition,login,lesson,name,simpleConfigName from pedagogy where active=1";
+            stmt = conn.prepareStatement(q);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int id= rs.getInt(1);
+                boolean isBasic = rs.getBoolean(2);
+                String xml = rs.getString(3);
+                String login = rs.getString(4);
+                String lesson = rs.getString(5);
+                String name = rs.getString(6);
+                String simpleConfigName = rs.getString(6);
+                PedagogyParser pp = new PedagogyParser();
+                Pedagogy ped = pp.parsePed(xml); // Fully instantiated pedagogy based on XML only
+                // now replace the fields from the db into the pedagogy
+                String xmlId = ped.getId();
+                // This supports a one-time-only cleanup operation of setting new pedagogy ids in db tables
+                // This creates a map of oldPedId -> Pedagogy objects for this purpose
+                if (buildMapOfOldIds )
+                    DbPedagogy.pedsByOldIdMap.put(xmlId,ped);
+                ped.setId(Integer.toString(id));
+                ped.setLogin(login);
+                ped.setLesson(lesson);
+                ped.setName(name);
+                // only basic pedagogies should have a simpleConfig name (used in the teacher tools TEACHER view of pedagogies)
+                if (isBasic)
+                    ped.setSimpleConfigName(simpleConfigName);
+               pedmap.put(Integer.toString(id),ped);
+            }
+            return pedmap;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
         }
     }
+
 
     private static void readPedagogiesFromFile() throws FileNotFoundException, SQLException {
         FileInputStream str = new FileInputStream("f:\\dev\\mathspring\\woServer\\resources\\pedagogies.xml");
@@ -91,4 +204,158 @@ public class DbPedagogy {
         }
         return 21;
     }
+
+
+
+    private static void adjustClassPedagogies(Connection conn) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select classId, pedagogyId from classPedagogies";
+            stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int clid= rs.getInt(1);
+                int pedId= rs.getInt(2);
+                Pedagogy ped = pedsByOldIdMap.get(Integer.toString(pedId));
+                // ped still exists so alter the ped in the table
+                if (ped != null)   {
+                    rs.updateInt("pedagogyId",Integer.parseInt(ped.getId()));
+                    rs.updateRow();
+                }
+            }
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+
+    /**
+     * Go through the database tables that ref pedagogy Ids and fix them to use the table ids rather
+     * than the one in the pedagogy XML.   If a pedagogy is refed that can't be found then it must have been
+     * deleted.  In this situation we will set up userpedagogyparameters.overridePedagogy to refer to the ID for
+     * Jane Full empathy (ID 1) so that these users can login
+     * @param conn
+     */
+    private static void adjustStudents(Connection conn) throws SQLException {
+        // for each student, change his pedagogyId (and his override pedagogy if necessary)
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id, pedagogyId, pedIdAdjusted from student";
+            stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int studId= rs.getInt(1);
+                int oldPedId = rs.getInt(2);     // use the old pedId to get the Pedagogy object from a map.
+                boolean hasOldPed = !rs.wasNull() && !(oldPedId <= 0);
+                Pedagogy ped=null;
+                if (hasOldPed)
+                    ped = pedsByOldIdMap.get(Integer.toString(oldPedId));
+                else ped = pedsByOldIdMap.get("1"); // a user with null pedagogyId is set to ped 1.
+                    // found: so replace the student's pedId with the new id which is in the pedagogy object
+                if (ped != null)  {
+                        rs.updateInt("pedagogyId",Integer.parseInt(ped.getId()));
+                        rs.updateBoolean("pedIdAdjusted", true);
+                        rs.updateRow();
+                        // change teh pedagogygroup table <classId,studId,pedId> so that it has the right pedId
+                        // not really necessary- this is what allows peds to be automatically assigned
+                        setPedagogyGroup(conn,studId,oldPedId,ped.getId() );
+                    }
+                // student uses a pedagogy that was deleted (presumably), so we leave it alone for historical purposes.
+                // But we do set the student's override pedagogy (in userpedagogyparameters) to a pedagogy that does exist
+                // Issue:  what if the student already has an override pedagogy (from assistments)?   - I guess we blow it away
+                else {
+                    rs.updateBoolean("pedIdAdjusted",true);
+                    rs.updateRow();
+                    setStudentOverridePedagogy(conn,studId,1); // set the students override pedagogy to 1.
+                }
+            }
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    private static void setPedagogyGroup(Connection conn, int studId, int oldPedId, String newPedId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select classId,pedagogyId,studId from pedagogyGroup where pedagogyId=? and studId=?";
+            stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmt.setInt(1,studId);
+            stmt.setInt(2,oldPedId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                int p= rs.getInt(2);
+                int s= rs.getInt(3);
+                rs.updateInt("pedagogyId",Integer.parseInt(newPedId));
+                rs.updateRow();
+            }
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    private static void setStudentOverridePedagogy(Connection conn, int studId, int pedId) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q = "select studId, overridePedagogy from userPedagogyParameters where studId=?";
+            ps = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ps.setInt(1, studId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                rs.getInt(1);
+                int opedId = rs.getInt(2);  // If there is one there, it's the one that assistment users were using.
+                if (rs.wasNull()) {
+                    rs.updateInt("overridePedagogy",pedId);
+                    rs.updateRow();
+                }
+                else {     // convert the id of the overriding pedagogy that assistments users were set to.
+                    Pedagogy ped = pedsByOldIdMap.get(Integer.toString(opedId));
+                    rs.updateInt("overridePedagogy",Integer.parseInt(ped.getId()));
+                    rs.updateRow();
+                }
+            }
+            else DbUser.insertStudentOverridePedagogy(conn, studId, pedId);
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+                ps.close();
+
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        try {
+            DbPedagogy p = new DbPedagogy();
+            DbPedagogy.buildMapOfOldIds = true;
+            DbPedagogy.conn = DbUtil.getAConnection("localhost");
+            Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
+            Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
+            Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
+//            adjustStudents(conn);
+            adjustClassPedagogies(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

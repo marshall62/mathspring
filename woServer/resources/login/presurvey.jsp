@@ -17,7 +17,8 @@
             Please click the button below to start a survey in another browser tab.  When you are done with the survey, click its
             submit button, close the browser tab and return here.   You should then click the Continue button to proceed.
   <br><br>
-        &nbsp;&nbsp;&nbsp;<input id="surveyButton" type="button" name="Start Survey" value="Start Survey"/>
+        &nbsp;&nbsp;&nbsp;
+            <input id="surveyButton" style="width: 10em; background-color: #51791e; font-size: 150%; font-weight: bold;" type="button" name="Start Survey" value="Start Survey"/>
         </p>
 
     <%--</form>--%>

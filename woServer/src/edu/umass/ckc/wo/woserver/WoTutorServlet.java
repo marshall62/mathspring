@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.woserver;
 
 import edu.umass.ckc.wo.assistments.AssistmentsHandler;
-import edu.umass.ckc.wo.beans.Teacher;
 import edu.umass.ckc.wo.beans.TeacherEntity;
 import edu.umass.ckc.wo.content.CCContentMgr;
 import edu.umass.ckc.wo.content.LessonMgr;
@@ -53,7 +52,7 @@ public class WoTutorServlet extends BaseServlet {
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         try {
 
-            ServletUtil.initialize(servletContext);
+            ServletUtil.initialize(servletContext, connection);
             logger.debug("Begin init of WoTutorServlet");
             // machine learning problem selector needs to read a policy file
             Settings.policyFile = servletConfig.getInitParameter(Names.POLICY_FILE);

@@ -142,6 +142,28 @@ public class DbUser {
         }
     }
 
+    // This is for a one-time clean-up converting XML pedagogies to db ones.
+    public static void insertStudentOverridePedagogy (Connection conn, int studId, int pedId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into userpedagogyparameters (studId, overridePedagogy, showIntro,maxtime,maxprobs,mode,singletopicmode,mastery) " +
+                    "values (?,?,1,600000,3,'ExamplePractice',0,0)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, pedId);
+            stmt.execute();
+
+        }
+
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
 
     public static boolean isAssistmentsUser (Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;

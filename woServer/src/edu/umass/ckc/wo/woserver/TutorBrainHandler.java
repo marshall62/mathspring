@@ -278,6 +278,11 @@ public class TutorBrainHandler {
                 RequestDispatcher disp=null;
 
                 String loginJSP = clientType.equals(LoginParams.ADULT) ? LoginAdult_2.LOGIN_JSP : LoginK12_2.LOGIN_JSP;
+                if (clientType.equals(LoginParams.ADULT) )
+                    servletInfo.request.setAttribute("startPage","LoginAdult_1");
+                else
+                    servletInfo.request.setAttribute("startPage","LoginK12_1");
+
                 disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
                 disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
                 logger.info("<< JSP: " + loginJSP);

@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.login;
 
-import ckc.servlet.servbase.ServletAction;
 import ckc.servlet.servbase.BaseServlet;
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.cache.ProblemMgr;
@@ -19,7 +18,6 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletContext;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import java.sql.Connection;
 
@@ -91,7 +89,7 @@ public class WoLoginServlet extends BaseServlet {
 
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         logger.debug("Begin init of WOLoginServlet");
-        ServletUtil.initialize(servletContext);
+        ServletUtil.initialize(servletContext, connection);
         Settings.formalityServletURI = servletConfig.getInitParameter(Names.FORMALITY_SERVLET_URI);
         servletContext.setAttribute("flashClientURI", Settings.flashClientPath);
         Settings.getSurveys(connection); // loads the pre/post Survey URLS

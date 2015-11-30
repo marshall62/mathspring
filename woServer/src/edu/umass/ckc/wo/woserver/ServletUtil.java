@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.woserver;
 import edu.umass.ckc.wo.admin.LessonMap;
 import edu.umass.ckc.wo.admin.LoginMap;
 import edu.umass.ckc.wo.admin.PedMap;
+import edu.umass.ckc.wo.db.DbPedagogy;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.smgr.SessionDemon;
 import edu.umass.ckc.wo.tutor.Settings;
@@ -28,6 +29,8 @@ import java.util.Timer;
  * To change this template use File | Settings | File Templates.
  */
 public class ServletUtil {
+
+    private static boolean initializerHasRun = false;
 
     /**
      * Builds a URL that depends on whether its a development environment or a release environment.   If its a dev env, then
@@ -70,7 +73,10 @@ public class ServletUtil {
     }
 
 
-    public static void initialize(ServletContext servletContext) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, DataConversionException {
+    public static void initialize(ServletContext servletContext, Connection conn) throws Exception {
+        if (!initializerHasRun)
+            initializerHasRun = true;
+        else return;
         Settings.host = servletContext.getInitParameter(Names.HOST);
         Settings.port = servletContext.getInitParameter(Names.SERVLET_PORT);
         Settings.isDevelopmentEnv = Boolean.parseBoolean(servletContext.getInitParameter(Names.IS_DEVELOPMENT_ENVIRONMENT)); // boolean saying if we are using Tomcat for HTML5
@@ -96,15 +102,20 @@ public class ServletUtil {
                 servletContext.getContextPath(),Settings.webContentPath,Settings.html5Probs);
         // Flash client must be on same machine but can be served by other than servletEngine
         // (e.g. it is best served by apache)
-        String pedagogiesFile = servletContext.getInitParameter(Names.PEDAGOGIES_FILE);
-        if (Settings.pedagogyGroups == null) {
-            InputStream str = servletContext.getResourceAsStream(pedagogiesFile);
-            InputStream lstr = servletContext.getResourceAsStream("lessons.xml");
-            InputStream loginstr = servletContext.getResourceAsStream("logins.xml");
-            Settings.lessonMap = new LessonMap(lstr);
-            Settings.loginMap = new LoginMap(loginstr);
-            Settings.pedagogyGroups = new PedMap(str);
-        }
+        // read pedagogies from db
+        Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
+        Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
+        Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
+        // pedagogies are no longer read from XML files
+//        String pedagogiesFile = servletContext.getInitParameter(Names.PEDAGOGIES_FILE);
+//        if (Settings.pedagogyGroups == null) {
+//            InputStream str = servletContext.getResourceAsStream(pedagogiesFile);
+//            InputStream lstr = servletContext.getResourceAsStream("lessons.xml");
+//            InputStream loginstr = servletContext.getResourceAsStream("logins.xml");
+//            Settings.lessonMap = new LessonMap(lstr);
+//            Settings.loginMap = new LoginMap(loginstr);
+//            Settings.pedagogyGroups = new PedMap(str);
+//        }
 
         Settings.mailServer = servletContext.getInitParameter(Names.ERROR_SMTP_SERVER);
 
