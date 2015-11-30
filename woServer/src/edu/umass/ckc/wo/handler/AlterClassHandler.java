@@ -399,11 +399,21 @@ public class AlterClassHandler {
             // not part of a create-class sequence so just show the simple config page again.
             else {
                 int classId =  e.getClassId();
-
-                DbClass.setSimpleConfig(conn, classId, ee.getLc(), ee.getCollab(), ee.getDiffRate(), ee.getLowDiff(), ee.getHighDiff());
                 ClassInfo info = DbClass.getClass(conn, classId);
-                // Contains settings which allows us to select content for this class
-                new ClassContentSelector(conn).selectContent(info);
+                String oldLowDiff = info.getSimpleLowDiff();
+                String oldHighDiff = info.getSimpleHighDiff();
+                String message="";
+                if (info.getGrade() != null) {
+                    DbClass.setSimpleConfig(conn, classId, ee.getLc(), ee.getCollab(), ee.getDiffRate(), ee.getLowDiff(), ee.getHighDiff());
+                    info = DbClass.getClass(conn, classId);
+                    // If the window of difficulty (lo-hi) is being set for the first time or changed from it's previous settings, then
+                    // we run the content selector (a slow process).
+                    if (oldLowDiff == null || oldHighDiff == null ||
+                            !oldHighDiff.equals(ee.getHighDiff()) || !oldLowDiff.equals(ee.getLowDiff()))
+                        new ClassContentSelector(conn).selectContent(info);
+                    message = "Your edits have been successully stored and content has been adjusted." ;
+                }
+                else message = "You need to set a grade for this class. Go to class information page to set this.";
 
                 // After alterring the class we show the page again with a message saying edits were successful.
                 Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
@@ -421,7 +431,7 @@ public class AlterClassHandler {
                 req.setAttribute("action","AdminAdvancedPedagogySelection");
                 req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp");
 
-                req.setAttribute("message","Your edits have been successully stored and content has been adjusted.");
+                req.setAttribute("message",message);
 //                req.getRequestDispatcher(SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
                 req.getRequestDispatcher(CreateClassHandler.SIMPLE_CLASS_CONFIG_JSP).forward(req,resp);
             }

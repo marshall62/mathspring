@@ -247,9 +247,6 @@ public class PedagogyParser {
         String id = e.getValue();
         p.setId(id);
 
-        e = pedElt.getChild("name");
-        String name = e.getValue();
-        p.setName(name);
 
         e = pedElt.getChild("comment");
         if (e != null)  {
