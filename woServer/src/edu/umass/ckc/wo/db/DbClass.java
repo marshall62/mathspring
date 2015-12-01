@@ -92,7 +92,7 @@ public class DbClass {
             String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
                     "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade," +
                     "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate, f.showPostSurvey, c.id from class c, classconfig f" +
-                    " where f.classid=c.id order by c.teacher";
+                    " where f.classid=c.id and c.isActive = 1 order by c.teacher";
             s = conn.prepareStatement(q);
             rs = s.executeQuery();
             while (rs.next()) {
@@ -811,37 +811,68 @@ public class DbClass {
             stmt.setInt(1, classId);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                boolean pretest = rs.getBoolean("pretest");
-                boolean posttest = rs.getBoolean("posttest");
-                boolean mfr = rs.getBoolean("mfr");
-                boolean fantasy = rs.getBoolean("fantasy");
-                boolean spatialR = rs.getBoolean("spatialR");
-                boolean tutoring = rs.getBoolean("tutoring");
-                boolean useDefaultHutActivationRules = rs.getBoolean("useDefaultHutActivationRules");
                 int maxNumProbsPerTopic = rs.getInt("maxNumberProbsToShowPerTopic");
                 int maxTimeInTopic = rs.getInt("maxTimeInTopic");
                 int contentFailureThreshold = rs.getInt("contentFailureThreshold");
                 double topicMastery = rs.getDouble("topicMastery");
-                String q2 = "insert into classconfig (classId,pretest,posttest,mfr,fantasy," +
-                        "spatialR,tutoring,useDefaultHutActivationRules,maxNumberProbsToShowPerTopic," +
-                        "maxTimeInTopic,contentFailureThreshold,topicMastery) values " +
-                        "(?,?,?,?,?,?,?,?,?,?,?,?)";
+                double difficultyRate = rs.getDouble("difficultyRate");
+                int statusReportIntervalDays = rs.getInt("statusReportIntervalDays");
+                int statusReportPeriodDays = rs.getInt("statusReportPeriodDays");
+                int studentEmailIntervalDays = rs.getInt("studentEmailIntervalDays");
+                int studentEmailPeriodDays = rs.getInt("studentEmailPeriodDays");
+                int minNumberProbsToShowPerTopic = rs.getInt("minNumberProbsToShowPerTopic");
+                int minTimeInTopic = rs.getInt("minTimeInTopic");
+                int externalActivityTimeThreshold = rs.getInt("externalActivityTimeThreshold");
+                int problemReuseIntervalSessions = rs.getInt("problemReuseIntervalSessions");
+                int problemReuseIntervalDays = rs.getInt("problemReuseIntervalDays");
+                int postSurveyWaitTime = rs.getInt("postSurveyWaitTime");
+                String topicIntroFrequency = rs.getString("topicIntroFrequency");
+                String exampleFrequency = rs.getString("exampleFrequency");
+                String lessonStyle = rs.getString("lessonStyle");
+                String presurveyURL = rs.getString("presurveyURL");
+                String postsurveyURL = rs.getString("postsurveyURL");
+                String simpleLC = rs.getString("simpleLC");
+                String simpleCollab = rs.getString("simpleCollab");
+                String simpleLowDiff = rs.getString("simpleLowDiff");
+                String simpleHighDiff = rs.getString("simpleHighDiff");
+                String simpleDiffRate = rs.getString("simpleDiffRate");
+                boolean showPostSurvey = rs.getBoolean("showPostSurvey");
+
+
+                String q2 = "insert into classconfig (classId,maxNumberProbsToShowPerTopic, maxTimeInTopic, contentFailureThreshold," +
+                        "topicMastery,difficultyRate,statusReportIntervalDays,statusReportPeriodDays,studentEmailIntervalDays,studentEmailPeriodDays," +
+                        "minNumberProbsToShowPerTopic,minTimeInTopic,externalActivityTimeThreshold,problemReuseIntervalSessions,problemReuseIntervalDays,postSurveyWaitTime," +
+                        "topicIntroFrequency,exampleFrequency,lessonStyle,presurveyURL,postsurveyURL,simpleLC, simpleCollab,simpleLowDiff,simpleHighDiff," +
+                        "simpleDiffRate,showPostSurvey ) values " +
+                        "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 ps = conn.prepareStatement(q2);
                 ps.setInt(1, newClassId);
-                ps.setBoolean(2, pretest);
-                ps.setBoolean(3, posttest);
-                ps.setBoolean(4, mfr);
-                ps.setBoolean(5, fantasy);
-                ps.setBoolean(6, spatialR);
-                ps.setBoolean(7, tutoring);
-                ps.setBoolean(8, useDefaultHutActivationRules);
-                // note that if nulls are in the db for the 4 params above, 0 will come back and that is what
-                // will be inserted into the clone rather than null because the effect should be the same
-                // in a class that is not using topic parameters.
-                ps.setInt(9, maxNumProbsPerTopic);
-                ps.setInt(10, maxTimeInTopic);
-                ps.setInt(11, contentFailureThreshold);
-                ps.setDouble(12, topicMastery);
+                ps.setInt(2, maxNumProbsPerTopic);
+                ps.setInt(3, maxTimeInTopic);
+                ps.setInt(4, contentFailureThreshold);
+                ps.setDouble(5, topicMastery);
+                ps.setDouble(6, difficultyRate);
+                ps.setInt(7, statusReportIntervalDays);
+                ps.setInt(8, statusReportPeriodDays);
+                ps.setInt(9, studentEmailIntervalDays);
+                ps.setInt(10, studentEmailPeriodDays);
+                ps.setInt(11, minNumberProbsToShowPerTopic);
+                ps.setInt(12, minTimeInTopic);
+                ps.setInt(13, externalActivityTimeThreshold);
+                ps.setInt(14, problemReuseIntervalSessions);
+                ps.setInt(15, problemReuseIntervalDays);
+                ps.setInt(16, postSurveyWaitTime);
+                ps.setString(17, topicIntroFrequency);
+                ps.setString(18, exampleFrequency);
+                ps.setString(19, lessonStyle);
+                ps.setString(20, presurveyURL);
+                ps.setString(21, postsurveyURL);
+                ps.setString(22, simpleLC);
+                ps.setString(23, simpleCollab);
+                ps.setString(24, simpleLowDiff);
+                ps.setString(25, simpleHighDiff);
+                ps.setString(26, simpleDiffRate);
+                ps.setBoolean(27, showPostSurvey);
                 ps.executeUpdate();
                 ps.close();
             }
