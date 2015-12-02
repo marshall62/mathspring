@@ -45,7 +45,8 @@ public class ProblemSelectionHandler {
             int topicId = ((AdminSelectTopicProblemsEvent) event).getTopicId();
             DbProblem probMgr = new DbProblem();
             Topic topic = ProblemMgr.getTopic(topicId);
-            List<Problem> problems = probMgr.getProblemsInTopic(topicId);
+            // omit testable problems
+            List<Problem> problems = ProblemMgr.getWorkingProblems(topicId);
             // get the problems omitted for this topic
             List<SATProb> satProbs = probMgr.getTopicOmittedProblems(conn,event.getClassId(),problems, topicId);
             ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
@@ -88,7 +89,7 @@ public class ProblemSelectionHandler {
                 activatedIds[i] = Integer.parseInt(activeProblemIds[i]);
             ProblemMgr.getAllProblems();
             DbProblem probMgr = new DbProblem();
-            List<Problem> problemsInTopic = probMgr.getProblemsInTopic(topicId);
+            List<Problem> problemsInTopic = ProblemMgr.getWorkingProblems(topicId);
             List<SATProb> satProbs = probMgr.activateTopicProblems(conn, problemsInTopic,activatedIds);
             List<Integer> deactivatedIds = new ArrayList<Integer>();
             ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());

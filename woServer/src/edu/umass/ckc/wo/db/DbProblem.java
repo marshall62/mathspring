@@ -364,6 +364,8 @@ public class DbProblem extends BaseMgr {
     }
 
 
+
+
     public List<Problem> getActivatedTopicProblems(Connection conn, int classId, int topicId) throws SQLException {
         List<Problem> topicProbs = getProblemsInTopic(topicId);
         topicProbs = excludeProblemsOmittedForClass(conn,classId,topicProbs);

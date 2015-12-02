@@ -238,7 +238,6 @@ public class ProblemMgr {
     }
 
 
-    // jkhj
 
 
     private static List<ProblemAnswer> getAnswerValues(Connection conn, int id) throws SQLException {
@@ -462,6 +461,20 @@ public class ProblemMgr {
         new DbProblem().deactivateProblem(conn,probId,probName);     
 
 
+    }
+
+    /**
+     * Returns all the non-testable problems in a topic
+     */
+    public static List<Problem> getWorkingProblems (int topicId) {
+        List<Problem> all = getTopicProblems(topicId);
+        List<Problem> some = new ArrayList<Problem>(all.size());
+        for (Problem p : all) {
+            if (p.isTestProblem())
+                continue;
+            some.add(p);
+        }
+        return some;
     }
 
     /**
