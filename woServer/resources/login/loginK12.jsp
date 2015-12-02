@@ -50,6 +50,8 @@ function checkSound() {
         <div class="p7ccm04-3col-sidebar-left-right-column2 p7ccm-col">
           <div class="p7ccm04-3col-sidebar-left-right-column2-cnt p7ccm04-content">
             <p>
+                <%--The easiest way to turn off these buttons--%>
+                <c:set var="preSurvey" value=""></c:set>
               <c:if test="${preSurvey ne ''}"><button onclick="javascript: location.href='${preSurvey}'" type="button">First Day Survey</button> </c:if>
             </p>
           </div>
@@ -57,6 +59,8 @@ function checkSound() {
         <div class="p7ccm04-3col-sidebar-left-right-column3 p7ccm-col">
           <div class="p7ccm04-3col-sidebar-left-right-column3-cnt p7ccm04-content">
             <p >
+                <%--The easiest way to turn off these buttons--%>
+                <c:set var="postSurvey" value=""></c:set>
               <c:if test="${postSurvey ne ''}"><button onclick="javascript: location.href='${postSurvey}'" type="button">Last Day Survey</button> </c:if>
             </p>
           </div>

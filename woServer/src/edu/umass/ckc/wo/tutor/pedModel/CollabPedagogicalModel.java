@@ -43,6 +43,9 @@ public class CollabPedagogicalModel extends BasePedagogicalModel {
             PartnerManager.removeRequest(studId);
             DbCollaborationLogging.saveEvent(smgr.getConnection(), smgr.getStudentId(), 0, null, "CollaborationFinishedAlert_Originator");
             Intervention interv = new FinishCollaborationIntervention("Originator");
+            Class c = interv.getClass();
+            String n = c.getName();
+            smgr.getStudentState().setLastIntervention(n);
             return new InterventionResponse(interv);
         }
         return super.processNextProblemRequest(e);

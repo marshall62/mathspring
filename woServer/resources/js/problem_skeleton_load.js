@@ -9,7 +9,7 @@ function plugin(probId, sessid, elapsedtime, eventcounter, servcontext, servname
     servletContext = servcontext;
     servletName = servname;
     teacherId=teacherid;
-    alert("In plugin: " + probId);
+//    alert("In plugin: " + probId);
     if (!previewMode)
         servletGet(true, "GetQuickAuthProblem",{probId: pid},pluginProblem);
     else
@@ -37,7 +37,7 @@ function getTutorServletURL (action, args) {
 }
 
 function pluginProblem (responseText, textStatus, XMLHttpRequest) {
-    alert("In pluginProblem ");
+//    alert("In pluginProblem ");
       var activity = JSON.parse(responseText);
     var problem = activity.problem;
     var problemParams = activity.binding;
@@ -55,19 +55,19 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var  resource = problem.resource;
 
 
-    alert("stmt:" + stmt + ":\n" +
-        "fig:" + fig + ":\n" +
-        "audio:" + audio + ":\n" +
-        "hints:" + hints + ":\n" +
-        "answers:" + answers + ":\n" +
-        "newAnswer:" + newAnswer + ":\n" +
-        "answer:" + answer + ":\n" +
-        "units:" + units + ":\n" +
-        "mode:" + mode + ":\n" +
-        "questType:" + questType + ":\n" +
-        "resource:" + resource + ":\n" +
-        "probContentPath:" + probContentPath + ":\n" +
-        "problemParams:" + problemParams + ":\n");
+//    alert("stmt:" + stmt + ":\n" +
+//        "fig:" + fig + ":\n" +
+//        "audio:" + audio + ":\n" +
+//        "hints:" + hints + ":\n" +
+//        "answers:" + answers + ":\n" +
+//        "newAnswer:" + newAnswer + ":\n" +
+//        "answer:" + answer + ":\n" +
+//        "units:" + units + ":\n" +
+//        "mode:" + mode + ":\n" +
+//        "questType:" + questType + ":\n" +
+//        "resource:" + resource + ":\n" +
+//        "probContentPath:" + probContentPath + ":\n" +
+//        "problemParams:" + problemParams + ":\n");
     var g = {stmt: stmt, fig: fig, audio: audio, hints: hints, answers: answers, newAnswer: newAnswer,
         answer: answer, units: units, mode: mode, questType: questType, resource: resource, probContentPath: probContentPath, problemParams: problemParams};
     prepareForData(document, g);
