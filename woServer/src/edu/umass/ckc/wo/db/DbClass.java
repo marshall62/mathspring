@@ -83,7 +83,7 @@ public class DbClass {
         }
     }
 
-    public static ClassInfo[] getAllClasses(Connection conn) throws SQLException {
+    public static ClassInfo[] getAllClasses(Connection conn, boolean orderByTeacher) throws SQLException {
         ResultSet rs = null;
         PreparedStatement s = null;
 
@@ -92,7 +92,7 @@ public class DbClass {
             String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
                     "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade," +
                     "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate, f.showPostSurvey, c.id from class c, classconfig f" +
-                    " where f.classid=c.id order by c.teacher";
+                    " where f.classid=c.id order by " + ( orderByTeacher ? "c.teacher" : "c.id");
             s = conn.prepareStatement(q);
             rs = s.executeQuery();
             while (rs.next()) {

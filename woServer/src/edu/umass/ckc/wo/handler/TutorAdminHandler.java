@@ -49,7 +49,7 @@ public class TutorAdminHandler {
             int teacherId = ((AdminDeleteClassesEvent) e).getTeacherId();
             ClassInfo[] classes;
             if (teacherId == -1)
-                classes = DbClass.getAllClasses(conn);
+                classes = DbClass.getAllClasses(conn, true);
             else classes = DbClass.getClasses(conn,teacherId);
             servletRequest.setAttribute("classes",classes);
             servletRequest.setAttribute("teacherId",-1);    // not needed for this operation
@@ -62,7 +62,7 @@ public class TutorAdminHandler {
             DbClass.deleteClasses(conn,classesToDelete);
             ClassInfo[] classes;
             if (teacherId != -1)
-                classes = DbClass.getAllClasses(conn);
+                classes = DbClass.getAllClasses(conn, true);
             else classes = DbClass.getClasses(conn,teacherId);
 
             servletRequest.setAttribute("classes",classes);
