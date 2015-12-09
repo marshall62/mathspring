@@ -139,7 +139,7 @@ public class UserRegistrationHandler {
         String startPage = e.getStartPage();
         req.setAttribute("startPage",startPage);
         req.setAttribute("studId",studId);
-        ClassInfo[] classes = DbClass.getAllClasses(conn);
+        ClassInfo[] classes = DbClass.getAllClasses(conn, true);
         req.setAttribute("classes",classes);
         RequestDispatcher disp = req.getRequestDispatcher(UserRegistrationHandler.REGISTER2);
         disp.forward(req,resp);
