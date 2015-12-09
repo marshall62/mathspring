@@ -64,7 +64,11 @@ public class WoLoginServlet extends BaseServlet {
             ls.processAction(params);
             return false;
         }
-        else {  // processes the first login event which is the user id/pw
+        else {  // processes the first login event which is the user id/pw (e.g. called LoginK12_1).  This generates a second event
+            // (e.g. LoginK12_2) which is also processed here.  It validates the submitted user/pw and then, if no errors, returns
+            // a LoginResult where newSession is true and its not forwarded to a JSP.   This causes it to enter the next phase which
+            // is a LoginSequence comprised of a set of interventions that are selected and returned to the user.  When the user replies
+            // to the intervention it is handled in the if statement above and the login sequence continues.
             LoginResult lr = action.process(servletInfo);
             // state variables that prevent login interventions from running twice might
             // be leftover from a previous login sequence that failed recently.  This

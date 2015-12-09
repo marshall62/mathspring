@@ -76,10 +76,10 @@ function checkSound() {
           <div class="p7ccm04-1col-column1-cnt p7ccm04-content">
             <p>To use the MathSpring Mathematics Tutor, you must have pop-ups enabled, and either speakers or a headset. Please use the buttons at the bottom of this page to see if your browser is properly configured.</p>
             <p>&nbsp;</p>
-            <p>&nbsp;</p>
+
             <div class="nest">
               <p></p>
-              <p></p>
+              <p><strong>Do you have a username and password already? If so, enter them here and click the login button</strong> </p>
               <form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
                 <input type="hidden" name="action" value="LoginK12_2"/>
                 <input type="hidden" name="skin" value="k12"/>
@@ -93,22 +93,25 @@ function checkSound() {
                   <br />
                 </p>
 
-                <p>&nbsp;</p>
+
                 <div class="nest2">
                   <p>
                       <b>${message} </b> <c:if test="${message != null}"><br><br></c:if>
                       <input value="Log In" type="submit"/>
 
                   </p>
-
+                  <br>  <br>
                    <!-- </form> -->
                   <form id="signupForm" action="${pageContext.request.contextPath}/WoAdmin">
+                      <p><strong>Are you a student?  If you are, and want to register to use Mathspring in your class, click Sign up.
+                      </strong></p>
 
                   <p>
                     <button type="button" onClick="javascript:signup();">Sign up</button>
                   </p>
                   </form>
-                  <p><strong>Or you may</strong></p>
+
+                  <p><strong>Or if you just want to try the system, click Log in as guest</strong></p>
                   <form name="guest" action="${pageContext.request.contextPath}/WoLoginServlet">
                     <input type="hidden" name="action" value="GuestLogin"/>
                     <input type="hidden" name="clientType" value="${clientType}"/>

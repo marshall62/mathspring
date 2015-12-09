@@ -468,6 +468,8 @@ public class ProblemMgr {
      */
     public static List<Problem> getWorkingProblems (int topicId) {
         List<Problem> all = getTopicProblems(topicId);
+        if (all == null || all.size() == 0)
+            return new ArrayList<Problem>();
         List<Problem> some = new ArrayList<Problem>(all.size());
         for (Problem p : all) {
             if (p.isTestProblem())

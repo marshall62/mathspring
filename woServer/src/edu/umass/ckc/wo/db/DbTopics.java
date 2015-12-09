@@ -96,10 +96,14 @@ public class DbTopics {
                     itr.remove();
                 }
             }
-
-            String ids = sb.substring(0,sb.toString().length()-1);
-            String q = "select id, description from problemgroup where active=1 and " +
+            String q;
+            if (sb.length() == 0)
+                q = "select id, description from problemgroup where active=1";
+            else {
+                String ids = sb.substring(0,sb.toString().length()-1);
+                q = "select id, description from problemgroup where active=1 and " +
                      "id not in (" + ids + ")";
+            }
 
             stmt = conn.prepareStatement(q);
             rs = stmt.executeQuery();

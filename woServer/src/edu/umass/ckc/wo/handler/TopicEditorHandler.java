@@ -49,6 +49,7 @@ public class TopicEditorHandler {
         if (e instanceof AdminReorderTopicsEvent) {
             TopicMgr topicMgr = new TopicMgr();
             AdminReorderTopicsEvent ee = (AdminReorderTopicsEvent) e;
+
             List<Topic> topics=null;
             if (ee.getDirection().equals("up") || ee.getDirection().equals("down"))
                  topics=topicMgr.moveTopic(conn,(AdminReorderTopicsEvent) e);
