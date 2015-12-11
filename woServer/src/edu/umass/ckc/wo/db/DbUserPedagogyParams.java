@@ -75,7 +75,7 @@ public class DbUserPedagogyParams {
             rs = ps.executeQuery();
             if (rs.next()) {
                 boolean showIntro = rs.getBoolean(1);
-                int maxTime = rs.getInt(2);
+                int maxTime = rs.getInt(2);   // given in minutes
                 int maxProbs = rs.getInt(3);
                 String mode = rs.getString(4);
                 boolean singTopic = rs.getBoolean(5);

@@ -3,6 +3,8 @@ package edu.umass.ckc.wo.db;
 import com.mysql.jdbc.Statement;
 import edu.umass.ckc.wo.log.RequestActions;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutor.studmod.StudentModelMotivational;
 import edu.umass.ckc.wo.util.SqlQuery;
@@ -143,15 +145,23 @@ public class DbUser {
     }
 
     // This is for a one-time clean-up converting XML pedagogies to db ones.
-    public static void insertStudentOverridePedagogy (Connection conn, int studId, int pedId) throws SQLException {
+    public static void insertStudentOverridePedagogy(Connection conn, int studId, int pedId, LessonModelParameters lparams) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
+        TopicModelParameters params = (TopicModelParameters) lparams;
         try {
-            String q = "insert into userpedagogyparameters (studId, overridePedagogy, showIntro,maxtime,maxprobs,mode,singletopicmode,mastery) " +
-                    "values (?,?,1,600000,3,'ExamplePractice',0,0)";
+            String q = "insert into userpedagogyparameters (studId, overridePedagogy, showIntro,maxtime,maxprobs,mode," +
+                    "singletopicmode,mastery) " +
+                    "values (?,?,?,?,?,'ExamplePractice',0,?)";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1, studId);
             stmt.setInt(2, pedId);
+            TopicModelParameters.frequency f = params.getTopicIntroFrequency();
+            // need to set a string value in here. not a number.  Add new cols
+            stmt.setBoolean(3,params.getTopicIntroFrequency() != TopicModelParameters.frequency.never);
+            stmt.setLong(4,params.getMaxTimeInTopic());
+            stmt.setInt(5,params.getMaxNumberProbs());
+            stmt.setDouble(6,params.getTopicMastery());
             stmt.execute();
 
         }

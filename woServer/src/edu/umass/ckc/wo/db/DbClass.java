@@ -591,7 +591,7 @@ public class DbClass {
                 // we keep the defaults that were defined the control params of the Pedagogy defined the in the XML file?
                 if (rs.wasNull())
                     return new TopicModelParameters();
-                long maxTimeInTopic = rs.getLong("maxNumberProbsToShowPerTopic");
+                long maxTimeInTopic = rs.getLong("maxTimeInTopic");
                 int thresh = rs.getInt("contentFailureThreshold");
                 double mastery = rs.getDouble("topicMastery");
                 int minProbsInTopic = rs.getInt("minNumberProbsToShowPerTopic");

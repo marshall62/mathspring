@@ -8,9 +8,8 @@ import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.config.LoginXML;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.xml.JDOMUtils;
-import org.hibernate.cache.HashtableCache;
-import org.hibernate.property.Dom4jAccessor;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -246,13 +245,14 @@ public class DbPedagogy {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select id, pedagogyId, pedIdAdjusted from student";
+            String q = "select id, pedagogyId,classId from student";
             stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 int studId= rs.getInt(1);
                 int oldPedId = rs.getInt(2);     // use the old pedId to get the Pedagogy object from a map.
                 boolean hasOldPed = !rs.wasNull() && !(oldPedId <= 0);
+                int classid = rs.getInt(3);
                 Pedagogy ped=null;
                 if (hasOldPed)
                     ped = pedsByOldIdMap.get(Integer.toString(oldPedId));
@@ -260,7 +260,7 @@ public class DbPedagogy {
                     // found: so replace the student's pedId with the new id which is in the pedagogy object
                 if (ped != null)  {
                         rs.updateInt("pedagogyId",Integer.parseInt(ped.getId()));
-                        rs.updateBoolean("pedIdAdjusted", true);
+//                        rs.updateBoolean("pedIdAdjusted", true);
                         rs.updateRow();
                         // change teh pedagogygroup table <classId,studId,pedId> so that it has the right pedId
                         // not really necessary- this is what allows peds to be automatically assigned
@@ -270,9 +270,9 @@ public class DbPedagogy {
                 // But we do set the student's override pedagogy (in userpedagogyparameters) to a pedagogy that does exist
                 // Issue:  what if the student already has an override pedagogy (from assistments)?   - I guess we blow it away
                 else {
-                    rs.updateBoolean("pedIdAdjusted",true);
-                    rs.updateRow();
-                    setStudentOverridePedagogy(conn,studId,1); // set the students override pedagogy to 1.
+//                    rs.updateBoolean("pedIdAdjusted",true);
+//                    rs.updateRow();
+                    setStudentOverridePedagogy(conn,studId,1, classid); // set the students override pedagogy to 1.
                 }
             }
         }
@@ -309,7 +309,7 @@ public class DbPedagogy {
         }
     }
 
-    private static void setStudentOverridePedagogy(Connection conn, int studId, int pedId) throws SQLException {
+    private static void setStudentOverridePedagogy(Connection conn, int studId, int pedId, int classId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -330,7 +330,23 @@ public class DbPedagogy {
                     rs.updateRow();
                 }
             }
-            else DbUser.insertStudentOverridePedagogy(conn, studId, pedId);
+            // We have a bug here.  This puts dumb values in important fields like maxProbs, maxTime.   When this user logs
+            // in these values are used instead of those that are set-up for the pedagogy.  Effect is that students seem mastered
+            // in all topics.  We need to put the correct values in this row  because they override values set
+            // by default for the lesson or the class.  We get them in this order of precedence:
+            // classconfig, lessonDefinition
+            else {
+                Pedagogy ped = Settings.pedagogyGroups.get(Integer.toString(pedId));
+                // get the classConfig lesson settings
+                LessonModelParameters classParams = DbClass.getLessonModelParameters(conn, classId);
+                // get the lesson settings from the lessonDefinition
+                LessonXML lx =  Settings.lessonMap.get(ped.getLessonName());
+                LessonModelParameters lessonModelParameters = lx.getLessonModelParams();
+                // prefer class params to ones defined in lesson
+                lessonModelParameters.overload(classParams);
+                // Now set the users lesson settings.
+                DbUser.insertStudentOverridePedagogy(conn, studId, pedId, lessonModelParameters);
+            }
         } finally {
             if (rs != null)
                 rs.close();
@@ -350,7 +366,7 @@ public class DbPedagogy {
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
             Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
-//            adjustStudents(conn);
+            adjustStudents(conn);
             adjustClassPedagogies(conn);
         } catch (Exception e) {
             e.printStackTrace();

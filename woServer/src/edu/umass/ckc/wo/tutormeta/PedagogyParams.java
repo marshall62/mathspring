@@ -21,10 +21,10 @@ public class PedagogyParams {
     private int cuId;
 
 
-    public PedagogyParams(int studId, boolean showIntro, int maxTime, int maxProbs, String mode, boolean singleTopicMode, String ccss, int topicId, float topicMastery, int cuId) {
+    public PedagogyParams(int studId, boolean showIntro, int maxTimeMinutes, int maxProbs, String mode, boolean singleTopicMode, String ccss, int topicId, float topicMastery, int cuId) {
         this.studId = studId;
         this.showIntro = showIntro;
-        this.maxTime = maxTime * 60 * 1000;  // max time is given in minutes.   We convert to milliseconds here
+        this.maxTime = maxTimeMinutes * 60 * 1000;  // max time is given in minutes.   We convert to milliseconds here
         this.maxProbs = maxProbs;
         this.mode = mode;
         this.singleTopicMode = singleTopicMode;
