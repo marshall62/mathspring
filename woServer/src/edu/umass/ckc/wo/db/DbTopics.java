@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.db;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCStandard;
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 
 import java.util.Iterator;
@@ -95,10 +96,14 @@ public class DbTopics {
                     itr.remove();
                 }
             }
-
-            String ids = sb.substring(0,sb.toString().length()-1);
-            String q = "select id, description from problemgroup where active=1 and " +
+            String q;
+            if (sb.length() == 0)
+                q = "select id, description from problemgroup where active=1";
+            else {
+                String ids = sb.substring(0,sb.toString().length()-1);
+                q = "select id, description from problemgroup where active=1 and " +
                      "id not in (" + ids + ")";
+            }
 
             stmt = conn.prepareStatement(q);
             rs = stmt.executeQuery();
@@ -118,14 +123,38 @@ public class DbTopics {
         }
  }
 
-   
+    /** Gets topics for a class that are active and have problems that are ready.
+     *  Takes an additional flag (includeTestableProblems ) which will also include a topic
+     *  in the return list if it has testable problems
+     * @return
+     */
+    public static List<Topic> getClassPlayableTopics (Connection conn, int classId, boolean includeTestableProblems) throws SQLException {
+        List<Topic> possibleTopics  = getClassActiveTopics(conn,classId);
+        Iterator<Topic> itr = possibleTopics.iterator();
+        while (itr.hasNext()) {
+            Topic t = itr.next();
+            if (!ProblemMgr.isTopicPlayable(t.getId(), includeTestableProblems)) {
+                itr.remove();
+            }
+        }
+        return possibleTopics;
+
+    }
+
+
+
+
+
 
     public static List<Topic> getClassActiveTopics (Connection conn, int classId) throws SQLException {
-        List<Topic> topics = getClassActiveTopics2(conn,classId,false);
+        List<Topic> topics = getClassActiveTopicsHelper(conn, classId, false);
         if (topics.size() == 0)
-            return getClassActiveTopics2(conn,classId,true);
+            return getClassActiveTopicsHelper(conn, classId, true);
         else return topics;
     }
+
+
+
 
     /**
      *
@@ -135,12 +164,13 @@ public class DbTopics {
      * @return
      * @throws SQLException
      */
-    public static List<Topic> getClassActiveTopics2 (Connection conn, int classId, boolean isDefault) throws SQLException {
+    private static List<Topic> getClassActiveTopicsHelper (Connection conn, int classId, boolean isDefault) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
             String q = "select probGroupId, topic.description, seqPos from classlessonplan, problemgroup topic where " +
-                    (isDefault ? "isDefault=1" : "classid=?") + " and topic.id=probGroupId and seqPos > 0 and topic.active=1 and topic.id in (select distinct pgroupid from probprobgroup) order by seqPos";
+                    (isDefault ? "isDefault=1" : "classid=?") + " and topic.id=probGroupId and seqPos > 0 and topic.active=1 " +
+                    "and topic.id in (select distinct pgroupid from probprobgroup) order by seqPos";
             stmt = conn.prepareStatement(q);
             if (!isDefault)
                 stmt.setInt(1,classId);

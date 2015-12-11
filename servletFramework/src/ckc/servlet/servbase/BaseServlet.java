@@ -263,6 +263,7 @@ public class BaseServlet extends HttpServlet {
             logger.debug("completed initializing servlet");
         }  catch (Exception e) {
             logger.error("initializing servlet failed");
+            e.printStackTrace();
             throw new ServletException(e);
         }
     }

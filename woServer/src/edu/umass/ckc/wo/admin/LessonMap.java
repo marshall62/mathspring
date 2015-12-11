@@ -26,7 +26,7 @@ public class LessonMap extends Hashtable<String, LessonXML> {
     private static final Logger logger = Logger.getLogger(LessonMap.class);
 
 
-
+    public LessonMap() {}
 
     public LessonMap(InputStream str) throws IOException, ClassNotFoundException, DataConversionException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         LessonParser parser = new LessonParser(str); // a list of Pedagogy objects

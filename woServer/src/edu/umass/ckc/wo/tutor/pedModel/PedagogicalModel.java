@@ -463,12 +463,12 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
                     List<ProblemAnswer> correctAnswers = new ArrayList<ProblemAnswer>();
                     // turn the String coming out of the student state into simple ProblemAnswer objects so we can use the grade method
                     for (String a: possibleInputs) {
-                        correctAnswers.add(new ProblemAnswer(a,probId));
+                        correctAnswers.add(new ProblemAnswer(a.replaceAll("\\s+",""),probId));
                     }
                     return findAnswerMatch(correctAnswers,userInput);
                 }
             }
-            return p.getAnswer().equalsIgnoreCase(userInput.trim());
+            return p.getAnswer().equalsIgnoreCase(userInput.replaceAll("\\s+",""));
         }
         return false;
     }

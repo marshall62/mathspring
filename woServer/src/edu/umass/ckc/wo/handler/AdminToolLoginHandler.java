@@ -103,9 +103,9 @@ public class AdminToolLoginHandler {
         servletRequest.setAttribute("sessId",Integer.toString(sessId));
         // TODO make a clone of the class selection JSP used by students.
         // If a teacher has been selected, get his classes; o/w all classes
-        ClassInfo[] classes1 = teacher != null ? DbClass.getClasses(conn,teacher.getId()) : DbClass.getAllClasses(conn);
+        ClassInfo[] classes1 = teacher != null ? DbClass.getClasses(conn,teacher.getId()) : DbClass.getAllClasses(conn, false);
         Classes bean1 = new Classes(classes1);
-        List<Teacher> teachers = DbTeacher.getAllTeachers(conn);
+        List<Teacher> teachers = DbTeacher.getAllTeachers(conn, false);
         ClassInfo classInfo = null;
         if (classId == -1) {
             if (classes1.length > 0) {

@@ -1,5 +1,8 @@
 package edu.umass.ckc.wo.tutor;
 
+import edu.umass.ckc.wo.tutormeta.Switcher;
+import org.jdom.Element;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,6 +21,7 @@ public class DynamicPedagogy extends Pedagogy{
     private ArrayList<String> studentModels = new ArrayList<String>();
     private ArrayList<String> reviewModeSelectors = new ArrayList<String>();
     private ArrayList<String> challengeModeSelectors = new ArrayList<String>();
+    private Element switchers;
     private Random switcher = new Random();
 
     public String changeProblemSelectorClass() {
@@ -187,5 +191,13 @@ public class DynamicPedagogy extends Pedagogy{
             }
             return challengeModeSelectors.get(target);
         }
+    }
+
+    public Element getSwitchers(){
+        return switchers;
+    }
+
+    public void setSwitchersElement(Element e) {
+        switchers = e;
     }
 }

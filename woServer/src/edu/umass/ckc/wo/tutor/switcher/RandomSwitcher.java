@@ -1,15 +1,11 @@
-package edu.umass.ckc.wo.tutor.model;
+package edu.umass.ckc.wo.tutor.switcher;
 
-import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
-import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.DynamicPedagogy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
-import edu.umass.ckc.wo.tutor.pedModel.BasePedagogicalModel;
-import edu.umass.ckc.wo.tutor.pedModel.DynamicPedagogicalModel;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
-import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutor.model.InterventionGroup;
+import edu.umass.ckc.wo.tutormeta.Switcher;
 
 import java.util.List;
 import java.util.Random;
@@ -17,33 +13,27 @@ import java.util.Random;
 /**
  * Created with IntelliJ IDEA.
  * User: Melissa
- * Date: 9/18/15
- * Time: 1:56 PM
+ * Date: 10/2/15
+ * Time: 4:31 PM
  * To change this template use File | Settings | File Templates.
  */
-public class OptionsModel{
+public class RandomSwitcher extends Switcher {
 
-    SessionManager smgr;
-    Pedagogy pedagogy;
-    InterventionGroup intervs;
+    private String actionTaken = "No change taken since last report";
 
-    public OptionsModel(SessionManager smgr, Pedagogy pedagogy, InterventionGroup intervs){
-        this.smgr = smgr;
-        this.pedagogy = pedagogy;
-        this.intervs = intervs;
+    public RandomSwitcher(SessionManager smgr, DynamicPedagogy ped, InterventionGroup intervs){
+        super(smgr, ped, intervs);
     }
 
-    public Response processChanges(TutorHutEvent e) throws Exception {
-        if(smgr.getTimeInSession() - smgr.getStudentState().getTimeLastChange() > 60000 && pedagogy instanceof DynamicPedagogy){
-            smgr.getStudentState().setTimeLastChange(smgr.getTimeInSession());
-            String change = changeRandElt(e);
-            new TutorLogger(smgr).logDynamicChange(e, change);
-        }
-        return null;
+    @Override
+    public boolean checkConditions() {
+        if(smgr.getTimeInSession() - smgr.getStudentState().getTimeLastChange() > 60000)
+            return true;
+        return false;
     }
 
-    private String changeRandElt(TutorHutEvent e) throws Exception {
-        DynamicPedagogy dynPedagogy = (DynamicPedagogy) pedagogy;
+    @Override
+    public void doChange() {
         Random rand = new Random();
         String elementSwitched = null;
         String eltChanged = "None";
@@ -51,27 +41,27 @@ public class OptionsModel{
             //TODO Compatibility checking: ask for list of dependencies and send them as parameters to the change methods
             switch (rand.nextInt(7)){
                 case 1:
-                    elementSwitched = dynPedagogy.changeChallengeModeProblemSelectorClass();
+                    elementSwitched = ped.changeChallengeModeProblemSelectorClass();
                     eltChanged = "ChallengeModeSelector";
                     break;
                 case 2:
-                    elementSwitched = dynPedagogy.changeHintSelectorClass();
+                    elementSwitched = ped.changeHintSelectorClass();
                     eltChanged = "HintSelector";
                     break;
                 case 3:
-                    elementSwitched = dynPedagogy.changeLearningCompanionClass();
+                    elementSwitched = ped.changeLearningCompanionClass();
                     eltChanged = "LearningCompanion";
                     break;
                 case 4:
-                    elementSwitched = dynPedagogy.changeReviewModeProblemSelectorClass();
+                    elementSwitched = ped.changeReviewModeProblemSelectorClass();
                     eltChanged = "ReviewModeProblemSelector";
                     break;
                 case 5:
-                    elementSwitched = dynPedagogy.changeProblemSelectorClass();
+                    elementSwitched = ped.changeProblemSelectorClass();
                     eltChanged = "ProblemSelector";
                     break;
                 case 6:
-                    elementSwitched = dynPedagogy.changeStudentModelClass();
+                    elementSwitched = ped.changeStudentModelClass();
                     eltChanged = "StudentModel";
                     break;
                 default:
@@ -95,7 +85,16 @@ public class OptionsModel{
             }
 
         }
-      //  System.out.println(eltChanged + " was changed to: " + elementSwitched);
-        return eltChanged + " was changed to: " + elementSwitched;
+        actionTaken = eltChanged + " was changed to: " + elementSwitched;
+    }
+
+    @Override
+    public void doRelatedTasks() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String toString(){
+        return actionTaken;
     }
 }

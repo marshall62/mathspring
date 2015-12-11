@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
@@ -74,6 +75,10 @@ public class TopicSummary {
     boolean effort_disengaged = false;
     String topicState = "";
     String testing = "";
+    String helpUsageBehavior = "";
+    int SHINT_SOF_sequence=0;
+    int SOF_SOF_sequence=0;
+    int neglectful_count=0;
 
 
     boolean fastResponse;
@@ -103,7 +108,7 @@ public class TopicSummary {
             this.hasAvailableContent = false;
         }
         try {
-            List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
+            List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, DbUser.isShowTestControls(conn, smgr.getStudentId()));
             totalProblems = l.size();
         } catch (UserException ue) {
             totalProblems=0;
@@ -120,6 +125,9 @@ public class TopicSummary {
             topicState = "topicEmpty";
         } else {
             determineTopicState();
+            analyzeHelpUsageBehavior();
+            analyzeMonsterMasteryBehavior();
+            analyzeNeglectfulBehavior();
         }
     }
 
@@ -186,7 +194,7 @@ public class TopicSummary {
         String s;
         try {
 
-            s = "select effort, mastery from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 order by ProblemBeginTime DESC ";
+            s = "select effort, mastery from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 and mode='practice' order by ProblemBeginTime DESC ";
 
             stmt = conn.prepareStatement(s);
             stmt.setInt(1, studId);
@@ -219,7 +227,7 @@ public class TopicSummary {
 //        mastery = masteryArray[0];
         mastery = getTopicMastery(); // do not calculate a mastery, get it from the table
         try {
-            s = "select  mastery from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 ";
+            s = "select  mastery from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 and mode='practice'";
             stmt = conn.prepareStatement(s);
             stmt.setInt(1, studId);
             stmt.setInt(2, topicId);
@@ -242,7 +250,7 @@ public class TopicSummary {
 
         //check if last problem was difficult
         try {
-            s = "select problemId from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 order by ProblemBeginTime DESC ";
+            s = "select problemId from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 and mode='practice' order by ProblemBeginTime DESC ";
             stmt = conn.prepareStatement(s);
             stmt.setInt(1, studId);
             stmt.setInt(2, topicId);
@@ -271,6 +279,8 @@ public class TopicSummary {
 
                 if (correctForTheFirstTime == true) {
                     topicState = "correctForTheFirstTime";
+                    if (effortArray[1].equals("SHINT")) topicState = "correctForTheFirstTime_goodHelpUsage";
+
                 } else {
                     if (masteryArray[0] >= masteryThreshold) { //mastered
                         System.out.println("mastered" + masteryArray[0]);
@@ -284,13 +294,20 @@ public class TopicSummary {
                         }
                     } else {   //correct but not mastered
                         topicState = "inProgress";
+                        if (effortArray[1].equals("SHINT")) topicState = "inProgress_goodHelpUsage";
                     }
 
                 }
 
-            } else if (effortArray[0].equals("SHINT")) {
+            }
+
+            else if (masteryArray[0] >= masteryThreshold)  topicState = "inMastery";
+
+            else if (effortArray[0].equals("SHINT")) {
+
 
                 topicState = "SHINT";
+
             } else if (effortArray[0].equals("ATT")) {
 
                 if (problemDifficult == true) topicState = "ATT_hardProblem";
@@ -317,6 +334,161 @@ public class TopicSummary {
         }
     }
 
+    //  algorithm for determining help usage behavior
+    private void analyzeHelpUsageBehavior() throws Exception {
+        int i;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String s;
+        String effort="";
+        Boolean got_SOF=false;
+        try {
+
+            s = "select effort from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 and mode='practice' order by ProblemBeginTime DESC ";
+
+            stmt = conn.prepareStatement(s);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, topicId);
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                effort = rs.getString("effort");
+
+
+                if (!rs.wasNull())
+                    {
+                        if (effort.equals("SOF")){
+
+                            got_SOF=true;
+
+                        }
+
+                        else if (effort.equals("SHINT")){
+                            if (got_SOF==true) SHINT_SOF_sequence++;
+                            got_SOF=false;
+
+                        }
+
+                        else {got_SOF=false;}
+
+                    }
+            }
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+
+
+
+    }
+
+    //  algorithm for determining neglectful behavior
+    private void analyzeNeglectfulBehavior() throws Exception {
+        int i;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String s;
+        String effort="";
+
+
+        try {
+
+            s = "select effort from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 and mode='practice' order by ProblemBeginTime DESC ";
+
+            stmt = conn.prepareStatement(s);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, topicId);
+
+            rs = stmt.executeQuery();
+
+
+            for (i = 0; i <=3; i++) {
+                if (rs.next()) {effort = rs.getString("effort");
+                 if (!rs.wasNull())
+                {
+                    if (effort.equals("NOTR") || effort.equals("GIVEUP") || effort.equals("GUESS") ){
+
+
+                    neglectful_count++;
+
+
+                }
+
+
+                }
+
+                }
+            }
+
+
+
+
+
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+
+
+
+    }
+
+    //  algorithm for determining monster mastery behavior
+    private void analyzeMonsterMasteryBehavior() throws Exception {
+        int i;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String s;
+        String effort="";
+        Boolean got_SOF=false;
+
+        try {
+
+            s = "select effort from studentproblemhistory where studId=? and topicId=? and problemEndTime>0 and mode='practice' order by ProblemBeginTime DESC ";
+
+            stmt = conn.prepareStatement(s);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, topicId);
+
+            rs = stmt.executeQuery();
+
+
+
+            while (rs.next()) {
+
+                effort = rs.getString("effort");
+
+
+                if (!rs.wasNull())
+                {
+                    if (effort.equals("SOF")){
+
+                        if (got_SOF==true)   SOF_SOF_sequence++;
+                        got_SOF=true;
+                      }
+
+                    else got_SOF=false;
+
+
+                }
+
+            }
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+
+
+
+    }
 
     private String getStudentName() throws Exception {
         PreparedStatement ps = null;
@@ -408,7 +580,7 @@ public class TopicSummary {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
-            String q = "select effort from studentproblemhistory where studId=? and problemEndTime>0 order by ProblemBeginTime DESC limit 0,?";
+            String q = "select effort from studentproblemhistory where studId=? and problemEndTime>0  and  mode='practice' order by ProblemBeginTime DESC limit 0,?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1, studId);
             stmt.setInt(2, limitValue);
@@ -497,6 +669,19 @@ public class TopicSummary {
         return topicState;
     }
 
+  public int getSHINT_SOF_sequence() {
+        return SHINT_SOF_sequence;
+    }
+
+    public int getSOF_SOF_sequence() {
+        return SOF_SOF_sequence;
+    }
+
+
+    public int getNeglectful_count() {
+        return neglectful_count;
+    }
+
     public Boolean getTopicDisengaged() {
         return effort_disengaged;
     }
@@ -531,7 +716,7 @@ public class TopicSummary {
 
     public static List<TopicSummary> getTopicSummaries(SessionManager smgr) throws Exception {
 
-        List<Topic> topics = DbTopics.getClassActiveTopics(smgr.getConnection(), smgr.getClassID());
+        List<Topic> topics = DbTopics.getClassPlayableTopics(smgr.getConnection(), smgr.getClassID(), smgr.showTestableContent());
         List<TopicSummary> topicSummaries = new ArrayList<TopicSummary>();
         for (Topic t : topics) {
             TopicSummary s = new TopicSummary(t);

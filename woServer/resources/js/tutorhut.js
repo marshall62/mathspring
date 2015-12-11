@@ -480,7 +480,60 @@ function showFlashProblem (resource,ans,solution, containerElement, mode) {
 
 }
 
+function showQuickAuthProblem (pid, solution, resource, mode, questType) {
+    hideHTMLProblem(false);
+    globals.probMode = mode;
+    transients.answersChosenSoFar=[];
+    var probParams,hints ;
+    if (globals.params)  {
+        probParams = JSON.stringify(globals.params);
+    }
+    if (globals.hints)  {
+        hints = JSON.stringify(globals.hints);
+        var h = JSON.parse(hints);
+    }
+    if (mode != MODE_EXAMPLE) {
+        globals.probElapsedTime = 0;
+        globals.lastProbType = HTML_PROB_TYPE;
+        globals.lastProbId = pid;
+    }
+    var isDemo = mode === MODE_DEMO || mode == MODE_EXAMPLE;
+    if (isDemo)
+        openExampleDialog(solution);
 
+    if (!isDemo)  {
+        loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton","probId="+pid));
+//        loadIframe(PROBLEM_WINDOWID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
+//            "&figure=" +  encodeURIComponent(globals.questionImage) +
+//            "&audio="+ encodeURIComponent(globals.questionAudio) +
+//            "&hints=" + hints +
+//            "&answers=" + encodeURIComponent(globals.answers) +
+//            "&newAnswer=" + encodeURIComponent(globals.newAnswer ) +
+//            "&answer=" + encodeURIComponent(globals.answer) +
+//            "&units="+ encodeURIComponent(globals.units)  +
+//            "&mode=" + encodeURIComponent(mode) +
+//            "&questType=" + encodeURIComponent(questType) +
+//            "&resource=" + encodeURIComponent(resource) +
+//            "&probContentPath=" + encodeURIComponent(sysGlobals.problemContentPath ) +
+//             "&problemParams="+ encodeURIComponent(probParams));
+        $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
+    }
+    else
+        loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton","probId="+pid));
+//        loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
+//            "&figure=" +  encodeURIComponent(globals.questionImage) +
+//            "&audio="+ encodeURIComponent(globals.questionAudio) +
+//            "&hints=" + encodeURIComponent(hints) +
+//            "&answers=" + encodeURIComponent(globals.answers) +
+//            "&newAnswer=" + encodeURIComponent(globals.newAnswer ) +
+//            "&answer=" + encodeURIComponent(globals.answer) +
+//            "&units="+ encodeURIComponent(globals.units)  +
+//            "&mode=" + encodeURIComponent(mode) +
+//            "&questType=" + encodeURIComponent(questType) +
+//            "&resource=" + encodeURIComponent(resource) +
+//            "&probContentPath=" + encodeURIComponent(sysGlobals.problemContentPath ) +
+//            "&problemParams="+ encodeURIComponent(probParams));
+}
 
 function showHTMLProblem (pid, solution, resource, mode) {
     hideHTMLProblem(false);
@@ -547,7 +600,7 @@ function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequ
 
     if (activityType == INTERVENTION){
         if(activity.interventionType == SAME_INTERVENTION){
-            continueInterventionTimeout();
+            setTimeout(continueInterventionTimeout(), 1000);
         }
         else{
             processNextProblemIntervention(activity);
@@ -656,7 +709,9 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.answers = null;
             }
             sendBeginEvent(globals,pid,mode);
-            showHTMLProblem(pid,solution,resource,mode);
+            if (activity.form==='quickAuth')
+                showQuickAuthProblem(pid,solution,resource,mode,activity.questType);
+            else showHTMLProblem(pid,solution,resource,mode);
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
             }

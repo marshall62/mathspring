@@ -49,7 +49,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //    protected TopicSelector topicSelector;
 //    TopicModel.difficulty nextDiff;
     List<PedagogicalMoveListener> pedagogicalMoveListeners;
-    private OptionsModel optionsModel;
 
 
     public BasePedagogicalModel() {
@@ -68,7 +67,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         buildComponents(smgr,pedagogy);
     }
 
-    private void buildComponents (SessionManager smgr, Pedagogy pedagogy) {
+    protected void buildComponents (SessionManager smgr, Pedagogy pedagogy) {
         try {
             problemGrader = new ProblemGrader(smgr);
             setExampleSelector(new BaseExampleSelector());
@@ -97,7 +96,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 buildInterventions(pedagogy.getInterventionsElement());
             else interventionGroup = new InterventionGroup();
             lessonModel.init(smgr,lessonModelParameters,pedagogy,this,this);
-            optionsModel = new OptionsModel(smgr, pedagogy, interventionGroup);
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {
@@ -201,6 +199,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         e.setCorrect(isCorrect);
         // first update the student model so that intervention selectors have access to latest stats based on this attempt
         studentModel.studentAttempt(smgr.getStudentState(), e.getUserInput(), isCorrect, e.getProbElapsedTime());
+
         AttemptResponse r = (AttemptResponse) lessonModel.processUserEvent(e); // this should always return null
 
         Intervention intervention=null;
@@ -254,7 +253,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         // at the end of a problem the emotional state of the student model is updated
 //        this.studentModel.updateEmotionalState(this.smgr,e.getProbElapsedTime(),e.getElapsedTime());
-        optionsModel.processChanges(e);
         this.studentModel.endProblem(smgr, smgr.getStudentId(),e.getProbElapsedTime(),e.getElapsedTime());
         r.setEffort(this.studentModel.getEffort());
         new TutorLogger(smgr).logEndProblem(e, r);
@@ -435,7 +433,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 if (showAsDemo) {
                     new TutorModelUtils().setupDemoProblem(p,smgr,hintSelector);
                 }
-                else smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
+                //elsesmgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
             }
         }
         if (p != null)
@@ -447,7 +445,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        if (p != null && p.getType().equals(Problem.HTML_PROB_TYPE)) {
 //            r.shuffleAnswers(smgr.getStudentState());
 //        }
-        r.setProblemBindings(smgr);
+//        r.setProblemBindings(smgr);
         return r;
 
     }
@@ -479,13 +477,13 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         // TODO We've got topic stuff built in here that is difficult to extract and move to the LessonModel.   It's figuring out
         // what mode the problem should be returned in (practice or demo) based on topicModel example frequency for the tutoring strategy
         setProblemTopic(p, topicId);
-        smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
+      //  smgr.getStudentState().setTopicNumPracticeProbsSeen(smgr.getStudentState().getTopicNumPracticeProbsSeen() + 1);
         if (p != null)
             studentModel.newProblem(state,p);
         problemGiven(p);
 
         r = new ProblemResponse(p);
-        r.setProblemBindings(smgr);
+//        r.setProblemBindings(smgr);
         return r;
     }
 
@@ -608,7 +606,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
             problemGiven(curProb); // inform pedagogical move listeners that a problem is given.
             r = new ProblemResponse(curProb);
-            r.setProblemBindings(smgr);
+//            r.setProblemBindings(smgr);
         }
         else {
             r = ProblemResponse.NO_MORE_PROBLEMS;

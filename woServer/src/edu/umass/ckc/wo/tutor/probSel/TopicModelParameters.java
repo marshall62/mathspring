@@ -47,7 +47,8 @@ public class TopicModelParameters extends LessonModelParameters {
     private boolean singleTopicMode;
 
     // overload the params of this with those given for class.
-    public TopicModelParameters overload(TopicModelParameters classParams) {
+    public LessonModelParameters overload(LessonModelParameters theClassParams) {
+        TopicModelParameters classParams = (TopicModelParameters) theClassParams;
         if (classParams == null) return this;
         if (classParams.getDifficultyRate() > 0)
             this.difficultyRate =classParams.getDifficultyRate();
@@ -55,8 +56,10 @@ public class TopicModelParameters extends LessonModelParameters {
             this.maxNumberProbs =classParams.getMaxNumberProbs();
         if (classParams.getMinNumberProbs() > 0)
             this.minNumberProbs =classParams.getMinNumberProbs();
+        // class params has maxTime given in MS.
         if (classParams.getMaxTimeInTopic() > 0)
             this.maxTimeInTopic =classParams.getMaxTimeInTopic();
+        // class params has minTime in MS
         if (classParams.getMinTimeInTopic() > 0)
             this.minTimeInTopic =classParams.getMinTimeInTopic();
         if (classParams.getContentFailureThreshold() > 0)
@@ -90,7 +93,8 @@ public class TopicModelParameters extends LessonModelParameters {
             topicExampleFrequency = frequency.oncePerSession;
         }
         topicIntroFrequency = userParams.isShowIntro() ? frequency.oncePerSession : frequency.never;
-        maxTimeInTopic = userParams.getMaxTime();
+        int minutes= (int) userParams.getMaxTime();  // userPedagogyParameters table has maxTime in minutes, we want MS
+        maxTimeInTopic =minutes * 60 * 1000;
         minTimeInTopic = 0;
         maxNumberProbs = userParams.getMaxProbs();
         topicMastery = userParams.getTopicMastery();

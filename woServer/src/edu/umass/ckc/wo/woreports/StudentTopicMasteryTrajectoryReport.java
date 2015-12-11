@@ -70,7 +70,7 @@ public class StudentTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
         req.setAttribute("studentName",u.toString());
         req.setAttribute("className",className);
         req.setAttribute("problems",problems);
-        req.setAttribute("flashProblemPreviewer", ProbPlayer.getURLToProbPlayer());
+        req.setAttribute("flashProblemPreviewer", ProbPlayer.getURLToProbPreviewer());
         req.setAttribute("message", userEvents.isEmpty() ? "No events can be found for this user and topic." : "" );
         req.setAttribute("width",smh.probIds.size()*50); // about 50pixels per data point will be a good width for the chart
         req.getRequestDispatcher(ReportHandler.STUDENT_TOPIC_MASTERY_TRAJECTORY_JSP).forward(req,resp);

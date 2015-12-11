@@ -1,11 +1,9 @@
 package edu.umass.ckc.wo.handler;
 
 
-import com.mysql.jdbc.Statement;
 import edu.umass.ckc.wo.admin.PedagogyAssigner;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.enumx.Actions;
 import edu.umass.ckc.wo.event.admin.*;
 import edu.umass.ckc.wo.html.admin.*;
 import ckc.servlet.servbase.ServletEvent;
@@ -18,8 +16,10 @@ import edu.umass.ckc.wo.util.ThreeTuple;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +32,11 @@ import java.util.List;
  * Handles all events for creating a user.
  */
 public class UserRegistrationHandler {
+    public static final String TEST_DEVELOPER_USER = "testDeveloper";
+    public static final String TEST_STUDENT_USER = "testStudent";
+    public static final String REGISTER1 = "login/userregistration.jsp";
+    public static final String REGISTER2 = "login/userRegSelectClass.jsp";
+    public static final String REGISTER3 = "login/userRegComplete.jsp";
     public static final Logger logger = Logger.getLogger(UserRegistrationHandler.class);
 
     public UserRegistrationHandler() {
@@ -51,13 +56,15 @@ public class UserRegistrationHandler {
      * GETPROPS:  additional user property fields in the UserProps table come in (goto to final)
      * FINAL: Generate a message saying the user has been created successfully.
      */
-    public View handleEvent(ServletContext sc, HttpServletRequest servletRequest, Connection conn, ServletEvent e) throws Exception {
-        if (e instanceof UserRegistrationStartEvent) // START state
-            return generateStudPage(servletRequest,(UserRegistrationStartEvent) e);
-        else if (e instanceof UserRegistrationAuthenticationInfoEvent) // STUD state
-            return processStudentInfo(servletRequest, conn, (UserRegistrationAuthenticationInfoEvent) e);
-        else if (e instanceof UserRegistrationClassSelectionEvent) // CLASS state
-            return processClassInfo(servletRequest, conn, (UserRegistrationClassSelectionEvent) e);
+    public View handleEvent(ServletContext sc, HttpServletRequest servletRequest, Connection conn, ServletEvent e, HttpServletResponse servletResponse) throws Exception {
+        if (e instanceof UserRegistrationStartEvent) // the first page in registering a new user prompts for user, pw, etc
+            return generateStudPage(servletRequest, (UserRegistrationStartEvent) e, servletResponse);
+        else if (e instanceof UserRegistrationValidateUsernameEvent)
+            return validateUser(conn, (UserRegistrationValidateUsernameEvent) e);  // make sure the user isn't already used
+        else if (e instanceof UserRegistrationAuthenticationInfoEvent) // takes the inputs for the new user: username, pw, etc
+            return processStudentInfo(servletRequest, servletResponse,conn, (UserRegistrationAuthenticationInfoEvent) e);   // produces a page to select a class
+        else if (e instanceof UserRegistrationClassSelectionEvent) // the input from the class selection page.
+            return processClassInfo(servletRequest, servletResponse, conn, (UserRegistrationClassSelectionEvent) e); // take the user back to the login page
         else if (e instanceof UserRegistrationMoreInfoEvent) // GETPROPS state
             return processPropertyInfo(servletRequest, conn, (UserRegistrationMoreInfoEvent) e);
         else
@@ -65,13 +72,29 @@ public class UserRegistrationHandler {
     }
 
 
+    public View validateUser (Connection conn, UserRegistrationValidateUsernameEvent e) throws Exception {
+        final String uName = e.getUserName();
+        int id = DbUser.getStudent(conn, e.getUserName());
+        if (id == -1)
+            return null;
+        else return new View() {
+            public String getView () {
+                return "The user " +uName+ " already exists.  Try another name.";
+            }
+        };
+
+    }
+
+
     /**
      * Generate the inputs that collect the user name, email address, password, etc.
+     *
      * @param req
+     * @param resp
      * @return
      * @throws Exception
      */
-    private View generateStudPage(HttpServletRequest req, UserRegistrationEvent e) throws Exception {
+    private View generateStudPage(HttpServletRequest req, UserRegistrationEvent e, HttpServletResponse resp) throws Exception {
         String url = ServletURI.getURI(req);
 
 
@@ -79,8 +102,12 @@ public class UserRegistrationHandler {
         Variables v = new Variables(req.getServerName(),
                 req.getServletPath(),
                 req.getServerPort());
-
-        return new UserRegistrationAuthenticationInfoPage(url, null, e);
+        String startPage = e.getStartPage();
+        req.setAttribute("startPage",startPage);
+        RequestDispatcher disp = req.getRequestDispatcher(UserRegistrationHandler.REGISTER1);
+        disp.forward(req,resp);
+//        return new UserRegistrationAuthenticationInfoPage(url, null, e);
+        return null;
     }
 
     /**
@@ -92,27 +119,34 @@ public class UserRegistrationHandler {
      * @return
      * @throws Exception
      */
-    private View  processStudentInfo(HttpServletRequest req, Connection conn, UserRegistrationAuthenticationInfoEvent e) throws Exception {
+    private View  processStudentInfo(HttpServletRequest req, HttpServletResponse resp, Connection conn, UserRegistrationAuthenticationInfoEvent e) throws Exception {
         Variables v = new Variables(req.getServerName(),
                 req.getServletPath(),
                 req.getServerPort());
         String url = ServletURI.getURI(req);
-        if (e.getPassword()==null || e.getPassword().trim().equals(""))
-            return new UserRegistrationAuthenticationInfoPage(url, "Please retry.  You must provide a password.", e);
-        int studId = DbUser.getStudent(conn, e.getUserName(),e.getPassword());
-        if (studId != -1)
-           return new UserRegistrationAuthenticationInfoPage(url, "Please retry.  That user name is already taken.", e);
-        else {
-            boolean isTestUser = e.isTestUser();
-            // We either have a real student user who is registering in a class or a test user registering in a class.
-            if (isTestUser)
-                studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), User.UserType.test);
-            else
-                studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), User.UserType.student);
-            if (e.getEmail()!= null && e.getEmail().length()>0)
-                Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,e.getUserName(),e.getPassword(),e.getEmail());
-            return new UserRegistrationClassSelectionPage(url, studId, conn, Actions.createUser3,  e);
-        }
+        int studId;
+
+        // We either have a real student user who is registering in a class or a test user registering in a class.
+        if (e.getUserType().equals(TEST_DEVELOPER_USER))
+            studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), e.getAge(), e.getGender(), User.UserType.test);
+        else if (e.getUserType().equals(TEST_STUDENT_USER))
+            studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(),e.getAge(), e.getGender(), User.UserType.testStudent);
+        else
+            studId = DbUser.createUser(conn,e.getFname(),e.getLname(),e.getUserName(),e.getPassword(),e.getEmail(), e.getAge(), e.getGender(), User.UserType.student);
+        if (e.getEmail()!= null && e.getEmail().length()>0)
+            Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,e.getUserName(),e.getPassword(),e.getEmail());
+
+        String startPage = e.getStartPage();
+        req.setAttribute("startPage",startPage);
+        req.setAttribute("studId",studId);
+        ClassInfo[] classes = DbClass.getAllClasses(conn, true);
+        req.setAttribute("classes",classes);
+        RequestDispatcher disp = req.getRequestDispatcher(UserRegistrationHandler.REGISTER2);
+        disp.forward(req,resp);
+//        return new UserRegistrationAuthenticationInfoPage(url, null, e);
+        return null;
+//        return new UserRegistrationClassSelectionPage(url, studId, conn, Actions.createUser3,  e);
+
     }
 
     public static String genName (Connection conn, String prefix) throws SQLException {
@@ -127,7 +161,7 @@ public class UserRegistrationHandler {
     public static int registerExternalUser(Connection conn, String assistmentsClassName, String externalUserName, User.UserType ut) throws Exception {
         int count = DbUser.getGuestUserCounter(conn);
         String user = externalUserName + count;   // create a userName from the external name + counter
-        int studId = DbUser.createUser(conn,"","", user,"","", ut);
+        int studId = DbUser.createUser(conn,"","", user,"","", "0", "", ut);
         ClassInfo cl = DbClass.getClassByName(conn, assistmentsClassName);
         int classId = cl.getClassid();
         DbUser.updateStudentClass(conn, studId, classId);
@@ -164,7 +198,7 @@ public class UserRegistrationHandler {
         else if (userType == User.UserType.externalTempNonTest)
             prefix = "externalTempCaller";
         String user = genName(conn,prefix);
-        int studId = DbUser.createUser(conn,"","", user,"","", userType);
+        int studId = DbUser.createUser(conn,"","", user,"","", "0", "", userType);
         ClassInfo cl = DbClass.getClassByName(conn, className);
         int classId = cl.getClassid();
         DbUser.updateStudentClass(conn, studId, classId);
@@ -178,7 +212,7 @@ public class UserRegistrationHandler {
 
     public static int registerStudentUser(Connection conn, String userName, String pw, ClassInfo classInfo) throws Exception {
 
-        int studId = DbUser.createUser(conn,"","", userName,pw,"", User.UserType.student);
+        int studId = DbUser.createUser(conn,"","", userName,pw,"", "0", "", User.UserType.student);
         int classId = classInfo.getClassid();
         DbUser.updateStudentClass(conn, studId, classId);
         // Now that the student is in a class, he is assigned a Pedagogy from one of the pedagogies
@@ -188,6 +222,9 @@ public class UserRegistrationHandler {
         DbUser.setStudentPedagogy(conn,studId,pedId);
         return studId;
     }
+
+
+
 
 
 
@@ -229,23 +266,34 @@ public class UserRegistrationHandler {
     }
 
     /**
-     * The student has selected a class.  Now generate a page that requests a more information about the user.
+     * The student has selected a class.  Now generate a page that tells the user his username and
+     * gives a button to return to login
      * @param req
      * @param conn
      * @param e
      * @return
      * @throws Exception
      */
-    private View processClassInfo(HttpServletRequest req, Connection conn, UserRegistrationClassSelectionEvent e) throws Exception {
+    private View processClassInfo(HttpServletRequest req, HttpServletResponse resp, Connection conn, UserRegistrationClassSelectionEvent e) throws Exception {
 
-        String uri = ServletURI.getURI(req);
+//        String uri = ServletURI.getURI(req);
         DbUser.updateStudentClass(conn, e.getStudId(), e.getClassId());
+        User stud = DbUser.getStudent(conn,e.getStudId());
+        ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
         // Now that the student is in a class, he is assigned a Pedagogy from one of the pedagogies
         // that the class uses.
         int pedId = PedagogyAssigner.assignPedagogy(conn,e.getStudId(), e.getClassId());
         // store the pedagogy id in the student table row for this user.
         DbUser.setStudentPedagogy(conn,e.getStudId(),pedId);
-        return new UserRegistrationUserPropertiesPage(uri, e, null, conn);
+        req.setAttribute("userName", stud.getUname());
+        req.setAttribute("fname", stud.getFname());
+        req.setAttribute("lname", stud.getLname());
+        req.setAttribute("teacher", classInfo.getTeacherName());
+        req.setAttribute("className", classInfo.getName());
+        req.setAttribute("startPage",e.getStartPage());
+        RequestDispatcher disp = req.getRequestDispatcher(UserRegistrationHandler.REGISTER3);
+        disp.forward(req,resp);
+        return null;
     }
 
 

@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.content.TopicIntro;
+import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
@@ -92,6 +93,16 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
 
     // TopicIntros being returned depends on the parameters
     public TopicIntro getTopicIntro(int curTopic) throws Exception {
+
+        // The classConfig table can have settings that control the topic-demo aspect of the pedagogy.
+        // These settings should override the default settings that are in the lesson config part of the XML.
+
+        int classId = smgr.getClassID();
+        TopicModelParameters classParams = (TopicModelParameters) DbClass.getLessonModelParameters(conn, classId);
+        // found classConfig parameters that control behavior of this lesson, use the frequency for the demo problem
+        if (classParams != null)
+            this.freq = classParams.getTopicIntroFrequency();
+
         // if it should always be shown,  show it.
         if (this.freq == TopicModelParameters.frequency.always ) {
             // if it hasn't been seen in this session, store that it has.

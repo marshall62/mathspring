@@ -2,7 +2,9 @@ package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.db.DbUserPedagogyParams;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
 import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
@@ -16,10 +18,12 @@ import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.model.TutorModelUtils;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
+import edu.umass.ckc.wo.tutormeta.PedagogyParams;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import org.jdom.Element;
 
@@ -51,6 +55,9 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
     // The intervention must be defined with <topicIntroFrequecy> in the config.
     // Valid values for this are: never, oncePerSession, always.  If not provided a default is used
     // as defined in the  TopicModelParameters via PedagogicalModelParameters .
+
+    // TODO need to honor frequency values set in parameters set for the class.
+    // These need to override those that are set in the XML config.  Similarly for topic intro IS.
     private void configure () {
         Element config = this.getConfigXML();
         Element freqElt = config.getChild("demoFrequency");
@@ -80,6 +87,20 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
     public Problem getTopicDemoProblem (int curTopic) throws Exception {
         Problem problem = null;
         StudentState state = smgr.getStudentState();
+        // The classConfig table can have settings that control the topic-demo aspect of the pedagogy.
+        // These settings should override the default settings that are in the lesson config part of the XML.
+
+        int classId = smgr.getClassID();
+        TopicModelParameters classParams = (TopicModelParameters) DbClass.getLessonModelParameters(conn, classId);
+        // found classConfig parameters that control behavior of this lesson, use the frequency for the demo problem
+        if (classParams != null)
+            freq = classParams.getTopicExampleFrequency();
+        // overload the defaults with stuff defined for the class.
+
+//       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
+        // these params are the ones that were passed in by Assistments and saved for the user
+
+
         if (!smgr.getStudentState().isExampleShown()) {
             if (freq == TopicModelParameters.frequency.always) {
                 if (!smgr.getStudentState().isExampleSeen(curTopic))

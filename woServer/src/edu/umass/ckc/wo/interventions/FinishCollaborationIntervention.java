@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.interventions;
 
+import net.sf.json.JSONObject;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Melissa
@@ -8,6 +10,12 @@ package edu.umass.ckc.wo.interventions;
  * To change this template use File | Settings | File Templates.
  */
 public class FinishCollaborationIntervention extends InputResponseIntervention implements NextProblemIntervention{
+    private String destination;
+
+    public FinishCollaborationIntervention(String source){
+        destination = source;
+    }
+
     public String getType () {
         return "FinishCollaborationIntervention";
     }
@@ -17,6 +25,13 @@ public class FinishCollaborationIntervention extends InputResponseIntervention i
 
         str+="</div>";
         return str;
+    }
+
+    @Override
+    public JSONObject buildJSON(JSONObject jo) {
+        super.buildJSON(jo);
+        jo.element("source", destination);
+        return jo;
     }
 
     @Override

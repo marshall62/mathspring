@@ -16,6 +16,7 @@ public class UserRegistrationAuthenticationInfoEvent extends UserRegistrationEve
     public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
     public static final String TEST_USER = "testUser";
+    public static final String USERTYPE = "userType";
     private String fname;
     private String lname;
     private String momName;
@@ -23,20 +24,25 @@ public class UserRegistrationAuthenticationInfoEvent extends UserRegistrationEve
     private String userName;
     private String email;
     private String testUser;
+    private String userType;
+    private String age;
+    private String gender;
 
-    public void init(String fname, String lname, String email, String password, String userName, String testUser) {
+    public void init(String fname, String lname, String email, String password, String userName, String userType, String age,String gender) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
         this.password = password;
         this.userName = userName;
-        this.testUser = testUser;
+        this.userType = userType;
+        this.age = age;
+        this.gender=gender;
     }
 
     public UserRegistrationAuthenticationInfoEvent(ServletParams p) throws Exception {
         super(p);
         this.init(p.getString(FNAME),p.getString(LNAME),p.getString(EMAIL),p.getString(PASSWORD),p.getString(UNAME),
-                p.getString(TEST_USER));
+                p.getString(USERTYPE), p.getString("age"), p.getString("gender"));
     }
 
     public String getFname() {
@@ -89,5 +95,17 @@ public class UserRegistrationAuthenticationInfoEvent extends UserRegistrationEve
 
     public boolean isTestUser () {
         return this.testUser != null && this.testUser.equals("testUser");
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }

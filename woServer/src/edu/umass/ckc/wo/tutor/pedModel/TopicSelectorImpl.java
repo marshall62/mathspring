@@ -1,9 +1,12 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
 import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
@@ -102,7 +105,7 @@ public class TopicSelectorImpl implements TopicSelector {
     // the topic and is built in HTML5 so that it can play without clicking a "next step" button which was imposed
     // by the way Flash problems (being used as demos) work
     public Problem getDemoProblem(int curTopic) throws Exception {
-        List<Integer> probs = getClassTopicProblems(curTopic, classID, smgr.isTestUser());
+        List<Integer> probs = getClassTopicProblems(curTopic, classID, DbUser.isShowTestControls(conn, smgr.getStudentId()));
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         probs.removeAll(recentProbs);
@@ -179,7 +182,7 @@ public class TopicSelectorImpl implements TopicSelector {
 
 
     public void initializeTopic(int curTopic, StudentState state) throws Exception {
-        List<Integer> probs = getClassTopicProblems(curTopic, classID, smgr.isTestUser());
+        List<Integer> probs = getClassTopicProblems(curTopic, classID, DbUser.isShowTestControls(conn,smgr.getStudentId()));
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         probs.removeAll(recentProbs);
@@ -215,7 +218,10 @@ public class TopicSelectorImpl implements TopicSelector {
             logger.debug("getNextTopicWithAvailableProblems  next topic is : " + nextTopicId);
             return nextTopicId;
         }
+        // TODO Note:  We should be using the idea of a 'playable' topic as in the commented line below.  This is because
+        // we shouldn't be working with topics that have no ready problems which is possible with the method we are using.
         List<Integer> topics = DbClass.getClassLessonTopics(conn, classID);
+//        List<Topic> topics = DbTopics.getClassPlayableTopics(conn,classID,smgr.showTestableContent());
         // if -1 is passed as the current topic, then return the first topic in the list as this is presumably a session that hasn't been
         // assigned a topic
         if (topicID == -1)
@@ -274,7 +280,7 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
     public boolean hasReadyContent(int topicId) throws Exception {
-        List<Integer> topicProbs =getClassTopicProblems(topicId, classID, smgr.isTestUser());
+        List<Integer> topicProbs =getClassTopicProblems(topicId, classID, DbUser.isShowTestControls(conn,smgr.getStudentId()));
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, topicId);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         topicProbs.removeAll(recentProbs);

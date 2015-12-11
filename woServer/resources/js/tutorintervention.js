@@ -21,6 +21,8 @@ function processNextProblemIntervention(activityJSON) {
         processChangeGUIIntervention(activityJSON);
     else if (interventionType === "TopicIntro")
         processTopicIntroIntervention(activityJSON);
+//    else if (interventionType === "ExternalActivityAskIntervention")
+//        processExternalActivityAskIntervention(activityJSON.html);
     else if (interventionType === "ExternalActivity") {
        processExternalActivityIntervention(activityJSON);
     }
@@ -39,11 +41,12 @@ function processNextProblemIntervention(activityJSON) {
     else if(interventionType === "CollaborationOriginatorIntervention")
         processCollaborationOriginatorIntervention(activityJSON.html, activityJSON.timeoutwait);
     else if(interventionType === "FinishCollaborationIntervention")
-        processCollaborationFinishedIntervention(activityJSON.html);
+        processCollaborationFinishedIntervention(activityJSON.html, activityJSON.source);
     else if(interventionType === "CollaborationTimedoutIntervention")
         processCollaborationTimedoutIntervention(activityJSON.html);
     else if(interventionType === "CollaborationOptionIntervention")
         processCollaborationOptionIntervention(activityJSON.html);
+
     sendBeginIntervention(globals,interventionType);
 
 }
@@ -95,12 +98,47 @@ function processAttemptIntervention (interv) {
     }
 }
 
+// WHen the mode of the external activity intervention selector is ASK.  This will first ask the user if they want to see it.
+// We call back the server with the answer, and only show it if they say yes.
+
+function processExternalActivityAskIntervention (html) {
+    // Asks if they want the external activity.  Calls one of the two functions depending on the student answer
+    interventionDialogOpenAsYesNo("Let's try something different!", html, NEXT_PROBLEM_INTERVENTION,wantsExternalActivity,doesNotWantExternalActivity );
+}
+
+// If the student says yes to the external activity, this function is called and we report yes to the server.
+// It will return the external activity intervention and we will show it.
+function wantsExternalActivity () {
+    alert("Student wants the external activity") ;
+    // send an InputResponse to the server with YES.  callback fn should be processNextProblemResult
+    sendNextProblemInputResponse("&answer=YES");
+}
+
+// If the student says yes to the external activity, this function is called and we report no to the server
+// It will go on with normal problem selection and we will proceed as normal
+function doesNotWantExternalActivity () {
+    alert("Student does not want the external activity") ;
+    // send an InputResponse to the server with NO.  callback fn should be processNextProblemResult
+    sendNextProblemInputResponse("&answer=NO");
+    servletGet("InputResponseNextProblemIntervention","&probElapsedTime="+globals.probElapsedTime  + "&destination="+globals.destinationInterventionSelector,
+        processNextProblemResult)
+}
+
+
+//Send an InputResponse for NextProblemIntervention to server.
+// arg will be something like "&answer=YES"
+function sendNextProblemInputResponse (arg) {
+    // send an InputResponse to the server with NO.  callback fn should be processNextProblemResult
+    servletGet("InputResponseNextProblemIntervention","&probElapsedTime="+globals.probElapsedTime  + "&destination="+globals.destinationInterventionSelector + arg,
+        processNextProblemResult)
+}
 
 function processExternalActivityIntervention(activityJSON) {
     var pid = activityJSON.id;
     var resource = activityJSON.resource;
     var instructions = activityJSON.instructions;
     var destinationIS = activityJSON.destinationIS;
+    var ask = (activityJSON.askMode=== "ask");
     debugAlert("Its an external problem.   Changing problemWindow src attribute to " + resource);
     globals.probElapsedTime = 0;
 
@@ -110,8 +148,11 @@ function processExternalActivityIntervention(activityJSON) {
     globals.destinationInterventionSelector = destinationIS;
     globals.isInputIntervention = true;
     //    showInstructionsDialog(instructions);
-    if (typeof instructions != 'undefined')
+    if (typeof instructions != 'undefined' && !ask)
         interventionDialogOpenAsConfirm("External Activity Instructions", instructions, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
+    else if (typeof instructions != 'undefined' && ask)   {
+        interventionDialogOpenAsYesNo("External Activity Instructions", instructions, NEXT_PROBLEM_INTERVENTION,interventionDialogYesClick,interventionDialogNoClick );
+    }
     else {
         servletGet("BeginExternalActivity", {xactId: pid, probElapsedTime: globals.probElapsedTime});
         window.open(resource,'External Activity', "height=600,width=800");
@@ -131,43 +172,67 @@ function checkIfInputIntervention (interv) {
     return globals.isInputIntervention;
 }
 
+function interventionDialogYesClickOld () {
+    myprogress(globals)  ;
+}
+
 //  The intervention dialog can be opened with either an OK button or a Yes-No buttons.  When those buttons are clicked, one of the three buttons below is
 // called.
 // At the time the intervention dialog is opened (say with Yes-No buttons), two function names are also provided - one for handling yes, one for no.
 // These function names are stored inside click attribute of the button part of the dialog
 
+// This function is used by a Yes/No dialog which should have no HTML form.   The yes button was clicked so we
+// just need to send 'yes' back to the server as userInput
 function interventionDialogYesClick () {
-    myprogress(globals)  ;
+    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION)
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseNextProblemIntervention",processNextProblemResult,"yes");
+    else
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseAttemptIntervention",processNextProblemResult,"yes");
+    doCloseInterventionDialog();
 }
 
+// This function is used by a Yes/No dialog which should have no HTML form.   The no button was clicked so we
+// just need to send 'no' back to the server as userInput
 function interventionDialogNoClick () {
-    interventionDialogClose();
+    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION)
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseNextProblemIntervention",processNextProblemResult,"no");
+    else
+        sendInterventionDialogYesNoConfirmInputResponse("InputResponseAttemptIntervention",processNextProblemResult,"no");
+    doCloseInterventionDialog();
 }
 
+
+// An confirm dialog may or may not have other inputs to send back (e.g. gather some emotion data and click OK)
+// So it must send back all the inputs including the OK
 function interventionDialogOKClick () {
-    interventionDialogClose();
+    interventionDialogClose("ok");
 }
 
 
 
 
-function interventionDialogClose () {
-    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
-    else if (globals.interventionType === ATTEMPT_INTERVENTION && !globals.isInputIntervention)
-        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
+function interventionDialogClose (userInput) {
+    // NO LONGER HAVE Continue events
+//    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && !globals.isInputIntervention)
+//        servletGet("ContinueNextProblemIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
+//    else if (globals.interventionType === ATTEMPT_INTERVENTION && !globals.isInputIntervention)
+//        servletGet("ContinueAttemptIntervention", {probElapsedTime: globals.probElapsedTime, destination: globals.destinationInterventionSelector}, processNextProblemResult);
 
     // If closing down an intervention dialog for next problem we send the InputResponse event and ask processNextProblemResult
     // to handle what the server returns.   For attempts we send InputResponse event but, FOR NOW, we don't expect the server
     // to return anything so no callback is given.
     // TODO We may want to actually do something based on an input response intervention dialog on attempts so we'd need some
     // kind of handler in place that can react to what the server returns.
-    else if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && globals.isInputIntervention)
-        sendInterventionDialogInputResponse("InputResponseNextProblemIntervention",processNextProblemResult);
+    if (globals.interventionType === NEXT_PROBLEM_INTERVENTION && globals.isInputIntervention)
+        sendInterventionDialogInputResponse("InputResponseNextProblemIntervention",userInput, processNextProblemResult);
 
     else if (globals.interventionType === ATTEMPT_INTERVENTION && globals.isInputIntervention)
-        sendInterventionDialogInputResponse("InputResponseAttemptIntervention");
+        sendInterventionDialogInputResponse("InputResponseAttemptIntervention", userInput);
+    doCloseInterventionDialog();
 
+}
+
+function doCloseInterventionDialog () {
     $("#"+INTERVENTION_DIALOG_CONTENT).html("");
     globals.interventionType = null;
     globals.isInputIntervention= false;
@@ -215,11 +280,27 @@ function openInterventionDialog (title, html, type) {
 }
 
 
-
-function sendInterventionDialogInputResponse (event, fn) {
+// The userInput will be what the user did to close the dialog (e.g. "ok") so that if form-inputs are not present
+// this value is what matters to the server.
+function sendInterventionDialogInputResponse (event, userInput, fn) {
+    // If the dialog contains an HTML form, this gets the values of the form inputs and creates the URL parameters for them
     var formInputs = $("#"+INPUT_RESPONSE_FORM).serialize() ;
     incrementTimers(globals);
-    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime  + "&destination="+globals.destinationInterventionSelector,fn)
+    servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime  +
+        "&destination="+globals.destinationInterventionSelector + "&userInput="+userInput, fn)
+}
+
+/**
+ * Yes/No and confirm dialogs for interventions that request a response will not have an HTML form.  So we simply
+ * send the userInput with yes, no, or ok.
+ * @param event
+ * @param fn
+ */
+function sendInterventionDialogYesNoConfirmInputResponse (event, fn, userInput) {
+
+    incrementTimers(globals);
+    servletFormPost(event, "&probElapsedTime="+globals.probElapsedTime  + "&destination="+globals.destinationInterventionSelector + "&userInput="+userInput,
+        fn) ;
 }
 
 

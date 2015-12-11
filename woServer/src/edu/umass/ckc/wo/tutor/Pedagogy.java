@@ -22,7 +22,7 @@ public class Pedagogy implements Comparable {
     private String studentModelClass;
     private String learningCompanionClass ;
     private String pedagogicalModelClass ;
-    private String id;
+    private String id;    // id of the pedagogy in the db (this is one that matters)
     private String name;
     private String comment;
     private String packg;
@@ -310,6 +310,20 @@ public class Pedagogy implements Comparable {
         return lessonName;
     }
 
+    public void setLogin (String loginXMLName) {
+        setLoginXMLName(loginXMLName);
+        // get the XML for this login and set it.
+        setLoginXML(Settings.loginMap.get(loginXMLName));
+
+    }
+
+    public void setLesson (String lessonXMLName) {
+        setLessonName(lessonXMLName);
+        // get the XML for this login and set it.
+        setLessonXML(Settings.lessonMap.get(lessonXMLName));
+
+    }
+
     public void setLoginXMLName(String loginXMLName) {
         this.loginXMLName = loginXMLName;
     }
@@ -342,4 +356,5 @@ public class Pedagogy implements Comparable {
     public String getSimpleConfigName() {
         return simpleConfigName;
     }
+
 }

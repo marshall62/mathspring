@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Maps the Pedagogy id to a Pedagogy object.
@@ -27,6 +28,8 @@ public class PedMap extends Hashtable<String, Pedagogy> {
         PedagogyParser config = new PedagogyParser(str); // a list of Pedagogy objects
         buildMap(config);
     }
+
+    public PedMap () {}
 
     private void buildMap(PedagogyParser config) {
         for (Pedagogy p: config.getPedagogies())  {

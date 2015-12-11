@@ -1,9 +1,10 @@
 package edu.umass.ckc.wo.woserver;
 
 
-import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.assistments.AssistmentsHandler;
 import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.ProblemBinding;
+import edu.umass.ckc.wo.content.QuickAuthProb;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.event.*;
@@ -20,10 +21,10 @@ import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
-import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 import edu.umass.ckc.wo.content.Problem;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -186,6 +187,44 @@ public class TutorBrainHandler {
                 new MyProgressHandler(servletInfo.getServletContext(),smgr,servletInfo.getConn(),servletInfo.getRequest(),servletInfo.getResponse()).handleRequest(ee);
                 return false;
             }
+            else if (e instanceof GetQuickAuthProblemSkeletonEvent) {
+                RequestDispatcher disp=null;
+                Problem p = ProblemMgr.getProblem(((GetQuickAuthProblemSkeletonEvent) e).getProbId());
+                String quickAuthJSP = "problem_skeleton.jsp";
+                disp = servletInfo.getRequest().getRequestDispatcher(quickAuthJSP);
+                servletInfo.getRequest().setAttribute("problem",p);
+                servletInfo.getRequest().setAttribute("sessionId",smgr.getSessionNum());
+                servletInfo.getRequest().setAttribute("eventCounter",smgr.getEventCounter());
+                servletInfo.getRequest().setAttribute("elapsedTime",((GetQuickAuthProblemSkeletonEvent) e).getElapsedTime());
+                String servContext= servletInfo.getRequest().getContextPath();
+                if (servContext != null && servContext.length()>1)
+                    servContext=servContext.substring(1);    // strip off the leading /
+
+                servletInfo.getRequest().setAttribute("servletContext",servContext);
+                servletInfo.getRequest().setAttribute("servletName",servletInfo.getServletName());
+                servletInfo.getRequest().setAttribute("previewMode",false);
+                servletInfo.getRequest().setAttribute("teacherId",-1);  // for preview mode it looks for a teacher ID
+                disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
+                logger.info("<< JSP: " + quickAuthJSP);
+                return false;
+            }
+            else if (e instanceof GetQuickAuthProblemEvent) {
+                Problem p = ProblemMgr.getProblem(((GetQuickAuthProblemEvent) e).getProbId());
+                ProblemBinding b = new ProblemBinding(p);
+                b.setBindings(smgr);
+                QuickAuthProb qp = new QuickAuthProb(p,Settings.problemContentPath,b);
+                JSONObject jo = new JSONObject();
+                qp.buildJSON(jo);
+                final String json = jo.toString();
+                View v = new View() {
+                    public String getView() throws Exception {
+                        return json;
+
+                    }
+                };
+                servletInfo.getOutput().append(v.getView());
+                return true;
+            }
 
             // N.B.  The above new events have to come before this one because they all inherit from
             // TutorHutEvent and we don't want TutorHutEventHandler processing their events
@@ -237,8 +276,14 @@ public class TutorBrainHandler {
                 smgr.getStudentState().clearTutorHutState();
                 String clientType = DbSession.getClientType(servletInfo.getConn(), smgr.getSessionNum());
                 RequestDispatcher disp=null;
-
+                if (clientType == null)
+                    clientType = LoginParams.K12;
                 String loginJSP = clientType.equals(LoginParams.ADULT) ? LoginAdult_2.LOGIN_JSP : LoginK12_2.LOGIN_JSP;
+                if (clientType.equals(LoginParams.ADULT) )
+                    servletInfo.request.setAttribute("startPage","LoginAdult_1");
+                else
+                    servletInfo.request.setAttribute("startPage","LoginK12_1");
+
                 disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
                 disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
                 logger.info("<< JSP: " + loginJSP);

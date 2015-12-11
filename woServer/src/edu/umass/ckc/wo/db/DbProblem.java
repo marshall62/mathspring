@@ -364,6 +364,8 @@ public class DbProblem extends BaseMgr {
     }
 
 
+
+
     public List<Problem> getActivatedTopicProblems(Connection conn, int classId, int topicId) throws SQLException {
         List<Problem> topicProbs = getProblemsInTopic(topicId);
         topicProbs = excludeProblemsOmittedForClass(conn,classId,topicProbs);
@@ -832,7 +834,7 @@ public class DbProblem extends BaseMgr {
         for (Topic t: activetopics) {
 
             DbProblem probMgr = new DbProblem();
-            List<Problem> problems = probMgr.getProblemsInTopic(t.getId());
+            List<Problem> problems = ProblemMgr.getWorkingProblems(t.getId());
             // get the problems omitted for this topic
             List<String> ids = probMgr.getClassOmittedTopicProblemIds(conn,classId,t.getId());
             if (problems == null)

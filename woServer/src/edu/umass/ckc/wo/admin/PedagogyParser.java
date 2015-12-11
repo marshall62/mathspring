@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorParam;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.xml.JDOMUtils;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 
@@ -39,6 +40,8 @@ public class PedagogyParser {
         Document d = makeDocument(str);
         pedagogies = readPedagogies(d);
     }
+
+    public PedagogyParser () {}
 
     /**
      * Make a JDOM Document out of the file.
@@ -82,8 +85,19 @@ public class PedagogyParser {
         }
 
 
+    /**
+     * Given the XML for a pedagogy (comes from DB now).  This will parse it into JDOM elements and return it.
+     * @param pedXML
+     * @return
+     * @throws Exception
+     */
+    public Pedagogy parsePed (String pedXML) throws Exception {
+        Element pedElt = JDOMUtils.getRoot(pedXML);
+        Pedagogy p = readPed(pedElt);
+        return p;
+    }
 
-    private Pedagogy readPed(Element pedElt) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, DataConversionException {
+    public Pedagogy readPed(Element pedElt) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, DataConversionException {
         Element e;
 
         e = pedElt.getChild("pedagogicalModelClass");
@@ -164,6 +178,11 @@ public class PedagogyParser {
             }
         }
 
+        e = pedElt.getChild("switchers");
+        if (e != null) {
+            p.setSwitchersElement(e);
+        }
+
         return p;
 
     }
@@ -228,9 +247,6 @@ public class PedagogyParser {
         String id = e.getValue();
         p.setId(id);
 
-        e = pedElt.getChild("name");
-        String name = e.getValue();
-        p.setName(name);
 
         e = pedElt.getChild("comment");
         if (e != null)  {

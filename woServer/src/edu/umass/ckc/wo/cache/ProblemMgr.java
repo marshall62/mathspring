@@ -238,7 +238,6 @@ public class ProblemMgr {
     }
 
 
-    // jkhj
 
 
     private static List<ProblemAnswer> getAnswerValues(Connection conn, int id) throws SQLException {
@@ -462,6 +461,44 @@ public class ProblemMgr {
         new DbProblem().deactivateProblem(conn,probId,probName);     
 
 
+    }
+
+    /**
+     * Returns all the non-testable problems in a topic
+     */
+    public static List<Problem> getWorkingProblems (int topicId) {
+        List<Problem> all = getTopicProblems(topicId);
+        if (all == null || all.size() == 0)
+            return new ArrayList<Problem>();
+        List<Problem> some = new ArrayList<Problem>(all.size());
+        for (Problem p : all) {
+            if (p.isTestProblem())
+                continue;
+            some.add(p);
+        }
+        return some;
+    }
+
+    /**
+     * Return whether the topic contains ready problems.   If the  includeTestableProblems is true,
+     * it will return true if there are no ready problems but some testables.
+     * @param topicId
+     * @param includeTestableProblems
+     * @return
+     * @throws SQLException
+     */
+    public static boolean isTopicPlayable(int topicId, boolean includeTestableProblems) throws SQLException {
+        List<Problem> probs = ProblemMgr.getTopicProblems(topicId);
+        if (probs == null)
+            return false;
+        for (Problem p : probs) {
+            // if a problems isn't testable it must be ready.
+            if (!p.isTestProblem())
+                return true;
+            else if (includeTestableProblems && p.isTestProblem())
+                return true;
+        }
+        return false;
     }
 
 

@@ -6,7 +6,7 @@ March 20, 2012
    --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>
+<%--<jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>--%>
 
 <!DOCTYPE HTML>
 <html>
@@ -97,6 +97,7 @@ March 20, 2012
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics&teacherId=${teacherId}&classId=${classId}">Topic Selection</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection&teacherId=${teacherId}&classId=${classId}">Problem Selection</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPedagogies&teacherId=${teacherId}&classId=${classId}">Pedagogy Selection</a></li>
+                                                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassPrePost&teacherId=${teacherId}&classId=${classId}">Pre/Post Surveys</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditClassList&teacherId=${teacherId}&classId=${classId}">Student List</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassCloneClass&teacherId=${teacherId}&classId=${classId}">Clone a Class</a></li>
                                                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassEdit&teacherId=${teacherId}&classId=${classId}">Class Information</a></li>

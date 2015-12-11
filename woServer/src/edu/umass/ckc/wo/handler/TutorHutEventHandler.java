@@ -40,8 +40,11 @@ public class TutorHutEventHandler {
         if (r != null)
             return new View() {
                 public String getView() throws Exception {
-                    if (r != null)
-                        return r.getJSON().toString();
+                    if (r != null) {
+                        String jsonstr = r.getJSON().toString();
+                        logger.debug(jsonstr);
+                        return jsonstr;
+                    }
                     else throw new Exception("Null Response received by TutorHutEventHandler.handleRequest");
                 }
             };

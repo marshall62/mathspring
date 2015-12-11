@@ -85,11 +85,12 @@ March 23, 2012
                         <div class="leftNav">
                             <div id="p7TMM_1" class="p7TMM10">
                                 <ul class="p7TMM">
-                                    <li><a href="#">Main</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/WoAdmin?action=AdminMainPage&teacherId=${teacherId}&classId=${classId}">Main</a></li>
                                     <li><a href= "<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminNoClassCreateNewClass&teacherId=<c:out value="${teacherId}"/>">Create Class</a></li>
 
-
+                                    <li><a href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminTeacherRegistration">Create Teacher</a></li>
                                     <li><a href="#">Class Reports</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/WoAdmin?action=AdminTutor&teacherId=${teacherId}">Administrate Tutor </a></li>
 
 
                                     <li><a href="http://mathspring.org/">Mathspring Website </a></li>

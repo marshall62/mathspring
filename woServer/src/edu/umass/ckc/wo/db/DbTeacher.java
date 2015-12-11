@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.db;
 
+import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Teacher;
 
 import java.sql.Connection;
@@ -45,7 +46,7 @@ public class DbTeacher {
 
     }
 
-    public static List<Teacher> getAllTeachers(Connection conn) throws SQLException {
+    public static List<Teacher> getAllTeachers(Connection conn, boolean includeClasses) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
@@ -59,6 +60,10 @@ public class DbTeacher {
                 String lname = rs.getString("lname");
                 String uname = rs.getString("username");
                 Teacher t = new Teacher(null,id,fname,lname,uname,null);
+                if (includeClasses) {
+                    List<ClassInfo> classes = DbClass.getTeacherClasses(conn,t.getId());
+                    t.setClasses(classes);
+                }
                 result.add(t);
             }
             return result;
@@ -93,6 +98,36 @@ public class DbTeacher {
                 stmt.close();
             if (rs != null)
                 rs.close();
+        }
+    }
+
+    /**
+     * Deleting teachers depends on first deleting their classes
+     * @param conn
+     * @param teacherIds
+     * @throws SQLException
+     */
+    public static void deleteTeachers(Connection conn, int[] teacherIds) throws SQLException {
+        for (int tid: teacherIds) {
+            List<ClassInfo> classes = DbClass.getTeacherClasses(conn,tid);
+            for (ClassInfo c : classes)
+                DbClass.deleteClass(conn,c.getClassid());
+            // once all the classes are gone there should be no other tables related to a teacher and now we delete the teacher row.
+            deleteTeacher(conn, tid);
+        }
+    }
+
+
+    private static int deleteTeacher(Connection conn, int tid) throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            String q = "delete from teacher where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, tid);
+            return stmt.executeUpdate();
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
     }
 }

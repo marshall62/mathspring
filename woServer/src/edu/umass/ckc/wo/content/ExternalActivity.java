@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.content;
 
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
+import edu.umass.ckc.wo.tutor.intervSel2.ExternalActivityIS;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import net.sf.json.JSONObject;
 
@@ -15,6 +16,7 @@ public class ExternalActivity extends Problem implements NextProblemIntervention
     private static final String EXTERNAL_ACTIVITY = "ExternalActivity";
     private int topicId;
     private String destinationIS; // necessary so that client can call back server and go back to the IS that selects this.
+    private String askMode = ExternalActivityIS.FORCE; // either force or ask
 
 
     public ExternalActivity() {
@@ -35,6 +37,14 @@ public class ExternalActivity extends Problem implements NextProblemIntervention
         this.destinationIS = destinationIS;
     }
 
+    public String getAskMode() {
+        return askMode;
+    }
+
+    public void setAskMode(String askMode) {
+        this.askMode = askMode;
+    }
+
     @Override
     public boolean isBuildProblem() {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
@@ -48,6 +58,7 @@ public class ExternalActivity extends Problem implements NextProblemIntervention
         jo.element("topicId",this.getTopicId());
         jo.element("instructions",this.getInstructions());
         jo.element("mode", PRACTICE);
+        jo.element("askMode", this.askMode);
         jo.element("destinationIS", this.getDestinationIS());
         return jo;
     }

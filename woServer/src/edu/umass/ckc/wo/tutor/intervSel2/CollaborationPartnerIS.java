@@ -53,12 +53,13 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
         // the person who is waiting for help is the given id.   This is the partner.
         partnerName = PartnerManager.getPartnerName(smgr.getConnection(), id); // get the partner's name
         // update DB with collab event indicating the two students are starting to collaborate
-        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), id, null, "CollaborationPartnerIntervention");
+        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), id, null, "CollaborationInstructions_Partner");
         return selectIntervention(e);
     }
 
     //  THis handles the input from the last intervention saying they are done and then clicking OK
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
+        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Partner");
         return null;
     }
 
@@ -78,8 +79,8 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
         // this happens when the collaboration is done.  THe reason they are not partners anymore (above condition of if)
         // is because the originator clicks NextProblem button which then sends an event to CollaborationIS which removes the partnership.
         //  So we tell the helper he is done.
-        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationPartnerIntervention");
-        Intervention interv= new FinishCollaborationIntervention();
+        DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedAlert_Partner");
+        Intervention interv= new FinishCollaborationIntervention("Partner");
         return interv;
     }
 

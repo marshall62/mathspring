@@ -127,7 +127,7 @@ public class MyProgressNavigationForceIS extends NextProblemInterventionSelector
         long now = System.currentTimeMillis();
 
         // We only want this intervention to come up after a practice problem because the MPP return-to-hut will break unless the problem was originally practice.
-        if (!smgr.getStudentState().getCurProblemMode().equals(Problem.PRACTICE))
+        if (smgr.getStudentState().getCurProblemMode() == null || !smgr.getStudentState().getCurProblemMode().equals(Problem.PRACTICE))
             return null;
         NextProblemIntervention intervention=null;
 

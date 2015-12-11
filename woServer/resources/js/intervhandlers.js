@@ -47,6 +47,8 @@ function processMyProgressNavAskIntervention (html) {
     interventionDialogOpenAsYesNo("Let's see our progress!", html, NEXT_PROBLEM_INTERVENTION,myprogress,interventionDialogNoClick );
 }
 
+
+
 //This function continues the wait on a TimeoutIntervention
 function continueInterventionTimeout(){
     timewaited = timewaited+tmoutwait;
@@ -91,9 +93,13 @@ function processCollaborationOriginatorIntervention(html, timeoutwait) {
 
 
 
-function processCollaborationFinishedIntervention(html) {
-    globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationPartnerIS";
-//    interventionDialogOpen("Collaboration over", html, NEXT_PROBLEM_INTERVENTION);
+function processCollaborationFinishedIntervention(html, destination) {
+    if(destination === "Partner"){
+        globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationPartnerIS";
+    }
+    else{
+        globals.destinationInterventionSelector = "edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS";
+    }
     interventionDialogOpenAsConfirm("Collaboration over", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
 }
 

@@ -3,6 +3,8 @@ package edu.umass.ckc.wo.db;
 import com.mysql.jdbc.Statement;
 import edu.umass.ckc.wo.log.RequestActions;
 import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutor.studmod.StudentModelMotivational;
 import edu.umass.ckc.wo.util.SqlQuery;
@@ -142,6 +144,36 @@ public class DbUser {
         }
     }
 
+    // This is for a one-time clean-up converting XML pedagogies to db ones.
+    public static void insertStudentOverridePedagogy(Connection conn, int studId, int pedId, LessonModelParameters lparams) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        TopicModelParameters params = (TopicModelParameters) lparams;
+        try {
+            String q = "insert into userpedagogyparameters (studId, overridePedagogy, showIntro,maxtime,maxprobs,mode," +
+                    "singletopicmode,mastery) " +
+                    "values (?,?,?,?,?,'ExamplePractice',0,?)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, pedId);
+            TopicModelParameters.frequency f = params.getTopicIntroFrequency();
+            // need to set a string value in here. not a number.  Add new cols
+            stmt.setBoolean(3,params.getTopicIntroFrequency() != TopicModelParameters.frequency.never);
+            stmt.setLong(4,params.getMaxTimeInTopic());
+            stmt.setInt(5,params.getMaxNumberProbs());
+            stmt.setDouble(6,params.getTopicMastery());
+            stmt.execute();
+
+        }
+
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
 
     public static boolean isAssistmentsUser (Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
@@ -201,6 +233,8 @@ public class DbUser {
         else return false;
     }
 
+
+
     public static boolean[] getUserFlags (Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -227,6 +261,16 @@ public class DbUser {
 
 
         }
+    }
+
+    public static int getStudent(Connection conn, String userName) throws Exception {
+        String q = "select id from Student where userName=?";
+        PreparedStatement ps = conn.prepareStatement(q);
+        ps.setString(1, userName);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next())
+            return rs.getInt(1);
+        else return -1;
     }
 
 
@@ -312,7 +356,7 @@ public class DbUser {
 
     public static int createUser(Connection conn, String fname, String lname, String userName,
                                  String password, String email,
-                                 User.UserType userType) throws Exception {
+                                 String age, String gender, User.UserType userType) throws Exception {
         boolean[] flags = User.getUserTypeFlags(userType);
         boolean keepUser = flags[0];
         boolean keepData = flags[1];
@@ -323,7 +367,8 @@ public class DbUser {
         if (id != -1)
             return -1;
         String q;
-        q = "insert into Student (fname,lname,userName,email,password,keepUser,keepData,updateStats,showTestControls, trialUser, isGuest) values (?,?,?,?,?,?,?,?,?,?,?)";
+        q = "insert into Student (fname,lname,userName,email,password,keepUser,keepData,updateStats,showTestControls, trialUser, isGuest,age,gender) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps;
         ps = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, fname);
@@ -338,6 +383,8 @@ public class DbUser {
         boolean isTrialUser = User.isTrialUser(userType);
         ps.setInt(10,isTrialUser?1:0);
         ps.setInt(11,userType== User.UserType.guest ? 1 : 0);
+        ps.setInt(12, age.length() > 0 ? Integer.parseInt(age) : 0);
+        ps.setString(13,gender);
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
         if (rs.next())
@@ -950,4 +997,34 @@ public class DbUser {
         }
     }
 
+    /**
+     * Go through all users sessions and figure out how much time they've been logged into the tutor for and return that number in minutes.
+     * @param conn
+     * @param studId
+     * @return
+     */
+    public static int getLoggedInTimeInMinutes(Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            long totalLoggedTime = 0;
+            String q = "select beginTime, lastAccessTime from session where studId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Timestamp bt = rs.getTimestamp(1);
+                Timestamp lt = rs.getTimestamp(2);
+                long sessLen = lt.getTime() - bt.getTime();
+                totalLoggedTime += sessLen;
+            }
+            return (int) totalLoggedTime / 60000 ;  // converts from ms to min
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 }

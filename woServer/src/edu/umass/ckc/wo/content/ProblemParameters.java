@@ -130,6 +130,33 @@ public class ProblemParameters {
 
     }
 
+    public Binding addBindings2(Problem p, int studId, Connection conn, StudentState state) throws SQLException {
+
+//        JSONObject rJson = r.getJSON();
+//        // We have already bound this problem
+//        if (r.getParams() != null) {
+//            return;
+//        }
+
+        Binding unusedBinding = getUnusedAssignment(p.getId(), studId, conn);
+        saveAssignment(unusedBinding, state);
+        // short answer problems need to save the possible answers in the student state too.
+        if (p.isShortAnswer()) {
+            ProblemAnswer bestAnswer= saveAnswerPossibilities(conn,state,p.getAnswers(),unusedBinding.getPosition());
+            // add in the answer to the map using this fixed variable.  N.B. This alters the map and thats why we use a copy
+            // so that the next time the Best_answer isn't already there.
+
+            unusedBinding.addKVPair("$Best_Answer",bestAnswer.getVal());
+        }
+        return unusedBinding;
+//        JSONObject pJson = unusedBinding.getJSON(new JSONObject());
+//        r.setParams(pJson.toString());
+//        rJson.element("parameters", pJson);
+
+    }
+
+
+
     // short answer problems that are parameterized need to save the appropriate set of possible answers into the student state.
     // WHen the variable bindings are selected prior to calling this method, the index of the selected binding is kept and passed to this so that
     // we can then select the possible answers that have the same index (the bindingPosition in the ProblemAnswer table)

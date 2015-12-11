@@ -4,11 +4,17 @@ package edu.umass.ckc.wo.woserver;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Classes;
 import edu.umass.ckc.wo.beans.Teacher;
+import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.content.ProblemBinding;
+import edu.umass.ckc.wo.content.QuickAuthProb;
 import edu.umass.ckc.wo.db.DbAdmin;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTeacher;
 import edu.umass.ckc.wo.event.admin.*;
 import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.event.tutorhut.GetQuickAuthProblemEvent;
+import edu.umass.ckc.wo.event.tutorhut.GetQuickAuthProblemSkeletonEvent;
 import edu.umass.ckc.wo.handler.*;
 import edu.umass.ckc.wo.html.admin.Variables;
 import ckc.servlet.servbase.ServletEvent;
@@ -16,8 +22,10 @@ import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.content.PrePostProblemDefn;
 import edu.umass.ckc.wo.db.DbPrePost;
 import edu.umass.ckc.wo.tutor.Settings;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -118,6 +126,44 @@ public class AdminHandler {
             if (v == null)
                 return false;
         }
+        else if (e instanceof AdminGetQuickAuthSkeletonEvent) {
+            AdminGetQuickAuthSkeletonEvent ee = (AdminGetQuickAuthSkeletonEvent) e;
+            RequestDispatcher disp=null;
+            Problem p = ProblemMgr.getProblem(ee.getProbId());
+            String quickAuthJSP = "problem_skeleton.jsp";
+            disp = servletRequest.getRequestDispatcher(quickAuthJSP);
+            servletRequest.setAttribute("problem",p);
+            servletRequest.setAttribute("preview",true);
+            servletRequest.setAttribute("sessionId",-1);
+            servletRequest.setAttribute("eventCounter", -1);
+            servletRequest.setAttribute("elapsedTime",-1);
+            servletRequest.setAttribute("previewMode",true);
+            servletRequest.setAttribute("teacherId",ee.getTeacherId());
+            String servContext= servletRequest.getContextPath();
+            if (servContext != null && servContext.length()>1)
+                servContext=servContext.substring(1);    // strip off the leading /
+
+            servletRequest.setAttribute("servletContext", servContext);
+//            servletRequest.setAttribute("servletName",servletInfo.getServletName());
+            disp.forward(servletRequest,servletResponse);
+            logger.info("<< JSP: " + quickAuthJSP);
+            return false;
+        }
+        else if (e instanceof AdminGetQuickAuthProblemEvent) {
+            Problem p = ProblemMgr.getProblem(((AdminGetQuickAuthProblemEvent) e).getProbId());
+            ProblemBinding b = new ProblemBinding(p);
+//            b.setBindings(smgr);
+            QuickAuthProb qp = new QuickAuthProb(p,Settings.problemContentPath,b);
+            JSONObject jo = new JSONObject();
+            qp.buildJSON(jo);
+            final String json = jo.toString();
+            v = new View() {
+                public String getView() throws Exception {
+                    return json;
+
+                }
+            };
+        }
         else if (e instanceof AdminSelectClassEvent) {
             AdminSelectClassEvent ee = (AdminSelectClassEvent) e;
 //            servletRequest.getSession().setAttribute(AdminHandler.CLASSID,ee.getClassId());
@@ -138,7 +184,7 @@ public class AdminHandler {
         }
         else if (e instanceof AdminEditSurveysEvent && !((AdminEditSurveysEvent) e).isSaveMode()) {
             servletRequest.setAttribute("teacherId",((AdminEditSurveysEvent) e).getTeacherId());
-            CreateClassHandler.setTeacherName(conn,servletRequest, ((AdminEditSurveysEvent) e).getTeacherId());
+            CreateClassHandler.setTeacherName(conn, servletRequest, ((AdminEditSurveysEvent) e).getTeacherId());
             servletRequest.setAttribute("preSurvey",Settings.preSurvey);
             servletRequest.setAttribute("postSurvey",Settings.preSurvey);
             servletRequest.getRequestDispatcher(CreateClassHandler.EDIT_SURVEYS_JSP).forward(servletRequest,servletResponse);
@@ -153,7 +199,7 @@ public class AdminHandler {
             servletRequest.setAttribute("preSurvey",Settings.preSurvey);
             servletRequest.setAttribute("postSurvey",Settings.postSurvey);
             servletRequest.setAttribute("message","Survey settings saved.");
-            servletRequest.getRequestDispatcher(CreateClassHandler.EDIT_SURVEYS_JSP).forward(servletRequest,servletResponse);
+            servletRequest.getRequestDispatcher(CreateClassHandler.EDIT_SURVEYS_JSP).forward(servletRequest, servletResponse);
             return false;
         }
         // this else class must be after the previous ones because their events are subclasses of AdminClassEvent
@@ -165,8 +211,11 @@ public class AdminHandler {
 //            new TeacherRegistrationHandler().handleEvent(conn,(AdminTeacherRegistrationEvent) e, servletRequest, servletResponse);
 //            return false; // forward to JSP , tell caller not to generate servlet output
 //        }
-        else if (e instanceof UserRegistrationEvent)
-            v = new UserRegistrationHandler().handleEvent(sc, servletRequest, conn, e);
+        else if (e instanceof UserRegistrationEvent)   {
+            v = new UserRegistrationHandler().handleEvent(sc, servletRequest, conn, e, servletResponse);
+            if (v == null)
+                return false;
+        }
 
 
         else if (e instanceof AdminGetPrePostProblemPreviewEvent) {
@@ -214,6 +263,11 @@ public class AdminHandler {
         }
 
         else if (e instanceof AdminReloadProblemsEvent || e instanceof AdminTutorEvent) {
+            new TutorAdminHandler().processEvent(servletRequest, servletResponse, e, conn);
+            return false;
+        }
+        else if (e instanceof AdminDeleteTeachersEvent || e instanceof AdminDeleteClassesEvent || e instanceof AdminDeleteStudentsEvent
+                || e instanceof AdminDeleteClassesSubmitEvent || e instanceof AdminDeleteTeachersSubmitEvent ) {
             new TutorAdminHandler().processEvent(servletRequest, servletResponse, e, conn);
             return false;
         }

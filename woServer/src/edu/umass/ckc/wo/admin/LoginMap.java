@@ -24,7 +24,7 @@ public class LoginMap extends Hashtable<String, LoginXML> {
 
     private static final Logger logger = Logger.getLogger(LoginMap.class);
 
-
+    public LoginMap () {}
 
 
     public LoginMap(InputStream str) throws IOException, ClassNotFoundException, DataConversionException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {

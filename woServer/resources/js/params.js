@@ -2,21 +2,23 @@ var maxHints = 10;
 var currentHint = "Question";
 var shown = {};
 
-function prepareForData(doc) {
+
+function prepareForData(doc, components) {
     for (i = 1; i <= maxHints; ++i) {
         doc.getElementById("Hint"+i.toString()+"Thumb").style.display="none";
         doc.getElementById("Hint"+i.toString()).style.display = "none";
         addHintHandler(doc, i.toString());
     }
-    if (isDemo()) {
+    if (components.mode === 'demo') {
         hideAnswers(doc, 0)
     }
-    if (isMultiChoice() == false) {
+    if (!isMultiChoice(components.questType)) {
         showShortAnswerBox(doc);
         addShortAnswerHandler(doc);
     }
     else {
-        var answers = getAnswers();
+//        var answers = getAnswers();
+        var answers =components.answers;
         if (answers != undefined && answers != null){
             hideAnswers(doc, answers.length);
             addAnswerClickedHandlers(doc, answers.length);
@@ -24,16 +26,12 @@ function prepareForData(doc) {
     }
 }
 
-function isDemo() {
-    return window.parent.isDemoMode();
-}
 
-function isMultiChoice() {
-    var answers = window.parent.getAnswers();
-    if (answers == null || answers == undefined || answers.length == undefined) {
-        return false;
-    }
-    return true;
+
+function isMultiChoice(questType) {
+    return (questType === 'multiChoice');
+
+
 }
 
 function isArray(parsedItem) {
@@ -129,40 +127,47 @@ function addHintHandler(doc, hintLabel){
     }
 }
 
-function plug(doc) {
-    var probStatement = getProblemStatement();
-    var probFigure = getProblemFigure();
-    var probSound = getProblemSound();
-    var probUnits = getUnits();
+function plug(doc, components) {
+//    var probStatement = getProblemStatement();
+//    var probFigure = getProblemFigure();
+//    var probSound = getProblemSound();
+//    var probUnits = getUnits();
+    var probStatement = components.stmt;
+    var probFigure = components.fig;
+    var probSound = components.audio;
+    var probUnits = components.units;
+    var problemParams =components.problemParams;
+
     if(probStatement != null && probStatement != undefined && probStatement != "")
-        doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(probStatement));
+        doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(probStatement, components), problemParams);
     if(probFigure != null && probFigure != undefined && probFigure != "")
-        doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure));
+        doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure, components), problemParams);
     if(probSound != null && probSound != undefined && probSound != "") {
         //TODO I don't think the below lines do what I want them to.
-        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound+".ogg"));
-        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound+".mp3"));
+        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".ogg", components.resource, components.probContentPath));
+        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".mp3", components.resource, components.probContentPath));
     }
     if (probUnits != null && probUnits != undefined && probUnits != "") {
-        doc.getElementById("Units").innerHTML = parametrizeText(format(getUnits()));
+        doc.getElementById("Units").innerHTML = parametrizeText(format(getUnits(), components), problemParams);
     }
-    var hints = getHints();
+    var hints=components.hints;
+
     var hintID = "";
     if (hints != undefined && hints != null) {
         for (i=0; i<hints.length;++i)  {
             if(hints[i] )
             hintID = getElementCorrespondingToHint(hints[i].label);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
-                doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML));
+                doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML, components), problemParams);
             }
             else{
                 alert("text missing for hint: "+i);
             }
-            doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText)));
+            doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText, components), problemParams));
             //TODO I don't think this does what I want
             if (hints[i].audioResource != undefined && hints[i].audioResource != "")  {
-                doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".ogg"));
-                doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource+".mp3"));
+                doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));
+                doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".mp3", components.resource, components.probContentPath));
             }
         }
 
@@ -174,37 +179,38 @@ function plug(doc) {
         }
     }
 
-    if (isMultiChoice()) {
-        var answers = getAnswers();
+    if (isMultiChoice(components.questType)) {
+//        var answers = getAnswers();
+        var answers = components.answers;
         if (answers != null && answers != undefined) {
             for(i=0;i<answers.length;++i) {
                 if (answers[i].a != null && answers[i].a != undefined) {
-                    doc.getElementById("AnswerA").innerHTML = parametrizeText(format(answers[i].a));
+                    doc.getElementById("AnswerA").innerHTML = parametrizeText(format(answers[i].a, components), problemParams);
                 }
                 if (answers[i].b != null && answers[i].b != undefined) {
-                    doc.getElementById("AnswerB").innerHTML = parametrizeText(format(answers[i].b));
+                    doc.getElementById("AnswerB").innerHTML = parametrizeText(format(answers[i].b, components), problemParams);
                 }
                 if (answers[i].c != null && answers[i].c != undefined) {
-                    doc.getElementById("AnswerC").innerHTML = parametrizeText(format(answers[i].c));
+                    doc.getElementById("AnswerC").innerHTML = parametrizeText(format(answers[i].c, components), problemParams);
                 }
                 if (answers[i].d != null && answers[i].d != undefined) {
-                    doc.getElementById("AnswerD").innerHTML = parametrizeText(format(answers[i].d));
+                    doc.getElementById("AnswerD").innerHTML = parametrizeText(format(answers[i].d, components), problemParams);
                 }
                 if (answers[i].e != null && answers[i].e != undefined) {
-                    doc.getElementById("AnswerE").innerHTML = parametrizeText(format(answers[i].e));
+                    doc.getElementById("AnswerE").innerHTML = parametrizeText(format(answers[i].e, components), problemParams);
                 }
             }
         }
     }
 }
 
-function getURL (filename) {
+function getURL(filename, resource, probContentPath) {
     if (filename == null || filename == undefined)
         return filename;
-    return window.parent.getProblemContentPath() + "/html5Probs/" + window.parent.getResource().split(".")[0] + "/" + filename;
+    return probContentPath + "/html5Probs/" + resource.split(".")[0] + "/" + filename;
 }
 
-function format (rawText) {
+function format(rawText, components) {
     if(rawText == null || rawText == undefined){
         return rawText;
     }
@@ -277,7 +283,7 @@ function format (rawText) {
                     else if(startIndex != undefined){
                         j++;
                         endIndex = j;
-                        var toInsert  = replaceWithHTML(imgOrVid, extension);
+                        var toInsert  = replaceWithHTML(imgOrVid, extension, components.resource, components.probContentPath);
                         rawText = rawText.substring(0, startIndex) + toInsert + rawText.substring(endIndex+1, rawText.length);
                         var newLen = toInsert.toString().length;
                         j = startIndex + newLen;
@@ -315,7 +321,7 @@ function format (rawText) {
                     else if(startIndex != undefined){
                         j++;
                         endIndex = j;
-                        var toInsert  = parseSimpleExp(imgOrVid+"."+extension);
+                        var toInsert  = parseSimpleExp(imgOrVid + "." + extension, components);
                         if(typeof toInsert === 'number' && isNaN(toInsert)){
                             alert("invalid expression detected");
                         }
@@ -373,18 +379,18 @@ function format (rawText) {
     return rawText;
 }
 
-function replaceWithHTML(file, ext){
+function replaceWithHTML(file, ext, resource, probContentPath){
 
     var toInsert = "";
 
     //Replace and image file name inside {} with the appropriate html
-    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg"){
-        toInsert = "<img src=\""+getURL(file+"."+ext)+"\"></img>";
+    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "svg"){
+        toInsert = "<img src=\""+getURL(file + "." + ext, resource, probContentPath)+"\"></img>";
     }
 
     //Do the same for a video
     else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
-       toInsert = "<video src=\""+getURL(file+"."+ext)+" controls preload=\"auto\"></video>";
+       toInsert = "<video src=\""+getURL(file + "." + ext, resource, probContentPath)+" controls preload=\"auto\"></video>";
     }
 
     else{
@@ -395,9 +401,9 @@ function replaceWithHTML(file, ext){
 
 //TODO test try catches
 //Parses correctly formatted expressions containing only operators from the set {+,-,/,*,^}
-function parseSimpleExp(expression){
+function parseSimpleExp(expression, components){
     //Convert parameters to their values
-    expression = parametrizeText(expression);
+    expression = parametrizeText(expression, components.problemParams);
     //Remove white space to make processing easier
     expression = expression.replace(/\s/g,"");
 
@@ -507,10 +513,10 @@ function applyOperator(operator, opd1, opd2){
     }
 }
 
-function parametrizeText(rawText) {
+function parametrizeText(rawText, problemParams) {
     if (rawText == null || rawText == undefined)
         return rawText;
-    var constraints = getConstraints();
+    var constraints = getConstraints(problemParams);
     if (constraints == null) {
         return rawText;
     }
@@ -531,11 +537,11 @@ function parametrizeText(rawText) {
     return parametrizedText;
 }
 
-function getConstraints() {
+function getConstraints(problemParams) {
     var rand = -1;
     var constraints = {};
-    var constraints = getConstraintJSon();
-    if (getConstraintJSon() == null || getConstraintJSon() == undefined) {
+    var constraints = problemParams;
+    if (constraints == null || constraints == undefined) {
         return null;
     }
     data = constraints;

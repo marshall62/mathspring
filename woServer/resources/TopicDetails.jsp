@@ -22,7 +22,7 @@
 
 <html id="default"><head>
     <meta charset="utf-8" />
-    <title>Wayang   </title>
+    <title>MathSpring   </title>
 
     <link rel="stylesheet" href="css/wayang.css" /><!-- Main Lar -->
     <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica|Acme|Asul' rel='stylesheet' type='text/css'>
@@ -91,6 +91,8 @@
 
 
         var totalProblems=${totalProblems};
+        var problemsDone= ${problemsDone};
+
 
       var i=0;
 
@@ -270,7 +272,9 @@
 
 
     <!-- Start Header Middle --><div id="header_wrapper_small" ><!-- BEGIN HEADER MAIN -->
-    <!--Start Logo--><header  id="wayang_logo_small"><img src="img/mathspring_logo.png" height="34" alt="Wayang Outpost" /></header>
+    <!--Start Logo--><header  id="wayang_logo_small">
+        <img src="img/mathspring_logo.png" height="34" alt="MathSpring">
+        </header>
 
     <!--End Logo-->
     <subheader id="subheader_small">Topic Details</subheader><!--End Logo-->

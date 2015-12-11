@@ -238,7 +238,7 @@ public class ProblemDifficultyReport extends Report {
                 probnumber = flashProbName.substring(8);
             else
                 System.out.println("Warning: Problem name " + probName + " is badly formed");
-            String probPlayerURL = ProbPlayer.getURLToProbPlayer();
+            String probPlayerURL = ProbPlayer.getURLToProbPreviewer();
             // TODO a Hack to fulfill a request by Ivon for using a different player to show problems in this report.
             probPlayerURL = probPlayerURL.replace("probplayer","problem_checker");
             String link = probPlayerURL + "?questionNum=" + probnumber;
@@ -449,8 +449,9 @@ public class ProblemDifficultyReport extends Report {
             long begTime = 0, probTime, firstActTime = 0;
             boolean found = false;
             int nA = 0, nB = 0, nC = 0, nD = 0;
+            boolean isExample=false;
             while (rs.next()) {
-                found = true;
+
                 int studId = rs.getInt("e.studid");
 
                 // encountered a new student
@@ -490,24 +491,31 @@ public class ProblemDifficultyReport extends Report {
                 boolean isCorrect = rs.getBoolean("e.isCorrect");
                 long elapsedTime = rs.getLong("e.elapsedTime");
                 String userInput = rs.getString("e.userInput");
+                String activityName = rs.getString("e.activityName"); // on beginProblem will be either practice or demo
 
-                if (action.equals("BeginProblem")) {
+
+                if (action.equals("BeginProblem") && activityName.equals("practice")) {
+                    found = true;
+                    isExample = false;
                     begTime = elapsedTime;
                     studEncounters++;
                     attemptIx = 0;
                     correctAttemptIx = 0;
                     nHints = 0;
                     firstActTime = 0;
-                } else if (action.equals("EndProblem")) {
+                }
+                else if (action.equals("BeginProblem"))
+                    isExample = true;
+                else if (action.equals("EndProblem") && !isExample) {
                     probTime = elapsedTime - begTime;
                     // if a problem ends six seconds after beginning with no hints or attempts, we count it as a skip
                     if (probTime < 6000 && attemptIx == 0 && nHints == 0)
                         nSkips++;
-                } else if (action.equals("Hint")) {
+                } else if (action.equals("Hint") && !isExample) {
                     nHints++;
                     if (firstActTime == 0)
                         firstActTime = elapsedTime - begTime;
-                } else if (action.equals("Attempt")) {
+                } else if (action.equals("Attempt") && !isExample) {
                     attemptIx++;
                     if (firstActTime == 0)
                         firstActTime = elapsedTime - begTime;

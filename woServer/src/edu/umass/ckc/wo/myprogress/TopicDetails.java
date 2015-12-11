@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCStandard;
 import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
 import edu.umass.ckc.wo.content.Problem;
@@ -86,7 +87,7 @@ public class TopicDetails {
 
 
         curTopicLoader = new TopicSelectorImpl(smgr, (TopicModelParameters) DbClass.getClassLessonModelParameters(conn,classId));
-        List<Integer> problemIdList = curTopicLoader.getClassTopicProblems(topicId, classId, smgr.isTestUser());
+        List<Integer> problemIdList = curTopicLoader.getClassTopicProblems(topicId, classId, DbUser.isShowTestControls(conn,smgr.getStudentId()));
         List<Problem> problemList = new ArrayList<Problem>();
         for (int id : problemIdList)
             problemList.add(ProblemMgr.getProblem(id));

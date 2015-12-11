@@ -10,7 +10,7 @@ package edu.umass.ckc.wo.interventions;
 public class CollaborationOriginatorIntervention extends TimeoutIntervention implements NextProblemIntervention{
 
     public String getType () {
-        this.setWaitTime(30);
+        this.setWaitTime(1000);
         return "CollaborationOriginatorIntervention";
     }
 

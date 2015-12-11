@@ -53,6 +53,7 @@ public class Names {
   public static final String LOGIN_FAILURE = "<login status=\"false\"/>";
   public static final String XML_HEADER = "<?xml version = \"1.0\" encoding = \"ISO-8859-1\" ?>";
     public static final String PROB_PLAYER_PATH = "probplayerPath";
+    public static final String PROB_PREVIEWER_PATH = "probPreviewerPath";
     public static final String USE_HYBRID_TUTOR = "useHybridTutor";
     public static final String USE_EMOTE_SERVLET = "useEmoteServlet";
     public static final String USE_LEARNING_COMPANIONS= "useLearningCompanions";

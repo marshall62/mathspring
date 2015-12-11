@@ -64,6 +64,10 @@
         <param-name>probplayerPath</param-name>
         <param-value>Problems/probplayer.swf</param-value>
     </context-param>
+    <context-param>
+        <param-name>probPreviewerPath</param-name>
+        <param-value>Problems/problem_checker.swf</param-value>
+    </context-param>
 
     <context-param>
         <param-name>html5Probs</param-name>

@@ -127,7 +127,7 @@ public class PerProbClassSummaryReport2 extends Report {
                 probnumber= flashProbName.substring(8) ;
             else
                 System.out.println("Warning: Problem name " + probName + " is badly formed");
-            String link = ProbPlayer.getURLToProbPlayer() + "?questionNum=" + probnumber ;
+            String link = ProbPlayer.getURLToProbPreviewer() + "?questionNum=" + probnumber ;
             //Change the color of the row depending on performance
             ReportProblem rp = new ReportProblem(1);
             String bgcolor = new String("#FFFFFF") ;

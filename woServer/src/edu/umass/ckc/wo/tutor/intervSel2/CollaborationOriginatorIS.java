@@ -61,11 +61,11 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             double random = Math.random();
             // Based on nothing other than time a student is offered help from a neighbor.  This intervention has
             // inputs so that the student may accept for decline.
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.1) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.4) {
 //                rememberInterventionSelector(this);   // can't do it this way in the new intervention model (must have interventions provide class name of IS so that this class is used)
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
-                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationOptionIntervention");
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationOfferedBySystem_Originator");
                 return new CollaborationOptionIntervention();
             }
             else{
@@ -79,7 +79,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         // Do you want to work with someone OR do you want to continue waiting  Answer of YES handled here:  keeps the user waiting
         if(option != null && option.equals("Yes")){
 //            rememberInterventionSelector(this);
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationOriginatorIntervention");
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationAccepted_Originator");
             Intervention interv =  new CollaborationOriginatorIntervention();
             return new InterventionResponse(interv); // DM had modify to return an InterventionResponse rather than intervention
         }
@@ -88,12 +88,20 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         else if(option != null && (option.equals("No") || option.equals("No_alone") || option.equals("No_decline"))){
             PartnerManager.decline(smgr.getStudentId());
 //            rememberInterventionSelector(this);
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationConfirmationIntervention");
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationDeclined_Originator");
             return null;
         }
         // When originator clicks the OK button to start working together with the partner this returns null so that next problem
-        // is selected.
+        // is selected.  Or when the originator clicks the OK button after the collaboration has ended.
         else{
+            //To begin
+           if(PartnerManager.requestExists(smgr.getStudentId())){
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationConfirmationToBeginClickedOK_Originator");
+            }
+           //After ended
+            else{
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Originator");
+            }
             return null;
         }
     }
@@ -105,8 +113,8 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
         // returns message to originator saying that they are waiting for partner
         if(partner == null){
-            if(e.getTimeWaiting()>= 60000){
-                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationTimedoutIntervention");
+            if(e.getTimeWaiting()>= 120000){
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationAskContinueWaiting_Originator");
                 return new CollaborationTimedoutIntervention();
             }
             else{
@@ -116,7 +124,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         else{
             User u = DbUser.getStudent(smgr.getConnection(),partner);
             String name = (u.getFname() != null && !u.getFname().equals("")) ? u.getFname() : u.getUname();
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationIntervention");
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), partner, null, "CollaborationConfirmationToBeginAlert_Originator");
             Intervention interv = new CollaborationConfirmationIntervention(name);
             return interv;
         }

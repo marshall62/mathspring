@@ -141,7 +141,7 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
         req.setAttribute("teacherId", cl.getTeachid());
         req.setAttribute("classId", classId);
         req.setAttribute("className", className);
-        req.setAttribute("flashProblemPreviewer", ProbPlayer.getURLToProbPlayer());
+        req.setAttribute("flashProblemPreviewer", ProbPlayer.getURLToProbPreviewer());
 
         req.setAttribute("studentName", u.toString());
         req.setAttribute("message", nEvents == 0 ? "No events can be found for this user and topic." : "");

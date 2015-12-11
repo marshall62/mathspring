@@ -43,6 +43,11 @@ public class PedagogyRetriever {
         int pedagogyId = DbUser.getStudentPedagogy(conn,studId);
         // Assistments users are typically using a given pedagogy for the Assistments class.  Occasionally some students come into MS with params like lessonId which means using a
         // pedagogy designed for Common Core content.   These users have an override pedagogy which deals with these requests.
+
+        // Also if a student has a pedagogyId that no longer exists (the pedagogy was deleted), then the student cannot effectively ever login again.
+        // For every student with a broken pedagogy such as this,  I've added an override pedagogy of Jane Full empathy (ID 1) so that it will be found and used
+        // rather than the broken one.  The broken one is left in the student table so that if anyone ever needs to see what pedagogy a student originally used,
+        // it will be there.
         int overridePedagogyId = DbUser.getStudentOverridePedagogy(conn,studId);
         if (overridePedagogyId != -1) pedagogyId = overridePedagogyId;
         // users who have been in the system prior to the institution of pedagogy ids will
@@ -63,7 +68,7 @@ public class PedagogyRetriever {
                 // Not sure what to do: so throw exception
             else {
                 throw new AdminException("This user has been assigned the pedagogy " + pedagogyId + " but " +
-                        "not Pedagogy can be found in the pedagogy.xml that matches this.");
+                        "no Pedagogy can be found in the pedagogy.xml that matches this.");
             }
 
         }

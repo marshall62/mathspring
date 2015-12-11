@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -43,7 +44,8 @@ public class BaseProblemSelector implements ProblemSelector {
     public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
         TopicModel.difficulty nextDiff = topicModel.getNextProblemDifficulty(lastProblemScore);
         StudentState state = smgr.getStudentState();
-        List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), smgr.isTestUser());
+        // Gets problems with testable problems included if the user is marked to receive testable stuff.
+        List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()));
 //        List<Problem> topicProblems = xx;
         int lastIx = state.getCurProblemIndexInTopic();
         int nextIx=-1;
