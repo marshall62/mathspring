@@ -62,8 +62,8 @@ public class ClassTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
     private int exampleProbId;
     private int practiceProbId ;
 
-    List<Double> avgProcessMasteryHistory;
-    List<Double> avgAnswerMasteryHistory;
+    List<Double> avgProcessMasteryHistory;   // Ivon's estimate of mastery
+    List<Double> avgAnswerMasteryHistory;    // Tom's estimate of mastery (no longer shown)
 
 
 

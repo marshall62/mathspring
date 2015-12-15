@@ -346,65 +346,6 @@ public class StudentAllTopicsMasteryTrajectoryReport extends TopicTrajectoryRepo
     }
 
 
-    // process the event and save the topicMastery updates whenever and endProblem is hit.
-    private void processProblem(Connection conn, int studId, String username, int sessNum, int probId, int topicId, String action,
-                                ResultSet rs, HttpServletRequest req) throws Exception {
-
-
-        // We've just hit a different problem.  Process the last one (if this isn't the first prob in the session)
-        if (action.equalsIgnoreCase("beginProblem")) {
-
-            this.pidList.add(probId);
-            beginProblemTime = rs.getLong("elapsedTime");
-            endProblem = false;
-            timeToChoose = 0;
-            timeToAnswer = 0;
-            timeToHint = 0;
-            numHints = 0;
-            solved = 0;
-            incAttempts = 0;
-            timeToFirstAttempt = 0;
-
-        }
-        // don't do anything with events after endProblem and before next beginProblem
-        if (endProblem)
-            ;
-        else if (action.equalsIgnoreCase("attempt")) {
-            if (((Integer.parseInt(rs.getString("isCorrect"))) == 1) &&
-                    (timeToAnswer == 0)) {
-                timeToAnswer = Integer.parseInt(rs.getString("probElapsed"));
-
-                if (timeToChoose == 0)  //this is the first attempt, and it is correct
-                    solved = 1;
-
-            }
-            // if its the first attempt
-            if (timeToChoose == 0) {
-                timeToChoose = Integer.parseInt(rs.getString("probElapsed"));
-                timeToFirstAttempt = timeToChoose;
-            }
-            if ((Integer.parseInt(rs.getString("isCorrect"))) == 0
-                    && incAttempts < 4)  // A hack because somehow students could get more than 4 incorrect answers
-                incAttempts++;
-        } else if (action.toLowerCase().startsWith("hint")) {
-            if (timeToHint == 0)
-                timeToHint = Integer.parseInt(rs.getString("probElapsed"));
-
-            if (numHints < 7)   // A threshold just in case students make hectic choose_a clicks
-                numHints++;
-        } else if (action.equalsIgnoreCase("endProblem")) {
-            endProblem = true;
-            // update the topic Mastery based on whats happened in this problem.
-            topicMasteryTracker.updateMastery(probId, numHints, solved, incAttempts, timeToFirstAttempt, 0, "practice");   //!!!!Check mode and number of practice problems
-
-            if (topicMasteryTracker.getMastery() > 0)
-                curTopicData.history.add(new MasteryPoint(probId, topicMasteryTracker.getMastery()));
-
-        }  // end endProblem
-    }
-
-
-
     // for each TopicData store a rowIndex which is the row in the table that will represent this topic in the output
     // graph that is sent to the LineGraphServlet. Returns the number of rows
     private int determineRowIndices() {

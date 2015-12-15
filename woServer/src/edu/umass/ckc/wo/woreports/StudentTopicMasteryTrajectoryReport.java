@@ -62,8 +62,8 @@ public class StudentTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
         }
 
         req.setAttribute("xLabels",getLabelSequence(smh.probIds));
-        req.setAttribute("rawMasterySequence",getJQPlotLine(smh.rawMasteryHistory));
-        req.setAttribute("masterySequence",getJQPlotLine(smh.masteryHistory));
+        req.setAttribute("rawMasterySequence",getJQPlotLine(smh.rawMasteryHistory));   // Tom's mastery estimate
+        req.setAttribute("masterySequence",getJQPlotLine(smh.masteryHistory));          // Ivon's mastery estimate
         req.setAttribute("teacherId",cl.getTeachid());
         req.setAttribute("classId",classId);
         req.setAttribute("topicName",topicName);
