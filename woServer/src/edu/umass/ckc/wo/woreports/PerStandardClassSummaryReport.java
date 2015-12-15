@@ -126,10 +126,10 @@ public class PerStandardClassSummaryReport extends Report {
             String outputLine = "<tr>";
 
             if (ci.getNumProbs() > 0) {
-                double percentFirstAtt = ci.getNumSolvedOnAttempt1() / ci.getNumProbs();
-                double avgNumHints = ci.getNumHints() / ci.getNumProbs();
-                double avgThinkTime = ci.getThinkTime() / ci.getNumProbs();
-                double avgIncAtt = ci.getNumMistakes() / ci.getNumProbs();
+                double percentFirstAtt = ((double) ci.getNumSolvedOnAttempt1()) / ci.getNumProbs();
+                double avgNumHints = ((double) ci.getNumHints()) / ci.getNumProbs();
+                double avgThinkTime = ((double) ci.getThinkTime()/1000.0) / ci.getNumProbs();
+                double avgIncAtt = ((double) ci.getNumMistakes()) / ci.getNumProbs();
 
                 if (percentFirstAtt < 0.20 && avgNumHints >= 1 && avgThinkTime > 20) {
                     bgcolor = new String("#FF0000");

@@ -76,6 +76,11 @@ a:visited {  font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: 
     <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=5&state=showReport">Class Summary Per Student</a></td>
     <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Number of problems and hints each student has seen</td>
   </tr>
+    <tr> <td></td>
+        <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class Summary Per Common Core Cluster <br/> (will take a couple of minutes to run) </a></td>
+        <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Math skills that your students are having trouble with</td>
+    </tr>
+
   <tr> <td></td>
     <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class Summary Per Skill <br/> (will take a couple of minutes to run) </a></td>
     <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Math skills that your students are having trouble with</td>
