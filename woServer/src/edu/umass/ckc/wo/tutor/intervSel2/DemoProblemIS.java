@@ -93,8 +93,11 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
         int classId = smgr.getClassID();
         TopicModelParameters classParams = (TopicModelParameters) DbClass.getLessonModelParameters(conn, classId);
         // found classConfig parameters that control behavior of this lesson, use the frequency for the demo problem
+        TopicModelParameters.frequency classFreq=null;
         if (classParams != null)
-            freq = classParams.getTopicExampleFrequency();
+            classFreq = classParams.getTopicExampleFrequency();
+        if (classFreq != null)
+            this.freq = classFreq;
         // overload the defaults with stuff defined for the class.
 
 //       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
