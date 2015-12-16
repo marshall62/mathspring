@@ -20,11 +20,12 @@
             var ticks = [${xLabels}] ;
             var line1 = ${processMastery};
             var line2 = ${answerMastery};
-            var plot1 = $.jqplot ('chart1', [line1,line2], {
+//            var plot1 = $.jqplot ('chart1', [line1,line2], {
+            var plot1 = $.jqplot ('chart1', [line1], {
                 animate: true,
                 series: [
-                    {label: 'Average Process Mastery'},
-                    {label: 'Average Answer Mastery'}
+                    {label: 'Average Process Mastery'}
+//                    {label: 'Average Answer Mastery'}
                 ],
                 legend: {
                     show: true,

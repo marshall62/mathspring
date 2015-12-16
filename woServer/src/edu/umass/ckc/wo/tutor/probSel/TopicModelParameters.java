@@ -94,7 +94,7 @@ public class TopicModelParameters extends LessonModelParameters {
         }
         topicIntroFrequency = userParams.isShowIntro() ? frequency.oncePerSession : frequency.never;
         int minutes= (int) userParams.getMaxTime();  // userPedagogyParameters table has maxTime in minutes, we want MS
-        maxTimeInTopic =minutes * 60 * 1000;
+        maxTimeInTopic =minutes;
         minTimeInTopic = 0;
         maxNumberProbs = userParams.getMaxProbs();
         topicMastery = userParams.getTopicMastery();

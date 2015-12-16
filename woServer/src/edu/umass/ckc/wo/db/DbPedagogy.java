@@ -33,7 +33,7 @@ public class DbPedagogy {
     private static Connection conn;
     private static HashMap<String,Pedagogy> pedsByOldIdMap = new HashMap<String, Pedagogy>();
 
-    private static boolean buildMapOfOldIds = false;
+    private static boolean buildMapOfOldIds = true;
 
     public static LessonMap buildAllLessons (Connection conn) throws Exception {
         LessonMap m = new LessonMap();
@@ -169,7 +169,11 @@ public class DbPedagogy {
         String lesson = ped.getChild("lesson").getTextTrim();
         String login = ped.getChild("login").getTextTrim();
         String xml = JDOMUtils.toXML(ped);
-        writeToDb(conn,name,simpleConfigName,lesson,login,xml,isBasic );
+        e = ped.getChild("id") ;
+        String idS = e.getTextTrim();
+        int id = Integer.parseInt(idS);
+        if (id == 44 || id == 45 || id == 46 || id == 48)
+            writeToDb(conn,name,simpleConfigName,lesson,login,xml,isBasic );
     }
 
     private static int writeToDb(Connection conn, String name, String simpleConfigName,
@@ -179,7 +183,7 @@ public class DbPedagogy {
         try {
             String q = "insert into pedagogy (isBasic,login,lesson,name,simpleConfigName,definition,active)" +
                     " values (?,?,?,?,?,?,?)";
-            stmt = conn.prepareStatement(q);
+            stmt = conn.prepareStatement(q,PreparedStatement.RETURN_GENERATED_KEYS);
             stmt.setBoolean(1,isBasic);
             stmt.setString(2, login);
             stmt.setString(3, lesson);
@@ -190,10 +194,11 @@ public class DbPedagogy {
             stmt.execute();
             rs = stmt.getGeneratedKeys();
             rs.next();
-            return rs.getInt(1);
+            int newId = rs.getInt(1);
+            return newId;
         }
         catch (SQLException e) {
-
+            e.printStackTrace();
         }
         finally {
             if (rs != null)
@@ -221,6 +226,11 @@ public class DbPedagogy {
                 if (ped != null)   {
                     rs.updateInt("pedagogyId",Integer.parseInt(ped.getId()));
                     rs.updateRow();
+                }
+                // if the pedagogy cannot be found, then a class should not be listing it as a pedagogy.
+                else {
+                    rs.deleteRow();
+
                 }
             }
         }
@@ -362,11 +372,12 @@ public class DbPedagogy {
         try {
             DbPedagogy p = new DbPedagogy();
             DbPedagogy.buildMapOfOldIds = true;
-            DbPedagogy.conn = DbUtil.getAConnection("localhost");
+            DbPedagogy.conn = DbUtil.getAConnection("rose.cs.umass.edu");
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
             Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
-            adjustStudents(conn);
+//            DbPedagogy.readPedagogiesFromFile();
+//            adjustStudents(conn);
             adjustClassPedagogies(conn);
         } catch (Exception e) {
             e.printStackTrace();

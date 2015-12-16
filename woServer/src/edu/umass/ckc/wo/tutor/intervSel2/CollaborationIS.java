@@ -48,6 +48,8 @@ public class CollaborationIS extends NextProblemInterventionSelector {
         //If eligible partners exist for a student that (may) need help (the originator), we may put the originator into a collab situation
         else if(PartnerManager.hasEligiblePartners(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>())){
             //
+            if (smgr.getStudentState().getLessonState().getNextProblemMode() == null)
+                return null;
             if(smgr.getStudentState().getLessonState().getNextProblemMode().equals(Problem.PRACTICE)){
               CollaborationOriginatorIS ii = new CollaborationOriginatorIS(smgr);
                ii.init(smgr,pedagogicalModel);

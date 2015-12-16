@@ -20,11 +20,12 @@
             var ticks = [${xLabels}] ;
             var line1 = ${masterySequence};
             var line2 = ${rawMasterySequence};
-            var plot1 = $.jqplot ('chart1', [line1,line2], {
+            var plot1 = $.jqplot ('chart1', [line1], {
+//            var plot1 = $.jqplot ('chart1', line1, {
                 animate: true,
                 series: [
-                    {label: 'mastery'},
-                    {label: 'raw mastery'}
+                    {label: 'mastery'}
+//                    {label: 'raw mastery'}
                 ],
                 legend: {
                     show: true,

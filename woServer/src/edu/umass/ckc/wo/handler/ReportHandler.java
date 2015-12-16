@@ -34,7 +34,7 @@ public class ReportHandler {
     public static final int OVERALL_HTML = 3;
     public static final int PER_PROB_HTML = 4;
     public static final int PER_STUD_HTML= 5;
-    public static final int PER_STUD_PER_SKILL_HTML = 7;
+    public static final int PER_CLUSTER_HTML = 7;
     public static final int PER_STUD_PREPOST_HTML = 10;
     public static final int PASSWORDS_HTML = 12;
     public static final int EPISODICDATA_HTML = 13 ;
@@ -171,6 +171,10 @@ public class ReportHandler {
 //                break;
             case PER_SKILL_HTML: // 3/16/10 dm checked v1/v2 working.  
                 r=new PerSkillClassSummaryReport();
+                id=e.getClassId();
+                break;
+            case PER_CLUSTER_HTML: // 3/16/10 dm checked v1/v2 working.
+                r=new PerStandardClassSummaryReport();
                 id=e.getClassId();
                 break;
             case OVERALL_HTML:  // dm checked v1/v2 working

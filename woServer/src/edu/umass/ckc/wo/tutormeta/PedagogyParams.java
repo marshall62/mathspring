@@ -42,6 +42,7 @@ public class PedagogyParams {
         return showIntro;
     }
 
+    // Returns a time in ms  (read in from db as minutes but converted to ms in the constructor of this class)
     public long getMaxTime() {
         return maxTime;
     }

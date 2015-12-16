@@ -100,8 +100,11 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
         int classId = smgr.getClassID();
         TopicModelParameters classParams = (TopicModelParameters) DbClass.getLessonModelParameters(conn, classId);
         // found classConfig parameters that control behavior of this lesson, use the frequency for the demo problem
+        TopicModelParameters.frequency classFreq=null;
         if (classParams != null)
-            this.freq = classParams.getTopicIntroFrequency();
+            classFreq = classParams.getTopicIntroFrequency();
+        if (classFreq != null)
+            this.freq = classFreq;
 
         // if it should always be shown,  show it.
         if (this.freq == TopicModelParameters.frequency.always ) {
