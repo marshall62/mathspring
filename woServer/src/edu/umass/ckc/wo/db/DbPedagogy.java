@@ -372,7 +372,7 @@ public class DbPedagogy {
         try {
             DbPedagogy p = new DbPedagogy();
             DbPedagogy.buildMapOfOldIds = true;
-            DbPedagogy.conn = DbUtil.getAConnection("localhost");
+            DbPedagogy.conn = DbUtil.getAConnection("rose.cs.umass.edu");
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
             Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
