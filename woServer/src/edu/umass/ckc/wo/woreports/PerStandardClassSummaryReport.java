@@ -30,6 +30,7 @@ public class PerStandardClassSummaryReport extends Report {
     private int maxAbsSkillID;
     private HashMap<Integer,ClusterInfo> clusterData = new HashMap<Integer,ClusterInfo>();
     private int teacherId;
+    private int classId;
 
     public View createReport(Connection conn, int classId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse response) throws Exception {
 
@@ -44,7 +45,7 @@ public class PerStandardClassSummaryReport extends Report {
                 "  <th class=\"table-sortable:numeric\" align=center>Incorrect attempts per Problem</th>\n" +
                 " </tr></thead>\n" +
                 "<tbody id='data'>\n";
-
+        this.classId = classId;
         ClassInfo cl = DbClass.getClass(conn, classId);
         teacherId = cl.getTeachid();
         String className = getClassName(cl);
@@ -136,9 +137,11 @@ public class PerStandardClassSummaryReport extends Report {
                 } else if (percentFirstAtt < 0.25 && avgNumHints > 0.5 ) {
                     bgcolor = new String("#FFFF00");
                 }
-
+                String subReportURL = "WoAdmin?action=AdminViewReport&teacherId=" +teacherId+ "&classId=" +classId+ "&reportId=4&extraParam=cluster:"+ ci.id+ "&state=showReport&mode=clusters";
                 outputLine = outputLine.concat(
-                        "<td" + " bgcolor=" + bgcolor + ">" + ci.getName() + "</td>" +
+                        "<td" + " bgcolor=" + bgcolor + ">" +
+                                "<a href=\"" +subReportURL+ "\">" + ci.getName() +  "</a>" +
+                                "</td>" +
                                 "<td" + " bgcolor=" + bgcolor + ">" + ci.getNumProbs() + "</td>" +
                                 "<td" + " bgcolor=" + bgcolor + ">" + doubleToString(percentFirstAtt * 100) +
                                 "</td>" +
@@ -198,7 +201,7 @@ public class PerStandardClassSummaryReport extends Report {
         }
 
         public String getName () {
-            return name + descr;
+            return name + ".  " +  descr;
         }
 
         public int getNumProbs() {
