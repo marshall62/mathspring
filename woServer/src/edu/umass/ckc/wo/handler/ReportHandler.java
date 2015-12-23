@@ -185,12 +185,19 @@ public class ReportHandler {
 //                r=new PerProbClassSummaryReport2();
                 r=new ProblemDifficultyReport();
                 int classid=e.getClassId();
-                String skillid = e.getExtraParam() ;
+                String extra = e.getExtraParam() ;
+                // The extraParam can be one of cluster:445 or just 12 where 12 is a skill Id.
+                if ( extra != null && extra.startsWith("cluster:")) {
+                    ProblemDifficultyReport rep = new ProblemDifficultyReport();
+                    int clusterId = Integer.parseInt(extra.substring(extra.indexOf(":")+1));
+                    rep.createClusterReport(conn, classid, clusterId, e,req, resp);
+                    return rep;
+                }
+                else if (extra != null) {
 
-                if ( skillid != null ) {
 //                    PerProbClassSummaryReport2 rep = new PerProbClassSummaryReport2();
                     ProblemDifficultyReport rep = new ProblemDifficultyReport();
-                    rep.createReport(conn, classid, (new Integer(skillid)).intValue(), e,req, resp);
+                    rep.createReport(conn, classid, (new Integer(extra)).intValue(), e,req, resp);
                     return rep ;
                 }
                 id = classid ;

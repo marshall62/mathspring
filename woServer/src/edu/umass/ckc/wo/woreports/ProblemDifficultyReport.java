@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ProblemDifficultyReport extends Report {
 
     private int semiabsskillId = -1;
+    private int clusterId = -1;
     public static final int RED = 3;
     public static final int YELLOW = 2;
     public static final int OK = 0;
@@ -72,6 +73,7 @@ public class ProblemDifficultyReport extends Report {
 
     ;
     String topicName = null; // null if all topics
+    String clusterName = null; // null if all topics
 
 //    class Stats {
 //        int probId;
@@ -112,6 +114,33 @@ public class ProblemDifficultyReport extends Report {
     public View createReport(Connection conn, int classid, int semiabsskillid, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         semiabsskillId = semiabsskillid;
         return createReport(conn, classid, e, req, resp);
+    }
+
+    public View createClusterReport(Connection conn, int classid, int clusterId, AdminViewReportEvent e, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        this.clusterId = clusterId;
+        return createReport(conn, classid, e, req, resp);
+    }
+
+    public String getClusterName (Connection conn, int clusterId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select displayname from cluster where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,clusterId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                String n = rs.getString(1);
+                return n;
+            }
+            return null;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
     }
 
     public String getTopicName(Connection conn, int semiAbsSkillID) throws SQLException {
@@ -171,8 +200,10 @@ public class ProblemDifficultyReport extends Report {
         String className = getClassName(cl);
         String table = getEventLogTable(cl);
         String q;
-        if (semiabsskillId == -1)
+        if (semiabsskillId == -1 && clusterId == -1)
             q = "select * from problem where status='ready'";
+        else  if (clusterId != -1)
+            q = "select p.* from problem p, probstdmap m, standard s where p.id=m.probId and s.id=m.stdId and s.clusterId=? and p.status='ready'";
         else q = "select * from problem where id in (select distinct problemid\n" +
                 "from hint h, skill s\n" +
                 "where problemid>0 and h.skillid=s.id\n" +
@@ -181,11 +212,20 @@ public class ProblemDifficultyReport extends Report {
         PreparedStatement ps = conn.prepareStatement(q);
         if (semiabsskillId != -1)
             ps.setInt(1, semiabsskillId);
-
-        if (semiabsskillId == -1) {
+        else if (clusterId != -1)
+            ps.setInt(1,clusterId);
+        if (semiabsskillId == -1 && clusterId == -1) {
             this.src.append(generateHeader3("4: Problem Difficulty Report - " + className));
             this.src.append("<h3>Problem Difficulty Report for " + className + "</h3>\n");
-        } else {
+        }
+        else if (clusterId != -1) {
+            this.clusterName = getClusterName(conn, clusterId);
+            this.src.append(generateHeader3("4: Problem Difficulty Report - " + className + " for problems in cluster: " + clusterName));
+            this.src.append("<H3>Problem Difficulty Report - " + className + " for problems in cluster: " + clusterName + "</h3>\n");
+
+        }
+
+        else {
             topicName = getTopicName(conn, semiabsskillId);
             this.src.append(generateHeader3("4: Problem Difficulty Report - " + className + " for problems in topic: " + topicName));
             this.src.append("<H3>Problem Difficulty Report - " + className + " for problems in topic: " + topicName + "</h3>\n");
