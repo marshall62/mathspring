@@ -43,9 +43,7 @@ public class CollabPedagogicalModel extends BasePedagogicalModel {
             PartnerManager.removeRequest(studId);
             DbCollaborationLogging.saveEvent(smgr.getConnection(), smgr.getStudentId(), 0, null, "CollaborationFinishedAlert_Originator");
             Intervention interv = new FinishCollaborationIntervention("Originator");
-            Class c = interv.getClass();
-            String n = c.getName();
-            smgr.getStudentState().setLastIntervention(n);
+            smgr.getStudentState().setLastIntervention("edu.umass.ckc.wo.tutor.intervSel2.CollaborationIS");
             return new InterventionResponse(interv);
         }
         return super.processNextProblemRequest(e);
@@ -65,8 +63,8 @@ public class CollabPedagogicalModel extends BasePedagogicalModel {
                 intSel.init(smgr,this);
                 // N.B. Assumption is that we no longer get Interventions back
                 r = intSel.processInputResponseNextProblemInterventionEvent( e);
-                // I don't understand why we are adding stuff to the event after its been sent to the npis
-//                e.setUserInput(intSel.getUserInputXML());
+                // XML created to represent user input is retrieved from the IS and put in the event for logger to stick in eventlog.userinput
+                e.setUserInput(intSel.getUserInputXML());
                 // The last intervention selector will either return an InternalEvent or null
                 // if an internal state is returned, then process it
                 if (r instanceof InternalEvent)
