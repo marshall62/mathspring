@@ -76,7 +76,6 @@ public class CollaborationIS extends NextProblemInterventionSelector {
         NextProblemInterventionSelector is =  (NextProblemInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
         is.init(smgr,pedagogicalModel);
         return is.processInputResponseNextProblemInterventionEvent(e);
-//        return ((NextProblemInterventionSelector) getInterventionSelectorThatGeneratedIntervention()).processInputResponseNextProblemInterventionEvent(e);
     }
 
     @Override

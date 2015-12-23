@@ -61,7 +61,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             double random = Math.random();
             // Based on nothing other than time a student is offered help from a neighbor.  This intervention has
             // inputs so that the student may accept for decline.
-            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.4) {
+            if(timeSinceLastCollab > minIntervalBetweenCollabInterventions && random < 0.8) {
 //                rememberInterventionSelector(this);   // can't do it this way in the new intervention model (must have interventions provide class name of IS so that this class is used)
                 smgr.getStudentState().setLastInterventionTime(now);
                 PartnerManager.addRequest(smgr.getConnection(), smgr.getStudentId(), new ArrayList<String>());
@@ -97,12 +97,14 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             //To begin
            if(PartnerManager.requestExists(smgr.getStudentId())){
                 DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationConfirmationToBeginClickedOK_Originator");
+               return null;
             }
            //After ended
             else{
-                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Originator");
-            }
-            return null;
+               DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Originator");
+               Response r=  smgr.getPedagogicalModel().processNextProblemRequest(new NextProblemEvent(e.getElapsedTime(),e.getProbElapsedTime()));
+               return r;
+           }
         }
     }
 
