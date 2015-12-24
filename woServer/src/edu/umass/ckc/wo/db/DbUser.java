@@ -644,6 +644,7 @@ public class DbUser {
         deleteChildRows(conn, "studId", studId, "studentproblemhistory");
         deleteChildRows(conn, "studId", studId, "affectstudentmodel");
         deleteChildRows(conn, "studId", studId, "basestudentmodel");
+        deleteChildRows(conn, "studId", studId, "collaborationlog");
         deleteEngagementData(conn, studId);
         deletePencilPaperData(conn, studId);
         deletePrePostEvents(conn, studId);
