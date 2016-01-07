@@ -7,11 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicLevelsReport.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicLevelsReport.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
@@ -20,9 +17,9 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/fragment.js2" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1447176754816" ignored="false" />
     <file path="/FormalityServlet.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1357859666661" ignored="false" />
-    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1452020627664" ignored="false" />
+    <file path="/Dummy.txt" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1452091339113" ignored="false" />
     <file path="U:/wo4/emailer/src/edu/umass/ckc/email/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355867832631" ignored="false" />
-    <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1450202205203" ignored="false" />
+    <file path="/fragment.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1452091345152" ignored="false" />
     <file path="/Emailer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355868961488" ignored="false" />
     <file path="/StudentStatusEmail.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1375205200311" ignored="false" />
     <file path="U:/wo4/wo4.xml" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1355870660750" ignored="false" />
@@ -409,7 +406,7 @@
     <file path="/ProbPlayer.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1398888705476" ignored="false" />
     <file path="/tutorMain.jsp" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1377552546628" ignored="false" />
     <file path="/DbStudentProblemHistory.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1426516577524" ignored="false" />
-    <file path="/StudentProblemHistory.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1426539715385" ignored="false" />
+    <file path="/StudentProblemHistory.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1452091256114" ignored="false" />
     <file path="/NavigationHandler.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1399396958753" ignored="false" />
     <file path="/probplayer_LC.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1375814374178" ignored="false" />
     <file path="/probPlayerIvons.as" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1376072789402" ignored="false" />
@@ -724,7 +721,7 @@
     <file path="/ProblemGroupSelector.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393875217880" ignored="false" />
     <file path="/TopicSelectorImpl.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1427128955160" ignored="false" />
     <file path="/MyProgressPage.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393880724464" ignored="false" />
-    <file path="/ClassTopicLevelsReport.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1452034370749" ignored="false" />
+    <file path="/ClassTopicLevelsReport.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1452091725956" ignored="false" />
     <file path="/challengeDone.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393961109919" ignored="false" />
     <file path="/reviewDone.html" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393961136617" ignored="false" />
     <file path="/JaneEmpathicLC.java" changelist="e9179ac1-2462-42bf-b909-02222a92cb15" time="1393967679601" ignored="false" />
@@ -1152,27 +1149,43 @@
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="206" column="34" selection-start="8910" selection-end="8910" vertical-scroll-proportion="0.0">
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#5490#5505#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClassTopicLevelsReport.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ClassTopicLevelsReport.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicLevelsReport.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="119" selection-start="1436" selection-end="1436" vertical-scroll-proportion="-12.24">
-              <folding />
+            <state line="277" column="76" selection-start="13034" selection-end="13034" vertical-scroll-proportion="0.6597744">
+              <folding>
+                <element signature="e#4373#4389#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="web.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Report.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/Report.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="186" column="21" selection-start="7090" selection-end="7090" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml">
           <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="118" selection-start="1756" selection-end="1756" vertical-scroll-proportion="0.60157794">
+            <state line="54" column="118" selection-start="1756" selection-end="1756" vertical-scroll-proportion="-6.1">
               <folding />
             </state>
           </provider>
@@ -1187,8 +1200,10 @@
       <file leaf-file-name="StudentProblemHistory.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="255" column="117" selection-start="12537" selection-end="12537" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="254" column="24" selection-start="12429" selection-end="12429" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#12975#12983#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1218,15 +1233,6 @@
               <folding>
                 <element signature="imports" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AdminViewReportEvent.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/admin/AdminViewReportEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="13" selection-start="96" selection-end="96" vertical-scroll-proportion="0.0">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -1280,7 +1286,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicMasteryTrajectoryReport.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/StudentTopicMasteryTrajectoryReport.java" />
         <option value="$PROJECT_DIR$/woServer/resources/teacherTools/reports/studTopicMasteryTrajectory.jsp" />
         <option value="$PROJECT_DIR$/woServer/resources/teacherTools/reports/classTopicMasteryTrajectory.jsp" />
@@ -1295,6 +1300,7 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/PerStandardClassSummaryReport.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ProblemDifficultyReport.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicLevelsReport.java" />
       </list>
     </option>
@@ -1344,7 +1350,7 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="416" />
+    <option name="x" value="398" />
     <option name="y" value="2" />
     <option name="width" value="1332" />
     <option name="height" value="1008" />
@@ -3136,7 +3142,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="416" y="2" width="1332" height="1008" extended-state="0" />
+    <frame x="398" y="2" width="1332" height="1008" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1442786" sideWeight="0.9992685" order="7" side_tool="false" content_ui="tabs" />
@@ -3212,7 +3218,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added links to cluster report so that it takes you to a report that show the problems seen within that cluster for the given class." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix bug 254.   Report only color-codes topics where student saw 10+ problems.   changed color to purple rather than cyan blue which was confused with background color of table rows.   Verified that each value in the cell is # probs solved / # probs seen&#10;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -3225,7 +3231,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Made a fix so that selecting problems from the Problem selection dialog for test users correctly sets the nextProblem Id.&#10;&#10;Altered tutorhut so that an empty list of lc files does not cause a 404 error.   It just skips it." />
     <MESSAGE value="Converted Attempt intervention seleecrs to return Response objects" />
     <MESSAGE value="Some debugging statements and small fixes to get jcharts reports working" />
     <MESSAGE value="Added Teacher Tools Pre/Post page for activating post surveys" />
@@ -3250,6 +3255,7 @@
     <MESSAGE value="Added PerStandard report" />
     <MESSAGE value="TopicIntros and Examples were not being shown on entry to topic because it was getting null values for the frequency of these things from the classconfig table.  Added a check that says only use the classconfig value to override the lesson definition if a non null value is there." />
     <MESSAGE value="Added links to cluster report so that it takes you to a report that show the problems seen within that cluster for the given class." />
+    <MESSAGE value="Fix bug 254.   Report only color-codes topics where student saw 10+ problems.   changed color to purple rather than cyan blue which was confused with background color of table rows.   Verified that each value in the cell is # probs solved / # probs seen&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3321,13 +3327,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="16" selection-start="2079" selection-end="2079" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="103" column="32" selection-start="3191" selection-end="3191" vertical-scroll-proportion="0.0">
@@ -3402,7 +3401,10 @@
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="206" column="34" selection-start="8910" selection-end="8910" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#5490#5505#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3429,26 +3431,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="255" column="117" selection-start="12537" selection-end="12537" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicLevelsReport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="119" selection-start="1436" selection-end="1436" vertical-scroll-proportion="-12.24">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml">
       <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="118" selection-start="1756" selection-end="1756" vertical-scroll-proportion="0.60157794">
+        <state line="54" column="118" selection-start="1756" selection-end="1756" vertical-scroll-proportion="-6.1">
           <folding />
         </state>
       </provider>
@@ -3457,6 +3445,33 @@
       </provider>
       <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorProvider">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/Report.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="186" column="21" selection-start="7090" selection-end="7090" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="254" column="24" selection-start="12429" selection-end="12429" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#12975#12983#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woreports/ClassTopicLevelsReport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="277" column="76" selection-start="13034" selection-end="13034" vertical-scroll-proportion="0.6597744">
+          <folding>
+            <element signature="e#4373#4389#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>

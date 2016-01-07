@@ -262,6 +262,16 @@ public class StudentProblemHistory {
         return ids;
     }
 
+    public List<String> getTopicProblemsSolvedOnFirstAttempt(int topicId) {
+        List<StudentProblemData> topicHist = getTopicHistory(topicId);
+        List<String> ids = new ArrayList<String>();
+        for (StudentProblemData d: topicHist) {
+            if (d.isPracticeProblem() && d.getNumAttemptsToSolve()==1)
+                ids.add(Integer.toString(d.getProbId()));
+        }
+        return ids;
+    }
+
     public int getNumPracticeProbsSeenInTopicAcrossSessions(int topicID) {
         List<String> probs = getTopicProblemsSeen(topicID);
         if (probs != null)
