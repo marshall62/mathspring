@@ -878,4 +878,8 @@ public class SessionManager {
     public int getEventCounter() {
         return this.eventCounter;  //To change body of created methods use File | Settings | File Templates.
     }
+
+    public boolean isInInterleavedProblemSet() throws SQLException {
+        return this.getStudentState().getCurTopic() == DbTopics.getInterleavedTopicId(this.getConnection());
+    }
 }

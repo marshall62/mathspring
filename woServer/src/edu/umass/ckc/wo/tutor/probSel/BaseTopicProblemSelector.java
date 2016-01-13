@@ -11,7 +11,6 @@ import edu.umass.ckc.wo.interventions.SelectProblemSpecs;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import ckc.servlet.servbase.UserException;
-import edu.umass.ckc.wo.db.DbTopics;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -152,7 +151,7 @@ public class BaseTopicProblemSelector extends BaseProblemSelectorOld {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void init (SessionManager smgr) throws Exception {
+    private void init(SessionManager smgr) throws Exception {
         this.smgr = smgr;
         conn = smgr.getConnection();
         int studentID = smgr.getStudentId();

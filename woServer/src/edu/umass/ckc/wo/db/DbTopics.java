@@ -564,4 +564,92 @@ public class DbTopics {
                 ps.close();
         }
     }
+
+    /**
+     * Return the id of the topic whose description is Interleaved Problem Set ...
+     * @param conn
+     * @return
+     * @throws SQLException
+     */
+    public static int getInterleavedTopicId(Connection conn) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id from problemgroup where name like 'Interleaved Problem Set%'";
+            stmt = conn.prepareStatement(q);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            else return -1;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static void deleteStudentInterleavedProblems (Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+
+        try {
+            String q = "delete from interleavedProblems where studId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static void addStudentInterleavedProblem (Connection conn, int studId, int probId, int position) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into interleavedProblems (studId, probId, position, shown) values (?,?,?,0)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, probId);
+            stmt.setInt(3, position);
+            stmt.execute();
+        }
+
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
+    public static int getStudentInterleavedProblem (Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select probId from interleavedProblems where studId=? and shown=0 order by position";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            return -1;
+
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 }

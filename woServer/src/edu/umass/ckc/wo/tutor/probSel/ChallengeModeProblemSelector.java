@@ -37,10 +37,6 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
 
 
     @Override
-    public void init(SessionManager smgr) throws Exception {
-    }
-
-    @Override
     public void setParameters(PedagogicalModelParameters params) {
         this.parameters = params;
     }

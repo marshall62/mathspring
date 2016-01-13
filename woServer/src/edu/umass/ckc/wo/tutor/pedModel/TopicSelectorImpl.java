@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
 import ckc.servlet.servbase.UserException;
-import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
@@ -10,13 +9,17 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
+import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
+import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -144,6 +147,8 @@ public class TopicSelectorImpl implements TopicSelector {
      * @throws Exception
      */
     public EndOfTopicInfo isEndOfTopic(long probElapsedTime, TopicModel.difficulty difficulty) throws Exception {
+
+
         boolean maxProbsReached=false, maxTimeReached=false, topicMasteryReached=false, contentFailure=false;
         // if maxProbs then we're done
         if (smgr.getStudentState().getTopicNumPracticeProbsSeen() >= tmParameters.getMaxNumberProbs())
@@ -181,7 +186,29 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
 
-    public void initializeTopic(int curTopic, StudentState state) throws Exception {
+
+    /**
+     * When a new topic is about to begin we initialize the student state by determining the problems available in the topic.
+     * If the topic is the interleaved topic (a fixed ID), then we do the work of selecting the problems NOW and saving them.
+     * We do this only once because it is a potentially time-intensive selection process.
+     *
+     * @param curTopic
+     * @param state
+     * @param studentModel
+     * @throws Exception
+     */
+    public void initializeTopic(int curTopic, StudentState state, StudentModel studentModel) throws Exception {
+        // TODO If the topic we are switching to is an interleaved problem set, we need to select the problems now
+        // For a student and a topic we store these in the db table interleavedProblems (studId, probId, position, shown)
+        if (curTopic == DbTopics.getInterleavedTopicId(conn)) {
+            InterleavedProblemSetParams params = this.tmParameters.getInterleaveParams();
+            List<Integer> topicsToReview = getReviewableTopics(conn, curTopic, studentModel, params);
+            buildInterleavedProblemSet(conn,topicsToReview,studentModel,params);
+            return;
+            // the lines following this if are irrelevant
+
+        }
+
         List<Integer> probs = getClassTopicProblems(curTopic, classID, DbUser.isShowTestControls(conn,smgr.getStudentId()));
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
         List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
@@ -197,12 +224,57 @@ public class TopicSelectorImpl implements TopicSelector {
             smgr.getStudentState().setCurTopicHasEasierProblem(false);
     }
 
+    private void buildInterleavedProblemSet(Connection conn, List<Integer> topicsToReview, StudentModel studentModel, InterleavedProblemSetParams params) throws SQLException {
+        // need to clear the interleavedProblems table for this student and then load it with problems from the topicsToReview
+        // TODO for now go through each review topic and the student history and find a problem that the student got right with hints.
+        // failing that, find a problem whose difficulty is close to the mastery.
+        int numProbsPerTopic = params.getNumProbsPerTopic();
+        int studId = smgr.getStudentId();
+        int interleaveTopicId = DbTopics.getInterleavedTopicId(conn);
+        StudentProblemHistory hist = studentModel.getStudentProblemHistory();
+        List<StudentProblemData> probs = hist.getReverseHistory();
+        List<Integer> probIds = new ArrayList<Integer> ();
+        for (StudentProblemData p : probs) {
+            int topicId = p.getTopicId();
+            if (topicsToReview.contains(topicId) ) {
+                // if we haven't already put this problem in the list, consider it
+                if (!probIds.contains(p.getProbId()))  {
+                    // Add problems where a hint was seen and it was solved.
+                    if (p.getNumHints() > 0 && p.isSolved())
+                        probIds.add(p.getProbId());
+                    // Add problems that were solved and are above the student mastery in the topic
+                    if (p.isSolved() && studentModel.getTopicMastery(topicId) <= ProblemMgr.getProblem(p.getProbId()).getDifficulty())
+                        probIds.add(p.getProbId());
+                    // Add problems that were attempted and not solved and are below the student mastery in the topic
+                    if (p.getNumAttemptsToSolve() > 0 && !p.isSolved() && studentModel.getTopicMastery(topicId) >= ProblemMgr.getProblem(p.getProbId()).getDifficulty())
+                        probIds.add(p.getProbId());
+                }
+            }
+            // When we go back in the history and hit the last interleaved problem-set, stop adding stuff.
+            else if (topicId == interleaveTopicId)
+                break;
+        }
+        Collections.shuffle(probIds);
+        DbTopics.deleteStudentInterleavedProblems(conn,studId);
+        int i=1;
+        for (int pid : probIds)
+            DbTopics.addStudentInterleavedProblem(conn,studId,pid,i++);
+        // TODO we're going to have issues with the MPP:  What happens if student is in interleaved topic and uses MPP and then
+        // clicks go back to problem I was on??  Handling the nextProb event is going to have to be handled correctly
+    }
+
 
     // Cycle through the topics looking for one that is available (i.e. has problems that haven't been solved,omitted, or given
     // as examples).   If it goes through the whole list of topics and returns to the current topic,  then it returns -1
     public int getNextTopicWithAvailableProblems(Connection conn, int topicID,
-                                                 StudentState state) throws Exception {
+                                                 StudentState state, StudentModel studentModel) throws Exception {
         int nextTopicId;
+
+        // If this lesson includes interleaved problem sets, check to see if we should show one
+        if (this.tmParameters.showInterleavedProblemSets() && showInterleavedProblemSet(conn,topicID,studentModel)) {
+            return DbTopics.getInterleavedTopicId(conn);
+        }
+
 
         logger.debug("Finding a next topic: getNextTopicWithAvailableProblems");
         //  A sidelined topic may exist if the student left a topic early to go pursue some other topic using the MPP.
@@ -218,10 +290,8 @@ public class TopicSelectorImpl implements TopicSelector {
             logger.debug("getNextTopicWithAvailableProblems  next topic is : " + nextTopicId);
             return nextTopicId;
         }
-        // TODO Note:  We should be using the idea of a 'playable' topic as in the commented line below.  This is because
-        // we shouldn't be working with topics that have no ready problems which is possible with the method we are using.
-        List<Integer> topics = DbClass.getClassLessonTopics(conn, classID);
-//        List<Topic> topics = DbTopics.getClassPlayableTopics(conn,classID,smgr.showTestableContent());
+
+        List<Integer> topics = DbClass.getClassLessonPlayableTopics(conn, classID);
         // if -1 is passed as the current topic, then return the first topic in the list as this is presumably a session that hasn't been
         // assigned a topic
         if (topicID == -1)
@@ -252,6 +322,78 @@ public class TopicSelectorImpl implements TopicSelector {
             return nextTopicId;
         }
     }
+
+    /**
+     * Given the current topic, go through the students problem-solving history in reverse looking for topics that are reviewable.
+     * A reviewable topic is one that a student solved enough problems in.   Gathering these topics stops at the point where
+     * we find a topic that is the interleaved-topic ID.   The effect is that we are gathering reviewable topics between now and
+     * the last time an interleaved problem set was given.  Returns the list of topics to review.
+     * @param conn
+     * @param topicID
+     * @param studentModel
+     * @param params
+     * @return
+     * @throws SQLException
+     */
+    private List<Integer> getReviewableTopics(Connection conn, int topicID, StudentModel studentModel, InterleavedProblemSetParams params) throws SQLException {
+        StudentProblemHistory hist = studentModel.getStudentProblemHistory();
+        int interleaveId = DbTopics.getInterleavedTopicId(conn);
+        int lastTopic = topicID;
+        int topicCount = 0;  // counts the number of fully explored topics.
+        int probsSolvedInTopic = 0;
+        long timeInTopic=0; // number of seconds in the topic
+        List<Integer> topicsToReview = new ArrayList<Integer>();
+        for (StudentProblemData d : hist.getReverseHistory()) {
+            int probTopicId = d.getTopicId();
+            if (d.isDemo() || d.isTopicIntro())
+                continue;
+            // if the problem is in the interleaved topic, we've found the last time we were in an interleaved problem set
+            if (probTopicId == interleaveId)
+                return topicsToReview;
+            // if the problem is in a different topic than the last, then increment the topicCounter IF the problemsSolved count is
+            // at a level that indicates the student saw enough problems in the previous topic.   Then
+            // reset the problemsSolved counter.
+            if (probTopicId != lastTopic)  {
+                // Did the user solve enough problems in the topic?  If so, we'll count it as an explored topic.
+                if (probsSolvedInTopic >= params.getExploredProblemNum()) {
+                    topicCount++;
+                    topicsToReview.add(lastTopic);  // put the last topic in a list
+                }
+                probsSolvedInTopic= d.isSolved() ? 1 : 0; // if the current problem is solved start at 1, else 0
+                timeInTopic = d.isSolved() ? d.getTimeInProblemSeconds() : 0;
+                lastTopic = probTopicId;
+            }
+            // Each time we see a solved problem that is in the same topic as the last problem, we increment the problemsSolved counter
+            else if (probTopicId == lastTopic && d.isSolved())
+                probsSolvedInTopic++;
+            // count the amount of time spent in every practice problem
+            timeInTopic += d.getTimeInProblemSeconds();
+            // if we've found enough reviewable topics or spent enough time, exit
+            if (topicCount >= params.getNumTopicsToWait() || timeInTopic >= params.getExploredMinTime() * 60)
+                return topicsToReview;
+        }
+        return topicsToReview;
+    }
+
+    /**
+     * Given the current topic,  determine if its time to show an interleaved problem set.
+     * @param conn
+     * @param topicID
+     * @param studentModel
+     * @return
+     * @throws SQLException
+     */
+    private boolean showInterleavedProblemSet(Connection conn, int topicID, StudentModel studentModel) throws SQLException {
+        InterleavedProblemSetParams params = this.tmParameters.getInterleaveParams();
+        List<Integer> topicsToReview = getReviewableTopics(conn, topicID, studentModel, params);
+
+        // We only want to show an interleaved topic if we found enough topics to review since the last time we showed
+        // an interleaved problem set.
+        if (topicsToReview.size() >= params.getNumTopicsToWait())
+            return true;
+        else return false;
+    }
+
 
     /**
      * Return all the problems in a topic for a given class.   This means removing the classOmittedProblems for this topic.

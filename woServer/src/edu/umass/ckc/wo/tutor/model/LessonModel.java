@@ -21,6 +21,8 @@ import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
+import edu.umass.ckc.wo.tutormeta.ProblemSelector;
+import edu.umass.ckc.wo.tutormeta.StudentModel;
 import org.jdom.Element;
 
 import java.lang.reflect.InvocationTargetException;
@@ -47,6 +49,7 @@ public class LessonModel implements TutorEventProcessor {
     protected PedagogicalMoveListener pedagogicalMoveListener;
     protected PedagogicalModel pedagogicalModel;
     protected StudentState studentState;
+    protected StudentModel studentModel;
     protected InterventionGroup interventionGroup;
 
 
@@ -69,6 +72,7 @@ public class LessonModel implements TutorEventProcessor {
         this.pedagogicalModel = pedagogicalModel;
         this.pedagogicalMoveListener = pedagogicalMoveListener;
         this.studentState = smgr.getStudentState();
+        this.studentModel= smgr.getStudentModel();
         LessonXML x = pedagogy.getLessonXML();
         interventionGroup = new InterventionGroup(x.getInterventions());
         interventionGroup.buildInterventions(smgr,pedagogicalModel);
@@ -138,4 +142,6 @@ public class LessonModel implements TutorEventProcessor {
     public PedagogicalMoveListener getPedagogicalMoveListener() {
         return pedagogicalMoveListener;
     }
+
+
 }

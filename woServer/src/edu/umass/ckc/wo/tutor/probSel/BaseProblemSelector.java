@@ -12,6 +12,9 @@ import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -25,12 +28,14 @@ public class BaseProblemSelector implements ProblemSelector {
 
     protected PedagogicalModelParameters parameters;
     protected TopicModel topicModel;
+    protected LessonModelParameters lessonModelParameters;
     protected SessionManager smgr;
 
     public BaseProblemSelector(SessionManager smgr, LessonModel lessonModel, PedagogicalModelParameters params) {
         this.smgr = smgr;
         this.topicModel = (TopicModel) lessonModel;
         this.parameters=params;
+        this.lessonModelParameters = ((TopicModel) lessonModel).getTmParams(); // topics assumed when using this selector
     }
 
 
@@ -42,6 +47,9 @@ public class BaseProblemSelector implements ProblemSelector {
      * are met.    In theory,  there should be no fencepost errors based on this.
      */
     public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
+        if (topicModel.isInInterleavedTopic()) {
+            return selectInterleavedProblem(smgr,e,lastProblemScore);
+        }
         TopicModel.difficulty nextDiff = topicModel.getNextProblemDifficulty(lastProblemScore);
         StudentState state = smgr.getStudentState();
         // Gets problems with testable problems included if the user is marked to receive testable stuff.
@@ -75,12 +83,27 @@ public class BaseProblemSelector implements ProblemSelector {
         return p;
     }
 
-
-
-    @Override
-    public void init(SessionManager smgr) throws Exception {
-        //To change body of implemented methods use File | Settings | File Templates.
+    private Problem selectInterleavedProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select probId from interleavedProblems where studid=? and shown=0 order by position";
+            stmt = smgr.getConnection().prepareStatement(q);
+            stmt.setInt(1,smgr.getStudentId());
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return ProblemMgr.getProblem(c);
+            }
+            else return null;
+        }  finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
     }
+
 
     @Override
     public void setParameters(PedagogicalModelParameters params) {

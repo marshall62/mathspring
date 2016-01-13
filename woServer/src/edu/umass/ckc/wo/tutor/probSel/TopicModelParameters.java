@@ -45,6 +45,7 @@ public class TopicModelParameters extends LessonModelParameters {
     private double topicMastery;
     private String lessonStyle;
     private boolean singleTopicMode;
+    private InterleavedProblemSetParams interleaveParams=null;  // If interleaved problem sets are part of the lesson, this will be non-null
 
     // overload the params of this with those given for class.
     public LessonModelParameters overload(LessonModelParameters theClassParams) {
@@ -151,6 +152,10 @@ public class TopicModelParameters extends LessonModelParameters {
         this.topicExampleFrequency = DEFAULT_EXAMPLE_FREQ;
     }
 
+    /**
+     * This constructor is the one that is used to parse the XML in a the lesson definition.
+     * @param controlElt
+     */
     public TopicModelParameters (Element controlElt) {
         readControlParams(controlElt);
     }
@@ -229,9 +234,60 @@ public class TopicModelParameters extends LessonModelParameters {
             this.setTopicExampleFrequency(s);
         }
 
+        // this will replace showExampleFirst
+        c = p.getChild("interleavedProblemSets");
+        if (c != null) {
+            readInterleavedProblemSetConfig(c);
+        }
+
 
     }
 
+    /**
+     * Given an element like
+     * <interleavedProblemSet> <everyNTopics>N</everyNTopics> <numProbsInExploredTopic>8</numProbsInExploredTopic>
+     *  <minTimeInExploredTopic>10</minTimeInExploredTopic> <numProbsPerTopic>2</numProbsPerTopic></interleavedProblemSet>
+     * parse it into an object that holds the definition and place it inside the topicModelParams
+     * @param p
+     */
+    private void readInterleavedProblemSetConfig(Element p) {
+        Element c = p.getChild("everyNTopics");
+        String s;
+        int everyNTopics = -1;
+        int exploredTopicMinTime=10;  // given in minutes
+        int exploredTopicProbNum=10;
+        int numProbsPerTopic=3;
+        if (c != null) {
+            s = c.getValue();
+            everyNTopics = Integer.parseInt(s);
+        }
+        c = p.getChild("numProbsInExploredTopic");
+        if (c != null) {
+            s = c.getValue();
+            exploredTopicProbNum = Integer.parseInt(s);
+
+        }
+        c = p.getChild("minTimeInExploredTopic");
+        if (c != null) {
+            s = c.getValue();
+            exploredTopicMinTime = Integer.parseInt(s);
+
+        }
+        c = p.getChild("numProbsPerTopic");
+        if (c != null) {
+            s = c.getValue();
+            numProbsPerTopic = Integer.parseInt(s);
+
+        }
+
+        InterleavedProblemSetParams iParams = new InterleavedProblemSetParams();
+        iParams.setNumTopicsToWait(everyNTopics);
+        iParams.setExploredProblemNum(exploredTopicProbNum);
+        iParams.setExploredMinTime(exploredTopicMinTime);
+        iParams.setNumProbsPerTopic(numProbsPerTopic);
+        this.interleaveParams = iParams;
+
+    }
 
 
     // gets the given TopicIntro frequency from a string
@@ -371,5 +427,13 @@ public class TopicModelParameters extends LessonModelParameters {
 
     public String getLessonStyle() {
         return lessonStyle;
+    }
+
+    public boolean showInterleavedProblemSets () {
+        return this.getInterleaveParams() != null;
+    }
+
+    public InterleavedProblemSetParams getInterleaveParams() {
+        return interleaveParams;
     }
 }

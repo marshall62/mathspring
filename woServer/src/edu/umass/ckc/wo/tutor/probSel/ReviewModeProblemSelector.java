@@ -39,11 +39,6 @@ public class ReviewModeProblemSelector  implements ProblemSelector {
 
 
     @Override
-    public void init(SessionManager smgr) throws Exception {
-
-    }
-
-    @Override
     public void setParameters(PedagogicalModelParameters params) {
         this.parameters = params;
     }

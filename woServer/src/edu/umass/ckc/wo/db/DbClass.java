@@ -1028,6 +1028,29 @@ public class DbClass {
         return topics;
     }
 
+    // Gets the topics for the class in the order given by the classLessonPlan.  It will omit any topic that
+    // does not have ready problems.
+    public static List<Integer> getClassLessonPlayableTopics(Connection conn, int classID) throws SQLException {
+        String q = "select p.seqPos, p.probGroupId from ClassLessonPlan p, problemGroup t where p.seqpos >= 0" +
+                "                and p.classId=? and t.id=p.probGroupId and t.active=1 and exists" +
+                "(select * from problem pp, probprobgroup tm where pp.id=tm.probId and tm.pgroupId=t.id and pp.status='ready') order by p.seqpos" ;
+        PreparedStatement ps = conn.prepareStatement(q);
+        ps.setInt(1, classID);
+        ResultSet rs = ps.executeQuery();
+        List<Integer> topics = new ArrayList<Integer>();
+        while (rs.next()) {
+            int topicId = rs.getInt(2);
+            topics.add(topicId);
+        }
+
+        if (topics.size() == 0)   {
+            topics = getClassLessonPlayableTopics(conn, getDefaultClassId(conn));
+        }
+
+        return topics;
+    }
+
+
     public static List<Integer> getClassOmittedProblems(Connection conn, int classID, int topicId) throws SQLException {
         String q = "select probId from ClassOmittedProblems where classId=? and topicId=?";
         PreparedStatement ps = conn.prepareStatement(q);
