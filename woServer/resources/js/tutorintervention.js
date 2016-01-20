@@ -285,6 +285,9 @@ function openInterventionDialog (title, html, type) {
 function sendInterventionDialogInputResponse (event, userInput, fn) {
     // If the dialog contains an HTML form, this gets the values of the form inputs and creates the URL parameters for them
     var formInputs = $("#"+INPUT_RESPONSE_FORM).serialize() ;
+    // Not sure if this has a leading "&" on the first variable or not.  I need it to begin with that so I conditionally add it
+    if (formInputs.length > 0 && formInputs[0] != '&')
+        formInputs = "&" + formInputs;
     incrementTimers(globals);
     servletFormPost(event,formInputs + "&probElapsedTime="+globals.probElapsedTime  +
         "&destination="+globals.destinationInterventionSelector + "&userInput="+userInput, fn)

@@ -25,7 +25,8 @@ public class AskEmotionRadioIntervention extends InputResponseIntervention imple
 
     @Override
     public String logEventName() {
-        return "AskEmotionIntervention";
+        return "AskEmotionIntervention-" + emotion.getName();
+
     }
 
 

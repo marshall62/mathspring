@@ -17,6 +17,8 @@ import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.pedModel.*;
+import edu.umass.ckc.wo.tutor.probSel.BaseProblemSelector;
+import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.*;
@@ -73,6 +75,16 @@ public class TopicModel extends LessonModel {
 
 
     private EndOfTopicInfo checkForEOT(long probElapsedTime) throws Exception {
+        int curTopic = smgr.getStudentState().getCurTopic();
+        // If in interleaved Topic, need to see if the list of problems is all shown.
+        if (curTopic == DbTopics.getInterleavedTopicId(smgr.getConnection())) {
+            boolean b =BaseProblemSelector.hasInterleavedProblem(smgr.getConnection(),smgr.getStudentId());
+            if (b)
+                return new EndOfTopicInfo(true,false,false,false,false,false);
+            else
+                return new EndOfTopicInfo(false,false,false,false,false,false);
+        }
+
         // No interventions, so grade the last problem and if EOT, send an internal event for that
         ProblemGrader grader = pedagogicalModel.getProblemGrader();
         Problem lastProb = ProblemMgr.getProblem(smgr.getStudentState().getCurProblem());

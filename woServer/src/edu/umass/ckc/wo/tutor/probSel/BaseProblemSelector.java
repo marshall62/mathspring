@@ -12,6 +12,7 @@ import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,7 +49,7 @@ public class BaseProblemSelector implements ProblemSelector {
      */
     public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
         if (topicModel.isInInterleavedTopic()) {
-            return selectInterleavedProblem(smgr,e,lastProblemScore);
+            return selectInterleavedProblem(smgr.getConnection(),smgr.getStudentId());
         }
         TopicModel.difficulty nextDiff = topicModel.getNextProblemDifficulty(lastProblemScore);
         StudentState state = smgr.getStudentState();
@@ -83,16 +84,40 @@ public class BaseProblemSelector implements ProblemSelector {
         return p;
     }
 
-    private Problem selectInterleavedProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws SQLException {
+    public static boolean hasInterleavedProblem (Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select count(*) from interleavedProblems where studid=? and shown=0";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c > 0;
+            }
+            return false;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static Problem selectInterleavedProblem(Connection conn, int studId) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
             String q = "select probId from interleavedProblems where studid=? and shown=0 order by position";
-            stmt = smgr.getConnection().prepareStatement(q);
-            stmt.setInt(1,smgr.getStudentId());
+            stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            stmt.setInt(1,studId);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 int c= rs.getInt(1);
+                rs.updateInt("shown",1);
+                rs.updateRow();
                 return ProblemMgr.getProblem(c);
             }
             else return null;

@@ -575,7 +575,7 @@ public class DbTopics {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select id from problemgroup where name like 'Interleaved Problem Set%'";
+            String q = "select id from problemgroup where description like 'Interleaved Problem Set%'";
             stmt = conn.prepareStatement(q);
             rs = stmt.executeQuery();
             if (rs.next()) {
@@ -600,7 +600,7 @@ public class DbTopics {
             String q = "delete from interleavedProblems where studId=?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,studId);
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
         }
         finally {
             if (stmt != null)

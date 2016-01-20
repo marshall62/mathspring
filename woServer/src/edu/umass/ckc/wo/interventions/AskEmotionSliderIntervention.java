@@ -26,7 +26,7 @@ public class AskEmotionSliderIntervention extends InputResponseIntervention impl
 
     @Override
     public String logEventName() {
-        return "AskEmotionIntervention";
+        return "AskEmotionIntervention-" + emotion.getName();
     }
 
     @Override

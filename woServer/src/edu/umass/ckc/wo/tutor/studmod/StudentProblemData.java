@@ -288,6 +288,6 @@ public class StudentProblemData {
     }
 
     public long getTimeInProblemSeconds () {
-        return (this.getProblemEndTime() - this.getProblemBeginTime()) / 1000;
+        return Math.max(0,this.getProblemEndTime() - this.getProblemBeginTime()) / 1000;
     }
 }

@@ -233,7 +233,7 @@ public class TopicSelectorImpl implements TopicSelector {
         int interleaveTopicId = DbTopics.getInterleavedTopicId(conn);
         StudentProblemHistory hist = studentModel.getStudentProblemHistory();
         List<StudentProblemData> probs = hist.getReverseHistory();
-        List<Integer> probIds = new ArrayList<Integer> ();
+        Set<Integer> probIds = new TreeSet<Integer> ();
         for (StudentProblemData p : probs) {
             int topicId = p.getTopicId();
             if (topicsToReview.contains(topicId) ) {
@@ -254,10 +254,11 @@ public class TopicSelectorImpl implements TopicSelector {
             else if (topicId == interleaveTopicId)
                 break;
         }
-        Collections.shuffle(probIds);
+        List<Integer> pids = new ArrayList<Integer>(probIds);
+        Collections.shuffle(pids);
         DbTopics.deleteStudentInterleavedProblems(conn,studId);
         int i=1;
-        for (int pid : probIds)
+        for (int pid : pids)
             DbTopics.addStudentInterleavedProblem(conn,studId,pid,i++);
         // TODO we're going to have issues with the MPP:  What happens if student is in interleaved topic and uses MPP and then
         // clicks go back to problem I was on??  Handling the nextProb event is going to have to be handled correctly
