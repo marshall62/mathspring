@@ -320,7 +320,7 @@ public class DbSession {
                         deleteStudentAndData(conn, studId);
                     else if (!DbUser.isKeepData(conn,studId))
                         DbUser.deleteStudentData(conn, studId);
-                    cleanOutTestUserData(conn, sessId, studId);
+
                     // blow away student data if the student associated with this session has no other active sessions.
                     if (hasNoActiveSessions(conn,studId))
                         removeTransientState(conn,studId);
