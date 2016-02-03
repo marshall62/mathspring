@@ -994,15 +994,13 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 // XML created to represent user input is retrieved from the IS and put in the event for logger to stick in eventlog.userinput
                 e.setUserInput(intSel.getUserInputXML());
 
-                // I don't understand why we are adding stuff to the event after its been sent to the npis
-//                e.setUserInput(intSel.getUserInputXML());
                 // The last intervention selector will either return an InternalEvent or null
                 // if an internal state is returned, then process it
                 if (r instanceof InternalEvent)
                     // this should not happen because pedagogical models don't have internal events.
                     r = processInternalEvent((InternalEvent) r);
                 // if null comes back, see if the pedagogical model has an intervention
-                else if (r==null)
+                else if (r==null && shouldForceNextProblem())
                     r =  getNextProblemIntervention(new NextProblemEvent(e.getServletParams()));
                 // otherwise its an InterventionResponse which will be logged and returned.
             }
@@ -1029,10 +1027,19 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         return r;
     }
 
+    /**
+     * This is intended to be a hook for subclasses to weigh in (especially CollabPedagogicalModel),
+     * without having to override the whole processInputResponseNextProblemInterventionEvent() method.
+     * @return Whether to move on to the next problem
+     */
+    protected boolean shouldForceNextProblem() {
+        return true;
+    }
+
     @Override
     /**
      * An input response to an intervention on attempt will go back to the originating IS.  This
-     *  may return an intervention, internval event, or null.
+     *  may return an intervention, interval event, or null.
      */
     public Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);

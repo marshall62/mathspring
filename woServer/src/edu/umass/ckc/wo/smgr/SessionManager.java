@@ -1,8 +1,7 @@
 package edu.umass.ckc.wo.smgr;
 
-import ckc.servlet.servbase.ServletEvent;
 import ckc.servlet.servbase.ServletParams;
-import edu.umass.ckc.wo.PartnerManager;
+import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
@@ -16,9 +15,7 @@ import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
-import edu.umass.ckc.wo.tutormeta.PedagogyParams;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
@@ -444,7 +441,7 @@ public class SessionManager {
                     return new LoginResult(-1, "This user is invalid because it is not in a class.   You need to re-register and select a class", LoginResult.ERROR);
                 }
                 //Remove collaboration requests and pairings for students who have just logged in, as any such data is erroneous.
-                PartnerManager.clearOldData(studId);
+                CollaborationManager.clearOldData(studId);
                 int oldSessId = DbSession.findActiveSession(getConnection(), studId);
                 Pedagogy ped;
                 if (oldSessId != -1) {
