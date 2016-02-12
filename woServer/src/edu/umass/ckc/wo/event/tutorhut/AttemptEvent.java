@@ -29,6 +29,16 @@ public class AttemptEvent extends IntraProblemEvent {
         setIntervene(Boolean.parseBoolean(interv));
     }
 
+    // for unit testing only
+    public AttemptEvent (String userInput, boolean isCorrect,  long probElapsed, long elapsed, int sessId) {
+        this.userInput=userInput;
+        this.isCorrect=isCorrect;
+        this.probElapsedTime=probElapsed;
+        this.elapsedTime=elapsed;
+        this.sessionId=sessId;
+    }
+
+
     public String getUserInput() {
         return userInput;
     }

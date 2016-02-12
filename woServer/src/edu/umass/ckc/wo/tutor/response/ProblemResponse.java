@@ -1,9 +1,8 @@
 package edu.umass.ckc.wo.tutor.response;
 
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.TopicMastery;
 import net.sf.json.JSONObject;

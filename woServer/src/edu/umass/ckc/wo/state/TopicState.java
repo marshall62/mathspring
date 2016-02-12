@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.smgr;
+package edu.umass.ckc.wo.state;
 
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
@@ -58,6 +58,7 @@ public class TopicState extends State {
     private static final String EXAMPLE_SHOWN = "st.exampleShown";
     private static final String CUR_PROB_INDEX_IN_TOPIC = "st.curProbIndexInTopic";
     private static final String TOPIC_INTERNAL_STATE = "st.topicInternalState"; // one of Begin, In, End
+    private static final String REVIEW_TOPICS = "st.reviewTopics"; //
 
 
     public static final String BEGINNING_OF_TOPIC = "BeginningOfTopic";
@@ -76,7 +77,7 @@ public class TopicState extends State {
             CLIP_COUNTERS , STUDENT_SELECTED_TOPIC , SIDELINED_TOPIC , REVIEW_MODE ,EXAMPLE_SHOWN,
             CHALLENGE_MODE , TEACH_TOPIC_MODE
              , TOPIC_SWITCH , CONTENT_FAILURE_TOPIC_SWITCH,TOPIC_HAS_EASIER_PROBLEM,TOPIC_HAS_HARDER_PROBLEM,
-            CUR_PROB_INDEX_IN_TOPIC, TOPIC_INTERNAL_STATE, TOPIC_PROBLEMS_SOLVED} ;
+            CUR_PROB_INDEX_IN_TOPIC, TOPIC_INTERNAL_STATE, TOPIC_PROBLEMS_SOLVED, REVIEW_TOPICS} ;
     private int curProblem;
     private int lastProblem;
     private int nextProblem;
@@ -118,6 +119,7 @@ public class TopicState extends State {
     private int curProblemIndexInTopic;
     private String internalState;
     private int topicProblemsSolved;
+    private List<String> reviewTopics;
 
 
     public TopicState(Connection conn) {
@@ -171,8 +173,10 @@ public class TopicState extends State {
         this.curProblemIndexInTopic = mapGetPropInt(m, CUR_PROB_INDEX_IN_TOPIC, -1);
         this.internalState = mapGetPropString(m,TOPIC_INTERNAL_STATE,TopicState.BEGINNING_OF_TOPIC);
         this.topicProblemsSolved = mapGetPropInt(m,TOPIC_PROBLEMS_SOLVED,0);
+        this.reviewTopics = mapGetPropList(m,REVIEW_TOPICS);
 
     }
+
 
 
 
@@ -217,6 +221,12 @@ public class TopicState extends State {
         // each time we initialize the TopicState we set it back to a BeginningOfTopic state.
         setInternalState(TopicState.BEGINNING_OF_TOPIC);
         setTopicProblemsSolved(0);
+    }
+
+
+
+    public void cleanupState () throws SQLException {
+        clearReviewTopics();
     }
 
 
@@ -598,5 +608,20 @@ public class TopicState extends State {
     public void setTopicProblemsSolved(int topicProblemsSolved) throws SQLException {
         this.topicProblemsSolved = topicProblemsSolved;
         setProp(this.objid,TOPIC_PROBLEMS_SOLVED,topicProblemsSolved);
+    }
+
+    public void setReviewTopics(List<String> reviewTopics) throws SQLException {
+        this.reviewTopics = reviewTopics;
+        for (String topicId: reviewTopics)
+            addProp(this.objid,REVIEW_TOPICS, topicId);
+    }
+
+    public void clearReviewTopics () throws SQLException {
+        this.reviewTopics = null;
+        clearProp(this.objid,REVIEW_TOPICS);
+    }
+
+    public List<String> getReviewTopics() {
+        return reviewTopics;
     }
 }

@@ -1,11 +1,8 @@
 package edu.umass.ckc.wo.tutor.model;
 
-import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.response.*;
-import edu.umass.ckc.wo.tutormeta.Intervention;
 
 /**
  * Created with IntelliJ IDEA.

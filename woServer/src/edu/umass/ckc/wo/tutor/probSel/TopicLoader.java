@@ -1,9 +1,7 @@
 package edu.umass.ckc.wo.tutor.probSel;
 
-import edu.umass.ckc.wo.content.CCStandard;
-import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;

@@ -11,14 +11,11 @@ import edu.umass.ckc.wo.event.tutorhut.ClickCharacterEvent;
 import edu.umass.ckc.wo.event.tutorhut.EliminateCharacterEvent;
 import edu.umass.ckc.wo.event.tutorhut.MuteCharacterEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.response.HintResponse;
 import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.ClickCharacterResponse;
-import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutormeta.Activity;
-import edu.umass.ckc.wo.tutormeta.Intervention;
-import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.util.SqlQuery;
 
 import java.sql.Connection;

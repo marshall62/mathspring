@@ -1,7 +1,5 @@
 package edu.umass.ckc.wo.tutor.studmod;
 
-import edu.umass.ckc.wo.smgr.StudentState;
-
 import java.sql.SQLException;
 
 /**

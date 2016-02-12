@@ -15,7 +15,7 @@ import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
@@ -230,11 +230,18 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     @Override
     public Response processBeginProblemEvent(BeginProblemEvent e) throws Exception {
+        long t = System.currentTimeMillis();
         Response r = new Response();
         this.studentModel.beginProblem(smgr, e); // this sets state.curProb to the new probid
+//        System.out.println("After StudentModel.beginProblem " + (System.currentTimeMillis() - t));
         new TutorLogger(smgr).logBeginProblem(e, r);  // this relies on the above being done first
-        if (learningCompanion != null )
+//        System.out.println("After TutorLogger.beginProblem " + (System.currentTimeMillis() - t));
+
+        if (learningCompanion != null )   {
             learningCompanion.processUncategorizedEvent(e,r);
+//            System.out.println("After learningCompanion.processUncategorizedEvent " + (System.currentTimeMillis() - t));
+
+        }
         return r;
     }
 
@@ -598,13 +605,15 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
      * @throws Exception
      */
      public ProblemResponse getNextProblem(NextProblemEvent e) throws Exception {
-
         Problem curProb = problemSelector.selectProblem(smgr, e, lastProblemScore);
-        ProblemResponse r=null;
+        // typically it takes 125 ms to finish the above call
+
+         ProblemResponse r=null;
         if (curProb != null) {
             curProb.setMode(Problem.PRACTICE);
 
             problemGiven(curProb); // inform pedagogical move listeners that a problem is given.
+            // this call takes about 175 ms
             r = new ProblemResponse(curProb);
 //            r.setProblemBindings(smgr);
         }
@@ -648,7 +657,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         // We have a fixed sequence which prefers forced problems, followed by topic intros, examples, interventions, regular problems.
         // If we ever want something more customized (e.g. from a XML pedagogy defn),  this would have to operate based on that defn
-
+        long t = System.currentTimeMillis();
         Response r=null;
         StudentState state = smgr.getStudentState();
         Problem curProb=null;
@@ -658,10 +667,12 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         // Many interventions are generated in this call because the Lesson Model wants to notify the student about beginnings of new
         // lessons, endings of lessons, etc.
         r = lessonModel.processUserEvent(e);  // If the lesson/topic is done we get a response (an internal event) and exit
-
         // If the lessonModel didn't generate something, now we see if the pedagogical model wants to generate an intervention
-        if (r == null)
+        if (r == null)  {
             r = getNextProblemIntervention(e);
+        }
+        // less than 100 ms at this point
+
         // Some interventions are designed to be shown while a problem is being shown (perhaps some GUI element is changed)
         // For cases like this, the intervention's isBuildProblem is true.
         // If the intervention requires a problem, get the next problem and return a Problem with the intervention as a property of a problem
@@ -672,18 +683,25 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 r = pr;
             }
         }
-        if (r == null)
-            r = getNextProblem(e);
+        if (r == null) {
+            r = getNextProblem(e); // takes about 300 ms
+            // 400 ms by this point
+
+        }
+
         if (r != null && r instanceof ProblemResponse) {
              curProb = ((ProblemResponse) r).getProblem();
         }
         if (learningCompanion != null )
             learningCompanion.processNextProblemRequest(smgr,e,r);
-        if (curProb != null)
-            smgr.getStudentModel().newProblem(state,curProb);
+        if (curProb != null)  {
+            smgr.getStudentModel().newProblem(state, curProb);  // 120 ms
+            // 520 ms by this point
+        }
         if (r instanceof InterventionResponse)
             new TutorLogger(smgr).logNextProblemIntervention(e,(InterventionResponse) r);
         else new TutorLogger(smgr).logNextProblem(e, r.getCharacterControl(), "PracticeProblem");
+        // about 30 ms to do the logging
         StudentEffort eff = studentModel.getEffort();
         r.setEffort(eff);
         return r;

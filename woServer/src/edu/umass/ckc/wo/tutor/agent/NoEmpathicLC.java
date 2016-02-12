@@ -1,19 +1,14 @@
 package edu.umass.ckc.wo.tutor.agent;
 
-import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.response.AttemptResponse;
-import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
-import edu.umass.ckc.wo.tutormeta.StudentModel;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

@@ -1,8 +1,7 @@
 package edu.umass.ckc.wo.tutormeta;
 
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.TopicIntro;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 

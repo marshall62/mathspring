@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.woreports;
 
-import edu.umass.ckc.wo.smgr.PrePostState;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.PrePostState;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 
 import java.sql.Connection;

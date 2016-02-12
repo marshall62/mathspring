@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.admin.LessonMap;
 import edu.umass.ckc.wo.admin.LoginMap;
 import edu.umass.ckc.wo.admin.PedMap;
 import edu.umass.ckc.wo.db.DbPedagogy;
+import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.smgr.SessionDemon;
 import edu.umass.ckc.wo.tutor.Settings;
@@ -117,6 +118,7 @@ public class ServletUtil {
 //        }
 
         Settings.mailServer = servletContext.getInitParameter(Names.ERROR_SMTP_SERVER);
+        Settings.interleavedTopicID = DbTopics.getInterleavedTopicId(conn);
         initializerHasRun = true;
 
     }

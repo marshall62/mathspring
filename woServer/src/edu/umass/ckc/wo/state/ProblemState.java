@@ -1,9 +1,10 @@
-package edu.umass.ckc.wo.smgr;
+package edu.umass.ckc.wo.state;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
+import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
 

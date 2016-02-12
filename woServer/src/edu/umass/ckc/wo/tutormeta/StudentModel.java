@@ -1,6 +1,6 @@
 package edu.umass.ckc.wo.tutormeta;
 
-import edu.umass.ckc.wo.db.DbStudentModel;
+import edu.umass.ckc.wo.db.DbStateTableMgr;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class StudentModel extends State implements TutorEventHandler {
 
-    protected DbStudentModel dbWorker ;
+    protected DbStateTableMgr dbWorker ;
     protected StudentProblemHistory problemHistory;
 
     protected MasteryHeuristic heuristic=null;   // object that computes topic mastery based on performance

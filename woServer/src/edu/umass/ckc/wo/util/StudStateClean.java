@@ -1,7 +1,7 @@
 package edu.umass.ckc.wo.util;
 
 import edu.umass.ckc.wo.db.DbUtil;
-import edu.umass.ckc.wo.smgr.*;
+import edu.umass.ckc.wo.state.*;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutor.studmod.StudentModelMotivational;
 
@@ -72,7 +72,7 @@ public class StudStateClean {
     }
 
     private static void cleanStudentState(Connection conn, int id) throws SQLException {
-        ProblemState.clearState(conn,id);
+        ProblemState.clearState(conn, id);
         TopicState.clearState(conn, id);
         SessionState.clearState(conn, id);
         PrePostState.clearState(conn, id);

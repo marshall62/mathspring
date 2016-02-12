@@ -40,6 +40,7 @@ public class SessionEvent extends ActionEvent {
 
     }
 
+
     public void setSessionId(int sessionId) {
         this.sessionId = sessionId;
     }

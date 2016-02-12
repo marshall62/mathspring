@@ -113,6 +113,8 @@ public class Settings {
     public static boolean sendClassStatusEmail = false;
     public static boolean sendStudentStatusEmail = false;
 
+    public static int interleavedTopicID;  // id of a problemGroup row in the db with the description Interleaved Problem Set.
+
     public static void setSurveys (Connection conn, String preSurvey, String postSurvey) throws SQLException {
         PreparedStatement stmt=null;
         try {

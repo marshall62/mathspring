@@ -8,8 +8,7 @@ import edu.umass.ckc.wo.content.ProblemStats;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentEffort;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -46,7 +45,7 @@ public class BaseStudentModel extends StudentModel {
     public static final String PRE_TEST_NUM_INCORRECT = "pretestNumIncorrect";
     public static final String POST_TEST_NUM_INCORRECT = "posttestNumIncorrect";
     private static final String  TABLE_NAME= "baseStudentModel";
-    public static final String[] TABLE_COLS = new String[] {"studId","avgTimeInProb","avgTimeInAssistedProb",
+    public static final String[] TABLE_COLS = new String[] {"avgTimeInProb","avgTimeInAssistedProb",
                 "avgAttemptsInProb","avgAttemptsInAssistedProb","avgTimeBetweenAttempts","avgHintsGivenPerProb",
                 "avgHintsGivenPerAssistedProb","pretestNumCorrect","posttestNumCorrect","pretestNumIncorrect",
                 "posttestNumIncorrect","numProbsReceivedAssistance","numProbsSeen","numProbsSolved","numHintsTotal",
@@ -86,6 +85,7 @@ public class BaseStudentModel extends StudentModel {
     protected int sessId;
     protected SessionManager smgr;
 
+
      /* END OF INSTANCE VARS CORRESPONDING TO DATABASE TABLE BASESTUDENTMODEL */
 
 
@@ -119,7 +119,7 @@ public class BaseStudentModel extends StudentModel {
         this.conn = conn;
         this.heuristic = new StudentModelMasteryHeuristic(conn);
         this.problemHistory = new StudentProblemHistory();
-        dbWorker = new DbStudentModel(conn);
+        dbWorker = new DbStateTableMgr(conn);
 
     }
 
@@ -233,7 +233,7 @@ public class BaseStudentModel extends StudentModel {
         logger.debug("Save BEGIN");
         long n =System.currentTimeMillis() ;
         dbWorker.save(this,this.objid, TABLE_NAME, TABLE_COLS, BaseStudentModel.class);
-
+        smgr.getStudentState().save();
         // because the topicmasterylevels are updated in the db by this classes access method, we don't need to write them when the
         // student model is saved.
         logger.debug("Save END took:" + (System.currentTimeMillis()-n));
@@ -276,10 +276,15 @@ public class BaseStudentModel extends StudentModel {
      */
     public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
         this.numProbsSeen++;
+        long t = System.currentTimeMillis();
         smgr.getStudentState().beginProblem(null, e);
-       if (PartnerManager.requestExists(smgr.getStudentId()))
+//        System.out.println("In SM.beginProblem, after studentState.beginProblem " + (System.currentTimeMillis() - t));
+       if (PartnerManager.requestExists(smgr.getStudentId())) {
             smgr.setCollaboratingWith(PartnerManager.getRequestedPartner(smgr.getStudentId()));
+//           System.out.println("In SM.beginProblem, after PartnerManager.requestExists " + (System.currentTimeMillis() - t));
+       }
         this.problemHistory.beginProblem(smgr,e);
+//        System.out.println("In SM.beginProblem, after problemHistory.beginProblem " + (System.currentTimeMillis() - t));
 
     }
 
@@ -887,7 +892,7 @@ public class BaseStudentModel extends StudentModel {
 
 
     public void clearTutorHutState () throws SQLException {
-        DbStudentModel.clear(conn, TABLE_NAME, objid);
+        DbStateTableMgr.clear(conn, TABLE_NAME, objid);
     }
 
 

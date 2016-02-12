@@ -6,7 +6,7 @@ import edu.umass.ckc.wo.db.DbStudentProblemHistory;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutormeta.StudentEffort;
 import org.apache.log4j.Logger;
 

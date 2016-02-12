@@ -2,11 +2,11 @@ package edu.umass.ckc.wo.woreports;
 
 
 import edu.umass.ckc.email.Emailer;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.util.WoProps;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.beans.ClassInfo;
-import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.tutormeta.TopicMastery;
 

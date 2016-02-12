@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.smgr;
+package edu.umass.ckc.wo.state;
 
 import java.util.List;
 
