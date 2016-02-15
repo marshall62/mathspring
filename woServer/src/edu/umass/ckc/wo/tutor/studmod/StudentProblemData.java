@@ -286,4 +286,8 @@ public class StudentProblemData {
     public boolean isExample () {
         return this.mode.equals(Problem.EXAMPLE);
     }
+
+    public long getTimeInProblemSeconds () {
+        return Math.max(0,this.getProblemEndTime() - this.getProblemBeginTime()) / 1000;
+    }
 }

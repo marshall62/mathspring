@@ -6,7 +6,7 @@ import edu.umass.ckc.wo.event.tutorhut.ContinueAttemptInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseAttemptInterventionEvent;
 import edu.umass.ckc.wo.interventions.RapidAttemptIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 
 import edu.umass.ckc.wo.tutor.response.Response;

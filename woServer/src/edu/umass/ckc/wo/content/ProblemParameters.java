@@ -1,12 +1,10 @@
 package edu.umass.ckc.wo.content;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 import edu.umass.ckc.wo.db.DbStudentProblemHistory;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import net.sf.json.*;
 import java.util.Random;

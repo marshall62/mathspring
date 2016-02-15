@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
-import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
@@ -9,9 +8,8 @@ import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
-import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
@@ -19,7 +17,6 @@ import edu.umass.ckc.wo.tutormeta.StudentModel;
 import org.jdom.Element;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;

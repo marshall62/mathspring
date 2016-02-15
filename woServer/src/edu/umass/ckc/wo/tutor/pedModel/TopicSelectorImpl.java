@@ -1,18 +1,20 @@
 package edu.umass.ckc.wo.tutor.pedModel;
 
 import ckc.servlet.servbase.UserException;
-import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
+import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
+import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import org.apache.log4j.Logger;
 
@@ -78,7 +80,11 @@ public class TopicSelectorImpl implements TopicSelector {
      * @throws Exception
      */
     public List<Integer> getUnsolvedProblems(int theTopicId, int classId, boolean includeTestProblems) throws Exception {
-
+        // if an interleaved problem set get the ones that haven't been shown.
+        if (theTopicId == Settings.interleavedTopicID) {
+            List<Integer> pids = DbTopics.getNonShownInterleavedProblemSetProbs(smgr.getConnection(), smgr.getStudentId()) ;
+            return pids;
+        }
         // studentID and classID were set in init method.
         List<Integer> topicProbs = getClassTopicProblems(theTopicId, classId, includeTestProblems);
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, theTopicId);
@@ -105,10 +111,7 @@ public class TopicSelectorImpl implements TopicSelector {
     // the topic and is built in HTML5 so that it can play without clicking a "next step" button which was imposed
     // by the way Flash problems (being used as demos) work
     public Problem getDemoProblem(int curTopic) throws Exception {
-        List<Integer> probs = getClassTopicProblems(curTopic, classID, DbUser.isShowTestControls(conn, smgr.getStudentId()));
-        List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
-        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
-        probs.removeAll(recentProbs);
+        List<Integer> probs = getUnsolvedProblems(curTopic,smgr.getClassID(),DbUser.isShowTestControls(conn, smgr.getStudentId()));
         if (probs.size() == 0) {
             return null;
         }
@@ -144,6 +147,8 @@ public class TopicSelectorImpl implements TopicSelector {
      * @throws Exception
      */
     public EndOfTopicInfo isEndOfTopic(long probElapsedTime, TopicModel.difficulty difficulty) throws Exception {
+
+
         boolean maxProbsReached=false, maxTimeReached=false, topicMasteryReached=false, contentFailure=false;
         // if maxProbs then we're done
         if (smgr.getStudentState().getTopicNumPracticeProbsSeen() >= tmParameters.getMaxNumberProbs())
@@ -181,11 +186,34 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
 
-    public void initializeTopic(int curTopic, StudentState state) throws Exception {
-        List<Integer> probs = getClassTopicProblems(curTopic, classID, DbUser.isShowTestControls(conn,smgr.getStudentId()));
-        List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, curTopic);
-        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
-        probs.removeAll(recentProbs);
+
+    /**
+     * When a new topic is about to begin we initialize the student state by determining the problems available in the topic.
+     * If the topic is the interleaved topic (a fixed ID), then we do the work of selecting the problems NOW and saving them.
+     * We do this only once because it is a potentially time-intensive selection process.
+     *
+     * @param curTopic
+     * @param state
+     * @param studentModel
+     * @throws Exception
+     */
+    public void initializeTopic(int curTopic, StudentState state, StudentModel studentModel) throws Exception {
+        //  If the topic we are switching to is an interleaved problem set, we need to select the problems now
+        // For a student and a topic we store these in the db table interleavedProblems (studId, probId, position, shown)
+        if (curTopic == Settings.interleavedTopicID) {
+            InterleavedProblemSetParams params = this.tmParameters.getInterleaveParams();
+//            List<String> topicsToReview = getReviewableTopics(conn, curTopic, studentModel, params);
+            // get the topics to review from the student (topic) state.
+            List<String> topicsToReview = smgr.getStudentState().getReviewTopics();
+            new InterleavedTopic(smgr).buildInterleavedProblemSet(conn, topicsToReview, studentModel, params);
+
+            return;
+            // the lines following this if are irrelevant
+
+        }
+
+        List<Integer> probs = getUnsolvedProblems(curTopic, classID, DbUser.isShowTestControls(conn, smgr.getStudentId()));
+
         // If there is only one problem in the list, this is the example so there will not be content next time
         // It is assumed that the topic has at least one problem, since we just called getNextTopicWithAvailableContent
         if (probs.size() == 1) {
@@ -198,11 +226,20 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
 
+
+
+
     // Cycle through the topics looking for one that is available (i.e. has problems that haven't been solved,omitted, or given
     // as examples).   If it goes through the whole list of topics and returns to the current topic,  then it returns -1
     public int getNextTopicWithAvailableProblems(Connection conn, int topicID,
-                                                 StudentState state) throws Exception {
+                                                 StudentState state, StudentModel studentModel) throws Exception {
         int nextTopicId;
+        InterleavedTopic it = new InterleavedTopic(smgr);
+        // If this lesson includes interleaved problem sets, check to see if we should show one
+        if (this.tmParameters.showInterleavedProblemSets() && it.shouldShowInterleavedProblemSet(conn, topicID, studentModel, tmParameters.getInterleaveParams())) {
+            return Settings.interleavedTopicID;
+        }
+
 
         logger.debug("Finding a next topic: getNextTopicWithAvailableProblems");
         //  A sidelined topic may exist if the student left a topic early to go pursue some other topic using the MPP.
@@ -218,10 +255,8 @@ public class TopicSelectorImpl implements TopicSelector {
             logger.debug("getNextTopicWithAvailableProblems  next topic is : " + nextTopicId);
             return nextTopicId;
         }
-        // TODO Note:  We should be using the idea of a 'playable' topic as in the commented line below.  This is because
-        // we shouldn't be working with topics that have no ready problems which is possible with the method we are using.
-        List<Integer> topics = DbClass.getClassLessonTopics(conn, classID);
-//        List<Topic> topics = DbTopics.getClassPlayableTopics(conn,classID,smgr.showTestableContent());
+
+        List<Integer> topics = DbClass.getClassLessonPlayableTopics(conn, classID);
         // if -1 is passed as the current topic, then return the first topic in the list as this is presumably a session that hasn't been
         // assigned a topic
         if (topicID == -1)
@@ -240,7 +275,10 @@ public class TopicSelectorImpl implements TopicSelector {
                 //  Get the topic with the lowest seqNum (NB inactive topics have seqNum=-1 so we must omit those)
                 nextTopicId = topics.get(0);
             }
-        } while (!hasReadyContent(nextTopicId) && nextTopicId != topicID);
+            // bail out of the loop if we hit the same topic we started with
+            if (nextTopicId == topicID)
+                break;
+        } while (isMastered(nextTopicId) || !hasReadyContent(nextTopicId) && nextTopicId != topicID);
 
         // if it did a full cycle through all topics,  there are no more problems to show
         if (nextTopicId == topicID)   {
@@ -252,6 +290,10 @@ public class TopicSelectorImpl implements TopicSelector {
             return nextTopicId;
         }
     }
+
+
+
+
 
     /**
      * Return all the problems in a topic for a given class.   This means removing the classOmittedProblems for this topic.
@@ -280,11 +322,12 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
     public boolean hasReadyContent(int topicId) throws Exception {
-        List<Integer> topicProbs =getClassTopicProblems(topicId, classID, DbUser.isShowTestControls(conn,smgr.getStudentId()));
-        List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, topicId);
-        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
-        topicProbs.removeAll(recentProbs);
-        return topicProbs.size() > 0;
+        List<Integer> topicProbs = getUnsolvedProblems(topicId,classID,DbUser.isShowTestControls(conn,smgr.getStudentId()));
+        return topicProbs.size() > 1;   // Topics with 1 unsolved problem are not playable because it will use the 1 prob as a demo
+    }
+
+    public boolean isMastered (int topicId) throws SQLException {
+        return smgr.getStudentModel().getTopicMastery(topicId) >= tmParameters.getTopicMastery() ;
     }
 
 
@@ -292,4 +335,6 @@ public class TopicSelectorImpl implements TopicSelector {
     public void init() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
 }

@@ -2,23 +2,32 @@ package edu.umass.ckc.wo.tutor.intervSel2;
 
 import ckc.servlet.servbase.ServletParams;
 import ckc.servlet.servbase.UserException;
-import edu.umass.ckc.wo.event.tutorhut.ContinueNextProblemInterventionEvent;
-import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
-import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
-import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.interventions.InterleavedTopicSwitchIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.TopicSwitchAskIntervention;
 import edu.umass.ckc.wo.interventions.TopicSwitchIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
+import edu.umass.ckc.wo.tutor.pedModel.InterleavedTopic;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
+import edu.umass.ckc.wo.tutor.probSel.ReviewModeTopicLoader;
 import edu.umass.ckc.wo.tutor.response.BeginningOfTopicEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -110,13 +119,28 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
             int solved = studentState.getTopicProblemsSolved();
             // If configured to ask about staying in the topic and not a content failure, then pop up dialog asking if stay or switch topics.
             // Can only stay in the current topic if we have more content (i.e. maxProbs = true or maxTime has been reached)
-            if (this.ask && !reasons.isContentFailure())
+            if (smgr.getStudentState().getCurTopic() == Settings.interleavedTopicID)  {
+                intervention = getInterleavedTopicIntervention();
+
+            }
+            else if (this.ask && !reasons.isContentFailure())
                 intervention = new TopicSwitchAskIntervention(expl,smgr.getSessionNum());
                 // just inform that we are moving to next topic
             else intervention = new TopicSwitchIntervention(expl,seen,solved);
         }
         return intervention;
     }
+
+    private NextProblemIntervention getInterleavedTopicIntervention() throws SQLException {
+        InterleavedTopic interleavedTopic = new InterleavedTopic(smgr);
+        List<String> reviewTopics = studentState.getReviewTopics();
+        List<String> topicNames = new ArrayList<String>(reviewTopics.size());
+        List<InterleavedTopic.TopicPerformance> topicPerformanceList = interleavedTopic.getStudentPerformance();
+        NextProblemIntervention intervention = new InterleavedTopicSwitchIntervention(topicPerformanceList);
+        return intervention;
+    }
+
+
 
 
     @Override
@@ -156,6 +180,9 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 //            return new BeginningOfTopicEvent(e,smgr.getStudentState().getCurTopic());
             TopicModel tm = (TopicModel) pedagogicalModel.getLessonModel();
             tm.clearEndOfTopicInfo();
+            // At this point we generate an EndProblemEvent to end the last problem before going into the next topic
+            EndProblemEvent epe = new EndProblemEvent(e.getServletParams());
+            smgr.getPedagogicalModel().processEndProblemEvent(epe);
             return null;
         }
 

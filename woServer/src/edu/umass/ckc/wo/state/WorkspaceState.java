@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.smgr;
+package edu.umass.ckc.wo.state;
 
 import edu.umass.ckc.wo.util.State;
 import edu.umass.ckc.wo.util.WoProps;

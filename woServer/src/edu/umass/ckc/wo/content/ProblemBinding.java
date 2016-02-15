@@ -1,13 +1,10 @@
 package edu.umass.ckc.wo.content;
 
-import edu.umass.ckc.wo.db.DbStudentProblemHistory;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import net.sf.json.JSONObject;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Random;
 
 /**

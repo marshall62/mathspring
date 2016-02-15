@@ -4,8 +4,7 @@ import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutor.model.TopicModel;
+import edu.umass.ckc.wo.state.StudentState;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

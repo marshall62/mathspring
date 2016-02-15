@@ -4,7 +4,7 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import org.apache.log4j.Logger;
@@ -35,10 +35,6 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
         super(smgr,lessonModel,params);
     }
 
-
-    @Override
-    public void init(SessionManager smgr) throws Exception {
-    }
 
     @Override
     public void setParameters(PedagogicalModelParameters params) {

@@ -7,7 +7,7 @@ import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.interventions.FinishCollaborationIntervention;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;

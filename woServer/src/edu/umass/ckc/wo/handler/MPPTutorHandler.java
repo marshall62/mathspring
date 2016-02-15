@@ -6,7 +6,7 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.html.tutor.TutorPage;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.*;

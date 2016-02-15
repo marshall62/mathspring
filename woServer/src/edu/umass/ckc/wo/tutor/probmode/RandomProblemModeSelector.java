@@ -3,7 +3,7 @@ package edu.umass.ckc.wo.tutor.probmode;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutormeta.HintSelector;
 

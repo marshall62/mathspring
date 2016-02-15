@@ -1,8 +1,7 @@
 package edu.umass.ckc.wo.tutor.probmode;
 
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutormeta.HintSelector;
+import edu.umass.ckc.wo.state.StudentState;
 
 /**
  * Based on the idea that a pedagogy might process a student request for the next problem by returning the next problem

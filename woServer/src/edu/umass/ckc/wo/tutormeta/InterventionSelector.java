@@ -5,7 +5,7 @@ import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 
 import java.sql.Connection;
