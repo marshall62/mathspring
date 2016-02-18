@@ -12,6 +12,7 @@ import edu.umass.ckc.wo.event.tutorhut.SplashPageEvent;
 import edu.umass.ckc.wo.event.tutorhut.TopicDetailEvent;
 import edu.umass.ckc.wo.myprogress.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
 
 import javax.servlet.ServletContext;
@@ -78,11 +79,12 @@ public class DashboardHandler {
         totalMasteredTopics = ss.getTotalMasteredTopics();
         topicsMasteredInLastSession = ss.getTopicsMasteredInLastSession();
         masteryThreshold = ss.getMasteryThreshold();
+        StudentState state= smgr.getStudentState();
 
         // We want to get the probId that should be passed on the Navigation event (to MPP) when launched from hybrid tutor
         // Similarly for the topicId.   If they aren't passed in, then its the old system and we get them from the student state.
-        int probId = (pid != null) ? Integer.parseInt(pid) : smgr.getStudentState().getCurProblem();
-        int topicId = (topid != null) ? Integer.parseInt(topid) : smgr.getStudentState().getCurTopic();
+        int probId = (pid != null) ? Integer.parseInt(pid) : state.getCurProblem();
+        int topicId = (topid != null) ? Integer.parseInt(topid) :state.getCurTopic();
         request.setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
         request.setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
         request.setAttribute("teacherName", smgr.getClassTeacher());
