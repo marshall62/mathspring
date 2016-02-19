@@ -35,7 +35,7 @@ public class ClassTopicLevelsReport extends DirectReport {
     public static final String RED = "#ff0000";
     public static final String YELLOW = "#ffff00";
     public static final String GREEN = "C0FF97" ; // "#00ff00";
-    public static final String BLUE = "A5FEFA" ;//"#2DBBFF";
+    public static final String BLUE = "A544FA" ;//"#2DBBFF";
     public static final double LOW = 0.25;
     public static final double LOWMED = 0.50;
     public static final double MED = 0.75;
@@ -62,13 +62,15 @@ public class ClassTopicLevelsReport extends DirectReport {
         int topicId;
         double mastery;
         int solved;
+        int solvedOnFirstAttempt;
         int seen;
 
-        StudentTopicData(int topicId, double mastery, int solved, int seen) {
+        StudentTopicData(int topicId, double mastery, int solved, int seen, int solvedOnFirst) {
             this.topicId = topicId;
             this.mastery = mastery;
             this.solved = solved;
             this.seen = seen;
+            this.solvedOnFirstAttempt = solvedOnFirst;
         }
     }
 
@@ -96,7 +98,8 @@ public class ClassTopicLevelsReport extends DirectReport {
         this.src.append("<td bgcolor=\"" + GREEN + "\">&nbsp;&nbsp;</td><td>Mastery level = MEDIUM HIGH (grade=B) </td><tr>\n");
         this.src.append("<td bgcolor=\"" + BLUE + "\">&nbsp;&nbsp;</td><td>Mastery level = HIGH  (grade=A) </td><tr>\n");
         this.src.append("</table>");
-        this.src.append("<br>Each cell contains the number correct out of the number of problems given in the topic.<br>");
+        this.src.append("<br>Each cell contains:  mastery [number solved on first attempt / number problems solved] in the topic.<br>");
+        this.src.append("<br>Only topics where a student has solved 10 problems are color coded<br>");
     }
 
     /**
@@ -197,9 +200,12 @@ public class ClassTopicLevelsReport extends DirectReport {
             for (TopicFrequency f: orderedTopics) {
                 StudentTopicData td = getStudentTopicData(sd.topicData,f.topicId);
                 if (td != null && td.seen > 0) {
-                    String label = td.solved + "/" + td.seen;
-                    // the data is a link to a topic mastery trajectory report for this student on this topic
-                    sb.append("<td bgcolor=\"" + getColor(td.mastery) + "\">"+ getLinkToTopicMasteryTrajectoryReport(td.mastery, label, sd.studId,f.topicId) + "</td>");
+                    String label = td.solvedOnFirstAttempt + "/" + td.solved;
+                    // only color-code cells where 10 problems have been solved in the topic. (per Ivon request 1/5/16)
+                    if (td.solved >= 10)
+                        // the data is a link to a topic mastery trajectory report for this student on this topic
+                        sb.append("<td bgcolor=\"" + getColor(td.mastery) + "\">"+ getLinkToTopicMasteryTrajectoryReport(td.mastery, label, sd.studId,f.topicId) + "</td>");
+                    else sb.append("<td>"+ getLinkToTopicMasteryTrajectoryReport(td.mastery, label, sd.studId,f.topicId) + "</td>");
                 }
                 else
                     sb.append("<td></td>");
@@ -261,15 +267,16 @@ public class ClassTopicLevelsReport extends DirectReport {
                     if (m.isEntered()) {
                         List<StudentProblemData> data = hist.getTopicHistory(m.getTopic().getId());
                         List<String> solved = hist.getTopicProblemsSolved(m.getTopic().getId());
+                        List<String> solved1 = hist.getTopicProblemsSolvedOnFirstAttempt(m.getTopic().getId());
                         List<String> seen  = hist.getTopicProblemsSeen(m.getTopic().getId());
                         int x= topicFrequencies.get(m.getTopic().getId())+ seen.size();
                         topicFrequencies.put(m.getTopic().getId(),x);
                         String label = solved.size() + "/" + seen.size();
-                        topicData.add(new StudentTopicData(m.getTopic().getId(),m.getMastery(),solved.size(),seen.size()));
+                        topicData.add(new StudentTopicData(m.getTopic().getId(),m.getMastery(),solved.size(),seen.size(), solved1.size()));
 //                        this.src.append("<td bgcolor=\"" + getColor(m.updateMastery()) + "\">"+ String.format("%5.2f [%s]",m.updateMastery(), label) + "</td>");
                     }
                     else {
-                        topicData.add(new StudentTopicData(m.getTopic().getId(),-1,-1,-1));
+                        topicData.add(new StudentTopicData(m.getTopic().getId(),-1,-1,-1, -1));
 //                        this.src.append("<td></td>");
                     }
                 }

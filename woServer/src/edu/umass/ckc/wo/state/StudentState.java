@@ -1,10 +1,11 @@
-package edu.umass.ckc.wo.smgr;
+package edu.umass.ckc.wo.state;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
+import edu.umass.ckc.wo.smgr.*;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.TutorEventHandler;
@@ -41,9 +42,9 @@ public class StudentState extends State implements TutorEventHandler {
    // variables that are only needed for the duration of the student's session
 
 
-    private ProblemState problemState;
+    private ProblemState2 problemState;
     private TopicState topicState;
-    private LessonState lessonState;
+    private LessonState2 lessonState;
     private SessionState sessionState;
     private WorkspaceState workspaceState;
     private PrePostState ppState;
@@ -52,12 +53,12 @@ public class StudentState extends State implements TutorEventHandler {
     private boolean curProblemIsTopicIntro;
     private String pedagogicalModelInternalState;
 
-    public StudentState(Connection conn, SessionManager smgr) {
+    public StudentState(Connection conn, SessionManager smgr) throws SQLException {
         this.smgr = smgr;
         this.conn = conn;
-        this.problemState = new ProblemState(conn);
+        this.problemState = new ProblemState2(conn);
         this.topicState = new TopicState(conn);
-        this.lessonState = new LessonState(conn);
+        this.lessonState = new LessonState2(conn);
         this.sessionState = new SessionState(conn);
         this.workspaceState = new WorkspaceState(conn);
         this.ppState = new PrePostState(conn);
@@ -67,13 +68,19 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public void extractProps(WoProps props) throws SQLException {
-        problemState.extractProps(props);
+//        problemState.extractProps(props);
+        problemState.load(objid);
         topicState.extractProps(props);
-        lessonState.extractProps(props);
+        lessonState.load(objid);
         sessionState.extractProps(props);
         workspaceState.extractProps(props);
         ppState.extractProps(props);
 
+    }
+
+    public void save () throws SQLException {
+        problemState.save();
+        lessonState.save();
     }
 
 
@@ -410,6 +417,23 @@ public class StudentState extends State implements TutorEventHandler {
         topicState.setTopicProblemsSolved(n);
     }
 
+    /** WHen an interleaved topic is given we save the topics from which problems are pulled.   This is only used
+     * for two purposes.
+     * @param topicIds
+     */
+    public void setReviewTopics (List<String> topicIds) throws SQLException {
+        topicState.setReviewTopics(topicIds);
+
+    }
+
+    public void clearReviewTopics () throws SQLException {
+        topicState.clearReviewTopics();
+    }
+
+    public List<String> getReviewTopics () {
+        return topicState.getReviewTopics();
+    }
+
 
     /////////////////  End of Topic State methods
 
@@ -471,11 +495,11 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public int getProbExamplesShown() {
-        return problemState.getProbExamplesShown();
+        return problemState.getExamplesShown();
     }
 
     public long getProbElapsedTime() {
-        return problemState.getProbElapsedTime();
+        return problemState.getElapsedTime();
     }
 
 
@@ -502,7 +526,7 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     public void setProblemIdleTime(int t) throws SQLException {
-        problemState.setProblemIdleTime(t);
+        problemState.setIdleTime(t);
     }
 
 
@@ -515,7 +539,7 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     public long getProbStartTime() {
-        return problemState.getProbStartTime();
+        return problemState.getStartTime();
     }
 
     public long getHintStartTime() {
@@ -527,7 +551,7 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     public double getCurProblemAvgTimeBetweenAttempts() {
-        return problemState.getCurProblemAvgTimeBetweenAttempts();
+        return problemState.getAvgTimeBetweenAttempts();
     }
 
     public long getInterventionStartTime() {
@@ -535,21 +559,21 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     public int getNumAttemptsOnCurProblem() {
-        return problemState.getNumAttemptsOnCurProblem();
+        return problemState.getNumAttempts();
     }
 
     public int getNumMistakesOnCurProblem() {
-        return problemState.getNumMistakesOnCurProblem();
+        return problemState.getNumMistakes();
     }
 
 
     public int getNumHintsGivenOnCurProblem() {
-        return problemState.getNumHintsGivenOnCurProblem();
+        return problemState.getNumHintsGiven();
     }
 
 
     public int getNumHelpAidsGivenOnCurProblem() {
-        return problemState.getNumHelpAidsGivenOnCurProblem();
+        return problemState.getNumHelpAidsGiven();
     }
 
     // Returns true only if they solved it correctly
@@ -649,20 +673,20 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     public void setProblemAnswer(String ans) throws SQLException {
-        problemState.setProblemAnswer(ans);
+        problemState.setAnswer(ans);
     }
 
     public String getProblemAnswer() {
-        return problemState.getProblemAnswer();
+        return problemState.getAnswer();
     }
 
 
     public List<String> getPossibleShortAnswers() {
-        return problemState.getPossibleShortAnswers();
+        return problemState.getPossibleShortAnswersList();
     }
 
     public void setPossibleShortAnswers(List<String> possibleShortAnswers) throws SQLException {
-        problemState.setPossibleShortAnswers(possibleShortAnswers);
+        problemState.setPossibleShortAnswersList(possibleShortAnswers);
     }
 
 
@@ -908,12 +932,17 @@ public class StudentState extends State implements TutorEventHandler {
 
     }
 
+    public void topicDone () throws SQLException {
+        lessonState.cleanupState();
+        topicState.cleanupState();
+    }
+
     public void newSession (SessionManager smgr) throws SQLException {
         InterventionState.clearState(conn, smgr.getStudentId());  // on new session interventions need to clear their states.
         sessionState.initializeState();
         lessonState.initializeState();
         topicState.initializeState();
-        problemState.initializeProblemState();
+        problemState.initializeState();
 
 
     }
@@ -921,7 +950,7 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     private void initializeProblemState (Problem p) throws SQLException {
-        this.problemState.initializeProblemState();
+        this.problemState.initializeState();
     }
 
     // At the time NextProblem button is clicked, the tutor selects the next prob (or intervention).   If
@@ -949,7 +978,7 @@ public class StudentState extends State implements TutorEventHandler {
             this.setStudentSelectedTopic(p.getInTopicId());
 
         }
-        // moved initializeProblemState to beginProblem so that the endProblem event has the correct
+        // moved initializeState to beginProblem so that the endProblem event has the correct
         // problem settings at the time it is called (after this method and before beginProblem)
     }
 
@@ -957,14 +986,19 @@ public class StudentState extends State implements TutorEventHandler {
 
     // This is called when a problem is put on-screen in Flash.
     public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
+        long t = System.currentTimeMillis();
         this.setInProblem(true);
         problemState.beginProblem(smgr, e);
+//        System.out.println("In StudentState.beginProblem, after problemState.beginProblem " + (System.currentTimeMillis() - t));
+
         this.setLastProblem(getCurProblem());
         this.setCurProblem(getNextProblem());
 
 
         this.setCurProblemMode(getNextProblemMode());
         Problem prob = ProblemMgr.getProblem(topicState.getNextProblem());
+//        System.out.println("In StudentState.beginProblem, after ProblemMgr.getProblem " + (System.currentTimeMillis() - t));
+
         //  a TOpicIntro won't be found here.
         if (prob != null) {
             this.setCurProbType(prob.getType());
@@ -972,10 +1006,15 @@ public class StudentState extends State implements TutorEventHandler {
         else if (this.getCurProblemMode().equals(Problem.TOPIC_INTRO))
             this.setCurProbType(Problem.TOPIC_INTRO_PROB_TYPE);
         initializeProblemState(new DbProblem().getProblem(conn, topicState.getCurProblem()));
+//        System.out.println("In StudentState.beginProblem, after initializeState " + (System.currentTimeMillis() - t));
+
 
     }
 
-
+    // When an EndProblem comes in at the end of a topic there are usually several interventions that play between
+    // the NextProblem event and this EndProblem event.   They are usually TopicSwitchAsk and TopicIntro interventions
+    // At the beginning of the new topic the lesson state is wiped clean.  This means that this EndProblem event
+    // might have
     public void endProblem(SessionManager smgr, int studId,long probElapsedTime, long elapsedTime) throws SQLException {
         // At the end of each problem the timeInTopic is increased by the time spent in the problem.
         this.setTimeInTopic(this.getTimeInTopic()+ probElapsedTime);
@@ -1005,7 +1044,7 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public void helpAidGiven(StudentState s) throws SQLException {
-        problemState.setNumHelpAidsGivenOnCurProblem(problemState.getNumHelpAidsGivenOnCurProblem() + 1);
+        problemState.setNumHelpAidsGiven(problemState.getNumHelpAidsGiven() + 1);
         if (this.getTimeToFirstEvent() < 0) {
             problemState.setTimeToFirstEvent(this.getProbElapsedTime());
         }
@@ -1015,7 +1054,7 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     public void videoGiven (StudentState s) throws SQLException {
-        problemState.setNumHelpAidsGivenOnCurProblem(problemState.getNumHelpAidsGivenOnCurProblem() + 1);
+        problemState.setNumHelpAidsGiven(problemState.getNumHelpAidsGiven() + 1);
         smgr.getStudentState().setIsVideoShown(true);
         if (this.getTimeToFirstEvent() < 0) {
             problemState.setTimeToFirstEvent(this.getProbElapsedTime());
@@ -1025,9 +1064,9 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     public void exampleGiven(StudentState s, int exampleId) throws SQLException {
-        problemState.setNumHelpAidsGivenOnCurProblem(problemState.getNumHelpAidsGivenOnCurProblem() + 1);
+        problemState.setNumHelpAidsGiven(problemState.getNumHelpAidsGiven() + 1);
         setIsExampleShown(true);   // this says whether an example is seen within the topic.
-        problemState.setProbExamplesShown(problemState.getProbExamplesShown() + 1); // counts how many examples given in the cur problem
+        problemState.setExamplesShown(problemState.getExamplesShown() + 1); // counts how many examples given in the cur problem
         addExampleProblemGiven(exampleId);
         if (this.getTimeToFirstEvent() < 0) {
             problemState.setTimeToFirstEvent(this.getProbElapsedTime());
@@ -1048,9 +1087,9 @@ public class StudentState extends State implements TutorEventHandler {
         // now update things
         problemState.setLastEvent(HINT_EVENT);
         if (hint == null) return;
-        problemState.setProblemIdleTime(0);
+        problemState.setIdleTime(0);
         if (!isProblemSolved())
-            problemState.setNumHintsGivenOnCurProblem(problemState.getNumHintsGivenOnCurProblem() + 1);
+            problemState.setNumHintsGiven(problemState.getNumHintsGiven() + 1);
         problemState.setHintStartTime(this.getProbElapsedTime());
         boolean atEnd = hint.getLabel().equals(problemState.getCurHint());
         problemState.setCurHint(hint.getLabel());
@@ -1080,7 +1119,7 @@ public class StudentState extends State implements TutorEventHandler {
      * @throws java.sql.SQLException
      */
     public void studentNonIdleEvent () throws SQLException {
-        problemState.setProblemIdleTime(0);
+        problemState.setIdleTime(0);
     }
 
 
@@ -1103,10 +1142,10 @@ public class StudentState extends State implements TutorEventHandler {
         }
         this.setLastAnswer(answer);
         if ( ! isProblemSolved())
-            problemState.setNumAttemptsOnCurProblem(problemState.getNumAttemptsOnCurProblem() + 1);
+            problemState.setNumAttempts(problemState.getNumAttempts() + 1);
         long lastAttemptTime = this.getAttemptStartTime();
         problemState.setAttemptStartTime(this.getTime());
-        problemState.setProblemIdleTime(0);
+        problemState.setIdleTime(0);
         problemState.setHintStartTime(-1); // once an attempt is given, we need to reset the last hint
 //        this.setCurHint(null);
 //        this.setCurHintId(-1);
@@ -1133,15 +1172,15 @@ public class StudentState extends State implements TutorEventHandler {
 
         }
         else if (! isProblemSolved()) {
-            problemState.setNumMistakesOnCurProblem(problemState.getNumMistakesOnCurProblem() + 1);
+            problemState.setNumMistakes(problemState.getNumMistakes() + 1);
         }
         if (lastAttemptTime == -1 && !previouslySolved ) {
             problemState.setAttemptStartTime(now);
-            problemState.setCurProblemAvgTimeBetweenAttempts(probElapsed);
+            problemState.setAvgTimeBetweenAttempts(probElapsed);
         } else if (!previouslySolved) {
             long diff = now - lastAttemptTime;
-            double x = updateRunningAverage(problemState.getCurProblemAvgTimeBetweenAttempts(), diff);
-            problemState.setCurProblemAvgTimeBetweenAttempts(x);
+            double x = updateRunningAverage(problemState.getAvgTimeBetweenAttempts(), diff);
+            problemState.setAvgTimeBetweenAttempts(x);
         }
         if (!previouslySolved)
             smgr.getStudentModel().getStudentProblemHistory().attempt(smgr,isCorrect,probElapsed);
@@ -1149,16 +1188,16 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
     private double updateRunningAverage(double runningAvg, double curVal) {
-        if (problemState.getNumAttemptsOnCurProblem() == 0) {
+        if (problemState.getNumAttempts() == 0) {
             // when a variable's curVal has an initialization value of -1 , we want to return 0 for the avg.
             if (curVal < 0)
                 return 0.0;
             else
                 return curVal;
-        } else if (problemState.getNumAttemptsOnCurProblem() == 1)
+        } else if (problemState.getNumAttempts() == 1)
             return curVal;
         else
-            return (runningAvg * problemState.getNumAttemptsOnCurProblem() + curVal) / (problemState.getNumAttemptsOnCurProblem() + 1);
+            return (runningAvg * problemState.getNumAttempts() + curVal) / (problemState.getNumAttempts() + 1);
 
     }
 
@@ -1217,7 +1256,7 @@ public class StudentState extends State implements TutorEventHandler {
         return this.workspaceState;
     }
 
-    public LessonState getLessonState () {
+    public LessonState2 getLessonState () {
         return this.lessonState;
     }
 
@@ -1227,10 +1266,6 @@ public class StudentState extends State implements TutorEventHandler {
 
     public SessionState getSessionState () {
         return sessionState;
-    }
-
-    public ProblemState getProblemState () {
-        return this.problemState;
     }
 
     public PrePostState getPrePostState() {

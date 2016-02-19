@@ -4,9 +4,9 @@ import java.sql.*;
 import java.util.*;
 
 import edu.umass.ckc.wo.content.*;
-import edu.umass.ckc.wo.db.DbStudentModel;
+import edu.umass.ckc.wo.db.DbStateTableMgr;
 import edu.umass.ckc.wo.db.DbUtil;
-import edu.umass.ckc.wo.smgr.*;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutormeta.*;
 import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
@@ -794,7 +794,7 @@ public class StudentModelMotivational extends AffectStudentModel {
         DbUtil.loadDbDriver();
         try {
             Connection conn = DbUtil.getAConnection();
-            new DbStudentModel(conn).printCols("foo");
+            new DbStateTableMgr(conn).printCols("foo");
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

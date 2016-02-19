@@ -502,7 +502,7 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
         openExampleDialog(solution);
 
     if (!isDemo)  {
-        loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton","probId="+pid));
+        loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
 //        loadIframe(PROBLEM_WINDOWID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
 //            "&figure=" +  encodeURIComponent(globals.questionImage) +
 //            "&audio="+ encodeURIComponent(globals.questionAudio) +
@@ -519,7 +519,7 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
     else
-        loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton","probId="+pid));
+        loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
 //        loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
 //            "&figure=" +  encodeURIComponent(globals.questionImage) +
 //            "&audio="+ encodeURIComponent(globals.questionAudio) +

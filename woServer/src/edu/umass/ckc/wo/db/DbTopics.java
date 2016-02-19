@@ -564,4 +564,125 @@ public class DbTopics {
                 ps.close();
         }
     }
+
+    /**
+     * Return the id of the topic whose description is Interleaved Problem Set ...
+     * @param conn
+     * @return
+     * @throws SQLException
+     */
+    public static int getInterleavedTopicId(Connection conn) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id from problemgroup where description like 'Interleaved Problem Set%'";
+            stmt = conn.prepareStatement(q);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            else return -1;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static void deleteStudentInterleavedProblems (Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+
+        try {
+            String q = "delete from interleavedProblems where studId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            stmt.executeUpdate();
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    /**
+     * Returns a list of pairs [probId, topicIc] which are the problems in an interleaved prob set for a student.
+     * @param conn
+     * @param studId
+     * @return
+     * @throws SQLException
+     */
+    public static List<int[]> getInterleavedProblems (Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select probId, topicId from interleavedProblems where studId=? order by position";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+            List<int[]> res = new ArrayList<int[]>();
+            while (rs.next()) {
+                int pid= rs.getInt(1);
+                int tid= rs.getInt(2);
+                res.add(new int[] {pid,tid});
+            }
+            return res;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static void addStudentInterleavedProblem (Connection conn, int studId, int probId, int topicId, int position) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into interleavedProblems (studId, probId, topicId, position, shown) values (?,?,?,?,0)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, probId);
+            stmt.setInt(3, topicId);
+            stmt.setInt(4, position);
+            stmt.execute();
+        }
+
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
+    public static List<Integer> getNonShownInterleavedProblemSetProbs(Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            List<Integer> probs = new ArrayList<Integer>();
+            String q = "select probId from interleavedProblems where studId=? and shown=0 order by position";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int c= rs.getInt(1);
+                probs.add(c);
+            }
+            return probs;
+
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 }

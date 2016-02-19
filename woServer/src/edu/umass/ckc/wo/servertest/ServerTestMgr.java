@@ -3,7 +3,7 @@ package edu.umass.ckc.wo.servertest;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.NavigationEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 

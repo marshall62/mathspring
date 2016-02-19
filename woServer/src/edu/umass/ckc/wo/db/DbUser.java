@@ -2,7 +2,7 @@ package edu.umass.ckc.wo.db;
 
 import com.mysql.jdbc.Statement;
 import edu.umass.ckc.wo.log.RequestActions;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
@@ -644,6 +644,7 @@ public class DbUser {
         deleteChildRows(conn, "studId", studId, "studentproblemhistory");
         deleteChildRows(conn, "studId", studId, "affectstudentmodel");
         deleteChildRows(conn, "studId", studId, "basestudentmodel");
+        deleteChildRows(conn, "studId", studId, "collaborationlog");
         deleteEngagementData(conn, studId);
         deletePencilPaperData(conn, studId);
         deletePrePostEvents(conn, studId);

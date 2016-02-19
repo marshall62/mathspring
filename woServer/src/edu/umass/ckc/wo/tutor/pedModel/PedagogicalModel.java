@@ -12,7 +12,7 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.*;
@@ -175,6 +175,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
         else if (e instanceof NextProblemEvent)  {
             NextProblemEvent ee = (NextProblemEvent)  e;
+            long t = System.currentTimeMillis();
             //  I think the only way we arrive at this with forceProblem=true is from the tool for test-users that allows problem selection from dialog
             if (ee.isForceProblem())
                 r = processStudentSelectsProblemRequest(ee);
@@ -184,6 +185,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
                 r = processReviewModeNextProblemRequest(ee);
             else r = processNextProblemRequest((NextProblemEvent) e);
             studentModel.save();
+            System.out.println("Time to process NextProblem event " + (System.currentTimeMillis() - t));
             return r;
         }
 
@@ -222,8 +224,11 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
 
         else if (e instanceof BeginProblemEvent) {
+            long t = System.currentTimeMillis();
             r = processBeginProblemEvent((BeginProblemEvent) e);
             studentModel.save();
+            System.out.println("Time to process BeginProblem event " + (System.currentTimeMillis() - t));
+
             return r;
         }
         else if (e instanceof ResumeProblemEvent) {

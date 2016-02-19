@@ -1,20 +1,5 @@
 package edu.umass.ckc.wo.tutor.studmod;
 
-import edu.umass.ckc.wo.content.Hint;
-import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.db.DbStudentModel;
-import edu.umass.ckc.wo.db.DbUtil;
-import edu.umass.ckc.wo.smgr.StudentState;
-import edu.umass.ckc.wo.tutormeta.Intervention;
-import edu.umass.ckc.wo.util.WoProps;
-import org.apache.log4j.Logger;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
-
 public class MotivationalStudentModel  {
     /*
     private static Logger logger = Logger.getLogger(MotivationalStudentModel.class);
@@ -745,7 +730,7 @@ public class MotivationalStudentModel  {
         DbUtil.loadDbDriver();
         try {
             Connection conn = DbUtil.getAConnection();
-            new DbStudentModel(conn).printCols("foo");
+            new DbStateTableMgr(conn).printCols("foo");
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

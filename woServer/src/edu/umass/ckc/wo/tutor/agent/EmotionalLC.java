@@ -1,11 +1,11 @@
 package edu.umass.ckc.wo.tutor.agent;
 
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutor.response.AttemptResponse;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
 import edu.umass.ckc.wo.event.tutorhut.ContinueEvent;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;

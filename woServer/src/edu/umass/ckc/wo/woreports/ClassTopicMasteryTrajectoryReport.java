@@ -146,13 +146,32 @@ public class ClassTopicMasteryTrajectoryReport extends TopicTrajectoryReport {
         avgAnswerMasteryHistory = new ArrayList<Double>();
         List<Integer> avgAnswerCounters = new ArrayList<Integer>();
         int weight = 0;
+        // Ivon requested that this report stop putting out trajectory points if there are less than five students included
+        // in a time-slice.   The number of students in a time-slice is held in the counters lists.
         for (StudentMasteryHistory h: classData) {
             updateAverages(avgProcessMasteryHistory,h.masteryHistory,weight, avgProcessCounters);
             updateAverages(avgAnswerMasteryHistory,h.rawMasteryHistory,weight, avgAnswerCounters);
             weight++;
         }
+        int numStudentsNecessary = 5; // don't add a mastery point if there are less than this many students providing data
+        // Now remove points from avgProcessMasteryHistory and avgAnswerMasteryHistory where counters associated with time-slices
+        // are less than numStudentsNecessary
+        for (int i = 0; i < avgProcessCounters.size(); i++) {
+            // once we hit the portion of the list of counters that is below 5 we will start removing masteries
+            // from the end of the list.   When done,  we will have removed all the masteries from the end of the list
+            // that had counters below 5
+            if (avgProcessCounters.get(i) < numStudentsNecessary)
+                avgProcessMasteryHistory.remove(avgProcessMasteryHistory.size()-1);
+
+        }
+        for (int i = 0; i < avgAnswerCounters.size(); i++) {
+            if (avgAnswerCounters.get(i) < numStudentsNecessary)
+                avgAnswerMasteryHistory.remove(avgAnswerMasteryHistory.size()-1);
+
+        }
     }
 
+    // Given one students mastery history as studentMasteries.  This is a sequence of probIds and the mastery at that point
     // Update the values in avgMast using the student data.   The avgMast is a weighted average where the value in the avgMast gets weight and
     // the student's value gets weight 1.   The list of counters keeps track of how many masteries at time slice t have been encountered
     private void updateAverages(List<Double> avgMast, List<Double> studentMasteries, int weight, List<Integer> counters) {

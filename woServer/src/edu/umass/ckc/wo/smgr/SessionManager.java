@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.smgr;
 
-import ckc.servlet.servbase.ServletEvent;
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
@@ -13,12 +12,11 @@ import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.NavigationHandler;
 import edu.umass.ckc.wo.login.LoginResult;
 import edu.umass.ckc.wo.mrcommon.Names;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
-import edu.umass.ckc.wo.tutormeta.PedagogyParams;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
@@ -285,10 +283,6 @@ public class SessionManager {
 
     public StudentState getStudentState() {
         return studState;
-    }
-
-    public ProblemState getProblemState() {
-        return studState.getProblemState();
     }
 
 
@@ -877,5 +871,9 @@ public class SessionManager {
 
     public int getEventCounter() {
         return this.eventCounter;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public boolean isInInterleavedProblemSet() throws SQLException {
+        return this.getStudentState().getCurTopic() == Settings.interleavedTopicID;
     }
 }

@@ -3,7 +3,7 @@ package edu.umass.ckc.wo.tutor.pedModel;
 public class EndOfTopicInfo {
     boolean maxProbsReached=false, maxTimeReached=false, topicMasteryReached=false, failToFindEasier=false, failToFindHarder=false, failToFindSame=false;
 
-    EndOfTopicInfo(boolean maxProbsReached, boolean maxTimeReached, boolean failToFindEasier, boolean failToFindHarder, boolean failToFindSame, boolean topicMasteryReached) {
+    public EndOfTopicInfo(boolean maxProbsReached, boolean maxTimeReached, boolean failToFindEasier, boolean failToFindHarder, boolean failToFindSame, boolean topicMasteryReached) {
         this.maxProbsReached = maxProbsReached;
         this.maxTimeReached = maxTimeReached;
         this.failToFindEasier = failToFindEasier;

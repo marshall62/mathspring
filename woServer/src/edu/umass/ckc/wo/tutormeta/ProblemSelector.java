@@ -20,8 +20,6 @@ import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 public interface ProblemSelector {
 
 
-    public void init (SessionManager smgr) throws Exception;
-
     void setParameters(PedagogicalModelParameters params);
 
     public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception;
