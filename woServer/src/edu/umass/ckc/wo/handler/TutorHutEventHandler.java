@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.handler;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.Response;
 import org.apache.log4j.Logger;
@@ -31,7 +32,7 @@ public class TutorHutEventHandler {
      * @throws Exception
      */
     public View handleRequest(TutorHutEvent e) throws Exception {
-
+        StudentState state = smgr.getStudentState();
         String curLoc = smgr.getStudentState().getCurLocation();  // find out where the student is in the GUI
         PedagogicalModel pm = smgr.getPedagogicalModel();
 

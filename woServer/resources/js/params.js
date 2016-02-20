@@ -385,7 +385,7 @@ function replaceWithHTML(file, ext, resource, probContentPath){
 
     //Replace and image file name inside {} with the appropriate html
     if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "svg"){
-        toInsert = "<img src=\""+getURL(file + "." + ext, resource, probContentPath)+"\"></img>";
+        toInsert = "<img style=\"max-height: 100%; max-width: 100%\" src=\""+getURL(file + "." + ext, resource, probContentPath)+"\"></img>";
     }
 
     //Do the same for a video

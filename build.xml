@@ -1146,22 +1146,22 @@
   </target>
 
 
-    <target name="DeployRoseWar" description="Build the woj.war file for rose" depends="clean.artifact.rose_war, artifact.woserver_war_rose, ZipMathspringApacheResources">
+    <target name="DeployRoseWar" description="Build the woj.war file for rose" depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose, ZipMathspringApacheResources">
 
     </target>
 
-    <target name="DeployRoseWarWithoutContent" description="Build the woj.war file for rose" depends="clean.artifact.rose_war, artifact.woserver_war_rose"/>
+    <target name="DeployRoseWarWithoutContent" description="Build the woj.war file for rose" depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose"/>
 
-    <target name="DeploySugareeWar" description="Build the woj.war file for sugaree" depends="clean.artifact.sugaree_war, artifact.woserver_war_sugaree">
+    <target name="DeploySugareeWar" description="Build the woj.war file for sugaree" depends="clean.module.woserver, clean.artifact.sugaree_war, artifact.woserver_war_sugaree">
 
-        <!--property sugaree.webapps in build.properties file-->
-        <copy file="${artifact.output.woserver_war_sugaree}/woj.war" todir="${sugaree.webapps}">
-        </copy>
+    <!--property sugaree.webapps in build.properties file-->
+    <copy file="${artifact.output.woserver_war_sugaree}/woj.war" todir="${sugaree.webapps}">
+    </copy>
 
-    </target>
+</target>
 
-    <target name="DeployCadmiumWar" description="Build the woj.war file for cadmium" depends="clean.artifact.cadmium_war, artifact.woserver_war_cadmium">
-    </target>
+<target name="DeployCadmiumWar" description="Build the woj.war file for cadmium" depends="clean.artifact.cadmium_war, artifact.woserver_war_cadmium">
+</target>
 
     <!-- Utility scripts for fetching math content and learning companion from elsewhere-->
     <target name="ZipMathspringApacheResources" depends="init.artifacts" description="Build a zip of Apache resources">

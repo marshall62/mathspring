@@ -7,6 +7,8 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.state.WorkspaceState;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
@@ -99,8 +101,10 @@ public class PostSurvey extends LoginInterventionSelector {
 
     private Intervention showSurvey(SessionEvent e) throws Exception {
         super.selectIntervention(e);
+        StudentState state = smgr.getStudentState();
+        WorkspaceState wstate = state.getWorkspaceState();
         // set the student state so we know its been done
-        smgr.getStudentState().getWorkspaceState().setPostSurveyDone(true);
+        wstate.setPostSurveyDone(true);
 
         // Shows the survey in an embedded iframe
         if (this.embed) {
