@@ -137,11 +137,19 @@ function plug(doc, components) {
     var probSound = components.audio;
     var probUnits = components.units;
     var problemParams =components.problemParams;
+    var statementHeight = 0;
 
-    if(probStatement != null && probStatement != undefined && probStatement != "")
+    if(probStatement != null && probStatement != undefined && probStatement != ""){
         doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(probStatement, components), problemParams);
-    if(probFigure != null && probFigure != undefined && probFigure != "")
+        statementHeight = window.getComputedStyle(doc.getElementById("ProblemStatement")).getPropertyValue("height");
+        statementHeight = parseInt(statementHeight, 10);
+    }
+    if(probFigure != null && probFigure != undefined && probFigure != ""){
         doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure, components), problemParams);
+        var finalTop = parseInt(window.getComputedStyle(doc.getElementById("ProblemFigure")).getPropertyValue("top"),10) + statementHeight;
+        doc.getElementById("ProblemFigure").style.top = finalTop + "px";
+        var top = doc.getElementById("ProblemFigure").style.top;
+    }
     if(probSound != null && probSound != undefined && probSound != "") {
         //TODO I don't think the below lines do what I want them to.
         doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".ogg", components.resource, components.probContentPath));
@@ -159,6 +167,9 @@ function plug(doc, components) {
             hintID = getElementCorrespondingToHint(hints[i].label);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML, components), problemParams);
+                var finalTop = parseInt(window.getComputedStyle(doc.getElementById(hintID)).getPropertyValue("top"),10) + statementHeight;
+                doc.getElementById(hintID).style.top = finalTop + "px";
+                var top = doc.getElementById(hintID).style.top;
             }
             else{
                 alert("text missing for hint: "+i);
