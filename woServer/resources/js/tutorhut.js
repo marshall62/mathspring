@@ -600,7 +600,7 @@ function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequ
 
     if (activityType == INTERVENTION){
         if(activity.interventionType == SAME_INTERVENTION){
-            setTimeout(continueInterventionTimeout(), 1000);
+            setTimeout(continueInterventionTimeout, 1000);
         }
         else{
             processNextProblemIntervention(activity);
