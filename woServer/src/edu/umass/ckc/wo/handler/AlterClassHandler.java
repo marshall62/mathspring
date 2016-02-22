@@ -336,9 +336,10 @@ public class AlterClassHandler {
             String errMessage="";
             if (peds.size() == 0)
                 errMessage = "Class does not have pedagogies selected.   Please select some before generating students.";
+
             else if (e2.getEndNum() < e2.getBeginNum())
                 errMessage = "Begin Number must be <= End Number";
-            else if (students.size() == 0) {
+            else {
                 try {
                     DbClass.createClassStudents(conn,classInfo,e2.getPrefix(),e2.getPassword(),e2.getBeginNum(),e2.getEndNum(),e2.getTestUserPrefix(), e2.getPassword());
                     students = DbClass.getClassStudents(conn, classId);
@@ -346,7 +347,7 @@ public class AlterClassHandler {
                     errMessage = "Failure while creating class. " + ue.getMessage();
                 }
             }
-            else errMessage =  "Class already has students.   Cannot generate new ones.";
+
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
 
