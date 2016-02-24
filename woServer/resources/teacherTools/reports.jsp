@@ -38,53 +38,49 @@
 
 
             <%-- Learning Hut Reports --%>
-            <tr>
-                <td colspan="3"><font  face="Arial, Helvetica, sans-serif">Learning Hut Reports</font>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ><font face="Arial, Helvetica, sans-serif"/><a
-                        href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=23&state=showReport">Class
-                    Summary Per Student Per Topic</a></td>
-                <td><font  face="Arial, Helvetica, sans-serif"/>Mastery levels of topics</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ><font face="Arial, Helvetica, sans-serif"/><a
-                        href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=4&state=showReport">Class
-                    Summary Per Problem</a></td>
-                <td><font  face="Arial, Helvetica, sans-serif"/>Problems that are challenging for your
-                    students
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ><font face="Arial, Helvetica, sans-serif"/><a
-                        href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=5&state=showReport">Class
-                    Summary Per Student</a></td>
-                <td><font  face="Arial, Helvetica, sans-serif"/>Number of problems and hints each student
-                    has seen
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ><font face="Arial, Helvetica, sans-serif"/><a
-                        href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=7&state=showReport">Class
-                    Summary Per Common Core Cluster  <br/> </a></td>
-                <td><font  face="Arial, Helvetica, sans-serif"/>Common Core clusters that your students are having
-                    trouble with
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ><font face="Arial, Helvetica, sans-serif"/><a
-                        href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class
-                    Summary Per Skill <br/> (will take a couple of minutes to run) </a></td>
-                <td><font  face="Arial, Helvetica, sans-serif"/>Math skills that your students are having
-                    trouble with
-                </td>
-            </tr>
+
+                <tr>
+                    <td colspan="3"><font  face="Arial, Helvetica, sans-serif">Detailed Problem Solving Reports</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td ><font face="Arial, Helvetica, sans-serif"/><a
+                            href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=23&state=showReport">Class
+                        Summary Per Student Per Topic</a></td>
+                    <td><font  face="Arial, Helvetica, sans-serif"/>How your students are mastering a variety of math topics</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td ><font face="Arial, Helvetica, sans-serif"/><a
+                            href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=4&state=showReport">Class
+                        Summary Per Problem</a></td>
+                    <td><font  face="Arial, Helvetica, sans-serif"/>Results for problems, for your whole class</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td ><font face="Arial, Helvetica, sans-serif"/><a
+                            href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=5&state=showReport">Class
+                        Summary Per Student</a></td>
+                    <td><font  face="Arial, Helvetica, sans-serif"/>Number of problems and hints each student
+                        has seen
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td ><font face="Arial, Helvetica, sans-serif"/><a
+                            href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=7&state=showReport">Class
+                        Summary Per Common Core Cluster  <br/> </a></td>
+                    <td><font  face="Arial, Helvetica, sans-serif"/>Results per Common Core Cluster, for your whole class</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td ><font face="Arial, Helvetica, sans-serif"/><a
+                            href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class
+                        Summary Per Skill <br/></a></td>
+                    <td><font  face="Arial, Helvetica, sans-serif"/>Results in fine-grained level math skills, for your whole class</td>
+                </tr>
+
             <tr><td colspan="3"><font  face="Arial, Helvetica, sans-serif">Pre/Post test Reports</font></td>
             </tr>
             <tr>
@@ -102,6 +98,7 @@
                 <%--<td><font  face="Arial, Helvetica, sans-serif"/>Shows individual pre/post test problem scoring data per student</td>--%>
             <%--</tr>--%>
             <%-- For Researchers only Reports --%>
+            <c:if test="${isAdmin}">
             <tr>
                 <td colspan="3"><font  face="Arial, Helvetica, sans-serif">For Researchers only</font>
                 </td>
@@ -159,7 +156,7 @@
                     activity- per student
                 </td>
             </tr>
-
+            </c:if>
         </table>
 
 
