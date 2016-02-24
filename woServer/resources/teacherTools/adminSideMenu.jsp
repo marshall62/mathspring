@@ -65,11 +65,11 @@ March 20, 2012
                         <div class="headerWrapper">
                         <table width="100%">
                             <tr>
-                                <td width=80%>
+                                <td width=60%>
                         <p id="header">Mathspring Administrator Tools </p>
                                 </td>
-                                <td width=20%>
-                        <p  align="right" width="200"><font color="#8BB42D" size="4" face="Arial, Helvetica, sans-serif">Class #: ${classId} </font> </p>
+                                <td width=40%>
+                        <p  align="right" width="400"><font color="#8BB42D" size="4" face="Arial, Helvetica, sans-serif">Class: ${classId}:${classInfo.name} </font> </p>
                                 </td>
                             </tr>
                         </table>
