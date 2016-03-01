@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.collab.CollaborationManager;
+import edu.umass.ckc.wo.collab.CollaborationState;
 import edu.umass.ckc.wo.db.DbCollaborationLogging;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
@@ -23,11 +24,16 @@ import java.sql.SQLException;
  */
 public class CollaborationPartnerIS extends NextProblemInterventionSelector {
 
+    //Stores state data, such as point in collaboration, time since collaboration
+    private CollaborationState state;
+
     private static Logger logger = Logger.getLogger(CollaborationIS.class);
+
     private String partnerName = null;
 
     public CollaborationPartnerIS(SessionManager smgr) throws SQLException {
         super(smgr);
+        state = CollaborationManager.getCollaborationState(smgr);
     }
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel){
@@ -56,6 +62,7 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
 
     //This handles the input from the last intervention saying they are done and then clicking OK
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
+        state.triggerCooldown();
         DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Partner");
         return null;
     }

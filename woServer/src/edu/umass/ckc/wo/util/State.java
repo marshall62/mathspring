@@ -26,7 +26,7 @@ public abstract class State {
     protected Connection conn;
     protected int objid;
 
-    private static int[] lock = new int[] {}; // used for synchronization in the setProp method below
+    private static final Object lock = new Object(); // used for synchronization in the setProp method below
 
 
 
@@ -546,8 +546,6 @@ public abstract class State {
     // is used as the basis of synchronization.
     public boolean setProp (int id, String property, String value, int position) throws SQLException {
         synchronized (lock) {
-            //rezecib debug
-            System.out.println("State.setProp(" + id + ", " + property + ", " + value + ", " + position + ")");
             String q = "delete from woproperty where objid=? and property=? and position=?";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setInt(1,id);

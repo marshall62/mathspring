@@ -21,7 +21,7 @@ import java.util.Map;
 //TODO: Investigate why/when student state would get cleared
 public class CollaborationState extends State {
     /** The maximum amount of time we allow a student to wait before being given a partner, in milliseconds */
-    private int maxPartnerWaitPeriod;
+    private long maxPartnerWaitPeriod;
 
     /** The time between collaboration interventions, in milliseconds */
     private long timeInterval;
@@ -35,7 +35,11 @@ public class CollaborationState extends State {
     private final String TIME_OF_LAST_INTERVENTION = getClass().getSimpleName() + ".TimeOfLastIntervention";
     long timeOfLastIntervention;
 
-    public CollaborationState(SessionManager smgr) throws SQLException {
+    public CollaborationState(SessionManager smgr) {
+        reloadSession(smgr);
+    }
+
+    public void reloadSession(SessionManager smgr) {
         this.conn = smgr.getConnection();
         this.objid = smgr.getStudentId();
         WoProps props = smgr.getStudentProperties();
@@ -58,15 +62,24 @@ public class CollaborationState extends State {
         setProp(this.objid, TIME_OF_LAST_INTERVENTION, timeOfLastIntervention);
     }
 
+    /**
+     * Sets the time of the last intervention to the current time, effectively starting
+     * a cooldown on collaboration events of duration timeInterval.
+     * @throws SQLException
+     */
+    public void triggerCooldown() throws SQLException {
+        setTimeOfLastIntervention(System.currentTimeMillis());
+    }
+
     public long getTimeOfLastIntervention() {
         return timeOfLastIntervention;
     }
 
-    public int getMaxPartnerWaitPeriod() {
+    public long getMaxPartnerWaitPeriod() {
         return maxPartnerWaitPeriod;
     }
 
-    public void setMaxPartnerWaitPeriod(int maxPartnerWaitPeriod) {
+    public void setMaxPartnerWaitPeriod(long maxPartnerWaitPeriod) {
         this.maxPartnerWaitPeriod = maxPartnerWaitPeriod;
     }
 

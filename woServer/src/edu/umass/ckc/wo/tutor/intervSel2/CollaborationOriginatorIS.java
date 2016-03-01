@@ -36,8 +36,6 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
     public CollaborationOriginatorIS(SessionManager smgr) throws SQLException {
         super(smgr);
         state = CollaborationManager.getCollaborationState(smgr);
-        //rezecib debug
-        System.out.println("CollaborationOriginatorIS constructor");
     }
 
     //CollaborationOriginatorIS works a little differently, in that it gets called several times without being init'd,
@@ -94,6 +92,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             }
            //After ended
             else{
+               state.triggerCooldown();
                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Originator");
                Response r=  smgr.getPedagogicalModel().processNextProblemRequest(new NextProblemEvent(e.getElapsedTime(),e.getProbElapsedTime()));
                return r;
@@ -108,9 +107,6 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
         // returns message to originator saying that they are waiting for partner
         if(partner == null){
-            //rezecib debug
-            System.out.println("CollaborationOriginator Time Waiting: " + e.getTimeWaiting()
-                    + " (max wait: " + state.getMaxPartnerWaitPeriod() + ")");
             if(e.getTimeWaiting() >= state.getMaxPartnerWaitPeriod()){
                 DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationAskContinueWaiting_Originator");
                 return new CollaborationTimedoutIntervention();

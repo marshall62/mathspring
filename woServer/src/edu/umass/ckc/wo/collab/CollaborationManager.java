@@ -3,7 +3,6 @@ package edu.umass.ckc.wo.collab;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
-import edu.umass.ckc.wo.tutor.intervSel2.CollaborationIS;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -167,6 +166,8 @@ public class CollaborationManager {
     public synchronized static CollaborationState getCollaborationState(SessionManager smgr) throws SQLException {
         if(!collaborationStates.containsKey(smgr.getStudentId()))
             collaborationStates.put(smgr.getStudentId(), new CollaborationState(smgr));
+        else
+            collaborationStates.get(smgr.getStudentId()).reloadSession(smgr);
         return collaborationStates.get(smgr.getStudentId());
     }
 
