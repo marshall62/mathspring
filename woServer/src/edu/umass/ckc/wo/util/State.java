@@ -26,7 +26,7 @@ public abstract class State {
     protected Connection conn;
     protected int objid;
 
-    private static int[] lock = new int[] {}; // used for synchronization in the setProp method below
+    private static final Object lock = new Object(); // used for synchronization in the setProp method below
 
 
 

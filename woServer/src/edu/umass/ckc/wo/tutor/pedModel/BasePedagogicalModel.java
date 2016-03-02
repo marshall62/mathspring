@@ -1020,7 +1020,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                     // this should not happen because pedagogical models don't have internal events.
                     r = processInternalEvent((InternalEvent) r);
                 // if null comes back, see if the pedagogical model has an intervention
-                else if (r==null)
+                else if (r==null && shouldForceNextProblem())
                     r =  getNextProblemIntervention(new NextProblemEvent(e.getServletParams()));
                 // otherwise its an InterventionResponse which will be logged and returned.
             }
@@ -1045,6 +1045,15 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
         return r;
+    }
+
+    /**
+     * This is intended to be a hook for subclasses to weigh in (especially CollabPedagogicalModel),
+     * without having to override the whole processInputResponseNextProblemInterventionEvent() method.
+     * @return Whether to move on to the next problem
+     */
+    protected boolean shouldForceNextProblem() {
+        return true;
     }
 
     @Override

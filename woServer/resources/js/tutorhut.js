@@ -600,7 +600,7 @@ function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequ
 
     if (activityType == INTERVENTION){
         if(activity.interventionType == SAME_INTERVENTION){
-            setTimeout(continueInterventionTimeout, 1000);
+            setTimeout(continueInterventionTimeout, 5000);
         }
         else{
             processNextProblemIntervention(activity);
@@ -767,15 +767,32 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     showHourglassCursor(false);
 }
 
+function newBrowserWindow (url,w, h) {
+    posx = window.screenLeft + window.innerWidth - w;
+    posy = window.screenTop + window.innerHeight - h;
+    newwindow=window.open(url,'name','height=600,width=260,location=no,scrollbars=no,left='+posx+',top='+posy);
+    if (window.focus) {newwindow.focus()}
+    return false;
+}
+
+//  Called when the learning companion animations end
+function learningCompanionDone () {
+    alert("This idiot is done jabbering!") ;
+    $("#"+LEARNING_COMPANION_CONTAINER).dialog("close");
+}
+
 function showLearningCompanion (json) {
 
     var files = json.learningCompanionFiles;
-    if (files != undefined && files != null)
+    if (files != undefined && files != null)  {
+
         $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+    }
     else return;
 //    alert("learning companion file: " + files);
     if (files instanceof Array)    {
         if (files[0] != globals.learningCompanionClip) {
+//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],260,600);
             loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files[0]);
             // $("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files[0]);   // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files[0];
@@ -784,11 +801,12 @@ function showLearningCompanion (json) {
     }
     else {
         if (files != globals.learningCompanionClip) {
+//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files, 260,600);
             loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files);
             //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files;
-}
-}
+        }
+    }
 }
 
 
@@ -832,6 +850,7 @@ function clickHandling () {
             open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); }
         }
     );
+
 //    $("#"+LEARNING_COMPANION_CONTAINER).draggable(
 //        {
 //        start: function(e, ui) {
@@ -1168,8 +1187,9 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
             alert("making a cyclic call to nextprob from a new mathspring.jsp");
         nextProb(globals);
     }
-    if (learningCompanionMovieClip != '')
+    if (learningCompanionMovieClip != '')  {
         $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+    }
     globals.isBeginningOfSession=false;
 
 }

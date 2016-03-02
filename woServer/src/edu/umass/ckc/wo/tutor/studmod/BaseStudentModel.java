@@ -1,7 +1,7 @@
 package edu.umass.ckc.wo.tutor.studmod;
 
-import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.ProblemStats;
@@ -279,8 +279,8 @@ public class BaseStudentModel extends StudentModel {
         long t = System.currentTimeMillis();
         smgr.getStudentState().beginProblem(null, e);
 //        System.out.println("In SM.beginProblem, after studentState.beginProblem " + (System.currentTimeMillis() - t));
-       if (PartnerManager.requestExists(smgr.getStudentId())) {
-            smgr.setCollaboratingWith(PartnerManager.getRequestedPartner(smgr.getStudentId()));
+        if (CollaborationManager.requestExists(smgr.getStudentId())) {
+             smgr.setCollaboratingWith(CollaborationManager.getRequestedPartner(smgr.getStudentId()));
 //           System.out.println("In SM.beginProblem, after PartnerManager.requestExists " + (System.currentTimeMillis() - t));
        }
         this.problemHistory.beginProblem(smgr,e);
