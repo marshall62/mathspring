@@ -7,7 +7,7 @@ package edu.umass.ckc.wo.interventions.lc;
  * Time: 12:48 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LCFn {
+public class LCFn extends LCRuleComponent {
     private String fnName; // a method in the LCAccessors class
     private Class[] args;
 
@@ -30,5 +30,10 @@ public class LCFn {
 
     public void setArgs(Class[] args) {
         this.args = args;
+    }
+
+    public Object eval () throws Exception {
+        LCAccessors accessors = new LCAccessors(smgr,event);
+        return accessors.eval(this);
     }
 }

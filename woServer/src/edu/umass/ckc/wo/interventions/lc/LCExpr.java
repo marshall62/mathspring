@@ -19,7 +19,7 @@ import java.util.List;
  * Time: 12:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LCExpr {
+public class LCExpr extends LCRuleComponent {
     private LCFn fn;
 //    private String fn;
 //    private List<Object> args;
@@ -61,10 +61,10 @@ public class LCExpr {
         this.dVal = dVal;
     }
 
-    public boolean eval (SessionManager smgr, SessionEvent ev) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        // use the fn to call a method in LCAccessors  .  Use the relop to compare the result to the value
-        LCAccessors lca = new LCAccessors(smgr,ev);
-        Object val = lca.eval(this.fn);
+    public boolean eval () throws Exception {
+        //  Use the relop to compare the result of the function to the value
+        this.fn.setup(smgr,event);
+        Object val = this.fn.eval();
         if (valType == BOOL)
             return ((Boolean) val) == true;
         else if (relop.equals("=") && valType == INT )
@@ -99,8 +99,8 @@ public class LCExpr {
         return false;
     }
 
-    public boolean evalPrint (SessionManager smgr, SessionEvent ev) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        boolean b = eval(smgr,ev);
+    public boolean evalPrint () throws Exception {
+        boolean b = eval();
         System.out.println(this.toString() +"is: " + b);
         return b ;
     }
@@ -119,18 +119,34 @@ public class LCExpr {
 
             SessionEvent atEv = new AttemptEvent("test",false,10,20,smgr.getSessionNum());
             LCExpr e1 = new LCExpr("curTopicMastery",null, "<", 0.5);
-            e1.evalPrint(smgr,null);
+            e1.setup(smgr,null);
+            e1.evalPrint();
             Class[] args1 = new Class[] {SessionEvent.class};
             LCExpr e2 = new LCExpr("isAttemptEvent",args1);
-            e2.evalPrint(smgr,null);
+            e2.setup(smgr,null);
+            e2.evalPrint();
             LCExpr e3 = new LCExpr("curProbNumIncorrectAttempts",null, ">=", 0);
-            e3.evalPrint(smgr,null);
+            e3.setup(smgr,null);
+            e3.evalPrint();
+
             LCExpr e4 = new LCExpr("solvedOnAttempt",null, "=", 1);
-            e4.evalPrint(smgr,null);
+            e4.setup(smgr,null);
+            e4.evalPrint();
             LCExpr e5 = new LCExpr("timeToSolve",null, ">=", 5000);
-            e5.evalPrint(smgr,null);
+            e5.setup(smgr,null);
+            e5.evalPrint();
             LCExpr e6 = new LCExpr("curProbTimeToFirstAttempt",null, ">", 1000);
-            e6.evalPrint(smgr,null);
+            e6.setup(smgr,null);
+            e6.evalPrint();
+            LCExpr e7 = new LCExpr("effort3",null, "=", "SOF");
+            e7.setup(smgr,null);
+            e7.evalPrint();
+            LCExpr e8 = new LCExpr("effort2",null, "=", "SHINT");
+            e8.setup(smgr,null);
+            e8.evalPrint();
+            LCExpr e9 = new LCExpr("effort1",null, "=", "NOTR");
+            e9.setup(smgr,null);
+            e9.evalPrint();
 
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

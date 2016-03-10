@@ -30,6 +30,9 @@ public class LCAccessors {
     private StudentProblemHistory probSolveHist;
     private SessionEvent event ; // the current event sent in by user
 
+    private static final double LOW_MASTERY_LEVEL = 0.4;
+    private static final double HIGH_MASTERY_LEVEL = 0.85;
+
     /**
      * Creates the Object with a session manager instance and the current user event.   Must be done prior to calling
      * eval method to evaluate rules.
@@ -47,7 +50,7 @@ public class LCAccessors {
     public Object eval (LCFn fn) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class c = this.getClass();
         Method m = c.getDeclaredMethod(fn.getFnName(),fn.getArgs());
-
+        // The assumption is that all methods take an event for an argument and thats it.
         return m.invoke(this, this.event);
     }
 
@@ -55,13 +58,28 @@ public class LCAccessors {
      * Gets the mastery in the current topic.
      * @return
      */
-    public double curTopicMastery (SessionEvent ev)  {
+    public double curTopicMasteryValue (SessionEvent ev)  {
         try {
             return studentModel.getTopicMastery(state.getCurTopic());
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return 0.01;   // protection against exceptions and/or divide by zero errors.
         }
+    }
+
+    public boolean isMasteryLow (SessionEvent ev) {
+        double d = curTopicMasteryValue(ev);
+        return d < LOW_MASTERY_LEVEL;
+    }
+
+    public boolean isMasteryMiddle (SessionEvent ev) {
+        double d = curTopicMasteryValue(ev);
+        return d >= LOW_MASTERY_LEVEL && d < HIGH_MASTERY_LEVEL;
+    }
+
+    public boolean isMasteryHigh (SessionEvent ev) {
+        double d = curTopicMasteryValue(ev);
+        return d >= HIGH_MASTERY_LEVEL;
     }
 
     /**
@@ -122,6 +140,18 @@ public class LCAccessors {
      */
     public long curProbTimeToFirstAttempt (SessionEvent ev) {
         return state.getTimeToFirstAttempt();
+    }
+
+    public String getEffort3 (SessionEvent ev) {
+        return historyEffortN(3);
+    }
+
+    public String getEffort2 (SessionEvent ev) {
+        return historyEffortN(2);
+    }
+    // Get the effort on the current problem.  This may not have a value until the problem is solved.
+    public String getEffort1 (SessionEvent ev) {
+        return historyEffortN(1);
     }
 
     /**

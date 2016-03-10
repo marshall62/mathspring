@@ -1,10 +1,9 @@
 package edu.umass.ckc.wo.woserver;
 
 import edu.umass.ckc.wo.assistments.AssistmentsHandler;
-import edu.umass.ckc.wo.beans.TeacherEntity;
+
 import edu.umass.ckc.wo.content.CCContentMgr;
 import edu.umass.ckc.wo.content.LessonMgr;
-import edu.umass.ckc.wo.db.HibernateUtil;
 import edu.umass.ckc.wo.exc.AssistmentsBadInputException;
 import edu.umass.ckc.wo.mrcommon.Names;
 import ckc.servlet.servbase.BaseServlet;
@@ -15,8 +14,6 @@ import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.db.DbUtil;
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
-import org.hibernate.classic.Session;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -24,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.io.File;
-import java.util.List;
 
 /**
  * This servlet replaces TutorBrainServlet.  It handles all requests coming from the wayang client software.
@@ -52,7 +48,7 @@ public class WoTutorServlet extends BaseServlet {
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         try {
 
-            ServletUtil.initialize(servletContext, connection);
+            ServletUtil.initialize(servletContext);
             logger.debug("Begin init of WoTutorServlet");
             // machine learning problem selector needs to read a policy file
             Settings.policyFile = servletConfig.getInitParameter(Names.POLICY_FILE);
@@ -100,25 +96,6 @@ public class WoTutorServlet extends BaseServlet {
             e.printStackTrace();
             throw e;
         }
-    }
-
-    private void hibernateTest() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-//        session.beginTransaction();
-//        TeacherEntity teacher = new TeacherEntity();
-//        teacher.setEmail("marshall5862@gmail.com");
-//        teacher.setFname("Dave");
-//        teacher.setLname("Marshall");
-//        teacher.setUserName("marshall62");
-//        teacher.setPassword("passpass");
-//        session.save(teacher);
-        Query q =  session.createQuery("from TeacherEntity where userName= :un");
-        q.setParameter("un","marshall62");
-        List<TeacherEntity> l = q.list();
-        for (TeacherEntity e : l)
-            System.out.println(e.getId());
-//        session.getTransaction().commit();
     }
 
 
