@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.interventions.lc;
+package edu.umass.ckc.wo.lc;
 
 import edu.umass.ckc.wo.db.DbPedagogy;
 import edu.umass.ckc.wo.event.SessionEvent;
@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -33,6 +34,9 @@ public class LCAccessors {
     private static final double LOW_MASTERY_LEVEL = 0.4;
     private static final double HIGH_MASTERY_LEVEL = 0.85;
 
+    public static final int LOW_EMOTION = 2;
+    public static final int HIGH_EMOTION = 4;
+
     /**
      * Creates the Object with a session manager instance and the current user event.   Must be done prior to calling
      * eval method to evaluate rules.
@@ -54,11 +58,32 @@ public class LCAccessors {
         return m.invoke(this, this.event);
     }
 
+    public String lastReportedEmotionLevel (SessionEvent ev) {
+        int val = lastReportedEmotionValue(ev);
+        if (val <= LOW_EMOTION)
+            return "LOW";
+        else if (val >= HIGH_EMOTION)
+            return "HIGH";
+        else return "NEUTRAL";
+    }
+
+
+    public int lastReportedEmotionValue (SessionEvent ev) {
+        AffectStudentModel asm = (AffectStudentModel) studentModel;
+        int val = asm.getLastReportedEmotionValue();
+        return val;
+    }
+
+    public String lastReportedEmotion (SessionEvent ev) {
+        AffectStudentModel asm = (AffectStudentModel) studentModel;
+        return asm.getLastReportedEmotion();
+    }
+
     /**
      * Gets the mastery in the current topic.
      * @return
      */
-    public double curTopicMasteryValue (SessionEvent ev)  {
+    public double topicMasteryValue(SessionEvent ev)  {
         try {
             return studentModel.getTopicMastery(state.getCurTopic());
         } catch (SQLException e) {
@@ -67,20 +92,22 @@ public class LCAccessors {
         }
     }
 
-    public boolean isMasteryLow (SessionEvent ev) {
-        double d = curTopicMasteryValue(ev);
+    public boolean isTopicMasteryLow (SessionEvent ev) {
+        double d = topicMasteryValue(ev);
         return d < LOW_MASTERY_LEVEL;
     }
 
-    public boolean isMasteryMiddle (SessionEvent ev) {
-        double d = curTopicMasteryValue(ev);
+    public boolean isTopicMasteryMiddle (SessionEvent ev) {
+        double d = topicMasteryValue(ev);
         return d >= LOW_MASTERY_LEVEL && d < HIGH_MASTERY_LEVEL;
     }
 
-    public boolean isMasteryHigh (SessionEvent ev) {
-        double d = curTopicMasteryValue(ev);
+    public boolean isTopicMasteryHigh (SessionEvent ev) {
+        double d = topicMasteryValue(ev);
         return d >= HIGH_MASTERY_LEVEL;
     }
+
+
 
     /**
      * Return true if the current user event is an attempt
@@ -111,7 +138,7 @@ public class LCAccessors {
      * Get the number of incorrect attempts in the current problem.
      * @return
      */
-    public int curProbNumIncorrectAttempts (SessionEvent ev) {
+    public int numIncorrectAttempts (SessionEvent ev) {
         return state.getNumMistakesOnCurProblem();
     }
 
@@ -119,7 +146,7 @@ public class LCAccessors {
      * Get the number of attempts it took to solve the problem.  -1 indicates problem hasn't been solved.
      * @return
      */
-    public int solvedOnAttempt (SessionEvent ev) {
+    public int numAttemptsToSolve (SessionEvent ev) {
         if (state.getTimeToSolve() > 0)
             return state.getNumMistakesOnCurProblem() + 1;
         return -1;
@@ -133,6 +160,15 @@ public class LCAccessors {
         return state.getTimeToSolve();
     }
 
+    public long timeToFirstHint (SessionEvent ev) {
+        return state.getTimeToFirstHint();
+    }
+
+    public boolean isSolved (SessionEvent ev) {
+        return state.isProblemSolved();
+    }
+
+
 
     /**
      * Get the number of milliseconds it took for the user to make an attempt on the current problem.  -1 indicates no attempt made.
@@ -142,27 +178,35 @@ public class LCAccessors {
         return state.getTimeToFirstAttempt();
     }
 
-    public String getEffort3 (SessionEvent ev) {
+    // Get the effort on the current problem
+    public String currentEffort (SessionEvent ev) {
+        return historyEffortN(0);
+    }
+
+    // get the effort on the problem 3 before the current
+    public String effort3 (SessionEvent ev) {
         return historyEffortN(3);
     }
 
-    public String getEffort2 (SessionEvent ev) {
+    // get the effort on the problem 2 before the current
+    public String effort2 (SessionEvent ev) {
         return historyEffortN(2);
     }
-    // Get the effort on the current problem.  This may not have a value until the problem is solved.
-    public String getEffort1 (SessionEvent ev) {
+    // Get the effort on the previous
+    public String effort1 (SessionEvent ev) {
         return historyEffortN(1);
     }
 
+
     /**
      * Get the effort of the nth problem where n is a number indicating how many problems to go back.
-     * 1 indicates the last problem the student saw.
+     * 0 indicates the last problem the student saw.
      *
      * @param n
      * @return The effort or empty string "" if nothing can be found
      */
     public String historyEffortN (int n) {
-        int c = 1;
+        int c = 0;
         String e = "";
         for (StudentProblemData d : probSolveHist.getReverseHistory()) {
             if (c == n) {

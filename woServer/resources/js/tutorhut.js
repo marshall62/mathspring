@@ -780,7 +780,7 @@ function newBrowserWindow (url,w, h) {
 //  Called when the learning companion animations end
 function learningCompanionDone () {
     alert("This idiot is done jabbering!") ;
-    $("#"+LEARNING_COMPANION_CONTAINER).dialog("close");
+    $("#"+LEARNING_COMPANION_CONTAINER).dialog('close');
 }
 
 function showLearningCompanion (json) {
@@ -849,6 +849,15 @@ function clickHandling () {
             height: 700,
             closeOnEscape: false,
             position: ['right', 'bottom'],
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "blind",
+//                effect: { effect: "scale", scale: "both", percent: "5", origin: "bottom", direction: "vertical" },
+                duration: 1000
+            },
             open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); }
         }
     );

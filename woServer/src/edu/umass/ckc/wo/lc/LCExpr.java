@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.interventions.lc;
+package edu.umass.ckc.wo.lc;
 
 import edu.umass.ckc.wo.db.DbPedagogy;
 import edu.umass.ckc.wo.event.SessionEvent;
@@ -6,11 +6,7 @@ import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

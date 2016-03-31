@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.interventions.lc;
+package edu.umass.ckc.wo.lc;
 
 /**
  * Created with IntelliJ IDEA.

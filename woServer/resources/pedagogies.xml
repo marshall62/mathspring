@@ -1703,7 +1703,7 @@ JakeNoSPPButton-->
                 </config>
             </interventionSelector>
         </interventions>
-
+        <learningCompanionRuleSet>Test Rule Set</learningCompanionRuleSet>
         <learningCompanionClass>JakeSemiEmpathicLC</learningCompanionClass>
     </pedagogy>
 

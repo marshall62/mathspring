@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.interventions.lc;
+package edu.umass.ckc.wo.lc;
 
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;

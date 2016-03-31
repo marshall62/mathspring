@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.admin;
 
+import edu.umass.ckc.wo.lc.DbLCRule;
+import edu.umass.ckc.wo.lc.LCRuleset;
 import edu.umass.ckc.wo.tutor.DynamicPedagogy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
@@ -231,6 +233,14 @@ public class PedagogyParser {
         e = pedElt.getChild("learningCompanionClass");
         if ( e != null )
             p.setLearningCompanionClass(e.getValue());
+
+        e = pedElt.getChild("learningCompanionCharacter");
+        if ( e != null )
+            p.setLearningCompanionCharacter(e.getValue());
+        e = pedElt.getChild("learningCompanionRuleSet");
+        if ( e != null )  {
+            p.setLearningCompanionRuleSetName(e.getValue());
+        }
 
         return p;
     }

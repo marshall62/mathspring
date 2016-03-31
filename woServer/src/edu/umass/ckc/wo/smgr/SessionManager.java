@@ -710,7 +710,7 @@ public class SessionManager {
 //        url = "jdbc:mysql://localhost:3306/test";
 //        url = "jdbc:mysql://localhost/rashidb"; // this works
         try {
-            logger.debug("connecting to db on url " + url);
+            logger.info("connecting to db on url " + url);
             return DriverManager.getConnection(url, dbUser, dbPassword);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

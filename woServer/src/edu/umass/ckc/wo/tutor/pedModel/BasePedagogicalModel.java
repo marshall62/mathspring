@@ -18,6 +18,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.agent.RuleDrivenLearningCompanion;
 import edu.umass.ckc.wo.tutor.intervSel2.AttemptInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
@@ -85,8 +86,12 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             setReviewModeProblemSelector((ReviewModeProblemSelector) Class.forName(pedagogy.getReviewModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
             setChallengeModeProblemSelector((ChallengeModeProblemSelector) Class.forName(pedagogy.getChallengeModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
             setHintSelector((HintSelector) Class.forName( pedagogy.getHintSelectorClass()).getConstructor().newInstance());
-            if (pedagogy.getLearningCompanionClass() != null)
+            if (pedagogy.getLearningCompanionClass() != null)   {
                 setLearningCompanion((LearningCompanion) Class.forName( pedagogy.getLearningCompanionClass()).getConstructor(SessionManager.class).newInstance(smgr));
+                if (pedagogy.getLearningCompanionRuleSet() != null) {
+                    ((RuleDrivenLearningCompanion) learningCompanion).setRuleSet(pedagogy.getLearningCompanionRuleSet());
+                }
+            }
 //            if (pedagogy.getNextProblemInterventionSelector() != null)
 //                setNextProblemInterventionSelector(buildNextProblemIS(smgr, pedagogy));
 //            if (pedagogy.getAttemptInterventionSelector() != null)

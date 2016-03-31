@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.interventions.lc;
+package edu.umass.ckc.wo.lc;
 
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -15,8 +15,20 @@ import java.lang.reflect.InvocationTargetException;
  * To change this template use File | Settings | File Templates.
  */
 public class LCCondition  extends LCRuleComponent {
+    private int condId;
     private LCExpr expr;
     boolean applyNot = false;
+
+    public LCCondition (int id, String fnName, String relop, String param, String paramType, boolean applyNot) {
+        this.condId = id;
+        if (paramType.equals("String"))
+            expr = new LCExpr(fnName,null,relop,param);
+        else if (paramType.equals("Integer"))
+            expr = new LCExpr(fnName,null,relop,Integer.parseInt(param));
+        else if (paramType.equals("Double"))
+            expr = new LCExpr(fnName,null,relop,Double.parseDouble(param));
+        this.applyNot = applyNot;
+    }
 
 
     public LCCondition (LCExpr expr, boolean applyNot) {
@@ -28,7 +40,7 @@ public class LCCondition  extends LCRuleComponent {
 
     }
 
-    public boolean eval ( ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public boolean eval ( ) throws Exception {
         boolean v = expr.eval();
         return applyNot ? !v : v;
     }
