@@ -35,6 +35,18 @@ public class CollaborationManager {
 
     //Mutators should definitely be synchronized here, but should accessors be?
 
+
+    /**
+     * Sometimes a student gets his pedagogy changed to one that is non-collaborative.  At the point when they login we check
+     * to see if they are in a collaborative pedagogy.  If not, this method gets called to remove a student from the collaboration managers
+     * lists.
+     * @param studId
+     */
+    public synchronized static void removeStudentFromCollaborationSystem (int studId) {
+        clearOldData(studId);
+
+    }
+
     /**
      * For an originator (a person that needs help) this adds a WaitingStudent object into the cache.   The object contains a
      * list of his possible helpers (neighbors).   When the collaboration begins, the WaitingStudent object has its partner property set.

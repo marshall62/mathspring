@@ -49,4 +49,9 @@ public class CollabPedagogicalModel extends BasePedagogicalModel {
     protected boolean shouldForceNextProblem() {
         return !isCollaborating(smgr.getStudentId());
     }
+
+    @Override
+    public boolean isCollaborative () {
+        return true;
+    }
 }

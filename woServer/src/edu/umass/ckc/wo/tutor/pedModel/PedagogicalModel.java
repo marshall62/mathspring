@@ -140,6 +140,10 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         return smgr;
     }
 
+    public boolean isCollaborative () {
+        return false;
+    }
+
 
     @Override
     public Response processInternalEvent(InternalEvent e) throws Exception {
