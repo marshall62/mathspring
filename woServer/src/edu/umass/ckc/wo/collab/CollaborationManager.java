@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.collab;
 
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
@@ -123,6 +124,7 @@ public class CollaborationManager {
 
     public static void clearOldData(int id){
         removeSelfFromLists(id);
+        collaborationStates.remove(id);
         requesters.remove(id);
         //TODO change the next two removals to only remove if prospective partner is inactive?
         if(requestees_requesters.containsKey(id)){
@@ -171,6 +173,23 @@ public class CollaborationManager {
         return collaborationStates.get(smgr.getStudentId());
     }
 
+    /**
+     * Determines whether the student can collaborate, taking into account:
+     *  - Problem mode (must be practice mode)
+     *  - Collaboration cooldown (time between collaborations)
+     *  - Number of problems between collaborations (normally disabled)
+     * @param smgr The session manager for the student.
+     * @return Whether this student can collaborate.
+     * @throws SQLException
+     */
+    public synchronized static boolean canCollaborate(SessionManager smgr) throws SQLException {
+        int id = smgr.getStudentId();
+        CollaborationState state = collaborationStates.get(id);
+        return hasEligiblePartners(smgr.getConnection(), id)
+                && Problem.PRACTICE.equals(smgr.getStudentState().getLessonState().getNextProblemMode())
+                && (state.isTimeToCollab() || state.hasSeenEnoughProblemsForCollab());
+    }
+
     private static class WaitingStudent{
         private Set<Integer> possiblePartners;
         private Integer partner = null;
@@ -188,7 +207,7 @@ public class CollaborationManager {
         }
 
         private void setPartners(Connection conn, int id) throws SQLException {
-                possiblePartners = getNeighbors(conn, id);
+            possiblePartners = getNeighbors(conn, id);
         }
 
         private Set<Integer> getNeighbors(Connection conn, int id) throws SQLException {

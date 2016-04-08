@@ -6,7 +6,7 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
@@ -48,6 +48,7 @@ public class BaseProblemSelector implements ProblemSelector {
      * are met.    In theory,  there should be no fencepost errors based on this.
      */
     public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
+        long t = System.currentTimeMillis();
         if (topicModel.isInInterleavedTopic()) {
             return selectInterleavedProblem(smgr.getConnection(),smgr.getStudentId());
         }
@@ -55,6 +56,11 @@ public class BaseProblemSelector implements ProblemSelector {
         StudentState state = smgr.getStudentState();
         // Gets problems with testable problems included if the user is marked to receive testable stuff.
         List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()));
+        int lastProbId = smgr.getStudentState().getCurProblem();
+        // if the last problem given wasn't solved it'll still be in the list.  Toss it out.  We don't want to show the same problem 2X in a row
+        int loc = topicProbIds.indexOf(lastProbId);
+        if (loc != -1)
+            topicProbIds.remove(loc);
 //        List<Problem> topicProblems = xx;
         int lastIx = state.getCurProblemIndexInTopic();
         int nextIx=-1;
@@ -76,17 +82,23 @@ public class BaseProblemSelector implements ProblemSelector {
         else if (nextIx == -1 && nextDiff == TopicModel.difficulty.SAME) {
             nextIx = Math.min(lastIx, topicProbIds.size()-1);
         }
+        nextIx = Math.min(nextIx, topicProbIds.size()-1);
         int nextProbId = topicProbIds.get( nextIx);
         state.setCurProblemIndexInTopic( nextIx);
         state.setCurTopicHasEasierProblem(nextIx > 0);
-        state.setCurTopicHasHarderProblem(nextIx < topicProbIds.size() - 1);
+        if (nextIx < topicProbIds.size() - 1)
+            state.setCurTopicHasHarderProblem(true);
+        else state.setCurTopicHasHarderProblem(false);
+        // it takes 125 ms to get to here
+
         Problem p = ProblemMgr.getProblem(nextProbId);
+
         return p;
     }
 
     public static boolean hasInterleavedProblem (Connection conn, int studId) throws SQLException {
         ResultSet rs=null;
-        PreparedStatement stmt=null;
+         PreparedStatement stmt=null;
         try {
             String q = "select count(*) from interleavedProblems where studid=? and shown=0";
             stmt = conn.prepareStatement(q);
@@ -110,15 +122,15 @@ public class BaseProblemSelector implements ProblemSelector {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select probId from interleavedProblems where studid=? and shown=0 order by position";
+            String q = "select studid, probId,shown from interleavedProblems where studid=? and shown=0 order by position";
             stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             stmt.setInt(1,studId);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                int c= rs.getInt(1);
-                rs.updateInt("shown",1);
+                int probid= rs.getInt(2);
+                rs.updateInt(3,1);
                 rs.updateRow();
-                return ProblemMgr.getProblem(c);
+                return ProblemMgr.getProblem(probid);
             }
             else return null;
         }  finally {

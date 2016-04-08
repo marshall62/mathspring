@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor;
 
 import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.config.LoginXML;
+import edu.umass.ckc.wo.lc.LCRuleset;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import org.jdom.Element;
@@ -45,6 +46,9 @@ public class Pedagogy implements Comparable {
     private LessonXML lessonXML;
     private LoginXML loginXML;
     private String simpleConfigName;
+    private String learningCompanionRuleSetName;
+    private LCRuleset learningCompanionRuleSet;
+    private String learningCompanionCharacter;
 
 
     public Pedagogy() {
@@ -357,4 +361,27 @@ public class Pedagogy implements Comparable {
         return simpleConfigName;
     }
 
+    public void setLearningCompanionRuleSetName(String learningCompanionRuleSet) {
+        this.learningCompanionRuleSetName = learningCompanionRuleSet;
+    }
+
+    public String getLearningCompanionRuleSetName() {
+        return learningCompanionRuleSetName;
+    }
+
+    public void setLearningCompanionRuleSet(LCRuleset learningCompanionRuleSet) {
+        this.learningCompanionRuleSet = learningCompanionRuleSet;
+    }
+
+    public LCRuleset getLearningCompanionRuleSet() {
+        return learningCompanionRuleSet;
+    }
+
+    public String getLearningCompanionCharacter() {
+        return learningCompanionCharacter;
+    }
+
+    public void setLearningCompanionCharacter(String learningCompanionCharacter) {
+        this.learningCompanionCharacter = learningCompanionCharacter;
+    }
 }

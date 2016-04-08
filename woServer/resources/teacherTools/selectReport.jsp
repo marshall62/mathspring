@@ -62,28 +62,28 @@ a:visited {  font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: 
     <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Shows individual pre/post test problem scoring data per student</td>
   </tr>
 <%-- Learning Hut Reports --%>
-  <tr><td colspan="3"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">Learning Hut Reports</font></td>
+  <tr><td colspan="3"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">Detailed Problem Solving Reports</font></td>
   </tr>
     <tr> <td></td>
       <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=23&state=showReport">Class Summary Per Student Per Topic</a></td>
-      <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Mastery levels of topics</td>
+      <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>How your students are mastering a variety of math topics</td>
     </tr>
   <tr>  <td></td>
     <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=4&state=showReport">Class Summary Per Problem</a></td>
-    <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Problems that are challenging for your students</td>
+    <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Results for problems, for your whole class</td>
   </tr>
   <tr> <td></td>
     <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=5&state=showReport">Class Summary Per Student</a></td>
     <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Number of problems and hints each student has seen</td>
   </tr>
     <tr> <td></td>
-        <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class Summary Per Common Core Cluster <br/> (will take a couple of minutes to run) </a></td>
-        <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Math skills that your students are having trouble with</td>
+        <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class Summary Per Common Core Cluster</a></td>
+        <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Results per Common Core Cluster, for your whole class</td>
     </tr>
 
   <tr> <td></td>
-    <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class Summary Per Skill <br/> (will take a couple of minutes to run) </a></td>
-    <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Math skills that your students are having trouble with</td>
+    <td bgcolor=#773430 ><font  face="Arial, Helvetica, sans-serif"/><a href="WoAdmin?action=AdminViewReport&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&reportId=2&state=showReport">Class Summary Per Skill</a></td>
+    <td><font color="#FFFFFF" face="Arial, Helvetica, sans-serif"/>Results in fine-grained level math skills, for your whole class</td>
   </tr>
 <%-- For Researchers only Reports --%>
   <tr><td colspan="3"><font color="#FFFFFF" face="Arial, Helvetica, sans-serif">For Researchers only</font></td>

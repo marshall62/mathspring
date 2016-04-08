@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.tutor.emot;
 
-import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1327,6 +1327,7 @@ JakeNoSPPButton-->
                     <intervalCriteria type="affect" emotion="Frustration" lowerBound="3" upperBound="3"/>
                     <intervalCriteria type="affect" emotion="Interest" lowerBound="3" upperBound="3"/>
                     <intervalCriteria type="random" frequency="3"/>
+                    <intervalCriteria waitTimeMin="8"/>
                     <maxPartnerWaitMin>3</maxPartnerWaitMin>
                     <message name="work with [A]">For this next problem, please go work with name on name's computer.</message>
                 </config>
@@ -1702,7 +1703,7 @@ JakeNoSPPButton-->
                 </config>
             </interventionSelector>
         </interventions>
-
+        <learningCompanionRuleSet>Test Rule Set</learningCompanionRuleSet>
         <learningCompanionClass>JakeSemiEmpathicLC</learningCompanionClass>
     </pedagogy>
 

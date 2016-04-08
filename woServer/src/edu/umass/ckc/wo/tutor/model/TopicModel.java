@@ -12,13 +12,13 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
 
-import edu.umass.ckc.wo.smgr.TopicState;
+import edu.umass.ckc.wo.state.TopicState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.intervSel2.NextProblemInterventionSelector;
 import edu.umass.ckc.wo.tutor.pedModel.*;
 import edu.umass.ckc.wo.tutor.probSel.BaseProblemSelector;
-import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.*;
@@ -77,12 +77,13 @@ public class TopicModel extends LessonModel {
     private EndOfTopicInfo checkForEOT(long probElapsedTime) throws Exception {
         int curTopic = smgr.getStudentState().getCurTopic();
         // If in interleaved Topic, need to see if the list of problems is all shown.
-        if (curTopic == DbTopics.getInterleavedTopicId(smgr.getConnection())) {
+        if (curTopic == Settings.interleavedTopicID) {
             boolean b =BaseProblemSelector.hasInterleavedProblem(smgr.getConnection(),smgr.getStudentId());
-            if (b)
-                return new EndOfTopicInfo(true,false,false,false,false,false);
+            if (!b)
+                eotInfo = new EndOfTopicInfo(true,false,false,false,false,false);
             else
-                return new EndOfTopicInfo(false,false,false,false,false,false);
+                eotInfo = new EndOfTopicInfo(false,false,false,false,false,false);
+            return eotInfo;
         }
 
         // No interventions, so grade the last problem and if EOT, send an internal event for that
@@ -214,12 +215,12 @@ public class TopicModel extends LessonModel {
         IntraProblemEvent ipe = (IntraProblemEvent) e.getSessionEvent();
         long probElapsed = ipe.getProbElapsedTime();
         // If in an interleaved topic that is all out of problems, end the topic.
-        if (isInInterleavedTopic()) {
-            // TODO does this generate errors when this "topic" ends and it tries to show interventions like "moving to another topic because...."
-            int pid = DbTopics.getStudentInterleavedProblem(smgr.getConnection(),smgr.getStudentId()) ;
-            if (pid == -1)
-                return this.processInternalEvent(new EndOfTopicEvent(e.getSessionEvent(),studentState.getCurTopic()));
-        }
+//        if (isInInterleavedTopic()) {
+//            // TODO does this generate errors when this "topic" ends and it tries to show interventions like "moving to another topic because...."
+//            List<Integer> pids = DbTopics.getNonShownInterleavedProblemSetProbs(smgr.getConnection(), smgr.getStudentId()) ;
+//            if (pids.size() == 0)
+//                return this.processInternalEvent(new EndOfTopicEvent(e.getSessionEvent(),studentState.getCurTopic()));
+//        }
         EndOfTopicInfo eot = checkForEOT(probElapsed);
 
         if (eot.isTopicDone())   {
@@ -244,6 +245,8 @@ public class TopicModel extends LessonModel {
         Response r = super.processInternalEvent(e);
         // r == null means we have no interventions about end of topic and we move on to BeginTopic
         if (r == null) {
+            // cleans up any remaining state in the topicState (will also be initialized at BeginTopic time)
+            studentState.topicDone();
             // At this point we are done doing anything for EndOfTopic and will now move to BeginningOfTopic.
             // We get the next Topic ID and send it to the processBeginTopic method so that it can see that it was passed a different
             // topic than what is still the current topic.
@@ -425,7 +428,7 @@ public class TopicModel extends LessonModel {
         smgr.getStudentState().newTopic();
         if (nextTopic != -1)
             pedagogicalMoveListener.newTopic(ProblemMgr.getTopic(nextTopic)); // inform pedagogical move listeners of topic switch
-        // TODO If the topic we are switching to is an interleaved problem set, we need to select the problems now
+        //If the topic we are switching to is an interleaved problem set, we need to select the problems now
         topicSelector.initializeTopic(nextTopic, smgr.getStudentState(), smgr.getStudentModel());
         smgr.getStudentState().setCurTopic(nextTopic);
 
@@ -522,7 +525,7 @@ public class TopicModel extends LessonModel {
     }
 
     public boolean isInInterleavedTopic () throws SQLException {
-        return studentState.getCurTopic() == DbTopics.getInterleavedTopicId(smgr.getConnection());
+        return studentState.getCurTopic() == Settings.interleavedTopicID;
     }
 
 

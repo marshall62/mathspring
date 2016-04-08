@@ -3,7 +3,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 import edu.umass.ckc.wo.content.Problem;
 //import edu.umass.ckc.wo.content.ProblemImpl;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.BaseProblemSelectorOld;
 import edu.umass.ckc.wo.tutormeta.StudentModel;

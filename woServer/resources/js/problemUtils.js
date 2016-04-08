@@ -166,7 +166,6 @@ function prob_playHint (hintLabel) {
 
 function clearHintStage(){
     for(i = 1; i <= maxHints; ++i){
-        document.getElementById("Hint"+i.toString()).className = "hint default";
         document.getElementById("Hint"+i.toString()).style.display = "none";
         document.getElementById("Hint"+i+"ThumbImg").style.display = "initial";
         document.getElementById("Hint"+i+"ThumbImgPressed").style.display = "none";

@@ -24,6 +24,8 @@ public abstract class TutorHutEvent extends SessionEvent {
 
     TutorHutEvent() {}
 
+
+
     TutorHutEvent(ServletParams p) throws Exception {
         super(p);
         String et = p.getString(ELAPSED_TIME,"0");

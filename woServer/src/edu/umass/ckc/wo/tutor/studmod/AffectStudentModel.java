@@ -2,10 +2,10 @@ package edu.umass.ckc.wo.tutor.studmod;
 
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.db.DbStudentModel;
+import edu.umass.ckc.wo.db.DbStateTableMgr;
 import edu.umass.ckc.wo.db.DbUtil;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
 
@@ -54,7 +54,7 @@ public class AffectStudentModel extends BaseStudentModel {
     private static final String CONFIDENCE_REPORT_TIME = "ConfidenceReportTime";
     private static final String LAST_INTERVENTION_TIME = "LastInterVentionTime";
     private static final String TABLE_NAME = "affectstudentmodel";
-    private static final String[] TABLE_COLS= new String[] {"studid","informReward","studControlReward","lastEmotion",
+    private static final String[] TABLE_COLS= new String[] {"informReward","studControlReward","lastEmotion",
             "lastEmotionValue","lastInterventionTime","reportedInterest","interestReportTime",
             "reportedFrustration","frustrationReportTime","reportedConfidence","confidenceReportTime",
             "reportedExcitement","excitementReportTime","ability","motiv_hintAbuse","motiv_quickGuess",
@@ -103,7 +103,7 @@ public class AffectStudentModel extends BaseStudentModel {
 
     public AffectStudentModel(Connection conn) throws SQLException {
        super(conn);
-       dbWorker = new DbStudentModel(conn);
+       dbWorker = new DbStateTableMgr(conn);
     }
 
     public String getEngagementType() {
@@ -681,7 +681,7 @@ public class AffectStudentModel extends BaseStudentModel {
 
     public void clearTutorHutState () throws SQLException {
         super.clearTutorHutState();
-        DbStudentModel.clear(conn,TABLE_NAME,objid);
+        DbStateTableMgr.clear(conn, TABLE_NAME, objid);
     }
 
     /**

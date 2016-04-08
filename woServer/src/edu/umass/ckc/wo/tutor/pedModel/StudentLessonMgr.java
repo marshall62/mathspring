@@ -4,7 +4,7 @@ import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

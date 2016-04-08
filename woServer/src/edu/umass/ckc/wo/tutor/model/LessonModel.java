@@ -3,34 +3,24 @@ package edu.umass.ckc.wo.tutor.model;
 
 
 import edu.umass.ckc.wo.config.LessonXML;
-import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
-import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
-import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.response.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.InterventionResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
-import edu.umass.ckc.wo.tutormeta.ProblemSelector;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
 import org.jdom.Element;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import java.util.List;
 
 
 /**

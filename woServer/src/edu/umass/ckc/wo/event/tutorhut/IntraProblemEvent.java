@@ -14,6 +14,7 @@ public class IntraProblemEvent extends TutorHutEvent {
 
     public IntraProblemEvent () {}
 
+
     public IntraProblemEvent (ServletParams p) throws Exception {
         super(p);
         setProbElapsedTime(p.getLong(PROB_ELAPSED_TIME));

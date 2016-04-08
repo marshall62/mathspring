@@ -19,7 +19,7 @@ import edu.umass.ckc.wo.login.LoginAdult_2;
 import edu.umass.ckc.wo.login.LoginK12_2;
 import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;

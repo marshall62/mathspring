@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.admin.PedMap;
 import edu.umass.ckc.wo.admin.PedagogyParser;
 import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.config.LoginXML;
+import edu.umass.ckc.wo.lc.DbLCRule;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
@@ -131,6 +132,9 @@ public class DbPedagogy {
                 // only basic pedagogies should have a simpleConfig name (used in the teacher tools TEACHER view of pedagogies)
                 if (isBasic)
                     ped.setSimpleConfigName(simpleConfigName);
+                // pedagogies can mention a rule set name that controls the learning companion.   This will read find the rules
+                // in the db that are associated with the ruleSetName and install the ruleset in the pedagogy object
+                DbLCRule.loadRuleSetIntoPedagogy(conn,ped);
                pedmap.put(Integer.toString(id),ped);
             }
             return pedmap;

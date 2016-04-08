@@ -1,7 +1,7 @@
 package edu.umass.ckc.wo.tutor.probmode;
 
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 
 import java.util.Random;
 

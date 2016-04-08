@@ -39,8 +39,11 @@
             <difficultyRate>3</difficultyRate>
             <interleavedProblemSets>
                 <everyNTopics>4</everyNTopics>
-                <numProbsInExploredTopic>8</numProbsInExploredTopic>
-                <minTimeInExploredTopic>10</minTimeInExploredTopic>
+                <!-- How many problems must have been solved in a past topic for it to be considered explored enough for review-->
+                <numProbsInExploredTopic>2</numProbsInExploredTopic>
+                <!-- The minimum time spent in a past topic to be considered explored enough for review -->
+                <minTimeInExploredTopic>1</minTimeInExploredTopic>
+                <!-- The number of problems to take from each reviewable topic-->
                 <numProbsPerTopic>2</numProbsPerTopic>
             </interleavedProblemSets>
         </controlParameters>

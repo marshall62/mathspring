@@ -59,7 +59,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/woServer/target/woServer-0.1.0/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="woServer/web/WebForCadmium" />
+      <element id="javaee-facet-resources" facet="woServer/web/WebForRose" />
     </root>
   </artifact>
 </component>

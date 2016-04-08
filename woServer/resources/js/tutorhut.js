@@ -558,7 +558,8 @@ function showHTMLProblem (pid, solution, resource, mode) {
             // uses Melissa's engine
 //            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
             // commented out on 3/16/15 to move to Melissa's engine
-            loadIframe(PROBLEM_WINDOWID,  "problem_skeleton.jsp");  // uses Jess's engine
+//            loadIframe(PROBLEM_WINDOWID,  "problem_skeleton.jsp");  // uses Jess's engine
+            loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
         }
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
@@ -577,7 +578,8 @@ function showHTMLProblem (pid, solution, resource, mode) {
         else {
 //            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
             // commented out on 3/16/15 to move to Melissa's engine
-            loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp");     // uses Jess's engine
+//            loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp");     // uses Jess's engine
+            loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
         }
     }
 
@@ -767,15 +769,32 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     showHourglassCursor(false);
 }
 
+function newBrowserWindow (url,w, h) {
+    posx = window.screenLeft + window.innerWidth - w;
+    posy = window.screenTop + window.innerHeight - h;
+    newwindow=window.open(url,'name','height=600,width=260,location=no,scrollbars=no,left='+posx+',top='+posy);
+    if (window.focus) {newwindow.focus()}
+    return false;
+}
+
+//  Called when the learning companion animations end
+function learningCompanionDone () {
+    alert("This idiot is done jabbering!") ;
+    $("#"+LEARNING_COMPANION_CONTAINER).dialog('close');
+}
+
 function showLearningCompanion (json) {
 
     var files = json.learningCompanionFiles;
-    if (files != undefined && files != null)
+    if (files != undefined && files != null)  {
+
         $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+    }
     else return;
 //    alert("learning companion file: " + files);
     if (files instanceof Array)    {
         if (files[0] != globals.learningCompanionClip) {
+//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],260,600);
             loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files[0]);
             // $("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files[0]);   // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files[0];
@@ -784,11 +803,12 @@ function showLearningCompanion (json) {
     }
     else {
         if (files != globals.learningCompanionClip) {
+//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files, 260,600);
             loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files);
             //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files;
-}
-}
+        }
+    }
 }
 
 
@@ -829,9 +849,19 @@ function clickHandling () {
             height: 700,
             closeOnEscape: false,
             position: ['right', 'bottom'],
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "blind",
+//                effect: { effect: "scale", scale: "both", percent: "5", origin: "bottom", direction: "vertical" },
+                duration: 1000
+            },
             open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); }
         }
     );
+
 //    $("#"+LEARNING_COMPANION_CONTAINER).draggable(
 //        {
 //        start: function(e, ui) {
@@ -1168,8 +1198,9 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
             alert("making a cyclic call to nextprob from a new mathspring.jsp");
         nextProb(globals);
     }
-    if (learningCompanionMovieClip != '')
+    if (learningCompanionMovieClip != '')  {
         $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+    }
     globals.isBeginningOfSession=false;
 
 }

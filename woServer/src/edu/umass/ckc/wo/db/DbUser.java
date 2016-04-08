@@ -2,7 +2,7 @@ package edu.umass.ckc.wo.db;
 
 import com.mysql.jdbc.Statement;
 import edu.umass.ckc.wo.log.RequestActions;
-import edu.umass.ckc.wo.smgr.StudentState;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;

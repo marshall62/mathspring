@@ -2,10 +2,8 @@ package edu.umass.ckc.wo.tutor.agent;
 
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.StudentState;
 import edu.umass.ckc.wo.tutor.TransactionLogger;
 import edu.umass.ckc.wo.tutor.hintSel.StrategicHintSelector;
 import edu.umass.ckc.wo.tutor.response.*;

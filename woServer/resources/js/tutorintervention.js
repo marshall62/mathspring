@@ -57,25 +57,23 @@ function processTopicIntroIntervention (interv) {
     globals.instructions =  "This is an introduction to a topic.  Please review it before beginning work by clicking the new-problem button.";
     globals.destinationInterventionSelector = interv.destinationInterventionSelector;  // needs this so we can send back to IS when topic intro ends
     // send EndEvent  to end the previous problem
-    sendEndEvent(globals);
+   // sendEndEvent(globals); // no longer done this way.  don't want this kind of dependency
 //            showProblemInfo(pid,resource);
     globals.probElapsedTime = 0;
 //    sendBeginEvent(globals);
-    showTopicIntro(interv.resource,interv.topicName);
+    showTopicIntro(interv.resource,interv.topicName,interv.resourceType);
     globals.topicId = interv.topicId;
     globals.probId = 999;  // a dummy indicator that this "problem" is a topic intro
     globals.lastProbType=TOPIC_INTRO_PROB_TYPE; // needed so that nextproblem button knows that its ending a topic intro
 }
 
 
-function showTopicIntro (resource, topic) {
-
+function showTopicIntro (resource, topic, resourceType) {
+    if (resourceType === 'html')
+        showHTMLProblem(null,null,resource+'.html',false);
     // if nothing pop up an alert
-    if (typeof(resource) != 'undefined' && resource != '')
+    else if (typeof(resource) != 'undefined' && resource != '')
         showFlashProblem(resource,null,null,FLASH_CONTAINER_INNER, false);
-    else if (interv.resourceType === 'html')
-        showHTMLProblem(null,null,resource,false);
-
     else alert("Beginning topic: "  + topic + ".  No Flash movie to show")
 
 

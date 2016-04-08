@@ -1,8 +1,8 @@
 package edu.umass.ckc.wo.smgr;
 
 import ckc.servlet.servbase.ServletParams;
-import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
+import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
 import edu.umass.ckc.wo.event.tutorhut.LogoutEvent;
@@ -12,6 +12,7 @@ import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.NavigationHandler;
 import edu.umass.ckc.wo.login.LoginResult;
 import edu.umass.ckc.wo.mrcommon.Names;
+import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -282,10 +283,6 @@ public class SessionManager {
 
     public StudentState getStudentState() {
         return studState;
-    }
-
-    public ProblemState getProblemState() {
-        return studState.getProblemState();
     }
 
 
@@ -713,7 +710,7 @@ public class SessionManager {
 //        url = "jdbc:mysql://localhost:3306/test";
 //        url = "jdbc:mysql://localhost/rashidb"; // this works
         try {
-            logger.debug("connecting to db on url " + url);
+            logger.info("connecting to db on url " + url);
             return DriverManager.getConnection(url, dbUser, dbPassword);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -877,6 +874,6 @@ public class SessionManager {
     }
 
     public boolean isInInterleavedProblemSet() throws SQLException {
-        return this.getStudentState().getCurTopic() == DbTopics.getInterleavedTopicId(this.getConnection());
+        return this.getStudentState().getCurTopic() == Settings.interleavedTopicID;
     }
 }
