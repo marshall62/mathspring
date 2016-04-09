@@ -59,7 +59,6 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
         CollaborationPartnerIntervention interv = new CollaborationPartnerIntervention();
         interv.setPartner(partnerName);
         return interv;
-//        return selectIntervention(e);
     }
 
     //This handles the input from the last intervention saying they are done and then clicking OK
