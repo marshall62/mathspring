@@ -184,7 +184,7 @@ public class CollaborationManager {
      */
     public synchronized static boolean canCollaborate(SessionManager smgr) throws SQLException {
         int id = smgr.getStudentId();
-        CollaborationState state = collaborationStates.get(id);
+        CollaborationState state = getCollaborationState(smgr);
         return hasEligiblePartners(smgr.getConnection(), id)
                 && Problem.PRACTICE.equals(smgr.getStudentState().getLessonState().getNextProblemMode())
                 && (state.isTimeToCollab() || state.hasSeenEnoughProblemsForCollab());
