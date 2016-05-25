@@ -53,6 +53,7 @@ public class StudentState extends State implements TutorEventHandler {
     private boolean curProblemIsTopicIntro;
     private String pedagogicalModelInternalState;
 
+
     public StudentState(Connection conn, SessionManager smgr) throws SQLException {
         this.smgr = smgr;
         this.conn = conn;
@@ -1088,8 +1089,10 @@ public class StudentState extends State implements TutorEventHandler {
         problemState.setLastEvent(HINT_EVENT);
         if (hint == null) return;
         problemState.setIdleTime(0);
-        if (!isProblemSolved())
-            problemState.setNumHintsGiven(problemState.getNumHintsGiven() + 1);
+        problemState.setNumHintsGiven(problemState.getNumHintsGiven() + 1);
+        if (!isProblemSolved()) {
+            problemState.setNumHintsBeforeCorrect(problemState.getNumHintsBeforeCorrect() + 1);
+        }
         problemState.setHintStartTime(this.getProbElapsedTime());
         boolean atEnd = hint.getLabel().equals(problemState.getCurHint());
         problemState.setCurHint(hint.getLabel());
@@ -1307,6 +1310,11 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
 
+    public int getCurProblemIndexInLesson() {
+        return lessonState.getCurProblemIndex();
+    }
 
-
+    public void setCurProblemIndexInLesson(int curProblemIndexInLesson) {
+        lessonState.setCurProblemIndex(curProblemIndexInLesson);
+    }
 }

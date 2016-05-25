@@ -156,7 +156,7 @@ public class UserRegistrationHandler {
 
 
 
-    // currently usertypes are either assistmentStudent or assistmentTest
+    // currently usertypes are either coopStudent or coopStudentTest
     // The assumption is that we are willing to create a mathspring user for this external user so we need to generate a name.
     public static int registerExternalUser(Connection conn, String assistmentsClassName, String externalUserName, User.UserType ut) throws Exception {
         int count = DbUser.getGuestUserCounter(conn);

@@ -12,8 +12,9 @@ public class PedagogyParams {
     private int studId;
     private boolean showIntro;
     private long maxTime;
+    private int maxTimeMinutes;
     private int maxProbs;
-    private float topicMastery;
+    private float mastery;   // THe mastery level we'd want the student to reach.
     private String mode;
     private boolean singleTopicMode;
     private String ccss;
@@ -24,13 +25,14 @@ public class PedagogyParams {
     public PedagogyParams(int studId, boolean showIntro, int maxTimeMinutes, int maxProbs, String mode, boolean singleTopicMode, String ccss, int topicId, float topicMastery, int cuId) {
         this.studId = studId;
         this.showIntro = showIntro;
+        this.maxTimeMinutes = maxTimeMinutes;
         this.maxTime = maxTimeMinutes * 60 * 1000;  // max time is given in minutes.   We convert to milliseconds here
         this.maxProbs = maxProbs;
         this.mode = mode;
         this.singleTopicMode = singleTopicMode;
         this.ccss = ccss;
         this.topicId=topicId;
-        this.topicMastery = topicMastery;
+        this.mastery = topicMastery;
         this.cuId= cuId;
     }
 
@@ -45,6 +47,10 @@ public class PedagogyParams {
     // Returns a time in ms  (read in from db as minutes but converted to ms in the constructor of this class)
     public long getMaxTime() {
         return maxTime;
+    }
+
+    public int getMaxTimeMinutes () {
+        return this.maxTimeMinutes;
     }
 
     public int getMaxProbs() {
@@ -67,12 +73,12 @@ public class PedagogyParams {
         return topicId;
     }
 
-    public float getTopicMastery() {
-        return topicMastery;
+    public float getMastery() {
+        return mastery;
     }
 
-    public void setTopicMastery(float topicMastery) {
-        this.topicMastery = topicMastery;
+    public void setMastery(float mastery) {
+        this.mastery = mastery;
     }
 
     public int getCuId() {

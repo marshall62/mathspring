@@ -1,4 +1,4 @@
-package edu.umass.ckc.wo.tutor.response;
+package edu.umass.ckc.wo.event.internal;
 
 import edu.umass.ckc.wo.event.SessionEvent;
 
@@ -9,11 +9,11 @@ import edu.umass.ckc.wo.event.SessionEvent;
  * Time: 9:59 AM
  * To change this template use File | Settings | File Templates.
  */
-public class InTopicEvent extends InternalEvent {
+public class EndOfTopicEvent extends InternalEvent {
     private int topicId;
 
-    public InTopicEvent(SessionEvent sessionEvent, int topicId) {
-        super(sessionEvent,"InTopic");
+    public EndOfTopicEvent(SessionEvent sessionEvent, int topicId) {
+        super(sessionEvent,"EndOfTopic");
         this.topicId=topicId;
     }
 

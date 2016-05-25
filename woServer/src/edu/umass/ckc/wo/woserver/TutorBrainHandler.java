@@ -318,7 +318,7 @@ public class TutorBrainHandler {
     public String getTopicStartAnchor(String client, int sessId,String lc, int topic ) {
         String url = Settings.flashClientPath + client;
 
-        String args = "?sessnum="+sessId+"&learningHutChoice=true&elapsedTime=0&mode=teachTopic" + ((lc !=null) ? ("&learningCompanion="+lc) : "") +"&topicId="+topic; //"&problemIdString='+problemId;
+        String args = "?sessnum="+sessId+"&learningHutChoice=true&elapsedTime=0&mode=teachStandard" + ((lc !=null) ? ("&learningCompanion="+lc) : "") +"&topicId="+topic; //"&problemIdString='+problemId;
         System.out.println("URL TO call flash is " + (url+args));
         return "<a href=\"" +(url+args)+ "\">here</a>";
     }

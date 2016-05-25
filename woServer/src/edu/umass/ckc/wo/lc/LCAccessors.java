@@ -1,5 +1,8 @@
 package edu.umass.ckc.wo.lc;
 
+import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.Hint;
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbPedagogy;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
@@ -15,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -156,12 +160,16 @@ public class LCAccessors {
      * Get how long it takes to solve the current problem. -1 indicates not solved.
      * @return
      */
-    public long timeToSolve (SessionEvent ev) {
-        return state.getTimeToSolve();
+    public double timeToSolveSecs (SessionEvent ev) {
+        return state.getTimeToSolve() / 1000.0;
     }
 
-    public long timeToFirstHint (SessionEvent ev) {
-        return state.getTimeToFirstHint();
+    public double timeToFirstHintSecs (SessionEvent ev) {
+        return state.getTimeToFirstHint() / 1000.0;
+    }
+
+    public double timeToFirstAttemptSecs (SessionEvent ev) {
+        return state.getTimeToFirstAttempt() / 1000.0;
     }
 
     public boolean isSolved (SessionEvent ev) {
@@ -169,14 +177,6 @@ public class LCAccessors {
     }
 
 
-
-    /**
-     * Get the number of milliseconds it took for the user to make an attempt on the current problem.  -1 indicates no attempt made.
-     * @return
-     */
-    public long curProbTimeToFirstAttempt (SessionEvent ev) {
-        return state.getTimeToFirstAttempt();
-    }
 
     // Get the effort on the current problem
     public String currentEffort (SessionEvent ev) {
@@ -218,13 +218,44 @@ public class LCAccessors {
         return (e != null) ? e : "";
     }
 
+    public boolean videoExists (SessionEvent e) throws SQLException {
+        int curProbId = state.getCurProblem();
+        Problem p = ProblemMgr.getProblem(curProbId);
+        if (p != null) {
+            String v = p.getVideo();
+            return v != null && !v.equals("");
+        }
+        return false;
+
+    }
+
+    public boolean exampleExists (SessionEvent e) throws SQLException {
+        int curProbId = state.getCurProblem();
+        Problem p = ProblemMgr.getProblem(curProbId);
+        if (p != null) {
+            int ex = p.getExample();
+            return ex != -1;
+        }
+        return false;
+    }
+
+    public boolean hintExists (SessionEvent e) throws SQLException {
+        int curProbId = state.getCurProblem();
+        Problem p = ProblemMgr.getProblem(curProbId);
+        if (p != null) {
+            List<Hint> hs = p.getHints();
+            return hs != null && hs.size() > 0;
+        }
+        return false;
+    }
+
 
     public static void main(String[] args) {
         try {
             Connection conn = SessionManager.getAConnection();
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
-            Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
+            Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,null);
             SessionManager smgr = new SessionManager(conn);
             smgr.attemptSessionCreation("dm","dm",System.currentTimeMillis(),true);
 

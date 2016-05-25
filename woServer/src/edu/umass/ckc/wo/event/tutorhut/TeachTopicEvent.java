@@ -72,7 +72,7 @@ public class TeachTopicEvent extends ActionEvent {
     private int cuId;
     private int lessonId;
 
-    public TeachTopicEvent(ServletParams p) throws AssistmentsBadInputException, Exception {
+    public TeachTopicEvent(ServletParams p) throws Exception {
         super(p);
         try {
 

@@ -93,6 +93,11 @@ public class StudentProblemHistory {
         return new StudentEffort(effs[2],effs[1],effs[0]) ;
     }
 
+    public void saveCurProbEffort (Connection conn, int studId, String effort) throws SQLException {
+        int studProbHistId = DbStudentProblemHistory.getMostRecentStudentProblemHistoryRecord(conn,studId);
+        DbStudentProblemHistory.updateVar(studProbHistId,conn,DbStudentProblemHistory.EFFORT,effort);
+    }
+
 
 
     public void endProblem(SessionManager smgr, StudentProblemData curProbData, int topicId) throws Exception {
@@ -104,7 +109,7 @@ public class StudentProblemHistory {
         String hint = state.getCurHint();
         EffortHeuristic effortComputer = new EffortHeuristic();
        // TODO do not set effort if the current problem is Topic Intro or Example
-        String effort = effortComputer.computeEffort(state, numAttemptsToSolve);
+        String effort = effortComputer.computeEffort(state);
         DbStudentProblemHistory.endProblem(smgr.getConnection(),studProbHistId,state.getNumHintsBeforeCorrect(),
                 numAttemptsToSolve,state.getTimeToSolve(),
                state.getTimeToFirstHint(),state.getTimeToFirstAttempt(),state.isProblemSolved(), now,
@@ -231,6 +236,20 @@ public class StudentProblemHistory {
 
     }
 
+    // get problems in the history that are sorted by students most recent encounter (this means a problem seen more than
+    // once will have the most recent encounter earlier in the list.
+    public List<StudentProblemData> getCCSSHistoryMostRecentEncounters (String ccss) throws SQLException {
+        List<StudentProblemData> result = getCCSSHistory(ccss);
+        // sort so that list is in descending order based on endTime
+        Collections.sort(result,new Comparator<StudentProblemData>() {
+            public int compare(StudentProblemData o1, StudentProblemData o2) {
+                return (o1.getProblemEndTime() < o2.getProblemEndTime()) ? 1 : (o1.getProblemEndTime() == o2.getProblemEndTime() ? 0 : -1);
+            }
+        });
+        return result;
+
+    }
+
         // get problems in the history that are in the topic
         public List<StudentProblemData> getTopicHistory(int topicID) {
             List<StudentProblemData> result = new ArrayList<StudentProblemData>();
@@ -241,6 +260,19 @@ public class StudentProblemHistory {
             }
             return result;
         }
+
+    // get problems in the history that are in the standard
+    public List<StudentProblemData> getCCSSHistory(String ccss) throws SQLException {
+        List<StudentProblemData> result = new ArrayList<StudentProblemData>();
+        long now = System.currentTimeMillis();
+        for (StudentProblemData d: history) {
+            int probId = d.getProbId();
+            Problem p = ProblemMgr.getProblem(probId);
+            if (p.hasStandard(ccss))
+                result.add(d);
+        }
+        return result;
+    }
 
     public List<String> getTopicProblemsSeen(int topicId) {
         List<StudentProblemData> topicHist = getTopicHistory(topicId);
@@ -278,4 +310,5 @@ public class StudentProblemHistory {
             return probs.size();
         else return 0;
     }
+
 }

@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
@@ -67,8 +68,41 @@ public class TopicSelectorImpl implements TopicSelector {
         return studentProblemHistory.getTopicHistoryMostRecentEncounters(topicId);
     }
 
+    private int computeDayDiff(Date now, Date probBeginTime) {
+        long msDif = now.getTime() - probBeginTime.getTime();
+        long secs = msDif / 1000;
+        long mins = secs / 60;
+        long hrs = mins / 60;
+        int days = (int) hrs / 24;
+        return days;
+    }
 
 
+    public List<Integer> getRecentExamplesAndCorrectlySolvedProblems (List<StudentProblemData> probEncountersInTopic) throws Exception {
+        // get the ones that are within the problemReuseInterval
+        List<Integer> probs = new ArrayList<Integer>();
+        int nSessionReuseInterval = this.pedagogicalModel.getParams().getProblemReuseIntervalSessions();
+        int nDayReuseInterval = this.pedagogicalModel.getParams().getProblemReuseIntervalDays();
+        int sess = smgr.getSessionNum();
+        Date now = new Date(System.currentTimeMillis());
+        int numSessions=0;
+        for (StudentProblemData d: probEncountersInTopic) {
+            Date probBeginTime = new Date(d.getProblemBeginTime());
+            if (d.getSessId() != sess) {
+                numSessions++;
+                sess = d.getSessId();
+            }
+            int dayDiff = computeDayDiff(now,probBeginTime);
+            // We stop when one of the intervals is reached
+            if (numSessions == nSessionReuseInterval || dayDiff >= nDayReuseInterval)
+                break;
+            if (d.isSolved())
+                probs.add(d.getProbId());
+            else if (d.getMode().equals(Problem.DEMO))
+                probs.add(d.getProbId());
+        }
+        return probs;
+    }
 
 
     /**
@@ -88,7 +122,7 @@ public class TopicSelectorImpl implements TopicSelector {
         // studentID and classID were set in init method.
         List<Integer> topicProbs = getClassTopicProblems(theTopicId, classId, includeTestProblems);
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, theTopicId);
-        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
+        List<Integer> recentProbs = smgr.getExtendedStudentState().getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         topicProbs.removeAll(recentProbs);
         return topicProbs;
     }
@@ -174,11 +208,11 @@ public class TopicSelectorImpl implements TopicSelector {
         boolean failEasier=false, failHarder=false,failSame=false;
 
         boolean fail=false;
-        if (diff == TopicModel.difficulty.EASIER)
+        if (diff == LessonModel.difficulty.EASIER)
             failEasier= !smgr.getStudentState().curTopicHasEasierProblem();
-        else if (diff == TopicModel.difficulty.HARDER)
+        else if (diff == LessonModel.difficulty.HARDER)
             failHarder =  !smgr.getStudentState().curTopicHasHarderProblem();
-        else if (diff == TopicModel.difficulty.SAME)
+        else if (diff == LessonModel.difficulty.SAME)
             failSame = !(smgr.getStudentState().curTopicHasHarderProblem() || smgr.getStudentState().curTopicHasEasierProblem());
         EndOfTopicInfo info = new EndOfTopicInfo(false,false,failEasier,failHarder, failSame, false);
         return info;

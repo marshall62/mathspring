@@ -2,9 +2,13 @@ package edu.umass.ckc.wo.tutor.agent;
 
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.lc.InferenceEngine;
 import edu.umass.ckc.wo.lc.LCAction;
+import edu.umass.ckc.wo.lc.LCRule;
 import edu.umass.ckc.wo.lc.LCRuleset;
+import edu.umass.ckc.wo.servletController.MariHandler;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.TransactionLogger;
@@ -25,15 +29,20 @@ import java.util.List;
  */
 public class RuleDrivenLearningCompanion extends LearningCompanion {
 
-    private LCRuleset ruleSet;
+    private List<LCRuleset> ruleSets;
+    private String charactersName;
 
 
-    public RuleDrivenLearningCompanion() {
+    public RuleDrivenLearningCompanion(SessionManager smgr) {
 
     }
 
-    public void setRuleSet (LCRuleset ruleSet) {
-        this.ruleSet = ruleSet;
+    public void addRuleSet (LCRuleset ruleSet) {
+        this.ruleSets.add(ruleSet);
+    }
+
+    public void setRuleSets (List<LCRuleset> rulesets) {
+        this.ruleSets = rulesets;
     }
 
 
@@ -49,7 +58,11 @@ public class RuleDrivenLearningCompanion extends LearningCompanion {
 
     @Override
     public String getCharactersName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.charactersName;
+    }
+
+    public void setCharactersName(String charactersName) {
+        this.charactersName = charactersName;
     }
 
     // Default implementation of methods that must be overidden by learning companions that are subclasses.
@@ -69,9 +82,7 @@ public class RuleDrivenLearningCompanion extends LearningCompanion {
 
 
     public Response processNextProblemRequest (SessionManager smgr, NextProblemEvent e, Response r) throws Exception {
-        addEmotion("idle");
-        addLearningCompanionToResponse(r);
-        return r;
+        return processEvent(smgr,e,r);
     }
 
 
@@ -96,17 +107,58 @@ public class RuleDrivenLearningCompanion extends LearningCompanion {
 //    }
 
     public Response processHintRequest (SessionManager smgr, HintEvent e, HintResponse r) throws Exception {
-        addLearningCompanionToResponse(r);
-        return r;
+        return processEvent(smgr,e,r);
     }
-    public Response processAttempt (SessionManager smgr, AttemptEvent e, AttemptResponse r) throws Exception {
-        LCAction act = this.ruleSet.runRulesForEvent(smgr, e, "Attempt");
-        if (act != null)    {
+
+    /**
+     * Given a user event, this will go through all the rulesets in the pedagogy and apply rules that are
+     * relevant to that event.
+     * @param smgr
+     * @param e
+     * @param r
+     * @return
+     * @throws Exception
+     */
+    private Response processEvent (SessionManager smgr, TutorHutEvent e, Response r) throws Exception {
+        //TODO not sure how multiple rulesets should be dealt with.  Is there some precedence among them or can
+        //I just go through them in some undefined order and find the first rule that matches?
+        // The problem is that if I just go through one and then the other, they aren't all treated with the same
+        // importance.
+        InferenceEngine ruleInterpreter = new InferenceEngine(smgr);
+        LCRule rule = ruleInterpreter.runRulesForEvent(e,ruleSets);
+        if (rule != null)    {
+            LCAction act = rule.getAction();
             clips.add(act.getName()); // The LCAction has the name of the html lc action and this is all we really use
             addLearningCompanionToResponse(r);
+            return r;
         }
-        return r;
+        else {
+            // If no rule is applied, then set the character to idle by default.
+            clips.add("idle");
+            addLearningCompanionToResponse(r);
+            return r;
+        }
     }
+
+    public Response processAttempt (SessionManager smgr, AttemptEvent e, AttemptResponse r) throws Exception {
+        return processEvent(smgr,e,r);
+    }
+
+    @Override
+    public Response processEndProblem(SessionManager smgr, EndProblemEvent e, Response r) throws Exception {
+        return processEvent(smgr,e,r);
+    }
+
+    @Override
+    public Response processBeginProblem(SessionManager smgr, BeginProblemEvent e, Response r) throws Exception {
+        return processEvent(smgr,e,r);
+    }
+
+    @Override
+    public Response processEndExample(SessionManager smgr, EndExampleEvent e, Response r) throws Exception {
+        return processEvent(smgr,e,r);
+    }
+
     public Response processInputResponse (SessionManager smgr, InputResponseEvent e, Response r) throws Exception {
         addLearningCompanionToResponse(r);
         return r;

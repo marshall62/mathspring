@@ -1,4 +1,4 @@
--<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- web.xml to run on localhost only
 The results of this go into out/artifacts/MathSpring_exploded
 -->
@@ -182,6 +182,31 @@ The results of this go into out/artifacts/MathSpring_exploded
 
         <!--<load-on-startup>1</load-on-startup>-->
     </servlet>
+
+
+    <servlet>
+        <servlet-name>MathspringSubSessionServlet</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.MathspringSubSessionServlet</servlet-class>
+
+
+        <init-param>
+            <param-name>handlerClassName</param-name>
+            <param-value>edu.umass.ckc.wo.servletController.MariHandler</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>videoURI</param-name>
+            <param-value>http://cadmium.cs.umass.edu/mathspring/video/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>emailLogFilename</param-name>
+            <param-value>u:\\wayang\\emailErr.log</param-value>
+        </init-param>
+
+    </servlet>
+
+
+
     <servlet>
         <servlet-name>WoTestDbServlet</servlet-name>
         <servlet-class>edu.umass.ckc.wo.woserver.TestDbServlet</servlet-class>
@@ -194,6 +219,10 @@ The results of this go into out/artifacts/MathSpring_exploded
 
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>MathspringSubSessionServlet</servlet-name>
+        <url-pattern>/mathspringSubSession</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SimpleJSPServlet</servlet-name>
         <url-pattern>/SimpleJSPServlet</url-pattern>

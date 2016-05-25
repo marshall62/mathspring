@@ -1,0 +1,7 @@
+<lc_ruleset name="BasedOnCurrentProblem">
+    <lc_r name="21" priority="1" onEvent="Attempt">
+        <lc_c fnname="effort1" relop="=" val="SOF" type="String"></lc_c>
+        <lc_a media="watchVideo">How about watching a video to see how a similar problem would get solved?</lc_a>
+
+    </lc_r>
+</lc_ruleset>

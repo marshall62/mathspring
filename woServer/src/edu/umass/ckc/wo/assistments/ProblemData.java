@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.assistments;
 
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import java.sql.Date;
@@ -109,7 +110,7 @@ public class ProblemData {
 
 
 
-    public ProblemData(AssistmentsUser u, AssistmentSessionData d, StudentProblemData lastProb) {
+    public ProblemData(CoopUser u, AssistmentSessionData d, StudentProblemData lastProb) {
         // set the fields of this thing given the last problem from the problem history
         this.user = d.getUid();
         this.userClass = d.getaClass();
@@ -167,7 +168,7 @@ public class ProblemData {
             "hintCount": "<hint count>",
             "answerInHint": "<hint contained answer>"
          */
-    public String toJSON () {
+    public String toJSONForAssistments () {
         JSONObject o = new JSONObject();
         // For some reason Assistments wants a strange form of JSON with everything quoted and subobjects all have quotes escaped.
         o.element("user",this.user);
@@ -205,4 +206,8 @@ public class ProblemData {
         o.element("partnerSpecificData",psdStr);
         return o.toString();
     }
+
+
+
+
 }

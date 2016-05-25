@@ -111,7 +111,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 //        this.maxNumberProbs = params.getMaxNumberProbs();
 //        this.maxTimeInTopic = params.getMaxTimeInTopic();
 //        this.contentFailureThreshold = params.getContentFailureThreshold();
-//        this.topicMastery = params.getTopicMastery();
+//        this.topicMastery = params.getMastery();
 //        this.minNumberProbs = params.getMinNumberProbs();
 //        this.minTimeInTopic = params.getMinTimeInTopic();
 //        this.divisor = params.getDifficultyRate();

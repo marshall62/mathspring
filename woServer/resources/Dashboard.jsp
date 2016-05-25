@@ -127,7 +127,7 @@
         </c:forEach>
 
         var k = 0;
-        <c:forEach var="topicMastery" items="${dd.topicMasteryList}">
+        <c:forEach var="mastery" items="${dd.topicMasteryList}">
 
 
         dayList[i][5][k] = "${topicMastery}";

@@ -63,6 +63,8 @@ public class BaseServlet extends HttpServlet {
     protected void setHostAndContextPath (String servletName, ServletContext servletContext, HttpServletRequest request) {
 
         String scName = servletContext.getServletContextName();
+        String servletNameFromURL = request.getServletPath(); // something like /TutorBrain
+        servletNameFromURL = servletNameFromURL.substring(1,servletNameFromURL.length());
         StringBuffer uri = request.getRequestURL(); // like http://localhost:8082/wo4/TutorBrain
         String servPath = request.getServletPath();  // like /TutorBrain
         // a regexp to match the part I care about, the host and the port.
@@ -70,7 +72,7 @@ public class BaseServlet extends HttpServlet {
         Matcher m = pattern.matcher(uri.toString());
         m.find();
         hostPath = m.group(1) ;  // later we'll add this to the SessionManager
-        pattern = Pattern.compile("(^(.)*?)/" + servletName);
+        pattern = Pattern.compile("(^(.)*?)/" + servletNameFromURL);
         m = pattern.matcher(uri.toString());
         m.find();
         contextPath = m.group(1);

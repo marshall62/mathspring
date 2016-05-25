@@ -27,6 +27,7 @@ public class DbClass {
 
     public static final String GUEST_USER_CLASS_NAME = "GuestUserClass";
     public static final String ASSISTMENTS_CLASS_NAME = "AssistmentsUserClass";
+    public static final String MARI_CLASS_NAME = "MariUserClass";
 
     public static ClassInfo getClass(Connection conn, int classId) throws SQLException {
         ResultSet rs = null;

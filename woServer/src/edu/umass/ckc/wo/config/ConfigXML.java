@@ -15,13 +15,12 @@ public class ConfigXML {
     protected Element interventions;
     protected Element control;
     protected String name;
-    protected String style;
 
-    public ConfigXML(Element interventions, Element control, String name, String style) {
+
+    public ConfigXML(Element interventions, Element control, String name) {
         this.interventions = interventions;
         this.control = control;
         this.name = name;
-        this.style = style;
     }
 
     public Element getInterventions() {

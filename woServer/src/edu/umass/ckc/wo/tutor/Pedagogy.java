@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import org.jdom.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,17 +47,20 @@ public class Pedagogy implements Comparable {
     private LessonXML lessonXML;
     private LoginXML loginXML;
     private String simpleConfigName;
-    private String learningCompanionRuleSetName;
-    private LCRuleset learningCompanionRuleSet;
+    private boolean lcFromXML;
+    private boolean lcFromDb;
+    private List<LCRuleset> learningCompanionRuleSets;
     private String learningCompanionCharacter;
 
 
     public Pedagogy() {
+        this.learningCompanionRuleSets = new ArrayList<LCRuleset>();
     }
 
     public Pedagogy(String problemSelector, String hintSelector,
                     String studentModel, String learningCompanion, String pedModelClassname, String id,
                     String name, String comment, String defaultClasspath, boolean isDefault) {
+        this();
         this.problemSelectorClass = getFullyQualifiedClassname(defaultClasspath+".probSel",problemSelector);
         this.hintSelectorClass = getFullyQualifiedClassname(defaultClasspath+".hintSel",hintSelector);
         this.studentModelClass = getFullyQualifiedClassname(defaultClasspath,studentModel);
@@ -70,11 +74,13 @@ public class Pedagogy implements Comparable {
     }
 
     public Pedagogy(String pedModClass, String id, String name, String comment, String defaultClasspath, boolean isDefault, String packg) {
+        this();
         this.id = id;
         this.name = name;
         this.comment = comment;
         this.isDefault = isDefault;
         this.pedagogicalModelClass = getFullyQualifiedClassname(defaultClasspath+"."+packg,pedModClass);
+
     }
 
     public String getPedagogicalModelClass() {
@@ -361,20 +367,16 @@ public class Pedagogy implements Comparable {
         return simpleConfigName;
     }
 
-    public void setLearningCompanionRuleSetName(String learningCompanionRuleSet) {
-        this.learningCompanionRuleSetName = learningCompanionRuleSet;
+    public void addLearningCompanionRuleSet(LCRuleset learningCompanionRuleSet) {
+        this.learningCompanionRuleSets.add(learningCompanionRuleSet);
     }
 
-    public String getLearningCompanionRuleSetName() {
-        return learningCompanionRuleSetName;
+    public List<LCRuleset> getLearningCompanionRuleSets() {
+        return learningCompanionRuleSets;
     }
 
-    public void setLearningCompanionRuleSet(LCRuleset learningCompanionRuleSet) {
-        this.learningCompanionRuleSet = learningCompanionRuleSet;
-    }
-
-    public LCRuleset getLearningCompanionRuleSet() {
-        return learningCompanionRuleSet;
+    public boolean hasRuleset () {
+        return learningCompanionRuleSets.size() > 0;
     }
 
     public String getLearningCompanionCharacter() {

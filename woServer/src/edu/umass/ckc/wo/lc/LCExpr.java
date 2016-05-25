@@ -29,6 +29,10 @@ public class LCExpr extends LCRuleComponent {
     public static int INT = 1;
     public static int DOUB = 2;
     public static int BOOL = 3;
+    public static int MAST = 4;
+
+    public static final double LOW_MAST = 0.35;
+    public static final double HIGH_MAST = 0.75;
 
     public LCExpr (String fn, Class[] args) {
         this.fn=new LCFn(fn,args);
@@ -36,10 +40,18 @@ public class LCExpr extends LCRuleComponent {
 
     }
 
+
     public LCExpr(String fn,  Class[] args, String relop, String strVal) {
         this.fn=new LCFn(fn,args);
         this.relop = relop;
         this.valType = STR;
+        this.strVal = strVal;
+    }
+
+    public LCExpr(String fn,  Class[] args, String relop, String strVal, boolean isMastery) {
+        this.fn=new LCFn(fn,args);
+        this.relop = relop;
+        this.valType = MAST;
         this.strVal = strVal;
     }
 
@@ -55,6 +67,18 @@ public class LCExpr extends LCRuleComponent {
         this.relop = relop;
         this.valType = DOUB;
         this.dVal = dVal;
+    }
+
+    public LCFn getFn() {
+        return fn;
+    }
+
+    public String getRelop() {
+        return relop;
+    }
+
+    public int getValType() {
+        return valType;
     }
 
     public boolean eval () throws Exception {
@@ -91,8 +115,43 @@ public class LCExpr extends LCRuleComponent {
             return ((Integer) val) >= this.iVal;
         else if (relop.equals(">=") && valType == DOUB)
             return ((Double) val) >= this.dVal;
+        else if (valType == MAST)
+            return evalMasteryExpr(relop,this.strVal,((Double) val));
 
         return false;
+    }
+
+    // A kind of hack way of offering the ability to have a function like:
+    // topicMastery = LOW.   strVal will be one of LOW, MIDDLE, HIGH.  val
+    // will be a double returned by the topicMasteryValue function.
+    //
+    private boolean evalMasteryExpr(String relop, String strVal, double val) {
+        double compareToVal = 0;
+        if (strVal.equals("LOW"))
+            compareToVal = LOW_MAST;
+        else if (strVal.equals("HIGH"))
+            compareToVal = HIGH_MAST;
+        // it doesn't make sense to ask mastery < LOW.  So <= and < are both interpreted as
+        // either mastery < HIGH or mastery < MIDDLE.  Similarly for > where it doesn't make
+        // sense to have mastery > HIGH
+        if (relop.equals("<"))
+            return val < compareToVal;
+        else if (relop.equals("<="))
+            return val <= compareToVal;
+        else if (relop.equals(">"))
+            return val > compareToVal;
+        else if (relop.equals(">="))
+            return val >= compareToVal;
+        else if (relop.equals("=")) {
+            if (strVal.equals("LOW"))
+                return val <= LOW_MAST;
+            else if (strVal.equals("MIDDLE"))
+                return val > LOW_MAST && val < HIGH_MAST;
+            else if (strVal.equals("HIGH"))
+                return val >= HIGH_MAST;
+        }
+        return false;
+
     }
 
     public boolean evalPrint () throws Exception {
@@ -107,7 +166,7 @@ public class LCExpr extends LCRuleComponent {
             conn = SessionManager.getAConnection();
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
-            Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
+            Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,null);
             SessionManager smgr = new SessionManager(conn);
             smgr.attemptSessionCreation("dm","dm",System.currentTimeMillis(),true);
 

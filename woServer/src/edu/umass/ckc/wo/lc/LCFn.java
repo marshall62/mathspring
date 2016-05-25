@@ -1,5 +1,8 @@
 package edu.umass.ckc.wo.lc;
 
+import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.smgr.SessionManager;
+
 /**
  * Created with IntelliJ IDEA.
  * User: david
@@ -13,7 +16,10 @@ public class LCFn extends LCRuleComponent {
 
     public LCFn(String fnName, Class[] args) {
         this.fnName = fnName;
-        this.args = args;
+        if (args == null)
+            this.args = new Class[] {SessionEvent.class};
+        else
+            this.args = args;
     }
 
     public String getFnName() {

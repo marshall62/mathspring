@@ -18,8 +18,18 @@ public class User {
 
 
 
+    /*
+    Meanings:
+       test: a developer user who is testing the system and wants extra controls
+       guest:  A user who logs in by clicking the "guest login" button
+       student: A student who is registered as a "regular" student (also called a "real" student)
+       coopStudent: A student coming from another system (e.g. MARi or Assistments)
+       coopStudentTest:  A test-student coming from another system (test implies showing tester controls and not altering statistics about problems)
+       external*:  Not sure.   Probably supports the use of calls to the system using TeachTopic
+       testStudent:  a tester who sees the same interface a regular student would (no problem stats updates happen)
+     */
     public enum UserType {
-        test, guest, student, assistmentStudent, assistmentTest, externalTest, externalTempTest, externalTempNonTest, testStudent
+        test, guest, student, coopStudent, coopStudentTest, externalTest, externalTempTest, externalTempNonTest, testStudent
     }
 
     public User(String fname, String lname, String uname, String email, String password, int id) {
@@ -42,9 +52,9 @@ public class User {
             return new boolean[] {false,false,false,false} ;
         else if (userType == UserType.student)
             return new boolean[] {true,true,true,false} ;
-        else if (userType == UserType.assistmentStudent)
+        else if (userType == UserType.coopStudent)
             return new boolean[] {true,true,true,false} ;
-        else if (userType == UserType.assistmentTest)
+        else if (userType == UserType.coopStudentTest)
             return new boolean[] {true,true,false,true} ;
         else if (userType == UserType.externalTest)
             return new boolean[] {true,true,false,true} ;
@@ -57,7 +67,7 @@ public class User {
 
 
     public static boolean isTrialUser (UserType ut) {
-        return (ut==UserType.test || ut==UserType.assistmentTest || ut==UserType.externalTempTest || ut==UserType.externalTest || ut==UserType.testStudent);
+        return (ut==UserType.test || ut==UserType.coopStudentTest || ut==UserType.externalTempTest || ut==UserType.externalTest || ut==UserType.testStudent);
     }
 
     public String toString () {

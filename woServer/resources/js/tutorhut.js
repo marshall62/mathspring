@@ -783,6 +783,8 @@ function learningCompanionDone () {
     $("#"+LEARNING_COMPANION_CONTAINER).dialog('close');
 }
 
+
+
 function showLearningCompanion (json) {
 
     var files = json.learningCompanionFiles;

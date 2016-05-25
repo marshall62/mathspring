@@ -75,9 +75,12 @@ public class MyProgressPage implements View  {
             List<Integer> practiceProbsSeen;
 
             try {
-                StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
-                List<StudentProblemData> probEncountersInTopic = studentProblemHistory.getTopicHistoryMostRecentEncounters(t.getTopic().getId());
-                practiceProbsSeen = smgr.getPedagogicalModel().getPracticeProblemsSeen(probEncountersInTopic);
+
+//                StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
+//                List<StudentProblemData> probEncountersInTopic = studentProblemHistory.getTopicHistoryMostRecentEncounters(t.getTopic().getId());
+//                practiceProbsSeen = studentProblemHistory.getPracticeProblemsSeen(probEncountersInTopic);
+//                practiceProbsSeen = smgr.getPedagogicalModel().getPracticeProblemsSeen(probEncountersInTopic);
+                practiceProbsSeen = smgr.getExtendedStudentState().getPracticeProblemsSeenInTopic(t.getTopic().getId());
                 numProbsSeenInTopic = practiceProbsSeen.size();
             } catch (SQLException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -267,4 +270,6 @@ public class MyProgressPage implements View  {
   private String getBackToVillageURL() {
       return Settings.flashClientPath + this.client + ".swf?sessnum=" + sessionId ;
   }
+
+
 }

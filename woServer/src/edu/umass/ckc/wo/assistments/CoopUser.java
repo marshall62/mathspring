@@ -1,19 +1,19 @@
 package edu.umass.ckc.wo.assistments;
 
 /**
- * Created with IntelliJ IDEA.
+ * A user who comes from another system like Assistments or MARI
  * User: marshall
  * Date: 9/13/13
  * Time: 11:48 AM
  * To change this template use File | Settings | File Templates.
  */
-public class AssistmentsUser {
+public class CoopUser {
     private String uid;
     private String token;
     private int studId;
 
 
-    public AssistmentsUser(String uid, String token, int studId) {
+    public CoopUser(String uid, String token, int studId) {
         this.uid = uid;
         this.token = token;
         this.studId = studId;

@@ -18,13 +18,12 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
-import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.pedModel.CCPedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
-import edu.umass.ckc.wo.tutor.response.BeginningOfTopicEvent;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
+import edu.umass.ckc.wo.event.internal.BeginningOfTopicEvent;
+import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
@@ -109,7 +108,7 @@ public class AssistmentsHandler {
     private String genUser() throws SQLException {
         SecureRandom r = new SecureRandom();
         String s = new BigInteger(130, r).toString(20);
-        while (DbAssistmentsUsers.getUser(conn, s) != null)
+        while (DbCoopUsers.getUser(conn, s) != null)
             s = new BigInteger(130, r).toString(20);
         return s;
     }
@@ -161,7 +160,7 @@ public class AssistmentsHandler {
         int studId = -1;
         String user = e.getUser();
         // Find if this this assistments user has been in the system previously
-        AssistmentsUser u = DbAssistmentsUsers.getUser(conn, user);
+        CoopUser u = DbCoopUsers.getUser(conn, user);
         // This is the first we've ever heard of this user.
         if (u == null) {
             String token = callBackForToken(e);  // I think WPI changed the spec and doesn't require that we get a token for the user.
@@ -169,15 +168,15 @@ public class AssistmentsHandler {
             boolean isTestUser = e.isTestUser();
             // legit user params are given from Assistments, so we create a user in our system that has persisting user/data
             if (isTestUser) {
-                User.UserType ut = User.UserType.assistmentTest;
+                User.UserType ut = User.UserType.coopStudentTest;
                 studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
-                u = DbAssistmentsUsers.insertUserInDb(conn, user, token, studId);
+                u = DbCoopUsers.insertUserInDb(conn, user, token, studId);
             }
             // a call made Assistments that is not a test.
             else {
-                User.UserType ut = User.UserType.assistmentStudent;
+                User.UserType ut = User.UserType.coopStudent;
                 studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
-                u = DbAssistmentsUsers.insertUserInDb(conn, user, token, studId);
+                u = DbCoopUsers.insertUserInDb(conn, user, token, studId);
             }
             if (e.isShowTransitionPage())
                 return showIntroPage(e);
@@ -188,8 +187,8 @@ public class AssistmentsHandler {
             boolean isTestUser = e.isTestUser();
             User.UserType ut;
             if (isTestUser)
-                ut = User.UserType.assistmentTest;
-            else ut =  User.UserType.assistmentStudent;
+                ut = User.UserType.coopStudentTest;
+            else ut =  User.UserType.coopStudent;
             UserRegistrationHandler.setUserTestProperty(servletInfo.getConn(),u.getStudId(),ut);
             studId = u.getStudId();
         }
@@ -207,7 +206,8 @@ public class AssistmentsHandler {
         return BaseServlet.FORWARDED_TO_JSP;
     }
 
-    private boolean processTeachTopicRequest(TeachTopicEvent e, int studId, AssistmentsUser u) throws AssistmentsBadInputException, Exception {
+
+    private boolean processTeachTopicRequest(TeachTopicEvent e, int studId, CoopUser u) throws AssistmentsBadInputException, Exception {
         // TODO Currently the tutor remembers a student who returns through this entry point.   This includes his
         // full student state.  So this affects the tutoring.   If a student saw a topic and saw 3 problems and then
         // this call sends in a maxProblems of 3, it will return noMoreProblems=true.   So we need to figure out
@@ -246,7 +246,7 @@ public class AssistmentsHandler {
         int cuId = e.getCuId();
         int lessonId = e.getLessonId();
         int topicId = e.getTopic();
-        String ccss = e.getCcss();
+        String[] ccss = {e.getCcss()};
         if (topicId != -1) {
             Topic t = ProblemMgr.getTopic(topicId);
             if (t == null && ccss == null)
@@ -279,7 +279,7 @@ public class AssistmentsHandler {
         // saves the assistments calling parameters in assistmentSessionData so that this session has its unique set of params that will be
         // used at callback time to send logging data back to assistments
         if (u != null)
-            DbAssistmentsUsers.saveSessionInfo(conn, smgr.getSessionNum(), u.getUid(), e.getAssignment(),
+            DbCoopUsers.saveSessionInfo(conn, smgr.getSessionNum(), u.getUid(), e.getAssignment(),
                     e.getAssistment(), e.getProblem(), e.getAssistmentsClass(), this.assistmentsLogbackURL);
         new NavigationHandler(servletInfo.getServletContext(), smgr, conn, servletInfo.getRequest(), servletInfo.getResponse()).handleRequest(new NavigationEvent(smgr.getSessionNum(), "assistments", NavigationEvent.SAT_HUT, Long.toString(System.currentTimeMillis()), ""));
         // N.B. Passing solved=true so that the page generated does not act as though it is trying to resume an unsolved problem after return from MPP
@@ -372,7 +372,7 @@ public class AssistmentsHandler {
         smgr.getPedagogicalModel().setParams(defaultParams);
     }
 
-    private void processRequest(AssistmentsUser u, TeachTopicEvent e) {
+    private void processRequest(CoopUser u, TeachTopicEvent e) {
         // Go ahead and generate the Tutor Page using the requirements passed in.
 
         // This means setting a pedagogy for this user appropriate for this call's mode.
@@ -421,7 +421,7 @@ public class AssistmentsHandler {
     public boolean teachTopic0(TeachTopicEvent e) throws Exception {
 
 //            String flashClientURL = (String) servletContext.getAttribute("flashClientURI");
-        int studId = UserRegistrationHandler.registerTemporaryUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.assistmentTest);
+        int studId = UserRegistrationHandler.registerTemporaryUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.coopStudentTest);
         SessionManager smgr = new SessionManager(servletInfo.getConn()).assistmentsLoginSession(studId);
 //            int sessId = smgr.getSessionNum();
         int classId = smgr.getClassID();
@@ -455,15 +455,15 @@ public class AssistmentsHandler {
     private String getTeachTopicURL(String client, int sessId, String lc, int topic) {
         String url = Settings.flashClientPath + client;
 
-        String args = "?sessnum=" + sessId + "&learningHutChoice=true&elapsedTime=0&mode=teachTopic" + ((lc != null) ? ("&learningCompanion=" + lc) : "") + "&topicId=" + topic; //"&problemIdString='+problemId;
+        String args = "?sessnum=" + sessId + "&learningHutChoice=true&elapsedTime=0&mode=teachStandard" + ((lc != null) ? ("&learningCompanion=" + lc) : "") + "&topicId=" + topic; //"&problemIdString='+problemId;
         System.out.println("URL TO call flash is " + (url + args));
         return url + args;
     }
 
     public static void logToAssistmentsProblemEnd(SessionManager smgr, EndProblemEvent e) throws Exception {
         if (Settings.loggingBackToAssistments) {
-            AssistmentsUser u = DbAssistmentsUsers.getUserFromWayangStudId(smgr.getConnection(), smgr.getStudentId());
-            AssistmentSessionData d = DbAssistmentsUsers.getSessionInfo(smgr.getConnection(), smgr.getSessionNum());
+            CoopUser u = DbCoopUsers.getUserFromWayangStudId(smgr.getConnection(), smgr.getStudentId());
+            AssistmentSessionData d = DbCoopUsers.getSessionInfo(smgr.getConnection(), smgr.getSessionNum());
             // d will be null if Assistments did not pass all the required params that define its user/session, etc
             if (d == null)
                 return;
@@ -472,7 +472,7 @@ public class AssistmentsHandler {
             StudentProblemHistory hist = smgr.getStudentModel().getStudentProblemHistory();
             // get the last problem
             StudentProblemData lastProb = hist.getCurProblem();
-            String json = new ProblemData(u, d, lastProb).toJSON();
+            String json = new ProblemData(u, d, lastProb).toJSONForAssistments();
             if (d.getLogbackURL() != null)
                 post(d.getLogbackURL(), json);
         }
@@ -511,7 +511,7 @@ public class AssistmentsHandler {
 
 
     public boolean getProblemData(GetProblemDataEvent e) throws SQLException {
-        int[] a = DbAssistmentsUsers.getSessionInfo(servletInfo.getConn(), e.getUser(), e.getProblem(), e.getAssistment(), e.getAssignment());
+        int[] a = DbCoopUsers.getSessionInfo(servletInfo.getConn(), e.getUser(), e.getProblem(), e.getAssistment(), e.getAssignment());
 
         if (a != null) {
             int sessId = a[0];
@@ -519,13 +519,13 @@ public class AssistmentsHandler {
             int id = DbStudentProblemHistory.getMostRecentStudentProblemHistoryRecord(servletInfo.getConn(), studId);
             List<StudentProblemData> history = new ArrayList<StudentProblemData>();
             DbStudentProblemHistory.loadHistory(servletInfo.getConn(), studId, history);
-            AssistmentsUser u = new AssistmentsUser(e.getUser(), null, studId);
-            AssistmentSessionData sd = DbAssistmentsUsers.getSessionInfo(servletInfo.getConn(), sessId);
+            CoopUser u = new CoopUser(e.getUser(), null, studId);
+            AssistmentSessionData sd = DbCoopUsers.getSessionInfo(servletInfo.getConn(), sessId);
             if (history.size() > 0) {
                 StudentProblemData d = history.get(history.size() - 1);
                 ProblemData pd = new ProblemData(u, sd, d);
-                System.out.println(pd.toJSON());
-                servletInfo.getOutput().append(pd.toJSON());
+                System.out.println(pd.toJSONForAssistments());
+                servletInfo.getOutput().append(pd.toJSONForAssistments());
             } else {
                 JSONObject o = new JSONObject();
                 o.element("failure", true);

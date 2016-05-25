@@ -36,7 +36,8 @@ public class LessonParser {
             Element interventions = l.getChild("interventions");
             String n = l.getAttributeValue("name");
             String style = l.getAttributeValue("style");
-            result.add(new LessonXML(interventions,control,n,style));
+            String lessonModelClassName = l.getAttributeValue("className");
+            result.add(new LessonXML(interventions,control,n,lessonModelClassName));
         }
         return result;
     }

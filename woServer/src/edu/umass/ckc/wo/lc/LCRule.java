@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.lc;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +21,15 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
     private String descr;
     private String onEvent;
     private double priority;
+    private String notes;
+    private String interventionPointName;
 
     public LCRule() {
         conditions = new ArrayList<LCCondition>();
     }
 
     public LCRule(int id, String name, String descr, String onEvent, double priority) {
+        this();
         this.id=id;
         this.name=name;
         this.descr=descr;
@@ -45,7 +47,7 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
 
     /**
      * Test to see if a rule has all conditions true
-     * @return
+     * @return true if all the rule conditions are true
      * @throws Exception
      */
     public boolean test () throws Exception {
@@ -62,7 +64,7 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
     /**
      *
      */
-    public LCAction apply () {
+    public LCAction getAction () {
        return this.action;
     }
 
@@ -90,10 +92,6 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
         this.action = action;
     }
 
-    public LCRule(LCAction action) {
-        this.action = action;
-    }
-
     public boolean eval () throws Exception {
         boolean fail = false;
         for (LCCondition c : conditions) {
@@ -114,5 +112,19 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
         else if (this.priority > lcRule.getPriority())
             return 1;
         else return 0;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+
+    public String getInterventionPointName() {
+        return interventionPointName;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

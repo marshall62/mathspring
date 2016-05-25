@@ -2,14 +2,15 @@ package edu.umass.ckc.wo.tutor.pedModel;
 
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.assistments.AssistmentsHandler;
-import edu.umass.ckc.wo.assistments.AssistmentsUser;
+import edu.umass.ckc.wo.assistments.CoopUser;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.content.Video;
-import edu.umass.ckc.wo.db.DbAssistmentsUsers;
+import edu.umass.ckc.wo.db.DbCoopUsers;
+import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * The core of the tutor.
  * User: marshall
  * Date: 11/14/13
  * Time: 12:59 PM
@@ -63,7 +64,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         setTutorModel(new TutorModel(smgr));
         pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
         params = getPedagogicalModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
-        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
+//        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
         setParams(params);
         buildComponents(smgr,pedagogy);
     }
@@ -74,22 +75,23 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             setExampleSelector(new BaseExampleSelector());
             setVideoSelector(new BaseVideoSelector());
             // Use the params from the pedagogy and then overwrite any values with things that are set up for the class
-
-//            topicSelector = new TopicSelectorImpl(smgr,params, this);
-
             // need a pointer to the lessonModel object to pass into the various components.
-            lessonModel =  LessonModel.buildModel(smgr, lessonModelParameters);
+            lessonModel =  LessonModel.buildModel(smgr, pedagogy,smgr.getClassID(),smgr.getStudentId());
             this.getTutorModel().setLessonModel(lessonModel);
             setStudentModel((StudentModel) Class.forName(pedagogy.getStudentModelClass()).getConstructor(SessionManager.class).newInstance(smgr));
             smgr.setStudentModel(getStudentModel());
             setProblemSelector((ProblemSelector) Class.forName(pedagogy.getProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
-            setReviewModeProblemSelector((ReviewModeProblemSelector) Class.forName(pedagogy.getReviewModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
-            setChallengeModeProblemSelector((ChallengeModeProblemSelector) Class.forName(pedagogy.getChallengeModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
+            if (pedagogy.getReviewModeProblemSelectorClass() != null)
+                setReviewModeProblemSelector((ReviewModeProblemSelector) Class.forName(pedagogy.getReviewModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
+            if (pedagogy.getChallengeModeProblemSelectorClass() != null)
+                setChallengeModeProblemSelector((ChallengeModeProblemSelector) Class.forName(pedagogy.getChallengeModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
             setHintSelector((HintSelector) Class.forName( pedagogy.getHintSelectorClass()).getConstructor().newInstance());
             if (pedagogy.getLearningCompanionClass() != null)   {
                 setLearningCompanion((LearningCompanion) Class.forName( pedagogy.getLearningCompanionClass()).getConstructor(SessionManager.class).newInstance(smgr));
-                if (pedagogy.getLearningCompanionRuleSet() != null) {
-                    ((RuleDrivenLearningCompanion) learningCompanion).setRuleSet(pedagogy.getLearningCompanionRuleSet());
+                if (pedagogy.hasRuleset()) {
+                    String characterName = pedagogy.getLearningCompanionCharacter();
+                    ((RuleDrivenLearningCompanion) learningCompanion).setCharactersName(characterName);
+                    ((RuleDrivenLearningCompanion) learningCompanion).setRuleSets(pedagogy.getLearningCompanionRuleSets());
                 }
             }
 //            if (pedagogy.getNextProblemInterventionSelector() != null)
@@ -100,7 +102,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             if (pedagogy.getInterventionsElement() != null)
                 buildInterventions(pedagogy.getInterventionsElement());
             else interventionGroup = new InterventionGroup();
-            lessonModel.init(smgr,lessonModelParameters,pedagogy,this,this);
+            lessonModel.init(smgr,pedagogy,this,this);
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {
@@ -110,7 +112,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         } catch (NoSuchMethodException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Temp lates.
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (Exception e) {
@@ -200,7 +202,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
      * Otherwise, simply grade the problem, update the student model and return.
      */
     public Response processAttempt(AttemptEvent e) throws Exception {
-        boolean isCorrect = isAttemptCorrect(smgr.getStudentState().getCurProblem(),e.getUserInput());
+        boolean isCorrect = new ProblemGrader(smgr).isAttemptCorrect(smgr.getStudentState().getCurProblem(), e.getUserInput());
         e.setCorrect(isCorrect);
         // first update the student model so that intervention selectors have access to latest stats based on this attempt
         studentModel.studentAttempt(smgr.getStudentState(), e.getUserInput(), isCorrect, e.getProbElapsedTime());
@@ -243,7 +245,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        System.out.println("After TutorLogger.beginProblem " + (System.currentTimeMillis() - t));
 
         if (learningCompanion != null )   {
-            learningCompanion.processUncategorizedEvent(e,r);
+            learningCompanion.processBeginProblem(smgr, (BeginProblemEvent) e,r);
 //            System.out.println("After learningCompanion.processUncategorizedEvent " + (System.currentTimeMillis() - t));
 
         }
@@ -270,7 +272,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         new TutorLogger(smgr).logEndProblem(e, r);
         if (Settings.usingAssistments)
         {
-            AssistmentsUser assu = DbAssistmentsUsers.getUserFromWayangStudId(smgr.getConnection(), smgr.getStudentId());
+            CoopUser assu = DbCoopUsers.getUserFromWayangStudId(smgr.getConnection(), smgr.getStudentId());
             if (assu != null) {
                 smgr.setAssistmentsUser(true);
                 AssistmentsHandler.logToAssistmentsProblemEnd(smgr, (EndProblemEvent) e);
@@ -278,7 +280,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         }
 
         if (learningCompanion != null )
-            learningCompanion.processUncategorizedEvent(e,r);
+            learningCompanion.processEndProblem(smgr,(EndProblemEvent) e,r);
         return r;
     }
 
@@ -325,9 +327,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                 r= new ExampleResponse(ex);
             }
             else r= new ExampleResponse(null);
+            studentModel.exampleGiven(smgr.getStudentState(), exId);
         }
         else r= new ExampleResponse(null);
-        studentModel.exampleGiven(smgr.getStudentState(), exId);
+
         new TutorLogger(smgr).logShowExample((ShowExampleEvent) e, (ExampleResponse) r);
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
@@ -342,7 +345,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         Response r = new Video(vid);
         new TutorLogger(smgr).logShowVideoTransaction((ShowVideoEvent) e, r);
-        studentModel.videoGiven(smgr.getStudentState());
+        if (vid != null && !vid.equals(""))
+            studentModel.videoGiven(smgr.getStudentState());
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
 
@@ -795,7 +799,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         Response r = new Response();
         new TutorLogger(smgr).logEndExample( e, r);
         if (learningCompanion != null )
-            learningCompanion.processUncategorizedEvent(e,r);
+            learningCompanion.processEndExample(smgr,(EndExampleEvent) e,r);
         return r;
     }
 

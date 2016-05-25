@@ -590,6 +590,14 @@ public class Problem implements Activity {
         else return "";
     }
 
+    public boolean hasStandard(String ccss) {
+        for (CCStandard s : getStandards()) {
+            if (s.getCode().equals(ccss))
+                return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null);
         Hint h1 = new Hint(3,"hi");

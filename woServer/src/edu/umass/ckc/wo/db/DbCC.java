@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.db;
 
-import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.*;
 
 import java.sql.*;
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * Common Core tables
  * User: marshall
  * Date: 8/1/14
  * Time: 11:37 AM
@@ -82,12 +81,8 @@ public class DbCC {
 
     }
 
-    /**
+    /*
      * get the problem ids of problems that are part of a standard
-     * @param conn
-     * @param stdId
-     * @return
-     * @throws SQLException
      */
     public static List<Integer> getStandardProblemIds(Connection conn, String stdId) throws SQLException {
         PreparedStatement ps = null;
@@ -223,6 +218,8 @@ public class DbCC {
                 ps.close();
         }
     }
+
+
 
     public static List<Lesson> getAllLessons (Connection conn) throws SQLException {
         PreparedStatement ps = null;

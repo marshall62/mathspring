@@ -1,24 +1,26 @@
 package edu.umass.ckc.wo.db;
 
 import edu.umass.ckc.wo.assistments.AssistmentSessionData;
-import edu.umass.ckc.wo.assistments.AssistmentsUser;
-import edu.umass.ckc.wo.event.tutorhut.TeachTopicEvent;
+import edu.umass.ckc.wo.assistments.CoopUser;
 import edu.umass.ckc.wo.tutor.Settings;
 
 import java.sql.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * Coop users come from other systems like MARi and Assistments.   We store some information in the db about them.  The db table
+ * is called assistmentsUser
  * User: marshall
  * Date: 9/13/13
  * Time: 11:47 AM
  * To change this template use File | Settings | File Templates.
  */
-public class DbAssistmentsUsers {
+public class DbCoopUsers {
 
-    public static AssistmentsUser getUser(Connection conn, String userId) throws SQLException {
+    public static CoopUser getUser(Connection conn, String userId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
+        if (userId == null)
+            return null;
         try {
             String q = "select token, studId from assistmentsuser where uid=?";
             ps = conn.prepareStatement(q);
@@ -28,7 +30,7 @@ public class DbAssistmentsUsers {
             if (rs.next()) {
                 token = rs.getString("token");
                 int studId = rs.getInt("studId");
-                return new AssistmentsUser(userId,token,studId);
+                return new CoopUser(userId,token,studId);
             }
             return null;
         } finally {
@@ -40,7 +42,13 @@ public class DbAssistmentsUsers {
                         }
     }
 
-    public static AssistmentsUser insertUserInDb(Connection conn, String uid, String token, int studId) throws SQLException {
+    /*
+    MARi makes use of the AssistmentUser table.  MARi has two tokens we keep (access_token, session_token).  The
+    session_token is what identifies the user and is necessary for all read/write calls to MARi.  We store the
+    session_token as the uid and the access_token as the token.   We pretty much never need the access-token after the initial handshake
+    with MARi.
+     */
+    public static CoopUser insertUserInDb(Connection conn, String uid, String token, int studId) throws SQLException {
         PreparedStatement s = null;
         try {
             String q = "insert into assistmentsuser (uid, token, studId) " +
@@ -50,7 +58,7 @@ public class DbAssistmentsUsers {
             s.setString(2, token);
             s.setInt(3, studId);
             s.execute();
-            return new AssistmentsUser(uid,token,studId);
+            return new CoopUser(uid,token,studId);
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             if (e.getErrorCode() == Settings.duplicateRowError || e.getErrorCode() == Settings.keyConstraintViolation)
@@ -63,7 +71,7 @@ public class DbAssistmentsUsers {
     }
 
 
-    public static AssistmentsUser getUserFromWayangStudId(Connection conn, int studId) throws SQLException {
+    public static CoopUser getUserFromWayangStudId(Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -75,7 +83,7 @@ public class DbAssistmentsUsers {
             if (rs.next()) {
                 String uid = rs.getString("uid");
                 token = rs.getString("token");
-                return new AssistmentsUser(uid,token,studId);
+                return new CoopUser(uid,token,studId);
             }
             return null;
         } finally {

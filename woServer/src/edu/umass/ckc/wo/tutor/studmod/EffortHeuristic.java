@@ -52,12 +52,12 @@ public class EffortHeuristic {
      else
      GUESS --not seen hints/example/videos, correct after > 1 incorrect
 
+     *
      * @param state
-     * @param numAttemptsToSolve
      * @return
      */
 
-    public String computeEffort(StudentState state, int numAttemptsToSolve) {
+    public String computeEffort(StudentState state) {
 
         if (state.getCurProblemMode().equals(Problem.DEMO) || state.getCurProblemMode().equals(Problem.EXAMPLE)
         || state.getCurProblemMode().equals(Problem.TOPIC_INTRO))

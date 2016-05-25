@@ -31,7 +31,7 @@ public class InterleavedProblemSetProblemSelector extends BaseProblemSelector {
     @Override
     public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
         // if we are in a interleaved problem set, do the selection here; otherwise, the superclass can handle it.
-        if (smgr.isInInterleavedProblemSet())
+        if (smgr.getExtendedStudentState().isInInterleavedProblemSet())
             return null;
         else {
             throw new DeveloperException("Called InterleavedProblemSetProblemSelector.selectProblem when not in a interleaved topic.");

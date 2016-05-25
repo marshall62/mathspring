@@ -2,10 +2,7 @@ package edu.umass.ckc.wo.tutor.pedModel;
 
 import ckc.servlet.servbase.BaseServlet;
 import edu.umass.ckc.email.Emailer;
-import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.config.LessonXML;
-import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.content.ProblemAnswer;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbUserPedagogyParams;
 import edu.umass.ckc.wo.event.tutorhut.*;
@@ -22,18 +19,14 @@ import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.ReviewModeProblemSelector;
 import edu.umass.ckc.wo.tutor.response.HintResponse;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
+import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.ProblemResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
-import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutormeta.*;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -53,7 +46,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     protected Pedagogy pedagogy;
     protected LessonModel lessonModel;
     protected PedagogicalModelParameters params;
-    protected LessonModelParameters lessonModelParameters;
+//    protected LessonModelParameters lessonModelParameters;
 
     protected StudentModel studentModel;
     protected ProblemSelector problemSelector ;// problem selection is a pluggable strategy
@@ -437,52 +430,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
 
 
-    private boolean findAnswerMatch (List<ProblemAnswer> possible, String studentInput) {
-        for (ProblemAnswer a: possible) {
-            if (a.grade(studentInput))
-                return true;
-        }
-        return false;
-    }
-
-    public boolean isAttemptCorrect (int probId, String userInput) throws SQLException {
-        //Problem p = new DbProblem().getProblem(smgr.getConnection(),probId);
-        Problem p = ProblemMgr.getProblem(probId);
-
-        // Note:  Auth tool has two places to put answer for a short answer problem.  If only one answer is
-        // put in, it can be fetched using p.getAnswer().   If there are multiple forms of the answer, then use
-        // p.getAnswers().   Code below checks for which one was used and then uses it/them for grading the user input
-        if (p.isShortAnswer() && !p.isParametrized()) {
-            List<ProblemAnswer> possibleAnswers = null;
-            if (p.getAnswers().size()== 0) {
-                possibleAnswers = new ArrayList<ProblemAnswer>();
-                possibleAnswers.add(new ProblemAnswer(p.getAnswer(),probId));
-            }
-            else possibleAnswers = p.getAnswers();
-            return findAnswerMatch(possibleAnswers,userInput);
-        }
-        else if (p != null) {
-            if (p.isParametrized()) {
-                if (p.isMultiChoice())
-                    return smgr.getStudentState().getProblemAnswer().equalsIgnoreCase(userInput.trim());
-                else {
-                    // Get the list and check if one element is equal to student input.  This list comes from the StudentState
-                    // because it depends on the bindings selected for this problem and this student
-                    List<String> possibleInputs = smgr.getStudentState().getPossibleShortAnswers();
-                    List<ProblemAnswer> correctAnswers = new ArrayList<ProblemAnswer>();
-                    // turn the String coming out of the student state into simple ProblemAnswer objects so we can use the grade method
-                    for (String a: possibleInputs) {
-                        correctAnswers.add(new ProblemAnswer(a.replaceAll("\\s+",""),probId));
-                    }
-                    return findAnswerMatch(correctAnswers,userInput);
-                }
-            }
-            return p.getAnswer().equalsIgnoreCase(userInput.replaceAll("\\s+",""));
-        }
-        return false;
-    }
-
-
     public LearningCompanion getLearningCompanion() {
         return learningCompanion;
     }
@@ -511,104 +458,33 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
 
 
-    protected LessonModelParameters getLessonModelParametersForUser(Connection connection, Pedagogy ped, int classId, int studId) throws SQLException {
+//    protected LessonModelParameters getLessonModelParametersForUser(Connection connection, Pedagogy ped, int classId, int studId) throws SQLException {
+//
+//        String lessonName = ped.getLessonName();
+//        LessonXML lx =  Settings.lessonMap.get(lessonName);
+//        // first we get the parameters out of the Pedagogy's lesson as defined in the XML lessons.xml
+//        lessonModelParameters = lx.getLessonModelParams();
+//
+//        // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
+//        // see if this user has a set of parameters and if so use them to configure the pedagogy.
+//        // these params come from settings in the WoAdmin tool for the class.
+//        LessonModelParameters classParams = DbClass.getLessonModelParameters(connection, classId);
+//        // overload the defaults with stuff defined for the class.
+//        lessonModelParameters.overload(classParams);
+////       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
+//        // these params are the ones that were passed in by Assistments and saved for the user
+//
+//        PedagogyParams userParams = DbUserPedagogyParams.getPedagogyParams(connection, studId);
+//        lessonModelParameters.overload(userParams);
+//        // overload the params with anything provided for the user.
+////        defaultParams.overload(userParams);
+//        return lessonModelParameters;
+//    }
 
-        String lessonName = ped.getLessonName();
-        LessonXML lx =  Settings.lessonMap.get(lessonName);
-        // first we get the parameters out of the Pedagogy's lesson as defined in the XML lessons.xml
-        lessonModelParameters = lx.getLessonModelParams();
 
-        // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
-        // see if this user has a set of parameters and if so use them to configure the pedagogy.
-        // these params come from settings in the WoAdmin tool for the class.
-        LessonModelParameters classParams = DbClass.getLessonModelParameters(connection, classId);
-        // overload the defaults with stuff defined for the class.
-        lessonModelParameters.overload(classParams);
-//       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
-        // these params are the ones that were passed in by Assistments and saved for the user
 
-        PedagogyParams userParams = DbUserPedagogyParams.getPedagogyParams(connection, studId);
-        lessonModelParameters.overload(userParams);
-        // overload the params with anything provided for the user.
-//        defaultParams.overload(userParams);
-        return lessonModelParameters;
-    }
 
-    /**
-     * Get a list of problems the student has solved or seen as an example.   Works using the problemReuseInterval which is a number of
-     * sessions or days.  We only select problems within the interval.  This is a way to control recency.   We want solved problems and examples to be eligible to
-     * show again after a certain number of sessions or days (ideally this number might be determined on a per student basis but for now it lives in the pedagogy
-     * definition)
-     * @return
-     * @throws Exception
-     */
-    public List<Integer> getRecentExamplesAndCorrectlySolvedProblems (List<StudentProblemData> probEncountersInTopic) throws Exception {
-        // get the ones that are within the problemReuseInterval
-        List<Integer> probs = new ArrayList<Integer>();
-        int nSessionReuseInterval = this.params.getProblemReuseIntervalSessions();
-        int nDayReuseInterval = this.params.getProblemReuseIntervalDays();
-        int sess = smgr.getSessionNum();
-        Date now = new Date(System.currentTimeMillis());
-        int numSessions=0;
-        for (StudentProblemData d: probEncountersInTopic) {
-            Date probBeginTime = new Date(d.getProblemBeginTime());
-            if (d.getSessId() != sess) {
-                numSessions++;
-                sess = d.getSessId();
-            }
-            int dayDiff = computeDayDiff(now,probBeginTime);
-            // We stop when one of the intervals is reached
-            if (numSessions == nSessionReuseInterval || dayDiff >= nDayReuseInterval)
-                break;
-            if (d.isSolved())
-                probs.add(d.getProbId());
-            else if (d.getMode().equals(Problem.DEMO))
-                probs.add(d.getProbId());
-        }
-        return probs;
-    }
 
-    /**
-     * Returns ids of problems that have been given to the student.  Problems considered "seen" must be within
-     * the problem reuse interval specified for the pedagogy and class.
-     * @param probEncountersInTopic
-     * @return
-     * @throws Exception
-     */
-    public List<Integer> getPracticeProblemsSeen (List<StudentProblemData> probEncountersInTopic) throws Exception {
-
-        // get the ones that are within the problemReuseInterval
-        List<Integer> probs = new ArrayList<Integer>();
-        int nSessionReuseInterval = this.params.getProblemReuseIntervalSessions();
-        int nDayReuseInterval = this.params.getProblemReuseIntervalDays();
-        int sess = smgr.getSessionNum();
-        Date now = new Date(System.currentTimeMillis());
-        int numSessions=0;
-        for (StudentProblemData d: probEncountersInTopic) {
-            Date probBeginTime = new Date(d.getProblemBeginTime());
-            if (d.getSessId() != sess) {
-                numSessions++;
-                sess = d.getSessId();
-            }
-            int dayDiff = computeDayDiff(now,probBeginTime);
-            if (numSessions == nSessionReuseInterval || dayDiff >= nDayReuseInterval)
-                break;
-            if (d.isPracticeProblem())
-                probs.add(d.getProbId());
-
-        }
-        return probs;
-
-    }
-
-    private int computeDayDiff(Date now, Date probBeginTime) {
-        long msDif = now.getTime() - probBeginTime.getTime();
-        long secs = msDif / 1000;
-        long mins = secs / 60;
-        long hrs = mins / 60;
-        int days = (int) hrs / 24;
-        return days;
-    }
 
 
 

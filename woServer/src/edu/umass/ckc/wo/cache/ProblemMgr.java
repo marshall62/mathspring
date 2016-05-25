@@ -403,7 +403,7 @@ public class ProblemMgr {
     // we can do a lookup in log time with this.
     public static Problem getProblem (int id) throws SQLException {
         if (allProblems.size() == 0)
-            throw new SQLException("The ProblemMgr has no loaded problems.  Make sure the correct servlet is being wrong so that it gets loaded");
+            throw new SQLException("The ProblemMgr has no loaded problems.  Make sure the correct servlet is being run so that it gets loaded");
         Problem temp = new Problem(id);
         int ix = Collections.binarySearch(allProblems,temp,
                 new Comparator<Problem>() {

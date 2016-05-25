@@ -2,13 +2,11 @@ package edu.umass.ckc.wo.state;
 
 import edu.umass.ckc.wo.db.DbStateTableMgr;
 import edu.umass.ckc.wo.util.State;
-import edu.umass.ckc.wo.util.WoProps;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Map;
 
 /**
  * A minimal LessonState that should get much more of its variables from TopicState.   In the future every student should have a LessonState but only
@@ -27,6 +25,7 @@ public class LessonState2  extends State {
     private static final String CUR_PROBLEM_MODE = "curProblemMode";
     private static final String NEXT_PROBLEM_MODE = "nextProblemMode";
     private static final String LAST_PROBLEM_MODE = "lastProblemMode";
+    private static final String CUR_PROBLEM_INDEX = "curProblemIndex";
 
 
 
@@ -34,7 +33,7 @@ public class LessonState2  extends State {
 
     private static String TABLE_NAME = "studentlessonstate";
     private static String[] TABLE_COLS = new String[] { CUR_PROBLEM , LAST_PROBLEM , NEXT_PROBLEM , CUR_PROBLEM_MODE , NEXT_PROBLEM_MODE,
-            LAST_PROBLEM_MODE
+            LAST_PROBLEM_MODE, CUR_PROBLEM_INDEX
            } ;
     private int curProblem;
     private int lastProblem;
@@ -43,6 +42,7 @@ public class LessonState2  extends State {
     private String nextProblemMode;
     private String lastProblemMode;
     private String curProbType;
+    private int curProblemIndex;
     private DbStateTableMgr dbWorker;
 
 
@@ -160,6 +160,14 @@ public class LessonState2  extends State {
 
     public String getLastProblemMode() {
         return lastProblemMode;
+    }
+
+    public int getCurProblemIndex() {
+        return curProblemIndex;
+    }
+
+    public void setCurProblemIndex(int curProblemIndex) {
+        this.curProblemIndex = curProblemIndex;
     }
 
 

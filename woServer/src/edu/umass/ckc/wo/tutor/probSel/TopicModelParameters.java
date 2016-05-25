@@ -98,7 +98,7 @@ public class TopicModelParameters extends LessonModelParameters {
         maxTimeInTopic =minutes;
         minTimeInTopic = 0;
         maxNumberProbs = userParams.getMaxProbs();
-        topicMastery = userParams.getTopicMastery();
+        topicMastery = userParams.getMastery();
         minNumberProbs = 1;
         this.singleTopicMode = userParams.isSingleTopicMode();
         // If we get passed no topic from Assistments, then this translates into setting the maxtime in the topic to 0

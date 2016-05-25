@@ -51,8 +51,6 @@ public class WoTutorServlet extends BaseServlet {
             ServletUtil.initialize(servletContext,connection);
             logger.debug("Begin init of WoTutorServlet");
             // machine learning problem selector needs to read a policy file
-            Settings.policyFile = servletConfig.getInitParameter(Names.POLICY_FILE);
-            Settings.mlLogFile = servletConfig.getInitParameter(Names.ML_LOG_FILE);
             String useLearningCompanions = servletContext.getInitParameter(Names.USE_LEARNING_COMPANIONS);
             if (useLearningCompanions != null)
                 Settings.useLearningCompanions = Boolean.parseBoolean(useLearningCompanions);
@@ -61,12 +59,12 @@ public class WoTutorServlet extends BaseServlet {
             // Flash client must be on same machine but can be served by other than servletEngine
             // (e.g. it is best served by apache)
             Settings.getSurveys(connection); // loads the pre/post Survey URLS
-            AssistmentsHandler.assistmentsLogbackURL = servletConfig.getInitParameter(Names.ASSISTMENTS_LOGBACK_URL);
+//            AssistmentsHandler.assistmentsLogbackURL = servletConfig.getInitParameter(Names.ASSISTMENTS_LOGBACK_URL);
             String videoURI = servletConfig.getInitParameter(Names.VIDEO_URI);
             Settings.videoURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
                     servletContext.getContextPath(),Settings.webContentPath, videoURI);
-            Settings.emoteServletURI = servletConfig.getInitParameter(Names.EMOTE_SERVLET_URI);
-            Settings.formalityServletURI = servletConfig.getInitParameter(Names.FORMALITY_SERVLET_URI);
+//            Settings.emoteServletURI = servletConfig.getInitParameter(Names.EMOTE_SERVLET_URI);
+//            Settings.formalityServletURI = servletConfig.getInitParameter(Names.FORMALITY_SERVLET_URI);
             ServletUtil.startSessionCleanupDemon(connection);
 
             String host = DbUtil.getHost(connection);

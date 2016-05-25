@@ -15,7 +15,7 @@ public class LoginXML extends ConfigXML{
 
 
     public LoginXML(Element interventions, Element control, String name) {
-        super(interventions, control, name, null);
+        super(interventions, control, name);
     }
 
 

@@ -4,6 +4,7 @@ import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.collab.CollaborationManager;
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
 import edu.umass.ckc.wo.event.tutorhut.LogoutEvent;
@@ -13,12 +14,16 @@ import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.NavigationHandler;
 import edu.umass.ckc.wo.login.LoginResult;
 import edu.umass.ckc.wo.mrcommon.Names;
+import edu.umass.ckc.wo.state.ExtendedStudentState;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
+import edu.umass.ckc.wo.util.Dates;
 import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
 
@@ -30,8 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.GregorianCalendar;
-import java.util.Random;
+import java.util.*;
 
 
 public class SessionManager {
@@ -59,6 +63,7 @@ public class SessionManager {
     private String client = null; // the name of the Flash client that the user should use
     private WoProps woProps;
     private StudentState studState; // state variables about student stored in db
+    private ExtendedStudentState extStudState;
     //    private StudentProfile profile; // contains satv,satm, gender, and group
     private Random ran = new Random();
     private StudentModel studentModel = null;
@@ -280,6 +285,7 @@ public class SessionManager {
         studState = new StudentState(this.getConnection(), this);
         studState.setObjid(this.getStudentId());
         studState.extractProps(props);  // pull out student state props from all properties
+        this.extStudState = new ExtendedStudentState(this);
     }
 
     public StudentState getStudentState() {
@@ -875,7 +881,9 @@ public class SessionManager {
         return this.eventCounter;  //To change body of created methods use File | Settings | File Templates.
     }
 
-    public boolean isInInterleavedProblemSet() throws SQLException {
-        return this.getStudentState().getCurTopic() == Settings.interleavedTopicID;
+    public ExtendedStudentState getExtendedStudentState () {
+        return this.extStudState;
     }
+
+
 }

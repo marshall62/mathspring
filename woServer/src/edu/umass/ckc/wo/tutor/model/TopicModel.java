@@ -8,6 +8,10 @@ import edu.umass.ckc.wo.content.TopicIntro;
 
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.db.DbUser;
+import edu.umass.ckc.wo.event.internal.BeginningOfTopicEvent;
+import edu.umass.ckc.wo.event.internal.EndOfTopicEvent;
+import edu.umass.ckc.wo.event.internal.InTopicEvent;
+import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -59,12 +63,12 @@ public class TopicModel extends LessonModel {
     }
 
 
-    public void init (SessionManager smgr, LessonModelParameters lmParams,Pedagogy pedagogy,
+    public void init (SessionManager smgr, Pedagogy pedagogy,
                       PedagogicalModel pedagogicalModel, PedagogicalMoveListener pedagogicalMoveListener) throws Exception {
 
         // The superclass constructor calls readLessonControl which takes the control parameters out of the pedagogy and
         // builds the intervention handling for the model
-        super.init(smgr, lmParams, pedagogy, pedagogicalModel, pedagogicalMoveListener);
+        super.init(smgr, pedagogy, pedagogicalModel, pedagogicalMoveListener);
         this.tmParams = (TopicModelParameters) lmParams;
         hintSelector = pedagogicalModel.getHintSelector();
         topicSelector = new TopicSelectorImpl(smgr,tmParams);
@@ -171,7 +175,7 @@ public class TopicModel extends LessonModel {
         else {
             // Prevent starting a topic that has no problems.  This can happen if a student logs out after solving all problems in a topic because
             // we attempt to resume the last topic a student was in.
-            List<Integer> probs = getUnsolvedProblems(curTopic,smgr.getClassID(), DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()));
+            List<Integer> probs = getUnsolvedProblems();
             if (probs == null || probs.size() < 1)  {
                 curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState(), smgr.getStudentModel());
                 curTopic = switchTopics(curTopic);
@@ -305,34 +309,6 @@ public class TopicModel extends LessonModel {
             return processNextProblemEvent( (NextProblemEvent) e);
 
         }
-                                                            /*
-        // If this model didn't generate the intervention, return null so the pedagogical model can process it.
-        // If this model did generate it, process it and if that results in an internal event, process the internal event
-        // If it results in nothing, then let this model process this event as if it were a nextProblemEvent
-        else if (e instanceof ContinueNextProblemInterventionEvent) {
-            String lastInterventionClass = smgr.getStudentState().getLastIntervention();
-            InterventionSelectorSpec spec= interventionGroup.getInterventionSelectorSpec(lastInterventionClass);
-            // If the last intervention is not found in this model's list of interventions, it isn't relevant to this model
-            // so we return null
-            if (spec == null)
-                return null;
-            NextProblemInterventionSelector intSel = (NextProblemInterventionSelector) spec.buildIS(smgr);
-            intSel.init(smgr,pedagogicalModel);
-            // N.B. Assumption is that we no longer get Interventions back
-            Response r = intSel.processInterventionTimeoutEvent(e);
-            // no state change (InternalState returned) means process it just like a NextProblemEvent
-            if (r == null) {
-                // N.B. This can return null if no interventions and internal state = IN_TOPIC
-                r = processNextProblemEvent(new NextProblemEvent(e.getServletParams()));
-                // If this model processed the event, but there is nothing it wants to return, we need to return an indicator
-                // that the intervention was processed here so the pedagogical model won't try to .
-                if (r == null)
-                    return new InterventionInputProcessed(e);
-                else return r;
-            }
-            else if (r instanceof InternalEvent)
-                return this.processInternalEvent((InternalEvent) r);
-        }                                                     */
         // If this model didn't generate the intervention, return null so the pedagogical model can process it.
         // If this model did generate it, process it and if that results in an internal event, process the internal event
         // If it results in nothing, then let this model process this event as if it were a nextProblemEvent
@@ -374,48 +350,6 @@ public class TopicModel extends LessonModel {
 
 
 
-    public difficulty getNextProblemDifficulty (ProblemScore score) {
-        // New sessions won't have a previous problem score so we just return same difficulty
-        if (score == null)
-            return TopicModel.difficulty.SAME;
-        if (!score.isCorrect())
-            return TopicModel.difficulty.EASIER;
-        if (score.getMistakes() > score.getAvgMistakes()) {
-            logger.debug("Decreasing difficulty level... ");
-            return TopicModel.difficulty.EASIER;
-        }
-        else { // mistakes are LOW
-            if (score.getHints() > score.getAvgHints()) {
-                if (score.getSolveTimeSecs() > score.getAvgSolveTime()) {
-//                        logger.debug("Student is carefully seeing help and spending time, maintain level of difficulty (m<E_m, h>E_h, t>E_t)") ;
-                    logger.debug("Maintaining same difficulty level... ");
-                    return TopicModel.difficulty.SAME;
-
-                } else {
-//                        logger.debug("Rushing through hints to get to the correct answer, decrease level of difficulty (m<E_m, h>E_h, t<E_t)") ;
-                    logger.debug("Decreasing difficulty level... ");
-                    return TopicModel.difficulty.EASIER;
-
-                }
-            } else {
-                if (score.getSolveTimeSecs() > score.getAvgSolveTime()) {
-//                        logger.debug("Correctly working on problem with effort but without help (m<E_m, h<E_h, t>E_t)") ;
-//                        logger.debug("50% of the time increase level of difficulty. 50% of the time, maintain level of difficulty") ;
-                    if (Math.random() > 0.5) {
-                        logger.debug("Increasing difficulty level... ");
-                        return TopicModel.difficulty.HARDER;
-                    } else {
-                        logger.debug("Maintaining same difficulty level... ");
-                        return TopicModel.difficulty.SAME;
-                    }
-                } else
-                    ; // logger.debug("Correctly working the problem with no effort and few hints (m<E_m, h<E_h, t<E_t)") ;
-                logger.debug("Increasing the difficulty level...");
-                return TopicModel.difficulty.HARDER;
-            }
-        }
-
-    }
 
 
     /**
@@ -439,7 +373,7 @@ public class TopicModel extends LessonModel {
 
 
 
-    public EndOfTopicInfo isEndOfTopic(long probElapsedTime, difficulty difficulty) throws Exception {
+    public EndOfTopicInfo isEndOfTopic(long probElapsedTime, LessonModel.difficulty difficulty) throws Exception {
         return topicSelector.isEndOfTopic(probElapsedTime,difficulty);
     }
 
@@ -533,8 +467,11 @@ public class TopicModel extends LessonModel {
         return topicSelector.hasReadyContent(lessonId); // lessonId is a topic ID
     }
 
-    public List<Integer> getUnsolvedProblems(int theTopicId, int classId, boolean includeTestProblems) throws Exception {
-        return topicSelector.getUnsolvedProblems(theTopicId, classId, includeTestProblems);
+    public List<Integer> getUnsolvedProblems() throws Exception {
+        int classId = smgr.getClassID();
+        int topicId = smgr.getStudentState().getCurTopic();
+        boolean includeTestProbs =  DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId());
+        return topicSelector.getUnsolvedProblems(topicId, classId, includeTestProbs);
     }
 
     public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws Exception {
@@ -568,9 +505,8 @@ public class TopicModel extends LessonModel {
         return hintSelector;
     }
 
-    public enum difficulty {
-        EASIER,
-        SAME,
-        HARDER
+    public Class getLessonModelParametersClass () {
+        return TopicModelParameters.class;
     }
+
 }

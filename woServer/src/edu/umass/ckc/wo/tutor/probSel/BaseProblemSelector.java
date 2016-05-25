@@ -2,7 +2,6 @@ package edu.umass.ckc.wo.tutor.probSel;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -55,7 +54,7 @@ public class BaseProblemSelector implements ProblemSelector {
         TopicModel.difficulty nextDiff = topicModel.getNextProblemDifficulty(lastProblemScore);
         StudentState state = smgr.getStudentState();
         // Gets problems with testable problems included if the user is marked to receive testable stuff.
-        List<Integer> topicProbIds = topicModel.getUnsolvedProblems(state.getCurTopic(),smgr.getClassID(), DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()));
+        List<Integer> topicProbIds = topicModel.getUnsolvedProblems();
         int lastProbId = smgr.getStudentState().getCurProblem();
         // if the last problem given wasn't solved it'll still be in the list.  Toss it out.  We don't want to show the same problem 2X in a row
         int loc = topicProbIds.indexOf(lastProbId);
@@ -68,18 +67,18 @@ public class BaseProblemSelector implements ProblemSelector {
         if (lastIx == -1)
             nextIx = (int) Math.round((topicProbIds.size()-1) / parameters.getDifficultyRate());
 
-        if (nextIx == -1 && nextDiff == TopicModel.difficulty.EASIER) {
+        if (nextIx == -1 && nextDiff == LessonModel.difficulty.EASIER) {
             if (lastIx <= 0)
                 throw new DeveloperException("Last problem index=0 and want easier problem.   Content failure NOT PREDICTED by TopicSelector");
             nextIx =(int) Math.round(lastIx / parameters.getDifficultyRate());
         }
-        else if (nextIx == -1 && nextDiff == TopicModel.difficulty.HARDER) {
+        else if (nextIx == -1 && nextDiff == LessonModel.difficulty.HARDER) {
             if (lastIx >= topicProbIds.size())
                 throw new DeveloperException("Last problem >= number of problems in topic.   Content failure NOT PREDICTED by TopicSelector");
             nextIx = lastIx + ((int) Math.round((topicProbIds.size()-1 - lastIx) / parameters.getDifficultyRate()));
 
         }
-        else if (nextIx == -1 && nextDiff == TopicModel.difficulty.SAME) {
+        else if (nextIx == -1 && nextDiff == LessonModel.difficulty.SAME) {
             nextIx = Math.min(lastIx, topicProbIds.size()-1);
         }
         nextIx = Math.min(nextIx, topicProbIds.size()-1);

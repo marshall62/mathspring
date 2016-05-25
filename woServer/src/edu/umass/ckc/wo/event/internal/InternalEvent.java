@@ -1,6 +1,7 @@
-package edu.umass.ckc.wo.tutor.response;
+package edu.umass.ckc.wo.event.internal;
 
 import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.tutor.response.Response;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +13,9 @@ import edu.umass.ckc.wo.event.SessionEvent;
 public class InternalEvent extends Response {
     private SessionEvent sessionEvent;
     private String onEventName;
+
+    public InternalEvent() {
+    }
 
     public InternalEvent(SessionEvent sessionEvent, String onEventName) {
         this.sessionEvent = sessionEvent;
