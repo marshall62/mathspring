@@ -112,7 +112,6 @@ public class LCAccessors {
     }
 
 
-
     /**
      * Return true if the current user event is an attempt
      * @param ev
@@ -154,6 +153,11 @@ public class LCAccessors {
         if (state.getTimeToSolve() > 0)
             return state.getNumMistakesOnCurProblem() + 1;
         return -1;
+    }
+
+    public int numHintsGiven (SessionEvent ev) {
+        int n = state.getNumHintsGivenOnCurProblem() ;
+        return n;
     }
 
     /**

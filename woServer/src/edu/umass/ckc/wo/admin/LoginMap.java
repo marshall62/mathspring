@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.config.LoginXML;
 import org.apache.log4j.Logger;
 import org.jdom.DataConversionException;
+import org.jdom.JDOMException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ public class LoginMap extends Hashtable<String, LoginXML> {
     public LoginMap () {}
 
 
-    public LoginMap(InputStream str) throws IOException, ClassNotFoundException, DataConversionException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public LoginMap(InputStream str) throws IOException, ClassNotFoundException, JDOMException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         LoginParser parser = new LoginParser(str); // a list of Pedagogy objects
         List<LoginXML> l = parser.parse();
         buildMap(l);

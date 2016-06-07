@@ -30,16 +30,16 @@ public class RuleHistoryCache {
         map = new HashMap<Integer, StudentRuleHistory>();
     }
 
-    public StudentRuleHistory getStudentHistory(SessionManager smgr) {
-        return map.get(smgr.getStudentId());
+    public StudentRuleHistory getStudentHistory(int sessId) throws Exception {
+        return map.get(sessId);
     }
 
 
-    public void addRuleInstantiation(SessionManager smgr, LCRule r) throws Exception {
-        StudentRuleHistory h = map.get(smgr.getSessionNum());
+    public void addRuleInstantiation(int sessId, LCRule r) {
+        StudentRuleHistory h = map.get(sessId);
         if (h == null)  {
-            map.put(smgr.getSessionNum(),new StudentRuleHistory());
-            h = map.get(smgr.getSessionNum());
+            map.put(sessId,new StudentRuleHistory());
+            h = map.get(sessId);
         }
         h.addRule(r);
     }

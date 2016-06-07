@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.lc;
 
+import edu.umass.ckc.wo.exc.LCRuleException;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 
@@ -15,18 +16,46 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DbLCRule {
-    
-    public static LCRuleset readRuleSet (Connection conn, int ruleSetId, LCRuleset ruleset) throws SQLException {
+
+
+    public static LCMessage getLCMessage (Connection conn, int id) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select r.id, r.name, r.description, r.interventionpointName, r.priority from rule r, rulesetmap m where m.rulesetid=? and m.ruleid=r.id";
+            String q = "select messageText, name from lcmessage where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,id);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                String text = rs.getString(1);
+                String media = rs.getString(2);
+                return new LCMessage(id,text,media);
+            }
+            return null;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+    
+    public static LCRuleset readRuleSet (Connection conn, int ruleSetId, LCRuleset ruleset) throws Exception {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        int id=-1;
+        String name="";
+        try {
+            loadRulesetMetaRules(conn,ruleSetId, ruleset);
+            String q = "select r.id, r.name, r.description, r.onEvent, r.priority from rule r, rulesetmap m where m.rulesetid=? and m.ruleid=r.id";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,ruleSetId);
             rs = stmt.executeQuery();
+
             while (rs.next()) {
-                int id = rs.getInt(1);
-                String name= rs.getString(2);
+                id = rs.getInt(1);
+                name= rs.getString(2);
                 String descr= rs.getString(3);
                 String onEvent= rs.getString(4);
                 double priority = rs.getDouble(5);
@@ -37,6 +66,10 @@ public class DbLCRule {
             }
             return ruleset;
         }
+        catch (Exception e)  {
+            Exception eee = new LCRuleException("Failure to read in rule " + id + " " + name + e.getMessage(), e  );
+            throw eee;
+        }
         finally {
             if (stmt != null)
                 stmt.close();
@@ -45,15 +78,77 @@ public class DbLCRule {
         } 
     }
 
+    private static void loadRulesetMetaRules(Connection conn, int ruleSetId, LCRuleset ruleset) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id,name,value,units from lcmetarule where rulesetid=? and status=1";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,ruleSetId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int mrid= rs.getInt(1);
+                String name = rs.getString(2);
+                String value = rs.getString(3);
+                String units = rs.getString(4);
+                LCMetaRule mr = new LCMetaRule(name,units,value);
+                ruleset.addMetaRule(mr);
+            }
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
     public static void writeRuleset (Connection conn, LCRuleset ruleset) throws SQLException {
         int id = ruleset.getId();
         if (id == -1) {
             id = insertRuleset(conn,ruleset);
             ruleset.setId(id);
+            writeMetaRules(conn,ruleset,id);
         }
         else updateRuleset(conn,ruleset);
         for (LCRule r : ruleset.getRules())
             writeRule(conn,r,ruleset);
+    }
+
+    private static void writeMetaRules(Connection conn, LCRuleset ruleset, int rsid) throws SQLException {
+        List<LCMetaRule> mrs = ruleset.getMetaRules();
+        for (LCMetaRule r : mrs)
+            writeMetaRule(conn,r,rsid);
+    }
+
+    private static int writeMetaRule(Connection conn, LCMetaRule r, int rsid) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into lcmetarule (name, value, units,rulesetid) values (?,?,?,?)";
+            stmt = conn.prepareStatement(q,PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt.setString(1,r.getName());
+            stmt.setString(2,r.getValue());
+            stmt.setString(3,r.getUnits());
+            stmt.setInt(4,rsid);
+            stmt.execute();
+            rs = stmt.getGeneratedKeys();
+            rs.next();
+            return rs.getInt(1);
+        }
+        catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == Settings.duplicateRowError ||e.getErrorCode() == Settings.keyConstraintViolation )
+                ;
+            else throw e;
+        }
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return -1;
     }
 
     private static void updateRuleset(Connection conn, LCRuleset ruleset) throws SQLException {
@@ -323,7 +418,7 @@ public class DbLCRule {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select a.id,a.name,,lcmessageId,m.messageText,m.name,a.actionType from ruleaction a, lcmessage m where ruleId=? and m.id=a.lcmessageId";
+            String q = "select a.id,a.name,lcmessageId,m.messageText,m.name,a.actionType from ruleaction a, lcmessage m where ruleId=? and m.id=a.lcmessageId";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,ruleId);
             rs = stmt.executeQuery();
@@ -405,12 +500,41 @@ public class DbLCRule {
         <lcruleset source="db" name="MyRuleSet">
         <lcruleset source="ruleset.xml" name="MyOtherRuleSet">
          */
-    public static void loadRuleSetIntoPedagogy(Connection conn, Pedagogy ped, LCRuleset ruleset) throws SQLException {
+    public static void loadRuleSetIntoPedagogy(Connection conn, Pedagogy ped, LCRuleset ruleset) throws Exception {
 
         int rulesetId = getRuleSetId(conn,ruleset.getName());
         if (rulesetId != -1) {
             LCRuleset rs = readRuleSet(conn,rulesetId,ruleset);
 
         }
+    }
+
+    public static void clearRuleTable(Connection conn, String tablename) throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            String q = "delete from " + tablename;
+            ps = conn.prepareStatement(q);
+            int n = ps.executeUpdate();
+
+            q = "ALTER TABLE " + tablename + " AUTO_INCREMENT = 1";
+            ps = conn.prepareStatement(q);
+            n = ps.executeUpdate();
+
+        }
+        finally {
+            if (ps != null)
+                ps.close();
+
+        }
+
+    }
+
+    public static void clearRuleTables (Connection conn) throws SQLException {
+        clearRuleTable(conn,"ruleset");
+        clearRuleTable(conn,"rulesetmap");
+        clearRuleTable(conn,"rule");
+        clearRuleTable(conn,"rulecondition");
+        clearRuleTable(conn,"ruleaction");
+        clearRuleTable(conn,"lcmetarule");
     }
 }

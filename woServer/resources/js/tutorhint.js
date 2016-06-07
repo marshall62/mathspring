@@ -77,6 +77,7 @@ function processRequestHintResult(responseText, textStatus, XMLHttpRequest) {
     debugAlert("hint returned is ID: " + id + " label: " + label);
     globals.curHint = label;
     callProblemPlayHint(label);
+    showLearningCompanion(hint);
 }
 
 

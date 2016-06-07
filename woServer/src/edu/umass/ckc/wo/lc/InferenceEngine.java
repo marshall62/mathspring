@@ -1,15 +1,14 @@
 package edu.umass.ckc.wo.lc;
 
 import edu.umass.ckc.wo.event.SessionEvent;
-import edu.umass.ckc.wo.event.tutorhut.EventType;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -69,7 +68,7 @@ public class InferenceEngine {
                 logger.debug("Rule" + r.getName() + " is true");
                 LCAction act = r.getAction();
                 logger.debug("Action: " + act.getMsgText());
-                RuleHistoryCache.getInstance().addRuleInstantiation(smgr,r);
+                RuleHistoryCache.getInstance().addRuleInstantiation(smgr.getSessionNum(),r);
                 return r;
             }
         }
@@ -81,38 +80,36 @@ public class InferenceEngine {
      * From a list of candidates we go through the rulesets meta-rules and return the list of rules
      * that satisfy all the meta ruels.
      * @param ruleset
-     * @param candidates
+     * @param candidates rules for a given event
      * @param event
      * @return
      */
-    private void rulesThatSatisfyMetaRules(LCRuleset ruleset, List<LCRule> candidates, TutorHutEvent event, List<LCRule> rulesThatApply) {
+    private void rulesThatSatisfyMetaRules(LCRuleset ruleset, List<LCRule> candidates, TutorHutEvent event, List<LCRule> rulesThatApply) throws Exception {
+        rulesThatApply.addAll(candidates); // start out with all the rules being in the list.
         List<LCMetaRule> metaRules = ruleset.getMetaRules();
         long now = System.currentTimeMillis();
-        StudentRuleHistory hist = RuleHistoryCache.getInstance().getStudentHistory(smgr);
+        StudentRuleHistory hist = RuleHistoryCache.getInstance().getStudentHistory(smgr.getSessionNum());
         if (hist != null) {
+            // TODO need priority on meta rules.
             for (LCMetaRule mr : metaRules) {
-                // this will add in the rules that satisfy the meta rule.
-                rulesThatApply.addAll(rulesThatSatisfyMetaRule(mr, hist, candidates, now));
+                // Remove rules from rulesThatApply that do not satisfy all the meta-rule.
+                applyMetaRule(mr, hist, rulesThatApply, now);
+                // rulesThatApply.addAll(rulesThatSatisfyMetaRule(mr, hist, candidates, now));
             }
         }
-        else rulesThatApply.addAll(candidates);
+
     }
 
-    /**
-     * Given the rule history for a student and a meta-rule and the rules that apply so far, return a list of
-     * those rules that satisfy the meta-rule.
-     * @param mr
-     * @param hist
-     * @param candidates
-     * @return
-     */
-    private List<LCRule> rulesThatSatisfyMetaRule(LCMetaRule mr, StudentRuleHistory hist, List<LCRule> candidates, long now) {
-        // TODO not sure what the interface should be so that a meta-rule can be applied
-        // It seems like a meta-rule should be given a set of candidate LCrules and the students rule history and it
-        // should be able to return a list of candidate rules that satisfy the meta-rule.
-        candidates = mr.apply(hist,candidates, now); // will get a new (reduced) list of candidates that satisfy it
-        return candidates;
-    }
 
+    // Delete from the rulesThatApply those that do not satisfy the meta-rule.
+    private void applyMetaRule(LCMetaRule mr, StudentRuleHistory hist, List<LCRule> rulesThatApply, long now) {
+        ListIterator<LCRule> iter = rulesThatApply.listIterator();
+        while(iter.hasNext()){
+            LCRule r = iter.next();
+            if (! mr.isSatisfied(hist,r,now))
+                iter.remove();
+        }
+
+    }
 
 }

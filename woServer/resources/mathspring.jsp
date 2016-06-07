@@ -106,7 +106,8 @@
             answersChosenSoFar: [] ,
             sym: null,
             component: null,
-            componentAction: null
+            componentAction: null,
+            learningCompanionTextMessage: null
         }
 
 

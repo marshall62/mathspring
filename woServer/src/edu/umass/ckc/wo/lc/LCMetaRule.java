@@ -16,6 +16,11 @@ public class LCMetaRule {
     private String value;
     private int vali;
 
+    // tell how long to wait until a the same rule can fire again
+    private static final String AVOID_REPEAT_RULE_MR = "thisRuleNotFiredInPastMinutes";
+    // tell how long to wait before giving another message from a rule set.
+    private static final String AVOID_TOO_MANY_MESSAGES = "noMessageFiredInPastMinutes";
+
     public LCMetaRule(String name, String units, String value) {
         this.name = name;
         this.units = units;
@@ -45,7 +50,7 @@ public class LCMetaRule {
     public List<LCRule> apply(StudentRuleHistory hist, List<LCRule> candidates, long now) {
         List<LCRule> keep = new ArrayList<LCRule>();
         for (LCRule r : candidates) {
-            if (testInstantiations(hist, r, now))
+            if (isSatisfied(hist, r, now))
                 keep.add(r);
         }
         return keep;
@@ -58,12 +63,24 @@ public class LCMetaRule {
      * @param now
      * @return
      */
-    private boolean testInstantiations(StudentRuleHistory hist, LCRule r, long now) {
-        for (StudentRuleHistory.LCRuleInstantiation inst : hist.getHistory()) {
-            // fireMinimumFrequency means that we should return false if this rule fails any the test against
-            //  any rule instantiation
-            if (this.name.equalsIgnoreCase("ruleFireMinimumFrequency") && !testInstantiation(inst,r,now))
-                 return false;
+    public boolean isSatisfied(StudentRuleHistory hist, LCRule r, long now) {
+        // the too-many messages meta rule says to not fire messages until a certain wait time.  We simply test the top of the history stack
+        // (the last message given) to see when it was given and compare it to now.  If enough time has gone by, then it's ok to fire r.
+        if (this.name.equalsIgnoreCase(AVOID_TOO_MANY_MESSAGES)) {
+            StudentRuleHistory.LCRuleInstantiation inst = hist.getHistory().peek();
+            long diff = now - inst.getTime();
+            if (diff > this.vali)
+                return true;
+            else return false;
+        }
+        else if (this.name.equalsIgnoreCase(AVOID_REPEAT_RULE_MR) ) {
+            for (StudentRuleHistory.LCRuleInstantiation inst : hist.getHistory()) {
+                // avoidRepeatRule means that we should return false if this rule fails any the test against
+                //  any rule instantiation
+                if ( !testInstantiation(inst,r,now))
+                     return false;
+            }
+            return true;
         }
         return true;
 
@@ -79,7 +96,7 @@ public class LCMetaRule {
     private boolean testInstantiation(StudentRuleHistory.LCRuleInstantiation inst, LCRule r, long now) {
         // If the instantiation is for the given rule r, make sure it was fired longer ago than
         // the meta rules value.
-        if (this.name.equalsIgnoreCase("ruleFireMinimumFrequency") && inst.getR()==r)  {
+        if (this.name.equalsIgnoreCase(AVOID_REPEAT_RULE_MR) && inst.getR()==r)  {
             long diff = now - inst.getTime();
             return diff > this.vali;
         }

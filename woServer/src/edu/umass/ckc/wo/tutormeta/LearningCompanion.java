@@ -26,6 +26,7 @@ public abstract class LearningCompanion {
     protected List<String> clips = new ArrayList<String>();
 
     public static final String LEARNING_COMPANION_JSON_ATTRIBUTE = "learningCompanionFiles";
+    public static final String LEARNING_COMPANION_TEXT_MESSSAGE = "lcTextMessage";
 
     public abstract String getGender() ;
     public abstract String getEthnicity() ;

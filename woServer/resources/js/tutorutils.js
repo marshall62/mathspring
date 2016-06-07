@@ -59,6 +59,16 @@ function servletGetWait (action, args, callbackFn) {
            async: false});
 }
 
+function httpHead(url, successCallbackFn, failureCallbackFn) {
+    $.ajax({
+        type: "HEAD",
+        async: true,
+        success: function (data, textStatus, jqXHR) { successCallbackFn(url);} ,
+        error: function (jqXHR, textStatus, errorThrown) { failureCallbackFn(url);} ,
+        url: url
+    });
+}
+
 
 // return the XML that is <elementName>xxx</elementName>
 // Note that we must use begin and end tags as above.   No short-cuts.

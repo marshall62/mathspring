@@ -160,6 +160,19 @@ public class LCExpr extends LCRuleComponent {
         return b ;
     }
 
+    public String toString () {
+        String val = "";
+        if (this.valType == INT)
+            val = Integer.toString(iVal);
+        else if (this.valType == DOUB)
+            val = Double.toString(dVal);
+        else if (this.valType == BOOL)
+            return this.getFn().getFnName();
+        else
+            val = strVal;
+        return this.getFn().getFnName() + " " + this.getRelop() + " " + val;
+    }
+
     public static void main(String[] args) {
         Connection conn = null;
         try {

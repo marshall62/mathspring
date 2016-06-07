@@ -5,18 +5,16 @@ import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.xml.JDOMUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * An XML parser for reading in a ruleset from an XML stream.
  * User: david
  * Date: 4/8/16
  * Time: 1:01 PM
@@ -24,7 +22,10 @@ import java.util.List;
  */
 public class XMLLCRule {
 
-    public static void loadRuleSetIntoPedagogy(Pedagogy ped, LCRuleset rs, InputStream inputStream) {
+    private static Connection conn;
+
+    public static void loadRuleSetIntoPedagogy(Connection conn, Pedagogy ped, LCRuleset rs, InputStream inputStream) throws JDOMException, IOException {
+        XMLLCRule.conn = conn;
         String filename = rs.getSource(); // a file in the resources directory. e.g. lc_curProblem.xml
         Document d = JDOMUtils.makeDocument(inputStream);
         Element ruleset = d.getRootElement();
@@ -80,15 +81,22 @@ public class XMLLCRule {
         return null;
     }
 
-    private static LCAction parseAction(Element actElt) {
+    private static LCAction parseAction(Element actElt) throws SQLException {
         String media, text;
-        media = actElt.getAttributeValue("media");
         String actionType = actElt.getAttributeValue("actionType");
         String msgId = actElt.getAttributeValue("messageId");
         int msgIdi = -1;
-        if (msgId != null && !msgId.equals(""))
+        // if an lcmessageId is given, then we need to fetch the text and media file from the lcmessage table
+        if (msgId != null && !msgId.equals(""))  {
             msgIdi = Integer.parseInt(msgId);
-        text = actElt.getTextTrim();
+            LCMessage lcm = DbLCRule.getLCMessage(conn, msgIdi);
+            text = lcm.getText();
+            media = lcm.getMedia();
+        }
+        else {
+            text = actElt.getTextTrim();
+            media = actElt.getAttributeValue("media");
+        }
         return new LCAction(-1,text,media, actionType,msgIdi);
     }
 
@@ -110,12 +118,18 @@ public class XMLLCRule {
         try {
             str = new FileInputStream(f);
             LCRuleset rs = new LCRuleset();
-            XMLLCRule.loadRuleSetIntoPedagogy(null,rs,str);
-            Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
-           // DbLCRule.writeRuleset(conn,rs);
+            Connection conn= DbUtil.getAConnection("localhost");
+            XMLLCRule.loadRuleSetIntoPedagogy(conn, null, rs, str);
+//            XMLLCRule.loadRulesIntoPedagogy(conn, null, rs, str);
+            DbLCRule.clearRuleTables(conn); // blow away all the contents of rule tables and reset the id counters
+           DbLCRule.writeRuleset(conn,rs);
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (JDOMException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 

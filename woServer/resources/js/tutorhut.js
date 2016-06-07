@@ -785,9 +785,21 @@ function learningCompanionDone () {
 
 
 
+function successfulLCResult (url) {
+    loadIframe(LEARNING_COMPANION_WINDOW_ID, url);
+    //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
+
+}
+
+function failureLCResult (url) {
+    alert("Cannot find the learning companion URL " + url + "  Message: " + transients.learningCompanionTextMessage);
+}
+
+
 function showLearningCompanion (json) {
 
     var files = json.learningCompanionFiles;
+    transients.learningCompanionTextMessage = json.lcTextMessage;
     if (files != undefined && files != null)  {
 
         $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
@@ -796,19 +808,19 @@ function showLearningCompanion (json) {
 //    alert("learning companion file: " + files);
     if (files instanceof Array)    {
         if (files[0] != globals.learningCompanionClip) {
-//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],260,600);
-            loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files[0]);
-            // $("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files[0]);   // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files[0];
+            httpHead(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],successfulLCResult,failureLCResult)
+//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],260,600);
+
         }
 
     }
     else {
         if (files != globals.learningCompanionClip) {
-//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files, 260,600);
-            loadIframe(LEARNING_COMPANION_WINDOW_ID, sysGlobals.problemContentPath + "/LearningCompanion/" + files);
-            //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
             globals.learningCompanionClip = files;
+            httpHead(sysGlobals.problemContentPath + "/LearningCompanion/" + files, successfulLCResult,failureLCResult)
+//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files, 260,600);
+
         }
     }
 }

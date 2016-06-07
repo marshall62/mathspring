@@ -15,10 +15,12 @@ import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.xml.JDOMUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 
 import javax.servlet.ServletContext;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +36,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DbPedagogy {
-    private static Connection conn;
+
     private static HashMap<String,Pedagogy> pedsByOldIdMap = new HashMap<String, Pedagogy>();
 
     private static boolean buildMapOfOldIds = true;
@@ -142,7 +144,7 @@ public class DbPedagogy {
                 List<LCRuleset> rulesets = ped.getLearningCompanionRuleSets();
                 if (rulesets != null)
                     for (LCRuleset rset : rulesets)
-                        loadRuleset(rset,ped,servletContext);
+                        loadRuleset(conn,rset,ped,servletContext);
 
                pedmap.put(Integer.toString(id),ped);
             }
@@ -157,25 +159,25 @@ public class DbPedagogy {
     }
 
     // A ruleset comes from either the db or from a file.   This loads the ruleset (and all its rules) into the pedagogy.
-    private static void loadRuleset (LCRuleset rs , Pedagogy ped, ServletContext servletContext) throws SQLException {
+    private static void loadRuleset (Connection conn, LCRuleset rs , Pedagogy ped, ServletContext servletContext) throws Exception {
         if (rs.isFromDb())
             DbLCRule.loadRuleSetIntoPedagogy(conn,ped,rs);
         else
-            XMLLCRule.loadRuleSetIntoPedagogy(ped, rs, servletContext.getResourceAsStream(rs.getSource()));
+            XMLLCRule.loadRuleSetIntoPedagogy(conn, ped, rs, servletContext.getResourceAsStream(rs.getSource()));
     }
 
 
-    private static void readPedagogiesFromFile() throws FileNotFoundException, SQLException {
+    private static void readPedagogiesFromFile(Connection conn) throws IOException, SQLException, JDOMException {
         FileInputStream str = new FileInputStream("f:\\dev\\mathspring\\woServer\\resources\\pedagogies.xml");
         Document d = JDOMUtils.makeDocument(str);
         Element root = d.getRootElement();
         List<Element> peds =  root.getChildren("pedagogy");
         for (Element ped : peds) {
-            readPedagogy(ped);
+            readPedagogy(conn,ped);
         }
     }
 
-    private static void readPedagogy(Element ped) throws SQLException {
+    private static void readPedagogy(Connection conn, Element ped) throws SQLException {
 
         String name = ped.getChild("name").getTextTrim();
         Element e = ped.getChild("provideInSimpleConfig");
@@ -397,7 +399,7 @@ public class DbPedagogy {
         try {
             DbPedagogy p = new DbPedagogy();
             DbPedagogy.buildMapOfOldIds = true;
-            DbPedagogy.conn = DbUtil.getAConnection("rose.cs.umass.edu");
+            Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
             Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,null);

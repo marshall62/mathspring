@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.xml.JDOMUtils;
 import org.jdom.DataConversionException;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +24,7 @@ import java.util.List;
 public class LoginParser {
     private Element root;
 
-    public LoginParser(InputStream str) throws ClassNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, DataConversionException {
+    public LoginParser(InputStream str) throws ClassNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, JDOMException {
         Document d = JDOMUtils.makeDocument(str);
         root = d.getRootElement();
 

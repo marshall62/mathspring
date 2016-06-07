@@ -24,7 +24,7 @@ public class StudentRuleHistory {
 
     }
 
-    public List<LCRuleInstantiation> getHistory () {
+    public Stack<LCRuleInstantiation> getHistory () {
         return hist;
     }
 

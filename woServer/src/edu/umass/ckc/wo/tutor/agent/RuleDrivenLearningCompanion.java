@@ -16,6 +16,7 @@ import edu.umass.ckc.wo.tutor.hintSel.StrategicHintSelector;
 import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
+import net.sf.json.JSONObject;
 import org.dom4j.rule.RuleSet;
 
 import java.util.List;
@@ -129,15 +130,33 @@ public class RuleDrivenLearningCompanion extends LearningCompanion {
         if (rule != null)    {
             LCAction act = rule.getAction();
             clips.add(act.getName()); // The LCAction has the name of the html lc action and this is all we really use
-            addLearningCompanionToResponse(r);
+            addLearningCompanionToResponse(rule,r);
+
             return r;
         }
         else {
             // If no rule is applied, then set the character to idle by default.
             clips.add("idle");
-            addLearningCompanionToResponse(r);
+            addLearningCompanionToResponse(null, r);
             return r;
         }
+    }
+
+    public void addLearningCompanionToResponse (LCRule rule, Response r) {
+        JSONObject jo = r.getJSON();
+        // eliminate the element if there are no clips (clips) to send
+        if (clips.size() > 0) {
+            for (String e: clips)
+                jo.accumulate(LearningCompanion.LEARNING_COMPANION_JSON_ATTRIBUTE, getCharactersName()+"/"+e+".html");
+            r.setCharacterControl(clips.get(0));
+        }
+        if (rule != null) {
+            String msg =rule.getAction().getMsgText();
+            msg = msg != null ? msg : "";
+            jo.element(LEARNING_COMPANION_TEXT_MESSSAGE,msg);
+        }
+
+
     }
 
     public Response processAttempt (SessionManager smgr, AttemptEvent e, AttemptResponse r) throws Exception {

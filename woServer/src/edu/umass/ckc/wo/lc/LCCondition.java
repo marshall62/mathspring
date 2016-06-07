@@ -70,4 +70,8 @@ public class LCCondition  extends LCRuleComponent {
     public String getRelop() {
         return expr.getRelop();
     }
+
+    public String toString () {
+        return expr.toString();
+    }
 }

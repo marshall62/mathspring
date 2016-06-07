@@ -640,25 +640,28 @@ public class BaseStudentModel extends StudentModel {
     }
 
     public void standardUpdate(StudentState state, int probID, int numHelpAids, boolean isCorrect, int mistakes, long probElapsed) throws SQLException {
-        for (CCStandard std: ProblemMgr.getProblem(probID).getStandards())  {
-            StudentStandardMastery m = DbStudentStandardMastery.getMastery(conn,smgr.getStudentId(),std.getCode());
-            double mastery = INITIAL_STANDARD_MASTERY_ESTIMATE;
-            int numProbsSeen = 1;
-            long ttfa = state.getTimeToFirstAttempt();
-            this.heuristic = new StudentModelMasteryHeuristic(conn);
-            // will be null if the standard has not been encountered previously
-            if (m != null) {
-                mastery= m.getVal();
-                numProbsSeen = m.getNumProbs() + 1;
+        Problem p = ProblemMgr.getProblem(probID);
+        if (p != null && p.getStandards() != null) {
+            for (CCStandard std: ProblemMgr.getProblem(probID).getStandards())  {
+                StudentStandardMastery m = DbStudentStandardMastery.getMastery(conn,smgr.getStudentId(),std.getCode());
+                double mastery = INITIAL_STANDARD_MASTERY_ESTIMATE;
+                int numProbsSeen = 1;
+                long ttfa = state.getTimeToFirstAttempt();
+                this.heuristic = new StudentModelMasteryHeuristic(conn);
+                // will be null if the standard has not been encountered previously
+                if (m != null) {
+                    mastery= m.getVal();
+                    numProbsSeen = m.getNumProbs() + 1;
 
+                }
+                mastery = this.heuristic.computeStandardMastery(ttfa, mastery, probID,
+                        numHelpAids, isCorrect, mistakes, numProbsSeen, state.getCurProblemMode());
+
+                if (m == null)
+                    DbStudentStandardMastery.insertMastery(conn,smgr.getStudentId(),std.getCode(),mastery,numProbsSeen);
+                else
+                    DbStudentStandardMastery.updateMastery(conn,smgr.getStudentId(),std.getCode(),mastery,numProbsSeen);
             }
-            mastery = this.heuristic.computeStandardMastery(ttfa, mastery, probID,
-                    numHelpAids, isCorrect, mistakes, numProbsSeen, state.getCurProblemMode());
-
-            if (m == null)
-                DbStudentStandardMastery.insertMastery(conn,smgr.getStudentId(),std.getCode(),mastery,numProbsSeen);
-            else
-                DbStudentStandardMastery.updateMastery(conn,smgr.getStudentId(),std.getCode(),mastery,numProbsSeen);
         }
 
     }

@@ -127,4 +127,14 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
     public void setId(int id) {
         this.id = id;
     }
+
+    public String toString () {
+        StringBuilder sb = new StringBuilder(this.getName() + ": IF ");
+        for (LCCondition c : this.getConditions())
+            sb.append(c.toString()).append(" AND ");
+        sb.delete(sb.lastIndexOf("AND"),sb.length());
+        sb.append(" THEN " );
+        sb.append(this.getAction().getName() + " ("+this.getAction().getMsgText()+")");
+        return sb.toString();
+    }
 }

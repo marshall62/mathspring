@@ -1020,7 +1020,7 @@ public class StudentState extends State implements TutorEventHandler {
         // At the end of each problem the timeInTopic is increased by the time spent in the problem.
         this.setTimeInTopic(this.getTimeInTopic()+ probElapsedTime);
         // check if the previous event was a hint and problem not solved yet.  If so, then update hint_time
-        if ((this.isLastEvent(HINT_EVENT)) && (! isProblemSolved())) {
+       if ((this.isLastEvent(HINT_EVENT)) && (! isProblemSolved())) {
             long curr_hint_time = this.getTimeInHintsBeforeCorrect();
             long extra_hint_time = this.getProbElapsedTime() - this.getHintStartTime();
             problemState.setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);

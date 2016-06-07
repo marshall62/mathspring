@@ -317,7 +317,7 @@ public class MariHandler extends Handler {
     private String callbackForSessionToken(String token) {
         try {
             String url = String.format(mariSessionURL,token, API_KEY );
-            String response = HTTPRequest.sendPost(url);
+            String response = HTTPRequest.sendGet(url);
             JSONObject json = (JSONObject) JSONSerializer.toJSON(response);
             String sessionToken = json.getString(SESSION_TOKEN_JSON_FIELD);
             // if no token, then some error message is in the JSON that we should use
@@ -389,9 +389,11 @@ public class MariHandler extends Handler {
         o.element("session_token", u.getUid());
         JSONArray a = new JSONArray();
         JSONObject a1 = new JSONObject();
-        a1.element("pa", ccssMastery.getStd());
+//        a1.element("pa", ccssMastery.getStd());
+        a1.element("pa", "bdzL-hVx7-TnFb-CqC8");
         a1.element("value", Double.toString(ccssMastery.getVal()));
-        a1.element("confidence", "1.0");
+        a1.element("confidence", 1.0);
+
         a.add(a1);
         o.element("data", a);
         return o.toString();
