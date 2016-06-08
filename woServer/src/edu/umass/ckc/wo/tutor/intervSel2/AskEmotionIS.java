@@ -195,17 +195,18 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String reason = params.getString(AskEmotionSliderIntervention.REASON);
         // build XML like <interventionInput class="%AskEmotionIS"> <emotion> .... </emotion> </interventionInput>
         setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\"><![CDATA[" + reason + "]]></emotion>", e);
-        DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId());
+        DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId(), null, null);
         return null;  // no more interventions to return.
     }
 
-    private void processFreeAnswerInputs(InputResponseNextProblemInterventionEvent e) {
+    private void processFreeAnswerInputs(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
         String feeling = params.getString(AskEmotionFreeAnswerIntervention.FEELING);
         String reason = params.getString(AskEmotionFreeAnswerIntervention.REASON);
         String cont = params.getString(AskEmotionFreeAnswerIntervention.CONTINUE);
         setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel><reason><![CDATA[" + reason + "]]></reason>" +
                 "<continueMathspring><![CDATA[" + cont + "]]></continueMathspring></emotion>", e);
+        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), cont, reason);
     }
 
 

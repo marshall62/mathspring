@@ -250,6 +250,8 @@ public class MariHandler extends Handler {
         Response resp = pedMod.processInternalEvent(ie); // This will call the problem selector to get a problem.
 
         // For now we assume it is giving back a ProblemResponse rather than something else like an intervention
+        // TODO If a MARi user came into a particular standard previously and saw all the problems, coming in again will cause a content failure
+        // because the system may not be able to find a problem.  It will not gracefully deal with this.
         if (resp instanceof  ProblemResponse) {
             Problem prob = ((ProblemResponse) resp).getProblem();
             int probId = prob.getId();

@@ -2,24 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="189505d4-c36f-4dbf-8103-e3d81f5decb1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionFreeAnswerIntervention.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/InterleavedProblemSetParams.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/InterleavedProblemSetParams.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/InterleavedTopic.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/InterleavedTopic.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/util/Lists.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/util/Lists.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/TopicModelParameters.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/TopicModelParameters.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/TopicSelectorImpl.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/TopicSelectorImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbEmotionResponses.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbEmotionResponses.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="mathspring.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465402001760" ignored="false" />
+    <file path="/Dummy.txt" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465404328471" ignored="false" />
     <file path="/BaseStudentModel.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1464279097950" ignored="false" />
     <file path="/StudentModelMasteryHeuristic.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1461806677795" ignored="false" />
     <file path="/RawMasteryHeuristic.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1461761089864" ignored="false" />
-    <file path="/fragment.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465400376496" ignored="false" />
+    <file path="/fragment.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465404332389" ignored="false" />
     <file path="/DbStudentStandardMastery.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1461852848566" ignored="false" />
     <file path="/StudentState.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1462375979366" ignored="false" />
     <file path="/StudentProblemHistory.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1462307758340" ignored="false" />
@@ -35,7 +30,7 @@
     <file path="F:/springLearn/gs-relational-data-access/pom.xml" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1461935193354" ignored="false" />
     <file path="/web.xml" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1462217471240" ignored="false" />
     <file path="/BaseServlet.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1462278898152" ignored="false" />
-    <file path="/MariHandler.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1464697630692" ignored="false" />
+    <file path="/MariHandler.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465402201258" ignored="false" />
     <file path="/Handler.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1462279315658" ignored="false" />
     <file path="/MathspringSubSessionServlet.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1462279433323" ignored="false" />
     <file path="/AssistmentsHandler.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1463497130616" ignored="false" />
@@ -105,7 +100,8 @@
     <file path="/TopicModelParameters.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465319088480" ignored="false" />
     <file path="/Amazing.js" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465324479965" ignored="false" />
     <file path="/AskEmotionFreeAnswerIntervention.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465396799601" ignored="false" />
-    <file path="/AskEmotionIS.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465399045456" ignored="false" />
+    <file path="/AskEmotionIS.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465404405105" ignored="false" />
+    <file path="/DbEmotionResponses.java" changelist="189505d4-c36f-4dbf-8103-e3d81f5decb1" time="1465404357633" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,21 +150,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" line="358" class="edu.umass.ckc.wo.servletController.MariHandler" package="edu.umass.ckc.wo.servletController">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" line="124" class="edu.umass.ckc.wo.tutor.intervSel2.AskEmotionIS" package="edu.umass.ckc.wo.tutor.intervSel2">
+      <breakpoint url="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" line="360" class="edu.umass.ckc.wo.servletController.MariHandler" package="edu.umass.ckc.wo.servletController">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -241,15 +223,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Amazing.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/Amazing.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="45" selection-start="426" selection-end="426" vertical-scroll-proportion="-9.153846">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="AskEmotionRadioIntervention.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionRadioIntervention.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -271,16 +244,25 @@
       <file leaf-file-name="AskEmotionIS.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="142" column="79" selection-start="6169" selection-end="6169" vertical-scroll-proportion="0.0">
+            <state line="205" column="93" selection-start="9304" selection-end="9304" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tutorintervention.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="tutorintervention.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="268" column="125" selection-start="13395" selection-end="13395" vertical-scroll-proportion="0.21317829">
+            <state line="276" column="13" selection-start="13647" selection-end="13647" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MariHandler.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="253" column="104" selection-start="13575" selection-end="13575" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -298,7 +280,16 @@
       <file leaf-file-name="BasePedagogicalModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="367" column="21" selection-start="19042" selection-end="19042" vertical-scroll-proportion="0.0">
+            <state line="1052" column="61" selection-start="52111" selection-end="52111" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TutorLogger.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="131" column="15" selection-start="5406" selection-end="5406" vertical-scroll-proportion="0.23782772">
               <folding />
             </state>
           </provider>
@@ -316,16 +307,7 @@
       <file leaf-file-name="DbEmotionResponses.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbEmotionResponses.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="22" selection-start="307" selection-end="307" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TopicModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/TopicModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="261" column="0" selection-start="11447" selection-end="11447" vertical-scroll-proportion="0.0">
+            <state line="35" column="28" selection-start="1350" selection-end="1350" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -349,8 +331,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/LCMetaRule.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/LCAccessors.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/XMLLCRule.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/DbLCRule.java" />
         <option value="$PROJECT_DIR$/woServer/resources/lc_curProblem.xml" />
@@ -363,8 +343,10 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/InterleavedTopic.java" />
         <option value="$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/Amazing.js" />
         <option value="$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/Amazing.html" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionFreeAnswerIntervention.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbEmotionResponses.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
       </list>
     </option>
   </component>
@@ -1098,26 +1080,26 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="5" width="1642" height="1016" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297619" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23515716" sideWeight="0.998538" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30849826" sideWeight="0.9987342" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30849826" sideWeight="0.9987342" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3921801" sideWeight="0.49797297" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3247963" sideWeight="0.4972973" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974684" sideWeight="0.8323632" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32945284" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32945284" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.6706161" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32857144" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25316456" sideWeight="0.6705471" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25316456" sideWeight="0.69150174" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16763678" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1241,23 +1223,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/Amazing.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1252" column="45" selection-start="175374" selection-end="175374" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/InferenceEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="94" selection-start="2881" selection-end="2881" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1647#1655#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/DbLCRule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="78" column="73" selection-start="2550" selection-end="2550" vertical-scroll-proportion="0.0">
@@ -1300,23 +1265,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbEmotionResponses.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="22" selection-start="307" selection-end="307" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="135" column="21" selection-start="5042" selection-end="5042" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="367" column="21" selection-start="19042" selection-end="19042" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1335,13 +1286,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="79" selection-start="6169" selection-end="6169" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/intervhandlers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="35" column="22" selection-start="1753" selection-end="1753" vertical-scroll-proportion="0.0">
@@ -1351,7 +1295,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="268" column="125" selection-start="13395" selection-end="13395" vertical-scroll-proportion="0.21317829">
+        <state line="276" column="13" selection-start="13647" selection-end="13647" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="253" column="104" selection-start="13575" selection-end="13575" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbEmotionResponses.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="28" selection-start="1350" selection-end="1350" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="205" column="93" selection-start="9304" selection-end="9304" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1052" column="61" selection-start="52111" selection-end="52111" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="131" column="15" selection-start="5406" selection-end="5406" vertical-scroll-proportion="0.23782772">
           <folding />
         </state>
       </provider>
