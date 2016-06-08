@@ -68,41 +68,7 @@ public class TopicSelectorImpl implements TopicSelector {
         return studentProblemHistory.getTopicHistoryMostRecentEncounters(topicId);
     }
 
-    private int computeDayDiff(Date now, Date probBeginTime) {
-        long msDif = now.getTime() - probBeginTime.getTime();
-        long secs = msDif / 1000;
-        long mins = secs / 60;
-        long hrs = mins / 60;
-        int days = (int) hrs / 24;
-        return days;
-    }
 
-
-    public List<Integer> getRecentExamplesAndCorrectlySolvedProblems (List<StudentProblemData> probEncountersInTopic) throws Exception {
-        // get the ones that are within the problemReuseInterval
-        List<Integer> probs = new ArrayList<Integer>();
-        int nSessionReuseInterval = this.pedagogicalModel.getParams().getProblemReuseIntervalSessions();
-        int nDayReuseInterval = this.pedagogicalModel.getParams().getProblemReuseIntervalDays();
-        int sess = smgr.getSessionNum();
-        Date now = new Date(System.currentTimeMillis());
-        int numSessions=0;
-        for (StudentProblemData d: probEncountersInTopic) {
-            Date probBeginTime = new Date(d.getProblemBeginTime());
-            if (d.getSessId() != sess) {
-                numSessions++;
-                sess = d.getSessId();
-            }
-            int dayDiff = computeDayDiff(now,probBeginTime);
-            // We stop when one of the intervals is reached
-            if (numSessions == nSessionReuseInterval || dayDiff >= nDayReuseInterval)
-                break;
-            if (d.isSolved())
-                probs.add(d.getProbId());
-            else if (d.getMode().equals(Problem.DEMO))
-                probs.add(d.getProbId());
-        }
-        return probs;
-    }
 
 
     /**

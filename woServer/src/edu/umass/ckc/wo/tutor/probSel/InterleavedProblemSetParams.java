@@ -9,6 +9,7 @@ package edu.umass.ckc.wo.tutor.probSel;
  */
 public class InterleavedProblemSetParams {
     private int numTopicsToWait;  // how many topics must be explored before showing an interleaved problem set
+    private int numTopicsToReview;  // how many topics to include in a problem set
     private int exploredProblemNum; // how many problems must be solved in a topic to be considered "fully explored" (for purposes of extracting review problems)
     private int exploredMinTime; // minimum time (minutes) to spend in a topic to be considered "fully explored"
     private int numProbsPerTopic; // the number of problems from each topic to place into the problem-set
@@ -47,5 +48,13 @@ public class InterleavedProblemSetParams {
 
     public void setNumProbsPerTopic(int numProbsPerTopic) {
         this.numProbsPerTopic = numProbsPerTopic;
+    }
+
+    public int getNumTopicsToReview() {
+        return numTopicsToReview;
+    }
+
+    public void setNumTopicsToReview(int numTopicsToReview) {
+        this.numTopicsToReview = numTopicsToReview;
     }
 }

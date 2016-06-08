@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
+import edu.umass.ckc.wo.util.Lists;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -37,21 +38,25 @@ public class InterleavedTopic {
         StudentProblemHistory hist = studentModel.getStudentProblemHistory();
         List<StudentProblemData> probs = hist.getReverseHistory();
         // a list of pairs <pid, topicId>  which is review problems and the topics they are in.
-        Set<ReviewProblem> probsToReview = new HashSet<ReviewProblem>();
+        List<ReviewProblem> probsToReview = new ArrayList<ReviewProblem>();
         // Go through the student history and find problems that are good for review.
         for (StudentProblemData p : probs) {
             int topicId = p.getTopicId();
             String topicIdstr = Integer.toString(topicId);
             // If the problem is part of the list of topics to review, add it to the list of problems if it meets certain criteria
             if (topicsToReview.contains(topicIdstr) ) {
+                    // if the probsToReview has an element for the problem p, skip it
+                    // DM : N.B. this is a Java 8 lambda expression (see https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html#approach1)
+                    if (Lists.hasAnElement(probsToReview,  x -> x.getProbId() == p.getProbId()))
+                        continue;
                     // Add problems where a hint was seen and it was solved.
-                    if (p.getNumHints() > 0 && p.isSolved())
+                    else if (p.getNumHints() > 0 && p.isSolved())
                         probsToReview.add(new ReviewProblem(p.getProbId(),topicId));
                     // Add problems that were solved and are above the student mastery in the topic
-                    if (p.isSolved() && studentModel.getTopicMastery(topicId) <= ProblemMgr.getProblem(p.getProbId()).getDifficulty())
+                    else if (p.isSolved() && studentModel.getTopicMastery(topicId) <= ProblemMgr.getProblem(p.getProbId()).getDifficulty())
                         probsToReview.add(new ReviewProblem(p.getProbId(),topicId));
                     // Add problems that were attempted and not solved and are below the student mastery in the topic
-                    if (p.getNumAttemptsToSolve() > 0 && !p.isSolved() && studentModel.getTopicMastery(topicId) >= ProblemMgr.getProblem(p.getProbId()).getDifficulty())
+                    else if (p.getNumAttemptsToSolve() > 0 && !p.isSolved() && studentModel.getTopicMastery(topicId) >= ProblemMgr.getProblem(p.getProbId()).getDifficulty())
                         probsToReview.add(new ReviewProblem(p.getProbId(),topicId));
 
             }
@@ -70,17 +75,38 @@ public class InterleavedTopic {
         // clicks go back to problem I was on??  Handling the nextProb event is going to have to be handled correctly
     }
 
-    private boolean inReviewList (List<ReviewProblem> probsToReview, int pid) {
-        for (ReviewProblem p: probsToReview)
-            if (p.getProbId() == pid)
-                return true;
-        return false;
+
+    private int getNumTopicsSinceLastReview (Connection conn, int topicId, StudentModel sm, InterleavedProblemSetParams params) {
+        StudentProblemHistory hist = sm.getStudentProblemHistory();
+        int interleaveId = Settings.interleavedTopicID;
+        int lastTopic = topicId;
+        int topicCount = 0;  // counts the number of fully explored topics.
+        int probsSolvedInTopic = 0;
+        long timeInTopic=0; // number of seconds in the topic
+        List<String> topicsToReview = new ArrayList<String>();
+        for (StudentProblemData d : hist.getReverseHistory()) {
+            int probTopicId = d.getTopicId();
+            if (d.isDemo() || d.isTopicIntro())
+                continue;
+            // if the problem is in the interleaved topic, we've found the last time we were in an interleaved problem set
+            if (probTopicId == interleaveId)
+                return topicCount;
+            // if the problem is in a different topic than the last, then increment the topicCounter IF the problemsSolved count is
+            // at a level that indicates the student saw enough problems in the previous topic.   Then
+            // reset the problemsSolved counter.
+            if (probTopicId != lastTopic)  {
+                 topicCount++;
+                lastTopic = probTopicId;
+            }
+        }
+        return topicCount;
     }
 
     /**
      * Given the current topic, go through the students problem-solving history in reverse looking for topics that are reviewable.
      * A reviewable topic is one that a student solved enough problems in.   Gathering these topics stops at the point where
-     * we find a topic that is the interleaved-topic ID.   The effect is that we are gathering reviewable topics between now and
+     * we find a topic that is the interleaved-topic ID OR when we've gathered problems from enough topics (the number of topics is
+     * specified in the InterleavedProblemSetParams).   The effect is that we are gathering reviewable topics between now and
      * the last time an interleaved problem set was given.  Returns the list of topics to review.
      * @param conn
      * @param topicID
@@ -122,8 +148,8 @@ public class InterleavedTopic {
                 probsSolvedInTopic++;
             // count the amount of time spent in every practice problem
             timeInTopic += d.getTimeInProblemSeconds();
-            // if we've found enough reviewable topics or spent enough time, exit
-            if (topicCount >= params.getNumTopicsToWait() )
+            // exit if we've found enough reviewable topics - TODO or spent enough time
+            if (topicCount >= params.getNumTopicsToReview() )
                 return topicsToReview;
         }
         return topicsToReview;
@@ -142,10 +168,13 @@ public class InterleavedTopic {
      */
     boolean shouldShowInterleavedProblemSet(Connection conn, int topicID, StudentModel studentModel, InterleavedProblemSetParams params) throws SQLException {
         List<String> topicsToReview = getReviewableTopics(conn, topicID, studentModel, params);
-
+        int numTopicsSeenSinceLastReview = getNumTopicsSinceLastReview(conn,topicID,studentModel,params);
+        // put results of condition in local var so I can tweak this in debugger to force it to go into interleaved topics if I want.
+        boolean cond =  topicsToReview.size() >= params.getNumTopicsToReview() && numTopicsSeenSinceLastReview >= params.getNumTopicsToWait();
         // We only want to show an interleaved topic if we found enough topics to review since the last time we showed
-        // an interleaved problem set.
-        if (topicsToReview.size() >= params.getNumTopicsToWait()) {
+        // an interleaved problem set AND we have seen enough topics to satisfy the numTopicsToWait parameter which controls how frequently these
+        // interleaved topics are offered.
+        if (cond) {
             smgr.getStudentState().setReviewTopics(topicsToReview);
             return true;
         }

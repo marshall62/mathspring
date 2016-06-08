@@ -257,6 +257,7 @@ public class TopicModelParameters extends LessonModelParameters {
         int exploredTopicMinTime=10;  // given in minutes
         int exploredTopicProbNum=10;
         int numProbsPerTopic=3;
+        int numTopicsToReview=3;
         if (c != null) {
             s = c.getValue();
             everyNTopics = Integer.parseInt(s);
@@ -279,12 +280,19 @@ public class TopicModelParameters extends LessonModelParameters {
             numProbsPerTopic = Integer.parseInt(s);
 
         }
+        c = p.getChild("numTopicsToReview");
+        if (c != null) {
+            s = c.getValue();
+            numTopicsToReview = Integer.parseInt(s);
+
+        }
 
         InterleavedProblemSetParams iParams = new InterleavedProblemSetParams();
         iParams.setNumTopicsToWait(everyNTopics);
         iParams.setExploredProblemNum(exploredTopicProbNum);
         iParams.setExploredMinTime(exploredTopicMinTime);
         iParams.setNumProbsPerTopic(numProbsPerTopic);
+        iParams.setNumTopicsToReview(numTopicsToReview);
         this.interleaveParams = iParams;
 
     }
