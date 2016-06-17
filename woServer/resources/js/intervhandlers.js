@@ -33,7 +33,7 @@ function processTopicSwitchIntervention(html) {
 function processAskEmotionIntervention(html) {
     //alert("Switching topics because " + reason);
 //    interventionDialogOpen("How are you doing", html, NEXT_PROBLEM_INTERVENTION );
-    interventionDialogOpenAsConfirm("How are you doing", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
+    interventionDialogOpenAsConfirm("How are you doing", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick, 550 );
 
 }
 

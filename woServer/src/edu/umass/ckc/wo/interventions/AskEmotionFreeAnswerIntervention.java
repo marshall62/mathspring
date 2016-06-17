@@ -51,14 +51,14 @@ public class AskEmotionFreeAnswerIntervention extends InputResponseIntervention 
 
     public String getDialogHTML() {
         String str = "<div>  " +
-                                 getFormOpen() + " <p>We will ask these questions a <b>few</b> times, so its <b>OK</b> to change your mind.  <br>" +
+                                 getFormOpen() + " <p>We will ask these questions a <b>few</b> times, so its <b>OK</b> to change your mind.  " +
                 "Please be as <b>honest</b> as possible in answering these questions. <br><br>";
-        str += "1.  How do you feel about your work in Mathspring?<br>";
-        str += "<textarea name=\"" + FEELING + "\" rows=\"4\" cols=\"40\"/>" ;
-        str += "<br><br>2. What led you to this feeling?<br>";
-        str += "<textarea name=\"" + REASON + "\" rows=\"4\" cols=\"40\"/>" ;
-        str += "<br><br>3. Do you wish to continue working in Mathspring?  Why or why not?<br>";
-        str += "<textarea name=\"" + CONTINUE + "\" rows=\"4\" cols=\"40\"/>" ;
+        str += "1.  How do you feel about your work in Mathspring?";
+        str += "<textarea name=\"" + FEELING + "\" rows=\"3\" cols=\"40\"/>" ;
+        str += "<br><br>2. What led you to this feeling?";
+        str += "<textarea name=\"" + REASON + "\" rows=\"3\" cols=\"40\"/>" ;
+        str += "<br><br>3. Do you wish to continue working in Mathspring?  Why or why not?";
+        str += "<textarea name=\"" + CONTINUE + "\" rows=\"3\" cols=\"40\"/>" ;
         str+= "</p>";
 
         str+="</form></div>";

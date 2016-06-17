@@ -2,13 +2,16 @@
 <!-- web.xml to run on localhost only
 The results of this go into out/artifacts/MathSpring_exploded
 -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5">
+<!--<web-app xmlns="http://java.sun.com/xml/ns/javaee"-->
+         <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+         <!--xsi:schemaLocation="http://java.sun.com/xml/ns/javaee-->
+		  <!--http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"-->
+         <!--version="2.5">-->
 
-
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="WebApp_ID" version="3.0">
 
     <!-- for debugging only.  used for ?testdb2=true arg to servlet -->
 
@@ -218,6 +221,24 @@ The results of this go into out/artifacts/MathSpring_exploded
         <servlet-class>edu.umass.ckc.wo.woserver.SimpleJSPServlet</servlet-class>
 
     </servlet>
+
+
+    <servlet>
+        <servlet-name>Jersey REST Service</servlet-name>
+        <servlet-class>
+            org.glassfish.jersey.servlet.ServletContainer
+        </servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>edu.umass.ckc.wo.jerseytest</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey REST Service</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
 
     <servlet-mapping>
         <servlet-name>MathspringSubSessionServlet</servlet-name>
