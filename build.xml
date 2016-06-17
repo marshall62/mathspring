@@ -991,7 +991,7 @@
       <fileset dir="${woserver.output.dir}"/>
     </copy>
     <copy file="${basedir}/woServer/web/WEB-INF/rose/log4j.properties" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes/log4j.properties"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/rose/hibernate.cfg.xml" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes/hibernate.cfg.xml"/>
+    <!--<copy file="${basedir}/woServer/web/WEB-INF/rose/hibernate.cfg.xml" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes/hibernate.cfg.xml"/>-->
     <mkdir dir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib"/>
     <copy file="${path.variable.maven_repository}/antlr/antlr/2.7.6/antlr-2.7.6.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/antlr-2.7.6.jar"/>
     <copy file="${path.variable.maven_repository}/asm/asm/3.1/asm-3.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/asm-3.1.jar"/>
