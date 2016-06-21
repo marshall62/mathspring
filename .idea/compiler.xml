@@ -28,6 +28,11 @@
         <module name="woServer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="emailer" target="1.5" />
+      <module name="main" target="1.5" />
+      <module name="servletFramework" target="1.5" />
+      <module name="woServer" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
-

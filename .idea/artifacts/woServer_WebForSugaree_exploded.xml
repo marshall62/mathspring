@@ -2,16 +2,12 @@
   <artifact type="exploded-war" name="woServer:WebForSugaree exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/woServer_WebForSugaree_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="woServer/web/WebForSugaree" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="woServer" />
           <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/sugaree/log4j.properties" />
-          <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/sugaree/hibernate.cfg.xml" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: antlr:antlr:2.7.6" />
-          <element id="library" level="project" name="Maven: asm:asm:3.1" />
           <element id="library" level="project" name="Maven: cglib:cglib:2.2" />
           <element id="library" level="project" name="Maven: com.beust:jcommander:1.27" />
           <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.4.7" />
@@ -26,7 +22,6 @@
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1.1" />
           <element id="library" level="project" name="Maven: javax.mail:mail:1.5.0-b01" />
           <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
-          <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="library" level="project" name="Maven: jcharts:jcharts:0.7.5" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
@@ -39,13 +34,7 @@
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.3.3" />
           <element id="library" level="project" name="Maven: org.apache.servicemix.bundles:org.apache.servicemix.bundles.json-lib:2.4_1" />
           <element id="library" level="project" name="Maven: org.beanshell:bsh:2.0b4" />
-          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-annotations:3.5.6-Final" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.5.6-Final" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.5.2" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.5.2" />
           <element id="library" level="project" name="Maven: org.testng:testng:6.8.8" />
           <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
           <element id="library" level="project" name="Maven: xerces:xercesImpl:2.4.0" />
@@ -54,8 +43,11 @@
           <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.4c" />
           <element id="artifact" artifact-name="emailer:jar" />
           <element id="artifact" artifact-name="servletFramework:jar" />
-          <element id="library" level="project" name="Maven: javassist:javassist:3.12.1.GA" />
         </element>
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/woServer/resources" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/woServer/web/META-INF/context.xml" />
       </element>
     </root>
   </artifact>

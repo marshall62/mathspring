@@ -223,6 +223,16 @@
         <servlet-class>edu.umass.ckc.wo.charts.BarChartServletIvon</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>BarChartServletIvon</servlet-name>
         <url-pattern>/BarChartServletIvon</url-pattern>
