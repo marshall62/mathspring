@@ -1,11 +1,13 @@
 package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
-import edu.umass.ckc.wo.db.DbUser;
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
+import org.jdom.Element;
 
 import java.sql.SQLException;
 
@@ -16,13 +18,22 @@ import java.sql.SQLException;
  * Time: 3:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public class StudentName extends LoginInterventionSelector {
+public class ChildAssent extends LoginInterventionSelector {
 
-    private static final String JSP = "studentName.jsp";
+    private static final String JSP = "childAssent.jsp";
+    private String file = null;
 
-    public StudentName(SessionManager smgr) throws SQLException {
+    public ChildAssent(SessionManager smgr) throws SQLException {
         super(smgr);
     }
+
+    public void init (SessionManager smgr, PedagogicalModel pm) throws Exception {
+        if (configXML == null)
+            throw new UserException("ChildAssent expects config xml");
+        Element e =this.configXML.getChild("file");
+        file = e.getText();
+    }
+
 
     // THis is a run-once intervention (declared in the logins.xml that way).   This gets intervention is logged
     // in the RunONceInterventionLog table for a given student once it runs so it won't run again.
@@ -34,15 +45,18 @@ public class StudentName extends LoginInterventionSelector {
             return null;
         else {
             super.selectIntervention(e);
-            return new LoginIntervention(JSP);
+            return new LoginIntervention(file);
         }
     }
 
     public LoginIntervention processInput (ServletParams params) throws SQLException {
-        String fname = params.getString(LoginParams.FNAME);
-        String lini = params.getString(LoginParams.LINI);
-        DbUser.setUserNames(servletInfo.getConn(), smgr.getStudentId(), fname, lini);
-        return null;
+        String assent = params.getString(LoginParams.ASSENT);
+        if (assent.equalsIgnoreCase("no"))
+            return new LoginPage1Intervention("login/loginK12.jsp");
+        else
+            return null;
+//        DbUser.setUserNames(servletInfo.getConn(), smgr.getStudentId(), fname, lini);
+
     }
 
 

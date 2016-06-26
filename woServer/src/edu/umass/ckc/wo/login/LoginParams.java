@@ -24,6 +24,7 @@ public class LoginParams {
     public static final String EXCITEMENT = "excitement";
     public static final String FRUSTRATION = "frustration";
     public static final String INTEREST = "interest";
+    public static final String ASSENT = "assent";
 
     public static final String ADULT = "adult";
     public static final String K12 = "k12";

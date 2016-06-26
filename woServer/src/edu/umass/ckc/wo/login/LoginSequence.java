@@ -71,8 +71,6 @@ public class LoginSequence {
             servletInfo.getRequest().setAttribute("innerjsp",innerJSP);
             servletInfo.getRequest().setAttribute("servletContext",servletInfo.getServletContext().getContextPath());
             servletInfo.getRequest().setAttribute("servletName",servletInfo.getServletName());
-
-
             RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
             disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
         }

@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
-import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
@@ -42,8 +41,8 @@ public class LoginInterventionSelector extends InterventionSelector implements P
         this.servletInfo=servletInfo;
     }
 
-    public void processInput (ServletParams params) throws SQLException  {
-
+    public LoginIntervention processInput (ServletParams params) throws SQLException  {
+        return null;
     }
 
     public Intervention selectIntervention (SessionEvent e) throws Exception {

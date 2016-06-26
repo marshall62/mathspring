@@ -5,6 +5,7 @@ import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.CCContentMgr;
 import edu.umass.ckc.wo.content.LessonMgr;
+import edu.umass.ckc.wo.login.interv.LoginIntervention;
 import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -15,6 +16,7 @@ import edu.umass.ckc.wo.woserver.ServletInfo;
 import edu.umass.ckc.wo.woserver.ServletUtil;
 import org.apache.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletContext;
@@ -58,11 +60,23 @@ public class WoLoginServlet extends BaseServlet {
             SessionManager smgr = new SessionManager(conn,sessId,servletInfo.getHostPath(),servletInfo.getContextPath()).buildExistingSession();
             LoginInterventionSelector is = (LoginInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
             is.init(servletInfo);
-            is.processInput(params);
-            // Now find the next intervention
-            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
-            ls.processAction(params);
-            return false;
+            LoginIntervention interv = is.processInput(params);
+            if (interv == null) {
+                // Now find the next intervention
+                LoginSequence ls = new LoginSequence(servletInfo, params.getInt("sessionId"));
+                ls.processAction(params);
+                return false;
+            }
+            else {
+//                servletInfo.getRequest().setAttribute("innerjsp",innerJSP);
+                // This is kind of hacked for now.   The only LoginIntervention that ever returns another intervention is the ChildAssent.  If the child does not assent, we need
+                // to go back to the first login page.  We achieve this by returning LoginPage1Intervention which has a JSP in it that is the first login page.  So we just forward to it.
+                servletInfo.getRequest().setAttribute("servletContext",servletInfo.getServletContext().getContextPath());
+                servletInfo.getRequest().setAttribute("servletName",servletInfo.getServletName());
+                RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(interv.getView());
+                disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
+                return false;
+            }
         }
         else {  // processes the first login event which is the user id/pw (e.g. called LoginK12_1).  This generates a second event
             // (e.g. LoginK12_2) which is also processed here.  It validates the submitted user/pw and then, if no errors, returns

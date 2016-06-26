@@ -4,20 +4,14 @@ import ckc.servlet.servbase.ServletParams;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.ClassConfig;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.SessionEvent;
-import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
-import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
-import org.jdom.CDATA;
 import org.jdom.Element;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -99,8 +93,8 @@ public class PreSurvey  extends LoginInterventionSelector {
         }
     }
 
-    public void processInput (ServletParams params) throws SQLException {
-        // do nothing.
+    public LoginIntervention processInput (ServletParams params) throws SQLException {
+        return null;
     }
 
 
