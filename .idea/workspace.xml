@@ -7,11 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/util/Pair.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -176,8 +174,8 @@
       <file leaf-file-name="MathspringService.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="45" column="55" selection-start-line="45" selection-start-column="55" selection-end-line="45" selection-end-column="55" />
+            <state relative-caret-position="439">
+              <caret line="59" column="108" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -510,6 +508,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="wo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="woServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1601,14 +1625,7 @@
       <updated>1368642188690</updated>
       <workItem from="1466529229075" duration="20576000" />
       <workItem from="1466782596218" duration="3812000" />
-      <workItem from="1467398725899" duration="11116000" />
-    </task>
-    <task id="LOCAL-00150" summary="changes to ant.xml prior to merge from production">
-      <created>1419352252300</created>
-      <option name="number" value="00150" />
-      <option name="presentableId" value="LOCAL-00150" />
-      <option name="project" value="LOCAL" />
-      <updated>1419352252300</updated>
+      <workItem from="1467398725899" duration="11684000" />
     </task>
     <task id="LOCAL-00151" summary="moved params.js and problemUtils.js up from mscontent/htmlProbs/js and into woServer/resources/js">
       <created>1419352607371</created>
@@ -1946,11 +1963,18 @@
       <option name="project" value="LOCAL" />
       <updated>1466948101625</updated>
     </task>
-    <option name="localTasksCounter" value="199" />
+    <task id="LOCAL-00199" summary="Added a new method to the MARI service for checking how many problems a student can work on in a standard">
+      <created>1467841848963</created>
+      <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
+      <option name="project" value="LOCAL" />
+      <updated>1467841848968</updated>
+    </task>
+    <option name="localTasksCounter" value="200" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35504000" />
+    <option name="totallyTimeSpent" value="36072000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1974,7 +1998,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="275" y="-5" width="1617" height="1023" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.326555" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -1988,7 +2012,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20677146" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15671162" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15671162" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22032829" sideWeight="0.75179" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25433525" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
@@ -2074,7 +2098,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Bug fixes from Melissa (untested) to fix some issues in collab" />
     <MESSAGE value="More refactoring to eliminate topics from BasePedModel" />
     <MESSAGE value="Begin the debugging of topix&#10;" />
     <MESSAGE value="Got it to the point where it shows a topic intro and an example and then dies trying to select the first practice problem" />
@@ -2099,7 +2122,8 @@
     <MESSAGE value="Fixed null pointer bug in collabIS" />
     <MESSAGE value="Upgraded to Intellij 2016.   &#10;Using Tomcat 8&#10;and Java 8&#10;Eliminated some hibernate dependencies and cleaned up artifacts&#10;Added Jersey RESTful framework and handle requests in /rest/MathspringService." />
     <MESSAGE value="Added Child assent stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Child assent stuff" />
+    <MESSAGE value="Added a new method to the MARI service for checking how many problems a student can work on in a standard" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a new method to the MARI service for checking how many problems a student can work on in a standard" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2665,8 +2689,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="45" column="55" selection-start-line="45" selection-start-column="55" selection-end-line="45" selection-end-column="55" />
+        <state relative-caret-position="439">
+          <caret line="59" column="108" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
