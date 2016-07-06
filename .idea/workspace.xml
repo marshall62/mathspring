@@ -6,31 +6,12 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="Fixed null pointer bug in collabIS">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/EurekaChildAssent_files/image001.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/EurekaChildAssent_files/image002.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/EurekaChildAssent_files/image003.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/EurekaChildAssent_files/image004.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/EurekaChildAssent_files/themedata.thmx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/EurekaChildAssent_files/colorschememapping.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/EurekaChildAssent_files/filelist.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/login/childAssent.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/ChildAssent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginPage1Intervention.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build.xml" afterPath="" />
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginParams.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginParams.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/GetNeighbors.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/GetNeighbors.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PostSurvey.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PostSurvey.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -192,104 +173,112 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ChildAssent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/ChildAssent.java">
+      <file leaf-file-name="MathspringService.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoginPage1Intervention.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginPage1Intervention.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="45" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
+            <state relative-caret-position="201">
+              <caret line="45" column="55" selection-start-line="45" selection-start-column="55" selection-end-line="45" selection-end-column="55" />
               <folding>
-                <element signature="e#193#194#0" expanded="true" />
-                <element signature="e#220#221#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginInterventionSelector.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java">
+      <file leaf-file-name="MariHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-              <folding />
+            <state relative-caret-position="170">
+              <caret line="71" column="136" selection-start-line="71" selection-start-column="3" selection-end-line="71" selection-end-column="3" />
+              <folding>
+                <element signature="e#23214#23223#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MathAttitudes.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java">
+      <file leaf-file-name="ProblemMgr.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="41" column="91" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="448">
+              <caret line="396" column="0" selection-start-line="396" selection-start-column="0" selection-end-line="396" selection-end-column="0" />
+              <folding>
+                <element signature="e#14973#14982#0" expanded="true" />
+                <element signature="e#16003#16012#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WoLoginServlet.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java">
+      <file leaf-file-name="SessionManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="193">
-              <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+              <caret line="634" column="0" selection-start-line="634" selection-start-column="0" selection-end-line="634" selection-end-column="0" />
+              <folding>
+                <element signature="e#28222#28223#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PedagogyRetriever.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/PedagogyRetriever.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="277">
+              <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ActionFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/ActionFactory.java">
+      <file leaf-file-name="WoTutorServlet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoTutorServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+            <state relative-caret-position="476">
+              <caret line="87" column="22" selection-start-line="81" selection-start-column="12" selection-end-line="87" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginServletAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginServletAction.java">
+      <file leaf-file-name="ServletUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/ServletUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="20" column="23" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+            <state relative-caret-position="495">
+              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginK12_1.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginK12_1.java">
+      <file leaf-file-name="DbPedagogy.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPedagogy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
+            <state relative-caret-position="205">
+              <caret line="108" column="25" selection-start-line="108" selection-start-column="25" selection-end-line="108" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginIntervention.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginIntervention.java">
+      <file leaf-file-name="LoginResult.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginResult.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-              <folding />
+            <state relative-caret-position="461">
+              <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+              <folding>
+                <element signature="e#1793#1794#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginSequence.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java">
+      <file leaf-file-name="DbCoopUsers.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbCoopUsers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+            <state relative-caret-position="227">
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -346,8 +335,6 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/RestService.java" />
         <option value="$PROJECT_DIR$/woServer/pom.xml" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/util/Pair.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" />
         <option value="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" />
         <option value="$PROJECT_DIR$/build.properties" />
         <option value="$PROJECT_DIR$/build.xml" />
@@ -364,6 +351,11 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/ChildAssent.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginPage1Intervention.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/UserRegistrationHandler.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPedagogy.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" />
       </list>
     </option>
   </component>
@@ -423,10 +415,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="31" />
-    <option name="y" value="17" />
-    <option name="width" value="1564" />
-    <option name="height" value="993" />
+    <option name="x" value="275" />
+    <option name="y" value="-5" />
+    <option name="width" value="1617" />
+    <option name="height" value="1023" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -468,8 +460,88 @@
     </navigator>
     <panes>
       <pane id="ProjectPane">
-        <subPane />
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="woServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="woServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="woServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="All">
           <PATH>
@@ -495,7 +567,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1514,11 +1585,6 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
-  <component name="SliceManager">
-    <option name="analysisUIOptions">
-      <AnalysisUIOptions />
-    </option>
-  </component>
   <component name="StructureViewFactory">
     <option name="ACTIVE_ACTIONS" value="VISIBILITY_SORTER,ALPHA_COMPARATOR" />
   </component>
@@ -1534,14 +1600,8 @@
       <option name="presentableId" value="Default" />
       <updated>1368642188690</updated>
       <workItem from="1466529229075" duration="20576000" />
-      <workItem from="1466782596218" duration="3754000" />
-    </task>
-    <task id="LOCAL-00149" summary="Bug fixes for Affect Experiment of 1/5/15&#10;&#10;1.  All LCs will show solveTogether on first problem and interestHigh when examples are given&#10;2.  Message about &quot;can't find easier problem&quot; changed to &quot;just right problem&quot;&#10;3. Constant for initial topic mastery changed from .5 to .1&#10;4.  Added older versions of params.js and problemUtils.js to resources/js">
-      <created>1419351304136</created>
-      <option name="number" value="00149" />
-      <option name="presentableId" value="LOCAL-00149" />
-      <option name="project" value="LOCAL" />
-      <updated>1419351304136</updated>
+      <workItem from="1466782596218" duration="3812000" />
+      <workItem from="1467398725899" duration="11116000" />
     </task>
     <task id="LOCAL-00150" summary="changes to ant.xml prior to merge from production">
       <created>1419352252300</created>
@@ -1879,11 +1939,18 @@
       <option name="project" value="LOCAL" />
       <updated>1466540678424</updated>
     </task>
-    <option name="localTasksCounter" value="198" />
+    <task id="LOCAL-00198" summary="Added Child assent stuff">
+      <created>1466948101624</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1466948101625</updated>
+    </task>
+    <option name="localTasksCounter" value="199" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24330000" />
+    <option name="totallyTimeSpent" value="35504000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1906,30 +1973,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="31" y="17" width="1564" height="993" extended-state="0" />
+    <frame x="275" y="-5" width="1617" height="1023" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.326555" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26946107" sideWeight="0.7042773" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26826346" sideWeight="0.7042773" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47479483" sideWeight="0.20196079" order="18" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2971098" sideWeight="0.21066153" order="18" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31866667" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20689656" sideWeight="0.77526754" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14148681" sideWeight="0.81322426" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20677146" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19148937" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15671162" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22032829" sideWeight="0.75179" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25508982" sideWeight="0.73893803" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25433525" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2216418" sideWeight="0.2964427" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.123005316" sideWeight="0.705036" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14475743" sideWeight="0.705036" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51497006" sideWeight="0.79346406" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2971098" sideWeight="0.78933847" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.49120122" order="17" side_tool="false" content_ui="tabs" />
@@ -2007,7 +2074,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Added support for storing student collab being stored in studentproblemhistory" />
     <MESSAGE value="Bug fixes from Melissa (untested) to fix some issues in collab" />
     <MESSAGE value="More refactoring to eliminate topics from BasePedModel" />
     <MESSAGE value="Begin the debugging of topix&#10;" />
@@ -2032,7 +2098,8 @@
     <MESSAGE value="Fixed bug in ProblemDiffuclty report so it only counts problmes that are shown as practice problems." />
     <MESSAGE value="Fixed null pointer bug in collabIS" />
     <MESSAGE value="Upgraded to Intellij 2016.   &#10;Using Tomcat 8&#10;and Java 8&#10;Eliminated some hibernate dependencies and cleaned up artifacts&#10;Added Jersey RESTful framework and handle requests in /rest/MathspringService." />
-    <option name="LAST_COMMIT_MESSAGE" value="Upgraded to Intellij 2016.   &#10;Using Tomcat 8&#10;and Java 8&#10;Eliminated some hibernate dependencies and cleaned up artifacts&#10;Added Jersey RESTful framework and handle requests in /rest/MathspringService." />
+    <MESSAGE value="Added Child assent stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Child assent stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2073,6 +2140,12 @@
           <properties />
           <option name="timeStamp" value="29" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java</url>
+          <line>101</line>
+          <properties />
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -2083,7 +2156,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="30" />
+      <option name="time" value="49" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2149,91 +2222,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/FtoCService.java" />
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/RestService.java" />
-    <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="29" column="34" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/Problem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="194" column="30" selection-start-line="194" selection-start-column="26" selection-end-line="194" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar!/org/apache/commons/lang3/tuple/Pair.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/util/TwoTuple.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="65" column="16" selection-start-line="65" selection-start-column="16" selection-end-line="65" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/util/Pair.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="440" column="20" selection-start-line="440" selection-start-column="20" selection-end-line="440" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/HelloWorldResource.java" />
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MyApplication.java" />
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/WebController.java" />
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/Employee.java" />
-    <entry file="file://$PROJECT_DIR$/servletFramework/src/ckc/servlet/servbase/BaseServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="242" column="21" selection-start-line="242" selection-start-column="21" selection-end-line="242" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoTutorServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="37" column="83" selection-start-line="37" selection-start-column="66" selection-end-line="37" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="68" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/xml/JDOMUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/LCRuleset.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/DbLCRule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="99">
@@ -2245,28 +2233,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/ServletUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="107" column="57" selection-start-line="107" selection-start-column="57" selection-end-line="107" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPedagogy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="147" column="19" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1732">
-          <caret line="3" column="35" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -2307,14 +2273,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="98" column="45" selection-start-line="98" selection-start-column="45" selection-end-line="98" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
@@ -2334,143 +2292,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1190" selection-end-column="0" />
-          <folding>
-            <marker date="1466615776233" expanded="true" signature="623:774" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="811:1398" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="835:1318" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="1346:1391" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="1586:3152" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="1604:3145" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="2391:2746" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="2790:3128" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="3188:19582" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="3254:19575" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="3404:3460" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="3526:3585" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="5333:5388" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="5598:5656" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="5788:5844" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="5911:5969" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6036:6081" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6233:6270" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6337:6385" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6452:6497" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6564:6609" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6676:6727" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6794:6845" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="6912:6960" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7027:7075" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7142:7190" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7257:7305" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7372:7420" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7487:7531" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7598:7649" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7716:7764" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7831:7879" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="7946:8003" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="8070:8124" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="8191:8245" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="8312:8372" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="8439:8499" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="8566:8623" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="8763:8827" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="8894:8949" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9016:9079" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9146:9203" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9270:9327" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9394:9451" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9518:9575" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9642:9695" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9762:9822" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="9889:9946" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10013:10070" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10137:10194" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10261:10315" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10382:10436" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10503:10563" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10630:10690" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10757:10814" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="10881:10938" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11005:11062" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11129:11186" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11253:11310" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11377:11430" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11497:11557" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11624:11681" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11748:11805" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11872:11929" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="11996:12050" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12117:12171" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12238:12298" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12365:12425" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12492:12549" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12616:12673" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12740:12797" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12864:12921" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="12988:13045" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13112:13165" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13232:13292" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13359:13416" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13483:13540" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13607:13664" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13731:13785" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13852:13906" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="13973:14033" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14100:14160" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14227:14284" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14351:14408" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14475:14532" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14599:14656" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14723:14780" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14847:14900" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="14967:15027" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15094:15151" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15218:15275" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15342:15399" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15466:15520" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15587:15641" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15708:15768" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15835:15895" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="15962:16019" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16086:16143" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16210:16267" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16334:16391" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16458:16515" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16582:16635" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16702:16762" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16829:16886" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="16953:17010" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17077:17134" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17201:17255" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17322:17376" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17443:17503" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17570:17630" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17697:17754" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17821:17878" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="17945:18002" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18069:18126" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18193:18250" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18317:18370" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18437:18497" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18564:18621" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18688:18745" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18812:18877" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="18944:19010" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="19077:19143" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="19210:19277" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="19344:19404" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="38531:39104" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="38581:39096" ph="{...}" />
-            <marker date="1466615776233" expanded="true" signature="39141:39196" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="39232:39321" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="39262:39315" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="39604:40276" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="39736:40151" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="40347:40536" ph="..." />
-            <marker date="1466615776233" expanded="false" signature="40375:40442" ph="..." />
-            <marker date="1466615776233" expanded="true" signature="44987:45207" ph="..." />
-            <marker date="1466615776233" expanded="false" signature="45050:45119" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2494,7 +2315,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="22" column="0" selection-start-line="18" selection-start-column="8" selection-end-line="22" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2510,143 +2330,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20094">
           <caret line="1182" column="57" selection-start-line="1182" selection-start-column="57" selection-end-line="1182" selection-end-column="57" />
-          <folding>
-            <marker date="1466619550010" expanded="true" signature="977:1164" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="1205:1888" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="1232:1796" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="1827:1881" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="2180:4082" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="2201:4075" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="3090:3559" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="3615:4058" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="4118:23818" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="4187:23811" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="4379:4456" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="4528:4608" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="6506:6582" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="6810:6889" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="7033:7110" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="7183:7262" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="7335:7401" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="7565:7623" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="7696:7765" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="7838:7904" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="7977:8043" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="8116:8188" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="8261:8333" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="8406:8475" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="8548:8617" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="8690:8759" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="8832:8901" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="8974:9043" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="9116:9181" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="9254:9326" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="9399:9468" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="9541:9610" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="9683:9761" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="9834:9909" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="9982:10057" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="10130:10211" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="10284:10365" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="10438:10516" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="10668:10753" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="10826:10902" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="10975:11059" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="11132:11210" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="11283:11361" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="11434:11512" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="11585:11663" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="11736:11810" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="11883:11964" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="12037:12115" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="12188:12266" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="12339:12417" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="12490:12565" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="12638:12713" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="12786:12867" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="12940:13021" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="13094:13172" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="13245:13323" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="13396:13474" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="13547:13625" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="13698:13776" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="13849:13923" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="13996:14077" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="14150:14228" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="14301:14379" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="14452:14530" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="14603:14678" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="14751:14826" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="14899:14980" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="15053:15134" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="15207:15285" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="15358:15436" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="15509:15587" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="15660:15738" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="15811:15889" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="15962:16036" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="16109:16190" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="16263:16341" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="16414:16492" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="16565:16643" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="16716:16791" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="16864:16939" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="17012:17093" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="17166:17247" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="17320:17398" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="17471:17549" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="17622:17700" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="17773:17851" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="17924:18002" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="18075:18149" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="18222:18303" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="18376:18454" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="18527:18605" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="18678:18756" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="18829:18904" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="18977:19052" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="19125:19206" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="19279:19360" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="19433:19511" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="19584:19662" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="19735:19813" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="19886:19964" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="20037:20115" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="20188:20262" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="20335:20416" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="20489:20567" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="20640:20718" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="20791:20869" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="20942:21017" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="21090:21165" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="21238:21319" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="21392:21473" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="21546:21624" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="21697:21775" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="21848:21926" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="21999:22077" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="22150:22228" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="22301:22375" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="22448:22529" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="22602:22680" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="22753:22831" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="22904:22990" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="23063:23150" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="23223:23310" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="23383:23471" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="23544:23625" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="49706:50491" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="49777:50479" ph="{...}" />
-            <marker date="1466619550010" expanded="true" signature="50532:50590" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="50626:50727" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="50659:50721" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="51014:51943" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="51258:51800" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="52014:52281" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="52068:52135" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="56988:57332" ph="..." />
-            <marker date="1466619550010" expanded="true" signature="57123:57192" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2654,7 +2337,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2690,22 +2372,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="943">
-          <caret line="77" column="19" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
-          <folding>
-            <element signature="e#2022#2023#0" expanded="false" />
-            <element signature="e#2066#2067#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginServletAction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="20" column="23" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2713,7 +2386,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="14" column="37" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2721,7 +2396,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#849#850#0" expanded="false" />
+            <element signature="e#881#882#0" expanded="false" />
+            <element signature="e#927#928#0" expanded="false" />
+            <element signature="e#969#970#0" expanded="false" />
+            <element signature="e#1000#1001#0" expanded="false" />
+            <element signature="e#1031#1032#0" expanded="false" />
+            <element signature="e#1222#1223#0" expanded="false" />
+            <element signature="e#1325#1326#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2729,23 +2414,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="30" column="23" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
+        <state relative-caret-position="782">
           <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
+        <state relative-caret-position="748">
           <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2753,10 +2444,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="45" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
-          <folding>
-            <element signature="e#193#194#0" expanded="true" />
-            <element signature="e#220#221#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2764,7 +2452,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2772,15 +2462,214 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1394#1395#0" expanded="false" />
+            <element signature="e#1438#1439#0" expanded="false" />
+            <element signature="e#2202#2203#0" expanded="false" />
+            <element signature="e#2240#2241#0" expanded="false" />
+            <element signature="e#4541#4542#0" expanded="false" />
+            <element signature="e#4594#4595#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="41" column="91" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        <state relative-caret-position="255">
+          <caret line="22" column="131" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1964#1965#0" expanded="false" />
+            <element signature="e#1990#1991#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/CCPedagogicalModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="265" column="22" selection-start-line="265" selection-start-column="22" selection-end-line="265" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/CommonCorePedagogicalModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="57" column="62" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="62" column="27" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="616" column="51" selection-start-line="616" selection-start-column="51" selection-end-line="616" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutormeta/ProblemSelector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="240" column="36" selection-start-line="240" selection-start-column="36" selection-end-line="240" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/state/ExtendedStudentState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="80" column="25" selection-start-line="80" selection-start-column="25" selection-end-line="80" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/CCSSProblemSelector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="48" column="7" selection-start-line="48" selection-start-column="7" selection-end-line="61" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/UserRegistrationHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="162" column="17" selection-start-line="162" selection-start-column="17" selection-end-line="162" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/assistments/CoopUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/servicemix/bundles/org.apache.servicemix.bundles.json-lib/2.4_1/org.apache.servicemix.bundles.json-lib-2.4_1.jar!/net/sf/json/JSONObject.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="1708" column="0" selection-start-line="1708" selection-start-column="0" selection-end-line="1708" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbCoopUsers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="461">
+          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+          <folding>
+            <element signature="e#1793#1794#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPedagogy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="108" column="25" selection-start-line="108" selection-start-column="25" selection-end-line="108" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/PedagogyRetriever.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="634" column="0" selection-start-line="634" selection-start-column="0" selection-end-line="634" selection-end-column="0" />
+          <folding>
+            <element signature="e#28222#28223#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/ServletUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoTutorServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="87" column="22" selection-start-line="81" selection-start-column="12" selection-end-line="87" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="396" column="0" selection-start-line="396" selection-start-column="0" selection-end-line="396" selection-end-column="0" />
+          <folding>
+            <element signature="e#14973#14982#0" expanded="true" />
+            <element signature="e#16003#16012#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="71" column="136" selection-start-line="71" selection-start-column="3" selection-end-line="71" selection-end-column="3" />
+          <folding>
+            <element signature="e#23214#23223#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="45" column="55" selection-start-line="45" selection-start-column="55" selection-end-line="45" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

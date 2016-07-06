@@ -1,9 +1,21 @@
 package edu.umass.ckc.wo.rest;
 
+import edu.umass.ckc.wo.assistments.CoopUser;
 import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.CCContentMgr;
+import edu.umass.ckc.wo.content.LessonMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbCoopUsers;
+import edu.umass.ckc.wo.db.DbPedagogy;
+import edu.umass.ckc.wo.db.DbUser;
+import edu.umass.ckc.wo.handler.UserRegistrationHandler;
+import edu.umass.ckc.wo.servletController.MariHandler;
+import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
+import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 import edu.umass.ckc.wo.util.Pair;
 import edu.umass.ckc.wo.util.TwoTuple;
+import edu.umass.ckc.wo.woserver.ServletUtil;
 import org.json.JSONException;
 
 import javax.naming.Context;
@@ -28,6 +40,11 @@ import java.util.List;
  * RESTful web service to provide access to Mathspring resources.
  * Implemented using Jersey framework.
  * Created by david on 6/21/2016.
+ *
+ * Here are some test URLs:
+ * http://localhost:8080/mt/rest/problems/ccss
+ * http://localhost:8080/mt/rest/problems/ccss/6.RP.3.c
+ * http://localhost:8080/mt/rest/problems/ccss/6.RP.3.c/userid/667824ad141fcc8f521f5d85f51cdbd28b353e662518dbd900963a75f61acd19
  */
 
 @Path("/problems")
@@ -80,15 +97,59 @@ public class MathspringService {
         return Response.status(200).entity(result).build();
     }
 
+    private void serviceInit (Connection conn) throws Exception {
+        // If the service is called before any of the tutor servlets initialize the system, we do the servlet init because we need static objects created for this
+        ServletUtil.initialize(servletContext,conn);
+        if (!ProblemMgr.isLoaded())  {
+            ProblemMgr problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
+            problemMgr.loadProbs(conn);
+            CCContentMgr.getInstance().loadContent(conn);
+            LessonMgr.getAllLessons(conn);  // only to check integrity of content so we see errors early
+
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ccss/{std}/userid/{userid}")
+    /**
+     * returns JSON for the requested ccss like:  {"ccss":"8.G.2", "numProbs":"5"}
+     * The request must also contain a userId which is assumed to be a MARI session token that serves as the users id in mathspring so that
+     * we can use it to get to the numeric userId
+     */
+    public Response getCCSSStudentProblems(@PathParam("std")String ccstd, @PathParam("userid")String userid) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        Connection conn = getConnection();
+        serviceInit(conn);
+        int n = ProblemMgr.getStandardNumProblems(conn,ccstd);
+        jsonObject.put("ccss", ccstd);
+        jsonObject.put("numProbs", n);
+        CoopUser u = DbCoopUsers.getUser(conn,userid);
+        int studId = u.getStudId();
+
+        if (studId == -1)
+            // TODO return JSON indicating error that student cannot be found
+            jsonObject.put("numProbs", 0);
+        else {
+            List<Integer> probIds = MariHandler.getStdProblemsForStudent(conn,studId,ccstd);
+            jsonObject.put("numProbs", probIds.size());
+        }
+
+        String result = jsonObject.toString();
+        return Response.status(200).entity(result).build();
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ccss/{std}")
     /**
      * returns JSON for the requested ccss like:  {"ccss":"8.G.2", "numProbs":"5"}
      */
-    public Response getCCSSProblems(@PathParam("std")String ccstd) throws JSONException, SQLException {
+    public Response getCCSSProblems(@PathParam("std")String ccstd) throws Exception {
         JSONObject jsonObject = new JSONObject();
         Connection conn = getConnection();
+        // If the service is called before any of the tutor servlets initialize the system, we do the servlet init because we need static objects created for this
+        serviceInit(conn);
         int n = ProblemMgr.getStandardNumProblems(conn,ccstd);
         jsonObject.put("ccss", ccstd);
         jsonObject.put("numProbs", n);
@@ -110,9 +171,11 @@ public class MathspringService {
      ]}
      *
      */
-    public Response getAllCCSSProblems() throws JSONException, SQLException {
+    public Response getAllCCSSProblems() throws Exception {
         JSONObject jsonObject = new JSONObject();
         Connection conn = getConnection();
+        // If the service is called before any of the tutor servlets initialize the system, we do the servlet init because we need static objects created for this
+        serviceInit(conn);
         // get back a list of <CCSS, numProbs>
         List<Pair<String,Integer>> list = ProblemMgr.getAllStandardNumProblems(conn);
         for (Pair<String,Integer> pair : list) {

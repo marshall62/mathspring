@@ -391,8 +391,8 @@ public class MariHandler extends Handler {
         o.element("session_token", u.getUid());
         JSONArray a = new JSONArray();
         JSONObject a1 = new JSONObject();
-//        a1.element("pa", ccssMastery.getStd());
-        a1.element("pa", "bdzL-hVx7-TnFb-CqC8");
+        a1.element("pa", ccssMastery.getStd());
+//        a1.element("pa", "bdzL-hVx7-TnFb-CqC8");
         a1.element("value", Double.toString(ccssMastery.getVal()));
         a1.element("confidence", 1.0);
 
@@ -449,5 +449,27 @@ public class MariHandler extends Handler {
     @Override
     public boolean cleanup() {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public static List<Integer> getStdProblemsForStudent(Connection conn, int studId, String ccstd) throws Exception {
+
+        SessionManager smgr = new SessionManager(conn).assistmentsLoginSession(studId);
+
+        // Generate the tutor page so it shows what we want rather than making a next-prob callback to the server.
+        PedagogicalModel pedMod = smgr.getPedagogicalModel();  // This is going to be CommonCorePM
+        List<Problem> probs = ProblemMgr.getStandardProblems(smgr.getConnection(), ccstd);
+        // Turn this list of Problem objects into a simple list of integer ids.
+        List<Integer> probIds = new ArrayList<Integer>();
+        for (Problem p : probs) {
+            probIds.add(p.getId());
+        }
+        StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
+        // get the history records for problems this student has seen on this standard
+        List<StudentProblemData> probEncountersInStandard = studentProblemHistory.getCCSSHistoryMostRecentEncounters(ccstd);
+        // reduce this history to only the problems that are considered "recently correctly solved"
+        List<Integer> recentProbs = smgr.getExtendedStudentState().getRecentExamplesAndCorrectlySolvedProblems(probEncountersInStandard);
+        // eliminate these recently solved ones from the list of problems
+        probIds.removeAll(recentProbs);
+        return probIds;
     }
 }

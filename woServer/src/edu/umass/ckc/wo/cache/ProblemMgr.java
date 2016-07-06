@@ -431,7 +431,7 @@ public class ProblemMgr {
         PreparedStatement stmt=null;
         try {
             List<Pair<String,Integer>> res = new ArrayList<Pair<String,Integer>>();
-            String q = "select standardid, count(*) from problem group by standardid";
+            String q = "select m.stdid, count(m.probId) from probstdmap m, problem p where m.probid=p.id and p.status='ready' group by m.stdid";
             stmt = conn.prepareStatement(q);
             rs = stmt.executeQuery();
             while (rs.next()) {
