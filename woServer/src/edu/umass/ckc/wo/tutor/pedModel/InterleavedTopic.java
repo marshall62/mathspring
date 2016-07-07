@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
+import edu.umass.ckc.wo.tutor.studmod.EffortHeuristic;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -57,6 +58,12 @@ public class InterleavedTopic {
                         probsToReview.add(new ReviewProblem(p.getProbId(),topicId));
                     // Add problems that were attempted and not solved and are below the student mastery in the topic
                     else if (p.getNumAttemptsToSolve() > 0 && !p.isSolved() && studentModel.getTopicMastery(topicId) >= ProblemMgr.getProblem(p.getProbId()).getDifficulty())
+                        probsToReview.add(new ReviewProblem(p.getProbId(),topicId));
+                    // Add problems that were solved but after more than two attempts
+                    else if (p.getNumAttemptsToSolve() > 2)
+                        probsToReview.add(new ReviewProblem(p.getProbId(),topicId));
+                    // Add problems where it looks like user is guessing
+                    else if (p.getEffort().equals(EffortHeuristic.NOT_READING))
                         probsToReview.add(new ReviewProblem(p.getProbId(),topicId));
 
             }

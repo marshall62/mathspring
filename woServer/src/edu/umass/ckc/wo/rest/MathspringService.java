@@ -125,12 +125,11 @@ public class MathspringService {
         jsonObject.put("ccss", ccstd);
         jsonObject.put("numProbs", n);
         CoopUser u = DbCoopUsers.getUser(conn,userid);
-        int studId = u.getStudId();
-
-        if (studId == -1)
-            // TODO return JSON indicating error that student cannot be found
+        if (u == null) {
             jsonObject.put("numProbs", 0);
+        }
         else {
+            int studId = u.getStudId();
             List<Integer> probIds = MariHandler.getStdProblemsForStudent(conn,studId,ccstd);
             jsonObject.put("numProbs", probIds.size());
         }

@@ -2,11 +2,7 @@ package edu.umass.ckc.wo.servletController;
 
 import ckc.servlet.servbase.BaseServlet;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
-import edu.umass.ckc.wo.assistments.AssistmentSessionData;
 import edu.umass.ckc.wo.assistments.CoopUser;
-import edu.umass.ckc.wo.assistments.ProblemData;
-import edu.umass.ckc.wo.beans.ClassInfo;
-import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.*;
@@ -15,13 +11,11 @@ import edu.umass.ckc.wo.event.internal.MariTeachCommonCoreStandardEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.exc.AdminException;
 import edu.umass.ckc.wo.exc.AssistmentsBadInputException;
-import edu.umass.ckc.wo.handler.NavigationHandler;
 import edu.umass.ckc.wo.handler.UserRegistrationHandler;
 import edu.umass.ckc.wo.html.tutor.TutorPage;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Pedagogy;
-import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.CCPedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.CommonCorePedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -34,7 +28,6 @@ import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutor.studmod.StudentStandardMastery;
 import edu.umass.ckc.wo.tutormeta.Intervention;
-import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 import edu.umass.ckc.wo.tutormeta.PedagogyParams;
 import edu.umass.ckc.wo.util.HTTPRequest;
 import edu.umass.ckc.wo.woserver.ServletInfo;
@@ -43,14 +36,12 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -166,13 +157,13 @@ public class MariHandler extends Handler {
             // legit user params are given from Assistments, so we create a user in our system that has persisting user/data
             if (isTestUser) {
                 User.UserType ut = User.UserType.coopStudentTest;
-                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.MARI_CLASS_NAME, sessionToken, ut);
+                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.MARI_CLASS_NAME, sessionToken, ut, true);
                 u = DbCoopUsers.insertUserInDb(conn, sessionToken, accessToken, studId);
             }
 //            a call made by MARi that is not a test.
             else {
                 User.UserType ut = User.UserType.coopStudent;
-                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.MARI_CLASS_NAME, sessionToken, ut);
+                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.MARI_CLASS_NAME, sessionToken, ut, true);
                 u = DbCoopUsers.insertUserInDb(conn, sessionToken, accessToken, studId);
             }
             if (e.isShowTransitionPage())

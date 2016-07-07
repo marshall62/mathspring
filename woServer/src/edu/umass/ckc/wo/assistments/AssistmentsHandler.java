@@ -169,13 +169,13 @@ public class AssistmentsHandler {
             // legit user params are given from Assistments, so we create a user in our system that has persisting user/data
             if (isTestUser) {
                 User.UserType ut = User.UserType.coopStudentTest;
-                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
+                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut, false);
                 u = DbCoopUsers.insertUserInDb(conn, user, token, studId);
             }
             // a call made Assistments that is not a test.
             else {
                 User.UserType ut = User.UserType.coopStudent;
-                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut);
+                studId = UserRegistrationHandler.registerExternalUser(servletInfo.getConn(), DbClass.ASSISTMENTS_CLASS_NAME, e.getUser(), ut, false);
                 u = DbCoopUsers.insertUserInDb(conn, user, token, studId);
             }
             if (e.isShowTransitionPage())

@@ -103,7 +103,7 @@
         </lc_a>
     </lc_r>
 
-    <lc_r name="18" priority="1" onEvent="Attempt">
+    <lc_r name="18" priority="2" onEvent="Attempt">
         <lc_c fnname="hintExists"></lc_c>
         <lc_c not="on" fnname="isSolved"></lc_c>
         <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
