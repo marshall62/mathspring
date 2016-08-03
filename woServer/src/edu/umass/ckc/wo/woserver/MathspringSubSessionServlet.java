@@ -131,6 +131,7 @@ public class MathspringSubSessionServlet extends BaseServlet {
         catch (Exception e) {
             // sends a 500 error with message that Assistments will need to deal with.
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
+            e.printStackTrace();
             // pretty sure the above puts this on the output stream of the servlet so that we don't need to do anything
             // more to return stuff to caller
             return false;
