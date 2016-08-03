@@ -841,6 +841,9 @@ public class StudentState extends State implements TutorEventHandler {
     public int getCurTopic() {
         return workspaceState.getCurTopic();
     }
+    public int getLastTopic() {
+        return workspaceState.getLastTopic();
+    }
 
     public void setCurTopic(int pgroupID) throws SQLException {
         workspaceState.setCurTopic(pgroupID);

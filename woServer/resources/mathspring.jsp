@@ -52,6 +52,7 @@
             topicId: ${topicId},
             guiLock: false,
             learningCompanion: '${learningCompanion}',
+            learningCompanionMessageSelectionStrategy: '${learningCompanionMessageSelectionStrategy}',
             userName: '${userName}',
             studId : ${studId} ,
             probType : '${probType}',

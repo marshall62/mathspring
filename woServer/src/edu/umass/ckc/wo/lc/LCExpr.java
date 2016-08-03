@@ -84,7 +84,13 @@ public class LCExpr extends LCRuleComponent {
     public boolean eval () throws Exception {
         //  Use the relop to compare the result of the function to the value
         this.fn.setup(smgr,event);
-        Object val = this.fn.eval();
+        Object val;
+        try {
+            val = this.fn.eval();
+        } catch (Exception ee) {
+            System.out.println("Failed to run LCRule function: "  + fn.getFnName());
+            throw ee;
+        }
         if (valType == BOOL)
             return ((Boolean) val) == true;
         else if (relop.equals("=") && valType == INT )

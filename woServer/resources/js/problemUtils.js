@@ -17,7 +17,7 @@ var answer;
 var newAnswer;
 
 function probUtilsInit(doc, components) {
-    isShortAnswer = components.questType === 'shortAnswer'
+    isShortAnswer = components && components.questType === 'shortAnswer'
     if (!isShortAnswer)
         shuffleAnswers(doc,components);
 }

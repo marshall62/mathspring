@@ -80,9 +80,13 @@ public class TutorPage {
         info.getRequest().setAttribute("flashClientPath",flashClientPath);
         info.getRequest().setAttribute("formalityServlet",Settings.formalityServletURI);
         LearningCompanion lc = smgr.getLearningCompanion();
-        String character = "";
-        if (lc != null) character = lc.getCharactersName();
+        String character = "", strategy = "";
+        if (lc != null) {
+            character = lc.getCharactersName();
+            strategy = lc.getMessageSelectionStrategy();
+        }
         info.getRequest().setAttribute("learningCompanion",character);
+        info.getRequest().setAttribute("learningCompanionMessageSelectionStrategy",strategy);
         appendLogMsg("learningCompanion",character);
         // We must pass the wayangServletContext of this servlet to 4m so that it can build a URL to call wayang back
         info.getRequest().setAttribute("wayangServletContext",servContext);

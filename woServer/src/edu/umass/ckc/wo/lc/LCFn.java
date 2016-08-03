@@ -42,4 +42,8 @@ public class LCFn extends LCRuleComponent {
         LCAccessors accessors = new LCAccessors(smgr,event);
         return accessors.eval(this);
     }
+
+    public String toString () {
+        return this.fnName;
+    }
 }

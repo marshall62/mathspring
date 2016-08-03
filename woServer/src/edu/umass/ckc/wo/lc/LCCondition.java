@@ -62,9 +62,14 @@ public class LCCondition  extends LCRuleComponent {
 
 
     public boolean eval ( ) throws Exception {
-        expr.setup(smgr,event);
-        boolean v = expr.eval();
-        return applyNot ? !v : v;
+        try {
+            expr.setup(smgr, event);
+            boolean v = expr.eval();
+            return applyNot ? !v : v;
+        } catch (Exception ee) {
+            System.out.println("Failed to test condition " + expr.toString());
+            throw ee;
+        }
     }
 
     public String getRelop() {

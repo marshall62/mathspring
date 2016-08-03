@@ -51,14 +51,19 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
      * @throws Exception
      */
     public boolean test () throws Exception {
-        action.setup(smgr,event);
-        for (LCCondition cond : conditions) {
-            cond.setup(smgr, event);
-            boolean res = cond.eval();
-            if (! res)
-                return false;
+        try {
+            for (LCCondition cond : conditions) {
+                cond.setup(smgr, event);
+                boolean res = cond.eval();
+                if (!res)
+                    return false;
+            }
+            action.setup(smgr, event);
+            return true;    // if all conditions are true, return true
+        } catch (Exception ee) {
+            System.out.println("Failed to evaluate rule: " + this.getName());
+            throw ee;
         }
-        return true;    // if all conditions are true, return true
     }
 
     /**

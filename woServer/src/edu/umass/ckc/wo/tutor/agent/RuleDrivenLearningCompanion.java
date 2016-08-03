@@ -234,4 +234,9 @@ public class RuleDrivenLearningCompanion extends LearningCompanion {
         return clips;
     }
 
+    @Override
+    public String getMessageSelectionStrategy () {
+        return "rules";  // this indicates that the messages are selected by the Java class itself (as opposed to a rule-set)
+    }
+
 }

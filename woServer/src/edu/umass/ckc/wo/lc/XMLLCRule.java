@@ -1,13 +1,11 @@
 package edu.umass.ckc.wo.lc;
 
 import edu.umass.ckc.wo.db.DbUtil;
-import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.xml.JDOMUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import javax.servlet.ServletContext;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,7 +22,7 @@ public class XMLLCRule {
 
     private static Connection conn;
 
-    public static void loadRuleSetIntoPedagogy(Connection conn, Pedagogy ped, LCRuleset rs, InputStream inputStream) throws JDOMException, IOException {
+    public static void loadRuleSet(Connection conn, LCRuleset rs, InputStream inputStream) throws JDOMException, IOException {
         XMLLCRule.conn = conn;
         String filename = rs.getSource(); // a file in the resources directory. e.g. lc_curProblem.xml
         Document d = JDOMUtils.makeDocument(inputStream);
@@ -113,16 +111,20 @@ public class XMLLCRule {
     }
 
     public static void main(String[] args) {
-        File f = new File("F:\\dev\\mathspring\\woServer\\resources\\lc_curProblem.xml");
+        File f1 = new File("F:\\mathspring\\mathspring\\woServer\\resources\\lc_curProblem.xml");
+        File f2 = new File("F:\\mathspring\\mathspring\\woServer\\resources\\lc_lastProblem.xml");
+        File[] files = new File[] {f1, f2};
         FileInputStream str = null;
         try {
-            str = new FileInputStream(f);
-            LCRuleset rs = new LCRuleset();
-            Connection conn= DbUtil.getAConnection("localhost");
-            XMLLCRule.loadRuleSetIntoPedagogy(conn, null, rs, str);
-//            XMLLCRule.loadRulesIntoPedagogy(conn, null, rs, str);
+            Connection conn = DbUtil.getAConnection("localhost");
+            // Get rid of all the data related to rules
             DbLCRule.clearRuleTables(conn); // blow away all the contents of rule tables and reset the id counters
-           DbLCRule.writeRuleset(conn,rs);
+            for (File f: files) {
+                str = new FileInputStream(f);
+                LCRuleset rs = new LCRuleset();
+                XMLLCRule.loadRuleSet(conn, rs, str);
+                DbLCRule.writeRuleset(conn, rs);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SQLException e) {

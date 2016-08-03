@@ -19,7 +19,6 @@ import org.jdom.JDOMException;
 
 import javax.servlet.ServletContext;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -163,7 +162,7 @@ public class DbPedagogy {
         if (rs.isFromDb())
             DbLCRule.loadRuleSetIntoPedagogy(conn,ped,rs);
         else
-            XMLLCRule.loadRuleSetIntoPedagogy(conn, ped, rs, servletContext.getResourceAsStream(rs.getSource()));
+            XMLLCRule.loadRuleSet(conn, rs, servletContext.getResourceAsStream(rs.getSource()));
     }
 
 

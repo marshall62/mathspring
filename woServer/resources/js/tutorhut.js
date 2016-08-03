@@ -613,6 +613,12 @@ function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequ
     }
 }
 
+// after a BeginProblem event is sent to server, we need to show any learning companion message it returns
+function processBeginProblemResult (responseText, textStatus, XMLHttpRequest) {
+    var activity = JSON.parse(responseText);
+    showLearningCompanion(activity);
+}
+
 function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     debugAlert("Server returns " + responseText);
     // empty out the flashContainer div of any swfobjects and clear the iframe of any problems
@@ -710,7 +716,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.hints = null;
                 globals.answers = null;
             }
-            sendBeginEvent(globals,pid,mode);
+            sendBeginEvent(globals,pid,mode, processBeginProblemResult);
             if (activity.form==='quickAuth')
                 showQuickAuthProblem(pid,solution,resource,mode,activity.questType);
             else showHTMLProblem(pid,solution,resource,mode);
@@ -734,7 +740,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             else {
                 container =FLASH_CONTAINER_INNER;
             }
-            sendBeginEvent(globals,pid,mode) ;
+            sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
             showFlashProblem(resource,ans,solution,container,mode);
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
@@ -764,7 +770,14 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             globals.probId = pid;
 //            document.location.href = sysGlobals.flashClientPath + "?sessnum=" + globals.sessionId + "&sessionId=" + globals.sessionId + "&learningHutChoice=true&elapsedTime=" + globals.elapsedTime + "&learningCompanion=" + globals.learningCompanion + "&intervention=" + encodeURIComponent(activityXML) + "&mode=intervention"; // &topicId=" + topicId;
         }
-       showLearningCompanion(activity);
+        // Because beginProblem events sometimes return a lc message that is important we don't want this to play an idle message right
+        // on top of it.    This is because the rule-based lc messages are combining with lc messages coming from the LC classes that are plugged into the pedagogy.
+        // Those classes need to no longer return any messages because they are stepping on the ones from the rule-base.   However this issue is kind of bug in that
+        // NextProblem is sent and gets back an 'idle' message, then EndProblem is sent then BeginProblem is sent (which gets back a real message) but then the last thing done by in the NextProblem processing is 
+        // to show the lc idle message.   A global var says if the lc is rule-based or programmatic in its message selection.   If it's programmatic we will show messages
+        // in this position - o/w all messages must be returned by rules on events that are documented to support running rules (i.e. NextProblem is not one).
+        if (globals.learningCompanionMessageSelectionStrategy == "programmatic")
+            showLearningCompanion(activity);
     }
     showHourglassCursor(false);
 }
@@ -779,13 +792,15 @@ function newBrowserWindow (url,w, h) {
 
 //  Called when the learning companion animations end
 function learningCompanionDone () {
-    alert("This idiot is done jabbering!") ;
-    $("#"+LEARNING_COMPANION_CONTAINER).dialog('close');
+    // temporarily commented out because some of the lc animations are actually calling this
+    // alert("This idiot is done jabbering!") ;
+    // $("#"+LEARNING_COMPANION_CONTAINER).dialog('close');
 }
 
 
 
 function successfulLCResult (url) {
+    console.log("Showing LC " + url);
     loadIframe(LEARNING_COMPANION_WINDOW_ID, url);
     //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
 
@@ -799,6 +814,7 @@ function failureLCResult (url) {
 function showLearningCompanion (json) {
 
     var files = json.learningCompanionFiles;
+    var url;
     transients.learningCompanionTextMessage = json.lcTextMessage;
     if (files != undefined && files != null)  {
 
@@ -809,7 +825,9 @@ function showLearningCompanion (json) {
     if (files instanceof Array)    {
         if (files[0] != globals.learningCompanionClip) {
             globals.learningCompanionClip = files[0];
-            httpHead(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],successfulLCResult,failureLCResult)
+            url = sysGlobals.problemContentPath + "/LearningCompanion/" + files[0];
+            console.log("Attempting to show LC animation: " + url);
+            httpHead(url,successfulLCResult,failureLCResult) ;
 //            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],260,600);
 
         }
@@ -818,7 +836,9 @@ function showLearningCompanion (json) {
     else {
         if (files != globals.learningCompanionClip) {
             globals.learningCompanionClip = files;
-            httpHead(sysGlobals.problemContentPath + "/LearningCompanion/" + files, successfulLCResult,failureLCResult)
+            url = sysGlobals.problemContentPath + "/LearningCompanion/" + files;
+            console.log("Attempting to show LC animation: " + url);
+            httpHead(url, successfulLCResult,failureLCResult);
 //            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files, 260,600);
 
         }
@@ -1105,7 +1125,7 @@ function showFlashProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
-        sendBeginEvent(globals,pid,mode) ;
+        sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
     if (globals.showAnswer)
@@ -1148,7 +1168,7 @@ function showHTMLProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
-        sendBeginEvent(globals,pid,mode) ;
+        sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
 

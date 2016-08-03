@@ -83,6 +83,19 @@ public class LCAccessors {
         return asm.getLastReportedEmotion();
     }
 
+    public double lastTopicMasteryValue (SessionEvent ev) {
+        int lt =  state.getLastTopic();
+        if (lt != -1) {
+            try {
+                return studentModel.getTopicMastery(lt);
+            } catch (SQLException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                return 0.01;   // protection against exceptions and/or divide by zero errors.
+            }
+        }
+        else return 0;
+    }
+
     /**
      * Gets the mastery in the current topic.
      * @return
@@ -210,16 +223,22 @@ public class LCAccessors {
      * @return The effort or empty string "" if nothing can be found
      */
     public String historyEffortN (int n) {
+        StudentProblemData d = historyN(n);
+        if (d != null)
+            return (d.getEffort() != null) ?  d.getEffort() :  "";
+        else return "";
+
+    }
+
+    // Return the nth history record from the student problem solve history.
+    public StudentProblemData historyN (int n) {
         int c = 0;
-        String e = "";
         for (StudentProblemData d : probSolveHist.getReverseHistory()) {
-            if (c == n) {
-                e = d.getEffort();
-                break;
-            }
+            if (c == n)
+                return d;
             c++;
         }
-        return (e != null) ? e : "";
+        return null;
     }
 
     public boolean videoExists (SessionEvent e) throws SQLException {
@@ -251,6 +270,62 @@ public class LCAccessors {
             return hs != null && hs.size() > 0;
         }
         return false;
+    }
+
+    public double curProbDifficulty (SessionEvent e) throws SQLException {
+        int curProbId = state.getCurProblem();
+        Problem p = ProblemMgr.getProblem(curProbId);
+        return p.getDiff_level();
+    }
+
+    public double lastProbDifficulty (SessionEvent e) throws SQLException {
+        int pid = state.getLastProblem();
+        Problem p = ProblemMgr.getProblem(pid);
+        if (p != null)
+            return p.getDiff_level();
+        else return 0;
+    }
+
+    public int curProbTopic (SessionEvent e) {
+        return state.getCurTopic();
+
+    }
+
+    public String curProbMode (SessionEvent e) {
+        return state.getCurProblemMode();
+    }
+
+    public int lastProbTopic (SessionEvent e) {
+        final StudentProblemData data = historyN(1);
+        if (data != null)
+            return data.getTopicId();
+        else return -1;
+    }
+
+    public boolean curProbTopicSameAsLastProbTopic (SessionEvent e) {
+        return curProbTopic(e) == lastProbTopic(e);
+    }
+
+    public boolean curProbHarderThanLastProb (SessionEvent e) throws SQLException {
+        double c = curProbDifficulty(e);
+        double l = lastProbDifficulty(e);
+        return c > l;
+    }
+
+    public boolean lastProblemIsExampleOrDemo (SessionEvent e) {
+        final StudentProblemData d = historyN(1);
+        if (d != null)
+            return d.getMode().equals(Problem.DEMO) || d.getMode().equalsIgnoreCase(Problem.EXAMPLE);
+        else return false;
+    }
+
+    public boolean isFirstProblemInTopic (SessionEvent e) {
+        final StudentProblemData l = historyN(1);
+        if (l != null) {
+            int curTopic = state.getCurTopic();
+            return (l.getMode().equals(Problem.DEMO) || l.getTopicId() != curTopic);
+        }
+        else return true;
     }
 
 

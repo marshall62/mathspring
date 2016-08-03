@@ -91,7 +91,9 @@ public abstract class LearningCompanion {
     }
 
 
-
+    public String getMessageSelectionStrategy () {
+        return "programmatic";  // this indicates that the messages are selected by the Java class itself (as opposed to a rule-set)
+    }
 
 
 
