@@ -38,7 +38,7 @@ public class MathAttitudes extends LoginInterventionSelector {
 
 
 
-    public LoginIntervention processInput (ServletParams params) throws SQLException {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
 
 
         int confidence = params.getInt(LoginParams.CONFIDENCE,0);

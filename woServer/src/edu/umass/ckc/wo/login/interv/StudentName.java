@@ -38,7 +38,7 @@ public class StudentName extends LoginInterventionSelector {
         }
     }
 
-    public LoginIntervention processInput (ServletParams params) throws SQLException {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
         String fname = params.getString(LoginParams.FNAME);
         String lini = params.getString(LoginParams.LINI);
         DbUser.setUserNames(servletInfo.getConn(), smgr.getStudentId(), fname, lini);

@@ -123,7 +123,7 @@ public class PostSurvey extends LoginInterventionSelector {
         }
     }
 
-    public LoginIntervention processInput (ServletParams params) throws SQLException {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
         return null;
     }
 

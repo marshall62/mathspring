@@ -46,7 +46,7 @@ public class GetNeighbors extends LoginInterventionSelector {
         }
     }
 
-    public LoginIntervention processInput (ServletParams params) throws SQLException {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
         int left = params.getInt(LoginParams.LEFT);
         int right = params.getInt(LoginParams.RIGHT);
         DbUser.setFlankingUsers(servletInfo.getConn(), smgr.getStudentId(), left, right);

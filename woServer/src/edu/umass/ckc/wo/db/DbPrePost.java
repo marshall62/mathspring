@@ -19,6 +19,10 @@ import java.util.ArrayList;
  */
 public class DbPrePost {
 
+    public static final String PRETEST = "pretest";
+    public static final String POSTTEST = "posttest";
+
+
         /**
        * Given a problemId return a PrePostProblem object or null if it doesn't exist
        * @param conn
@@ -165,6 +169,97 @@ public class DbPrePost {
                 testIds.add(testId);
             }
             return testIds;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static void storeStudentAnswer(Connection conn, int sessId, int studentId, int probId, String userAnswer,
+                                          String testType) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into preposttestdata (sessionId,probId,studentAnswer, studId, testType) values (?,?,?,?,?)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,sessId);
+            stmt.setInt(2,probId);
+            stmt.setString(3,userAnswer);
+            stmt.setInt(4,studentId);
+            stmt.setString(5,testType);
+            stmt.execute();
+
+        }
+
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
+    public static PrePostProblemDefn getPretestProblem(Connection conn, int pretestId, int position) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select probId from prepostproblemtestmap where testid=? and position=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,pretestId);
+            stmt.setInt(2,position);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int probId= rs.getInt(1);
+                return getPrePostProblem(conn,probId);
+            }
+            return null;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static int getPrePostTestNumProblems(Connection conn, int pretestId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select count(*) from prepostproblemtestmap where testid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,pretestId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            else return -1;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static int getStudentCompletedNumProblems(Connection conn, int pretestId, int studentId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select count(*) from preposttestdata where studId=? and probId in (select probId from prepostproblemtestmap where testid=?)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studentId);
+            stmt.setInt(2,pretestId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            return -1;
         }
         finally {
             if (stmt != null)

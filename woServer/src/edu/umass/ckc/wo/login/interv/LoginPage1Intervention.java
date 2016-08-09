@@ -5,6 +5,6 @@ package edu.umass.ckc.wo.login.interv;
  */
 public class LoginPage1Intervention extends LoginIntervention {
     public LoginPage1Intervention(String view) {
-        super(view);
+        super(view,true);
     }
 }

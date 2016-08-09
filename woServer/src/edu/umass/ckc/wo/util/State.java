@@ -390,11 +390,11 @@ public abstract class State {
      * @return
      * @throws SQLException
      */
-    public List getProp (int id, String property) throws SQLException {
+    public List<String> getProp (int id, String property) throws SQLException {
         String q = "select value from woproperty where objid=? and property=? order by position";
         PreparedStatement ps = conn.prepareStatement(q);
         ResultSet rs = null;
-        List values = new ArrayList();
+        List<String> values = new ArrayList<String>();
         try {
             ps.setInt(1,id);
             ps.setString(2,property);

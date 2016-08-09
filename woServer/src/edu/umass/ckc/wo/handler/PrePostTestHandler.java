@@ -45,7 +45,8 @@ public class PrePostTestHandler implements View {
         boolean preComp = smgr.getStudentState().getPretestCompleted();
         boolean postComp = smgr.getStudentState().getPosttestCompleted();
         // some classes are configured not to receive a pretest (they must be given a post test on entering test hut)
-        boolean givePretest = DbClass.giveClassPretest(smgr.getConnection(),smgr.getStudentClass(smgr.getStudentId()));
+        int gp = DbClass.getClassPretest(smgr.getConnection(),smgr.getStudentClass(smgr.getStudentId()));
+        boolean givePretest=gp==1;
         if (preComp && postComp) {
             return "ack=true&allowEntry=false&reason=+" + edu.umass.ckc.wo.content.PrePostProblem.TC;
         } else if (preComp || !givePretest)

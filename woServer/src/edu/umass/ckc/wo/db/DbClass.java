@@ -548,7 +548,7 @@ public class DbClass {
         }
     }
 
-    public static boolean giveClassPretest(Connection conn, int classId) throws SQLException {
+    public static int getClassPretest(Connection conn, int classId) throws SQLException {
         ResultSet rs = null;
         PreparedStatement s = null;
 
@@ -559,9 +559,9 @@ public class DbClass {
             rs = s.executeQuery();
             if (rs.next()) {
                 int givePretest = rs.getInt(1);
-                return givePretest == 1;
+                return givePretest;
             }
-            return false;  // never should reach this line.
+            return -1;  // never should reach this line.
         } finally {
             if (s != null)
                 s.close();

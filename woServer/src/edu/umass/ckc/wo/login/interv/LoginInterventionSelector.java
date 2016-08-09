@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.login.LoginSequence;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -27,6 +28,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class LoginInterventionSelector extends InterventionSelector implements PedagogicalMoveListener {
+    public static final String INTERVENTION_CLASS = "interventionClass";
     protected HttpServletRequest request;
     protected ServletInfo servletInfo;
     protected MyState interventionState;
@@ -41,7 +43,7 @@ public class LoginInterventionSelector extends InterventionSelector implements P
         this.servletInfo=servletInfo;
     }
 
-    public LoginIntervention processInput (ServletParams params) throws SQLException  {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
         return null;
     }
 
@@ -49,9 +51,9 @@ public class LoginInterventionSelector extends InterventionSelector implements P
         rememberInterventionSelector(this);
         interventionState.setTimeOfLastIntervention(System.currentTimeMillis());
         HttpServletRequest req = this.servletInfo.getRequest();
-        req.setAttribute("skin",servletInfo.getParams().getString("skin"));
-        req.setAttribute("interventionClass",getClass().getName());
-        req.setAttribute("sessionId",e.getSessionId());
+        req.setAttribute(LoginSequence.SKIN,servletInfo.getParams().getString("skin"));
+        req.setAttribute(INTERVENTION_CLASS,getClass().getName());
+        req.setAttribute(LoginSequence.SESSION_ID,e.getSessionId());
         return null;
     }
 

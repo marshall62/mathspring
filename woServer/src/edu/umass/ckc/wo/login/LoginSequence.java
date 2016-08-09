@@ -26,6 +26,11 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class LoginSequence {
+    public static final String INNERJSP = "innerjsp";
+    public static final String SKIN = "skin";
+    public static final String SERVLET_CONTEXT = "servletContext";
+    public static final String SERVLET_NAME = "servletName";
+    public static final String SESSION_ID = "sessionId";
     private SessionManager smgr;
     private PedagogicalModel pedagogicalModel;
     private InterventionGroup interventionGroup;
@@ -47,6 +52,7 @@ public class LoginSequence {
         Pedagogy ped = pedagogicalModel.getPedagogy();
         buildInterventions(ped);
 
+
     }
 
     private void buildInterventions (Pedagogy ped) throws Exception {
@@ -59,18 +65,24 @@ public class LoginSequence {
         }
     }
 
-
-    public void processAction (ServletParams params) throws Exception {
+    public LoginIntervention getNextIntervention (ServletParams params) throws Exception {
         LoginIntervention li = (LoginIntervention) interventionGroup.selectIntervention(smgr,new SessionEvent(params,this.sessId),"Login");
+        return li;
+    }
+
+
+    public void processAction (ServletParams params, LoginIntervention li) throws Exception {
+
         if (li != null) {
             String innerJSP = li.getView();
-            String skin = params.getString("skin");
+            String skin = params.getString(SKIN);
             String loginJSP="login/logink12Outer.jsp" ;
             if (skin != null && skin.equalsIgnoreCase("adult"))
                 loginJSP = "login/loginAdultOuter.jsp";
-            servletInfo.getRequest().setAttribute("innerjsp",innerJSP);
-            servletInfo.getRequest().setAttribute("servletContext",servletInfo.getServletContext().getContextPath());
-            servletInfo.getRequest().setAttribute("servletName",servletInfo.getServletName());
+            servletInfo.getRequest().setAttribute(INNERJSP,innerJSP);
+            servletInfo.getRequest().setAttribute(SERVLET_CONTEXT,servletInfo.getServletContext().getContextPath());
+            servletInfo.getRequest().setAttribute(SERVLET_NAME,servletInfo.getServletName());
+            servletInfo.getRequest().setAttribute(SESSION_ID,smgr.getSessionNum());
             RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
             disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
         }

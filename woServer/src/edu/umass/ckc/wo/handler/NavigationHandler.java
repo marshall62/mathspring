@@ -193,8 +193,8 @@ public class NavigationHandler {
     }
 
     private boolean pretestRequired() throws SQLException {
-        boolean givePretest = DbClass.giveClassPretest(smgr.getConnection(), smgr.getStudentClass(smgr.getStudentId()));
-        return givePretest;
+        int givePretest = DbClass.getClassPretest(smgr.getConnection(), smgr.getStudentClass(smgr.getStudentId()));
+        return givePretest==1;
 
     }
 
