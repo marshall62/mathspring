@@ -9,47 +9,50 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="edu.umass.ckc.wo.content.PrePostProblemDefn" %>
 
-<%--@elvariable id="pretestQuestion" type="edu.umass.ckc.wo.content.PrePostProblemDefn"--%>
+<%--@elvariable id="question" type="edu.umass.ckc.wo.content.PrePostProblemDefn"--%>
 
 <c:if test="${message != null}">
     <b>${message}</b> <br><br>
 </c:if>
-<form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
+<script type="text/javascript" src="login/js/login.js"></script>
+
+
+<form method="post" name="login" onsubmit="return validateForm(${question.isMultiChoice()})" action="${pageContext.request.contextPath}/WoLoginServlet">
     <input type="hidden" name="action" value="LoginInterventionInput"/>
     <input type="hidden" name="sessionId" value="${sessionId}">
     <input type="hidden" name="skin" value="${skin}"/>
     <input type="hidden" name="interventionClass" value="${interventionClass}"/>
-    <input type="hidden" name="probId" value="${pretestQuestion.id}"/>
+    <input type="hidden" name="probId" value="${question.id}"/>
 
     <p>&nbsp;</p>
     <c:choose>
-        <c:when test="${pretestQuestion.isMultiChoice()}">
-            <p><b>${pretestQuestion.descr}:</b></p>
-            <c:if test="${pretestQuestion.aAns != null}">
-                <input type="radio" name="answer" value="${pretestQuestion.aAns}"> ${pretestQuestion.aAns}</input>
+        <c:when test="${question.isMultiChoice()}">
+            <p><b>${question.descr}:</b></p>
+            <c:if test="${question.aAns != null}">
+                <input id="a" type="radio" name="answer" value="${question.aAns}"> ${question.aAns}</input>
             </c:if>
-            <c:if test="${pretestQuestion.bAns != null}">
-                <br/><input type="radio" name="answer" value="${pretestQuestion.bAns}"> ${pretestQuestion.bAns}</input>
+            <c:if test="${question.bAns != null}">
+                <br/><input id="b" type="radio" name="answer" value="${question.bAns}"> ${question.bAns}</input>
             </c:if>
-            <c:if test="${pretestQuestion.cAns != null}">
-                <br/><input type="radio" name="answer" value="${pretestQuestion.cAns}"> ${pretestQuestion.cAns}</input>
+            <c:if test="${question.cAns != null}">
+                <br/><input id="c" type="radio" name="answer" value="${question.cAns}"> ${question.cAns}</input>
             </c:if>
-            <c:if test="${pretestQuestion.dAns != null}">
-                <br/><input type="radio" name="answer" value="${pretestQuestion.dAns}"> ${pretestQuestion.dAns}</input>
+            <c:if test="${question.dAns != null}">
+                <br/><input id="d" type="radio" name="answer" value="${question.dAns}"> ${question.dAns}</input>
             </c:if>
-            <c:if test="${pretestQuestion.eAns != null} ">
-                <br/> <input type="radio" name="answer" value="${pretestQuestion.eAns}"> ${pretestQuestion.eAns}</input>
+            <c:if test="${question.eAns != null} ">
+                <br/> <input id="e" type="radio" name="answer" value="${question.eAns}"> ${question.eAns}</input>
             </c:if>
 
             <br>
         </c:when>
         <c:otherwise>
-            <c:if test="${pretestQuestion.url != null}">
-                <img src="${pageContext.request.contextPath}${pretestQuestion.url}"/>
+            <c:if test="${question.url != null}">
+                <img src="${pageContext.request.contextPath}${question.url}"/>
                 <br/>
             </c:if>
-            <p><b>${pretestQuestion.descr}</b></p>
-            <input type="text" name="answer"/>
+            <p><b>${question.descr}</b></p>
+            <input id="f" type="text" name="answer"/>
             </br>
             <br>
         </c:otherwise>

@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
-import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.content.PrePostProblemDefn;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbPrePost;
@@ -67,31 +66,37 @@ import java.sql.SQLException;
 public class Pretest extends LoginInterventionSelector {
     private static final String ANSWER = "answer";
     private static final String PROBID = "probId";
-    private static final String PRETEST_QUESTION = "pretestQuestion";
+    private static final String QUESTION = "question";
     private static final String JSP = "pretestQuestion.jsp";
     public static final String TERMINATION_TEST = "terminationTest";
     public static final String COMPLETE_ALL_PROBLEMS = "completeAllProblems";
     public static final String MESSAGE = "message";
     public static final String START_MESSAGE = "startMessage";
 
-    private int pretestId;
-    private int classId;
-    private int numProbsInTest;
-    private int numPretestProblemsCompleted;
+    protected int testId;
+    protected int classId;
+    protected int numProbsInTest;
+    protected int numTestProbsCompleted;
     private String startMessage;
-
+    protected String testType;
     private String terminationPredicate;
 
 
     public Pretest(SessionManager smgr) throws SQLException {
         super(smgr);
         classId = smgr.getClassID();
-        this.pretestId = DbClass.getClassPretest(smgr.getConnection(),classId);
-        this.numProbsInTest = DbPrePost.getPrePostTestNumProblems(smgr.getConnection(),this.pretestId);
-        this.numPretestProblemsCompleted = DbPrePost.getStudentCompletedNumProblems(smgr.getConnection(),this.pretestId, smgr.getStudentId());
+        testType = DbPrePost.PRETEST;
+    }
+
+    protected void setProperties (String testType) throws SQLException {
+        this.testId = DbClass.getClassPrePostTest(smgr.getConnection(),classId,testType);
+        this.numProbsInTest = DbPrePost.getPrePostTestNumProblems(smgr.getConnection(),this.testId);
+        this.numTestProbsCompleted = DbPrePost.getStudentCompletedNumProblems(smgr.getConnection(),this.testId, smgr.getStudentId(),testType);
+
     }
 
     public void init (SessionManager smgr, PedagogicalModel pm) throws Exception {
+        setProperties(testType);
         if (configXML != null) {
             Element eotElt = configXML.getChild(TERMINATION_TEST);
             if (eotElt != null)
@@ -113,8 +118,16 @@ public class Pretest extends LoginInterventionSelector {
     // If no config, we do this by default.
     public boolean isTestComplete () {
         if (terminationPredicate == null || terminationPredicate.equals(COMPLETE_ALL_PROBLEMS))
-            return this.numPretestProblemsCompleted == this.numProbsInTest;
+            return this.numTestProbsCompleted >= this.numProbsInTest;
         else return false;
+    }
+
+    /**
+     * This is a simple test that overriden by Posttest subclass with more complexity.
+     * @return
+     */
+    public boolean isTestOn () throws SQLException {
+        return true;
     }
 
     public Intervention selectIntervention (SessionEvent e) throws Exception {
@@ -122,25 +135,28 @@ public class Pretest extends LoginInterventionSelector {
         // We want to insure that each student completes the entire pretest.  For now we are hard-wired to
         // test that the number of answers == the number of questions (later we may make this test vary based on some config)
 
+        boolean runTest = isTestOn();
         boolean pretestComplete = isTestComplete();
         boolean replayTest = false; // TODO To override the above we'd need some flag on the class or on the student
                                     // If that flag is set, we'd have to blow away the students previous answers so that things play right.
 
-        if (this.pretestId == -1)
+        if (this.testId == -1)
             return null;
         if ( pretestComplete && !replayTest)
             return null;
-        else {
+        // only run the test if it is ready to run (pretests are always ready, posttests have to be turned on with a switch in classconfig table)
+        else if (runTest) {
             HttpServletRequest req = this.servletInfo.getRequest();
             super.selectIntervention(e);
             // Get the next pre-test problem (using the numCompleted + 1 as the position index)
-            PrePostProblemDefn p = getPrePostProblemN(smgr.getConnection(),this.pretestId,this.numPretestProblemsCompleted+1);
+            PrePostProblemDefn p = getPrePostProblemN(smgr.getConnection(),this.testId,this.numTestProbsCompleted +1);
             req.setAttribute(MESSAGE,this.startMessage);
-            req.setAttribute(PRETEST_QUESTION,p);
+            req.setAttribute(QUESTION,p);
             req.setAttribute(LoginSequence.SESSION_ID,smgr.getSessionNum());
             // TODO The JSP will conditionally generate the write kind of HTML depending on whether its a multiple-choice or short-answer question.
             return new LoginIntervention(JSP);
         }
+        else return null;
     }
 
     /*
@@ -154,14 +170,14 @@ public class Pretest extends LoginInterventionSelector {
         String userAnswer = params.getString(ANSWER);
         int probId = params.getInt(PROBID);
         // Store the student answer to this question (need studId, probId, and answer)
-        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,DbPrePost.PRETEST);
-        this.numPretestProblemsCompleted++;
+        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType);
+        this.numTestProbsCompleted++;
         PrePostProblemDefn p = getNextPretestQuestion(smgr);
         if (p == null)
             return null;
         else {
             HttpServletRequest req = this.servletInfo.getRequest();
-            req.setAttribute(PRETEST_QUESTION,p);
+            req.setAttribute(QUESTION,p);
             req.setAttribute(LoginInterventionSelector.INTERVENTION_CLASS,getClass().getName());
             //  The JSP will conditionally generate the write kind of HTML depending on whether its a multiple-choice or short-answer question.
             return new LoginIntervention(JSP);
@@ -170,18 +186,14 @@ public class Pretest extends LoginInterventionSelector {
 
 
     private PrePostProblemDefn getPrePostProblemN(Connection connection, int pretestId, int position) throws SQLException {
-        PrePostProblemDefn p = DbPrePost.getPretestProblem(connection,pretestId,position);
+        PrePostProblemDefn p = DbPrePost.getPrePosttestProblem(connection,pretestId,position);
         return p;
     }
 
     private PrePostProblemDefn getNextPretestQuestion(SessionManager smgr) throws SQLException {
         // get the next problem using the numCompleted + 1 as an index
-        PrePostProblemDefn p = getPrePostProblemN(smgr.getConnection(),this.pretestId,this.numPretestProblemsCompleted+1);
+        PrePostProblemDefn p = getPrePostProblemN(smgr.getConnection(),this.testId,this.numTestProbsCompleted +1);
         return p;
     }
 
-
-    public String f (SessionManager smgr) {
-        return JSP;
-    }
 }

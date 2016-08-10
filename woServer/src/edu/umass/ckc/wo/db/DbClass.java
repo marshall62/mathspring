@@ -548,12 +548,15 @@ public class DbClass {
         }
     }
 
-    public static int getClassPretest(Connection conn, int classId) throws SQLException {
+    public static int getClassPrePostTest(Connection conn, int classId, String testType) throws SQLException {
         ResultSet rs = null;
         PreparedStatement s = null;
 
         try {
-            String q = "select pretest from ClassConfig where classId=?";
+            String q;
+            if (testType.equals(DbPrePost.PRETEST))
+                q = "select pretest from ClassConfig where classId=?";
+            else q = "select posttest from ClassConfig where classId=?";
             s = conn.prepareStatement(q);
             s.setInt(1, classId);
             rs = s.executeQuery();

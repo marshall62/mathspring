@@ -202,7 +202,7 @@ public class DbPrePost {
         }
     }
 
-    public static PrePostProblemDefn getPretestProblem(Connection conn, int pretestId, int position) throws SQLException {
+    public static PrePostProblemDefn getPrePosttestProblem(Connection conn, int pretestId, int position) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
@@ -225,13 +225,20 @@ public class DbPrePost {
         }
     }
 
-    public static int getPrePostTestNumProblems(Connection conn, int pretestId) throws SQLException {
+    /**
+     * Counts the number of questions in a pre or post test.
+     * @param conn
+     * @param testId
+     * @return
+     * @throws SQLException
+     */
+    public static int getPrePostTestNumProblems(Connection conn, int testId) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
             String q = "select count(*) from prepostproblemtestmap where testid=?";
             stmt = conn.prepareStatement(q);
-            stmt.setInt(1,pretestId);
+            stmt.setInt(1,testId);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 int c= rs.getInt(1);
@@ -246,14 +253,24 @@ public class DbPrePost {
         }
     }
 
-    public static int getStudentCompletedNumProblems(Connection conn, int pretestId, int studentId) throws SQLException {
+    /**
+     * Counts the number of questions a student has completed in a pre or post test
+     * @param conn
+     * @param testId
+     * @param studentId
+     * @param testType  either "pretest" or "posttest"
+     * @return
+     * @throws SQLException
+     */
+    public static int getStudentCompletedNumProblems(Connection conn, int testId, int studentId, String testType) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select count(*) from preposttestdata where studId=? and probId in (select probId from prepostproblemtestmap where testid=?)";
+            String q = "select count(*) from preposttestdata d, prepostproblemtestmap m where d.studId=? and d.probId = m.probId and m.testid=? and d.testType=?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,studentId);
-            stmt.setInt(2,pretestId);
+            stmt.setInt(2,testId);
+            stmt.setString(3,testType);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 int c= rs.getInt(1);
