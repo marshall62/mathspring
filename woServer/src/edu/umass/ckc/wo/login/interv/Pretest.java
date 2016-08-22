@@ -175,8 +175,13 @@ public class Pretest extends LoginInterventionSelector {
         String userAnswer = params.getString(ANSWER);
         int probId = params.getInt(PROBID);
         int timeOnProb = params.getInt(ELAPSED_TIME) / 1000; // convert to seconds
+        PrePostProblemDefn thisProb = DbPrePost.getPrePostProblem(conn,probId);
+        boolean isCorrect = true;
+        if (thisProb != null) {
+            isCorrect = gradeProb(thisProb,userAnswer);
+        }
         // Store the student answer to this question (need studId, probId, and answer)
-        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType, timeOnProb);
+        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType, timeOnProb, isCorrect);
         this.numTestProbsCompleted++;
         PrePostProblemDefn p = getNextPretestQuestion(smgr);
         if (p == null)
@@ -190,6 +195,26 @@ public class Pretest extends LoginInterventionSelector {
             //  The JSP will conditionally generate the write kind of HTML depending on whether its a multiple-choice or short-answer question.
             return new LoginIntervention(JSP);
         }
+    }
+
+    // If a problem has an expected answer (e.g. the answer field is non-null) we grade it.
+    // pretest problems that are multi-choice do not rely on a,b,c as the userAnswer.  What comes back as the userInput from the HTML form is
+    // something like "2 - I don't like this".   So to check correctness of a multi-choice question, the correct answer needs
+    // to be stored in the database as "2 - I don't like this" rather than "b".  We then do a string match.   Short answer questions
+    // just use a string match and remove spaces and upper case.
+    private boolean gradeProb(PrePostProblemDefn thisProb, String userAnswer) {
+
+        // For short-answer questions we do a string match.  The string match algorithm does nothing more than remove trailing spaces and upper case.
+        if (thisProb.isMultiChoice() && thisProb.getAnswer() != null) {
+            return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
+        }
+        // if its a short-answer problem with an expected answer, check it
+        else if (thisProb.getAnswer() != null) {
+            return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
+        }
+        // its not a question with an expected answer, so just mark it as correct
+        else
+            return true;
     }
 
 

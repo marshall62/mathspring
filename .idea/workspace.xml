@@ -7,51 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/woServer/resources/login/js/login.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/jquery-ui-1.10.4.custom/development-bundle/demos/slider/side-scroll.html" afterPath="$PROJECT_DIR$/woServer/resources/js/jquery-ui-1.10.4.custom/development-bundle/demos/slider/side-scroll.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/jquery-ui-1.10.4.custom/development-bundle/demos/tabs/manipulation.html" afterPath="$PROJECT_DIR$/woServer/resources/js/jquery-ui-1.10.4.custom/development-bundle/demos/tabs/manipulation.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp" afterPath="$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp" afterPath="$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/PrePostProblemDefn.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/PrePostProblemDefn.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPrePost.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPrePost.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/CreateClassPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/CreateClassPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/CreateClassSuccessPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/CreateClassSuccessPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/MyProgressPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/MyProgressPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/SelectPedagogyPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/SelectPedagogyPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/TeacherActivityPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/TeacherActivityPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/TeacherLoginPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/TeacherLoginPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/TeacherRegistrationPage.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/admin/TeacherRegistrationPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/XMLLCRule.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/XMLLCRule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/LoginSequence.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/mrcommon/Names.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/mrcommon/Names.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/PrePostPedagogicalModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/PrePostPedagogicalModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/WoPedagogicalModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/WoPedagogicalModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/hintSel/PercentageHintSelector.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/hintSel/PercentageHintSelector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationOriginatorIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/CollaborationOriginatorIS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelector.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/InterventionSelectorSpec.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/TopicIntroIS.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/TopicIntroIS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/SingleTopicPM.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/SingleTopicPM.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/TopicSelectorImpl.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/TopicSelectorImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/ChallengeModeTopicLoader.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/ChallengeModeTopicLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/OldBaseTopicProblemSelector.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/OldBaseTopicProblemSelector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/PrePostProblemSelectorImpl.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/PrePostProblemSelectorImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/ReviewModeTopicLoader.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/ReviewModeTopicLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/TopicLoader.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/TopicLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/MotivationalStudentModel.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/MotivationalStudentModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentModelMotivational.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentModelMotivational.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutormeta/BaseProblemSelectorOld.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutormeta/BaseProblemSelectorOld.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/MathspringSubSessionServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/MathspringSubSessionServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoTutorServlet.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoTutorServlet.java" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -216,8 +175,18 @@
       <file leaf-file-name="Pretest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="187" column="31" selection-start-line="187" selection-start-column="31" selection-end-line="187" selection-end-column="31" />
+            <state relative-caret-position="222">
+              <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DbPrePost.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPrePost.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="341">
+              <caret line="198" column="86" selection-start-line="198" selection-start-column="37" selection-end-line="198" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -253,6 +222,18 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="PrePostProblemDefn.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/PrePostProblemDefn.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+              <folding>
+                <element signature="e#3437#3438#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="MathAttitudes.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/MathAttitudes.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -263,31 +244,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PreSurvey.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="StudentName.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/StudentName.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="382">
               <caret line="49" column="18" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChildAssent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/ChildAssent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="26" column="75" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -400,11 +361,11 @@
         <option value="$PROJECT_DIR$/woServer/resources/login/js/progressBar.js" />
         <option value="$PROJECT_DIR$/woServer/resources/login/js/login.js" />
         <option value="$PROJECT_DIR$/woServer/resources/login/logink12Outer.jsp" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPrePost.java" />
         <option value="$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/LoginInterventionSelector.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/WoLoginServlet.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPrePost.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java" />
       </list>
     </option>
   </component>
@@ -1842,14 +1803,7 @@
       <workItem from="1468499050898" duration="26424000" />
       <workItem from="1470147876203" duration="37875000" />
       <workItem from="1470835918315" duration="10676000" />
-      <workItem from="1471615067594" duration="20678000" />
-    </task>
-    <task id="LOCAL-00156" summary="Fixed bug with logback URL for assistments.   We went back to a fixed URL rather than trying to get it from the referer header which wasn't present on calls from Assistments.">
-      <created>1421968663576</created>
-      <option name="number" value="00156" />
-      <option name="presentableId" value="LOCAL-00156" />
-      <option name="project" value="LOCAL" />
-      <updated>1421968663576</updated>
+      <workItem from="1471615067594" duration="22716000" />
     </task>
     <task id="LOCAL-00157" summary="Fixed bug for TeachTopic&amp;problemId=XXX where XXX is a quickAuth problem.  We were not sending the form=quickAuth to the client so that it correctly use the skeleton .    Added in a form variable to instantiate globals.form in the mathspring.jsp">
       <created>1422020781497</created>
@@ -2187,11 +2141,18 @@
       <option name="project" value="LOCAL" />
       <updated>1470844764708</updated>
     </task>
-    <option name="localTasksCounter" value="205" />
+    <task id="LOCAL-00205" summary="All pretest and posttest features working including warning messages about taking too long, progress bars and dynamically added buttons.   This means that authoring a problem needs to have a waitTime (in seconds) to tell the system how long to wait until popping up a message.    For many questions there is no correct answer.  For those questions that are math and short answer is the type of the input,  we can really only do a simple string comparison">
+      <created>1471878094977</created>
+      <option name="number" value="00205" />
+      <option name="presentableId" value="LOCAL-00205" />
+      <option name="project" value="LOCAL" />
+      <updated>1471878094979</updated>
+    </task>
+    <option name="localTasksCounter" value="206" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137876000" />
+    <option name="totallyTimeSpent" value="139914000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2274,7 +2235,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="added two pedagogies for semi empathy with collab" />
     <MESSAGE value="no-op commit" />
     <MESSAGE value="worked on improving login sequence" />
     <MESSAGE value="changed a probability of collab to .1" />
@@ -2299,7 +2259,8 @@
     <MESSAGE value="Added more rules and conditions to support messages that happen at BeginProblem events." />
     <MESSAGE value="Added built-in pretests at login time." />
     <MESSAGE value="Added Posttest and javascript form validation of pre/post test questions." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Posttest and javascript form validation of pre/post test questions." />
+    <MESSAGE value="All pretest and posttest features working including warning messages about taking too long, progress bars and dynamically added buttons.   This means that authoring a problem needs to have a waitTime (in seconds) to tell the system how long to wait until popping up a message.    For many questions there is no correct answer.  For those questions that are math and short answer is the type of the input,  we can really only do a simple string comparison" />
+    <option name="LAST_COMMIT_MESSAGE" value="All pretest and posttest features working including warning messages about taking too long, progress bars and dynamically added buttons.   This means that authoring a problem needs to have a waitTime (in seconds) to tell the system how long to wait until popping up a message.    For many questions there is no correct answer.  For those questions that are math and short answer is the type of the input,  we can really only do a simple string comparison" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2348,9 +2309,9 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java</url>
-          <line>155</line>
+          <line>207</line>
           <properties />
-          <option name="timeStamp" value="105" />
+          <option name="timeStamp" value="111" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -2362,7 +2323,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="110" />
+      <option name="time" value="112" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2700,14 +2661,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/PrePostProblemDefn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="49" column="26" selection-start-line="49" selection-start-column="26" selection-end-line="49" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/probSel/PrePostProblemSelectorImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="478">
@@ -2747,14 +2700,6 @@
           <folding>
             <element signature="e#28222#28223#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPrePost.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="223" column="0" selection-start-line="223" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2841,10 +2786,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPrePost.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="198" column="86" selection-start-line="198" selection-start-column="37" selection-end-line="198" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/PrePostProblemDefn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+          <folding>
+            <element signature="e#3437#3438#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="187" column="31" selection-start-line="187" selection-start-column="31" selection-end-line="187" selection-end-column="31" />
+        <state relative-caret-position="222">
+          <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
           <folding />
         </state>
       </provider>

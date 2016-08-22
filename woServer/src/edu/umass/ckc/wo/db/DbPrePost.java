@@ -52,6 +52,8 @@ public class DbPrePost {
                   if (rs.wasNull())
                       description = null;
                   String answer = rs.getString(5);
+                  if (rs.wasNull())
+                      answer = null;
                   int ansType = rs.getInt(6);
                   String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
                   String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
@@ -185,17 +187,18 @@ public class DbPrePost {
     }
 
     public static void storeStudentAnswer(Connection conn, int sessId, int studentId, int probId, String userAnswer,
-                                          String testType, int timeOnProb) throws SQLException {
+                                          String testType, int timeOnProb, boolean isCorrect) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "insert into preposttestdata (sessionId,probId,studentAnswer, studId, testType) values (?,?,?,?,?)";
+            String q = "insert into preposttestdata (sessionId,probId,studentAnswer, studId, testType, isCorrect) values (?,?,?,?,?,?)";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,sessId);
             stmt.setInt(2,probId);
             stmt.setString(3,userAnswer);
             stmt.setInt(4,studentId);
             stmt.setString(5,testType);
+            stmt.setBoolean(6,isCorrect);
             stmt.execute();
 
         }
