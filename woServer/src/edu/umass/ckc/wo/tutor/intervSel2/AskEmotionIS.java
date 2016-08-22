@@ -57,7 +57,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
         this.pedagogicalModel=pedagogicalModel;
-//        super.init(smgr,pedagogicalModel);
+//        super.setServletInfo(smgr,pedagogicalModel);
         configure();
     }
 

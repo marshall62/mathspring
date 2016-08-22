@@ -46,8 +46,8 @@ public class CreateClassSuccessPage implements View {
                 "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n" +
                 "<script language=\"JavaScript\">\n" +
                 "<!--\n" +
-                "function MM_reloadPage(init) {  //reloads the window if Nav4 resized\n" +
-                "  if (init==true) with (navigator) {if ((appName==\"Netscape\")&&(parseInt(appVersion)==4)) {\n" +
+                "function MM_reloadPage(setServletInfo) {  //reloads the window if Nav4 resized\n" +
+                "  if (setServletInfo==true) with (navigator) {if ((appName==\"Netscape\")&&(parseInt(appVersion)==4)) {\n" +
                 "    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}\n" +
                 "  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();\n" +
                 "}\n" +

@@ -61,7 +61,7 @@ public class LoginSequence {
         interventionGroup.buildInterventions(smgr,pedagogicalModel);
         for (InterventionSelector s : interventionGroup.getAllInterventions()) {
             LoginInterventionSelector ls = (LoginInterventionSelector) s;
-            ls.init(servletInfo);
+            ls.setServletInfo(servletInfo);
         }
     }
 

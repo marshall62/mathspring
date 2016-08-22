@@ -49,7 +49,7 @@ public class WoTutorServlet extends BaseServlet {
         try {
 
             ServletUtil.initialize(servletContext,connection);
-            logger.debug("Begin init of WoTutorServlet");
+            logger.debug("Begin setServletInfo of WoTutorServlet");
             // machine learning problem selector needs to read a policy file
             String useLearningCompanions = servletContext.getInitParameter(Names.USE_LEARNING_COMPANIONS);
             if (useLearningCompanions != null)
@@ -86,10 +86,10 @@ public class WoTutorServlet extends BaseServlet {
                 LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
 
             }
-            logger.debug("end init of WoTutorServlet");
+            logger.debug("end setServletInfo of WoTutorServlet");
 
         } catch (Exception e) {
-            logger.debug("fail init of WoTutorServlet");
+            logger.debug("fail setServletInfo of WoTutorServlet");
 
             e.printStackTrace();
             throw e;

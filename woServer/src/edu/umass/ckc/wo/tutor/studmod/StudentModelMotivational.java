@@ -116,7 +116,7 @@ public class StudentModelMotivational extends AffectStudentModel {
     public boolean motivated;
     public boolean self_confident;
     public boolean problemSolved = true;
-    public String fname; //Gets initialized in the init function
+    public String fname; //Gets initialized in the setServletInfo function
     private Vector RecentProbs_FirstAttempt_NoHint; //Records the correctness of first attempt for those problems with no hints
     private Vector RecentProbs_FirstAttempt_WithPossibleHint; //Records the correctness of first attempt for the last problems
     private Vector previousProbs_FirstAttempt_NoHint;//tracks the problems before Recent problems

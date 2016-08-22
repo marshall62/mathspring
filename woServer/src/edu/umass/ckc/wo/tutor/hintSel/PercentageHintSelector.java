@@ -28,9 +28,9 @@ public class PercentageHintSelector  extends BaseHintSelector implements HintSel
         this.init(smgr);
     }
 
-    //    public void init(SessionManager smgr, int probId) throws Exception {
+    //    public void setServletInfo(SessionManager smgr, int probId) throws Exception {
 //
-//        super.init(smgr, probId);
+//        super.setServletInfo(smgr, probId);
 //        conn_ = smgr.getConnection();
 //        state = new SelectorState();
 //        state.load(conn_,smgr.getStudentId());  // super loads the state

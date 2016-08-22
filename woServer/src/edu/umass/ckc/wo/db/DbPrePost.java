@@ -36,7 +36,7 @@ public class DbPrePost {
           try {
 //              String q = "select problemSet,name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
               String q = "select id, name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
-                      "aURL,bURL,cURL,dURL,eURL from PrePostProblem where id=?";
+                      "aURL,bURL,cURL,dURL,eURL,waitTimeSecs from PrePostProblem where id=?";
               ps = conn.prepareStatement(q);
               ps.setInt(1, probId);
               rs = ps.executeQuery();
@@ -55,9 +55,12 @@ public class DbPrePost {
                   int ansType = rs.getInt(6);
                   String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
                   String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
+                  int waitTimeSecs=0;
                   PrePostProblemDefn p;
                   if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
-                      ;
+                      waitTimeSecs= rs.getInt(17) ;
+                      if (rs.wasNull())
+                          waitTimeSecs=0;
                   }
                   else {
                       aChoice = rs.getString(7);
@@ -90,10 +93,13 @@ public class DbPrePost {
                       eURL = rs.getString(16);
                       if (rs.wasNull())
                           eURL = null;
+                      waitTimeSecs= rs.getInt(17) ;
+                      if (rs.wasNull())
+                          waitTimeSecs=0;
 
                   }
               return new PrePostProblemDefn(probId, name, description, url, ansType, answer, problemSet, aChoice, bChoice, cChoice,
-                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL);
+                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs);
               }
           } catch (SQLException e) {
               e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -179,7 +185,7 @@ public class DbPrePost {
     }
 
     public static void storeStudentAnswer(Connection conn, int sessId, int studentId, int probId, String userAnswer,
-                                          String testType) throws SQLException {
+                                          String testType, int timeOnProb) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {

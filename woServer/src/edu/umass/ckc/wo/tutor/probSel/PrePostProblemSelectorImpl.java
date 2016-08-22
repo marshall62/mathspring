@@ -3,8 +3,6 @@ package edu.umass.ckc.wo.tutor.probSel;
 import edu.umass.ckc.wo.content.PrePostProblem;
 import edu.umass.ckc.wo.content.PrePostProblemDefn;
 import edu.umass.ckc.wo.content.Problem;
-import edu.umass.ckc.wo.enumx.StudentInputEnum;
-import edu.umass.ckc.wo.event.StudentActionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutormeta.PrePostProblemSelector;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -299,7 +297,7 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
             // DM 3/09 Get problems from the map joined with the prePostProblem.   This is because
             // problems now can be in more than one test.
             String q = "select id,name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
-                    "aURL,bURL,cURL,dURL,eURL from PrePostProblem p, PrepostProblemTestMap m where m.testId=? and p.id=m.probId";
+                    "aURL,bURL,cURL,dURL,eURL,waitTimeSecs from PrePostProblem p, PrepostProblemTestMap m where m.testId=? and p.id=m.probId";
             ps = conn.prepareStatement(q);
             ps.setInt(1, testId);
             rs = ps.executeQuery();
@@ -317,6 +315,7 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
                 String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
                 String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
                 PrePostProblemDefn p;
+                int waitTimeSecs = 0;
                 if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
                     ;
                 } else {
@@ -350,9 +349,12 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
                     eURL = rs.getString(16);
                     if (rs.wasNull())
                         eURL = null;
+                    waitTimeSecs = rs.getInt(17);
+                    if (rs.wasNull())
+                        waitTimeSecs = 0;
                 }
                 result.add(new PrePostProblemDefn(id, name, description, url, ansType, answer, testId, aChoice, bChoice, cChoice,
-                        dChoice, eChoice, aURL, bURL, cURL, dURL, eURL));
+                        dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs));
             }
             return result;
         } finally {

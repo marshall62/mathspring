@@ -89,7 +89,8 @@ public class WoLoginServlet extends BaseServlet {
             Class c = Class.forName(cl);
             SessionManager smgr = new SessionManager(conn,sessId,servletInfo.getHostPath(),servletInfo.getContextPath()).buildExistingSession();
             LoginInterventionSelector is = (LoginInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
-            is.init(servletInfo);
+            is.setServletInfo(servletInfo);
+            is.init(smgr,smgr.getPedagogicalModel());
             LoginIntervention interv = is.processInput(params);
             if (interv == null) {
                 // Now find the next intervention
@@ -149,7 +150,7 @@ public class WoLoginServlet extends BaseServlet {
     }
 
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
-        logger.debug("Begin init of WOLoginServlet");
+        logger.debug("Begin setServletInfo of WOLoginServlet");
         ServletUtil.initialize(servletContext, connection);
         Settings.formalityServletURI = servletConfig.getInitParameter(Names.FORMALITY_SERVLET_URI);
         servletContext.setAttribute("flashClientURI", Settings.flashClientPath);
@@ -162,7 +163,7 @@ public class WoLoginServlet extends BaseServlet {
             LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
 
         }
-        logger.debug("end init of WOLoginServlet");
+        logger.debug("end setServletInfo of WOLoginServlet");
 
     }
 

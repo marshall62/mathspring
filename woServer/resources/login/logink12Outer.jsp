@@ -14,7 +14,10 @@
     <link href="/p7ie_fixes/p7ccm_ie.css" rel="stylesheet" type="text/css" media="all" />
     <![endif]-->
     <script type="text/javascript" src="login/js/p7EHCscripts.js"></script>
-    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+    <script src="js/jquery-1.10.2.js"></script>
+    <%--<script src="js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>--%>
+    <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script type="text/javascript" src="js/simple-slider.js"></script>
     <script type="text/javascript" src="js/login.js"></script>
     <script type="text/javascript">

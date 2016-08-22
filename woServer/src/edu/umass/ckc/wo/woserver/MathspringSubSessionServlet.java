@@ -31,7 +31,7 @@ public class MathspringSubSessionServlet extends BaseServlet {
     private static Logger logger = Logger.getLogger(MathspringSubSessionServlet.class);
     private String policyFile;
     private ProblemMgr problemMgr; // ProblemMgr is held here explicitely (even though not by necessity).
-    private String handlerClassName; // given as a servlet init param in web.xml   A class that will handle the requests (e.g. MariHandler)
+    private String handlerClassName; // given as a servlet setServletInfo param in web.xml   A class that will handle the requests (e.g. MariHandler)
     // It maintains a
     // static cache of sat hut Problems, hints, etc that persist throughout
     // the duration of the servlet engine run.   The WoAdminServlet even
@@ -52,7 +52,7 @@ public class MathspringSubSessionServlet extends BaseServlet {
         try {
 
             ServletUtil.initialize(servletContext,connection);
-            logger.debug("Begin init of WoTutorServlet");
+            logger.debug("Begin setServletInfo of WoTutorServlet");
 
             String externActPct = servletConfig.getInitParameter(Names.EXTERNAL_ACTIVITY_PERCENTAGE);
             if (externActPct == null)
@@ -92,10 +92,10 @@ public class MathspringSubSessionServlet extends BaseServlet {
                 LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
 
             }
-            logger.debug("end init of MathspringSubSessionServlet");
+            logger.debug("end setServletInfo of MathspringSubSessionServlet");
 
         } catch (Exception e) {
-            logger.debug("fail init of MathspringSubSessionServlet");
+            logger.debug("fail setServletInfo of MathspringSubSessionServlet");
 
             e.printStackTrace();
             throw e;

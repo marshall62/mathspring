@@ -39,7 +39,7 @@ public class LoginInterventionSelector extends InterventionSelector implements P
         interventionState = new MyState(smgr);
     }
 
-    public void init (ServletInfo servletInfo) {
+    public void setServletInfo(ServletInfo servletInfo) {
         this.servletInfo=servletInfo;
     }
 

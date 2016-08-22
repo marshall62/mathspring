@@ -72,6 +72,9 @@ public class Pretest extends LoginInterventionSelector {
     public static final String COMPLETE_ALL_PROBLEMS = "completeAllProblems";
     public static final String MESSAGE = "message";
     public static final String START_MESSAGE = "startMessage";
+    public static final String ELAPSED_TIME = "elapsedTime";
+    public static final String NUM_PROBS_IN_TEST = "numProbsInTest";
+    public static final String NUM_PROBS_COMPLETED = "numProbsCompleted";
 
     protected int testId;
     protected int classId;
@@ -152,6 +155,8 @@ public class Pretest extends LoginInterventionSelector {
             PrePostProblemDefn p = getPrePostProblemN(smgr.getConnection(),this.testId,this.numTestProbsCompleted +1);
             req.setAttribute(MESSAGE,this.startMessage);
             req.setAttribute(QUESTION,p);
+            req.setAttribute(NUM_PROBS_IN_TEST, this.numProbsInTest);
+            req.setAttribute(NUM_PROBS_COMPLETED, this.numTestProbsCompleted);
             req.setAttribute(LoginSequence.SESSION_ID,smgr.getSessionNum());
             // TODO The JSP will conditionally generate the write kind of HTML depending on whether its a multiple-choice or short-answer question.
             return new LoginIntervention(JSP);
@@ -169,8 +174,9 @@ public class Pretest extends LoginInterventionSelector {
     public LoginIntervention processInput (ServletParams params) throws Exception {
         String userAnswer = params.getString(ANSWER);
         int probId = params.getInt(PROBID);
+        int timeOnProb = params.getInt(ELAPSED_TIME) / 1000; // convert to seconds
         // Store the student answer to this question (need studId, probId, and answer)
-        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType);
+        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType, timeOnProb);
         this.numTestProbsCompleted++;
         PrePostProblemDefn p = getNextPretestQuestion(smgr);
         if (p == null)
@@ -178,6 +184,8 @@ public class Pretest extends LoginInterventionSelector {
         else {
             HttpServletRequest req = this.servletInfo.getRequest();
             req.setAttribute(QUESTION,p);
+            req.setAttribute(NUM_PROBS_IN_TEST, this.numProbsInTest);
+            req.setAttribute(NUM_PROBS_COMPLETED, this.numTestProbsCompleted);
             req.setAttribute(LoginInterventionSelector.INTERVENTION_CLASS,getClass().getName());
             //  The JSP will conditionally generate the write kind of HTML depending on whether its a multiple-choice or short-answer question.
             return new LoginIntervention(JSP);

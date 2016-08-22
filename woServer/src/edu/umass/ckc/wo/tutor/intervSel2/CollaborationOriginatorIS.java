@@ -38,7 +38,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         state = CollaborationManager.getCollaborationState(smgr);
     }
 
-    //CollaborationOriginatorIS works a little differently, in that it gets called several times without being init'd,
+    //CollaborationOriginatorIS works a little differently, in that it gets called several times without being setServletInfo'd,
     // via the SameIntervention path?
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel){
         this.pedagogicalModel = pedagogicalModel;

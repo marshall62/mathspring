@@ -116,7 +116,7 @@ public class XMLLCRule {
         File[] files = new File[] {f1, f2};
         FileInputStream str = null;
         try {
-            Connection conn = DbUtil.getAConnection("localhost");
+            Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
             // Get rid of all the data related to rules
             DbLCRule.clearRuleTables(conn); // blow away all the contents of rule tables and reset the id counters
             for (File f: files) {
@@ -125,6 +125,7 @@ public class XMLLCRule {
                 XMLLCRule.loadRuleSet(conn, rs, str);
                 DbLCRule.writeRuleset(conn, rs);
             }
+            System.out.println("Done");
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SQLException e) {

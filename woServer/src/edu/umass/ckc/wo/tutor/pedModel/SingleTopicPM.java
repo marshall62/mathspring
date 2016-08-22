@@ -43,7 +43,7 @@ public class SingleTopicPM extends BasePedagogicalModel {
 //        challengeModeSelector = new ChallengeModeProblemSelector();
 //        hintSelector = new PercentageHintSelector();
 //        problemSelector = new SingleTopicProblemSelector(smgr,params);
-//        problemSelector.init(smgr);
+//        problemSelector.setServletInfo(smgr);
 
 
 

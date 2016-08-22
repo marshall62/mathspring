@@ -44,7 +44,7 @@ public abstract class InterventionSelector implements PedagogicalMoveListener {
 
 
     public InterventionSelector(SessionManager smgr) {
-//        init(smgr, pedagogicalModel);
+//        setServletInfo(smgr, pedagogicalModel);
         this.smgr = smgr;
         this.conn = smgr.getConnection();
         this.studentState = smgr.getStudentState();
@@ -66,9 +66,9 @@ public abstract class InterventionSelector implements PedagogicalMoveListener {
     }
 
     /**
-     * The init method of the InterventionSelector is called at a time later than the constructor.  This is necessary because
+     * The setServletInfo method of the InterventionSelector is called at a time later than the constructor.  This is necessary because
      * some of the objects necessary to the InterventinoSelector are not available at the time of its construction (e.g. the PedagogicalModel).
-     * So we wait until just before we really need the InterventionSelector and then call its init method passing it the stuff it has to have at that point
+     * So we wait until just before we really need the InterventionSelector and then call its setServletInfo method passing it the stuff it has to have at that point
      *
      * @param smgr
      * @param pedagogicalModel

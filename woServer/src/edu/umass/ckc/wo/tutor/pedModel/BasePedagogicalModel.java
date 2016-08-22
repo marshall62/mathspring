@@ -136,7 +136,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        InterventionSelector sel= (InterventionSelector) Class.forName(interventionSelectorSpec.getClassName()).getConstructor(SessionManager.class, PedagogicalModel.class).newInstance(smgr,this);
 //        sel.setParams(interventionSelectorSpec.getParams());
 //        sel.setConfigXML(interventionSelectorSpec.getConfigXML());
-//        sel.init(smgr,this);
+//        sel.setServletInfo(smgr,this);
 //        return sel;
 //    }
 
@@ -378,7 +378,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         if (nextProblemInterventionSelector != null && !smgr.getStudentState().isInChallengeMode() && !smgr.getStudentState().isInReviewMode() &&
                 e.isTutorMode())
         {
-            nextProblemInterventionSelector.init(smgr, this);
+            nextProblemInterventionSelector.setServletInfo(smgr, this);
             intervention= nextProblemInterventionSelector.selectIntervention(e);
         }
         if (intervention != null) {
@@ -936,7 +936,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             InterventionSelectorSpec spec= interventionGroup.getInterventionSelectorSpec(lastInterventionClass);
             if (spec != null) {
                 NextProblemInterventionSelector intSel = (NextProblemInterventionSelector) spec.buildIS(smgr);
-                intSel.init(smgr,this);
+                intSel.setServletInfo(smgr,this);
                 // We may get back null, InternalEvent, InterventionResponse
                 r = intSel.processContinueNextProblemInterventionEvent( e);
                 // The last intervention selector will either return an InternalEvent or null

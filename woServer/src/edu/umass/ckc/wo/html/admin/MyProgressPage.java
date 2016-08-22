@@ -94,7 +94,7 @@ public class MyProgressPage implements View  {
 
               s= s.concat("\t\t\tfunction initChart" + masteryChartName + "() {\t\t\t\t\n") ;
               s= s.concat("\t\t\t\tvar chart = Chart;\n") ;
-              s= s.concat("\t\t\t\tchart.init(\"" + masteryChartName + "\");\n") ;
+              s= s.concat("\t\t\t\tchart.setServletInfo(\"" + masteryChartName + "\");\n") ;
               s= s.concat("\t\t\t\tchart.title = \"\";\n") ;
               s= s.concat("\t\t\t\tchart.type = \"bar\";\n") ;
               s= s.concat("\t\t\t\tchart.debug = false;\n") ;

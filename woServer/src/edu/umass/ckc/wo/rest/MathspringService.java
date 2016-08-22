@@ -98,7 +98,7 @@ public class MathspringService {
     }
 
     private void serviceInit (Connection conn) throws Exception {
-        // If the service is called before any of the tutor servlets initialize the system, we do the servlet init because we need static objects created for this
+        // If the service is called before any of the tutor servlets initialize the system, we do the servlet setServletInfo because we need static objects created for this
         ServletUtil.initialize(servletContext,conn);
         if (!ProblemMgr.isLoaded())  {
             ProblemMgr problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
@@ -147,7 +147,7 @@ public class MathspringService {
     public Response getCCSSProblems(@PathParam("std")String ccstd) throws Exception {
         JSONObject jsonObject = new JSONObject();
         Connection conn = getConnection();
-        // If the service is called before any of the tutor servlets initialize the system, we do the servlet init because we need static objects created for this
+        // If the service is called before any of the tutor servlets initialize the system, we do the servlet setServletInfo because we need static objects created for this
         serviceInit(conn);
         int n = ProblemMgr.getStandardNumProblems(conn,ccstd);
         jsonObject.put("ccss", ccstd);
@@ -173,7 +173,7 @@ public class MathspringService {
     public Response getAllCCSSProblems() throws Exception {
         JSONObject jsonObject = new JSONObject();
         Connection conn = getConnection();
-        // If the service is called before any of the tutor servlets initialize the system, we do the servlet init because we need static objects created for this
+        // If the service is called before any of the tutor servlets initialize the system, we do the servlet setServletInfo because we need static objects created for this
         serviceInit(conn);
         // get back a list of <CCSS, numProbs>
         List<Pair<String,Integer>> list = ProblemMgr.getAllStandardNumProblems(conn);

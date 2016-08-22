@@ -27,7 +27,7 @@ public class WoAdminServlet extends BaseServlet {
     }
 
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
-        logger.debug("Beginning init of WoAdminServlet");
+        logger.debug("Beginning setServletInfo of WoAdminServlet");
         ServletUtil.initialize(servletContext, connection);
         String prepostURI = servletConfig.getInitParameter("prepostProblemURI");
         String useServletSessions = servletConfig.getInitParameter("useServletSession");
@@ -49,7 +49,7 @@ public class WoAdminServlet extends BaseServlet {
             ProblemMgr probMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
             probMgr.loadProbs(connection);
         }
-        logger.debug("End init of WoAdminServlet");
+        logger.debug("End setServletInfo of WoAdminServlet");
 
     }
 

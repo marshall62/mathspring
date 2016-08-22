@@ -112,7 +112,7 @@ public class InterventionSelectorSpec implements Comparable<InterventionSelector
         sel.setParams(this.getParams());
 
         sel.setConfigXML(this.getConfigXML());
-        //sel.init(smgr,smgr.getPedagogicalModel());  // Want to put off the call to init til just before we call .selectIntervention()
+        //sel.setServletInfo(smgr,smgr.getPedagogicalModel());  // Want to put off the call to setServletInfo til just before we call .selectIntervention()
         return sel;
     }
 
