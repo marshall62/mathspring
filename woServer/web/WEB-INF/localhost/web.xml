@@ -225,6 +225,11 @@ The results of this go into out/artifacts/MathSpring_exploded
     </servlet>
 
     <servlet>
+        <servlet-name>ImageFetch</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.ImageFetchServlet</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>Jersey Web Application</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -242,6 +247,10 @@ The results of this go into out/artifacts/MathSpring_exploded
     <servlet-mapping>
         <servlet-name>MathspringSubSessionServlet</servlet-name>
         <url-pattern>/mathspringSubSession</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageFetch</servlet-name>
+        <url-pattern>/getImage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SimpleJSPServlet</servlet-name>

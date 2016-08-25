@@ -163,6 +163,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>ImageFetch</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.ImageFetchServlet</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>MathspringSubSessionServlet</servlet-name>
         <servlet-class>edu.umass.ckc.wo.woserver.MathspringSubSessionServlet</servlet-class>
 
@@ -189,6 +194,10 @@
 
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>ImageFetch</servlet-name>
+        <url-pattern>/getImage</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
            <servlet-name>TestDbServlet</servlet-name>
            <url-pattern>/TestDbServlet</url-pattern>

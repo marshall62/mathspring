@@ -177,7 +177,9 @@
         </c:when>
         <c:otherwise>
             <c:if test="${question.url != null}">
-                <img src="${pageContext.request.contextPath}${question.url}"/>
+                <%-- If we have the image as a file in the folder we'd do this--%>
+                <%--<img src="${pageContext.request.contextPath}${question.url}"/>--%>
+                <img src="${pageContext.request.contextPath}/getImage?table=prePostProblem&column=image&id=${question.id}"/>
                 <br/>
             </c:if>
             <p><b>${question.descr}</b></p>
