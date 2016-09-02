@@ -68,8 +68,6 @@ public class PrePostProblemDefn extends Problem {
         this.dURL = cleanAns(dURL);
         this.eURL = cleanAns(eURL);
         this.waitTimeSecs = waitTimeSecs;
-        if (waitTimeSecs == 0)
-            waitTimeSecs = 60;
     }
 
     public int getId() {

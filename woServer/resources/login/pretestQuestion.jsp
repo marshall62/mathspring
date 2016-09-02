@@ -28,10 +28,13 @@
     var showWaitMessage = true;
     // Pop up an alert after a period of time so student does not sit in the question too long
     $(document).ready(function () {
-        var interval = ${question.waitTimeSecs} * 1000;  // convert to ms
+        var warnTime = ${question.waitTimeSecs};
+        var interval = warnTime * 1000;  // convert to ms
         var d = new Date();
         startTime = d.getTime();
-        setInterval(function () { alertUser(${question.isMultiChoice()})}, interval );
+        // only set up a warning cycle if the warnTime is set.
+        if ( warnTime > 0)
+            setInterval(function () { alertUser(${question.isMultiChoice()})}, interval );
         // hide the controls that allow selecting 'I don't know'
         setIDontKnowControls(true, 'none');
     });

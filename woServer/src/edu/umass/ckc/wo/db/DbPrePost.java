@@ -97,7 +97,7 @@ public class DbPrePost {
                           eURL = null;
                       waitTimeSecs= rs.getInt(17) ;
                       if (rs.wasNull())
-                          waitTimeSecs=0;
+                          waitTimeSecs=-1;
 
                   }
               return new PrePostProblemDefn(probId, name, description, url, ansType, answer, problemSet, aChoice, bChoice, cChoice,

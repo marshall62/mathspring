@@ -57,7 +57,6 @@ public class ImageFetchServlet extends BaseServlet {
                 byte[] buffer = new byte[bufferSize];
 
                 while ((length = in.read(buffer)) != -1) {
-                    System.out.println("writing " + length + " bytes");
                     out.write(buffer, 0, length);
                 }
 
