@@ -236,6 +236,7 @@ public class Problem implements Activity {
         jo.element("instructions",instructions);
         if (isQuickAuth()) {
             jo.element("statementHTML", statementHTML);
+            jo.element("probContentPath", Settings.webContentPath);
             jo.element("questionAudio", questionAudio);
             jo.element("questionImage", imageURL);
             jo.element("units", units);

@@ -395,9 +395,14 @@ function replaceWithHTML(file, ext, resource, probContentPath){
     var toInsert = "";
 
     //Replace and image file name inside {} with the appropriate html
-    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "svg"){
-        toInsert = "<img style=\"max-height: 100%; max-width: 100%\" src=\""+getURL(file + "." + ext, resource, probContentPath)+"\"></img>";
+    // DM 9/16 removed svg from the list of extensions because they correctly scale themselves
+    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" ){
+        toInsert = '<img style="max-height: 100%; max-width: 100%" src=' +getURL(file + "." + ext, resource, probContentPath)+ '" >';
     }
+    // DM 9/16 added svg on its own without resizing
+    else if (ext == 'svg')
+        toInsert = '<img src=' +getURL(file + "." + ext, resource, probContentPath)+ '" >'
+
 
     //Do the same for a video
     else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
