@@ -22,10 +22,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import net.sf.json.JSONObject;
@@ -48,7 +45,7 @@ import java.util.List;
  */
 
 @Path("/problems")
-public class MathspringService {
+public class MathContentService {
 
     // TODO the below URL will be different for rose than localhost.   The value of the variable should come from web.xml
     protected static String tomcatDataSourceURL="jdbc/wodblocal"; // make sure META-INF/context.xml defines this datasource

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="mathspring" default="all">
+<project name="mathspring Sugaree" default="all">
   
   
   <property file="build.properties"/>
