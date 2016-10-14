@@ -55,7 +55,8 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/woServer/web/META-INF/context.xml" />
       </element>
-      <element id="dir-copy" path="$PROJECT_DIR$/woServer/resources" />
+      <element id="javaee-facet-resources" facet="woServer/web/WebForLocalhost" />
+      <element id="javaee-facet-resources" facet="woServer/web/WebForLocalhost" />
     </root>
   </artifact>
 </component>

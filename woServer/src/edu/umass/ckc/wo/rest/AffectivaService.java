@@ -9,14 +9,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-//import javax.ws.rs.*;
-//import javax.ws.rs.core.MediaType;
-//import javax.ws.rs.core.Response;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by david on 10/5/2016.
@@ -56,29 +49,25 @@ public class AffectivaService {
         return Response.status(200).entity(root.toString()).build();
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/test/{sessionId}")
-    public Response postFacialData (@PathParam("sessionId") String sessId) throws Exception {
-        List<AffectivaEmotion> emotions = new ArrayList<AffectivaEmotion>();
-        AffectivaEmotion ee = new AffectivaEmotion("joy",30.3);
-        emotions.add(ee);
-        ee = new AffectivaEmotion("disgust",4.56);
-        emotions.add(ee);
-//        List<AffectivaFacePoint> points = aReq.getFaceDataPoints();
-        logger.debug("sessionId: " + sessId);
-//        for (AffectivaFacePoint p : points)  {
-//            logger.debug("Point: " + p);
+//    @POST
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Path("/test/{sessionId}")
+//    public Response postFacialData (@PathParam("sessionId") String sessId) throws Exception {
+//        List<AffectivaEmotion> emotions = new ArrayList<AffectivaEmotion>();
+//        AffectivaEmotion ee = new AffectivaEmotion("joy",30.3);
+//        emotions.add(ee);
+//        ee = new AffectivaEmotion("disgust",4.56);
+//        emotions.add(ee);
+//        logger.debug("sessionId: " + sessId);
 //
+//        for (AffectivaEmotion e : emotions) {
+//            logger.debug("Emotion: " + e);
 //        }
-        for (AffectivaEmotion e : emotions) {
-            logger.debug("Emotion: " + e);
-        }
-        JSONObject o = new JSONObject();
-        o.put("message","success");
-        return Response.status(200).entity(o.toString()).build();
-    }
+//        JSONObject o = new JSONObject();
+//        o.put("message","success");
+//        return Response.status(200).entity(o.toString()).build();
+//    }
 
 
     // http://localhost:8080/mt/affectiva/userEmotion/1234
@@ -95,24 +84,5 @@ public class AffectivaService {
     }
 
 
-    @POST
-    @Path("/simpost")
-    @Consumes("application/json")
-    public Response crunchifyREST(InputStream incomingData) {
-        StringBuilder crunchifyBuilder = new StringBuilder();
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
-            String line = null;
-            while ((line = in.readLine()) != null) {
-                crunchifyBuilder.append(line);
-            }
-        } catch (Exception e) {
-            System.out.println("Error Parsing: - ");
-        }
-        System.out.println("Data Received: " + crunchifyBuilder.toString());
-
-        // return HTTP response 200 in case of success
-        return Response.status(200).entity(crunchifyBuilder.toString()).build();
-    }
 
 }
