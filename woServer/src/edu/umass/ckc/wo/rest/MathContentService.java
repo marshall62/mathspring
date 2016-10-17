@@ -55,14 +55,14 @@ public class MathContentService {
 
     @javax.ws.rs.core.Context ServletContext servletContext;
 
-    protected Connection getConnection () throws SQLException {
+    public static Connection getConnection (ServletContext sc) throws SQLException {
         // Obtain our environment naming context
         Context initCtx;
         try {
             initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // There is servlet context parameter defined in web.xml that says the name of the database resource to use from context.xml
-            String datasource = servletContext.getInitParameter("wodb.datasource");
+            String datasource = sc.getInitParameter("wodb.datasource");
             // Look up our data source by name
             DataSource ds = (DataSource) envCtx.lookup(datasource);
             Connection conn = ds.getConnection();
@@ -116,7 +116,7 @@ public class MathContentService {
      */
     public Response getCCSSStudentProblems(@PathParam("std")String ccstd, @PathParam("userid")String userid) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        Connection conn = getConnection();
+        Connection conn = getConnection(servletContext);
         serviceInit(conn);
         int n = ProblemMgr.getStandardNumProblems(conn,ccstd);
         jsonObject.put("ccss", ccstd);
@@ -143,7 +143,7 @@ public class MathContentService {
      */
     public Response getCCSSProblems(@PathParam("std")String ccstd) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        Connection conn = getConnection();
+        Connection conn = getConnection(servletContext);
         // If the service is called before any of the tutor servlets initialize the system, we do the servlet setServletInfo because we need static objects created for this
         serviceInit(conn);
         int n = ProblemMgr.getStandardNumProblems(conn,ccstd);
@@ -169,7 +169,7 @@ public class MathContentService {
      */
     public Response getAllCCSSProblems() throws Exception {
         JSONObject jsonObject = new JSONObject();
-        Connection conn = getConnection();
+        Connection conn = getConnection(servletContext);
         // If the service is called before any of the tutor servlets initialize the system, we do the servlet setServletInfo because we need static objects created for this
         serviceInit(conn);
         // get back a list of <CCSS, numProbs>

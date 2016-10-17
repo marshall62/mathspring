@@ -1072,7 +1072,7 @@
         <copy todir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes">
             <fileset dir="${woserver.output.dir}"/>
         </copy>
-        <copy file="${basedir}/woServer/web/WEB-INF/cadmium/log4j.properties" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes/log4j.properties"/>
+        <copy file="${basedir}/woServer/web/WEB-INF/rose/log4j.properties" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes/log4j.properties"/>
         <mkdir dir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib"/>
         <copy file="${path.variable.maven_repository}/cglib/cglib/2.2/cglib-2.2.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/cglib-2.2.jar"/>
         <copy file="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jcommander-1.27.jar"/>

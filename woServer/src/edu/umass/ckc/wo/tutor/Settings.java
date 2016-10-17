@@ -67,6 +67,8 @@ public class Settings {
   public static  String host = "should be set to the name of the host (e.g. localhost or rose.cs.umass.edu)";
   public static  String port = "should be set to the name of the port only when its not 80";
 
+  public static String tomcatDatasourceURL;
+
   public static final int duplicateRowError = 2627;
   public static final int keyConstraintViolation = 1062;
   public static final boolean debugAllClasses = false ;

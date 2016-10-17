@@ -9,6 +9,10 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -22,6 +26,15 @@ public class AffectivaService {
 
     @javax.ws.rs.core.Context ServletContext servletContext;
 
+    /**
+     * Receives post request from client running affectiva SDK.  Format of input is JSON like:
+     * {emotions: [{name: "sad", value: 0.43}, {name: "joy", value: 9.3}],
+     facepoints: [{locationId: "lnostril", x:34, y:10}, {locationId: "leye", x:45, y:959}]}
+     * @param postdata
+     * @param sessId
+     * @return
+     * @throws Exception
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
@@ -41,12 +54,34 @@ public class AffectivaService {
             AffectivaFacePoint afp = AffectivaFacePoint.createFromJSON(fp);
             System.out.println(afp.toString());
         }
+        Connection conn = MathContentService.getConnection(servletContext);
+        saveFaceData(conn,sessId,emotions,facepoints);
 
 //        List<AffectivaFacePoint> points = aReq.getFaceDataPoints();
         root.put("sessionId",sessId);
         JSONObject o = new JSONObject();
         root.put("message","success");
         return Response.status(200).entity(root.toString()).build();
+    }
+
+    private void saveFaceData(Connection conn, String sessId, JSONArray emotions, JSONArray facepoints) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into facedata (sessId, data) values (?,?)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,Integer.parseInt(sessId));
+            stmt.setString(2,emotions.toString() + facepoints.toString());
+            stmt.execute();
+
+        }
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+
     }
 
 //    @POST
