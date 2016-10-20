@@ -145,6 +145,9 @@ public class Pretest extends LoginInterventionSelector {
 
         if (this.testId == -1)
             return null;
+        // if the test is deactiveated, we have to abort showing it
+        else if (!isTestActive(smgr.getConnection(), this.testId))
+            return null;
         if ( pretestComplete && !replayTest)
             return null;
         // only run the test if it is ready to run (pretests are always ready, posttests have to be turned on with a switch in classconfig table)
@@ -215,6 +218,11 @@ public class Pretest extends LoginInterventionSelector {
         // its not a question with an expected answer, so just mark it as correct
         else
             return true;
+    }
+
+    private boolean isTestActive (Connection conn, int testId) throws SQLException {
+        return DbPrePost.isTestActive(conn,testId);
+
     }
 
 

@@ -294,4 +294,26 @@ public class DbPrePost {
                 rs.close();
         }
     }
+
+    public static boolean isTestActive(Connection conn, int testId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select isactive from preposttest where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, testId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                boolean b= rs.getBoolean(1);
+                return b;
+            }
+            return false;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 }
