@@ -12,13 +12,15 @@ import net.sf.json.JSONObject;
  */
 public class LoginIntervention implements Intervention {
     private String view;  // name of JSP
-    private String url;   // URL which will be shown in a separate browser window
-    private boolean separateWindow =false; // tells whether to display the URL in a separate window
+    private String url;   // URL which will be shown in a separate browser window   -- DM 8/16 not seeing evidence of this being used
+    private boolean separateWindow =false; // tells whether to display the URL in a separate window      -- DM 8/16 not seeing evidence of this being used
+    private boolean topLevel = false; // indicates if the JSP should be within an outer JSP or not
 
     public LoginIntervention(String view, String url, boolean separateWindow) {
         this.view = view;
         this.url = url;
         this.separateWindow =separateWindow;
+        this.topLevel = false;
     }
 
     public LoginIntervention(String view) {
@@ -26,8 +28,17 @@ public class LoginIntervention implements Intervention {
 
     }
 
+    public LoginIntervention(String view, boolean isTopLevel) {
+        this(view,null,false);
+        this.topLevel = isTopLevel;
+    }
+
     public String getView () {
         return this.view;
+    }
+
+    public boolean isTopLevel () {
+        return this.topLevel;
     }
 
     public boolean openInSeparateWindow () {

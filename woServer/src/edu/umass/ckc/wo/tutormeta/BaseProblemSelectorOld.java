@@ -104,7 +104,7 @@ public abstract class BaseProblemSelectorOld implements ProblemSelector {
 //     * @param smgr
 //     * @throws Exception
 //     */
-//    public abstract void init(SessionManager smgr) throws Exception;
+//    public abstract void setServletInfo(SessionManager smgr) throws Exception;
 
     // TODO These should be abstract methods to force subclasses to implement these three methods.  Instead
     // we have implementations here so that subclasses will compile.   They will break at runtime if they don't

@@ -52,7 +52,7 @@ public class ReviewModeTopicLoader extends TopicLoader {
      * @throws java.sql.SQLException
       */
      public List<Problem> prepareForSelection(SessionManager smgr, boolean resetCounters) throws SQLException {
-         // studentID and classID were set in init method.
+         // studentID and classID were set in setServletInfo method.
          StudentState state = smgr.getStudentState();
          topicID =state.getCurTopic();
          this.topicName = ProblemMgr.getTopic(this.topicID).getName();

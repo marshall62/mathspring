@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.response;
 
 import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.event.internal.InternalEvent;
 
 /**
  * Created with IntelliJ IDEA.

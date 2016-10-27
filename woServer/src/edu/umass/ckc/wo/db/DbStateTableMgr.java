@@ -245,10 +245,15 @@ public class DbStateTableMgr {
                 load(studId,model, tableName, cols, smClass);  // potential for infinite loop if create fails.
             }
             else {
-                for (String col: cols) {
-                    PropertyDescriptor d = new PropertyDescriptor(col, smClass);
-                    String dt =  colTypes.get(col);
-                    setObjectPropVal(d, col, model, rs,dt);
+                try {
+                    for (String col: cols) {
+                        PropertyDescriptor d = new PropertyDescriptor(col, smClass);
+                        String dt =  colTypes.get(col);
+                        setObjectPropVal(d, col, model, rs,dt);
+                    }
+                } catch (IntrospectionException e) {
+                    System.out.println("Failed to find accessor " + cols + " in the class " + smClass.getName() + " Make sure there is a get method with exactly this name.");
+                    throw e;
                 }
 
             }

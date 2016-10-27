@@ -63,6 +63,30 @@ public class RawMasteryHeuristic implements MasteryHeuristic {
         return topicMastery;
     }
 
+    @Override
+    /**
+     * Compute a mastery level for a given standard.  numProbsSeen is the number of problems that the student has seen that contains this standard
+     */
+    public double computeStandardMastery(long timeToFirstAttempt, double stdMastery, int probID,
+                                        int numHelpAids, boolean isCorrect, int numMistakes, int numProbsSeen, String problemMode) throws SQLException {
+        double dd = DbProblem.getDiffLevel(conn,probID);
+
+        double incr=0.0;
+        if ( numMistakes == 0 && isCorrect  ) {
+            incr=1.0;     // 1
+        }
+        else if (numMistakes == 1 && isCorrect) {
+            incr=.8;   // .8
+        }
+        else if (numMistakes == 2 && isCorrect) {
+            incr=.3;   // .3
+        }
+        else if (numMistakes > 2)
+            incr=0; // 0
+        stdMastery = (stdMastery * (numProbsSeen-1) + incr) / (numProbsSeen);
+        return stdMastery;
+    }
+
     // The 4 methods below are the heuristic for updating topic mastery.   They are protected methods because there is a subclass of this
     // TopicMasterySimulator that is used in reports to generate a student's history of topic masteries by simulating events from the
     // event log.    By making it a subclass of this, we insure that it uses the same heuristic.

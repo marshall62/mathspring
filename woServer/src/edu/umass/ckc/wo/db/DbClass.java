@@ -27,6 +27,7 @@ public class DbClass {
 
     public static final String GUEST_USER_CLASS_NAME = "GuestUserClass";
     public static final String ASSISTMENTS_CLASS_NAME = "AssistmentsUserClass";
+    public static final String MARI_CLASS_NAME = "MariUserClass";
 
     public static ClassInfo getClass(Connection conn, int classId) throws SQLException {
         ResultSet rs = null;
@@ -547,20 +548,23 @@ public class DbClass {
         }
     }
 
-    public static boolean giveClassPretest(Connection conn, int classId) throws SQLException {
+    public static int getClassPrePostTest(Connection conn, int classId, String testType) throws SQLException {
         ResultSet rs = null;
         PreparedStatement s = null;
 
         try {
-            String q = "select pretest from ClassConfig where classId=?";
+            String q;
+            if (testType.equals(DbPrePost.PRETEST))
+                q = "select pretest from ClassConfig where classId=?";
+            else q = "select posttest from ClassConfig where classId=?";
             s = conn.prepareStatement(q);
             s.setInt(1, classId);
             rs = s.executeQuery();
             if (rs.next()) {
                 int givePretest = rs.getInt(1);
-                return givePretest == 1;
+                return givePretest;
             }
-            return false;  // never should reach this line.
+            return -1;  // never should reach this line.
         } finally {
             if (s != null)
                 s.close();
@@ -773,6 +777,8 @@ public class DbClass {
         } else return null;
     }
 
+
+
     public static List<User> getClassStudents(Connection conn, int classID) throws SQLException {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -880,6 +886,11 @@ public class DbClass {
         }
     }
 
+    public static List<User> addClassStudents (Connection conn, ClassInfo classInfo, int numStudentsToAdd) {
+        return null;
+    }
+
+
     public static boolean createClassStudents(Connection conn, ClassInfo classInfo, String prefix, String password, int beginNum, int endNum,
                                               String testUserPrefix, String testUserPassword) throws Exception {
         List<String> pedIds = DbClassPedagogies.getClassPedagogyIds(conn, classInfo.getClassid());
@@ -888,7 +899,7 @@ public class DbClass {
 
 
         // Build Test users if a prefix was given
-        if (testUserPrefix.trim().length() != 0) {
+        if (testUserPrefix != null && testUserPrefix.trim().length() != 0) {
             return buildTestUsers(conn, classInfo, testUserPrefix, testUserPassword, pedIds);
         }
         return true;
@@ -953,7 +964,7 @@ public class DbClass {
                 // There is no primary key containing username to make sure that these don't get duplicated.   Therefore,
                 // we need to manually check to see if that user exists first and throw an exception if it does.
                 if (DbUser.getStudent(conn, username.toString(), password) != -1)
-                    throw new UserException("User " + username + " already exists.");
+                    throw new UserException("Cannot create users.  User: " + username.toString() + " already exists.");
                 UserRegistrationHandler.registerStudentUser(conn,username.toString(),password,classInfo);
 
             } finally {

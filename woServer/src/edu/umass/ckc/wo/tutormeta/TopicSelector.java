@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutormeta;
 
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
 
@@ -44,7 +45,7 @@ public interface TopicSelector {
     // not sure this signature looks right for a general purpose interface.  It is too specific to our current topic system.
     // Currently these arguments are because the TopicSelector determines if the topic is over based on how long the student has been in
     // the topic and whether we are trying to find an easier/harder/same difficulty problem.
-    public  EndOfTopicInfo isEndOfTopic(long probElapsedTime, TopicModel.difficulty nextDiff)  throws Exception ;
+    public  EndOfTopicInfo isEndOfTopic(long probElapsedTime, LessonModel.difficulty nextDiff)  throws Exception ;
 
     /**
      * Return all the problems in a topic for a given class.   This means removing the classOmittedProblems for this topic.

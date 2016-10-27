@@ -34,6 +34,7 @@ public class PrePostProblemDefn extends Problem {
     private int numProbsSeen;     // create the problem we know these two things and need a package for returning them from the selector
     private int preNumProbsCorrect=0;
     private int postNumProbsCorrect=0;
+    private int waitTimeSecs;  // how many seconds we wait before warning student they need to answer.
 
     public PrePostProblemDefn () {
         id = -1;
@@ -47,8 +48,8 @@ public class PrePostProblemDefn extends Problem {
     }
 
     public PrePostProblemDefn(int id, String name, String descr, String url, int ansType, String answer, int problemSet,
-                          String aAns, String bAns, String cAns, String dAns, String eAns, String aURL,
-                          String bURL, String cURL, String dURL, String eURL) {
+                              String aAns, String bAns, String cAns, String dAns, String eAns, String aURL,
+                              String bURL, String cURL, String dURL, String eURL, int waitTimeSecs) {
         this.id = id;
         this.name = name;
         this.descr = descr;
@@ -66,6 +67,7 @@ public class PrePostProblemDefn extends Problem {
         this.cURL = cleanAns(cURL);
         this.dURL = cleanAns(dURL);
         this.eURL = cleanAns(eURL);
+        this.waitTimeSecs = waitTimeSecs;
     }
 
     public int getId() {
@@ -205,6 +207,16 @@ public class PrePostProblemDefn extends Problem {
         this.eURL = eURL;
     }
 
+    public int getWaitTimeSecs() {
+        return waitTimeSecs;
+    }
+
+    public void setWaitTimeSecs(int waitTimeSecs) {
+        this.waitTimeSecs = waitTimeSecs;
+    }
+
+
+
     /**
      * <PrePostProblem name="Problem 1" ansType="0" answer="180" problemSet="2">
      *     <description url="http://localhost/someimage.jpg"><![CDATA[What is the angle ABC?]]></description>
@@ -305,6 +317,7 @@ public class PrePostProblemDefn extends Problem {
     public boolean isMultiChoice () {
         return getAnsType() == MULTIPLE_CHOICE;
     }
+
 
     public String toString () {
         return id + ":" + name;

@@ -271,7 +271,7 @@ public class TopicLoader {
      * @throws Exception
      */
     public boolean hasReadyContent(StudentState state, int theTopicId) throws Exception {
-        // studentID and classID were set in init method.
+        // studentID and classID were set in setServletInfo method.
         List<Problem> topicProbs = getProblemsInTopic(conn, theTopicId);  // operates on a clone so destruction is ok
         Problem p = getLastProbGivenInTopic(state, topicProbs);
         int classID = determineClass();  // get either the default class (with default lesson plan) or the actual class (with a custom plan)
@@ -299,7 +299,7 @@ public class TopicLoader {
      * @throws SQLException
      */
     public List<Problem> prepareForSelection(SessionManager smgr, boolean resetCounters) throws SQLException {
-        // studentID and classID were set in init method.
+        // studentID and classID were set in setServletInfo method.
         StudentState state = smgr.getStudentState();
         classID = determineClass();  // get either the default class (with default lesson plan) or the actual class (with a custom plan)
         this.topicID = getCurTopic(conn, state, classID);
@@ -335,7 +335,7 @@ public class TopicLoader {
     }
 
     public List<Problem> prepareForSelection(SessionManager smgr, String ccss) throws SQLException {
-        // studentID and classID were set in init method.
+        // studentID and classID were set in setServletInfo method.
         StudentState state = smgr.getStudentState();
         probsInTopic = getProblemsInStandard(conn, ccss);   // get all problems in the topic
         // set some instance variables based on last problem shown

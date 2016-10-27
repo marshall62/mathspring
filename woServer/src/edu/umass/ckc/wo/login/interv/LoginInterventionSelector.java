@@ -1,12 +1,12 @@
 package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
-import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.TopicIntro;
 import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.login.LoginSequence;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -28,6 +28,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class LoginInterventionSelector extends InterventionSelector implements PedagogicalMoveListener {
+    public static final String INTERVENTION_CLASS = "interventionClass";
     protected HttpServletRequest request;
     protected ServletInfo servletInfo;
     protected MyState interventionState;
@@ -38,21 +39,21 @@ public class LoginInterventionSelector extends InterventionSelector implements P
         interventionState = new MyState(smgr);
     }
 
-    public void init (ServletInfo servletInfo) {
+    public void setServletInfo(ServletInfo servletInfo) {
         this.servletInfo=servletInfo;
     }
 
-    public void processInput (ServletParams params) throws SQLException  {
-
+    public LoginIntervention processInput (ServletParams params) throws Exception {
+        return null;
     }
 
     public Intervention selectIntervention (SessionEvent e) throws Exception {
         rememberInterventionSelector(this);
         interventionState.setTimeOfLastIntervention(System.currentTimeMillis());
         HttpServletRequest req = this.servletInfo.getRequest();
-        req.setAttribute("skin",servletInfo.getParams().getString("skin"));
-        req.setAttribute("interventionClass",getClass().getName());
-        req.setAttribute("sessionId",e.getSessionId());
+        req.setAttribute(LoginSequence.SKIN,servletInfo.getParams().getString("skin"));
+        req.setAttribute(INTERVENTION_CLASS,getClass().getName());
+        req.setAttribute(LoginSequence.SESSION_ID,e.getSessionId());
         return null;
     }
 

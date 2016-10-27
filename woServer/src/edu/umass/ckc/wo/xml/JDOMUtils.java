@@ -41,7 +41,7 @@ public class JDOMUtils {
      * @param str
      * @return  JDOM Document
      */
-    public static Document makeDocument (InputStream str) {
+    public static Document makeDocumentOld (InputStream str) {
 
         SAXBuilder parser = new SAXBuilder();
         try {
@@ -53,6 +53,13 @@ public class JDOMUtils {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return null;
+    }
+
+    public static Document makeDocument (InputStream str) throws JDOMException, IOException {
+
+        SAXBuilder parser = new SAXBuilder();
+            Document doc = parser.build(str);
+            return doc;
     }
 
     public static Element getRoot (String xml) throws Exception {

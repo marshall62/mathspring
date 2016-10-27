@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import org.apache.log4j.Logger;
 import org.jdom.DataConversionException;
+import org.jdom.JDOMException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class LessonMap extends Hashtable<String, LessonXML> {
 
     public LessonMap() {}
 
-    public LessonMap(InputStream str) throws IOException, ClassNotFoundException, DataConversionException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public LessonMap(InputStream str) throws IOException, ClassNotFoundException, JDOMException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         LessonParser parser = new LessonParser(str); // a list of Pedagogy objects
         List<LessonXML> l = parser.parse();
         buildMap(l);

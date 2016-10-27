@@ -7,7 +7,6 @@ import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 /**
@@ -39,11 +38,11 @@ public class StudentName extends LoginInterventionSelector {
         }
     }
 
-    public void processInput (ServletParams params) throws SQLException {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
         String fname = params.getString(LoginParams.FNAME);
         String lini = params.getString(LoginParams.LINI);
         DbUser.setUserNames(servletInfo.getConn(), smgr.getStudentId(), fname, lini);
-
+        return null;
     }
 
 

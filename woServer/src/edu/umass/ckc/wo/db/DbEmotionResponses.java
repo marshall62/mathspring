@@ -14,13 +14,13 @@ import java.sql.*;
 public class DbEmotionResponses {
 
 
-    public static int saveResponse (Connection conn, String emotion, int level, String explanation, int sessionId, int studId) throws SQLException {
+    public static int saveResponse(Connection conn, String emotion, int level, String explanation, int sessionId, int studId, String continueMathspring, String reasons) throws SQLException {
         long now = System.currentTimeMillis();
         ResultSet rs = null;
         PreparedStatement s = null;
         try {
-            String q = "insert into emotionInterventionResponse (emotion, level, explanation, sessionId, studId,timestamp) " +
-                    "values (?,?,?,?,?,?)";
+            String q = "insert into emotionInterventionResponse (emotion, level, explanation, sessionId, studId,timestamp, continueMathspring,reasons) " +
+                    "values (?,?,?,?,?,?,?,?)";
             s = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
             s.setString(1, emotion);
             s.setInt(2, level);
@@ -28,6 +28,12 @@ public class DbEmotionResponses {
             s.setInt(4, sessionId);
             s.setInt(5, studId);
             s.setTimestamp(6,new Timestamp(now));
+            if (continueMathspring != null)
+                s.setString(7,continueMathspring);
+            else s.setNull(7,Types.VARCHAR);
+            if (reasons != null)
+                s.setString(8,reasons);
+            else s.setNull(8,Types.VARCHAR);
             s.execute();
             rs = s.getGeneratedKeys();
             rs.next();

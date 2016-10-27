@@ -83,6 +83,8 @@
             <c:out escapeXml = "false" value="
                 <div id=\"Hint${num}\" class=\"hint\"></div>"/>
         </c:forTokens>
+        <%--  DM 9/16 try position relative so that the image isn't pushed down to some fixed location.  It should start right below prob stmt--%>
+        <%--<div id="ProblemFigure" style="position:relative"></div>--%>
         <div id="ProblemFigure"></div>
         <div id="ProblemStatement"></div>
         <c:forTokens items="A,B,C,D,E" delims="," var="letter">

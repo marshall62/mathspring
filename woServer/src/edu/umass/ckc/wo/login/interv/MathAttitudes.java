@@ -1,14 +1,12 @@
 package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
-import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbUserProfile;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 /**
@@ -40,7 +38,7 @@ public class MathAttitudes extends LoginInterventionSelector {
 
 
 
-    public void processInput (ServletParams params) throws SQLException {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
 
 
         int confidence = params.getInt(LoginParams.CONFIDENCE,0);
@@ -51,7 +49,7 @@ public class MathAttitudes extends LoginInterventionSelector {
 
         DbUserProfile.deleteProfile(servletInfo.getConn(), smgr.getStudentId())  ;
         DbUserProfile.setValues(conn, smgr.getStudentId(), confidence, excitement, interest, frustration);
-
+        return null;
     }
 
 

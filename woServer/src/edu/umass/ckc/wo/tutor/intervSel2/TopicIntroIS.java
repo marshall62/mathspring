@@ -40,7 +40,7 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
-//        super.init(smgr,pedagogicalModel);
+//        super.setServletInfo(smgr,pedagogicalModel);
         this.pedagogicalModel=pedagogicalModel;
         topicModel = (TopicModel) pedagogicalModel.getLessonModel();
         tmParams = topicModel.getTmParams();

@@ -105,7 +105,7 @@ public class ServletUtil {
         // read pedagogies from db
         Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
         Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
-        Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
+        Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,servletContext);
         // pedagogies are no longer read from XML files
 //        String pedagogiesFile = servletContext.getInitParameter(Names.PEDAGOGIES_FILE);
 //        if (Settings.pedagogyGroups == null) {

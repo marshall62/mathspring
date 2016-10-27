@@ -193,7 +193,7 @@ public class AffectStudentModel extends BaseStudentModel {
         super.endProblem(smgr, studId, probElapsedTime, elapsedTime);
 //        setIRTvariables(smgr.getStudentState());
         problemHistory.updateEmotions(smgr,this.lastEmotion,this.lastEmotionValue);
-        smgr.getStudentState().endProblem(smgr, 0, 0, 0); // set/initialize student state variables based on newProblem event
+       // smgr.getStudentState().endProblem(smgr, 0, 0, 0); // set/initialize student state variables based on newProblem event
     }
 
 

@@ -95,6 +95,7 @@ public class ReportHandler {
 
             req.setAttribute("classId",e.getClassId());
             req.setAttribute("teacherId",e.getTeacherId());
+            req.setAttribute("isAdmin",adminId != null);
             req.getRequestDispatcher("/teacherTools/reports.jsp").forward(req,resp);
             return null;
 //            return buildChooseClassPage(e, conn);

@@ -26,6 +26,7 @@ public abstract class LearningCompanion {
     protected List<String> clips = new ArrayList<String>();
 
     public static final String LEARNING_COMPANION_JSON_ATTRIBUTE = "learningCompanionFiles";
+    public static final String LEARNING_COMPANION_TEXT_MESSSAGE = "lcTextMessage";
 
     public abstract String getGender() ;
     public abstract String getEthnicity() ;
@@ -38,6 +39,9 @@ public abstract class LearningCompanion {
     public abstract Response processAttempt (SessionManager smgr, AttemptEvent e, AttemptResponse r) throws Exception;
     public abstract Response processHintRequest (SessionManager smgr, HintEvent e, HintResponse r) throws Exception;
     public abstract Response processNextProblemRequest (SessionManager smgr, NextProblemEvent e, Response r) throws Exception;
+    public abstract Response processEndProblem (SessionManager smgr, EndProblemEvent e, Response r) throws Exception;
+    public abstract Response processBeginProblem (SessionManager smgr, BeginProblemEvent e, Response r) throws Exception;
+    public abstract Response processEndExample (SessionManager smgr, EndExampleEvent e, Response r) throws Exception;
 
     public Response processUncategorizedEvent (TutorHutEvent e, Response r) {
         clips.add("idle");
@@ -87,7 +91,9 @@ public abstract class LearningCompanion {
     }
 
 
-
+    public String getMessageSelectionStrategy () {
+        return "programmatic";  // this indicates that the messages are selected by the Java class itself (as opposed to a rule-set)
+    }
 
 
 

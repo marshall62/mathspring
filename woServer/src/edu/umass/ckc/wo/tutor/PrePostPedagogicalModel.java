@@ -31,7 +31,7 @@ public class PrePostPedagogicalModel extends OldPedagogicalModel {
         this.problemSelector.init(smgr);
         this.studentModel = smgr.getStudentModel();
         this.smgr = smgr;
-//        problemSelector.init(smgr);
+//        problemSelector.setServletInfo(smgr);
     }
 
     public String endActivity(EndActivityEvent e) throws Exception {

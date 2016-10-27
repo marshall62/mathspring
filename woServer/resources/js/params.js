@@ -137,11 +137,21 @@ function plug(doc, components) {
     var probSound = components.audio;
     var probUnits = components.units;
     var problemParams =components.problemParams;
+    var statementHeight = 0;
 
-    if(probStatement != null && probStatement != undefined && probStatement != "")
+    if(probStatement != null && probStatement != undefined && probStatement != ""){
         doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(probStatement, components), problemParams);
-    if(probFigure != null && probFigure != undefined && probFigure != "")
+        statementHeight = window.getComputedStyle(doc.getElementById("ProblemStatement")).getPropertyValue("height");
+        statementHeight = parseInt(statementHeight, 10);
+    }
+    if(probFigure != null && probFigure != undefined && probFigure != ""){
         doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure, components), problemParams);
+        // var finalTop = parseInt(window.getComputedStyle(doc.getElementById("ProblemFigure")).getPropertyValue("top"),10) + statementHeight;
+        // DM Not sure why the above is so complex - shouldn't we just come down by the height of the stmt?
+        var finalTop =  statementHeight;
+        doc.getElementById("ProblemFigure").style.top = finalTop + "px";
+        var top = doc.getElementById("ProblemFigure").style.top;
+    }
     if(probSound != null && probSound != undefined && probSound != "") {
         //TODO I don't think the below lines do what I want them to.
         doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".ogg", components.resource, components.probContentPath));
@@ -159,6 +169,9 @@ function plug(doc, components) {
             hintID = getElementCorrespondingToHint(hints[i].label);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML, components), problemParams);
+                var finalTop = parseInt(window.getComputedStyle(doc.getElementById(hintID)).getPropertyValue("top"),10) + statementHeight;
+                doc.getElementById(hintID).style.top = finalTop + "px";
+                var top = doc.getElementById(hintID).style.top;
             }
             else{
                 alert("text missing for hint: "+i);
@@ -384,13 +397,18 @@ function replaceWithHTML(file, ext, resource, probContentPath){
     var toInsert = "";
 
     //Replace and image file name inside {} with the appropriate html
-    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "svg"){
-        toInsert = "<img style=\"max-height: 100%; max-width: 100%\" src=\""+getURL(file + "." + ext, resource, probContentPath)+"\"></img>";
+    // DM 9/16 removed svg from the list of extensions because they correctly scale themselves
+    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" ){
+        toInsert = '<img style="max-height: 100%; max-width: 100%" src="' +getURL(file + "." + ext, resource, probContentPath)+ '">';
     }
+    // DM 9/16 added svg on its own without resizing
+    else if (ext == 'svg')
+        toInsert = '<img src="' +getURL(file + "." + ext, resource, probContentPath)+ '" >'
+
 
     //Do the same for a video
     else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
-       toInsert = "<video src=\""+getURL(file + "." + ext, resource, probContentPath)+" controls preload=\"auto\"></video>";
+       toInsert = '<video src="' +getURL(file + "." + ext, resource, probContentPath)+ '" controls preload="auto"></video>';
     }
 
     else{

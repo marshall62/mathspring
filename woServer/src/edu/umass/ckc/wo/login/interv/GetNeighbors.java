@@ -2,7 +2,6 @@ package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbSession;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.LoginParams;
@@ -47,10 +46,11 @@ public class GetNeighbors extends LoginInterventionSelector {
         }
     }
 
-    public void processInput (ServletParams params) throws SQLException {
+    public LoginIntervention processInput (ServletParams params) throws Exception {
         int left = params.getInt(LoginParams.LEFT);
         int right = params.getInt(LoginParams.RIGHT);
         DbUser.setFlankingUsers(servletInfo.getConn(), smgr.getStudentId(), left, right);
+        return null;
     }
 
 

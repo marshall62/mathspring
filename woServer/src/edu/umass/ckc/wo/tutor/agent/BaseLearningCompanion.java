@@ -57,8 +57,28 @@ public class BaseLearningCompanion extends LearningCompanion {
         return r;
     }
 
+    @Override
+    public Response processEndProblem(SessionManager smgr, EndProblemEvent e, Response r) throws Exception {
+        addEmotion("idle");
+        addLearningCompanionToResponse(r);
+        return r;
+    }
 
-//    public Response processNextProblemRequest (SessionManager smgr, NextProblemEvent e, Response r) throws Exception {
+    @Override
+    public Response processBeginProblem(SessionManager smgr, BeginProblemEvent e, Response r) throws Exception {
+        addEmotion("idle");
+        addLearningCompanionToResponse(r);
+        return r;
+    }
+
+    @Override
+    public Response processEndExample(SessionManager smgr, EndExampleEvent e, Response r) throws Exception {
+        addEmotion("idle");
+        addLearningCompanionToResponse(r);
+        return r;
+    }
+
+    //    public Response processNextProblemRequest (SessionManager smgr, NextProblemEvent e, Response r) throws Exception {
 //        StudentState state = smgr.getStudentState();
 //        if (r instanceof ProblemResponse) {
 //            Problem p = ((ProblemResponse) r).getProblem();

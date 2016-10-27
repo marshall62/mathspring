@@ -53,16 +53,20 @@ public class InterventionGroup {
      * @throws Exception
      */
     public void buildInterventions (SessionManager smgr, PedagogicalModel pedMod) throws Exception {
-        List<Element> intervSels = interventionsElt.getChildren("interventionSelector");
-        for (Element intervSel : intervSels) {
-            InterventionSelectorSpec spec = new InterventionSelectorSpec(intervSel);
+        if (interventionsElt != null) {
+            List<Element> intervSels = interventionsElt.getChildren("interventionSelector");
+            if (intervSels != null) {
+                for (Element intervSel : intervSels) {
+                    InterventionSelectorSpec spec = new InterventionSelectorSpec(intervSel);
 
-            this.add(spec);
-            // we build the selector and stick it inside the spec.   These need to be built so that they can listen to pedaogogical moves sent to them
-            // through the ped model.
-            InterventionSelector sel = spec.buildIS(smgr);
-            spec.setSelector(sel);
-            pedMod.addPedagogicalMoveListener( (PedagogicalMoveListener) sel);
+                    this.add(spec);
+                    // we build the selector and stick it inside the spec.   These need to be built so that they can listen to pedaogogical moves sent to them
+                    // through the ped model.
+                    InterventionSelector sel = spec.buildIS(smgr);
+                    spec.setSelector(sel);
+                    pedMod.addPedagogicalMoveListener( (PedagogicalMoveListener) sel);
+                }
+            }
         }
     }
 

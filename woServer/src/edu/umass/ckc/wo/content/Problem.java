@@ -23,16 +23,18 @@ public class Problem implements Activity {
     public static QuestType parseType(String t) {
         if (t.equals("shortanswer"))
             return QuestType.shortAnswer;
-        return QuestType.multiChoice;
+        else if (t.equals("longAnswer"))
+            return QuestType.longAnswer;
+        else
+            return QuestType.multiChoice;
     }
-
-
-
 
     public enum QuestType {
         multiChoice ,
-        shortAnswer
+        shortAnswer,
+        longAnswer
     }
+
     public static final String DEMO = "demo";
     public static final String EXAMPLE = "example";
     public static final String PRACTICE = "practice";
@@ -236,6 +238,7 @@ public class Problem implements Activity {
         jo.element("instructions",instructions);
         if (isQuickAuth()) {
             jo.element("statementHTML", statementHTML);
+            jo.element("probContentPath", Settings.webContentPath);
             jo.element("questionAudio", questionAudio);
             jo.element("questionImage", imageURL);
             jo.element("units", units);
@@ -590,6 +593,14 @@ public class Problem implements Activity {
         else return "";
     }
 
+    public boolean hasStandard(String ccss) {
+        for (CCStandard s : getStandards()) {
+            if (s.getCode().equals(ccss))
+                return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null);
         Hint h1 = new Hint(3,"hi");
@@ -611,6 +622,10 @@ public class Problem implements Activity {
 
     public boolean isShortAnswer () {
         return this.questType == QuestType.shortAnswer;
+    }
+
+    public boolean isLongAnswer () {
+        return this.questType == QuestType.longAnswer;
     }
 
     public boolean isMultiChoice () {

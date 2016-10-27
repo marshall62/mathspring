@@ -75,9 +75,12 @@ public class MyProgressPage implements View  {
             List<Integer> practiceProbsSeen;
 
             try {
-                StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
-                List<StudentProblemData> probEncountersInTopic = studentProblemHistory.getTopicHistoryMostRecentEncounters(t.getTopic().getId());
-                practiceProbsSeen = smgr.getPedagogicalModel().getPracticeProblemsSeen(probEncountersInTopic);
+
+//                StudentProblemHistory studentProblemHistory = smgr.getStudentModel().getStudentProblemHistory();
+//                List<StudentProblemData> probEncountersInTopic = studentProblemHistory.getTopicHistoryMostRecentEncounters(t.getTopic().getId());
+//                practiceProbsSeen = studentProblemHistory.getPracticeProblemsSeen(probEncountersInTopic);
+//                practiceProbsSeen = smgr.getPedagogicalModel().getPracticeProblemsSeen(probEncountersInTopic);
+                practiceProbsSeen = smgr.getExtendedStudentState().getPracticeProblemsSeenInTopic(t.getTopic().getId());
                 numProbsSeenInTopic = practiceProbsSeen.size();
             } catch (SQLException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -91,7 +94,7 @@ public class MyProgressPage implements View  {
 
               s= s.concat("\t\t\tfunction initChart" + masteryChartName + "() {\t\t\t\t\n") ;
               s= s.concat("\t\t\t\tvar chart = Chart;\n") ;
-              s= s.concat("\t\t\t\tchart.init(\"" + masteryChartName + "\");\n") ;
+              s= s.concat("\t\t\t\tchart.setServletInfo(\"" + masteryChartName + "\");\n") ;
               s= s.concat("\t\t\t\tchart.title = \"\";\n") ;
               s= s.concat("\t\t\t\tchart.type = \"bar\";\n") ;
               s= s.concat("\t\t\t\tchart.debug = false;\n") ;
@@ -267,4 +270,6 @@ public class MyProgressPage implements View  {
   private String getBackToVillageURL() {
       return Settings.flashClientPath + this.client + ".swf?sessnum=" + sessionId ;
   }
+
+
 }

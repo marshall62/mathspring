@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.interventions;
 
+import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.xml.JDOMUtils;
@@ -69,10 +70,10 @@ public class SelectProblemSpecs implements Intervention {
 
     public TopicModel.difficulty getDesiredDifficulty () {
         if (name.equalsIgnoreCase(HARDER_PROBLEM))
-            return TopicModel.difficulty.HARDER;
+            return LessonModel.difficulty.HARDER;
         else if (name.equalsIgnoreCase(EASIER_PROBLEM))
-            return TopicModel.difficulty.EASIER;
-        else return TopicModel.difficulty.SAME;
+            return LessonModel.difficulty.EASIER;
+        else return LessonModel.difficulty.SAME;
     }
 
 

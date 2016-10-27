@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.admin;
 
+import edu.umass.ckc.wo.lc.LCRuleset;
 import edu.umass.ckc.wo.tutor.DynamicPedagogy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
@@ -212,14 +213,14 @@ public class PedagogyParser {
             String psClass = e.getValue();
             p.setReviewModeProblemSelectorClass(psClass);
         }
-        else p.setReviewModeProblemSelectorClass(DEFAULT_REVIEW_MODE_PROBLEM_SELECTOR);
+//        else p.setReviewModeProblemSelectorClass(DEFAULT_REVIEW_MODE_PROBLEM_SELECTOR);
 
         e = pedElt.getChild("challengeModeProblemSelectorClass");
         if (e != null) {
             String psClass = e.getValue();
             p.setChallengeModeProblemSelectorClass(psClass);
         }
-        else p.setChallengeModeProblemSelectorClass(DEFAULT_CHALLENGE_MODE_PROBLEM_SELECTOR);
+//        else p.setChallengeModeProblemSelectorClass(DEFAULT_CHALLENGE_MODE_PROBLEM_SELECTOR);
 
         e = pedElt.getChild("hintSelectorClass");
         if (e != null) {
@@ -231,6 +232,24 @@ public class PedagogyParser {
         e = pedElt.getChild("learningCompanionClass");
         if ( e != null )
             p.setLearningCompanionClass(e.getValue());
+
+        e = pedElt.getChild("learningCompanionCharacter");
+        if ( e != null )
+            p.setLearningCompanionCharacter(e.getValue());
+        List<Element> rulesets= pedElt.getChildren("learningCompanionRuleSet");
+        if (rulesets != null)
+            for (Element rs : rulesets) {
+                String src = rs.getAttributeValue("source");
+                String name = rs.getAttributeValue("name");
+                String descr = rs.getAttributeValue("description");
+                String notes = rs.getAttributeValue("notes");
+                LCRuleset lcrs = new LCRuleset();
+                lcrs.setName(name);
+                lcrs.setSource(src);
+                lcrs.setDescription(descr);
+                lcrs.setNotes(notes);
+                p.addLearningCompanionRuleSet(lcrs);
+            }
 
         return p;
     }
@@ -282,7 +301,8 @@ public class PedagogyParser {
         PedagogicalModelParameters params = new PedagogicalModelParameters();
         // if user provided some, overwrite the individual settings
         if (e != null)
-            readControlParams(params, e);
+            params.setParameters(e);
+//            readControlParams(params, e);
         p.setParams(params);
         e = pedElt.getChild("package");
         String packg = null ;
@@ -292,38 +312,6 @@ public class PedagogyParser {
 
     }
 
-    // Given a set of pm params that have default settings this reads the XML config and
-    // overwrites any that are provided.
-    private void readControlParams(PedagogicalModelParameters params, Element p) {
-
-        Element c;
-        String s;
-
-        c = p.getChild("externalActivityTimeThresholdMins");
-        if (c != null) {
-            s = c.getValue();
-            int externalActivityTimeThresholdMins = Integer.parseInt(s);
-            params.setExternalActivityTimeThreshold(externalActivityTimeThresholdMins);
-        }
-
-        c = p.getChild("problemReuseIntervalSessions");
-        if (c != null) {
-            s = c.getValue();
-            params.setProblemReuseIntervalSessions(s);
-        }
-        c = p.getChild("problemReuseIntervalDays");
-        if (c != null) {
-            s = c.getValue();
-            params.setProblemReuseIntervalDays(s);
-        }
-        c = p.getChild("displayMyProgressPage");
-        if (c != null) {
-            s = c.getValue();
-            boolean showMpp = Boolean.parseBoolean(s);
-            params.setShowMPP(showMpp);
-        }
-
-    }
 
     private void readAttemptInterventionSelectors(Pedagogy p, Element e) {
         InterventionSelectorSpec spec = parseSelector(e);

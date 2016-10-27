@@ -288,7 +288,7 @@
                   new slider(A_INIT1h, A_TPL1h);
               </script>
           </td>
-          <td><input type="text" size="3" name="topicMastery" value="<c:out value="${params.topicMastery}"/>"/> </td> </tr>
+          <td><input type="text" size="3" name="mastery" value="<c:out value="${params.topicMastery}"/>"/> </td> </tr>
 
 
       <tr>

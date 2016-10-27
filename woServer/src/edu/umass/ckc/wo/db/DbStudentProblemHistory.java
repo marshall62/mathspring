@@ -58,6 +58,7 @@ public class DbStudentProblemHistory {
     public static final String TIME_TO_FIRST_ATTEMPT = "timeToFirstAttempt";
     public static final String TIME_TO_FIRST_HINT = "timeToFirstHint";
     public static final String SOLUTION_HINT_GIVEN = "solutionHintGiven";
+    public static final String EFFORT = "effort";
 
     private static Logger logger =   Logger.getLogger(DbStudentProblemHistory.class);
 

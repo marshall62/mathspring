@@ -19,6 +19,10 @@ import java.util.ArrayList;
  */
 public class DbPrePost {
 
+    public static final String PRETEST = "pretest";
+    public static final String POSTTEST = "posttest";
+
+
         /**
        * Given a problemId return a PrePostProblem object or null if it doesn't exist
        * @param conn
@@ -32,7 +36,7 @@ public class DbPrePost {
           try {
 //              String q = "select problemSet,name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
               String q = "select id, name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
-                      "aURL,bURL,cURL,dURL,eURL from PrePostProblem where id=?";
+                      "aURL,bURL,cURL,dURL,eURL,waitTimeSecs from PrePostProblem where id=?";
               ps = conn.prepareStatement(q);
               ps.setInt(1, probId);
               rs = ps.executeQuery();
@@ -48,12 +52,17 @@ public class DbPrePost {
                   if (rs.wasNull())
                       description = null;
                   String answer = rs.getString(5);
+                  if (rs.wasNull())
+                      answer = null;
                   int ansType = rs.getInt(6);
                   String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
                   String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
+                  int waitTimeSecs=0;
                   PrePostProblemDefn p;
                   if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
-                      ;
+                      waitTimeSecs= rs.getInt(17) ;
+                      if (rs.wasNull())
+                          waitTimeSecs=0;
                   }
                   else {
                       aChoice = rs.getString(7);
@@ -86,10 +95,13 @@ public class DbPrePost {
                       eURL = rs.getString(16);
                       if (rs.wasNull())
                           eURL = null;
+                      waitTimeSecs= rs.getInt(17) ;
+                      if (rs.wasNull())
+                          waitTimeSecs=-1;
 
                   }
               return new PrePostProblemDefn(probId, name, description, url, ansType, answer, problemSet, aChoice, bChoice, cChoice,
-                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL);
+                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs);
               }
           } catch (SQLException e) {
               e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -165,6 +177,137 @@ public class DbPrePost {
                 testIds.add(testId);
             }
             return testIds;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static void storeStudentAnswer(Connection conn, int sessId, int studentId, int probId, String userAnswer,
+                                          String testType, int timeOnProb, boolean isCorrect) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into preposttestdata (sessionId,probId,studentAnswer, studId, testType, isCorrect) values (?,?,?,?,?,?)";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,sessId);
+            stmt.setInt(2,probId);
+            stmt.setString(3,userAnswer);
+            stmt.setInt(4,studentId);
+            stmt.setString(5,testType);
+            stmt.setBoolean(6,isCorrect);
+            stmt.execute();
+
+        }
+
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+    }
+
+    public static PrePostProblemDefn getPrePosttestProblem(Connection conn, int pretestId, int position) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select probId from prepostproblemtestmap where testid=? and position=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,pretestId);
+            stmt.setInt(2,position);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int probId= rs.getInt(1);
+                return getPrePostProblem(conn,probId);
+            }
+            return null;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    /**
+     * Counts the number of questions in a pre or post test.
+     * @param conn
+     * @param testId
+     * @return
+     * @throws SQLException
+     */
+    public static int getPrePostTestNumProblems(Connection conn, int testId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select count(*) from prepostproblemtestmap where testid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,testId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            else return -1;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    /**
+     * Counts the number of questions a student has completed in a pre or post test
+     * @param conn
+     * @param testId
+     * @param studentId
+     * @param testType  either "pretest" or "posttest"
+     * @return
+     * @throws SQLException
+     */
+    public static int getStudentCompletedNumProblems(Connection conn, int testId, int studentId, String testType) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select count(*) from preposttestdata d, prepostproblemtestmap m where d.studId=? and d.probId = m.probId and m.testid=? and d.testType=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studentId);
+            stmt.setInt(2,testId);
+            stmt.setString(3,testType);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            return -1;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static boolean isTestActive(Connection conn, int testId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select isactive from preposttest where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, testId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                boolean b= rs.getBoolean(1);
+                return b;
+            }
+            return false;
         }
         finally {
             if (stmt != null)

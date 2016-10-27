@@ -26,10 +26,10 @@ public class WoPedagogicalModel {
 //                              InterventionSelector intervSel, LearningCompanion lc, StudentActivityEvent e) throws Exception {
 //        super(smgr.getStudentModel(), probSel, hintSel, intervSel, lc);
 //        smgr_ = smgr;
-//        problemSelector.init(smgr);
-//        hintSelector.init(smgr);
+//        problemSelector.setServletInfo(smgr);
+//        hintSelector.setServletInfo(smgr);
 //        if (intervSel != null)
-//            intervSel.init(smgr_);
+//            intervSel.setServletInfo(smgr_);
 //    }
 //
 ////    public WoPedagogicalModel(SessionManager smgr, ProblemSelector probSel, ProblemSelector advProbSelector,

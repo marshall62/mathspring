@@ -1,7 +1,9 @@
 package edu.umass.ckc.wo.tutor.studmod;
 
-import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.collab.CollaborationManager;
+import edu.umass.ckc.wo.content.CCStandard;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.ProblemStats;
@@ -46,11 +48,11 @@ public class BaseStudentModel extends StudentModel {
     public static final String POST_TEST_NUM_INCORRECT = "posttestNumIncorrect";
     private static final String  TABLE_NAME= "baseStudentModel";
     public static final String[] TABLE_COLS = new String[] {"avgTimeInProb","avgTimeInAssistedProb",
-                "avgAttemptsInProb","avgAttemptsInAssistedProb","avgTimeBetweenAttempts","avgHintsGivenPerProb",
-                "avgHintsGivenPerAssistedProb","pretestNumCorrect","posttestNumCorrect","pretestNumIncorrect",
-                "posttestNumIncorrect","numProbsReceivedAssistance","numProbsSeen","numProbsSolved","numHintsTotal",
-                "numHelpAidsTotal","numHintsAfterSolveTotal","gender","avgSolveTime","totalSolveTime","avgMistakesInProblem",
-                "totalProbMistakes","avgHintTime","totalHintTime","totalTimeBetweenAttempts","totalAttempts"};
+            "avgAttemptsInProb","avgAttemptsInAssistedProb","avgTimeBetweenAttempts","avgHintsGivenPerProb",
+            "avgHintsGivenPerAssistedProb","pretestNumCorrect","posttestNumCorrect","pretestNumIncorrect",
+            "posttestNumIncorrect","numProbsReceivedAssistance","numProbsSeen","numProbsSolved","numHintsTotal",
+            "numHelpAidsTotal","numHintsAfterSolveTotal","gender","avgSolveTime","totalSolveTime","avgMistakesInProblem",
+            "totalProbMistakes","avgHintTime","totalHintTime","totalTimeBetweenAttempts","totalAttempts"};
 
     protected StudentEffort effort;
 
@@ -93,6 +95,7 @@ public class BaseStudentModel extends StudentModel {
     public int classId;
     private static final String INITIAL_TOPIC_MASTERY_ESTIMATE = "0.5";
     public static final double INITIAL_TOPIC_MASTERY_ESTIMATE_FL = 0.1;
+    public static final double INITIAL_STANDARD_MASTERY_ESTIMATE = 0.1;
 
 
 
@@ -147,7 +150,6 @@ public class BaseStudentModel extends StudentModel {
      * Load all student model key/value pairs.
      * Called right after StudentModel is constructed.
      *
-
      * @param studId
      * @param classId
      * @throws java.sql.SQLException
@@ -279,10 +281,10 @@ public class BaseStudentModel extends StudentModel {
         long t = System.currentTimeMillis();
         smgr.getStudentState().beginProblem(null, e);
 //        System.out.println("In SM.beginProblem, after studentState.beginProblem " + (System.currentTimeMillis() - t));
-       if (PartnerManager.requestExists(smgr.getStudentId())) {
-            smgr.setCollaboratingWith(PartnerManager.getRequestedPartner(smgr.getStudentId()));
+        if (CollaborationManager.requestExists(smgr.getStudentId())) {
+            smgr.setCollaboratingWith(CollaborationManager.getRequestedPartner(smgr.getStudentId()));
 //           System.out.println("In SM.beginProblem, after PartnerManager.requestExists " + (System.currentTimeMillis() - t));
-       }
+        }
         this.problemHistory.beginProblem(smgr,e);
 //        System.out.println("In SM.beginProblem, after problemHistory.beginProblem " + (System.currentTimeMillis() - t));
 
@@ -343,13 +345,17 @@ public class BaseStudentModel extends StudentModel {
         // If the student forced this problem + topic, then topic is stored in the state until this prob ends
         int topicId = (state.getStudentSelectedTopic() != -1) ? state.getStudentSelectedTopic() : state.getCurTopic();
         int numHelpAids = state.getNumHelpAidsBeforeCorrect() ;
+        int numHints = state.getNumHintsBeforeCorrect();
         int mistakes = state.getNumMistakesOnCurProblem() ;
         boolean isCorrect = state.isProblemSolved();
-        if (!isCorrect)
-            this.topicUpdate(state, probId,topicId, numHelpAids, isCorrect, mistakes, probElapsedTime);
+        if (!isCorrect) {
+            this.topicUpdate(state, probId,topicId, numHints+numHelpAids, isCorrect, mistakes, probElapsedTime);
+            this.standardUpdate(state, probId,numHints+numHelpAids, isCorrect, mistakes, probElapsedTime);
+        }
         state.endProblem(smgr, studId, probElapsedTime, elapsedTime);  // this call resets state.studentSelectedTopic to -1
         this.problemHistory.endProblem(smgr,problemHistory.getCurProblem(), topicId);
         this.effort = this.problemHistory.getEffort(smgr.getSessionNum());
+
         // Only update the statistics about a problem if the user is allowed to
         if (DbUser.isUpdateStats(conn,studId) )  {
             if (state.getCurProblemMode().equals(Problem.PRACTICE))
@@ -416,11 +422,19 @@ public class BaseStudentModel extends StudentModel {
     public void videoGiven(StudentState state) throws SQLException {
         this.numHelpAidsTotal++;
         state.videoGiven(null);  // set/initialize student state variables based on hintSelected event
+        EffortHeuristic effortComputer = new EffortHeuristic();
+        String effort = effortComputer.computeEffort(state);
+        getStudentProblemHistory().getCurProblem().setEffort(effort);
+        this.problemHistory.saveCurProbEffort(conn,smgr.getStudentId(),effort);
     }
 
     public void exampleGiven(StudentState state, int exampleId) throws SQLException {
         this.numHelpAidsTotal++;
         state.exampleGiven(null, exampleId);  // set/initialize student state variables based on hintSelected event
+        EffortHeuristic effortComputer = new EffortHeuristic();
+        String effort = effortComputer.computeEffort(state);
+        getStudentProblemHistory().getCurProblem().setEffort(effort);
+        this.problemHistory.saveCurProbEffort(conn,smgr.getStudentId(),effort);
     }
 
 
@@ -438,6 +452,10 @@ public class BaseStudentModel extends StudentModel {
             this.numHintsAfterSolveTotal++;
 
         state.hintGiven(null, hint);  // set/initialize student state variables based on hintSelected event
+        EffortHeuristic effortComputer = new EffortHeuristic();
+        String effort = effortComputer.computeEffort(state);
+        getStudentProblemHistory().getCurProblem().setEffort(effort);
+        this.problemHistory.saveCurProbEffort(conn,smgr.getStudentId(),effort);
     }
 
 
@@ -470,7 +488,7 @@ public class BaseStudentModel extends StudentModel {
         if (!isSolved && isCorrect)
             this.totalSolveTime += probElapsed;
         if (!isSolved)
-        setTotalTimeBetweenAttempts(getTotalTimeBetweenAttempts() + timebtw);
+            setTotalTimeBetweenAttempts(getTotalTimeBetweenAttempts() + timebtw);
         assert getTotalTimeBetweenAttempts() > 0;
         if (!isSolved)
             this.totalAttempts++;
@@ -481,12 +499,19 @@ public class BaseStudentModel extends StudentModel {
         // If the student forced this problem + topic, then topic is stored in the state until this prob ends
         int topicId = (state.getStudentSelectedTopic() != -1) ? state.getStudentSelectedTopic() : state.getCurTopic();
         int numHelpAids = state.getNumHelpAidsBeforeCorrect() ;
+        int numHints = state.getNumHintsBeforeCorrect();
         int mistakes = state.getNumMistakesOnCurProblem() ;
         // When the student is correct,   we update the mastery stats for this student immediately so that
         // if they see an MPP or move to another topic by force,  the mastery is correctly set.
-        if (isCorrect)
-            this.topicUpdate(state, probId,topicId, numHelpAids, isCorrect, mistakes, probElapsed);
+        if (isCorrect)  {
+            this.topicUpdate(state, probId,topicId, numHints+numHelpAids, isCorrect, mistakes, probElapsed);
+            this.standardUpdate(state,probId,numHints+numHelpAids,isCorrect,mistakes,probElapsed);
+        }
         state.studentAttempt(null, answer, isCorrect, probElapsed);  // set/initialize student state variables based on student attempt event
+        EffortHeuristic effortComputer = new EffortHeuristic();
+        String effort = effortComputer.computeEffort(state);
+        getStudentProblemHistory().getCurProblem().setEffort(effort);
+        this.problemHistory.saveCurProbEffort(conn,smgr.getStudentId(),effort);
     }
 
     /**
@@ -606,11 +631,39 @@ public class BaseStudentModel extends StudentModel {
         int numPracticeProbsSeenInTopicAcrossSessions = smgr.getStudentModel().getStudentProblemHistory().getNumPracticeProbsSeenInTopicAcrossSessions(topicID);
 //        this.heuristic = new StudentModelMasteryHeuristic(conn);
         this.heuristic = new StudentModelMasteryHeuristic(conn);
-        topicMastery = this.heuristic.computeTopicMastery(probElapsed,topicMastery,probID,
+        long ttfa = state.getTimeToFirstAttempt();
+        topicMastery = this.heuristic.computeTopicMastery(ttfa,topicMastery,probID,
                 topicID,numHelpAids,isCorrect,mistakes, numPracticeProbsSeenInTopicAcrossSessions, state.getCurProblemMode());
         setTopicMasteryLevel(topicID,topicMastery); // alter the mastery level in the db and in the SM instance variable for mastery levs
 //        this.setProp(objid,var,topicMastery);
         return topicMastery;
+    }
+
+    public void standardUpdate(StudentState state, int probID, int numHelpAids, boolean isCorrect, int mistakes, long probElapsed) throws SQLException {
+        Problem p = ProblemMgr.getProblem(probID);
+        if (p != null && p.getStandards() != null) {
+            for (CCStandard std: ProblemMgr.getProblem(probID).getStandards())  {
+                StudentStandardMastery m = DbStudentStandardMastery.getMastery(conn,smgr.getStudentId(),std.getCode());
+                double mastery = INITIAL_STANDARD_MASTERY_ESTIMATE;
+                int numProbsSeen = 1;
+                long ttfa = state.getTimeToFirstAttempt();
+                this.heuristic = new StudentModelMasteryHeuristic(conn);
+                // will be null if the standard has not been encountered previously
+                if (m != null) {
+                    mastery= m.getVal();
+                    numProbsSeen = m.getNumProbs() + 1;
+
+                }
+                mastery = this.heuristic.computeStandardMastery(ttfa, mastery, probID,
+                        numHelpAids, isCorrect, mistakes, numProbsSeen, state.getCurProblemMode());
+
+                if (m == null)
+                    DbStudentStandardMastery.insertMastery(conn,smgr.getStudentId(),std.getCode(),mastery,numProbsSeen);
+                else
+                    DbStudentStandardMastery.updateMastery(conn,smgr.getStudentId(),std.getCode(),mastery,numProbsSeen);
+            }
+        }
+
     }
 
 
@@ -636,18 +689,18 @@ public class BaseStudentModel extends StudentModel {
      * @throws java.sql.SQLException
      */
     public double getTopicMastery(int topicId) throws SQLException {
-       for (TopicMastery m: this.topicMasteryLevels) {
+        for (TopicMastery m: this.topicMasteryLevels) {
             if (m.getTopic().getId() == topicId) {
-               return m.getMastery();
+                return m.getMastery();
             }
         }
         return INITIAL_TOPIC_MASTERY_ESTIMATE_FL;
     }
 
     public boolean getTopicEntered(int topicId) throws SQLException {
-       for (TopicMastery m: this.topicMasteryLevels) {
+        for (TopicMastery m: this.topicMasteryLevels) {
             if (m.getTopic().getId() == topicId) {
-               return m.isEntered();
+                return m.isEntered();
             }
         }
         return false;
@@ -899,19 +952,19 @@ public class BaseStudentModel extends StudentModel {
     public static void main(String[] args) {
         int studId = Integer.parseInt(args[0]);
         int classId = Integer.parseInt(args[1]);
-          DbUtil.loadDbDriver();
-          try {
-              Connection conn = DbUtil.getAConnection();
-              BaseStudentModel m = new BaseStudentModel(conn);
+        DbUtil.loadDbDriver();
+        try {
+            Connection conn = DbUtil.getAConnection();
+            BaseStudentModel m = new BaseStudentModel(conn);
 
-              m.init(null,studId,classId);
-              m.setAvgAttemptsInAssistedProb(45.4);
-              m.setNumHintsAfterSolveTotal(4);
-              m.save();
-          } catch (SQLException e) {
-              e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-          }
+            m.init(null,studId,classId);
+            m.setAvgAttemptsInAssistedProb(45.4);
+            m.setNumHintsAfterSolveTotal(4);
+            m.save();
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
-      }
+    }
 
 }

@@ -1,0 +1,142 @@
+<lc_ruleset name="BasedOnCurrentProblem" description="Based on Current Problem" notes="created by Dave in XML file lc_curProblem.xml">
+    <meta_rule name="thisRuleNotFiredInPastMinutes" value="8" units="minutes" />
+    <meta_rule name="noMessageFiredInPastMinutes" value="3" units="minutes" />
+
+
+    <lc_r name="2" priority="1" onEvent="Attempt">
+        <lc_c fnname="hintExists"/>
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="68" media="HintUseful1">This is the moment where the Hint Button can be very useful</lc_a>
+    </lc_r>
+
+    <lc_r name="3" priority="1" onEvent="Attempt">
+        <lc_c fnname="videoExists"/>
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="69" media="video1">How about we ask for a video to help us?</lc_a>
+    </lc_r>
+
+    <lc_r name="4" priority="1" onEvent="Attempt">
+        <lc_c fnname="hintExists"/>
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="70" media="Hint1">Hey, let's click on the hint button! Maybe that will help us</lc_a>
+    </lc_r>
+
+    <lc_r name="5" priority="1" onEvent="Attempt">
+        <lc_c fnname="exampleExists"/>
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="71" media="example1">How about we click on the example button?</lc_a>
+    </lc_r>
+
+
+    <lc_r name="7" priority="1" onEvent="Attempt">
+        <lc_c fnname="hintExists"/>
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="=" val="HIGH" type="mastery"></lc_c>
+        <lc_a messageId="68" media="HintUseful1">This is the moment where the Hint Button can be very useful</lc_a>
+    </lc_r>
+
+    <lc_r name="8" priority="1" onEvent="Attempt">
+        <lc_c fnname="hintExists"/>
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="=" val="MIDDLE" type="mastery"></lc_c>
+        <lc_a messageId="68" media="HintUseful1">This is the moment where the Hint Button can be very useful</lc_a>
+    </lc_r>
+
+
+
+    <lc_r name="11" priority="1" onEvent="Attempt">
+        <lc_c fnname="hintExists"/>
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="2" type="Integer"></lc_c>
+        <lc_a messageId="73" media="dontgiveup1">Don't give up yet, you can do this. Try asking for a hint</lc_a>
+    </lc_r>
+
+
+    <!-- If not reading the problem because hint was within 2 seconds-->
+    <lc_r name="13" priority="1" onEvent="Attempt">
+        <lc_c not="on" fnname="isSolved" ></lc_c>
+        <lc_c fnname="timeToFirstHintSecs" relop="&lt;=" val="2.0" type="Double"></lc_c>
+        <lc_c fnname="timeToFirstHintSecs" relop="&gt;=" val="0.0" type="Double"></lc_c>
+        <lc_a messageId="75" media="compread1">How about we have the computer read the problem for us? You need to click on "Read Problem"</lc_a>
+    </lc_r>
+
+
+    <lc_r name="14" priority="1" onEvent="Attempt">
+        <lc_c fnname="currentEffort" relop="=" val="SOF" type="String"></lc_c>
+        <lc_c fnname="timeToSolveSecs" relop="&lt;=" val="10" type="Double"></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="76" media="Amazing1">You are doing amazing."</lc_a>
+    </lc_r>
+
+    <lc_r name="15" priority="1" onEvent="Attempt">
+        <lc-c fname="numHintsGiven" relop="=" val="1" type="integer"/>
+        <lc_c fnname="isSolved" ></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="&gt;=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="78" media="HintsWork">Great job, see? the hints do work"</lc_a>
+    </lc_r>
+
+    <lc_r name="16" priority="1" onEvent="Attempt">
+        <lc-c fname="numHintsGiven" relop="=" val="1" type="integer"/>
+        <lc_c fnname="isSolved" ></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="&gt;=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="80" media="Dedication">
+            Very good job!  Your effort and dedication are impressive, and it is paying off
+        </lc_a>
+    </lc_r>
+
+    <lc_r name="17" priority="1" onEvent="Attempt">
+        <lc-c fname="numHintsGiven" relop="=" val="1" type="integer"/>
+        <lc_c fnname="isSolved" ></lc_c>
+        <lc_c fnname="topicMasteryValue" relop="&gt;=" type="mastery" val="LOW"></lc_c>
+        <lc_a messageId="81" media="Sticking">
+            Even though these problems are hard, you are sticking with it!  Your approach is the right one and I bet you will soon be getting these problems without needing any hints
+        </lc_a>
+    </lc_r>
+
+    <lc_r name="18" priority="2" onEvent="Attempt">
+        <lc_c fnname="hintExists"></lc_c>
+        <lc_c not="on" fnname="isSolved"></lc_c>
+        <lc_c fnname="numIncorrectAttempts" relop="=" val="1" type="Integer"></lc_c>
+
+        <lc_a messageId="82" media="SecretWeapon">
+            Hey, Do you know about our secret weapon? It's the Hint Button. Students tell us it helps a lot. If the first hint doesn't help, try another
+        </lc_a>
+    </lc_r>
+
+    <lc_r name="19" priority="1" onEvent="Attempt">
+        <lc_c fnname="currentEffort" relop="=" val="SOF" type="String"></lc_c>
+        <lc_c fnname="effort1" relop="=" val="SHINT" type="String"></lc_c>
+        <lc_a messageId="77" media="SHINTANDSOF">
+            You SAW hints in the last problem and now got this one correct. I have to congratulate you --I think you learned something with those hints!
+        </lc_a>
+    </lc_r>
+
+    <lc_r name="20" priority="1" onEvent="Attempt">
+        <lc_c fnname="currentEffort" relop="=" val="SOF" type="String"></lc_c>
+        <lc_c fnname="effort1" relop="=" val="SOF" type="String"></lc_c>
+        <lc_c fnname="effort2" relop="=" val="SOF" type="String"></lc_c>
+        <lc_a messageId="90" media="THREECORRECT">
+            You got three correct in a row, congratulations!!!
+        </lc_a>
+    </lc_r>
+
+    <lc_r name="21" priority="1" onEvent="Hint">
+        <lc_c fnname="numHintsGiven" relop="&gt;" val="2" type="Integer"></lc_c>
+        <lc_a messageId="79">
+            Using a lot of hints is not bad at all, if we  use them to learn something and apply what you learn to the next problem
+        </lc_a>
+    </lc_r>
+
+
+
+</lc_ruleset>

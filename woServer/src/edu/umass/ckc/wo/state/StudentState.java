@@ -53,6 +53,7 @@ public class StudentState extends State implements TutorEventHandler {
     private boolean curProblemIsTopicIntro;
     private String pedagogicalModelInternalState;
 
+
     public StudentState(Connection conn, SessionManager smgr) throws SQLException {
         this.smgr = smgr;
         this.conn = conn;
@@ -840,6 +841,9 @@ public class StudentState extends State implements TutorEventHandler {
     public int getCurTopic() {
         return workspaceState.getCurTopic();
     }
+    public int getLastTopic() {
+        return workspaceState.getLastTopic();
+    }
 
     public void setCurTopic(int pgroupID) throws SQLException {
         workspaceState.setCurTopic(pgroupID);
@@ -1019,7 +1023,7 @@ public class StudentState extends State implements TutorEventHandler {
         // At the end of each problem the timeInTopic is increased by the time spent in the problem.
         this.setTimeInTopic(this.getTimeInTopic()+ probElapsedTime);
         // check if the previous event was a hint and problem not solved yet.  If so, then update hint_time
-        if ((this.isLastEvent(HINT_EVENT)) && (! isProblemSolved())) {
+       if ((this.isLastEvent(HINT_EVENT)) && (! isProblemSolved())) {
             long curr_hint_time = this.getTimeInHintsBeforeCorrect();
             long extra_hint_time = this.getProbElapsedTime() - this.getHintStartTime();
             problemState.setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
@@ -1088,8 +1092,10 @@ public class StudentState extends State implements TutorEventHandler {
         problemState.setLastEvent(HINT_EVENT);
         if (hint == null) return;
         problemState.setIdleTime(0);
-        if (!isProblemSolved())
-            problemState.setNumHintsGiven(problemState.getNumHintsGiven() + 1);
+        problemState.setNumHintsGiven(problemState.getNumHintsGiven() + 1);
+        if (!isProblemSolved()) {
+            problemState.setNumHintsBeforeCorrect(problemState.getNumHintsBeforeCorrect() + 1);
+        }
         problemState.setHintStartTime(this.getProbElapsedTime());
         boolean atEnd = hint.getLabel().equals(problemState.getCurHint());
         problemState.setCurHint(hint.getLabel());
@@ -1307,6 +1313,11 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
 
+    public int getCurProblemIndexInLesson() {
+        return lessonState.getCurProblemIndex();
+    }
 
-
+    public void setCurProblemIndexInLesson(int curProblemIndexInLesson) {
+        lessonState.setCurProblemIndex(curProblemIndexInLesson);
+    }
 }

@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.probSel.InterleavedProblemSetParams;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
@@ -70,7 +71,6 @@ public class TopicSelectorImpl implements TopicSelector {
 
 
 
-
     /**
      * Returns a list of problem Ids for the given topic.   Only problems active for the class and that haven't been solved (or examples) are returned.
      *
@@ -85,10 +85,10 @@ public class TopicSelectorImpl implements TopicSelector {
             List<Integer> pids = DbTopics.getNonShownInterleavedProblemSetProbs(smgr.getConnection(), smgr.getStudentId()) ;
             return pids;
         }
-        // studentID and classID were set in init method.
+        // studentID and classID were set in setServletInfo method.
         List<Integer> topicProbs = getClassTopicProblems(theTopicId, classId, includeTestProblems);
         List<StudentProblemData> probEncountersInTopic = getHistoryProblemsInTopic(smgr, theTopicId);
-        List<Integer> recentProbs = pedagogicalModel.getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
+        List<Integer> recentProbs = smgr.getExtendedStudentState().getRecentExamplesAndCorrectlySolvedProblems(probEncountersInTopic);
         topicProbs.removeAll(recentProbs);
         return topicProbs;
     }
@@ -174,11 +174,11 @@ public class TopicSelectorImpl implements TopicSelector {
         boolean failEasier=false, failHarder=false,failSame=false;
 
         boolean fail=false;
-        if (diff == TopicModel.difficulty.EASIER)
+        if (diff == LessonModel.difficulty.EASIER)
             failEasier= !smgr.getStudentState().curTopicHasEasierProblem();
-        else if (diff == TopicModel.difficulty.HARDER)
+        else if (diff == LessonModel.difficulty.HARDER)
             failHarder =  !smgr.getStudentState().curTopicHasHarderProblem();
-        else if (diff == TopicModel.difficulty.SAME)
+        else if (diff == LessonModel.difficulty.SAME)
             failSame = !(smgr.getStudentState().curTopicHasHarderProblem() || smgr.getStudentState().curTopicHasEasierProblem());
         EndOfTopicInfo info = new EndOfTopicInfo(false,false,failEasier,failHarder, failSame, false);
         return info;
@@ -304,7 +304,7 @@ public class TopicSelectorImpl implements TopicSelector {
      * @throws SQLException
      */
     public List<Integer> getClassTopicProblems(int topicId, int classId, boolean includeTestProblems) throws Exception {
-        // studentID and classID were set in init method.
+        // studentID and classID were set in setServletInfo method.
         List<Integer> topicProbs = ProblemMgr.getTopicProblemIds(topicId);  // operates on a clone so destruction is ok
         // TODO:  Issue:  If all the problems in a topic are marked as TESTABLE and there are no ready problems, the
         // list of problems becomes empty if the includeTestProblems flag is false.   Then we have a bug because

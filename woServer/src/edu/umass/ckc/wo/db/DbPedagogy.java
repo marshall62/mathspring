@@ -6,15 +6,20 @@ import edu.umass.ckc.wo.admin.PedMap;
 import edu.umass.ckc.wo.admin.PedagogyParser;
 import edu.umass.ckc.wo.config.LessonXML;
 import edu.umass.ckc.wo.config.LoginXML;
+import edu.umass.ckc.wo.lc.DbLCRule;
+import edu.umass.ckc.wo.lc.LCRuleset;
+import edu.umass.ckc.wo.lc.XMLLCRule;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.xml.JDOMUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 
+import javax.servlet.ServletContext;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,7 +35,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DbPedagogy {
-    private static Connection conn;
+
     private static HashMap<String,Pedagogy> pedsByOldIdMap = new HashMap<String, Pedagogy>();
 
     private static boolean buildMapOfOldIds = true;
@@ -40,14 +45,13 @@ public class DbPedagogy {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select name,definition,style from lessonDefinition";
+            String q = "select name,definition from lessonDefinition";
             stmt = conn.prepareStatement(q);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 String name= rs.getString(1);
                 String xml= rs.getString(2);
-                String style= rs.getString(3);
-                buildLesson(name, style, xml, m);
+                buildLesson(name, xml, m);
             }
         }
         finally {
@@ -59,11 +63,13 @@ public class DbPedagogy {
         return m;
     }
 
-    private static void buildLesson(String name, String style, String xml, LessonMap m) throws Exception {
+    private static void buildLesson(String name, String xml, LessonMap m) throws Exception {
         Element e = JDOMUtils.getRoot(xml);
         Element interventions = e.getChild("interventions");
         Element control = e.getChild("controlParameters");
-        LessonXML lx = new LessonXML(interventions,control,name,style);
+        String lmClassname = e.getAttributeValue("className");
+
+        LessonXML lx = new LessonXML(interventions,control,name,lmClassname);
         m.put(name,lx);
     }
 
@@ -99,7 +105,7 @@ public class DbPedagogy {
     }
 
 
-    public static PedMap buildAllPedagogies(Connection conn) throws Exception {
+    public static PedMap buildAllPedagogies(Connection conn, ServletContext servletContext) throws Exception {
         
         PedMap pedmap = new PedMap();
         ResultSet rs=null;
@@ -131,6 +137,14 @@ public class DbPedagogy {
                 // only basic pedagogies should have a simpleConfig name (used in the teacher tools TEACHER view of pedagogies)
                 if (isBasic)
                     ped.setSimpleConfigName(simpleConfigName);
+                // pedagogies can mention ruleset names that controls the learning companion.   The rulesets come from
+                // either the db or a file.  Each ruleset is added to the pedagogy.
+
+                List<LCRuleset> rulesets = ped.getLearningCompanionRuleSets();
+                if (rulesets != null)
+                    for (LCRuleset rset : rulesets)
+                        loadRuleset(conn,rset,ped,servletContext);
+
                pedmap.put(Integer.toString(id),ped);
             }
             return pedmap;
@@ -143,18 +157,26 @@ public class DbPedagogy {
         }
     }
 
+    // A ruleset comes from either the db or from a file.   This loads the ruleset (and all its rules) into the pedagogy.
+    private static void loadRuleset (Connection conn, LCRuleset rs , Pedagogy ped, ServletContext servletContext) throws Exception {
+        if (rs.isFromDb())
+            DbLCRule.loadRuleSetIntoPedagogy(conn,ped,rs);
+        else
+            XMLLCRule.loadRuleSet(conn, rs, servletContext.getResourceAsStream(rs.getSource()));
+    }
 
-    private static void readPedagogiesFromFile() throws FileNotFoundException, SQLException {
+
+    private static void readPedagogiesFromFile(Connection conn) throws IOException, SQLException, JDOMException {
         FileInputStream str = new FileInputStream("f:\\dev\\mathspring\\woServer\\resources\\pedagogies.xml");
         Document d = JDOMUtils.makeDocument(str);
         Element root = d.getRootElement();
         List<Element> peds =  root.getChildren("pedagogy");
         for (Element ped : peds) {
-            readPedagogy(ped);
+            readPedagogy(conn,ped);
         }
     }
 
-    private static void readPedagogy(Element ped) throws SQLException {
+    private static void readPedagogy(Connection conn, Element ped) throws SQLException {
 
         String name = ped.getChild("name").getTextTrim();
         Element e = ped.getChild("provideInSimpleConfig");
@@ -351,7 +373,11 @@ public class DbPedagogy {
                 LessonModelParameters classParams = DbClass.getLessonModelParameters(conn, classId);
                 // get the lesson settings from the lessonDefinition
                 LessonXML lx =  Settings.lessonMap.get(ped.getLessonName());
-                LessonModelParameters lessonModelParameters = lx.getLessonModelParams();
+                // 5/16/16 DM Had to comment out the below line which was important for migrating pedagogies as defined in these methods.
+                // But I've moved the lesson model parameters to an object that only lives inside the lesson model and can no longer be fetched
+                // from the LessonXML object.  Will have to get the params some other way (thru the LessonModel) in order to overload them.
+                // LessonModelParameters lessonModelParameters = lx.getLessonModelParams();
+                LessonModelParameters lessonModelParameters=null; // set to null so it will cause an exception until the issue above is dealt with
                 // prefer class params to ones defined in lesson
                 lessonModelParameters.overload(classParams);
                 // Now set the users lesson settings.
@@ -372,10 +398,10 @@ public class DbPedagogy {
         try {
             DbPedagogy p = new DbPedagogy();
             DbPedagogy.buildMapOfOldIds = true;
-            DbPedagogy.conn = DbUtil.getAConnection("rose.cs.umass.edu");
+            Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
-            Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn);
+            Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,null);
 //            DbPedagogy.readPedagogiesFromFile();
 //            adjustStudents(conn);
             adjustClassPedagogies(conn);

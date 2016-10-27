@@ -31,9 +31,15 @@ public class DbUserPedagogyParams {
     }
 
     public static void saveUserPedagogyParams(Connection conn, int studId, String mode, boolean showIntro, int maxtime, int maxprobs, boolean singleTopicMode,
-                                              String ccss, int topicId, float mastery, int cuId, int lessonId, int overridePedagogyId) throws SQLException {
+                                              String[] ccss, int topicId, float mastery, int cuId, int lessonId, int overridePedagogyId) throws SQLException {
         ResultSet rs = null;
         PreparedStatement s = null;
+        StringBuilder sb = new StringBuilder();
+        // put the standards in CSV format to stuff in one db field
+        for (int i=0;i<ccss.length;i++)
+            sb.append(ccss[i] + ",");
+        sb.append(ccss[ccss.length-1]);
+        String standards = sb.toString();
         try {
             String q = "insert into userpedagogyparameters (studid,showintro,maxtime,maxprobs,mode,singleTopicMode,ccss,topicId,mastery,cuId,lessonId,overridePedagogy) " +
                     "values (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -44,7 +50,7 @@ public class DbUserPedagogyParams {
             s.setInt(4, maxprobs);
             s.setString(5, mode);
             s.setBoolean(6, singleTopicMode);
-            s.setString(7, ccss);
+            s.setString(7, standards);
             s.setInt(8, topicId);
             s.setFloat(9, mastery);
             s.setInt(10, cuId);
@@ -64,6 +70,42 @@ public class DbUserPedagogyParams {
                 s.close();
         }
     }
+
+    public static void saveUserPedagogyParams(Connection conn, int studId, int maxtime, int maxprobs,
+                                              String[] ccss, float mastery, int overridePedagogyId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement s = null;
+        StringBuilder sb = new StringBuilder();
+        // put the standards in CSV format to stuff in one db field
+        for (int i=0;i<ccss.length-1;i++)
+            sb.append(ccss[i] + ",");
+        sb.append(ccss[ccss.length-1]);
+        String standards = sb.toString();
+        try {
+            String q = "insert into userpedagogyparameters (studid,maxtime,maxprobs,ccss,mastery,overridePedagogy) " +
+                    "values (?,?,?,?,?,?)";
+            s = conn.prepareStatement(q);
+            s.setInt(1, studId);
+            s.setInt(2, maxtime);
+            s.setInt(3, maxprobs);
+            s.setString(4, standards);
+            s.setFloat(5, mastery);
+            s.setInt(6, overridePedagogyId);
+
+            s.execute();
+
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == Settings.duplicateRowError || e.getErrorCode() == Settings.keyConstraintViolation)
+                ;
+            else throw e;
+        } finally {
+
+            if (s != null)
+                s.close();
+        }
+    }
+
 
     public static PedagogyParams getPedagogyParams(Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;

@@ -11,7 +11,10 @@ import java.sql.SQLException;
  */
 public interface MasteryHeuristic {
     double computeTopicMastery(long timeToFirstAttempt, double topicMastery, int probID, int topicID,
-                               int numHints, boolean isCorrect, int numMistakes, int numProbsInTopic, String problemMode) throws SQLException;
+                               int numHelpAids, boolean isCorrect, int numMistakes, int numProbsInTopic, String problemMode) throws SQLException;
+
+    double computeStandardMastery(long timeToFirstAttempt, double stdMastery, int probID,
+                               int numHelpAids,  boolean isCorrect, int numMistakes, int numProbsSeen, String problemMode) throws SQLException;
 
 
 }

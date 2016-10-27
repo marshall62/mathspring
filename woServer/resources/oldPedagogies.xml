@@ -14,7 +14,7 @@
 
         <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
         <contentFailureThreshold>1</contentFailureThreshold>
-        <topicMastery>1.2</topicMastery>
+        <mastery>1.2</mastery>
         <minNumberProbs>3</minNumberProbs>
         <maxNumberProbs>10</maxNumberProbs>
         <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -107,7 +107,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -181,7 +181,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -255,7 +255,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -329,7 +329,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -404,7 +404,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -472,7 +472,7 @@
     <lessonStyle>topics</lessonStyle>
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -562,7 +562,7 @@
     <lessonStyle>topics</lessonStyle>
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -667,7 +667,7 @@
     <lessonStyle>topics</lessonStyle>
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -757,7 +757,7 @@
     <lessonStyle>topics</lessonStyle>
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -859,7 +859,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -934,7 +934,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -1016,7 +1016,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>
@@ -1091,7 +1091,7 @@
 
     <maxTimeInTopicSecs>900</maxTimeInTopicSecs>
     <contentFailureThreshold>1</contentFailureThreshold>
-    <topicMastery>1.2</topicMastery>
+    <mastery>1.2</mastery>
     <minNumberProbs>3</minNumberProbs>
     <maxNumberProbs>10</maxNumberProbs>
     <minTimeInTopicSecs>120</minTimeInTopicSecs>

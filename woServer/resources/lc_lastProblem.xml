@@ -1,0 +1,59 @@
+<lc_ruleset name="BasedOnLastProblem" description="Based on Last Problem" notes="created by Dave in XML file lc_lastProblem.xml">
+    <meta_rule name="thisRuleNotFiredInPastMinutes" value="8" units="minutes" />
+    <meta_rule name="noMessageFiredInPastMinutes" value="3" units="minutes" />
+
+
+    <lc_r name="2" priority="1" onEvent="BeginProblem">
+        <lc_c fnname="curProbHarderThanLastProb" type="Boolean"/>
+        <lc_c fnname="curProbTopicSameAsLastProbTopic" type="Boolean"/>
+        <lc_c fnname="curProbMode" type="String" relop="=" val="practice"/>
+        <lc_a  messageId="87" media="HarderThanLast">
+            Now, this problem is harder than the last one. Let's take it slowly and work on this one carefully
+        </lc_a>
+    </lc_r>
+
+    <lc_r name="3" priority="1" onEvent="BeginProblem">
+        <lc_c fnname="lastProblemIsExampleOrDemo" type="Boolean"/>
+        <lc_c fnname="curProbTopicSameAsLastProbTopic" type="Boolean"/>
+        <lc_c fnname="curProbMode" type="String" relop="=" val="practice"/>
+        <lc_a  messageId="86" media="YourTurnAfterExample">
+            Now it is your turn to solve a problem!
+        </lc_a>
+    </lc_r>
+
+    <lc_r name="4" priority="1" onEvent="BeginProblem">
+        <lc_c fnname="effort1" relop="=" val="GIVEUP" type="String"></lc_c>
+        <lc_c fnname="effort2" relop="=" val="GIVEUP" type="String"></lc_c>
+        <lc_a messageId="93" media="NotAnsweringAnyMore">
+            You are not answering the problems anymore, are they too hard?. how about we click on "My Progress" and CHOOSE something different?
+        </lc_a>
+
+    </lc_r>
+
+    <lc_r name="5" priority="1" onEvent="BeginProblem">
+        <lc_c fnname="effort1" relop="=" val="NOTR" type="String"></lc_c>
+        <lc_c fnname="effort2" relop="=" val="NOTR" type="String"></lc_c>
+        <lc_a messageId="93" media="NotAnsweringAnyMore">
+            You are not answering the problems anymore, are they too hard?. how about we click on "My Progress" and CHOOSE something different?
+        </lc_a>
+
+    </lc_r>
+
+    <lc_r name="6" priority="1" onEvent="BeginProblem">
+        <lc_c fnname="isFirstProblemInTopic" type="Boolean"></lc_c>
+        <lc_c fnname="lastTopicMasteryValue" relop="=" val="HIGH" type="mastery"></lc_c>
+        <lc_a messageId="96" media="SWITCHNOHARDER">
+            Ok, here goes a new set of problems. I think we are doing very well, what do you think?
+        </lc_a>
+
+    </lc_r>
+
+    <lc_r name="7" priority="1" onEvent="BeginProblem">
+        <lc_c fnname="isFirstProblemInTopic" type="Boolean"></lc_c>
+        <lc_c fnname="lastTopicMasteryValue" relop="=" val="LOW" type="mastery"></lc_c>
+        <lc_a messageId="97" media="SWITCHNOEASIER">
+            Ok, let's stop for a moment and think. How about we take this set of problems slowwwly, and ask for hints when necessary . Deal?
+        </lc_a>
+
+    </lc_r>
+</lc_ruleset>

@@ -8,15 +8,50 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<script src="js/jquery-1.10.2.js"></script>
 
 <jsp:include page="${sideMenu}" />
+
+<script type="text/javascript">
+
+    function showAddStudentButtons2 (divId) {
+        $("#addStudents").append('<b>This is a test</b>');
+    }
+
+    function showAddStudentButtons (divID) {
+        f = $('<form name="form2" id="rosterForm" method="post" action="${pageContext.request.contextPath}/WoAdmin?action=AdminAlterClassCreateStudents&teacherId=${classInfo.teachid}&classId=${classInfo.classid}"></form>');
+        $("#addStudents").replaceWith(f)
+        tab = $('<table width="600"></table>');
+
+        tr = $('<tr></tr>');
+        tr.append('<td width="50"><span class="whArial">Prefix</span></td>');
+        tr.append('<td> <input name="prefix" type="text"> </td>');
+        tab.append(tr);
+        tr = $('<tr></tr>');
+        tr.append('<td width="50"><span class="whArial">Password</span></td>');
+        tr.append('<td> <input name="password" type="text"> </td>');
+        tab.append(tr);
+        tr = $('<tr></tr>');
+        tr.append('<td width="50"><span class="whArial">Begin Number</span></td>');
+        tr.append('<td> <input name="beginNumber" type="text"> </td>');
+        tab.append(tr);
+        tr = $('<tr></tr>');
+        tr.append('<td width="50"><span class="whArial">End Number</span></td>');
+        tr.append('<td> <input name="endNumber" type="text"> </td>' );
+        tab.append(tr);
+        f.append(tab);
+        f.append('<input type="submit" name="submit" value="Create Students"/>' );
+        f.append('<input type="hidden" name="teacherId"  value="${classInfo.teachid}"/>');
+        f.append('<input type="hidden" name="classId"  value="${classInfo.classid}"/>');
+    }
+
+</script>
 
 <%--<jsp:useBean id="bean" scope="request" type="edu.umass.ckc.wo.beans.Classes"/>--%>
 <jsp:useBean id="classInfo" scope="request" type="edu.umass.ckc.wo.beans.ClassInfo"/>
 
 <div class="mainPageMargin">
-    <div id="Layer2" align="center">
+    <div id="Layer2" align="left">
 
     <%--@elvariable id="classInfo" type="edu.umass.ckc.wo.beans.ClassInfo"--%>
     <%--@elvariable id="students" type="java.util.List"--%>
@@ -30,29 +65,32 @@
 
         <br>You should only generate students if you have completed step 2 in class creation (Simple Tutor Configuration) or pedagogy selection.<br><br>
         User names are formed by taking the prefix you provide and then appending numbers starting with <i>begin number</i> and ending with <i>end number</i>.  All students are given the password you provide.  Test users will also be created if you provide a prefix for them.
+        <div id="userSpecs">
             <form name="form1" id="rosterForm" method="post"
-            action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassCreateStudents&teacherId=<c:out value="${classInfo.teachid}"/>&classId=<c:out value="${classInfo.classid}"/>">
+                  action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminAlterClassCreateStudents&teacherId=<c:out value="${classInfo.teachid}"/>&classId=<c:out value="${classInfo.classid}"/>">
 
-            <table width="600">
-            <tr> <td width="50"><span class="whArial">Prefix</span></td>
-            <td> <input name="prefix" type="text"> </td></tr>
-            <tr> <td width="50"><span class="whArial">Password</span></td>
-            <td> <input name="password" type="text"> </td></tr>
-            <tr> <td width="50"><span class="whArial">Begin Number</span></td>
-            <td> <input name="beginNumber" type="text"> </td></tr>
-            <tr> <td width="50"><span class="whArial">End Number</span></td>
-            <td> <input name="endNumber" type="text"> </td></tr>
-            <tr> <td width="50"><span class="whArial">Test User Prefix</span></td>
-            <td> <input name="testUserPrefix" type="text"> </td></tr>
+                <table width="600">
+                    <tr> <td width="50"><span class="whArial">Prefix</span></td>
+                    <td> <input name="prefix" type="text"> </td></tr>
+                    <tr> <td width="50"><span class="whArial">Password</span></td>
+                    <td> <input name="password" type="text"> </td></tr>
+                    <tr> <td width="50"><span class="whArial">Begin Number</span></td>
+                    <td> <input name="beginNumber" type="text"> </td></tr>
+                    <tr> <td width="50"><span class="whArial">End Number</span></td>
+                    <td> <input name="endNumber" type="text"> </td></tr>
+                    <tr> <td width="50"><span class="whArial">Test User Prefix</span></td>
+                    <td> <input name="testUserPrefix" type="text"> </td></tr>
 
-            </table>
+                </table>
 
 
-            <input type="submit" name="submit" value="Create Students" />
-            <input type="hidden" name="teacherId"  value="<c:out value="${classInfo.teachid}"/>"/>
-            <input type="hidden" name="classId"  value="<c:out value="${classInfo.classid}"/>"/>
-            <c:if test="${createClassSeq}"> <input type="hidden" name="createClassSeq" value="true"/></c:if>
+                <input type="submit" name="submit" value="Create Students" />
+                <input type="hidden" name="teacherId"  value="<c:out value="${classInfo.teachid}"/>"/>
+                <input type="hidden" name="classId"  value="<c:out value="${classInfo.classid}"/>"/>
+                <c:if test="${createClassSeq}"> <input type="hidden" name="createClassSeq" value="true"/></c:if>
             </form>
+            </div>
+
         <p class="whArial">
             <c:out value="${message}"/>
         </p>
@@ -61,8 +99,16 @@
 
 
 
-            <p class="whArial"><b>Student Roster</b></p>
-        
+            <p class="whArial" align="center"><b>Student Roster</b></p>
+            <div id="addStudents">
+
+                    <b>Add More Students</b><br>
+                    <button type="button" name="addStudents" onclick="showAddStudentButtons('addStudents');">Add More Students</button>
+                    <p class="whArial">
+                        <c:out value="${message}"/>
+                    </p>
+            </div>
+            <br><br>
             <table width="600">
                 <tr>
                     <td width="50"><span class="whArial">Student ID</span></td>

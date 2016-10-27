@@ -95,7 +95,7 @@ public class MotivationalStudentModel  {
     public boolean problemSolved = true;
 //    public int numProbsSolved = 0; // must be updated when user exits a problem
 //    public int numProbsSinceLastIntervention = 0;    // TODO moved to StudentState
-    public String fname; //Gets initialized in the init function
+    public String fname; //Gets initialized in the setServletInfo function
     private int recentProbsAttempt1NoHint_1=0;
     private int recentProbsAttempt1NoHint_2=0;
     private int recentProbsAttempt1NoHint_3=0;
@@ -183,8 +183,8 @@ public class MotivationalStudentModel  {
     }
 
 
-    public void init(WoProps props, int studId, int classId) throws SQLException {
-        super.init(props, studId, classId);
+    public void setServletInfo(WoProps props, int studId, int classId) throws SQLException {
+        super.setServletInfo(props, studId, classId);
         doLoad(studId);
 
     }

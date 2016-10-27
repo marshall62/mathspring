@@ -103,10 +103,16 @@ public class InterventionSelectorSpec implements Comparable<InterventionSelector
 
     public InterventionSelector buildIS (SessionManager smgr) throws Exception {
 
-        InterventionSelector sel= (InterventionSelector) Class.forName(this.getFullyQualifiedClassname()).getConstructor(SessionManager.class).newInstance(smgr);
+        InterventionSelector sel=null;
+        try {
+            sel = (InterventionSelector) Class.forName(this.getFullyQualifiedClassname()).getConstructor(SessionManager.class).newInstance(smgr);
+        } catch (Exception e) {
+            System.out.println("Failed to construct intervention selector: " + this.getFullyQualifiedClassname());
+        }
         sel.setParams(this.getParams());
+
         sel.setConfigXML(this.getConfigXML());
-        //sel.init(smgr,smgr.getPedagogicalModel());  // Want to put off the call to init til just before we call .selectIntervention()
+        //sel.setServletInfo(smgr,smgr.getPedagogicalModel());  // Want to put off the call to setServletInfo til just before we call .selectIntervention()
         return sel;
     }
 

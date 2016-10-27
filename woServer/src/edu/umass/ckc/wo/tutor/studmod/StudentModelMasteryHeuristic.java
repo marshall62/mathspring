@@ -28,6 +28,46 @@ public class StudentModelMasteryHeuristic implements MasteryHeuristic {
         this.conn = conn;
     }
 
+    @Override
+    public double computeStandardMastery(long timeToFirstAttempt, double stdMastery, int probID,
+                                         int numHelpAids,  boolean isCorrect, int numMistakes, int numProbsSeen, String mode) throws SQLException {
+        double dd = DbProblem.getDiffLevel(conn,probID);
+
+        double oldThreshold = getThreshold(stdMastery);
+
+        if ( mode != null && ( mode.equals("PracticeProblem") ||
+                mode.equals( "review") || mode.equals("practice") )){// && ! problemWasSkipped(timeToFirstAttempt, isCorrect, numMistakes) ) {
+            if ( numProbsSeen == 1 ) {   //First problem with this standard
+                if ( numMistakes == 0 && isCorrect && numHelpAids==0 )   //correct No Errors
+                    stdMastery = 0.2 ;
+    /*            else if ( isCorrect && numHelpAids > 0 )
+                    topicMastery = 0.5 ;  */
+                else
+                    stdMastery = 0.1 ;
+            }
+
+
+
+            else if ( numMistakes == 0 && isCorrect  ) {    //Second problem onwards
+                if ( numHelpAids > 0 )
+                    stdMastery = updateCorrectWithHelp(stdMastery,dd, oldThreshold) ;
+                else
+                    stdMastery = updateCorrect(stdMastery,dd, oldThreshold);
+            }
+            else {
+                if ( numHelpAids > 0 )
+                    stdMastery = updateIncorrectWithHelp(timeToFirstAttempt,stdMastery,dd, oldThreshold);
+                else
+                    stdMastery = updateIncorrect(timeToFirstAttempt,stdMastery,dd, oldThreshold);
+            }
+        }
+        else {
+            return stdMastery ;   //if not a problem, don't change anything
+        }
+        //threshold = updateThreshold(topicMastery, threshold);      //update the threshold
+        return stdMastery;
+    }
+
     /** Computes the mastery level for the given topic without causing any changes to the db.
      *
      * This is called by the BaseStudentModel.   Its also used by the report tool to get the history of topic masteries for a line

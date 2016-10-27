@@ -19,6 +19,12 @@ function highlightHintButton() {
 function processTopicSwitchIntervention(html) {
     //alert("Switching topics because " + reason)
 //    interventionDialogOpen("Switching Topics", html, NEXT_PROBLEM_INTERVENTION );
+
+    // we set globals.lastProbType to be empty so that when the next Problem comes back to the client processNextProblemResult in tutorhut.js
+    // it won't send an endProblem event.   We don't want it to send an EndProblem event when the new topic starts because the TopicSwitchAskIS
+    // input response handling took care of processing an EndProblem event for the last problem in the previous topic.
+
+    globals.lastProbType = '';
     interventionDialogOpenAsConfirm("Switching Topics", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
 
 
@@ -27,7 +33,7 @@ function processTopicSwitchIntervention(html) {
 function processAskEmotionIntervention(html) {
     //alert("Switching topics because " + reason);
 //    interventionDialogOpen("How are you doing", html, NEXT_PROBLEM_INTERVENTION );
-    interventionDialogOpenAsConfirm("How are you doing", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick );
+    interventionDialogOpenAsConfirm("How are you doing", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick, 550 );
 
 }
 

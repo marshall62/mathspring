@@ -1,8 +1,7 @@
 package edu.umass.ckc.wo.tutor.model;
 
-import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
-import edu.umass.ckc.wo.tutor.response.InternalEvent;
+import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.tutor.response.Response;
 
 /**

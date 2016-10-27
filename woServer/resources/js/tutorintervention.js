@@ -246,12 +246,12 @@ function interventionDialogOpenNoButtons (title, html, type, timeoutFunction,del
     setTimeout(timeoutFunction, delay)
 }
 
-function interventionDialogOpenAsConfirm (title, html, type, confirmFunction) {
+function interventionDialogOpenAsConfirm (title, html, type, confirmFunction, height) {
     $("#ok_button").show();
     $("#noButton").hide();
     $("#yesButton").hide();
     setInterventionDialogButtonHandlerFunction("#ok_button",confirmFunction) ;
-    openInterventionDialog(title,html,type);
+    openInterventionDialog(title,html,type,height);
 }
 
 function interventionDialogOpenAsYesNo (title, html, type, yesFunction, noFunction) {
@@ -270,10 +270,12 @@ function setInterventionDialogButtonHandlerFunction (buttonId, buttonHandlerFunc
    button.click(buttonHandlerFunction);
 }
 
-function openInterventionDialog (title, html, type) {
+function openInterventionDialog (title, html, type, height) {
     globals.interventionType = type;
     $("#"+INTERVENTION_DIALOG).attr("title", title);
     $("#"+INTERVENTION_DIALOG_CONTENT).html(html);
+    if (height)
+        $("#"+INTERVENTION_DIALOG).dialog("option", "height", height);
     $("#"+INTERVENTION_DIALOG).dialog("open");
 }
 

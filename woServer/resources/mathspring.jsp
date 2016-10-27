@@ -52,6 +52,7 @@
             topicId: ${topicId},
             guiLock: false,
             learningCompanion: '${learningCompanion}',
+            learningCompanionMessageSelectionStrategy: '${learningCompanionMessageSelectionStrategy}',
             userName: '${userName}',
             studId : ${studId} ,
             probType : '${probType}',
@@ -106,7 +107,8 @@
             answersChosenSoFar: [] ,
             sym: null,
             component: null,
-            componentAction: null
+            componentAction: null,
+            learningCompanionTextMessage: null
         }
 
 

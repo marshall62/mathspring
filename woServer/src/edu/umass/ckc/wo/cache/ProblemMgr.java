@@ -16,6 +16,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
+
+import edu.umass.ckc.wo.util.Pair;
+import edu.umass.ckc.wo.util.TwoTuple;
 import org.apache.log4j.Logger;
 
 /**
@@ -398,12 +401,61 @@ public class ProblemMgr {
         return problems;
     }
 
+    public static int getStandardNumProblems (Connection conn, String ccss) throws SQLException{
+        String[] standards = ccss.split(",");
+        List<Problem> problems = new ArrayList<Problem>();
+        String q = "select count(p.id) from problem p, OverallProbDifficulty d, " +
+                "ProbStdMap std where p.id = std.probID and d.problemId = p.id and p.status='ready' and std.stdId in ";
+        String vars = "(";
+        //Start at 1 to get the right number of commas
+        for(int i = 1; i < standards.length; i++){
+            vars = vars + "?,";
+        }
+        q = q + vars + "?) order by d.diff_level";
+        PreparedStatement ps = conn.prepareStatement(q);
+        for(int i = 1; i <= standards.length; i++){
+            ps.setString(i, standards[i-1]);
+        }
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            int num = rs.getInt(1);
+            return num;                        //add to arraylist
+        }
+
+        return 0;
+    }
+
+    public static List<Pair<String,Integer>> getAllStandardNumProblems(Connection conn) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            List<Pair<String,Integer>> res = new ArrayList<Pair<String,Integer>>();
+            String q = "select m.stdid, count(m.probId) from probstdmap m, problem p where m.probid=p.id and p.status='ready' group by m.stdid";
+            stmt = conn.prepareStatement(q);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                String std= rs.getString(1);
+                int num = rs.getInt(2);
+                if (std != null)
+                    res.add(new Pair(std,num));
+            }
+            return res;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        } 
+    }
+
 
     // Problems were stored in the allProblems arrayList in order of ID (ascending) so that
     // we can do a lookup in log time with this.
     public static Problem getProblem (int id) throws SQLException {
         if (allProblems.size() == 0)
-            throw new SQLException("The ProblemMgr has no loaded problems.  Make sure the correct servlet is being wrong so that it gets loaded");
+            throw new SQLException("The ProblemMgr has no loaded problems.  Make sure the correct servlet is being run so that it gets loaded");
         Problem temp = new Problem(id);
         int ix = Collections.binarySearch(allProblems,temp,
                 new Comparator<Problem>() {
@@ -531,4 +583,6 @@ public class ProblemMgr {
             return p.isTestProblem();
         else return false;
     }
+
+
 }

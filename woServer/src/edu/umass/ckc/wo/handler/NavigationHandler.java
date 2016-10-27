@@ -192,11 +192,11 @@ public class NavigationHandler {
         return new PrePostTestHandler(sc, smgr, conn);
     }
 
-    private boolean pretestRequired() throws SQLException {
-        boolean givePretest = DbClass.giveClassPretest(smgr.getConnection(), smgr.getStudentClass(smgr.getStudentId()));
-        return givePretest;
-
-    }
+//    private boolean pretestRequired() throws SQLException {
+//        int givePretest = DbClass.getClassPrePostTest(smgr.getConnection(), smgr.getStudentClass(smgr.getStudentId()));
+//        return givePretest==1;
+//
+//    }
 
 
     private View getVillageView() {

@@ -111,7 +111,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 //        this.maxNumberProbs = params.getMaxNumberProbs();
 //        this.maxTimeInTopic = params.getMaxTimeInTopic();
 //        this.contentFailureThreshold = params.getContentFailureThreshold();
-//        this.topicMastery = params.getTopicMastery();
+//        this.topicMastery = params.getMastery();
 //        this.minNumberProbs = params.getMinNumberProbs();
 //        this.minTimeInTopic = params.getMinTimeInTopic();
 //        this.divisor = params.getDifficultyRate();
@@ -120,7 +120,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 //    }
 //
 //
-//    public void init (SessionManager smgr) throws Exception {
+//    public void setServletInfo (SessionManager smgr) throws Exception {
 //        this.smgr = smgr;
 //        conn = smgr.getConnection();
 //        int studentID = smgr.getStudentId();
@@ -939,7 +939,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 //    private String setDemoMode(Problem p, HintSelector hintSelector) throws Exception {
 //        String mode;
 //        mode = Settings.useHybridTutor ? Problem.DEMO : Problem.EXAMPLE;
-//        hintSelector.init(smgr);
+//        hintSelector.setServletInfo(smgr);
 //        List<Hint> soln = hintSelector.selectFullHintPath(smgr,p.getId());
 //        p.setSolution(soln);
 //        return mode;

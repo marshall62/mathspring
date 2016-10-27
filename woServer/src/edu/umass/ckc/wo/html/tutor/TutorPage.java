@@ -80,13 +80,18 @@ public class TutorPage {
         info.getRequest().setAttribute("flashClientPath",flashClientPath);
         info.getRequest().setAttribute("formalityServlet",Settings.formalityServletURI);
         LearningCompanion lc = smgr.getLearningCompanion();
-        String character = "";
-        if (lc != null) character = lc.getCharactersName();
+        String character = "", strategy = "";
+        if (lc != null) {
+            character = lc.getCharactersName();
+            strategy = lc.getMessageSelectionStrategy();
+        }
         info.getRequest().setAttribute("learningCompanion",character);
+        info.getRequest().setAttribute("learningCompanionMessageSelectionStrategy",strategy);
         appendLogMsg("learningCompanion",character);
         // We must pass the wayangServletContext of this servlet to 4m so that it can build a URL to call wayang back
         info.getRequest().setAttribute("wayangServletContext",servContext);
-        info.getRequest().setAttribute("servletName",info.getServletName());
+//        info.getRequest().setAttribute("servletName",info.getServletName());
+        info.getRequest().setAttribute("servletName","TutorBrain");
         Settings.problemContentPath = Settings.webContentPath.substring(0,Settings.webContentPath.length()-1);
         // if its a dev env, the html5Content & flash problem content must be under tomcat o/w security issues occur because of slightly diff URL hosts.   So we need to bind a var (problemContentPath) pointing to where this content is (either under tc or apache)
 //        info.getRequest().setAttribute("problemContentPath", Settings.isDevelopmentEnv ?  Settings.devWebContentPath : Settings.problemContentPath);
@@ -179,7 +184,7 @@ public class TutorPage {
         logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
     }
 
-//    This is called when Assistments makes a call to our system.    It loads a page with a problem.
+    //    This is called when Assistments or MARi makes a call to our system.    It loads a page with a problem.
     // This is also called on MPPReturnToHutEvent, MPPContinueTopicEvent, MPPReviewTopicEvent, MPPChallengeTopicEvent, MPPTryProblemEvent
     public void createTutorPageFromState(long elapsedTime, long probElapsedTime, int topicId,
                                          ProblemResponse problemResponse, String chalRevOrPracticeMode, String lastProbType,
@@ -194,6 +199,8 @@ public class TutorPage {
         disp.forward(info.getRequest(),info.getResponse());
         logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
     }
+
+
 
     //    This is called when Assistments makes a call to our system.    It loads a page with a problem.
     // This is also called on MPPReturnToHutEvent, MPPContinueTopicEvent, MPPReviewTopicEvent, MPPChallengeTopicEvent, MPPTryProblemEvent

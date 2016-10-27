@@ -21,6 +21,7 @@ public class WorkspaceState extends State {
 
 
     private static final String CUR_TOPIC = "wkspcst.curTopic";
+    private static final String LAST_TOPIC = "wkspcst.lastTopic";
 
     // We need to keep a memory of the students full lesson state (lessonId, CU id, cluster id, cc std, prereq info
     // so that when they login again we know where they were in the lesson.
@@ -38,6 +39,7 @@ public class WorkspaceState extends State {
 
     private boolean postSurveyDone;
     private int curTopic;
+    private int lastTopic;
     private int curLesson;
     private int curCU;
     private int curCluster;
@@ -57,6 +59,7 @@ public class WorkspaceState extends State {
     public void extractProps(WoProps props) throws SQLException {
         Map m = props.getMap();
         this.curTopic = mapGetPropInt(m, CUR_TOPIC, -1);
+        this.lastTopic = mapGetPropInt(m, LAST_TOPIC, -1);
         this.curLesson = mapGetPropInt(m,CUR_LESSON,-1);
         this.curCU = mapGetPropInt(m,CUR_CU,-1);
         this.curCluster = mapGetPropInt(m,CUR_CLUSTER,-1);
@@ -73,9 +76,14 @@ public class WorkspaceState extends State {
     public int getCurTopic() {
         return curTopic;
     }
+    public int getLastTopic() {
+        return lastTopic;
+    }
 
     public void setCurTopic(int pgroupID) throws SQLException {
+        this.lastTopic = this.curTopic;
         this.curTopic = pgroupID;
+        setProp(this.objid,LAST_TOPIC,this.lastTopic);
         setProp(this.objid, CUR_TOPIC,pgroupID);
     }
 
@@ -102,6 +110,8 @@ public class WorkspaceState extends State {
         clearProp(conn,id,PREREQ_STD);
         clearProp(conn,id,PREREQ_STD_STACK);
         clearProp(conn,id,POST_SURVEY_DONE);
+        clearProp(conn,id,CUR_TOPIC);
+        clearProp(conn,id,LAST_TOPIC);
     }
 
 

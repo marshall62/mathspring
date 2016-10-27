@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.probSel;
 
 import edu.umass.ckc.wo.tutormeta.PedagogyParams;
+import org.jdom.Element;
 
 /**
  * Created by IntelliJ IDEA.
@@ -87,10 +88,11 @@ public class PedagogicalModelParameters {
             return this;
         if (userParams.isShowIntro())
             this.topicIntroFrequency=TopicModelParameters.frequency.oncePerSession;
-        if (userParams.getMode().equalsIgnoreCase("Example"))  {
+        String mode = userParams.getMode();
+        if (mode != null && mode.equalsIgnoreCase("Example"))  {
             topicExampleFrequency = TopicModelParameters.frequency.always;
         }
-        else if (userParams.getMode().equalsIgnoreCase("Practice")) {
+        else if (mode != null && userParams.getMode().equalsIgnoreCase("Practice")) {
             topicExampleFrequency = TopicModelParameters.frequency.never;
         }
         else {
@@ -100,7 +102,7 @@ public class PedagogicalModelParameters {
         maxTimeInTopic = userParams.getMaxTime();
         minTimeInTopic = 0;
         maxNumberProbs = userParams.getMaxProbs();
-        topicMastery = userParams.getTopicMastery();
+        topicMastery = userParams.getMastery();
         minNumberProbs = 1;
         this.singleTopicMode = userParams.isSingleTopicMode();
         // If we get passed no topic from Assistments, then this translates into setting the maxtime in the topic to 0
@@ -108,6 +110,40 @@ public class PedagogicalModelParameters {
         if (userParams.getTopicId() == -1)
             this.setMaxTimeInTopic(0);
         return this;
+    }
+
+
+    /*
+        This kind of overloads the params which are all defaults.  It takes the XML from inside the the pedagogy
+        and overwrites the parameters that they tend to redefine.
+     */
+    public void setParameters(Element p) {
+        Element c;
+        String s;
+
+        c = p.getChild("externalActivityTimeThresholdMins");
+        if (c != null) {
+            s = c.getValue();
+            int externalActivityTimeThresholdMins = Integer.parseInt(s);
+            this.setExternalActivityTimeThreshold(externalActivityTimeThresholdMins);
+        }
+
+        c = p.getChild("problemReuseIntervalSessions");
+        if (c != null) {
+            s = c.getValue();
+            this.setProblemReuseIntervalSessions(s);
+        }
+        c = p.getChild("problemReuseIntervalDays");
+        if (c != null) {
+            s = c.getValue();
+            this.setProblemReuseIntervalDays(s);
+        }
+        c = p.getChild("displayMyProgressPage");
+        if (c != null) {
+            s = c.getValue();
+            boolean showMpp = Boolean.parseBoolean(s);
+            this.setShowMPP(showMpp);
+        }
     }
 
 
@@ -411,4 +447,6 @@ public class PedagogicalModelParameters {
     public String getLessonStyle() {
         return lessonStyle;
     }
+
+
 }

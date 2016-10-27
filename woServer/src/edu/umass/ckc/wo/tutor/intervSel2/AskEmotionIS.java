@@ -4,6 +4,7 @@ import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbEmotionResponses;
 import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.interventions.AskEmotionFreeAnswerIntervention;
 import edu.umass.ckc.wo.interventions.AskEmotionRadioIntervention;
 import edu.umass.ckc.wo.interventions.AskEmotionSliderIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
@@ -56,7 +57,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) {
         this.pedagogicalModel=pedagogicalModel;
-//        super.init(smgr,pedagogicalModel);
+//        super.setServletInfo(smgr,pedagogicalModel);
         configure();
     }
 
@@ -69,14 +70,16 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         inputType = getConfigParameter("inputType");
         if (config != null) {
             List<Element> emotElts = config.getChildren("emotion");
-            for (Element em: emotElts) {
-                String n = em.getAttributeValue("name");
-                Emotion e = new Emotion(n);
+            if (emotElts != null) {
+                for (Element em: emotElts) {
+                    String n = em.getAttributeValue("name");
+                    Emotion e = new Emotion(n);
 
-                List<Element> labels = em.getChildren("label");
-                for (Element lab: labels)
-                    e.addLabel(lab.getTextTrim(),Integer.parseInt(lab.getAttributeValue("val")));
-                emotions.add(e);
+                    List<Element> labels = em.getChildren("label");
+                    for (Element lab: labels)
+                        e.addLabel(lab.getTextTrim(),Integer.parseInt(lab.getAttributeValue("val")));
+                    emotions.add(e);
+                }
             }
             Element askWhyElt = config.getChild("askWhy");
             if (askWhyElt != null) {
@@ -120,11 +123,18 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
                 ((timeIntervalMin > -1 && timeSinceLastQueryMin >= timeIntervalMin) ||
                         (numProbsInterval > -1 && problemsSinceLastQuery >= numProbsInterval)) ;
         if (condition) {
-            Emotion emotionToQuery= getEmotionToQueryRandom();
-            if (inputType.equals("slider"))
+            Emotion emotionToQuery;
+            if (inputType.equals("slider"))  {
+                emotionToQuery= getEmotionToQueryRandom();
                 intervention = new AskEmotionSliderIntervention(emotionToQuery, numVals, this.askWhy);
-            else
+            }
+            else if (inputType.equals("freeAnswer"))
+                intervention = new AskEmotionFreeAnswerIntervention();
+            else   {
+                emotionToQuery= getEmotionToQueryRandom();
                 intervention = new AskEmotionRadioIntervention(emotionToQuery, this.askWhy);
+            }
+
             state.setTimeOfLastIntervention(now);
             state.setNumProblemsSinceLastIntervention(0);
             return intervention;
@@ -165,6 +175,10 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
      */
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
+        if (inputType.equals("freeAnswer")) {
+            processFreeAnswerInputs(e);
+            return null;
+        }
         String emotion = params.getString(AskEmotionSliderIntervention.EMOTION);
         String level = params.getString(AskEmotionSliderIntervention.LEVEL);
         if (level == null)
@@ -181,13 +195,19 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String reason = params.getString(AskEmotionSliderIntervention.REASON);
         // build XML like <interventionInput class="%AskEmotionIS"> <emotion> .... </emotion> </interventionInput>
         setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\"><![CDATA[" + reason + "]]></emotion>", e);
-        DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId());
+        DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId(), null, null);
         return null;  // no more interventions to return.
     }
 
-
-
-
+    private void processFreeAnswerInputs(InputResponseNextProblemInterventionEvent e) throws Exception {
+        ServletParams params = e.getServletParams();
+        String feeling = params.getString(AskEmotionFreeAnswerIntervention.FEELING);
+        String reason = params.getString(AskEmotionFreeAnswerIntervention.REASON);
+        String cont = params.getString(AskEmotionFreeAnswerIntervention.CONTINUE);
+        setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel><reason><![CDATA[" + reason + "]]></reason>" +
+                "<continueMathspring><![CDATA[" + cont + "]]></continueMathspring></emotion>", e);
+        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), cont, reason);
+    }
 
 
     @Override

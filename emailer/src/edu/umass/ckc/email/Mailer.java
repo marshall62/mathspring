@@ -425,6 +425,7 @@ public static boolean send(String t, String f, String subj, String b, String h)
         }
 
     public static void main(String[] args) {
+        System.out.println("Trying to run a test of Mailer");
         Mailer m = new Mailer("marshall@cs.umass.edu","marshall@cs.umass.edu","subj","hi there", "loki.cs.umass.edu");
         m.send();
     }

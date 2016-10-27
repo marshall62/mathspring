@@ -52,12 +52,12 @@ public class EffortHeuristic {
      else
      GUESS --not seen hints/example/videos, correct after > 1 incorrect
 
+     *
      * @param state
-     * @param numAttemptsToSolve
      * @return
      */
 
-    public String computeEffort(StudentState state, int numAttemptsToSolve) {
+    public String computeEffort(StudentState state) {
 
         if (state.getCurProblemMode().equals(Problem.DEMO) || state.getCurProblemMode().equals(Problem.EXAMPLE)
         || state.getCurProblemMode().equals(Problem.TOPIC_INTRO))
@@ -65,10 +65,8 @@ public class EffortHeuristic {
 
         if (state.getNumAttemptsOnCurProblem() == 0 && state.getNumHintsGivenOnCurProblem() == 0 && state.getNumHelpAidsGivenOnCurProblem() == 0)
             return SKIP;
-        else if (state.getTimeToFirstEvent() <= READING_THRESHOLD)
-            return NOT_READING;
-        else if (state.getTimeToFirstEvent() > 0 && state.getTimeToSolve() <= 0)
-            return GIVEUP;
+
+
         else if (state.getTimeToSolve() > 0 && state.getNumMistakesOnCurProblem() == 0 && state.getNumHelpAidsGivenOnCurProblem() == 0 &&
                 state.getNumHintsGivenOnCurProblem() == 0)
             return SOLVED_ON_FIRST;
@@ -82,6 +80,13 @@ public class EffortHeuristic {
         else if (state.getNumHelpAidsGivenOnCurProblem() == 0 && state.getNumHintsBeforeCorrect() == 0 && state.getNumMistakesOnCurProblem()  > 1 &&
                 state.getTimeToSolve() > 0)
             return CORRECT_AFTER_TWO;
+        //  DM These two moved down because they are the least discriminating and so problems
+        // are getting coded with these even though they shouldn't.  These used to be 2nd and 3rd checks
+        else if (state.getTimeToFirstEvent() <= READING_THRESHOLD)
+            return NOT_READING;
+        else if (state.getTimeToFirstEvent() > 0 && state.getTimeToSolve() <= 0)
+            return GIVEUP;
+
 
         return "unknown";
 

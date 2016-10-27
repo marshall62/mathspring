@@ -161,6 +161,33 @@
 
 
     </servlet>
+
+    <servlet>
+        <servlet-name>ImageFetch</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.ImageFetchServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>MathspringSubSessionServlet</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.MathspringSubSessionServlet</servlet-class>
+
+
+        <init-param>
+            <param-name>handlerClassName</param-name>
+            <param-value>edu.umass.ckc.wo.servletController.MariHandler</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>videoURI</param-name>
+            <param-value>http://cadmium.cs.umass.edu/mathspring/video/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>emailLogFilename</param-name>
+            <param-value>u:\\wayang\\emailErr.log</param-value>
+        </init-param>
+
+    </servlet>
+
     <servlet>
         <servlet-name>TestDbServlet</servlet-name>
         <servlet-class>edu.umass.ckc.wo.woserver.TestDbServlet</servlet-class>
@@ -168,9 +195,17 @@
     </servlet>
 
     <servlet-mapping>
+        <servlet-name>ImageFetch</servlet-name>
+        <url-pattern>/getImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
            <servlet-name>TestDbServlet</servlet-name>
            <url-pattern>/TestDbServlet</url-pattern>
        </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MathspringSubSessionServlet</servlet-name>
+        <url-pattern>/mathspringSubSession</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>WoLoginServlet</servlet-name>
         <url-pattern>/WoLoginServlet</url-pattern>
@@ -196,6 +231,16 @@
         <servlet-name>BarChartServletIvon</servlet-name>
         <servlet-class>edu.umass.ckc.wo.charts.BarChartServletIvon</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>BarChartServletIvon</servlet-name>

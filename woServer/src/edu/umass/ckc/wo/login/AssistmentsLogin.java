@@ -28,7 +28,7 @@ public class AssistmentsLogin implements ServletAction {
                           HttpServletResponse resp, StringBuffer servletOutput) throws Exception {
         String flashClientURL = (String) servletContext.getAttribute("flashClientURI");
         String userName = params.getString("userName");
-        int studId = UserRegistrationHandler.registerTemporaryUser(conn, DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.assistmentStudent);
+        int studId = UserRegistrationHandler.registerTemporaryUser(conn, DbClass.ASSISTMENTS_CLASS_NAME, User.UserType.coopStudent);
         SessionManager smgr = new SessionManager(conn).assistmentsLoginSession(studId);
         int sessId = smgr.getSessionNum();
         int classId = smgr.getClassID();

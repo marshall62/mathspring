@@ -16,9 +16,9 @@ public class Names {
 
   public static final String HOST = "host";
   public static final String SERVLET_PORT = "servletPort";
-  public static final String POLICY_FILE = "policyFile"; // servlet init param name for policy file
-  public static final String ML_LOG_FILE = "mlLogFile"; // servlet init param name for mach learn log file
-  public static final String PEDAGOGIES_FILE = "pedagogiesFile"; // servlet init param name for path to pedagogies XML file
+  public static final String POLICY_FILE = "policyFile"; // servlet setServletInfo param name for policy file
+  public static final String ML_LOG_FILE = "mlLogFile"; // servlet setServletInfo param name for mach learn log file
+  public static final String PEDAGOGIES_FILE = "pedagogiesFile"; // servlet setServletInfo param name for path to pedagogies XML file
 
   public static final String RESULT_TIME = "time";
   public static final String RESULT_ISCORRECT = "isCorrect";
