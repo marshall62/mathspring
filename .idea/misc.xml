@@ -44,9 +44,6 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/woServer/pom.xml" />
-        <option value="$PROJECT_DIR$/emailer/pom.xml" />
-        <option value="$PROJECT_DIR$/servletFramework/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -137,4 +134,3 @@
     </GetOptions>
   </component>
 </project>
-
