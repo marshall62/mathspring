@@ -23,16 +23,18 @@ public class Problem implements Activity {
     public static QuestType parseType(String t) {
         if (t.equals("shortanswer"))
             return QuestType.shortAnswer;
-        return QuestType.multiChoice;
+        else if (t.equals("longAnswer"))
+            return QuestType.longAnswer;
+        else
+            return QuestType.multiChoice;
     }
-
-
-
 
     public enum QuestType {
         multiChoice ,
-        shortAnswer
+        shortAnswer,
+        longAnswer
     }
+
     public static final String DEMO = "demo";
     public static final String EXAMPLE = "example";
     public static final String PRACTICE = "practice";
@@ -620,6 +622,10 @@ public class Problem implements Activity {
 
     public boolean isShortAnswer () {
         return this.questType == QuestType.shortAnswer;
+    }
+
+    public boolean isLongAnswer () {
+        return this.questType == QuestType.longAnswer;
     }
 
     public boolean isMultiChoice () {
