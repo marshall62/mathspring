@@ -55,6 +55,10 @@ public class LoginSequence {
 
     }
 
+    public SessionManager getSmgr () {
+        return this.smgr;
+    }
+
     private void buildInterventions (Pedagogy ped) throws Exception {
         LoginXML loginXML = ped.getLoginXML();
         interventionGroup = new InterventionGroup(loginXML.getInterventions());
@@ -63,6 +67,15 @@ public class LoginSequence {
             LoginInterventionSelector ls = (LoginInterventionSelector) s;
             ls.setServletInfo(servletInfo);
         }
+    }
+
+    // GIven a class like 'edu.umass.ckc.wo.login.interv.PreSurvey',  find the intervention selector object of that class.
+    public InterventionSelector getInterventionSelectorFromClass (Class theClass) {
+        for (InterventionSelector s: interventionGroup.getAllInterventions()) {
+            if (s.getClass() == theClass)
+                return s;
+        }
+        return null;
     }
 
     public LoginIntervention getNextIntervention (ServletParams params) throws Exception {

@@ -87,14 +87,19 @@ public class WoLoginServlet extends BaseServlet {
             String cl = params.getString("interventionClass");
             int sessId = params.getInt("sessionId");
             Class c = Class.forName(cl);
-            SessionManager smgr = new SessionManager(conn,sessId,servletInfo.getHostPath(),servletInfo.getContextPath()).buildExistingSession();
-            LoginInterventionSelector is = (LoginInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
-            is.setServletInfo(servletInfo);
-            is.init(smgr,smgr.getPedagogicalModel());
+            LoginSequence ls = new LoginSequence(servletInfo, sessId);
+            SessionManager smgr = ls.getSmgr();
+            LoginInterventionSelector is = (LoginInterventionSelector) ls.getInterventionSelectorFromClass(c);
+            // DM 10/16 Bug fix:  A class name is passed back.  We need to use the LoginSequence to build the login intervention selectors correctly
+            // and then ask it for the selector with the class name.   We then ask it to process the inputs.
+//            SessionManager smgr = new SessionManager(conn,sessId,servletInfo.getHostPath(),servletInfo.getContextPath()).buildExistingSession();
+//            LoginInterventionSelector is = (LoginInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
+//            is.setServletInfo(servletInfo);
+//            is.init(smgr,smgr.getPedagogicalModel());
             LoginIntervention interv = is.processInput(params);
             if (interv == null) {
                 // Now find the next intervention
-                LoginSequence ls = new LoginSequence(servletInfo, params.getInt("sessionId"));
+//                LoginSequence ls = new LoginSequence(servletInfo, params.getInt("sessionId"));
                 LoginIntervention li = ls.getNextIntervention(params);
                 ls.processAction(params,li);
                 return false;
@@ -116,7 +121,7 @@ public class WoLoginServlet extends BaseServlet {
             }
             // This is a follow-up intervention being returned by the original intervention.  We need to handle it with LoginSequence.
             else {
-                LoginSequence ls = new LoginSequence(servletInfo, params.getInt("sessionId"));
+//                LoginSequence ls = new LoginSequence(servletInfo, params.getInt("sessionId"));
                 ls.processAction(params,interv);
                 return false;
             }
