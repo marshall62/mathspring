@@ -3,6 +3,8 @@ package edu.umass.ckc.wo.content;
 import org.jdom.Element;
 import org.jdom.CDATA;
 
+import java.sql.Blob;
+
 
 /**
  * Copyright (c) University of Massachusetts
@@ -15,6 +17,8 @@ public class PrePostProblemDefn extends Problem {
     private String name;
     private String descr;
     private String url;
+    private boolean hasImage;
+    private Blob img;
     private int ansType;
     private String answer;
     private int problemSet;
@@ -30,6 +34,7 @@ public class PrePostProblemDefn extends Problem {
     private String eURL;
     public static final int SHORT_ANSWER = 0;
     public static final int MULTIPLE_CHOICE = 1;
+    public static final int LONG_ANSWER = 2;
     private int numProbsInTest;   // these two variables really don't belong here but at the time we
     private int numProbsSeen;     // create the problem we know these two things and need a package for returning them from the selector
     private int preNumProbsCorrect=0;
@@ -49,7 +54,7 @@ public class PrePostProblemDefn extends Problem {
 
     public PrePostProblemDefn(int id, String name, String descr, String url, int ansType, String answer, int problemSet,
                               String aAns, String bAns, String cAns, String dAns, String eAns, String aURL,
-                              String bURL, String cURL, String dURL, String eURL, int waitTimeSecs) {
+                              String bURL, String cURL, String dURL, String eURL, int waitTimeSecs, Blob img) {
         this.id = id;
         this.name = name;
         this.descr = descr;
@@ -68,6 +73,8 @@ public class PrePostProblemDefn extends Problem {
         this.dURL = cleanAns(dURL);
         this.eURL = cleanAns(eURL);
         this.waitTimeSecs = waitTimeSecs;
+        this.img = img;
+        this.hasImage= (img != null);
     }
 
     public int getId() {
@@ -317,6 +324,9 @@ public class PrePostProblemDefn extends Problem {
     public boolean isMultiChoice () {
         return getAnsType() == MULTIPLE_CHOICE;
     }
+    public boolean isLongAnswer () {
+        return getAnsType() == LONG_ANSWER;
+    }
 
 
     public String toString () {
@@ -354,5 +364,13 @@ public class PrePostProblemDefn extends Problem {
 
     public int getPostNumProbsCorrect() {
         return postNumProbsCorrect;
+    }
+
+    public boolean isHasImage() {
+        return hasImage;
+    }
+
+    public Blob getImg() {
+        return img;
     }
 }

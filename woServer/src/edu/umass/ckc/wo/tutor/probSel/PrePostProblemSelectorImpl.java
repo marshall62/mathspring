@@ -10,10 +10,7 @@ import ckc.servlet.servbase.ActionEvent;
 import edu.umass.ckc.wo.db.DbPrePost;
 import edu.umass.ckc.wo.beans.PretestPool;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -314,8 +311,14 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
                 int ansType = rs.getInt(6);
                 String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
                 String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
+
                 PrePostProblemDefn p;
                 int waitTimeSecs = 0;
+                Blob img=null;
+                waitTimeSecs = rs.getInt(17);
+                if (rs.wasNull())
+                    waitTimeSecs = 0;
+                img = rs.getBlob(18);
                 if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
                     ;
                 } else {
@@ -349,12 +352,10 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
                     eURL = rs.getString(16);
                     if (rs.wasNull())
                         eURL = null;
-                    waitTimeSecs = rs.getInt(17);
-                    if (rs.wasNull())
-                        waitTimeSecs = 0;
+
                 }
                 result.add(new PrePostProblemDefn(id, name, description, url, ansType, answer, testId, aChoice, bChoice, cChoice,
-                        dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs));
+                        dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs, img));
             }
             return result;
         } finally {

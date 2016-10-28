@@ -1,0 +1,20 @@
+10/27/16
+Notes:
+To make sure production is updated with master branch
+1.  commit and push master
+2.  checkout the local production branch from IDEA lower right
+3.  merge the local master branch
+4.  run it to make sure it works.  Fix as necessary
+5.  commit and push to production
+
+Goal:  Make sure that production branch represents the code in the ms release and that master branch
+represents the woj release.   I think I can then fix bugs in each and merge one branch into the other.
+
+
+Releases:
+10/27/16:   Fixed bugs related to login interventions not behaving well with missing config.xml.
+Also added long answers to surveys.
+
+ Released WOJ and MS systems.
+ Pushed both Repos (master and production) so that woj=master and production=ms
+

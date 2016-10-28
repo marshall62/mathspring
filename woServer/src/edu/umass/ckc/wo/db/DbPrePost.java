@@ -3,10 +3,7 @@ package edu.umass.ckc.wo.db;
 import edu.umass.ckc.wo.beans.PretestPool;
 import edu.umass.ckc.wo.content.PrePostProblemDefn;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,7 +33,7 @@ public class DbPrePost {
           try {
 //              String q = "select problemSet,name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
               String q = "select id, name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
-                      "aURL,bURL,cURL,dURL,eURL,waitTimeSecs from PrePostProblem where id=?";
+                      "aURL,bURL,cURL,dURL,eURL,waitTimeSecs,image from PrePostProblem where id=?";
               ps = conn.prepareStatement(q);
               ps.setInt(1, probId);
               rs = ps.executeQuery();
@@ -58,6 +55,11 @@ public class DbPrePost {
                   String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
                   String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
                   int waitTimeSecs=0;
+                  Blob img=null;
+                  waitTimeSecs= rs.getInt(17) ;
+                  if (rs.wasNull())
+                      waitTimeSecs=-1;
+                  img = rs.getBlob(18);
                   PrePostProblemDefn p;
                   if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
                       waitTimeSecs= rs.getInt(17) ;
@@ -95,13 +97,12 @@ public class DbPrePost {
                       eURL = rs.getString(16);
                       if (rs.wasNull())
                           eURL = null;
-                      waitTimeSecs= rs.getInt(17) ;
-                      if (rs.wasNull())
-                          waitTimeSecs=-1;
+
+
 
                   }
               return new PrePostProblemDefn(probId, name, description, url, ansType, answer, problemSet, aChoice, bChoice, cChoice,
-                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs);
+                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs, img);
               }
           } catch (SQLException e) {
               e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -187,11 +188,11 @@ public class DbPrePost {
     }
 
     public static void storeStudentAnswer(Connection conn, int sessId, int studentId, int probId, String userAnswer,
-                                          String testType, int timeOnProb, boolean isCorrect) throws SQLException {
+                                          String testType, int timeOnProb, boolean isCorrect, int seqNum) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "insert into preposttestdata (sessionId,probId,studentAnswer, studId, testType, isCorrect) values (?,?,?,?,?,?)";
+            String q = "insert into preposttestdata (sessionId,probId,studentAnswer, studId, testType, isCorrect, timeOnProblem, seqNum) values (?,?,?,?,?,?,?,?)";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,sessId);
             stmt.setInt(2,probId);
@@ -199,6 +200,8 @@ public class DbPrePost {
             stmt.setInt(4,studentId);
             stmt.setString(5,testType);
             stmt.setBoolean(6,isCorrect);
+            stmt.setInt(7,timeOnProb);
+            stmt.setInt(8,seqNum);
             stmt.execute();
 
         }
@@ -211,6 +214,7 @@ public class DbPrePost {
         }
     }
 
+    // positions are zero based.
     public static PrePostProblemDefn getPrePosttestProblem(Connection conn, int pretestId, int position) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
