@@ -6,18 +6,9 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="Fixed some other places where Collaboration deadlock could occur&#10;Added some more cooldown triggering to the Partner side">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/woServer_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/woServer_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emailer/emailer.iml" afterPath="$PROJECT_DIR$/emailer/emailer.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/servletFramework/servletFramework.iml" afterPath="$PROJECT_DIR$/servletFramework/servletFramework.iml" />
     </list>
-    <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
-    <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
     <ignored path="mathTutor.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -1987,13 +1978,7 @@
       <workItem from="1477021813151" duration="1097000" />
       <workItem from="1477023383282" duration="8706000" />
       <workItem from="1477679690571" duration="2966000" />
-      <workItem from="1477683046405" duration="10817000" />
-    </task>
-    <task id="LOCAL-00146" summary="Fixed some bugs in quickAuth code.">
-      <created>1418935647212</created>
-      <option name="number" value="00146" />
-      <option name="project" value="LOCAL" />
-      <updated>1418935647212</updated>
+      <workItem from="1477683046405" duration="10868000" />
     </task>
     <task id="LOCAL-00147" summary="Fixed some bugs in quickAuth code.">
       <created>1418935913543</created>
@@ -2283,11 +2268,17 @@
       <option name="project" value="LOCAL" />
       <updated>1477779906273</updated>
     </task>
-    <option name="localTasksCounter" value="195" />
+    <task id="LOCAL-00195" summary="minor workspace/configuration changes">
+      <created>1477780100419</created>
+      <option name="number" value="00195" />
+      <option name="project" value="LOCAL" />
+      <updated>1477780100419</updated>
+    </task>
+    <option name="localTasksCounter" value="196" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77322000" />
+    <option name="totallyTimeSpent" value="77373000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -2369,7 +2360,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Added &lt;minutesToWait&gt; config param to PostSurvey and a method in DbUser to calculate how many minutes a student has been in the system.   Also added postSurveyWaitTime in classConfig which will be used instead of the minutesToWait value in the XML file if it is present" />
     <MESSAGE value="Set logging levels in props files.  Made sure dead pedagogies result in exception.  added eventCounter to MPP events" />
     <MESSAGE value="Begin work of having delete items in teacher tools" />
     <MESSAGE value="Added deleteClasses and deleteTeachers function to admin side of teacher tools." />
@@ -2394,7 +2384,8 @@
     <MESSAGE value="Made Collaboration respect both Originator and Partner Cooldown&#10;Committed some files from the main fork that had escaped version control here" />
     <MESSAGE value="Fixed some other places where Collaboration deadlock could occur&#10;Added some more cooldown triggering to the Partner side" />
     <MESSAGE value="Mirrored fix to create class issue #290" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mirrored fix to create class issue #290" />
+    <MESSAGE value="minor workspace/configuration changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor workspace/configuration changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
