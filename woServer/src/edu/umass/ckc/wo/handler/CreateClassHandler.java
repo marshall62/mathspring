@@ -159,7 +159,7 @@ public class CreateClassHandler  {
         if (className.trim().equals("") || school.trim().equals("") || schoolYear.trim().equals("")
                 || town.trim().equals("")) {
             req.setAttribute("message","You must correctly fill out all required fields in the form.");
-            req.setAttribute("&teacherId",e.getTeacherId());
+            req.setAttribute("teacherId",e.getTeacherId());
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
             setTeacherName(conn,req,e.getTeacherId());
@@ -168,7 +168,7 @@ public class CreateClassHandler  {
         }
         else if (!validateYear(schoolYear)) {
 
-            req.setAttribute("&teacherId",e.getTeacherId());
+            req.setAttribute("teacherId",e.getTeacherId());
             setTeacherName(conn,req,e.getTeacherId());
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
@@ -212,7 +212,7 @@ public class CreateClassHandler  {
             }
             else {
 
-                req.setAttribute("&teacherId",e.getTeacherId());
+                req.setAttribute("teacherId",e.getTeacherId());
                 Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
                 req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
                 setTeacherName(conn,req,e.getTeacherId());
@@ -235,13 +235,13 @@ public class CreateClassHandler  {
         if (className.trim().equals("") || school.trim().equals("") || schoolYear.trim().equals("")
                 || town.trim().equals("")) {
             req.setAttribute("message","You must correctly fill out all required fields in the form.");
-            req.setAttribute("&teacherId",e.getTeacherId());
+            req.setAttribute("teacherId",e.getTeacherId());
             setTeacherName(conn,req,e.getTeacherId());
             req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
             return null;
         }
         else if (!validateYear(schoolYear)) {
-            req.setAttribute("&teacherId",e.getTeacherId());
+            req.setAttribute("teacherId",e.getTeacherId());
             setTeacherName(conn,req,e.getTeacherId());
             req.setAttribute("message","That year is invalid. Please enter year as 2XXX");
             req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
@@ -276,7 +276,7 @@ public class CreateClassHandler  {
                 return null;
             }
             else {
-                req.setAttribute("&teacherId",e.getTeacherId());
+                req.setAttribute("teacherId",e.getTeacherId());
                 setTeacherName(conn,req,e.getTeacherId());
                 req.setAttribute("message","Failed to add class.  That class already exists");
                 req.getRequestDispatcher(NOCLASS_JSP).forward(req,resp);
