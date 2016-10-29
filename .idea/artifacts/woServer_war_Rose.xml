@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="woServer war Rose">
-    <output-path>$PROJECT_DIR$/out/artifacts/woj/rose</output-path>
-    <root id="archive" name="woj.war">
-      <element id="artifact" artifact-name="woServer:WebForRose exploded" />
-    </root>
-  </artifact>
-</component>

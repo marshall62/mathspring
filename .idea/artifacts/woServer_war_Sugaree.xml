@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="woServer war Sugaree">
-    <output-path>$PROJECT_DIR$/out/artifacts/woj/sugaree</output-path>
-    <root id="archive" name="woj.war">
-      <element id="artifact" artifact-name="woServer:WebForSugaree exploded" />
-    </root>
-  </artifact>
-</component>
