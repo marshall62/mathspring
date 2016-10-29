@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="2069557305">
-    <data-source source="LOCAL" name="Data Source" uuid="10765447-be55-49aa-960c-8d195063fbaf">
+  <component name="DataSourceManagerImpl" format="xml" hash="1607477836">
+    <data-source source="LOCAL" name="rose.cs.umass.edu" uuid="10765447-be55-49aa-960c-8d195063fbaf">
       <driver-ref>mysql</driver-ref>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://rose.cs.umass.edu/wayangoutpostdb</jdbc-url>
+      <libraries>
+        <library>
+          <url>jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar!/</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="local testing database" uuid="8522e31e-76fb-41a7-8180-5c9333bc09c5">
+      <driver-ref>mysql</driver-ref>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost/wayangoutpostdb</jdbc-url>
       <libraries>
         <library>
           <url>jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar!/</url>
