@@ -72,10 +72,7 @@ public class CollaborationIS extends NextProblemInterventionSelector {
         else return Integer.parseInt(str);
     }
 
-    public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception{
-        // If they can't collaborate, don't bother checking anything else
-        if(!CollaborationManager.canCollaborate(smgr)) return null;
-
+    public static Intervention tryGettingPartnerIS(SessionManager smgr, PedagogicalModel pedagogicalModel) throws Exception {
         // See if this student has been requested as a partner for some other student who needs help
         Integer partner = CollaborationManager.checkForRequestingPartner(smgr.getStudentId());
         if(partner != null){ //Another student is waiting for their help; set this one up as their partner
@@ -85,12 +82,24 @@ public class CollaborationIS extends NextProblemInterventionSelector {
             // and locks their screen until they complete the problem together.
             return partnerIS.selectInterventionWithId(partner);
         }
+        return null;
+    }
+
+    public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception{
+        // If they can't collaborate, don't bother checking anything else
+        if(!CollaborationManager.canCollaborate(smgr)) return null;
+
+        //They're going into either partner or originator for sure now, so trigger the cooldown
+        state.triggerCooldown();
+        state.setNumProblemsSinceLastIntervention(0);
+
+        Intervention interv = tryGettingPartnerIS(smgr, pedagogicalModel);
+        if(interv != null) //There was a student waiting on this one as a partner
+            return (NextProblemIntervention)interv;
         else { //There were no students waiting on this one, so make this student originate a collaboration
             CollaborationOriginatorIS originatorIS = new CollaborationOriginatorIS(smgr);
             originatorIS.init(smgr, pedagogicalModel);
 
-            state.triggerCooldown();
-            state.setNumProblemsSinceLastIntervention(0);
             return originatorIS.selectIntervention(e);
         }
     }

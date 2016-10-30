@@ -70,27 +70,27 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
             //It's possible for both potential partners to get CollaborationOptionIntervention;
             // if so, they will both be stuck waiting for each other as partners unless we check if one has already
             // listed the other as a potential partner first
-            Integer partner = CollaborationManager.checkForRequestingPartner(smgr.getStudentId());
-            if(partner != null){ //Another student is waiting for their help; set this one up as their partner
-                CollaborationPartnerIS partnerIS = new CollaborationPartnerIS(smgr);
-                partnerIS.init(smgr, pedagogicalModel);
-                // tells the helper to work with the person next to them (on the other computer)
-                // and locks their screen until they complete the problem together.
-                NextProblemIntervention interv = partnerIS.selectInterventionWithId(partner);
+            Intervention interv = CollaborationIS.tryGettingPartnerIS(smgr, pedagogicalModel);
+            if(interv != null) //There was a student waiting on this one as a partner
                 return new InterventionResponse(interv);
-            }
             else { //Otherwise, proceed as normal (have them wait while we look for a partner)
                 DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationAccepted_Originator");
                 CollaborationManager.addRequest(smgr.getConnection(), smgr.getStudentId());
-                Intervention interv =  new CollaborationOriginatorIntervention();
-                return new InterventionResponse(interv); // DM had modify to return an InterventionResponse rather than intervention
+                // DM had modify to return an InterventionResponse rather than intervention
+                return new InterventionResponse(new CollaborationOriginatorIntervention());
             }
         }
         //CollaborationTimedoutIntervention: Yes, I want to keep waiting for a partner
         else if(option != null && option.equals(CollaborationTimedoutIntervention.YES)){
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationContinuedWaiting_Originator");
-            Intervention interv =  new CollaborationOriginatorIntervention();
-            return new InterventionResponse(interv); // DM had modify to return an InterventionResponse rather than intervention
+            //It's possible for the same deadlock as above, so check for a partner first
+            Intervention interv = CollaborationIS.tryGettingPartnerIS(smgr, pedagogicalModel);
+            if(interv != null) //There was a student waiting on this one as a partner
+                return new InterventionResponse(interv);
+            else {
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationContinuedWaiting_Originator");
+                // DM had modify to return an InterventionResponse rather than intervention
+                return new InterventionResponse(new CollaborationOriginatorIntervention());
+            }
         }
         //Either CollaborationTimedoutIntervention or CollaborationOptionIntervention, they wanted to exit out
         else if(option != null &&
