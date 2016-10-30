@@ -73,6 +73,9 @@ public class CollaborationIS extends NextProblemInterventionSelector {
     }
 
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception{
+        // If they can't collaborate, don't bother checking anything else
+        if(!CollaborationManager.canCollaborate(smgr)) return null;
+
         // See if this student has been requested as a partner for some other student who needs help
         Integer partner = CollaborationManager.checkForRequestingPartner(smgr.getStudentId());
         if(partner != null){ //Another student is waiting for their help; set this one up as their partner
@@ -82,9 +85,7 @@ public class CollaborationIS extends NextProblemInterventionSelector {
             // and locks their screen until they complete the problem together.
             return partnerIS.selectInterventionWithId(partner);
         }
-
-        //If eligible partners exist for a student that (may) need help (the originator), we may put the originator into a collab situation
-        if(CollaborationManager.canCollaborate(smgr)) {
+        else { //There were no students waiting on this one, so make this student originate a collaboration
             CollaborationOriginatorIS originatorIS = new CollaborationOriginatorIS(smgr);
             originatorIS.init(smgr, pedagogicalModel);
 
@@ -92,9 +93,6 @@ public class CollaborationIS extends NextProblemInterventionSelector {
             state.setNumProblemsSinceLastIntervention(0);
             return originatorIS.selectIntervention(e);
         }
-
-        //If no eligible partners exist, or we weren't ready to push a collaboration yet
-        return null;
     }
 
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{

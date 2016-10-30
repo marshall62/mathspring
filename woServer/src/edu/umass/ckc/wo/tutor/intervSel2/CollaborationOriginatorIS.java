@@ -79,12 +79,12 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
                 NextProblemIntervention interv = partnerIS.selectInterventionWithId(partner);
                 return new InterventionResponse(interv);
             }
-
-            //Otherwise, proceed as normal (have them wait while we look for a partner)
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationAccepted_Originator");
-            CollaborationManager.addRequest(smgr.getConnection(), smgr.getStudentId());
-            Intervention interv =  new CollaborationOriginatorIntervention();
-            return new InterventionResponse(interv); // DM had modify to return an InterventionResponse rather than intervention
+            else { //Otherwise, proceed as normal (have them wait while we look for a partner)
+                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationAccepted_Originator");
+                CollaborationManager.addRequest(smgr.getConnection(), smgr.getStudentId());
+                Intervention interv =  new CollaborationOriginatorIntervention();
+                return new InterventionResponse(interv); // DM had modify to return an InterventionResponse rather than intervention
+            }
         }
         //CollaborationTimedoutIntervention: Yes, I want to keep waiting for a partner
         else if(option != null && option.equals(CollaborationTimedoutIntervention.YES)){
