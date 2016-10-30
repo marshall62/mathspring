@@ -7,3 +7,14 @@ body {
 	background-color: #FFF0A3;
 }
 
+table.altrows {
+	border-collapse: collapse;
+}
+
+table.altrows td {
+	padding: 2px;
+}
+
+table.altrows tr:nth-child(odd) {
+	background-color: rgba(0,0,0,.05);
+}

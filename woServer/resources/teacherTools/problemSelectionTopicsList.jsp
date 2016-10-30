@@ -8,13 +8,11 @@
 
 <div class="mainPageMargin">
   <div id="Layer1" align="center">
-    <p class="a2"><b><font face="Arial, Helvetica, sans-serif"> Problem Topic Selection</font></b></p>
-    <p><font face="Arial, Helvetica, sans-serif">To select problems you must click on a topic below. </font></p>
-    <p><font face="Arial, Helvetica, sans-serif" color="#FF0000"> Note: You may not select problems for deactivated topics </font></p>
+      <p class="a2"><b><font face="Arial, Helvetica, sans-serif"> Problem Topic Selection</font></b></p>
+      <p><font face="Arial, Helvetica, sans-serif">To select problems you must click on a topic below. </font></p>
+      <p><font face="Arial, Helvetica, sans-serif" color="#FF0000"> Note: You may not select problems for deactivated topics </font></p>
 
-    
-      
-      <table width="334" border="0" height="98">
+      <table class="altrows" width="334" border="0" height="98">
           <tr>
                 <td width="40"><font  face="Arial, Helvetica, sans-serif">ID</font></td>
                 <td width="305"><font face="Arial, Helvetica, sans-serif">Topic</font></td>
@@ -24,11 +22,9 @@
           <%--@elvariable id="topics" type="edu.umass.ckc.wo.tutor.Topic[]"--%>
 
           <c:forEach var="topic" items="${topics}">
-
-              <tr>
-                  <c:if test="${topic.seqPos > 0 && topic.numProbs > 0}">
+              <c:if test="${topic.seqPos > 0 && topic.numProbs > 0}">
+                  <tr>
                       <td  width="40"><font  face="Arial, Helvetica, sans-serif"><c:out value="${topic.id}"/></font></td>
-
                       <td class="a2" width="305">
                           <a  href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSelectTopicProblems&topicId=<c:out value="${topic.id}"/>&classId=<c:out value="${classId}"/>&teacherId=<c:out value="${teacherId}"/>" >
                               <c:out value="${topic.name}"/>
@@ -39,30 +35,18 @@
                               <font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.numProbs}"/></font>
                           </a>
                       </td>
-                  </c:if>
-              </tr>
-
-
+                  </tr>
+              </c:if>
           </c:forEach>
       </table>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    
-    <table width="200" border="1">
-      <tr>
 
-        <td>
-            <form name="form2" id="form3" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics">
-
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="submit" name="Submit" value="Activate/Reorganize Topics" />
-                  <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
-                  <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
-            </form>
-        </td>
-      </tr>
-    </table>
-    <p>
-
+      <div style="height:54px"></div>
+      <form name="form2" id="form3" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics">
+            <input type="submit" name="Submit" value="Activate/Reorganize Topics" style="font-size:16px;padding:10px"/>
+            <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
+            <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
+      </form>
+      <div style="height:54px"></div>
   </div>
 </div>
 
