@@ -43,12 +43,6 @@ public class CollaborationIS extends NextProblemInterventionSelector {
     }
 
     private void configure() {
-        // this is actually in the pedagogies, but minutes is way too long
-        // especially considering that there's no way to get out during the waiting period
-//        state.setMaxPartnerWaitPeriod(stringToInt(getConfigParameter("maxPartnerWaitMin"), 2)*1000*60);
-        //TODO: Write these into the pedagogies xml
-        //These options aren't in the pedagogies xml, but should be at some point
-        //So I gave reasonable default values
         state.setMaxPartnerWaitPeriod((long)stringToInt(getConfigParameter("partnerWaitSeconds"), 15)*1000);
         state.setTimeInterval((long)stringToInt(getConfigParameter("collaborationIntervalMinutes"), 5)*1000*60);
         state.setProbInterval(stringToInt(getConfigParameter("collaborationIntervalProblems"), Integer.MAX_VALUE));
@@ -81,24 +75,19 @@ public class CollaborationIS extends NextProblemInterventionSelector {
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception{
         // See if this student has been requested as a partner for some other student who needs help
         Integer partner = CollaborationManager.checkForRequestingPartner(smgr.getStudentId());
-        // If a student (originator) is awaiting this student's help (the partner) then we give the partner some interventions
-        if(partner != null){
+        if(partner != null){ //Another student is waiting for their help; set this one up as their partner
             CollaborationPartnerIS partnerIS = new CollaborationPartnerIS(smgr);
             partnerIS.init(smgr, pedagogicalModel);
             // tells the helper to work with the person next to them (on the other computer)
             // and locks their screen until they complete the problem together.
-            return partnerIS.selectInterventionWithId(e, partner);
+            return partnerIS.selectInterventionWithId(partner);
         }
 
         //If eligible partners exist for a student that (may) need help (the originator), we may put the originator into a collab situation
-        if(CollaborationManager.hasEligiblePartners(smgr.getConnection(), smgr.getStudentId())
-                && Problem.PRACTICE.equals(smgr.getStudentState().getLessonState().getNextProblemMode())
-                && (state.isTimeToCollab() || state.hasSeenEnoughProblemsForCollab())) {
+        if(CollaborationManager.canCollaborate(smgr)) {
             CollaborationOriginatorIS originatorIS = new CollaborationOriginatorIS(smgr);
             originatorIS.init(smgr, pedagogicalModel);
 
-            //TODO: Do we actually want to set this cooldown information here? (as opposed to on termination)
-            // or even set it in both places in case termination somehow doesn't occur?
             state.triggerCooldown();
             state.setNumProblemsSinceLastIntervention(0);
             return originatorIS.selectIntervention(e);

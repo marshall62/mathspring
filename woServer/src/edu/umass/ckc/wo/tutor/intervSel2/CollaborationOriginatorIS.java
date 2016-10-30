@@ -39,7 +39,7 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
     }
 
     //CollaborationOriginatorIS works a little differently, in that it gets called several times without being setServletInfo'd,
-    // via the SameIntervention path?
+    // via the SameIntervention path? or perhaps because it keeps getting thrown back as an InterventionResponse below
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel){
         this.pedagogicalModel = pedagogicalModel;
     }
@@ -58,8 +58,6 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
         }
         else{
             // This intervention has inputs so that the student may accept or decline.
-            //TODO: Make request addition dependent on the student's response (so partner doesn't get notified before decision)
-            CollaborationManager.addRequest(smgr.getConnection(), smgr.getStudentId());
             DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationOfferedBySystem_Originator");
             return new CollaborationOptionIntervention();
         }
@@ -67,36 +65,54 @@ public class CollaborationOriginatorIS extends NextProblemInterventionSelector {
 
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception{
         String option = e.getServletParams().getString(CollaborationTimedoutIntervention.OPTION);
-        // Do you want to work with someone OR do you want to continue waiting  Answer of YES handled here:  keeps the user waiting
-        if(option != null && option.equals("Yes")){
-//            rememberInterventionSelector(this);
+        //CollaborationOptionIntervention: Yes, I want to work with a partner
+        if(option != null && option.equals(CollaborationOptionIntervention.YES)) {
+            //It's possible for both potential partners to get CollaborationOptionIntervention;
+            // if so, they will both be stuck waiting for each other as partners unless we check if one has already
+            // listed the other as a potential partner first
+            Integer partner = CollaborationManager.checkForRequestingPartner(smgr.getStudentId());
+            if(partner != null){ //Another student is waiting for their help; set this one up as their partner
+                CollaborationPartnerIS partnerIS = new CollaborationPartnerIS(smgr);
+                partnerIS.init(smgr, pedagogicalModel);
+                // tells the helper to work with the person next to them (on the other computer)
+                // and locks their screen until they complete the problem together.
+                NextProblemIntervention interv = partnerIS.selectInterventionWithId(partner);
+                return new InterventionResponse(interv);
+            }
+
+            //Otherwise, proceed as normal (have them wait while we look for a partner)
             DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationAccepted_Originator");
+            CollaborationManager.addRequest(smgr.getConnection(), smgr.getStudentId());
             Intervention interv =  new CollaborationOriginatorIntervention();
             return new InterventionResponse(interv); // DM had modify to return an InterventionResponse rather than intervention
         }
-        // Do you want to work with someone =NO OR do you want to continue waiting =NO handled here:
-        // logs it and then selects next problem
-        else if(option != null && (option.equals("No") || option.equals("No_alone") || option.equals("No_decline"))){
-            CollaborationManager.decline(smgr.getStudentId());
-//            rememberInterventionSelector(this);
-            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationDeclined_Originator");
-            return null;
+        //CollaborationTimedoutIntervention: Yes, I want to keep waiting for a partner
+        else if(option != null && option.equals(CollaborationTimedoutIntervention.YES)){
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationContinuedWaiting_Originator");
+            Intervention interv =  new CollaborationOriginatorIntervention();
+            return new InterventionResponse(interv); // DM had modify to return an InterventionResponse rather than intervention
         }
-        // When originator clicks the OK button to start working together with the partner this returns null so that next problem
-        // is selected.  Or when the originator clicks the OK button after the collaboration has ended.
+        //Either CollaborationTimedoutIntervention or CollaborationOptionIntervention, they wanted to exit out
+        else if(option != null &&
+                (   option.equals(CollaborationTimedoutIntervention.NO)
+                        || option.equals(CollaborationOptionIntervention.NO_ALONE)
+                        || option.equals(CollaborationOptionIntervention.NO_DECLINE))){
+            CollaborationManager.decline(smgr.getStudentId());
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, option, "CollaborationDeclined_Originator");
+            return null; //so that the next problem is selected
+        }
+        //Collaboration has been set up, the originator has clicked OK to start
+        else if(CollaborationManager.requestExists(smgr.getStudentId())){
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationConfirmationToBeginClickedOK_Originator");
+            return null; //so that the next problem is selected
+        }
+        //Collaboration has finished, the originator has clicked OK to return to individual tutoring
         else{
-            //To begin
-            if(CollaborationManager.requestExists(smgr.getStudentId())){
-                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationConfirmationToBeginClickedOK_Originator");
-                return null;
-            }
-            //After ended
-            else{
-                state.triggerCooldown();
-                DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Originator");
-                Response r=  smgr.getPedagogicalModel().processNextProblemRequest(new NextProblemEvent(e.getElapsedTime(),e.getProbElapsedTime()));
-                return r;
-            }
+            //We want to make sure they can't just endlessly collaborate by spending the whole cooldown on the problem
+            state.triggerCooldown();
+            DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), 0, null, "CollaborationFinishedClickedOK_Originator");
+            Response r=  smgr.getPedagogicalModel().processNextProblemRequest(new NextProblemEvent(e.getElapsedTime(),e.getProbElapsedTime()));
+            return r;
         }
     }
 
