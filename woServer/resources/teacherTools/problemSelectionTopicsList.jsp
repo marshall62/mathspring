@@ -9,14 +9,25 @@
 <div class="mainPageMargin">
   <div id="Layer1" align="center">
       <p class="a2"><b><font face="Arial, Helvetica, sans-serif"> Problem Topic Selection</font></b></p>
-      <p><font face="Arial, Helvetica, sans-serif">To select problems you must click on a topic below. </font></p>
+      <p><font face="Arial, Helvetica, sans-serif">To select problems you must click on a topic below.</font></p>
       <p><font face="Arial, Helvetica, sans-serif" color="#FF0000"> Note: You may not select problems for deactivated topics </font></p>
 
-      <table class="altrows" width="334" border="0" height="98">
-          <tr>
-                <td width="40"><font  face="Arial, Helvetica, sans-serif">ID</font></td>
-                <td width="305"><font face="Arial, Helvetica, sans-serif">Topic</font></td>
-                <td width="305"><font face="Arial, Helvetica, sans-serif">Number of Problems</font></td>
+      <%--@elvariable id="classGradeColumn" type="int"--%>
+      <%--@elvariable id="gradeColumnMask" type="boolean[]"--%>
+
+      <table class="altrows">
+          <tr class="rowheader">
+              <td rowspan="2">ID</td>
+              <td rowspan="2">Topic</td>
+              <td rowspan="2" style="max-width:80px">Total Problems</td>
+              <td colspan="10">Problems by Grade Level</td>
+          </tr>
+          <tr class="rowheader">
+              <c:forEach var="visible" varStatus="status" items="${gradeColumnMask}">
+                  <td style="${status.index eq classGradeColumn ? 'font-weight:bold;' : ''}${gradeColumnMask[status.index] ? '' : 'display:none'}">
+                      <c:out value="${status.index eq 0 ? 'K' : (status.index eq 9 ? 'H' : status.index.toString().concat('th'))}"/>
+                  </td>
+              </c:forEach>
           </tr>
 
           <%--@elvariable id="topics" type="edu.umass.ckc.wo.tutor.Topic[]"--%>
@@ -24,24 +35,29 @@
           <c:forEach var="topic" items="${topics}">
               <c:if test="${topic.seqPos > 0 && topic.numProbs > 0}">
                   <tr>
-                      <td  width="40"><font  face="Arial, Helvetica, sans-serif"><c:out value="${topic.id}"/></font></td>
-                      <td class="a2" width="305">
+                      <td><font  face="Arial, Helvetica, sans-serif"><c:out value="${topic.id}"/></font></td>
+                      <td class="a2">
                           <a  href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSelectTopicProblems&topicId=<c:out value="${topic.id}"/>&classId=<c:out value="${classId}"/>&teacherId=<c:out value="${teacherId}"/>" >
                               <c:out value="${topic.name}"/>
                           </a>
                       </td>
-                      <td width="40">
+                      <td>
                           <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
                               <font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.numProbs}"/></font>
                           </a>
                       </td>
+                      <c:forEach var="problemsByGrade" varStatus="status" items="${topic.problemsByGrade}">
+                          <td style="${status.index eq classGradeColumn ? 'font-weight:bold' : ''}${gradeColumnMask[status.index] ? '' : 'display:none;'}">
+                              <c:if test="${problemsByGrade > 0}"><c:out value="${problemsByGrade}"/></c:if>
+                          </td>
+                      </c:forEach>
                   </tr>
               </c:if>
           </c:forEach>
       </table>
 
       <div style="height:54px"></div>
-      <form name="form2" id="form3" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics">
+      <form name="form2" id="form3" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminEditTopics" style="margin:auto">
             <input type="submit" name="Submit" value="Activate/Reorganize Topics" style="font-size:16px;padding:10px"/>
             <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
             <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
