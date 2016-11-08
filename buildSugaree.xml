@@ -5,7 +5,7 @@
 
     <import file="${basedir}/build.xml"/>
 
-
+    <!-- cleans up before creating a new war for rose-->
     <target name="clean.artifact.rose_war" description="clean rose war file">
         <property name="artifact.output.woserver:woj_war" value="${basedir}/out/artifacts/woj"/>
         <delete dir="${artifact.output.woserver:woj_war}/rose"/>
