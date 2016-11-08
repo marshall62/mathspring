@@ -1197,6 +1197,8 @@ public class DbClass {
 
     }
 
+
+
     public static final List<ClassInfo> getTeacherClasses (Connection conn, int teacherId) throws SQLException {
         List<Integer> cids = getTeacherClassIds(conn,teacherId);
         List<ClassInfo> results = new ArrayList<ClassInfo>();
