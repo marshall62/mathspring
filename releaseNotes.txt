@@ -12,6 +12,14 @@ represents the woj release.   I think I can then fix bugs in each and merge one 
 
 
 Releases:
+
+11/8/16:  Added LC rules from Ivon which includes some fixes to the XMLLCRule tool for adding to the db and making rules and rulesets
+that have one rule file and many ruleset files that just point to rules.   Tested the rules coming from oldLCBehavior.   This release also
+includes Rafaels additions to the topic editor in the teacher tools.   Built some new ant scripts (auto-gened)  and then wrote buildSugaree.xml
+which is a master script that imports the auto-gened ones.   The auto-gened ant scripts need to be done more frequently (i.e. when new Maven
+dependencies are added ) because the Maven libs are part of the ant scripts.
+Released both WOJ and MS systems and pushed to master and production
+
 10/27/16:   Fixed bugs related to login interventions not behaving well with missing config.xml.
 Also added long answers to surveys.
 
