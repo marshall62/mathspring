@@ -11,18 +11,20 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Created with IntelliJ IDEA.
+ * Runs the rules that are part of a pedagogy's learning companion (a character and a group of rule-sets)
  * User: david
- * Date: 5/24/16
+ * Date: 5/10/16
  * Time: 8:23 AM
  * To change this template use File | Settings | File Templates.
  */
 public class InferenceEngine {
     private static Logger logger = Logger.getLogger(InferenceEngine.class);
     private SessionManager smgr;
+    private StudentDataCache cache;
 
     public InferenceEngine (SessionManager smgr) {
         this.smgr=smgr;
+        this.cache = new StudentDataCache(); // place to store computed values so that we don't repeat work
     }
 
     /**
@@ -45,7 +47,27 @@ public class InferenceEngine {
     }
 
     /**
-     * Given a bunch of rulesets and an event, return the rule that applies.
+     * Given a bunch of rulesets and an event, return the rule that applies.   A Pedagogy is defined to have a learning companion
+     * and a group of rule-sets.   Each rule-set has meta-rules that control the rules in that set.
+     *
+     * When a user creates an event in the tutor, we use this class to run the rules in the associated with the pedagogy.
+     * It finds rules that apply to event type and that satisfy the meta-rules and then checks each rule and stops at the first one that matches.
+     *
+     * When an event comes in from the user, we run the rules to find a possible response from the
+     * learning companion to include with the data returned to the client.
+     *
+     * Steps:
+     * Gather all rulesets for user
+     * For each ruleset:
+     *     for each rule that applies to the given event:
+     *         if rule satisfies the rulesets meta-rules (or if the rule overrides the meta-rule, it should satisfy the override condition)
+     *             add to candidates list
+     * sort candidates list by priority
+     * for each rule in candidates list:
+     *    if rule applies, fire it.
+     *
+     *    Issues with the above:  if there is more than one rule-set, how do we decide what order to go through them?
+     *
      * @param event
      * @param rulesets
      * @return
@@ -61,7 +83,7 @@ public class InferenceEngine {
         }
         Collections.sort(rulesThatApply); // sorts rules according to their priority
         for (LCRule r : rulesThatApply) {
-            r.setup(smgr,event);
+            r.setup(smgr,event, cache);
             boolean res = r.test();
             // if the result of testing the rule is true, then we stop testing rules and return it
             if (res) {
@@ -88,6 +110,7 @@ public class InferenceEngine {
         rulesThatApply.addAll(candidates); // start out with all the rules being in the list.
         List<LCMetaRule> metaRules = ruleset.getMetaRules();
         long now = System.currentTimeMillis();
+        // Nota Bene:  We only look at rules for this user's CURRENT SESSION
         StudentRuleHistory hist = RuleHistoryCache.getInstance().getStudentHistory(smgr.getSessionNum());
         if (hist != null) {
             // TODO need priority on meta rules.
@@ -102,10 +125,13 @@ public class InferenceEngine {
 
 
     // Delete from the rulesThatApply those that do not satisfy the meta-rule.
+    // The given meta-rule may be overridden with different values in the rule itself so we check to see if the rule
+    // has a metarule-override for the named meta-rule and use the value in the rule rather than in the meta-rule if it does.
     private void applyMetaRule(LCMetaRule mr, StudentRuleHistory hist, List<LCRule> rulesThatApply, long now) {
         ListIterator<LCRule> iter = rulesThatApply.listIterator();
         while(iter.hasNext()){
             LCRule r = iter.next();
+            // The isSatisfied method will take into account rule r's override values of mr
             if (! mr.isSatisfied(hist,r,now))
                 iter.remove();
         }

@@ -10,6 +10,8 @@ package edu.umass.ckc.wo.interventions;
 public class CollaborationTimedoutIntervention extends InputResponseIntervention implements NextProblemIntervention{
 
     public static final String OPTION = "option";
+    public static final String YES = "Yes_wait";
+    public static final String NO = "No";
 
     public String getType () {
         return "CollaborationTimedoutIntervention";
@@ -19,8 +21,8 @@ public class CollaborationTimedoutIntervention extends InputResponseIntervention
     public String getDialogHTML () {
         String str = "<div><p> No partner has been found for you yet. <br>" +
                       "Would you like to continue waiting for a partner?  <br/<br/>" + getFormOpen();
-        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"No\" checked=\"checked\">No</input><br>";
-        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"Yes\">Yes</input><br>";
+        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\""+NO+"\" checked=\"checked\">No</input><br>";
+        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\""+YES+"\">Yes</input><br>";
         str+="</form></div>";
         return str;
     }

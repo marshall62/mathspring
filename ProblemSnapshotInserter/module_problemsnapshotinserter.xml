@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_problemsnapshotinserter" default="compile.module.problemsnapshotinserter">
+  <dirname property="module.problemsnapshotinserter.basedir" file="${ant.file.module_problemsnapshotinserter}"/>
+  
+  <property name="module.jdk.home.problemsnapshotinserter" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.problemsnapshotinserter" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.problemsnapshotinserter" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.problemsnapshotinserter" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="problemsnapshotinserter.output.dir" value="${module.problemsnapshotinserter.basedir}/../out/production/ProblemSnapshotInserter"/>
+  <property name="problemsnapshotinserter.testoutput.dir" value="${module.problemsnapshotinserter.basedir}/../out/test/ProblemSnapshotInserter"/>
+  
+  <path id="problemsnapshotinserter.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="problemsnapshotinserter.module.production.classpath">
+    <path refid="${module.jdk.classpath.problemsnapshotinserter}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  <path id="problemsnapshotinserter.runtime.production.module.classpath">
+    <pathelement location="${problemsnapshotinserter.output.dir}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  <path id="problemsnapshotinserter.module.classpath">
+    <path refid="${module.jdk.classpath.problemsnapshotinserter}"/>
+    <pathelement location="${problemsnapshotinserter.output.dir}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  <path id="problemsnapshotinserter.runtime.module.classpath">
+    <pathelement location="${problemsnapshotinserter.testoutput.dir}"/>
+    <pathelement location="${problemsnapshotinserter.output.dir}"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.problemsnapshotinserter">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.problemsnapshotinserter">
+    <patternset refid="excluded.from.module.problemsnapshotinserter"/>
+  </patternset>
+  
+  <path id="problemsnapshotinserter.module.sourcepath">
+    <dirset dir="${module.problemsnapshotinserter.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.problemsnapshotinserter" depends="compile.module.problemsnapshotinserter.production,compile.module.problemsnapshotinserter.tests" description="Compile module ProblemSnapshotInserter"/>
+  
+  <target name="compile.module.problemsnapshotinserter.production" depends="register.custom.compilers" description="Compile module ProblemSnapshotInserter; production classes">
+    <mkdir dir="${problemsnapshotinserter.output.dir}"/>
+    <javac2 destdir="${problemsnapshotinserter.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.problemsnapshotinserter}/javac">
+      <compilerarg line="${compiler.args.problemsnapshotinserter}"/>
+      <bootclasspath refid="problemsnapshotinserter.module.bootclasspath"/>
+      <classpath refid="problemsnapshotinserter.module.production.classpath"/>
+      <src refid="problemsnapshotinserter.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.problemsnapshotinserter"/>
+    </javac2>
+    
+    <copy todir="${problemsnapshotinserter.output.dir}">
+      <fileset dir="${module.problemsnapshotinserter.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.problemsnapshotinserter.tests" depends="register.custom.compilers,compile.module.problemsnapshotinserter.production" description="compile module ProblemSnapshotInserter; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.problemsnapshotinserter" description="cleanup module">
+    <delete dir="${problemsnapshotinserter.output.dir}"/>
+    <delete dir="${problemsnapshotinserter.testoutput.dir}"/>
+  </target>
+</project>

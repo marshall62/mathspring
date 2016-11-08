@@ -605,6 +605,12 @@ public class StudentState extends State implements TutorEventHandler {
     public long getTimeToFirstAttempt() {
         return problemState.getTimeToFirstAttempt();
     }
+    public long getTimeToSecondAttempt() {
+        return problemState.getTimeToSecondAttempt();
+    }
+    public long getTimeToThirdAttempt() {
+        return problemState.getTimeToThirdAttempt();
+    }
 
     public int getNumHintsBeforeCorrect() {
         return problemState.getNumHintsBeforeCorrect();
@@ -1156,9 +1162,12 @@ public class StudentState extends State implements TutorEventHandler {
 //        this.setCurHint(null);
 //        this.setCurHintId(-1);
         problemState.setLastEvent(ATTEMPT_EVENT);
-        if (this.getTimeToFirstAttempt() == -1) {
+        if (this.getTimeToFirstAttempt() == -1)
             problemState.setTimeToFirstAttempt(probElapsed);
-        }
+        else if (this.getTimeToSecondAttempt() == -1)
+            problemState.setTimeToSecondAttempt(probElapsed);
+        else if (this.getTimeToThirdAttempt() == -1)
+            problemState.setTimeToThirdAttempt(probElapsed);
         if (this.getTimeToFirstEvent() < 0) {
             problemState.setTimeToFirstEvent(probElapsed);
         }

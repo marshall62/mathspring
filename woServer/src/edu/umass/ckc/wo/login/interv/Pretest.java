@@ -184,8 +184,7 @@ public class Pretest extends LoginInterventionSelector {
             isCorrect = gradeProb(thisProb,userAnswer);
         }
         // Store the student answer to this question (need studId, probId, and answer)
-        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType, timeOnProb, isCorrect);
-        this.numTestProbsCompleted++;
+        DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType, timeOnProb, isCorrect,this.numTestProbsCompleted++);
         PrePostProblemDefn p = getNextPretestQuestion(smgr);
         if (p == null)
             return null;
@@ -226,8 +225,9 @@ public class Pretest extends LoginInterventionSelector {
     }
 
 
+    // position given is 1-based,  datbase stores them as zero based, so reduce it
     private PrePostProblemDefn getPrePostProblemN(Connection connection, int pretestId, int position) throws SQLException {
-        PrePostProblemDefn p = DbPrePost.getPrePosttestProblem(connection,pretestId,position);
+        PrePostProblemDefn p = DbPrePost.getPrePosttestProblem(connection,pretestId,position-1);  // convert to 0-based.
         return p;
     }
 

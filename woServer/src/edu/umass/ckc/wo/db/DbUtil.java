@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.db;
 
 import edu.umass.ckc.wo.tutor.Settings;
-import sun.java2d.pipe.RegionSpanIterator;
 
 import java.io.*;
 import java.sql.*;

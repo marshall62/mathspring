@@ -14,10 +14,12 @@ public class LCRuleComponent {
 
     protected SessionManager smgr;
     protected SessionEvent event;
+    protected  StudentDataCache cache;
 
-    public void setup (SessionManager smgr, SessionEvent event) {
+    public void setup(SessionManager smgr, SessionEvent event, StudentDataCache cache) {
         this.smgr = smgr;
         this.event = event;
+        this.cache = cache;
     }
 }
 

@@ -41,7 +41,6 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
     }
 
     public NextProblemIntervention selectIntervention(NextProblemEvent e) throws Exception{
-//        rememberInterventionSelector(this);
         // The helper is given an intervention that tells
         // them to help the person who is next to them (partnerName).
         //  This intervention plays in the client along with a loop that runs and sends an event every second.
@@ -52,12 +51,14 @@ public class CollaborationPartnerIS extends NextProblemInterventionSelector {
     }
 
     //Tell the helper that they are about to work with a partner to give them some help.
-    public NextProblemIntervention selectInterventionWithId(NextProblemEvent e, int id) throws Exception{
+    public NextProblemIntervention selectInterventionWithId(int id) throws Exception{
         // the person who is waiting for help is the given id.   This is the partner.
         partnerName = CollaborationManager.getPartnerName(smgr.getConnection(), id); // get the partner's name
         // update DB with collab event indicating the two students are starting to collaborate
         DbCollaborationLogging.saveEvent(conn, smgr.getStudentId(), id, null, "CollaborationInstructions_Partner");
-        return selectIntervention(e);
+        CollaborationPartnerIntervention interv = new CollaborationPartnerIntervention();
+        interv.setPartner(partnerName);
+        return interv;
     }
 
     //This handles the input from the last intervention saying they are done and then clicking OK

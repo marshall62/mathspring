@@ -17,7 +17,7 @@ public class CCStandard implements Comparable<CCStandard> {
     private String category;
     private String idABC;
     private String clusName;
-    private String grade; // K-8, H
+    private String grade; // K, 1-8, H
     private CCCluster cluster;  // pointer to cluster that contains this standard
     private int clustId;
     private String clustName;

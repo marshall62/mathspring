@@ -161,8 +161,8 @@ public class DbPedagogy {
     private static void loadRuleset (Connection conn, LCRuleset rs , Pedagogy ped, ServletContext servletContext) throws Exception {
         if (rs.isFromDb())
             DbLCRule.loadRuleSetIntoPedagogy(conn,ped,rs);
-        else
-            XMLLCRule.loadRuleSet(conn, rs, servletContext.getResourceAsStream(rs.getSource()));
+//        else
+//            XMLLCRule.loadRuleSet(conn, rs, servletContext.getResourceAsStream(rs.getSource()));
     }
 
 

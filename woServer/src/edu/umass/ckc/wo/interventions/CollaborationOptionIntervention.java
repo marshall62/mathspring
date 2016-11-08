@@ -10,6 +10,9 @@ package edu.umass.ckc.wo.interventions;
 public class CollaborationOptionIntervention extends InputResponseIntervention implements NextProblemIntervention{
 
     public static final String OPTION = "option";
+    public static final String YES = "Yes_collaborate";
+    public static final String NO_ALONE = "No_alone";
+    public static final String NO_DECLINE = "No_decline";
 
     public  CollaborationOptionIntervention () {
         super();
@@ -21,9 +24,9 @@ public class CollaborationOptionIntervention extends InputResponseIntervention i
 
     public String getDialogHTML () {
         String str = "<div><p> Would you like to work with a person near you for the next problem?  <br/<br/>" + getFormOpen();
-        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"Yes\" checked=\"checked\">Yes; there is someone next to me.</input><br>";
-        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"No_alone\">No; there is no one next to me.</input><br>";
-        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\"No_decline\">No; I don't want to.</input><br>";
+        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\""+YES+"\" checked=\"checked\">Yes; there is someone next to me.</input><br>";
+        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\""+NO_ALONE+"\">No; there is no one next to me.</input><br>";
+        str += "<input name=\""+OPTION+"\" type=\"radio\" value=\""+NO_DECLINE+"\">No; I don't want to.</input><br>";
         str += "<input type=\"hidden\" name=\"destination\" value=\"edu.umass.ckc.wo.tutor.intervSel2.CollaborationOriginatorIS\">";
         str+="</form></div>";
         return str;

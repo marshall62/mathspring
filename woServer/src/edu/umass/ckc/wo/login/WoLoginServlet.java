@@ -96,6 +96,7 @@ public class WoLoginServlet extends BaseServlet {
 //            LoginInterventionSelector is = (LoginInterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
 //            is.setServletInfo(servletInfo);
 //            is.init(smgr,smgr.getPedagogicalModel());
+            is.init(smgr,smgr.getPedagogicalModel());
             LoginIntervention interv = is.processInput(params);
             if (interv == null) {
                 // Now find the next intervention

@@ -1,7 +1,6 @@
 package edu.umass.ckc.wo.smgr;
 
 import ckc.servlet.servbase.ServletParams;
-import edu.umass.ckc.wo.PartnerManager;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.content.Problem;
@@ -445,8 +444,7 @@ public class SessionManager {
                     return new LoginResult(-1, "This user is invalid because it is not in a class.   You need to re-register and select a class", LoginResult.ERROR);
                 }
                 //Remove collaboration requests and pairings for students who have just logged in, as any such data is erroneous.
-                PartnerManager.clearOldData(studId);
-                CollaborationManager.removeStudentFromCollaborationSystem(studId);   // DM 3/31/16
+                CollaborationManager.clearOldData(studId);
                 int oldSessId = DbSession.findActiveSession(getConnection(), studId);
                 Pedagogy ped;
                 if (oldSessId != -1) {

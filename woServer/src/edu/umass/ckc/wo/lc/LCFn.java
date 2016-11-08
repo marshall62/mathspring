@@ -39,7 +39,7 @@ public class LCFn extends LCRuleComponent {
     }
 
     public Object eval () throws Exception {
-        LCAccessors accessors = new LCAccessors(smgr,event);
+        LCAccessors accessors = new LCAccessors(smgr,cache);
         return accessors.eval(this);
     }
 
