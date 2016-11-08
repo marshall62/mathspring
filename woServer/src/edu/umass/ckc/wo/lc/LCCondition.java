@@ -63,7 +63,7 @@ public class LCCondition  extends LCRuleComponent {
 
     public boolean eval ( ) throws Exception {
         try {
-            expr.setup(smgr, event);
+            expr.setup(smgr, event, cache);
             boolean v = expr.eval();
             return applyNot ? !v : v;
         } catch (Exception ee) {
@@ -77,6 +77,6 @@ public class LCCondition  extends LCRuleComponent {
     }
 
     public String toString () {
-        return expr.toString();
+        return (applyNot ? "NOT " : "") + expr.toString();
     }
 }

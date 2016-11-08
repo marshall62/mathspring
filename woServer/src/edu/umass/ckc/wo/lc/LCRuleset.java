@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.lc;
 import edu.umass.ckc.wo.event.tutorhut.EventType;
 import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import org.apache.log4j.Logger;
+import org.jdom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class LCRuleset {
     List<LCMetaRule> metaRules;
     private String description;
     private String notes;
+    private List<Element> ruleElements;
 
     public LCRuleset() {
 //        rules = new ArrayList<LCRule>();
@@ -38,6 +40,13 @@ public class LCRuleset {
 
         }
         metaRules = new ArrayList<LCMetaRule>();
+    }
+
+    public LCRuleset (String name, int id) {
+        this();
+        this.id = id;
+        this.name = name;
+        this.source = "db";
     }
 
     // to get all the rules in a ruleset must go through the array of events and put togeter
@@ -136,5 +145,13 @@ public class LCRuleset {
 
     public List<LCMetaRule> getMetaRules() {
         return metaRules;
+    }
+
+    public void setRuleElements(List<Element> ruleElements) {
+        this.ruleElements = ruleElements;
+    }
+
+    public List<Element> getRuleElements() {
+        return ruleElements;
     }
 }
