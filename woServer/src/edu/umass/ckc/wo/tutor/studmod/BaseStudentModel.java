@@ -283,7 +283,7 @@ public class BaseStudentModel extends StudentModel {
 //        System.out.println("In SM.beginProblem, after studentState.beginProblem " + (System.currentTimeMillis() - t));
         if (CollaborationManager.requestExists(smgr.getStudentId())) {
             smgr.setCollaboratingWith(CollaborationManager.getRequestedPartner(smgr.getStudentId()));
-//           System.out.println("In SM.beginProblem, after PartnerManager.requestExists " + (System.currentTimeMillis() - t));
+//           System.out.println("In SM.beginProblem, after CollaborationManager.requestExists " + (System.currentTimeMillis() - t));
         }
         this.problemHistory.beginProblem(smgr,e);
 //        System.out.println("In SM.beginProblem, after problemHistory.beginProblem " + (System.currentTimeMillis() - t));

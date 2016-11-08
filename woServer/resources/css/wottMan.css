@@ -7,3 +7,55 @@ body {
 	background-color: #FFF0A3;
 }
 
+table.altrows {
+	border-collapse: collapse;
+}
+
+table.altrows td {
+	padding: 2px;
+	border-left: 1px solid rgba(0,0,0,.05);
+}
+table.altrows td:first-child {
+	border-left: none;
+}
+
+table.altrows tr:nth-child(even), table.altrows tr.rowheader {
+	background-color: rgba(0,0,0,.05);
+}
+
+tr.rowheader {
+	vertical-align: bottom;
+}
+
+a.moveupbutton, a.movedownbutton, a.removebutton {
+	display: block;
+	width: 24px;
+	height: 24px;
+	margin: auto;
+	background-size: cover;
+	transition: 0.5s;
+}
+
+a.moveupbutton {
+	background-image: url("../images/MoveUpInactive.png");
+}
+
+a.moveupbutton:hover {
+	background-image: url("../images/MoveUpActive.png");
+}
+
+a.movedownbutton {
+	background-image: url("../images/MoveDownInactive.png");
+}
+
+a.movedownbutton:hover {
+	background-image: url("../images/MoveDownActive.png");
+}
+
+a.removebutton {
+	background-image: url("../images/RemoveInactive.png");
+}
+
+a.removebutton:hover {
+	background-image: url("../images/RemoveActive.png");
+}

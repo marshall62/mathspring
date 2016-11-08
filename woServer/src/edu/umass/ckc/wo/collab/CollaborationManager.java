@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.collab;
 
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.smgr.User;
@@ -34,18 +35,6 @@ public class CollaborationManager {
     private static Map<Integer, Integer> current_matches = new HashMap<Integer, Integer>();
 
     //Mutators should definitely be synchronized here, but should accessors be?
-
-
-    /**
-     * Sometimes a student gets his pedagogy changed to one that is non-collaborative.  At the point when they login we check
-     * to see if they are in a collaborative pedagogy.  If not, this method gets called to remove a student from the collaboration managers
-     * lists.
-     * @param studId
-     */
-    public synchronized static void removeStudentFromCollaborationSystem (int studId) {
-        clearOldData(studId);
-
-    }
 
     /**
      * For an originator (a person that needs help) this adds a WaitingStudent object into the cache.   The object contains a
@@ -135,6 +124,7 @@ public class CollaborationManager {
 
     public static void clearOldData(int id){
         removeSelfFromLists(id);
+        collaborationStates.remove(id);
         requesters.remove(id);
         //TODO change the next two removals to only remove if prospective partner is inactive?
         if(requestees_requesters.containsKey(id)){
@@ -181,6 +171,23 @@ public class CollaborationManager {
         else
             collaborationStates.get(smgr.getStudentId()).reloadSession(smgr);
         return collaborationStates.get(smgr.getStudentId());
+    }
+
+    /**
+     * Determines whether the student can collaborate, taking into account:
+     *  - Problem mode (must be practice mode)
+     *  - Collaboration cooldown (time between collaborations)
+     *  - Number of problems between collaborations (normally disabled)
+     * @param smgr The session manager for the student.
+     * @return Whether this student can collaborate.
+     * @throws SQLException
+     */
+    public synchronized static boolean canCollaborate(SessionManager smgr) throws SQLException {
+        int id = smgr.getStudentId();
+        CollaborationState state = getCollaborationState(smgr);
+        return hasEligiblePartners(smgr.getConnection(), id)
+                && Problem.PRACTICE.equals(smgr.getStudentState().getLessonState().getNextProblemMode())
+                && (state.isTimeToCollab() || state.hasSeenEnoughProblemsForCollab());
     }
 
     private static class WaitingStudent{

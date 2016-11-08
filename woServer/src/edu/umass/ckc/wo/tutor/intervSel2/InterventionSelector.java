@@ -67,7 +67,7 @@ public abstract class InterventionSelector implements PedagogicalMoveListener {
 
     /**
      * The setServletInfo method of the InterventionSelector is called at a time later than the constructor.  This is necessary because
-     * some of the objects necessary to the InterventinoSelector are not available at the time of its construction (e.g. the PedagogicalModel).
+     * some of the objects necessary to the InterventionSelector are not available at the time of its construction (e.g. the PedagogicalModel).
      * So we wait until just before we really need the InterventionSelector and then call its setServletInfo method passing it the stuff it has to have at that point
      *
      * @param smgr

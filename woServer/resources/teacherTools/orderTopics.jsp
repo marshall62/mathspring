@@ -6,22 +6,30 @@
 <jsp:useBean id="params" scope="request" type="edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="mainPageMargin">
-  <div id="Layer1" align="left" >
-    <p align="center" class="a2"><font color="#000000"><b><font face="Arial, Helvetica, sans-serif">Active Topic Order </font></b></font></p>
-    <p style="color: #000000"><font face="Arial, Helvetica, sans-serif">Topics will be presented in the order below. </font></p>
+<div class="mainPageMargin" style="font-family: Arial, Helvetica, sans-serif">
+  <div id="Layer1" align="center" >
+      <p align="center" class="a2"><b>Active Topic Order</b></p>
+      <p>Topics will be presented in the order below.</p>
 
-    <form name="form1" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminTopicControl">
+      <%--@elvariable id="classGradeColumn" type="int"--%>
+      <%--@elvariable id="gradeColumnMask" type="boolean[]"--%>
+
+      <form name="form1" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminTopicControl">
       <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
       <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
-      <table width="374" border="0" height="98">
-          <tr>
-            <td></td>
-            <td valign="center"><font color="#00000" face="Arial, Helvetica, sans-serif">Order</font></td>
-               <td></td>
-            <td><font color="#000000" face="Arial, Helvetica, sans-serif">Topic</font></td>
-              <td><font color="#000000" face="Arial, Helvetica, sans-serif">Number of Problems</font> </td>
-              <%--<td><font color="#000000" face="Arial, Helvetica, sans-serif">Standards</font></td>--%>
+      <table class="altrows">
+          <tr class="rowheader">
+              <td rowspan="2" colspan="3">Reorder</td>
+              <td rowspan="2">Topic</td>
+              <td rowspan="2" style="max-width:80px">Total Problems</td>
+              <td colspan="10">Problems by Grade Level</td>
+          </tr>
+          <tr class="rowheader">
+              <c:forEach var="visible" varStatus="status" items="${gradeColumnMask}">
+                  <td style="${status.index eq classGradeColumn ? 'font-weight:bold;' : ''}${gradeColumnMask[status.index] ? '' : 'display:none'}">
+                      <c:out value="${status.index eq 0 ? 'K' : (status.index eq 9 ? 'H' : status.index.toString().concat('th'))}"/>
+                  </td>
+              </c:forEach>
           </tr>
 
           <c:set var="ix" value="0"/>
@@ -29,26 +37,23 @@
           <c:forEach var="topic" items="${topics}">
               <c:set var="ix" value="${ix+1}"/>
               <tr>
-                  <td valign="center" width="40">
-                     <a title="move up" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=up&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>">
-                          <img  src='<c:out value="${pageContext.request.contextPath}"/>/images/moveup.gif' alt="Move Up"></a></td>
-                  <td valign="center" width="40">
-                     <a title="move down" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=down&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>">
-                          <img  src='<c:out value="${pageContext.request.contextPath}"/>/images/movedown.gif' alt="Move Down"></a></td>
-                  <td valign="center" width="40">
-                     <a title="deactivate" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=omit&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>">
-                          <img  src='<c:out value="${pageContext.request.contextPath}"/>/images/del.gif' alt="Don't Play"></a></td>
-
-              <!--    <input name='<c:out value="topicPosition"/>' type="text" value='<c:out value="${topic.seqPos}"/>' size="3" /></td> -->
-                  <td width="305"><a title="${topic.standards}" href="#"> <font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.name}"/></font></a></td>
-
-                  <td width="40">
+                  <td>
+                     <a title="move up" class="moveupbutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=up&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
+                  <td>
+                     <a title="move down" class="movedownbutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=down&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
+                  <td>
+                     <a title="deactivate" class="removebutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=omit&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
+                  <td><a title="${topic.standards}" href="#"><c:out value="${topic.name}"/></a></td>
+                  <td>
                       <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
-                          <font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.numProbs}"/></font>
-                      </a></td>
-
-              <%--<td width="600">  <font color="#000000" face="Arial, Helvetica, sans-serif">  ${topic.standards}</font>--%>
-                                   <%--</td>--%>
+                          <c:out value="${topic.numProbs}"/>
+                      </a>
+                  </td>
+                  <c:forEach var="problemsByGrade" varStatus="status" items="${topic.problemsByGrade}">
+                      <td style="${status.index eq classGradeColumn ? 'font-weight:bold' : ''}${gradeColumnMask[status.index] ? '' : 'display:none;'}">
+                          <c:if test="${problemsByGrade > 0}"><c:out value="${problemsByGrade}"/></c:if>
+                      </td>
+                  </c:forEach>
               </tr>
 
 
@@ -56,27 +61,43 @@
       </table>
       <p/>
       <c:if test="${!empty inactiveTopics}">
-      <p align="center" class="a2"><font color="#00000"><b><font face="Arial, Helvetica, sans-serif">Inactive Topics </font></b></p>
-      <table width="334" border="0" height="98">
-          <tr>
-            <td valign="center"><font color="#00000" face="Arial, Helvetica, sans-serif">Reactivate</font></td>
-
-            <td><font color="#00000" face="Arial, Helvetica, sans-serif">Topic</font></td>
+      <p align="center" class="a2"><b>Inactive Topics </b></p>
+      <table class="altrows">
+          <tr class="rowheader">
+              <td rowspan="2" valign="center">Reactivate</td>
+              <td rowspan="2">Topic</td>
+              <td rowspan="2" style="max-width:80px">Total Problems</td>
+              <td colspan="10">Problems by Grade Level</td>
+          </tr>
+          <tr class="rowheader">
+              <c:forEach var="visible" varStatus="status" items="${gradeColumnMask}">
+                  <td style="${status.index eq classGradeColumn ? 'font-weight:bold;' : ''}${gradeColumnMask[status.index] ? '' : 'display:none'}">
+                      <c:out value="${status.index eq 0 ? 'K' : (status.index eq 9 ? 'H' : status.index.toString().concat('th'))}"/>
+                  </td>
+              </c:forEach>
           </tr>
           <c:set var="ix" value="0"/>
           <%--@elvariable id="inactiveTopics" type="edu.umass.ckc.wo.tutor.Topic[]"--%>
           <c:forEach var="topic" items="${inactiveTopics}">
               <c:set var="ix" value="${ix+1}"/>
               <tr>
-                  <td valign="center" width="40">
-                     <a title="activate" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=reactivate&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>">
-                          <img  src='<c:out value="${pageContext.request.contextPath}"/>/images/moveup.gif' alt="Reactivate"></a></td>
+                  <td valign="center">
+                     <a title="activate" class="moveupbutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=reactivate&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
+                  </td>
 
               <!--    <input name='<c:out value="topicPosition"/>' type="text" value='<c:out value="${topic.seqPos}"/>' size="3" /></td> -->
-                  <td width="305"><font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.name}"/></font></td>
+                  <td><font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.name}"/></td>
+                  <td>
+                      <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
+                          <c:out value="${topic.numProbs}"/>
+                      </a>
+                  </td>
+                  <c:forEach var="problemsByGrade" varStatus="status" items="${topic.problemsByGrade}">
+                      <td style="${status.index eq classGradeColumn ? 'font-weight:bold' : ''}${gradeColumnMask[status.index] ? '' : 'display:none;'}">
+                          <c:if test="${problemsByGrade > 0}"><c:out value="${problemsByGrade}"/></c:if>
+                      </td>
+                  </c:forEach>
               </tr>
-              
-
           </c:forEach>
       </table>
      </c:if>
@@ -85,7 +106,7 @@
     <%--@elvariable id="params" type="edu.umass.ckc.wo.tutor.probSel.ProblemSelectorParamters"--%>
       <table>
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Max Number of Problems Per Topic: </font></td>
+          <td>Max Number of Problems Per Topic: </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -122,7 +143,7 @@
       </tr>
 
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Min Number of Problems Per Topic: </font></td>
+          <td>Min Number of Problems Per Topic: </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -159,7 +180,7 @@
       </tr>
 
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Max Time In a Topic (min): </font></td>
+          <td>Max Time In a Topic (min): </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -193,7 +214,7 @@
       </tr>
 
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Min Time In a Topic (min): </font></td>
+          <td>Min Time In a Topic (min): </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -227,7 +248,7 @@
       </tr>
 
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Content Failure Threshold: </font></td>
+          <td>Content Failure Threshold: </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -259,7 +280,7 @@
           <td><input type="text" size="3" name="contentFailureThreshold"value="<c:out value="${params.contentFailureThreshold}"/>"/> </td>
       </tr>
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Topic Mastery: </font></td>
+          <td>Topic Mastery: </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -292,7 +313,7 @@
 
 
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Difficulty Rate: </font></td>
+          <td>Difficulty Rate: </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -325,7 +346,7 @@
 
 
       <tr>
-          <td><font color="#00000"><font face="Arial, Helvetica, sans-serif">Time Before External Activities Begin: </font></td>
+          <td>Time Before External Activities Begin: </td>
           <td>
               <script language="JavaScript">
                   var A_TPL1h = {
@@ -355,30 +376,18 @@
               </script>
           </td>
           <td><input type="text" size="3" name="externalActivityTimeThreshold" value="<c:out value="${params.externalActivityTimeThreshold}"/>"/> </td> </tr>
-
-
-
       </table>
       </c:if>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
     </form>
 
+    <div style="height:54px"></div>
     <form name="form3" id="form3" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminProblemSelection">
-
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="submit" name="Submit" value="Examine Problems in Each Topic" />
+          <input type="submit" name="Submit" value="Examine Problems in Each Topic" style="font-size:16px;padding:10px"/>
           <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
           <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
     </form>
-
-
-
+    <div style="height:54px"></div>
 </div>
 </div>
-
-
-
 </body>
 </html>

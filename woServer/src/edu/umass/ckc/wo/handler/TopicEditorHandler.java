@@ -46,11 +46,12 @@ public class TopicEditorHandler {
 
 
     public View handleEvent(ServletContext sc, Connection conn, AdminEditTopicsEvent e, HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+        List<Topic> topics = null;
+        PedagogicalModelParameters params = null;
         if (e instanceof AdminReorderTopicsEvent) {
             TopicMgr topicMgr = new TopicMgr();
             AdminReorderTopicsEvent ee = (AdminReorderTopicsEvent) e;
 
-            List<Topic> topics=null;
             if (ee.getDirection().equals("up") || ee.getDirection().equals("down"))
                  topics=topicMgr.moveTopic(conn,(AdminReorderTopicsEvent) e);
             else if (ee.getDirection().equals("omit")) {
@@ -63,78 +64,23 @@ public class TopicEditorHandler {
                 topics = DbTopics.getClassActiveTopics(conn,ee.getClassId());
             }
 //            List<Topic> activetopics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), topics);
-            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
-
-            ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
-            ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
-            Classes bean = new Classes(classes);
-            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
-            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-            req.setAttribute("isAdmin",adminId != null);
-            req.setAttribute("action","AdminEditTopics");
-            req.setAttribute("topics",topics);
-            req.setAttribute("inactiveTopics",inactiveTopics);
-            req.setAttribute("classId",e.getClassId());
-            req.setAttribute("teacherId",e.getTeacherId());
-            CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
-            req.setAttribute("classInfo", classInfo);
-            req.setAttribute("bean", bean);
-            PedagogicalModelParameters params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
+            params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
             DbClass.setProblemSelectorParameters(conn,e.getClassId(), params);
-            req.setAttribute("params",params);
-            req.getRequestDispatcher(JSP).forward(req,resp);
         }
         else if (e instanceof AdminTopicControlEvent) {
             AdminTopicControlEvent ee = (AdminTopicControlEvent) e;
-            List<Topic> topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), topics);
-            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
-            ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
-            ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
-            Classes bean = new Classes(classes);
-            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
-            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-            req.setAttribute("isAdmin",adminId != null);
-            req.setAttribute("action","AdminEditTopics");
-            req.setAttribute("topics",topics);
-            req.setAttribute("classId",e.getClassId());
-            req.setAttribute("teacherId",e.getTeacherId());
-            CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
-            req.setAttribute("inactiveTopics",inactiveTopics);
-            req.setAttribute("classInfo",classInfo);
-            req.setAttribute("bean", bean);
-            // send to contructor but time in topic is in incorrect units
-            PedagogicalModelParameters params = new PedagogicalModelParameters(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(), ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(), ee.getExternalActivityTimeThreshold(), ee.getMaxNumProbsPerTopic(),
+            topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
+            // send to constructor but time in topic is in incorrect units
+            params = new PedagogicalModelParameters(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(), ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(), ee.getExternalActivityTimeThreshold(), ee.getMaxNumProbsPerTopic(),
                     true, true);
             params.setMaxTimeInTopicMinutes(ee.getMaxTimeInTopic());  // now pass in as minutes
             params.setMinTimeInTopicMinutes(ee.getMinTimeInTopic());  // now pass in as minutes
             DbClass.setProblemSelectorParameters(conn,e.getClassId(), params);
-            req.setAttribute("params",params);
-            req.getRequestDispatcher(JSP).forward(req,resp);
         }
         else {
             // fetch a list of topics for the class sorted in the order they will be presented
-            List<Topic> topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), topics);
-
-            List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
-            ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
-            Classes bean = new Classes(classes);
-            ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
-            Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
-            req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-            req.setAttribute("isAdmin",adminId != null);
-            // forward to the JSP page that allows reordering the list and omitting topics.
-            req.setAttribute("action","AdminEditTopics");
-            req.setAttribute("bean",bean);
-            req.setAttribute("topics",topics);
-            req.setAttribute("inactiveTopics",inactiveTopics);
-            req.setAttribute("teacherId",e.getTeacherId());
-            CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
-            req.setAttribute("classId",e.getClassId());
-            req.setAttribute("classInfo",classInfo);
-            PedagogicalModelParameters params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
+            topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
+            params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
             // If parameters are not stored for this particular class, a default set should be stored
             // in classconfig table for classId=1.   If nothing there, then use the defaults created
             // in the default PedagogicalModelParameters constructor
@@ -143,9 +89,29 @@ public class TopicEditorHandler {
                 if (params == null)
                     params = new PedagogicalModelParameters();
             }
-            req.setAttribute("params",params);
-            req.getRequestDispatcher(JSP).forward(req,resp);
         }
+        ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
+        Classes bean = new Classes(classes);
+        ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
+        req.setAttribute("bean",bean);
+        req.setAttribute("classInfo",classInfo);
+        req.setAttribute("classGradeColumn", DbProblem.getGradeNum(classInfo.getGrade()));
+        DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), topics);
+        req.setAttribute("gradeColumnMask", DbProblem.getGradeColumnMask(topics));
+        List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
+        DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), inactiveTopics);
+        req.setAttribute("topics",topics);
+        req.setAttribute("inactiveTopics",inactiveTopics);
+        Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
+        req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+        req.setAttribute("isAdmin",adminId != null);
+        // forward to the JSP page that allows reordering the list and omitting topics.
+        req.setAttribute("action","AdminEditTopics");
+        req.setAttribute("teacherId",e.getTeacherId());
+        req.setAttribute("classId",e.getClassId());
+        CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
+        req.setAttribute("params",params);
+        req.getRequestDispatcher(JSP).forward(req,resp);
 
         return null;  //To change body of created methods use File | Settings | File Templates.
     }

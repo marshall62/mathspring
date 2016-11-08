@@ -824,7 +824,7 @@ public class DbProblem extends BaseMgr {
 
     /**
      * Given the Topics for a class, modify each Topic object so that it contains the number of problems that are activated for the topic
-     * and the class.
+     * and the class, and the number of problems broken down by grade level.
      * @param conn
      * @param classId
      * @param activetopics
@@ -832,14 +832,68 @@ public class DbProblem extends BaseMgr {
      */
     public static void setTopicNumProbsForClass(Connection conn, int classId, List<Topic> activetopics) throws SQLException {
         for (Topic t: activetopics) {
-
             DbProblem probMgr = new DbProblem();
             List<Problem> problems = ProblemMgr.getWorkingProblems(t.getId());
             // get the problems omitted for this topic
             List<String> ids = probMgr.getClassOmittedTopicProblemIds(conn,classId,t.getId());
             if (problems == null)
                 t.setNumProbs(0);
-            else t.setNumProbs(problems.size() - (ids != null ? ids.size() : 0));
+            else {
+                t.setNumProbs(problems.size() - (ids != null ? ids.size() : 0));
+                int[] problemsByGrade = new int[10];
+                for (Problem p : problems) {
+                    if(!ids.contains("" + p.getId())) {
+                        List<CCStandard> ccStandards = p.getStandards();
+                        if (ccStandards.size() > 0) {
+                            //Note: we're only taking the first standard, it's possible that it may be labeled with multiple grades
+                            // ... but I didn't find any that were and I'm not sure what we'd do in that case anyway
+                            int gradeNum = getGradeNum(ccStandards.get(0).getGrade());
+                            if (gradeNum >= 0)
+                                problemsByGrade[gradeNum]++;
+                        }
+                    }
+                }
+                t.setNumProbsByGrade(problemsByGrade);
+            }
         }
+    }
+
+    /**
+     * Gets a boolean mask for grade columns for displaying problems by grade.
+     * Assumption: There are 10 grade categories, K, 1-8, and H.
+     * @param topics The list of topics for which problems by grade will be displayed
+     * @return a boolean[] indicating which grade columns contain active problems
+     */
+    public static boolean[] getGradeColumnMask(List<Topic> topics) {
+        boolean[] gradeColumnMask = new boolean[10];
+        for(Topic t : topics) {
+            int[] problemsByGrade = t.getProblemsByGrade();
+            for(int i = 0; i < gradeColumnMask.length; i++)
+                if(problemsByGrade[i] > 0)
+                    gradeColumnMask[i] = true;
+        }
+        return gradeColumnMask;
+    }
+
+    /**
+     * Converts a grade string into a column number for displaying grades.
+     * @param grade The grade attribute from a CCStandard
+     * @return The column number for displaying this grade
+     */
+    public static int getGradeNum(String grade) {
+        int gradeNum = -1;
+        if (grade.equals("K"))
+            gradeNum = 0;
+        else if (grade.equals("H"))
+            gradeNum = 9;
+        else {
+            try {
+                gradeNum = Integer.parseInt(grade);
+            } catch (NumberFormatException e) {
+                //We don't really care if we can't parse it, but let's print an error message
+                System.out.println("Couldn't find grade for grade string: " + grade);
+            }
+        }
+        return gradeNum;
     }
 }

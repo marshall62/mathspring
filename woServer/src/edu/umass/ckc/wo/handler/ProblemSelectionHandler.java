@@ -128,6 +128,8 @@ public class ProblemSelectionHandler {
             Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
             servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
             DbProblem.setTopicNumProbsForClass(conn, event.getClassId(), topics);
+            servletRequest.setAttribute("gradeColumnMask", DbProblem.getGradeColumnMask(topics));
+            servletRequest.setAttribute("classGradeColumn", DbProblem.getGradeNum(classInfo.getGrade()));
             servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("topics",topics);
             servletRequest.setAttribute("classId",event.getClassId());
@@ -139,6 +141,4 @@ public class ProblemSelectionHandler {
         }
         return null;
     }
-
-
 }
