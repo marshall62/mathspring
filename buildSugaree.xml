@@ -13,7 +13,7 @@
 
     <!-- The below is taken from build.xml after it gets generated and then I add NO_RESOURCES to the name
     and then make the zip file have the added line to omit resources -->
-    <target name="artifact.woserver_war_rose_NO_RESOURCES" depends="init.artifacts, artifact.woserver:webforrose_exploded" description="Build &#39;woServer war Rose&#39; artifact">
+    <target name="artifact.woserver_war_rose_DEV_NO_RESOURCES" depends="init.artifacts, artifact.woserver:webforrose_exploded" description="Build &#39;woServer war Rose&#39; artifact">
         <property name="artifact.temp.output.woserver_war_rose" value="${artifacts.temp.dir}/woServer_war_Rose"/>
 
         <mkdir dir="${artifact.temp.output.woserver_war_rose}"/>
@@ -25,6 +25,22 @@
         </zip>
         <copy file="${temp.jar.path.woj.war}" tofile="${artifact.temp.output.woserver_war_rose}/woj.war"/>
         <copy file="${temp.jar.path.woj.war}" tofile="${artifact.output.woserver_war_rose}/woj.war"/>
+
+    </target>
+
+    <!-- CLipped from build.xml but edited to make ms.war instead of woj.war -->
+    <target name="artifact.woserver_war_rose_PRODUCTION_NO_RESOURCES" depends="init.artifacts, artifact.woserver:webforrose_exploded" description="Build &#39;woServer war Rose&#39; artifact">
+        <property name="artifact.temp.output.woserver_war_rose" value="${artifacts.temp.dir}/woServer_war_Rose"/>
+        <property name="temp.jar.path.ms.war" value="${artifacts.temp.dir}/ms.war"/>
+        <mkdir dir="${artifact.temp.output.woserver_war_rose}"/>
+        <zip destfile="${temp.jar.path.ms.war}">
+            <zipfileset dir="${artifact.output.woserver:webforrose_exploded}">
+                <!--  DM 6/21/16 Added this so that the contents of the resources don't get put in.-->
+                <exclude name="**/mathspring/**"></exclude>
+            </zipfileset>
+        </zip>
+        <copy file="${temp.jar.path.ms.war}" tofile="${artifact.temp.output.woserver_war_rose}/ms.war"/>
+        <copy file="${temp.jar.path.ms.war}" tofile="${artifact.output.woserver_war_rose}/ms.war"/>
 
     </target>
 
@@ -45,9 +61,13 @@
         <copy file="${artifact.output.woserver_war_rose}/woj.war" tofile="${artifact.output.woserver_war_rose}/ms.war"/>
     </target>
 
-    <!-- This is the only target I use.   It puts a woj.war in the output dirs -->
+    <!-- This builds a development release (WOJ) of Mathspring (use when on Master branch).   It puts a woj.war in the output dirs -->
     <target name="DeployRose_WOJ_WarWithoutContent" description="Build the woj.war file for rose without resources"
-            depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose_NO_RESOURCES"/>
+            depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose_DEV_NO_RESOURCES"/>
+
+    <!-- This builds a production release (MS) of Mathspring (should only be used when on production branch).   It uses same build process as woj above but writes ms.war-->
+    <target name="DeployRose_PRODUCTION_WarWithoutContent" description="Build the woj.war file for rose without resources"
+            depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose_PRODUCTION_NO_RESOURCES"/>
 
     <target name="DeploySugareeWar" description="Build the woj.war file for sugaree"
             depends="clean.module.woserver, artifact.woserver_war_sugaree">
