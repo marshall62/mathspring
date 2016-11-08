@@ -50,6 +50,7 @@
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
           <element id="library" level="project" name="Maven: org.json:json:20140107" />
         </element>
+        <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/rose/web.xml" />
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/woServer/resources" />
       <element id="directory" name="META-INF">
