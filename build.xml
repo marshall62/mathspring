@@ -369,32 +369,27 @@
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.emailer, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver, clean.module.main, clean.artifact.woserver:war_exploded, clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
+  <target name="clean" depends="clean.module.emailer, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver, clean.module.main, clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.emailer, compile.module.problemsnapshotinserter, compile.module.servletframework, compile.module.woserver, compile.module.main" description="build all modules"/>
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
     <property name="artifact.output.emailer:jar" value="${basedir}/out/artifacts/emailer_jar"/>
+    <property name="artifact.output.problemsnapshotinserter:jar" value="${basedir}/out/artifacts/ProblemSnapshotInserter_jar"/>
     <property name="artifact.output.servletframework:jar" value="${basedir}/out/artifacts/servletFramework_jar"/>
     <property name="artifact.output.woserver_war_rose" value="${basedir}/out/artifacts/woj/rose"/>
     <property name="artifact.output.woserver_war_sugaree" value="${basedir}/out/artifacts/woj/sugaree"/>
-    <property name="artifact.output.woserver:war" value="${basedir}/woServer/target"/>
-    <property name="artifact.output.woserver:war_exploded" value="${basedir}/woServer/target/woServer-0.1.0"/>
     <property name="artifact.output.woserver:webforlocalhost_exploded" value="${basedir}/out/artifacts/woServer_WebForLocalhost_exploded"/>
     <property name="artifact.output.woserver:webforrose_exploded" value="${basedir}/out/artifacts/woServer_WebForRose_exploded"/>
     <property name="artifact.output.woserver:webforsugaree_exploded" value="${basedir}/out/artifacts/woServer_WebForSugaree_exploded"/>
     <mkdir dir="${artifacts.temp.dir}"/>
     <property name="temp.jar.path.emailer.jar" value="${artifacts.temp.dir}/emailer.jar"/>
+    <property name="temp.jar.path.ProblemSnapshotInserter.jar" value="${artifacts.temp.dir}/ProblemSnapshotInserter.jar"/>
     <property name="temp.jar.path.servletFramework.jar" value="${artifacts.temp.dir}/servletFramework.jar"/>
     <property name="temp.jar.path.woj.war" value="${artifacts.temp.dir}/woj.war"/>
     <property name="temp.jar.path.woj.war2" value="${artifacts.temp.dir}/1/woj.war"/>
     <mkdir dir="${artifacts.temp.dir}/1"/>
-    <property name="temp.jar.path.woServer-0.1.0.war" value="${artifacts.temp.dir}/woServer-0.1.0.war"/>
-  </target>
-  
-  <target name="clean.artifact.woserver:war_exploded" description="clean woServer:war exploded artifact output">
-    <delete dir="${artifact.output.woserver:war_exploded}"/>
   </target>
   
   <target name="clean.artifact.woserver:webforlocalhost_exploded" description="clean woServer:WebForLocalhost exploded artifact output">
@@ -416,6 +411,16 @@
       <zipfileset dir="${emailer.output.dir}"/>
     </jar>
     <copy file="${temp.jar.path.emailer.jar}" tofile="${artifact.temp.output.emailer:jar}/emailer.jar"/>
+  </target>
+  
+  <target name="artifact.problemsnapshotinserter:jar" depends="init.artifacts, compile.module.problemsnapshotinserter" description="Build &#39;ProblemSnapshotInserter:jar&#39; artifact">
+    <property name="artifact.temp.output.problemsnapshotinserter:jar" value="${artifacts.temp.dir}/ProblemSnapshotInserter_jar"/>
+    <mkdir dir="${artifact.temp.output.problemsnapshotinserter:jar}"/>
+    <jar destfile="${temp.jar.path.ProblemSnapshotInserter.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${problemsnapshotinserter.output.dir}"/>
+      <zipfileset src="${path.variable.maven_repository}/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.ProblemSnapshotInserter.jar}" tofile="${artifact.temp.output.problemsnapshotinserter:jar}/ProblemSnapshotInserter.jar"/>
   </target>
   
   <target name="artifact.servletframework:jar" depends="init.artifacts, compile.module.servletframework" description="Build &#39;servletFramework:jar&#39; artifact">
@@ -444,91 +449,6 @@
       <zipfileset dir="${woserver.output.dir}" prefix="WEB-INF/classes"/>
     </zip>
     <copy file="${temp.jar.path.woj.war2}" tofile="${artifact.temp.output.woserver_war_sugaree}/woj.war"/>
-  </target>
-  
-  <target name="artifact.woserver:war" depends="init.artifacts, artifact.woserver:war_exploded" description="Build &#39;woServer:war&#39; artifact">
-    <property name="artifact.temp.output.woserver:war" value="${artifacts.temp.dir}/woServer_war"/>
-    <mkdir dir="${artifact.temp.output.woserver:war}"/>
-    <zip destfile="${temp.jar.path.woServer-0.1.0.war}">
-      <zipfileset dir="${artifact.temp.output.woserver:war_exploded}"/>
-    </zip>
-    <copy file="${temp.jar.path.woServer-0.1.0.war}" tofile="${artifact.temp.output.woserver:war}/woServer-0.1.0.war"/>
-  </target>
-  
-  <target name="artifact.woserver:war_exploded" depends="init.artifacts, compile.module.woserver" description="Build &#39;woServer:war exploded&#39; artifact">
-    <mkdir dir="${artifact.output.woserver:war_exploded}"/>
-    <mkdir dir="${artifact.output.woserver:war_exploded}/WEB-INF"/>
-    <mkdir dir="${artifact.output.woserver:war_exploded}/WEB-INF/classes"/>
-    <copy todir="${artifact.output.woserver:war_exploded}/WEB-INF/classes">
-      <fileset dir="${woserver.output.dir}"/>
-    </copy>
-    <mkdir dir="${artifact.output.woserver:war_exploded}/WEB-INF/lib"/>
-    <copy file="${path.variable.maven_repository}/commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/commons-cli-1.3.1.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/commons-collections-3.2.1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/directory/studio/org.apache.commons.io/2.4/org.apache.commons.io-2.4.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/org.apache.commons.io-2.4.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-io/commons-io/2.4/commons-io-2.4.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/commons-io-2.4.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/commons-lang-2.5.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/commons-logging-1.1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/ezmorph-1.0.6.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/httpclient-4.3.3.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/commons-codec-1.6.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/httpcore-4.3.2.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpmime/4.3.3/httpmime-4.3.3.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/httpmime-4.3.3.jar"/>
-    <copy file="${path.variable.maven_repository}/jcharts/jcharts/0.7.5/jcharts-0.7.5.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jcharts-0.7.5.jar"/>
-    <copy file="${path.variable.maven_repository}/org/jdom/jdom/1.1/jdom-1.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jdom-1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/servicemix/bundles/org.apache.servicemix.bundles.json-lib/2.4_1/org.apache.servicemix.bundles.json-lib-2.4_1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/org.apache.servicemix.bundles.json-lib-2.4_1.jar"/>
-    <copy file="${path.variable.maven_repository}/jstl/jstl/1.2/jstl-1.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jstl-1.2.jar"/>
-    <copy file="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/log4j-1.2.17.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/mail-1.5.0-b01.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1/activation-1.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/activation-1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/mysql-connector-java-5.1.30.jar"/>
-    <copy file="${path.variable.maven_repository}/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/opencsv-2.3.jar"/>
-    <copy file="${path.variable.maven_repository}/taglibs/standard/1.1.2/standard-1.1.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/standard-1.1.2.jar"/>
-    <copy file="${path.variable.maven_repository}/xerces/xercesImpl/2.4.0/xercesImpl-2.4.0.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/xercesImpl-2.4.0.jar"/>
-    <copy file="${path.variable.maven_repository}/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
-    <copy file="${path.variable.maven_repository}/com/thoughtworks/xstream/xstream/1.4.7/xstream-1.4.7.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/xstream-1.4.7.jar"/>
-    <copy file="${path.variable.maven_repository}/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/xmlpull-1.1.3.1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/testng/testng/6.8.8/testng-6.8.8.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/testng-6.8.8.jar"/>
-    <copy file="${path.variable.maven_repository}/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/bsh-2.0b4.jar"/>
-    <copy file="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jcommander-1.27.jar"/>
-    <copy file="${path.variable.maven_repository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/dom4j-1.6.1.jar"/>
-    <copy file="${path.variable.maven_repository}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
-    <copy file="${path.variable.maven_repository}/cglib/cglib/2.2/cglib-2.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/cglib-2.2.jar"/>
-    <copy file="${path.variable.maven_repository}/asm/asm/3.3.1/asm-3.3.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/asm-3.3.1.jar"/>
-    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jersey-bundle-1.19.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/json-20140107.jar"/>
-    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
-    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jersey-core-1.19.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/jersey/media/jersey-media-json-jackson/2.17/jersey-media-json-jackson-2.17.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jersey-media-json-jackson-2.17.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/jersey/core/jersey-common/2.17/jersey-common-2.17.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jersey-common-2.17.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/javax.ws.rs-api-2.0.1.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/javax.annotation-api-1.2.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/jersey/bundles/repackaged/jersey-guava/2.17/jersey-guava-2.17.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jersey-guava-2.17.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/hk2/hk2-api/2.4.0-b10/hk2-api-2.4.0-b10.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/hk2-api-2.4.0-b10.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/hk2/hk2-utils/2.4.0-b10/hk2-utils-2.4.0-b10.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/hk2-utils-2.4.0-b10.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/hk2/external/aopalliance-repackaged/2.4.0-b10/aopalliance-repackaged-2.4.0-b10.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/aopalliance-repackaged-2.4.0-b10.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/hk2/external/javax.inject/2.4.0-b10/javax.inject-2.4.0-b10.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/javax.inject-2.4.0-b10.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/hk2/hk2-locator/2.4.0-b10/hk2-locator-2.4.0-b10.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/hk2-locator-2.4.0-b10.jar"/>
-    <copy file="${path.variable.maven_repository}/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/javassist-3.18.1-GA.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/hk2/osgi-resource-locator/1.0.1/osgi-resource-locator-1.0.1.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/osgi-resource-locator-1.0.1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/glassfish/jersey/ext/jersey-entity-filtering/2.17/jersey-entity-filtering-2.17.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jersey-entity-filtering-2.17.jar"/>
-    <copy file="${path.variable.maven_repository}/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.3.2/jackson-jaxrs-base-2.3.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jackson-jaxrs-base-2.3.2.jar"/>
-    <copy file="${path.variable.maven_repository}/com/fasterxml/jackson/core/jackson-core/2.3.2/jackson-core-2.3.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jackson-core-2.3.2.jar"/>
-    <copy file="${path.variable.maven_repository}/com/fasterxml/jackson/core/jackson-databind/2.3.2/jackson-databind-2.3.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jackson-databind-2.3.2.jar"/>
-    <copy file="${path.variable.maven_repository}/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.3.2/jackson-jaxrs-json-provider-2.3.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jackson-jaxrs-json-provider-2.3.2.jar"/>
-    <copy file="${path.variable.maven_repository}/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.3.2/jackson-module-jaxb-annotations-2.3.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jackson-module-jaxb-annotations-2.3.2.jar"/>
-    <copy file="${path.variable.maven_repository}/com/fasterxml/jackson/core/jackson-annotations/2.3.2/jackson-annotations-2.3.2.jar" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/lib/jackson-annotations-2.3.2.jar"/>
-    <mkdir dir="${artifact.output.woserver:war_exploded}/META-INF"/>
-    <copy file="${basedir}/woServer/target/woServer-0.1.0/META-INF/MANIFEST.MF" tofile="${artifact.output.woserver:war_exploded}/META-INF/MANIFEST.MF"/>
-    <copy todir="${artifact.output.woserver:war_exploded}">
-      <fileset dir="${basedir}/woServer/resources"/>
-    </copy>
-    <mkdir dir="${artifact.output.woserver:war_exploded}/META-INF"/>
-    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:war_exploded}/META-INF/context.xml"/>
-    <mkdir dir="${artifact.output.woserver:war_exploded}/WEB-INF"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/sugaree/web.xml" tofile="${artifact.output.woserver:war_exploded}/WEB-INF/web.xml"/>
   </target>
   
   <target name="artifact.woserver:webforlocalhost_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForLocalhost exploded&#39; artifact">
@@ -585,23 +505,22 @@
     <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
     <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/json-20140107.jar"/>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
+    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
+    <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
+      <fileset dir="${basedir}/woServer/resources"/>
+    </copy>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
     <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
-    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
     <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
-    <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
-      <fileset dir="${basedir}/woServer/resources"/>
-    </copy>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
   </target>
   
   <target name="artifact.woserver:webforrose_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForRose exploded&#39; artifact">
@@ -658,6 +577,7 @@
     <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
     <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/json-20140107.jar"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/rose/web.xml" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/web.xml"/>
     <copy todir="${artifact.output.woserver:webforrose_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
@@ -713,6 +633,7 @@
     <copy todir="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.servletframework:jar}"/>
     </copy>
+    <copy file="${basedir}/woServer/web/WEB-INF/sugaree/web.xml" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/web.xml"/>
     <copy todir="${artifact.output.woserver:webforsugaree_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
@@ -720,10 +641,14 @@
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforsugaree_exploded}/META-INF/context.xml"/>
   </target>
   
-  <target name="build.all.artifacts" depends="artifact.emailer:jar, artifact.servletframework:jar, artifact.woserver_war_rose, artifact.woserver_war_sugaree, artifact.woserver:war, artifact.woserver:war_exploded, artifact.woserver:webforlocalhost_exploded, artifact.woserver:webforrose_exploded, artifact.woserver:webforsugaree_exploded" description="Build all artifacts">
+  <target name="build.all.artifacts" depends="artifact.emailer:jar, artifact.problemsnapshotinserter:jar, artifact.servletframework:jar, artifact.woserver_war_rose, artifact.woserver_war_sugaree, artifact.woserver:webforlocalhost_exploded, artifact.woserver:webforrose_exploded, artifact.woserver:webforsugaree_exploded" description="Build all artifacts">
     <mkdir dir="${artifact.output.emailer:jar}"/>
     <copy todir="${artifact.output.emailer:jar}">
       <fileset dir="${artifact.temp.output.emailer:jar}"/>
+    </copy>
+    <mkdir dir="${artifact.output.problemsnapshotinserter:jar}"/>
+    <copy todir="${artifact.output.problemsnapshotinserter:jar}">
+      <fileset dir="${artifact.temp.output.problemsnapshotinserter:jar}"/>
     </copy>
     <mkdir dir="${artifact.output.servletframework:jar}"/>
     <copy todir="${artifact.output.servletframework:jar}">
@@ -736,10 +661,6 @@
     <mkdir dir="${artifact.output.woserver_war_sugaree}"/>
     <copy todir="${artifact.output.woserver_war_sugaree}">
       <fileset dir="${artifact.temp.output.woserver_war_sugaree}"/>
-    </copy>
-    <mkdir dir="${artifact.output.woserver:war}"/>
-    <copy todir="${artifact.output.woserver:war}">
-      <fileset dir="${artifact.temp.output.woserver:war}"/>
     </copy>
     
     <!-- Delete temporary files -->
