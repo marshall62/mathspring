@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_emailer" default="compile.module.emailer">
+  <dirname property="module.emailer.basedir" file="${ant.file.module_emailer}"/>
+  
+  <property name="module.jdk.home.emailer" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.emailer" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.emailer" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.emailer" value="-encoding UTF-8 -source 1.5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="emailer.output.dir" value="${module.emailer.basedir}/target/classes"/>
+  <property name="emailer.testoutput.dir" value="${module.emailer.basedir}/target/test-classes"/>
+  
+  <path id="emailer.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="emailer.module.production.classpath">
+    <path refid="${module.jdk.classpath.emailer}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
+  </path>
+  
+  <path id="emailer.runtime.production.module.classpath">
+    <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
+  </path>
+  
+  <path id="emailer.module.classpath">
+    <path refid="${module.jdk.classpath.emailer}"/>
+    <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
+  </path>
+  
+  <path id="emailer.runtime.module.classpath">
+    <pathelement location="${emailer.testoutput.dir}"/>
+    <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.emailer">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.emailer">
+    <patternset refid="excluded.from.module.emailer"/>
+  </patternset>
+  
+  <path id="emailer.module.sourcepath">
+    <dirset dir="${module.emailer.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.emailer" depends="compile.module.emailer.production,compile.module.emailer.tests" description="Compile module emailer"/>
+  
+  <target name="compile.module.emailer.production" depends="register.custom.compilers" description="Compile module emailer; production classes">
+    <mkdir dir="${emailer.output.dir}"/>
+    <javac2 destdir="${emailer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.emailer}/javac">
+      <compilerarg line="${compiler.args.emailer}"/>
+      <bootclasspath refid="emailer.module.bootclasspath"/>
+      <classpath refid="emailer.module.production.classpath"/>
+      <src refid="emailer.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.emailer"/>
+    </javac2>
+    
+    <copy todir="${emailer.output.dir}">
+      <fileset dir="${module.emailer.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.emailer.tests" depends="register.custom.compilers,compile.module.emailer.production" description="compile module emailer; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.emailer" description="cleanup module">
+    <delete dir="${emailer.output.dir}"/>
+    <delete dir="${emailer.testoutput.dir}"/>
+  </target>
+</project>

@@ -8,7 +8,7 @@
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/web/WEB-INF/rose/web.xml" />
         </descriptors>
         <webroots>
-          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+          <root url="file://$MODULE_DIR$/resources" relative="/" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src" />

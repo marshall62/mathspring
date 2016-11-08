@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ProblemSnapshotInserter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ProblemSnapshotInserter_jar</output-path>
+    <root id="archive" name="ProblemSnapshotInserter.jar">
+      <element id="module-output" name="ProblemSnapshotInserter" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
