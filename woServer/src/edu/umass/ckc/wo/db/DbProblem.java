@@ -836,9 +836,8 @@ public class DbProblem extends BaseMgr {
             List<Problem> problems = ProblemMgr.getWorkingProblems(t.getId());
             // get the problems omitted for this topic
             List<String> ids = probMgr.getClassOmittedTopicProblemIds(conn,classId,t.getId());
-            if (problems == null)
-                t.setNumProbs(0);
-            else {
+            int problemCount = 0;
+            if (problems != null) {
                 t.setNumProbs(problems.size() - (ids != null ? ids.size() : 0));
                 int[] problemsByGrade = new int[10];
                 for (Problem p : problems) {
@@ -848,13 +847,16 @@ public class DbProblem extends BaseMgr {
                             //Note: we're only taking the first standard, it's possible that it may be labeled with multiple grades
                             // ... but I didn't find any that were and I'm not sure what we'd do in that case anyway
                             int gradeNum = getGradeNum(ccStandards.get(0).getGrade());
-                            if (gradeNum >= 0)
+                            if (gradeNum >= 0) {
                                 problemsByGrade[gradeNum]++;
+                                problemCount++;
+                            }
                         }
                     }
                 }
                 t.setNumProbsByGrade(problemsByGrade);
             }
+            t.setNumProbs(problemCount);
         }
     }
 
