@@ -8,9 +8,9 @@
 
 <div class="mainPageMargin">
   <div id="Layer1" align="center">
-      <p class="a2"><b><font face="Arial, Helvetica, sans-serif"> Problem Topic Selection</font></b></p>
-      <p><font face="Arial, Helvetica, sans-serif">To select problems you must click on a topic below.</font></p>
-      <p><font face="Arial, Helvetica, sans-serif" color="#FF0000"> Note: You may not select problems for deactivated topics </font></p>
+      <p class="a2"><b>Problem Topic Selection</b></p>
+      <p>To select problems you must click on a topic below.</p>
+      <p style="color:#FF0000">Note: You may not select problems for deactivated topics</p>
 
       <%--@elvariable id="classGradeColumn" type="int"--%>
       <%--@elvariable id="gradeColumnMask" type="boolean[]"--%>
@@ -35,7 +35,7 @@
           <c:forEach var="topic" items="${topics}">
               <c:if test="${topic.seqPos > 0 && topic.numProbs > 0}">
                   <tr>
-                      <td><font  face="Arial, Helvetica, sans-serif"><c:out value="${topic.id}"/></font></td>
+                      <td><c:out value="${topic.id}"/></td>
                       <td class="a2">
                           <a  href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminSelectTopicProblems&topicId=<c:out value="${topic.id}"/>&classId=<c:out value="${classId}"/>&teacherId=<c:out value="${teacherId}"/>" >
                               <c:out value="${topic.name}"/>
@@ -43,7 +43,7 @@
                       </td>
                       <td>
                           <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
-                              <font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.numProbs}"/></font>
+                              <c:out value="${topic.numProbs}"/>
                           </a>
                       </td>
                       <c:forEach var="problemsByGrade" varStatus="status" items="${topic.problemsByGrade}">
