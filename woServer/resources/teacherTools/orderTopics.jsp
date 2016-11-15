@@ -86,7 +86,7 @@
                   </td>
 
               <!--    <input name='<c:out value="topicPosition"/>' type="text" value='<c:out value="${topic.seqPos}"/>' size="3" /></td> -->
-                  <td><font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.name}"/></td>
+                  <td><c:out value="${topic.name}"/></td>
                   <td>
                       <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
                           <c:out value="${topic.numProbs}"/>
