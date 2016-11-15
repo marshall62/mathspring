@@ -11,21 +11,30 @@ import ckc.servlet.servbase.ServletParams;
 public class AdminReorderTopicsEvent extends AdminEditTopicsEvent {
 
     private int topicId;
-    private String direction;
-    
+    private String reorderType;
+    private int source, destination;
+
 
 
     public AdminReorderTopicsEvent (ServletParams p) throws Exception {
         super(p);
         topicId = p.getInt("topicId");
-        direction = p.getString("direction");
+        reorderType = p.getString("reorderType");
+        if(reorderType.equals("move")) {
+            source = p.getInt("topicFrom");
+            destination = p.getInt("topicTo");
+        }
     }
 
     public int getTopicId() {
         return topicId;
     }
 
-    public String getDirection() {
-        return direction;
+    public String getReorderType() {
+        return reorderType;
     }
+
+    public int getSource() { return source; }
+
+    public int getDestination() { return destination; }
 }

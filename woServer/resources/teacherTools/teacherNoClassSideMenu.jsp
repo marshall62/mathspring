@@ -41,6 +41,7 @@ March 23, 2012
 
     <link href="fonts/stylesheet.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="teacherTools/changeClassGrab.js"></script>
+    <script type="text/javascript" src="teacherTools/dragAndDropTable.js"></script>
     <script type="text/javascript">
         var repeatAct = '${action}';
         var path2= '${pageContext.request.contextPath}';
