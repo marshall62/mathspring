@@ -6,9 +6,9 @@
 <jsp:useBean id="params" scope="request" type="edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="mainPageMargin" style="font-family: Arial, Helvetica, sans-serif">
+<div class="mainPageMargin">
   <div id="Layer1" align="center" >
-      <p align="center" class="a2"><b>Active Topic Order</b></p>
+      <p class="a2"><b>Active Topic Order</b></p>
       <p>Topics will be presented in the order below.</p>
 
       <%--@elvariable id="classGradeColumn" type="int"--%>
