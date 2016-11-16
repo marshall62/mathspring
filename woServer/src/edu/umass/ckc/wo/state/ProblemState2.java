@@ -38,6 +38,8 @@ public class ProblemState2 extends State {
     private static final String TIME_TO_FIRST_EVENT = "timeToFirstEvent";
     private static final String TIME_TO_FIRST_HINT = "timeToFirstHint";
     private static final String TIME_TO_FIRST_ATTEMPT = "timeToFirstAttempt";
+    private static final String TIME_TO_SECOND_ATTEMPT = "timeToSecondAttempt";
+    private static final String TIME_TO_THIRD_ATTEMPT = "timeToThirdAttempt";
     private static final String TIME_IN_HINTS_BEFORE_CORRECT = "timeInHintsBeforeCorrect";
     private static final String NUM_HINTS_BEFORE_CORRECT = "numHintsBeforeCorrect";
     private static final String NUM_HELPAIDS_BEFORE_CORRECT = "numHelpAidsBeforeCorrect";
@@ -59,7 +61,8 @@ public class ProblemState2 extends State {
     private static final String  TABLE_NAME= "studentproblemstate";
     public static final String[] TABLE_COLS  = new String[] { CUR_HINT, CUR_HINT_ID, PROB_ELAPSED_TIME, PROB_START_TIME, HINT_START_TIME, ATTEMPT_START_TIME,
             CUR_PROB_NUM_ATTEMPTS, CUR_PROB_AVG_TIME_BETWEEN_ATTEMPTS, CUR_PROB_NUM_MISTAKES, CUR_PROB_NUM_HINTS_GIVEN, CUR_PROB_NUM_HELPAIDS_GIVEN,
-            CUR_PROB_MAX_HINTS, PROBLEM_SOLVED, TIME_TO_SOLVE, TIME_TO_FIRST_EVENT, TIME_TO_FIRST_HINT, TIME_TO_FIRST_ATTEMPT, TIME_IN_HINTS_BEFORE_CORRECT,
+            CUR_PROB_MAX_HINTS, PROBLEM_SOLVED, TIME_TO_SOLVE, TIME_TO_FIRST_EVENT, TIME_TO_FIRST_HINT, TIME_TO_FIRST_ATTEMPT, TIME_TO_SECOND_ATTEMPT, TIME_TO_THIRD_ATTEMPT,
+            TIME_IN_HINTS_BEFORE_CORRECT,
             NUM_HINTS_BEFORE_CORRECT, NUM_HELPAIDS_BEFORE_CORRECT, FIRST_EVENT, LAST_EVENT, STRATEGIC_HINT_SHOWN, PROB_IDLE_TIME, VIDEO_SHOWN,
             TEXT_READER_USED, SOLUTION_HINT_GIVEN, CUR_INTERVENTION, INTERVENTION_START_TIME, PROB_EXAMPLES_SHOWN, PROBLEM_BINDING, PROBLEM_ANSWER,POSSIBLE_SHORT_ANSWERS};
          // N.B.  If you add a new field above,  make sure clearState deletes its value
@@ -82,6 +85,8 @@ public class ProblemState2 extends State {
     private long timeToFirstEvent;
     private long timeToFirstHint;
     private long timeToFirstAttempt;
+    private long timeToSecondAttempt;
+    private long timeToThirdAttempt;
     private long timeInHintsBeforeCorrect;
     private int numHintsBeforeCorrect;
     private int numHelpAidsBeforeCorrect;
@@ -200,6 +205,8 @@ public class ProblemState2 extends State {
         this.setNumHelpAidsBeforeCorrect(0);
         this.setTimeToFirstEvent(-1);
         this.setTimeToFirstAttempt(-1);
+        this.setTimeToSecondAttempt(-1);
+        this.setTimeToThirdAttempt(-1);
         this.setTimeInHintsBeforeCorrect(0);
         this.setFirstEvent(null);
         this.setLastEvent(null);
@@ -374,8 +381,21 @@ public class ProblemState2 extends State {
         this.timeToFirstAttempt = timeToFirstAttempt;
     }
 
+    public void setTimeToSecondAttempt(long timeToSecondAttempt) throws SQLException {
+        this.timeToSecondAttempt = timeToSecondAttempt;
+    }
+    public void setTimeToThirdAttempt(long timeToThirdAttempt) throws SQLException {
+        this.timeToThirdAttempt = timeToThirdAttempt;
+    }
+
     public long getTimeToFirstAttempt() {
         return timeToFirstAttempt;
+    }
+    public long getTimeToSecondAttempt() {
+        return timeToSecondAttempt;
+    }
+    public long getTimeToThirdAttempt() {
+        return timeToThirdAttempt;
     }
 
     public void setTimeInHintsBeforeCorrect(long timeInHintsBeforeCorrect) throws SQLException {

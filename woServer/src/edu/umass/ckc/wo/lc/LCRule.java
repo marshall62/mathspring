@@ -23,6 +23,7 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
     private double priority;
     private String notes;
     private String interventionPointName;
+    private List<LCMetaRule> overrideMetaRules;
 
     public LCRule() {
         conditions = new ArrayList<LCCondition>();
@@ -45,6 +46,16 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
         conditions.add(c);
     }
 
+    public LCMetaRule getMetaRuleOverride (String metaRuleName) {
+        if (overrideMetaRules != null) {
+            for (LCMetaRule mr : overrideMetaRules) {
+                if (mr.getName().equals(metaRuleName))
+                    return mr;
+            }
+        }
+        return null;
+    }
+
     /**
      * Test to see if a rule has all conditions true
      * @return true if all the rule conditions are true
@@ -53,12 +64,12 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
     public boolean test () throws Exception {
         try {
             for (LCCondition cond : conditions) {
-                cond.setup(smgr, event);
+                cond.setup(smgr, event, cache);
                 boolean res = cond.eval();
                 if (!res)
                     return false;
             }
-            action.setup(smgr, event);
+            action.setup(smgr, event, cache);
             return true;    // if all conditions are true, return true
         } catch (Exception ee) {
             System.out.println("Failed to evaluate rule: " + this.getName());
@@ -100,7 +111,7 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
     public boolean eval () throws Exception {
         boolean fail = false;
         for (LCCondition c : conditions) {
-            c.setup(smgr,event);
+            c.setup(smgr,event, cache);
             if (!c.eval()) {
                 fail = true;
                 break;
@@ -135,11 +146,20 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
 
     public String toString () {
         StringBuilder sb = new StringBuilder(this.getName() + ": IF ");
+        sb.append("userEvent= " + this.getOnEvent()).append(" AND ");
         for (LCCondition c : this.getConditions())
             sb.append(c.toString()).append(" AND ");
-        sb.delete(sb.lastIndexOf("AND"),sb.length());
+        if (sb.indexOf("AND") != -1)
+            sb.delete(sb.lastIndexOf("AND"),sb.length());
         sb.append(" THEN " );
         sb.append(this.getAction().getName() + " ("+this.getAction().getMsgText()+")");
         return sb.toString();
+    }
+
+    public void addMetaRuleOverride(LCMetaRule mr) {
+        if (this.overrideMetaRules == null) {
+            this.overrideMetaRules = new ArrayList<LCMetaRule>();
+        }
+        this.overrideMetaRules.add(mr);
     }
 }

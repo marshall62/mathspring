@@ -83,7 +83,7 @@ public class LCExpr extends LCRuleComponent {
 
     public boolean eval () throws Exception {
         //  Use the relop to compare the result of the function to the value
-        this.fn.setup(smgr,event);
+        this.fn.setup(smgr,event, cache);
         Object val;
         try {
             val = this.fn.eval();
@@ -187,39 +187,40 @@ public class LCExpr extends LCRuleComponent {
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
             Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,null);
             SessionManager smgr = new SessionManager(conn);
+            StudentDataCache cache = new StudentDataCache();
             smgr.attemptSessionCreation("dm","dm",System.currentTimeMillis(),true);
 
             System.out.println("Testing LCExpr with user dm/dm studId="+ smgr.getStudentId());
 
             SessionEvent atEv = new AttemptEvent("test",false,10,20,smgr.getSessionNum());
             LCExpr e1 = new LCExpr("curTopicMastery",null, "<", 0.5);
-            e1.setup(smgr,null);
+            e1.setup(smgr,null, cache);
             e1.evalPrint();
             Class[] args1 = new Class[] {SessionEvent.class};
             LCExpr e2 = new LCExpr("isAttemptEvent",args1);
-            e2.setup(smgr,null);
+            e2.setup(smgr,null, cache);
             e2.evalPrint();
             LCExpr e3 = new LCExpr("curProbNumIncorrectAttempts",null, ">=", 0);
-            e3.setup(smgr,null);
+            e3.setup(smgr,null, cache);
             e3.evalPrint();
 
             LCExpr e4 = new LCExpr("solvedOnAttempt",null, "=", 1);
-            e4.setup(smgr,null);
+            e4.setup(smgr,null, cache);
             e4.evalPrint();
             LCExpr e5 = new LCExpr("timeToSolve",null, ">=", 5000);
-            e5.setup(smgr,null);
+            e5.setup(smgr,null, cache);
             e5.evalPrint();
             LCExpr e6 = new LCExpr("curProbTimeToFirstAttempt",null, ">", 1000);
-            e6.setup(smgr,null);
+            e6.setup(smgr,null, cache);
             e6.evalPrint();
             LCExpr e7 = new LCExpr("effort3",null, "=", "SOF");
-            e7.setup(smgr,null);
+            e7.setup(smgr,null, cache);
             e7.evalPrint();
             LCExpr e8 = new LCExpr("effort2",null, "=", "SHINT");
-            e8.setup(smgr,null);
+            e8.setup(smgr,null, cache);
             e8.evalPrint();
             LCExpr e9 = new LCExpr("effort1",null, "=", "NOTR");
-            e9.setup(smgr,null);
+            e9.setup(smgr,null, cache);
             e9.evalPrint();
 
         } catch (Exception e) {

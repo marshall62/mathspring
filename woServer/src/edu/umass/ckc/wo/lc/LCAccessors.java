@@ -34,6 +34,7 @@ public class LCAccessors {
     private StudentModel studentModel;
     private StudentProblemHistory probSolveHist;
     private SessionEvent event ; // the current event sent in by user
+    private StudentDataCache cache;
 
     private static final double LOW_MASTERY_LEVEL = 0.4;
     private static final double HIGH_MASTERY_LEVEL = 0.85;
@@ -45,14 +46,15 @@ public class LCAccessors {
      * Creates the Object with a session manager instance and the current user event.   Must be done prior to calling
      * eval method to evaluate rules.
      * @param smgr
-     * @param e
+     * @param cache
      */
-    public LCAccessors(SessionManager smgr, SessionEvent e) {
+    public LCAccessors(SessionManager smgr, StudentDataCache cache) {
         this.smgr = smgr;
         this.conn = smgr.getConnection();
         this.state = smgr.getStudentState();
         this.studentModel = smgr.getStudentModel();
         this.probSolveHist = studentModel.getStudentProblemHistory();
+        this.cache = cache;
     }
 
     public Object eval (LCFn fn) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -84,16 +86,20 @@ public class LCAccessors {
     }
 
     public double lastTopicMasteryValue (SessionEvent ev) {
-        int lt =  state.getLastTopic();
-        if (lt != -1) {
-            try {
-                return studentModel.getTopicMastery(lt);
-            } catch (SQLException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                return 0.01;   // protection against exceptions and/or divide by zero errors.
-            }
+        Double d = cache.lastTopicMasteryValue;
+        if (d == null) {
+            int lt = state.getLastTopic();
+            if (lt != -1) {
+                try {
+                    double v= studentModel.getTopicMastery(lt);
+                    cache.lastTopicMasteryValue=v;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    cache.lastTopicMasteryValue=0.01; // protection against exceptions and/or divide by zero errors.
+                }
+            } else cache.lastTopicMasteryValue=0.01;
         }
-        else return 0;
+        return cache.lastTopicMasteryValue;
     }
 
     /**
@@ -102,11 +108,15 @@ public class LCAccessors {
      */
     public double topicMasteryValue(SessionEvent ev)  {
         try {
-            return studentModel.getTopicMastery(state.getCurTopic());
+            Double d = cache.curTopicMasteryValue;
+            if (d == null) {
+                cache.curTopicMasteryValue = studentModel.getTopicMastery(state.getCurTopic());
+            }
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            return 0.01;   // protection against exceptions and/or divide by zero errors.
+            cache.curTopicMasteryValue= 0.01;   // protection against exceptions and/or divide by zero errors.
         }
+        return cache.curTopicMasteryValue;
     }
 
     public boolean isTopicMasteryLow (SessionEvent ev) {
@@ -188,6 +198,13 @@ public class LCAccessors {
     public double timeToFirstAttemptSecs (SessionEvent ev) {
         return state.getTimeToFirstAttempt() / 1000.0;
     }
+    public double timeToSecondAttemptSecs (SessionEvent ev) {
+        return state.getTimeToSecondAttempt() / 1000.0;
+    }
+    public double timeToThirdAttemptSecs (SessionEvent ev) {
+        return state.getTimeToThirdAttempt() / 1000.0;
+    }
+
 
     public boolean isSolved (SessionEvent ev) {
         return state.isProblemSolved();
@@ -197,21 +214,37 @@ public class LCAccessors {
 
     // Get the effort on the current problem
     public String currentEffort (SessionEvent ev) {
-        return historyEffortN(0);
+        String eff = cache.curEffort;
+        if (eff == null) {
+            cache.curEffort= historyEffortN(0);
+        }
+        return cache.curEffort;
     }
 
     // get the effort on the problem 3 before the current
     public String effort3 (SessionEvent ev) {
-        return historyEffortN(3);
+        String eff = cache.effort3;
+        if (eff == null) {
+            cache.effort3= historyEffortN(3);
+        }
+        return cache.effort3;
     }
 
     // get the effort on the problem 2 before the current
     public String effort2 (SessionEvent ev) {
-        return historyEffortN(2);
+        String eff = cache.effort2;
+        if (eff == null) {
+            cache.effort2= historyEffortN(2);
+        }
+        return cache.effort2;
     }
     // Get the effort on the previous
     public String effort1 (SessionEvent ev) {
-        return historyEffortN(1);
+        String eff = cache.effort1;
+        if (eff == null) {
+            cache.effort1= historyEffortN(1);
+        }
+        return cache.effort1;
     }
 
 
@@ -242,48 +275,64 @@ public class LCAccessors {
     }
 
     public boolean videoExists (SessionEvent e) throws SQLException {
-        int curProbId = state.getCurProblem();
-        Problem p = ProblemMgr.getProblem(curProbId);
-        if (p != null) {
-            String v = p.getVideo();
-            return v != null && !v.equals("");
+        if (cache.videoExists == null) {
+            int curProbId = state.getCurProblem();
+            Problem p = ProblemMgr.getProblem(curProbId);
+            if (p != null) {
+                String v = p.getVideo();
+                cache.videoExists = v != null && !v.equals("");
+            }
+            else cache.videoExists= false;
         }
-        return false;
+        return cache.videoExists;
 
     }
 
     public boolean exampleExists (SessionEvent e) throws SQLException {
-        int curProbId = state.getCurProblem();
-        Problem p = ProblemMgr.getProblem(curProbId);
-        if (p != null) {
-            int ex = p.getExample();
-            return ex != -1;
+        if (cache.exampleExists == null) {
+            int curProbId = state.getCurProblem();
+            Problem p = ProblemMgr.getProblem(curProbId);
+            if (p != null) {
+                int ex = p.getExample();
+                cache.exampleExists = ex != -1;
+            }
+            else cache.exampleExists= false;
         }
-        return false;
+        return cache.exampleExists;
     }
 
     public boolean hintExists (SessionEvent e) throws SQLException {
-        int curProbId = state.getCurProblem();
-        Problem p = ProblemMgr.getProblem(curProbId);
-        if (p != null) {
-            List<Hint> hs = p.getHints();
-            return hs != null && hs.size() > 0;
+        if (cache.hintExists == null) {
+            int curProbId = state.getCurProblem();
+            Problem p = ProblemMgr.getProblem(curProbId);
+            if (p != null) {
+                List<Hint> hs = p.getHints();
+                cache.hintExists= hs != null && hs.size() > 0;
+            }
+            else cache.hintExists =false;
+
         }
-        return false;
+        return cache.hintExists;
     }
 
     public double curProbDifficulty (SessionEvent e) throws SQLException {
-        int curProbId = state.getCurProblem();
-        Problem p = ProblemMgr.getProblem(curProbId);
-        return p.getDiff_level();
+        if (cache.curProbDifficulty == null) {
+            int curProbId = state.getCurProblem();
+            Problem p = ProblemMgr.getProblem(curProbId);
+            cache.curProbDifficulty= p.getDiff_level();
+        }
+        return cache.curProbDifficulty;
     }
 
     public double lastProbDifficulty (SessionEvent e) throws SQLException {
-        int pid = state.getLastProblem();
-        Problem p = ProblemMgr.getProblem(pid);
-        if (p != null)
-            return p.getDiff_level();
-        else return 0;
+        if (cache.lastProbDifficulty == null) {
+            int pid = state.getLastProblem();
+            Problem p = ProblemMgr.getProblem(pid);
+            if (p != null)
+                cache.lastProbDifficulty = p.getDiff_level();
+            else cache.lastProbDifficulty = 0.0;
+        }
+        return cache.lastProbDifficulty ;
     }
 
     public int curProbTopic (SessionEvent e) {
@@ -296,10 +345,13 @@ public class LCAccessors {
     }
 
     public int lastProbTopic (SessionEvent e) {
-        final StudentProblemData data = historyN(1);
-        if (data != null)
-            return data.getTopicId();
-        else return -1;
+        if (cache.lastProbTopic == null) {
+            final StudentProblemData data = historyN(1);
+            if (data != null)
+                cache.lastProbTopic = data.getTopicId();
+            else cache.lastProbTopic = -1;
+        }
+        return cache.lastProbTopic ;
     }
 
     public boolean curProbTopicSameAsLastProbTopic (SessionEvent e) {
@@ -313,19 +365,25 @@ public class LCAccessors {
     }
 
     public boolean lastProblemIsExampleOrDemo (SessionEvent e) {
-        final StudentProblemData d = historyN(1);
-        if (d != null)
-            return d.getMode().equals(Problem.DEMO) || d.getMode().equalsIgnoreCase(Problem.EXAMPLE);
-        else return false;
+        if (cache.lastProblemIsDemoOrExample == null) {
+            final StudentProblemData d = historyN(1);
+            if (d != null)
+                cache.lastProblemIsDemoOrExample = d.getMode().equals(Problem.DEMO) || d.getMode().equalsIgnoreCase(Problem.EXAMPLE);
+            else cache.lastProblemIsDemoOrExample = false;
+        }
+        return cache.lastProblemIsDemoOrExample;
     }
 
+    // The first problem in a topic is either a demo problem or one that is labelled with a different topic than the previous problem
     public boolean isFirstProblemInTopic (SessionEvent e) {
-        final StudentProblemData l = historyN(1);
-        if (l != null) {
-            int curTopic = state.getCurTopic();
-            return (l.getMode().equals(Problem.DEMO) || l.getTopicId() != curTopic);
+        if (cache.isFirstProblemInTopic == null) {
+            final StudentProblemData l = historyN(1);  // the last prob
+            if (l != null) {
+                int curTopic = state.getCurTopic();
+                cache.isFirstProblemInTopic = (l.getMode().equals(Problem.DEMO) || l.getTopicId() != curTopic);
+            } else cache.isFirstProblemInTopic = true;
         }
-        else return true;
+        return cache.isFirstProblemInTopic ;
     }
 
 

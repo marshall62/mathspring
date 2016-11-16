@@ -22,9 +22,10 @@ import org.dom4j.rule.RuleSet;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ * A learning companion that uses rules to define its behavior.   The learning companion is plugged into the pedagogy.
+ *
  * User: marshall
- * Date: 12/12/13
+ * Date: 5/10/16
  * Time: 8:11 AM
  * To change this template use File | Settings | File Templates.
  */

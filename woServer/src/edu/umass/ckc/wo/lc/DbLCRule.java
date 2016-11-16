@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,6 +33,35 @@ public class DbLCRule {
                 return new LCMessage(id,text,media);
             }
             return null;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+    public static List<LCRule> getAllRules (Connection conn) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select r.id, r.name, r.description, r.onEvent, r.priority from rule r";
+            stmt = conn.prepareStatement(q);
+            List<LCRule> rules = new ArrayList<LCRule>();
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name= rs.getString(2);
+                String descr= rs.getString(3);
+                String onEvent= rs.getString(4);
+                double priority = rs.getDouble(5);
+                LCRule rule = new LCRule(id,name,descr,onEvent,priority);
+                readRuleConditions(rule,conn,id);
+                readRuleAction(rule,conn,id);
+                rules.add(rule);
+            }
+            return rules;
         }
         finally {
             if (stmt != null)
@@ -536,5 +566,10 @@ public class DbLCRule {
         clearRuleTable(conn,"rulecondition");
         clearRuleTable(conn,"ruleaction");
         clearRuleTable(conn,"lcmetarule");
+    }
+
+    public static LCRuleset getRuleSet(Connection conn, String rulesetName) throws Exception {
+        int id = getRuleSetId(conn,rulesetName);
+        return readRuleSet(conn,id,new LCRuleset(rulesetName,id));
     }
 }

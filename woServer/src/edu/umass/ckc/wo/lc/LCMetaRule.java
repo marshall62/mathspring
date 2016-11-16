@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.lc;
 
+import org.jdom.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,13 @@ public class LCMetaRule {
             this.vali = Integer.parseInt(value) * 60 * 1000;
     }
 
+    public static LCMetaRule createFromRuleXML (Element mrOverrideElt) {
+        String name = mrOverrideElt.getAttributeValue("name");
+        String value = mrOverrideElt.getAttributeValue("value");
+        String units = mrOverrideElt.getAttributeValue("units");
+        return new LCMetaRule(name,units,value);
+    }
+
     public String getName() {
         return name;
     }
@@ -58,6 +67,7 @@ public class LCMetaRule {
 
     /**
      * See if this meta-rule is true by testing the given rule against the student history and the current time.
+     * If the given rule overrides this meta-rule, then use the value coming from the rule rather than defined in this meta rule.
      * @param hist
      * @param r
      * @param now
@@ -69,6 +79,8 @@ public class LCMetaRule {
         if (this.name.equalsIgnoreCase(AVOID_TOO_MANY_MESSAGES)) {
             StudentRuleHistory.LCRuleInstantiation inst = hist.getHistory().peek();
             long diff = now - inst.getTime();
+            LCMetaRule ovmr = r.getMetaRuleOverride(this.name);
+            int val = ovmr != null ? ovmr.vali : this.vali;
             if (diff > this.vali)
                 return true;
             else return false;
@@ -98,6 +110,9 @@ public class LCMetaRule {
         // the meta rules value.
         if (this.name.equalsIgnoreCase(AVOID_REPEAT_RULE_MR) && inst.getR()==r)  {
             long diff = now - inst.getTime();
+            // if the rule has a meta-rule override, use the override value rather than this meta-rule's
+            LCMetaRule mr = r.getMetaRuleOverride(this.name);
+            int val = (mr != null) ? mr.vali : this.vali;
             return diff > this.vali;
         }
         return true;

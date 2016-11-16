@@ -22,9 +22,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="emailer" />
         <module name="main" />
-        <module name="servletFramework" />
         <module name="woServer" />
       </profile>
     </annotationProcessing>

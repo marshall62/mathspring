@@ -1,16 +1,26 @@
-package edu.umass.ckc.wo.db;
-
 import com.mysql.jdbc.MysqlDataTruncation;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
-// Pull request test
+
+/**
+ * This file is used to populate the Problem table with snapshot images as BLOBs in the Problem.snapshot field.
+ *
+ * It is packaged as a jar file (see the project artifact ProblemSnapshotInserter which is an executable jar).
+ * It is run like this: java -jar ProblemSnapshotInserter.jar
+ * It is run like this: java -jar ProblemSnapshotInserter.jar d:/mydir/
+ *
+ * It will run over the Problem table in the db using Problem.name and look for an image by that name in the
+ * directory.   If found, it will insert it into the snapshot field as a blob.
+ *
+ *  To package the jar:
+ *      Build | Make module ProblemSnapshotInserter
+ *      Build | Build Artifacts | ProblemSnapshotInserter
+ *
+ *      Jar file is in out/artifacts
+ */
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,12 +31,44 @@ import java.sql.SQLException;
  */
 public class ScreenshotInserter {
 
+    public static Connection getAConnection (String host) throws SQLException {
+        String dbPrefix = "jdbc:mysql";
+        String dbHost = host;
+        String dbSource = "wayangoutpostdb";
+        String dbUser = "WayangServer";
+        String dbPassword = "jupiter";
+
+        String url;
+        if (dbPrefix.equals("jdbc:mysql"))
+            url = dbPrefix +"://"+ dbHost +"/"+ dbSource +"?user="+ dbUser +"&password="+ dbPassword; // preferred by MySQL
+        else // JDBCODBCBridge
+            url = dbPrefix +":"+ dbSource;
+//        url = "jdbc:mysql://localhost:3306/test";
+//        url = "jdbc:mysql://localhost/rashidb"; // this works
+        try {
+            System.out.println("connecting to db on url " + url);
+            return DriverManager.getConnection(url,dbUser,dbPassword);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw e;
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
 
-        Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
+        Connection conn = getAConnection("rose.cs.umass.edu");
+        System.out.println("Running snapshot inserter");
 
-        String dir = "U:\\MathspringProblemSnapshots\\screenshots\\";
-
+//        String dir = "U:\\MathspringProblemSnapshots\\screenshots\\";
+        String dir = "";
+        // if a dir is given as an arg to the program use it; otherwise use the current working dir.
+        if (args.length > 0) {
+            dir = args[0];
+            if (!dir.endsWith("/"))
+                dir += "/"; // needs to end with a slash
+            System.out.println("Using directory " + dir + " for images");
+        }
+        else System.out.println("Using current directory for images");
 
         String problem_name = null;
         PreparedStatement ps = null;
@@ -75,7 +117,7 @@ public class ScreenshotInserter {
                     ps2.executeUpdate();
                     System.out.println("Successfully wrote blob for " + problem_name);
                 } catch (MysqlDataTruncation exc) {
-                    System.out.println("ss too large for " + filename);
+                    System.out.println("Snapshot too large for " + filename);
                     continue;
                 } catch (Exception e) {
                     System.out.println("Cannot process problem " + problem_name + " .. Omitting");
