@@ -90,7 +90,9 @@ public class Topic implements Comparable<Topic> {
         this.ccStandards = ccStandards;
     }
 
-    // return the standard codes as a string separated by commas
+    /**
+     * @return The Common Core Standards associated with this topic, as a comma-separated string.
+     */
     public String getStandards () {
         if (this.ccStandards == null) {
             return "";
