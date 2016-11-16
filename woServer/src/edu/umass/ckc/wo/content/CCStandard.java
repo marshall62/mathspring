@@ -37,8 +37,12 @@ public class CCStandard implements Comparable<CCStandard> {
         this.grade = grade;
         this.idABC = idABC;
         String[] parts = idABC.split("\\.");
+        if(!parts[0].matches("\\d+") && parts[0].charAt(0) != 'K') {
+            //This should be a high school standard; these omit the HS, we need to add it back in
+            parts[0] = "HS" + parts[0];
+        }
         this.url = "http://www.corestandards.org/Math/Content/" + parts[0] + "/" + parts[1] +
-                "/#CCSS.Math.Content." + idABC;
+                "/#CCSS.Math.Content." + String.join(".", parts);
     }
 
     public CCStandard(String id, String descr, String grade, String cat, String clustName, int clustId,
