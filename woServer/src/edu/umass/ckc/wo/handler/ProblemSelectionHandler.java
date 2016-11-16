@@ -41,6 +41,11 @@ public class ProblemSelectionHandler {
         String svr = sc.getServerInfo();
 //        String url1 = servletRequest.getRequestURL();
 
+        ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
+        Classes bean1 = new Classes(classes1);
+        ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
+        servletRequest.setAttribute("bean",bean1);
+        servletRequest.setAttribute("classInfo",classInfo);
         if (event instanceof AdminSelectTopicProblemsEvent)  {
             int topicId = ((AdminSelectTopicProblemsEvent) event).getTopicId();
             DbProblem probMgr = new DbProblem();
@@ -49,32 +54,19 @@ public class ProblemSelectionHandler {
             List<Problem> problems = ProblemMgr.getWorkingProblems(topicId);
             // get the problems omitted for this topic
             List<SATProb> satProbs = probMgr.getTopicOmittedProblems(conn,event.getClassId(),problems, topicId);
-            ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
-            Classes bean1 = new Classes(classes1);
-            ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
-            Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
-            servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-
-            servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("problems",satProbs);
-            servletRequest.setAttribute("classId",event.getClassId());
-            servletRequest.setAttribute("teacherId",event.getTeacherId());
-            CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
             servletRequest.setAttribute("topicId",topicId);
-            servletRequest.setAttribute("bean", bean1);
-            servletRequest.setAttribute("classInfo", classInfo);
             String uri = Settings.probPreviewerPath;
             servletRequest.setAttribute("probPlayerHost", uri);
             servletRequest.setAttribute("html5ProblemURI",Settings.html5ProblemURI );
             servletRequest.setAttribute("topicName",topic.getName());
             servletRequest.setAttribute("standards",topic.getStandards());
             servletRequest.setAttribute("summary",topic.getSummary());
-            servletRequest.getRequestDispatcher(PROBLEMS_JSP).forward(servletRequest,servletResponse);
         }
         else if (event instanceof AdminActivateProblemsEvent) {
             int topicId = ((AdminActivateProblemsEvent) event).getTopicId();
             int classId = event.getClassId();
-            // DM 4/09   Hopeful bug fix.   CLasses that do not have an alterred topic list
+            // DM 4/09   Hopeful bug fix.   Classes that do not have an altered topic list
             // will not have a ClassLessonPlan row but this is necessary if problems are being
             // omitted from topics even if the topic sequence remains as the default.
             // So we must check if a ClassLessonPlan exists for this class and if not, build one.
@@ -92,27 +84,14 @@ public class ProblemSelectionHandler {
             List<Problem> problemsInTopic = ProblemMgr.getWorkingProblems(topicId);
             List<SATProb> satProbs = probMgr.activateTopicProblems(conn, problemsInTopic,activatedIds);
             List<Integer> deactivatedIds = new ArrayList<Integer>();
-            ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
-            Classes bean1 = new Classes(classes1);
-            ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
             for (SATProb prob:satProbs)
                 if (!prob.isActivated())
                     deactivatedIds.add(prob.getId());
             probMgr.updateOmittedProbsList(conn,classId,topicId,deactivatedIds);
-            Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
-            servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-
-            servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("problems",satProbs);
-            servletRequest.setAttribute("classId",event.getClassId());
-            servletRequest.setAttribute("teacherId",event.getTeacherId());
-            CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
             servletRequest.setAttribute("topicId",topicId);
-            servletRequest.setAttribute("bean", bean1);
-            servletRequest.setAttribute("classInfo", classInfo);
             String uri = ProbPlayer.getURLToProbPlayer();
             servletRequest.setAttribute("probPlayerHost",uri);
-            servletRequest.getRequestDispatcher(PROBLEMS_JSP).forward(servletRequest,servletResponse);
             // TODO fetch all ids of all problems within topic
             // do a setDiff on these with activeProblemIds yielding inactiveProblems
             // The ClassOmittedProblems table holds a list of all the omitted problems for a class.  This will need to have an additional column added for topicId
@@ -122,23 +101,18 @@ public class ProblemSelectionHandler {
         }
         else  {
             List<Topic> topics = DbTopics.getClassTopicsSequence(conn,event.getClassId());
-            ClassInfo[] classes1 = DbClass.getClasses(conn, event.getTeacherId());
-            Classes bean1 = new Classes(classes1);
-            ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
-            Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
-            servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
             DbProblem.setTopicNumProbsForClass(conn, event.getClassId(), topics);
             servletRequest.setAttribute("gradeColumnMask", DbProblem.getGradeColumnMask(topics));
             servletRequest.setAttribute("classGradeColumn", DbProblem.getGradeNum(classInfo.getGrade()));
-            servletRequest.setAttribute("action","AdminProblemSelection");
             servletRequest.setAttribute("topics",topics);
-            servletRequest.setAttribute("classId",event.getClassId());
-            servletRequest.setAttribute("teacherId",event.getTeacherId());
-            CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
-            servletRequest.setAttribute("bean",bean1);
-            servletRequest.setAttribute("classInfo",classInfo);
-            servletRequest.getRequestDispatcher(JSP).forward(servletRequest,servletResponse);
         }
+        Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
+        servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
+        servletRequest.setAttribute("classId",event.getClassId());
+        servletRequest.setAttribute("teacherId",event.getTeacherId());
+        CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
+        servletRequest.setAttribute("action","AdminProblemSelection");
+        servletRequest.getRequestDispatcher(JSP).forward(servletRequest,servletResponse);
         return null;
     }
 }
