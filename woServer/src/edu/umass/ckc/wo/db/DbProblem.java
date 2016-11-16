@@ -703,7 +703,7 @@ public class DbProblem extends BaseMgr {
         PreparedStatement stmt=null;
         try {
             // the type indicates we want problems that relate to the standard (P means prereq)
-            String q = "select s.id,s.description,s.category,s.grade from probstdmap m, standard s where m.probid=? and s.id=m.stdid";
+            String q = "select s.id,s.description,s.category,s.grade,s.idABC from probstdmap m, standard s where m.probid=? and s.id=m.stdid";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,id);
             rs = stmt.executeQuery();
@@ -712,7 +712,8 @@ public class DbProblem extends BaseMgr {
                 String descr= rs.getString(2);
                 String category= rs.getString(3);
                 String grade = rs.getString(4);
-                result.add(new CCStandard(code,descr,category, grade));
+                String idABC = rs.getString(5);
+                result.add(new CCStandard(code,descr,category,grade,idABC));
             }
             return result;
         }

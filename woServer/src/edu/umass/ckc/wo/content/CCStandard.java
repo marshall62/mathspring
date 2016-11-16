@@ -22,19 +22,23 @@ public class CCStandard implements Comparable<CCStandard> {
     private int clustId;
     private String clustName;
     private List<Problem> problems; // problems in this standard
+    private String url;
 
 
     public CCStandard () {
         problems = new ArrayList<Problem>();
     }
 
-    public CCStandard(String code, String description, String category, String grade) {
+    public CCStandard(String code, String description, String category, String grade, String idABC) {
         this();
         this.code = code;
         this.description = description;
         this.category = category;
         this.grade = grade;
-
+        this.idABC = idABC;
+        String[] parts = idABC.split("\\.");
+        this.url = "http://www.corestandards.org/Math/Content/" + parts[0] + "/" + parts[1] +
+                "/#CCSS.Math.Content." + idABC;
     }
 
     public CCStandard(String id, String descr, String grade, String cat, String clustName, int clustId,
@@ -123,4 +127,8 @@ public class CCStandard implements Comparable<CCStandard> {
     public String getGrade() {
         return grade;
     }
+
+    public String getUrl() { return url; }
+
+    public void setUrl(String url) { this.url = url; }
 }

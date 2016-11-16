@@ -12,10 +12,15 @@
 
 <div id="Layer1" align="center">
     <p class="a2"><b>Problem Selection</b></p>
-    <div align="left">
-        &nbsp;&nbsp;<b>Topic:</b>  <c:out value="${topicName}"/>  <br>
-        &nbsp;&nbsp;<b>Standards:</b>    <c:out value="${standards}"/> <br>
-        &nbsp;&nbsp;<b>Summary:</b>    <c:out value="${summary}"/>      <br>
+    <div align="left" style="margin-left:15px">
+        <b>Topic: </b><c:out value="${topicName}"/><br/>
+        <%--@elvariable id="topicStandards" type="edu.umass.ckc.wo.content.CCStandard[]"--%>
+        <b>Standards: </b>
+        <c:forEach var="standard" varStatus="status" items="${topicStandards}">
+            <a href="<c:out value="${standard.url}"/>"><c:out value="${standard.code}"/></a><c:if test="${!status.last}">, </c:if>
+        </c:forEach>
+        <br/>
+        <b>Summary: </b><c:out value="${summary}"/><br/>
     </div>
     <p>Problems that are checked will be shown to students in your class.</p>
 
@@ -38,10 +43,12 @@
 
             <%--@elvariable id="problems" type="edu.umass.ckc.wo.beans.SATProb[]"--%>
             <%--@elvariable id="prob" type="edu.umass.ckc.wo.content.Problem"--%>
+            <%--@elvariable id="problemStandards" type="edu.umass.ckc.wo.content.CCStandard[]"--%>
 
             <c:forEach var="problem" items="${problems}">
                 <%-- Get the Problem object that lives in the SATProblem--%>
                 <c:set var="prob" value="${problem.problem}"/>
+                <c:set var="problemStandards" value="${prob.standards}"/>
                 <tr>
                     <td>
                         <input type="checkbox" name="activated"
@@ -82,7 +89,11 @@
                     </td>
                     <td><c:out value="${problem.nickname}"/></td>
                     <td><c:out value="${problem.difficulty}"/></td>
-                    <td><c:out value="${prob.standardsString}"/></td>
+                    <td>
+                        <c:forEach var="standard" varStatus="status" items="${problemStandards}">
+                            <a href="<c:out value="${standard.url}"/>"><c:out value="${standard.code}"/></a><c:if test="${!status.last}">,</c:if>
+                        </c:forEach>
+                    </td>
                     <td><c:out value="${problem.type}"/></td>
                 </tr>
             </c:forEach>

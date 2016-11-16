@@ -46,6 +46,7 @@ public class ProblemSelectionHandler {
         ClassInfo classInfo = DbClass.getClass(conn,event.getClassId());
         servletRequest.setAttribute("bean",bean1);
         servletRequest.setAttribute("classInfo",classInfo);
+        String jsp = PROBLEMS_JSP;
         if (event instanceof AdminSelectTopicProblemsEvent)  {
             int topicId = ((AdminSelectTopicProblemsEvent) event).getTopicId();
             DbProblem probMgr = new DbProblem();
@@ -60,7 +61,7 @@ public class ProblemSelectionHandler {
             servletRequest.setAttribute("probPlayerHost", uri);
             servletRequest.setAttribute("html5ProblemURI",Settings.html5ProblemURI );
             servletRequest.setAttribute("topicName",topic.getName());
-            servletRequest.setAttribute("standards",topic.getStandards());
+            servletRequest.setAttribute("topicStandards",topic.getCcStandards());
             servletRequest.setAttribute("summary",topic.getSummary());
         }
         else if (event instanceof AdminActivateProblemsEvent) {
@@ -105,6 +106,7 @@ public class ProblemSelectionHandler {
             servletRequest.setAttribute("gradeColumnMask", DbProblem.getGradeColumnMask(topics));
             servletRequest.setAttribute("classGradeColumn", DbProblem.getGradeNum(classInfo.getGrade()));
             servletRequest.setAttribute("topics",topics);
+            jsp = JSP;
         }
         Integer adminId = (Integer) servletRequest.getSession().getAttribute("adminId"); // determine if this is admin session
         servletRequest.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
@@ -112,7 +114,7 @@ public class ProblemSelectionHandler {
         servletRequest.setAttribute("teacherId",event.getTeacherId());
         CreateClassHandler.setTeacherName(conn,servletRequest,event.getTeacherId());
         servletRequest.setAttribute("action","AdminProblemSelection");
-        servletRequest.getRequestDispatcher(JSP).forward(servletRequest,servletResponse);
+        servletRequest.getRequestDispatcher(jsp).forward(servletRequest,servletResponse);
         return null;
     }
 }
