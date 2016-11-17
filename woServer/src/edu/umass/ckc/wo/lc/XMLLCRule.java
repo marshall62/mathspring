@@ -235,7 +235,8 @@ public class XMLLCRule {
         options.addOption("w", false, "Write the rulesets and rules to the db");
         // add db option
         options.addOption("db", true, "Database to use:  rose or localhost");
-        options.addOption("l", true, "List the rules in the ruleset (provide the ruleset name as arg)") ;
+        options.addOption("l", false, "List the rules in the system") ;
+        options.addOption("rs", true, "Optional.  The name of the ruleset to list. ") ;
         options.addOption("f", true, "XML File that defines rules");
         options.addOption("help", false, "Prints this message");
         // create the parser
@@ -250,17 +251,26 @@ public class XMLLCRule {
             else
                 db = db + ".cs.umass.edu";
 
-            String rulesetName = line.getOptionValue("l");
+
 
             Connection conn = DbUtil.getAConnection(db);
             XMLLCRule.conn = conn;
             // a command to list the rules in a ruleset.  Exit afterwards because this command should only be used on its own
-            if (rulesetName != null) {
-                int id = DbLCRule.getRuleSetId(conn, rulesetName);
-                LCRuleset rs = DbLCRule.getRuleSet(conn,rulesetName);
-                System.out.println("Ruleset: " + rs.getName() + " : " + rs.getId());
-                for (LCRule r : rs.getRules())
-                    System.out.println(r);
+            if (line.hasOption("l")) {
+                String rulesetName = line.getOptionValue("rs");
+                if (rulesetName != null) {
+                    int id = DbLCRule.getRuleSetId(conn, rulesetName);
+                    LCRuleset rs = DbLCRule.getRuleSet(conn, rulesetName);
+                    System.out.println("Ruleset: " + rs.getName() + " : " + rs.getId());
+                    for (LCRule r : rs.getRules())
+                        System.out.println(r);
+                }
+                // no rs option given , print them all
+                else {
+                    System.out.println("All rules in the system");
+                    for (LCRule r : DbLCRule.getAllRules(conn))
+                        System.out.println(r);
+                }
                 System.exit(0);
             }
             if ( line.hasOption( "c" ) )
