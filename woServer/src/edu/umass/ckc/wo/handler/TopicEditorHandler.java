@@ -51,16 +51,15 @@ public class TopicEditorHandler {
         if (e instanceof AdminReorderTopicsEvent) {
             TopicMgr topicMgr = new TopicMgr();
             AdminReorderTopicsEvent ee = (AdminReorderTopicsEvent) e;
-
-            if (ee.getDirection().equals("up") || ee.getDirection().equals("down"))
-                 topics=topicMgr.moveTopic(conn,(AdminReorderTopicsEvent) e);
-            else if (ee.getDirection().equals("omit")) {
+            if (ee.getReorderType().equals("move"))
+                topics = topicMgr.moveTopic(conn, ee);
+            else if (ee.getReorderType().equals("omit")) {
                 int classId = e.getClassId();
-                int topicId = ((AdminReorderTopicsEvent) e).getTopicId();
+                int topicId = ee.getTopicId();
                 topics = topicMgr.omitTopic(conn,classId,topicId);
             }
-            else if (ee.getDirection().equals("reactivate")) {
-                topicMgr.reactivateTopic(conn,(AdminReorderTopicsEvent) e);
+            else if (ee.getReorderType().equals("reactivate")) {
+                topicMgr.reactivateTopic(conn, ee);
                 topics = DbTopics.getClassActiveTopics(conn,ee.getClassId());
             }
 //            List<Topic> activetopics = DbTopics.getClassActiveTopics(conn,e.getClassId());
@@ -101,6 +100,7 @@ public class TopicEditorHandler {
         List<Topic> inactiveTopics = DbTopics.getClassInactiveTopics(conn, topics);
         DbProblem.setTopicNumProbsForClass(conn, e.getClassId(), inactiveTopics);
         req.setAttribute("topics",topics);
+        req.setAttribute("numTopics",topics.size());
         req.setAttribute("inactiveTopics",inactiveTopics);
         Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
         req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher

@@ -6,9 +6,9 @@
 <jsp:useBean id="params" scope="request" type="edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="mainPageMargin" style="font-family: Arial, Helvetica, sans-serif">
+<div class="mainPageMargin">
   <div id="Layer1" align="center" >
-      <p align="center" class="a2"><b>Active Topic Order</b></p>
+      <p class="a2"><b>Active Topic Order</b></p>
       <p>Topics will be presented in the order below.</p>
 
       <%--@elvariable id="classGradeColumn" type="int"--%>
@@ -17,12 +17,12 @@
       <form name="form1" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminTopicControl">
       <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
       <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
-      <table class="altrows">
+      <table class="altrows" data-context-path="<c:out value="${pageContext.request.contextPath}"/>" data-teacher-id="<c:out value="${teacherId}"/>" data-class-id="<c:out value="${classId}"/>">
           <tr class="rowheader">
-              <td rowspan="2" colspan="3">Reorder</td>
+              <td rowspan="2" colspan="4">Reorder</td>
               <td rowspan="2">Topic</td>
-              <td rowspan="2" style="max-width:80px">Total Problems</td>
-              <td colspan="10">Problems by Grade Level</td>
+              <td rowspan="2" style="max-width:100px">Total Active Problems</td>
+              <td colspan="10">Active Problems by Grade</td>
           </tr>
           <tr class="rowheader">
               <c:forEach var="visible" varStatus="status" items="${gradeColumnMask}">
@@ -34,16 +34,14 @@
 
           <c:set var="ix" value="0"/>
           <%--@elvariable id="topics" type="edu.umass.ckc.wo.tutor.Topic[]"--%>
+          <%--@elvariable id="numTopics" type="int"--%>
           <c:forEach var="topic" items="${topics}">
-              <c:set var="ix" value="${ix+1}"/>
-              <tr>
-                  <td>
-                     <a title="move up" class="moveupbutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=up&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
-                  <td>
-                     <a title="move down" class="movedownbutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=down&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
-                  <td>
-                     <a title="deactivate" class="removebutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=omit&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
-                  <td><a title="${topic.standards}" href="#"><c:out value="${topic.name}"/></a></td>
+              <tr draggable="true" data-topic-id="<c:out value="${topic.id}"/>" data-index="<c:out value="${ix}"/>">
+                  <td><a title="drag and drop" class="dragdrophandle" draggable="false" href="#"></a></td>
+                  <td><a title="move up" class="moveupbutton<c:out value="${ix > 0 ? '' : ' disabled' }"/>" draggable="false" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&reorderType=move&topicFrom=<c:out value="${ix}"/>&topicTo=<c:out value="${ix-1}"/>&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a></td>
+                  <td><a title="move down" class="movedownbutton<c:out value="${ix < numTopics - 1 ? '' : ' disabled' }"/>" draggable="false" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&reorderType=move&topicFrom=<c:out value="${ix}"/>&topicTo=<c:out value="${ix+1}"/>&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a></td>
+                  <td><a title="deactivate" class="removebutton" draggable="false" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&reorderType=omit&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a></td>
+                  <td><a title="${topic.standards}" draggable="false" href="#"><c:out value="${topic.name}"/></a></td>
                   <td>
                       <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
                           <c:out value="${topic.numProbs}"/>
@@ -55,8 +53,7 @@
                       </td>
                   </c:forEach>
               </tr>
-
-
+              <c:set var="ix" value="${ix+1}"/>
           </c:forEach>
       </table>
       <p/>
@@ -66,8 +63,8 @@
           <tr class="rowheader">
               <td rowspan="2" valign="center">Reactivate</td>
               <td rowspan="2">Topic</td>
-              <td rowspan="2" style="max-width:80px">Total Problems</td>
-              <td colspan="10">Problems by Grade Level</td>
+              <td rowspan="2" style="max-width:100px">Total Active Problems</td>
+              <td colspan="10">Active Problems by Grade</td>
           </tr>
           <tr class="rowheader">
               <c:forEach var="visible" varStatus="status" items="${gradeColumnMask}">
@@ -82,11 +79,11 @@
               <c:set var="ix" value="${ix+1}"/>
               <tr>
                   <td valign="center">
-                     <a title="activate" class="moveupbutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&direction=reactivate&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
+                     <a title="activate" class="moveupbutton" href="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminReorderTopics&reorderType=reactivate&teacherId=<c:out value="${teacherId}"/>&classId=<c:out value="${classId}"/>&topicId=<c:out value="${topic.id}"/>"></a>
                   </td>
 
               <!--    <input name='<c:out value="topicPosition"/>' type="text" value='<c:out value="${topic.seqPos}"/>' size="3" /></td> -->
-                  <td><font color="#00000" face="Arial, Helvetica, sans-serif"><c:out value="${topic.name}"/></td>
+                  <td><c:out value="${topic.name}"/></td>
                   <td>
                       <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminSelectTopicProblems&teacherId=${teacherId}&classId=${classId}&topicId=${topic.id}">
                           <c:out value="${topic.numProbs}"/>
