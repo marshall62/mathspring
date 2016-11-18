@@ -44,7 +44,6 @@
           <element id="artifact" artifact-name="emailer:jar" />
           <element id="artifact" artifact-name="servletFramework:jar" />
         </element>
-        <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/sugaree/web.xml" />
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/woServer/resources" />
       <element id="directory" name="META-INF">
