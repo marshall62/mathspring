@@ -168,7 +168,7 @@
             <c:if test="${question.dAns != null}">
                 <br/><input id="d" type="radio" name="answer" value="${question.dAns}"> ${question.dAns}</input>
             </c:if>
-            <c:if test="${question.eAns != null} ">
+            <c:if test="${question.eAns != null}">
                 <br/> <input id="e" type="radio" name="answer" value="${question.eAns}"> ${question.eAns}</input>
             </c:if>
             <br/>

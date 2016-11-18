@@ -317,7 +317,7 @@ public class Pedagogy implements Comparable {
     }
 
     public String getLessonName() {
-        return lessonName;
+        return lessonName.trim();
     }
 
     public void setLogin (String loginXMLName) {
