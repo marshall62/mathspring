@@ -14,13 +14,13 @@ import java.sql.*;
 public class DbEmotionResponses {
 
 
-    public static int saveResponse(Connection conn, String emotion, int level, String explanation, int sessionId, int studId, String continueMathspring, String reasons) throws SQLException {
+    public static int saveResponse(Connection conn, String emotion, int level, String explanation, int sessionId, int studId, String continueMathspring, String reasons, String goal, String desiredResult) throws SQLException {
         long now = System.currentTimeMillis();
         ResultSet rs = null;
         PreparedStatement s = null;
         try {
-            String q = "insert into emotionInterventionResponse (emotion, level, explanation, sessionId, studId,timestamp, continueMathspring,reasons) " +
-                    "values (?,?,?,?,?,?,?,?)";
+            String q = "insert into emotionInterventionResponse (emotion, level, explanation, sessionId, studId,timestamp, continueMathspring,reasons,goal,desiredResult) " +
+                    "values (?,?,?,?,?,?,?,?,?,?)";
             s = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
             s.setString(1, emotion);
             s.setInt(2, level);
@@ -34,6 +34,12 @@ public class DbEmotionResponses {
             if (reasons != null)
                 s.setString(8,reasons);
             else s.setNull(8,Types.VARCHAR);
+            if (goal != null)
+                s.setString(9,goal);
+            else s.setNull(9,Types.VARCHAR);
+            if (desiredResult != null)
+                s.setString(10,desiredResult);
+            else s.setNull(10,Types.VARCHAR);
             s.execute();
             rs = s.getGeneratedKeys();
             rs.next();
