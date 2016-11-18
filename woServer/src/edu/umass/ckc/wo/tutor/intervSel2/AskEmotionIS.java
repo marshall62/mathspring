@@ -204,10 +204,10 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String feeling = params.getString(AskEmotionFreeAnswerIntervention.FEELING);
         String reason = params.getString(AskEmotionFreeAnswerIntervention.REASON);
         String goal = params.getString(AskEmotionFreeAnswerIntervention.GOAL);
-        String desiredResult = params.getString(AskEmotionFreeAnswerIntervention.RESULT);
+//        String desiredResult = params.getString(AskEmotionFreeAnswerIntervention.RESULT);
         setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel><reason><![CDATA[" + reason + "]]></reason>" +
-                "<goal><![CDATA[" + goal + "]]></goal><desiredResult><![CDATA[" + desiredResult + "]]></desiredResult></emotion>", e);
-        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), null, reason, goal, desiredResult);
+                "<goal><![CDATA[" + goal + "]]></goal></emotion>", e);
+        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), null, reason, goal, null);
     }
 
 

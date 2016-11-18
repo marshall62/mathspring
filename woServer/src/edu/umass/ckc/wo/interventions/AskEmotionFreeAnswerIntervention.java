@@ -62,8 +62,8 @@ public class AskEmotionFreeAnswerIntervention extends InputResponseIntervention 
         str += "<textarea name=\"" + REASON + "\" rows=\"3\" cols=\"40\"/>" ;
         str += "<br><br>3. What are you trying to do?";
         str += "<textarea name=\"" + GOAL + "\" rows=\"3\" cols=\"40\"/>" ;
-        str += "<br><br>3. What do you want to happen?";
-        str += "<textarea name=\"" + RESULT + "\" rows=\"3\" cols=\"40\"/>" ;
+//        str += "<br><br>3. What do you want to happen?";
+//        str += "<textarea name=\"" + RESULT + "\" rows=\"3\" cols=\"40\"/>" ;
         str+= "</p>";
 
         str+="</form></div>";
