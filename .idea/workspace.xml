@@ -6,10 +6,13 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore">
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" afterPath="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp" afterPath="$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionFreeAnswerIntervention.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionFreeAnswerIntervention.java" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -172,25 +175,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DbPedagogy.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbPedagogy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="401" column="25" selection-start-line="401" selection-start-column="25" selection-end-line="401" selection-end-column="25" />
-              <folding>
-                <marker date="1478638111812" expanded="true" signature="1472:1516" ph="select name,... lessonDefinition" />
-                <marker date="1478638111812" expanded="true" signature="2618:2659" ph="select name,... loginbehavior" />
-                <marker date="1478638111812" expanded="true" signature="3714:3806" ph="select id,is... pedagogy" />
-                <marker date="1478638111812" expanded="true" signature="7986:8117" ph="insert into pedagogy... " />
-                <marker date="1478638111812" expanded="true" signature="9084:9131" ph="select class... classPedagogies" />
-                <marker date="1478638111812" expanded="true" signature="10754:10796" ph="select id, p... student" />
-                <marker date="1478638111812" expanded="true" signature="13158:13241" ph="select class... pedagogyGroup" />
-                <marker date="1478638111812" expanded="true" signature="14109:14183" ph="select studI... userPedagogyParameters" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Settings.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/Settings.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -199,18 +183,6 @@
               <folding>
                 <marker date="1477584662108" expanded="true" signature="6719:6770" ph="update globa... " />
                 <marker date="1477584662108" expanded="true" signature="7210:7258" ph="select presu... globalsettings" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InferenceEngine.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/InferenceEngine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-              <folding>
-                <element signature="e#3046#3054#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -226,11 +198,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pretestQuestion.jsp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pretestQuestion.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="156" column="92" selection-start-line="156" selection-start-column="51" selection-end-line="156" selection-end-column="51" />
+            <state relative-caret-position="119">
+              <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -268,7 +240,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Pedagogy.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Pedagogy.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/Pedagogy.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="220">
@@ -281,6 +253,29 @@
                 <element signature="e#11811#11812#0" expanded="true" />
                 <element signature="e#11853#11854#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AskEmotionFreeAnswerIntervention.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionFreeAnswerIntervention.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="207">
+              <caret line="48" column="40" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+              <folding>
+                <element signature="e#986#987#0" expanded="true" />
+                <element signature="e#1089#1090#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AskEmotionIS.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="209" column="64" selection-start-line="209" selection-start-column="64" selection-end-line="209" selection-end-column="64" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -339,8 +334,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbClass.java" />
-        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Posttest.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/NavigationHandler.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/PrePostTestHandler.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/XMLLCRule.java" />
@@ -389,6 +382,8 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/PedagogyParser.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/Pedagogy.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/LessonModel.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java" />
+        <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionFreeAnswerIntervention.java" />
         <option value="$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp" />
       </list>
     </option>
@@ -449,9 +444,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="93" />
-    <option name="width" value="1662" />
-    <option name="height" value="1080" />
+    <option name="x" value="232" />
+    <option name="y" value="52" />
+    <option name="width" value="1451" />
+    <option name="height" value="968" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -498,136 +494,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="localhost" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="login" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -668,7 +534,7 @@
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.3254377" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="50" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="44" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="44" />
     <property name="OverrideImplement.combined" value="false" />
@@ -1728,35 +1594,7 @@
       <workItem from="1477585633053" duration="12354000" />
       <workItem from="1478638483462" duration="3798000" />
       <workItem from="1478649028135" duration="1168000" />
-      <workItem from="1479400951062" duration="9039000" />
-    </task>
-    <task id="LOCAL-00167" summary="changed JDK back to 1.7">
-      <created>1425671534805</created>
-      <option name="number" value="00167" />
-      <option name="presentableId" value="LOCAL-00167" />
-      <option name="project" value="LOCAL" />
-      <updated>1425671534805</updated>
-    </task>
-    <task id="LOCAL-00168" summary="more work on moving PedagogicalModels to TopicModels etc">
-      <created>1425678690770</created>
-      <option name="number" value="00168" />
-      <option name="presentableId" value="LOCAL-00168" />
-      <option name="project" value="LOCAL" />
-      <updated>1425678690770</updated>
-    </task>
-    <task id="LOCAL-00169" summary="continued refactor of models">
-      <created>1425934893336</created>
-      <option name="number" value="00169" />
-      <option name="presentableId" value="LOCAL-00169" />
-      <option name="project" value="LOCAL" />
-      <updated>1425934893336</updated>
-    </task>
-    <task id="LOCAL-00170" summary="Added support for storing student collab being stored in studentproblemhistory">
-      <created>1426516717112</created>
-      <option name="number" value="00170" />
-      <option name="presentableId" value="LOCAL-00170" />
-      <option name="project" value="LOCAL" />
-      <updated>1426516717112</updated>
+      <workItem from="1479400951062" duration="13909000" />
     </task>
     <task id="LOCAL-00171" summary="Bug fixes from Melissa (untested) to fix some issues in collab">
       <created>1426539797368</created>
@@ -2073,11 +1911,39 @@
       <option name="project" value="LOCAL" />
       <updated>1479507058361</updated>
     </task>
-    <option name="localTasksCounter" value="216" />
+    <task id="LOCAL-00216" summary="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore">
+      <created>1479507096018</created>
+      <option name="number" value="00216" />
+      <option name="presentableId" value="LOCAL-00216" />
+      <option name="project" value="LOCAL" />
+      <updated>1479507096018</updated>
+    </task>
+    <task id="LOCAL-00217" summary="Eliminated 4th OPEN question in AskEmotion.">
+      <created>1479507333023</created>
+      <option name="number" value="00217" />
+      <option name="presentableId" value="LOCAL-00217" />
+      <option name="project" value="LOCAL" />
+      <updated>1479507333023</updated>
+    </task>
+    <task id="LOCAL-00218" summary="Eliminated 4th OPEN question in AskEmotion.">
+      <created>1479908448757</created>
+      <option name="number" value="00218" />
+      <option name="presentableId" value="LOCAL-00218" />
+      <option name="project" value="LOCAL" />
+      <updated>1479908448757</updated>
+    </task>
+    <task id="LOCAL-00219" summary="update of touched xml files.">
+      <created>1479909020559</created>
+      <option name="number" value="00219" />
+      <option name="presentableId" value="LOCAL-00219" />
+      <option name="project" value="LOCAL" />
+      <updated>1479909020559</updated>
+    </task>
+    <option name="localTasksCounter" value="220" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="259594000" />
+    <option name="totallyTimeSpent" value="264464000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2089,12 +1955,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="93" y="0" width="1662" height="1080" extended-state="0" />
-    <editor active="true" />
+    <frame x="232" y="52" width="1451" height="968" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32629108" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2462039" sideWeight="0.6967841" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.245679" sideWeight="0.6967841" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -2106,15 +1972,15 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19413233" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22358015" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22032829" sideWeight="0.75179" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26681128" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26666668" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2216418" sideWeight="0.2964427" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18102372" sideWeight="0.705036" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2084831" sideWeight="0.705036" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37418655" sideWeight="0.7848392" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37407407" sideWeight="0.7848392" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.49120122" order="17" side_tool="false" content_ui="tabs" />
@@ -2192,8 +2058,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Got delete classes working.  Added some more info on logging associated with the InputEvents coming from intervention dialogs.  Should now have XML in user input indicating yes, no, ok." />
-    <MESSAGE value="commented out alerts in problem_skeleton_load.js" />
     <MESSAGE value="Removed survey buttons on login page" />
     <MESSAGE value="Fixed lastIntervention being saved when FinishCollaborationIntervention is returned" />
     <MESSAGE value="Fixed bug in ProblemDiffuclty report so it only counts problmes that are shown as practice problems." />
@@ -2215,9 +2079,11 @@
     <MESSAGE value="sync with master" />
     <MESSAGE value="Generated new ant scripts one for each module.  Created buildSugaree.xml&#10;which is a master file that uses what was generated" />
     <MESSAGE value="Added some build scripts for production" />
-    <MESSAGE value="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore" />
     <MESSAGE value="Fixed bug in pretestquestion so it shows answer E now.&#10;LessonXML was not being fetched from its DB table.  It was getting it from the XML&#10;inside the pedagogy XML.   Now we get it from DB." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bug in pretestquestion so it shows answer E now.&#10;LessonXML was not being fetched from its DB table.  It was getting it from the XML&#10;inside the pedagogy XML.   Now we get it from DB." />
+    <MESSAGE value="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore" />
+    <MESSAGE value="Eliminated 4th OPEN question in AskEmotion." />
+    <MESSAGE value="update of touched xml files." />
+    <option name="LAST_COMMIT_MESSAGE" value="update of touched xml files." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2296,7 +2162,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/admin/PedagogyParser.java</url>
-          <line>292</line>
+          <line>287</line>
           <properties />
           <option name="timeStamp" value="158" />
         </line-breakpoint>
@@ -2432,20 +2298,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/EffortHeuristic.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="48" column="64" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorutils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/affdex.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -2770,7 +2622,7 @@
         <state relative-caret-position="308">
           <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
           <folding>
-            <element signature="e#3046#3054#0" expanded="true" />
+            <element signature="e#3046#3054#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2837,14 +2689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="156" column="92" selection-start-line="156" selection-start-column="51" selection-end-line="156" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/LessonModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
@@ -2868,6 +2712,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="209" column="64" selection-start-line="209" selection-start-column="64" selection-end-line="209" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionFreeAnswerIntervention.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="48" column="40" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+          <folding>
+            <element signature="e#986#987#0" expanded="true" />
+            <element signature="e#1089#1090#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="masterDetails">
     <states>
@@ -2875,10 +2746,10 @@
         <settings>
           <artifact-editor>
             <show-content>
-              <type id="jpa-descriptors" />
               <type id="artifact" />
               <type id="library" />
               <type id="javaee-facet-resources" />
+              <type id="jpa-descriptors" />
             </show-content>
           </artifact-editor>
           <last-edited>woServer:WebForLocalhost exploded</last-edited>
@@ -2930,7 +2801,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>WebForLocalhost|woServer</last-edited>
+          <last-edited>ProblemSnapshotInserter</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
