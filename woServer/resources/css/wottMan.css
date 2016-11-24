@@ -8,12 +8,19 @@ body {
 }
 
 table.altrows {
-	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+table.altrows tr {
+	border-top: 2px dashed rgba(0,0,0,0);
+	border-bottom: 2px dashed rgba(0,0,0,0);
 }
 
 table.altrows td {
-	padding: 2px;
+	padding: 0px 2px;
 	border-left: 1px solid rgba(0,0,0,.05);
+	border-top: inherit;
+	border-bottom: inherit;
 }
 table.altrows td:first-child {
 	border-left: none;
@@ -27,13 +34,52 @@ tr.rowheader {
 	vertical-align: bottom;
 }
 
-a.moveupbutton, a.movedownbutton, a.removebutton {
+tr[draggable=true] {
+	/* Prevent the text of draggable elements from being selectable */
+	-moz-user-select: none;
+	-kthml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	/* Make dragging work in old WebKit */
+	-khtml-user-drag: element;
+	-webkit-user-drag: element;
+	opacity: 1.0;
+}
+
+tr.dragover-above[draggable=true] {
+	border-top: 2px dashed rgba(0,0,0,1);
+}
+
+tr.dragover-below[draggable=true] {
+	border-bottom: 2px dashed rgba(0,0,0,1);
+}
+
+tr.dragging {
+	opacity: 0.4;
+}
+
+a.dragdrophandle, a.moveupbutton, a.movedownbutton, a.removebutton {
 	display: block;
 	width: 24px;
 	height: 24px;
 	margin: auto;
 	background-size: cover;
 	transition: 0.5s;
+}
+
+a.disabled {
+	pointer-events: none;
+	cursor: default;
+	opacity: 0;
+}
+
+a.dragdrophandle {
+	cursor: move;
+	background-image: url("../images/DragInactive.png");
+}
+
+a.dragdrophandle:hover {
+	background-image: url("../images/DragActive.png");
 }
 
 a.moveupbutton {

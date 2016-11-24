@@ -11,55 +11,57 @@
 
 
 <div id="Layer1" align="center">
-    <p class="a2"><font size="3" color="#000000"><b><font face="Arial, Helvetica, sans-serif"> Problem Selection</font></b></font>
-    </p>
-    <div align="left">
-        &nbsp;&nbsp;<b>Topic:</b>  <c:out value="${topicName}"/>  <br>
-        &nbsp;&nbsp;<b>Standards:</b>    <c:out value="${standards}"/> <br>
-        &nbsp;&nbsp;<b>Summary:</b>    <c:out value="${summary}"/>      <br>
+    <p class="a2"><b>Problem Selection</b></p>
+    <div align="left" style="margin-left:15px">
+        <b>Topic: </b><c:out value="${topicName}"/><br/>
+        <%--@elvariable id="topicStandards" type="edu.umass.ckc.wo.content.CCStandard[]"--%>
+        <b>Standards: </b>
+        <c:forEach var="standard" varStatus="status" items="${topicStandards}">
+            <a href="<c:out value="${standard.url}"/>"><c:out value="${standard.code}"/></a><c:if test="${!status.last}">, </c:if>
+        </c:forEach>
+        <br/>
+        <b>Summary: </b><c:out value="${summary}"/><br/>
     </div>
-    <p style="color: #000000"><font face="Arial, Helvetica, sans-serif">Problems that are checked will be shown to
-        members of your class.</font></p>
+    <p>Problems that are checked will be shown to students in your class.</p>
 
 
     <form name="form1" id="form1" method="post"
           action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminActivateProblems">
         <input type="hidden" name="classId" value="<c:out value="${classId}"/>"/>
         <input type="hidden" name="topicId" value="<c:out value="${topicId}"/>"/>
-        <table width="515" border="1" height="98">
-            <tr>
-                <td width="60"><font color="#000000" face="Arial, Helvetica, sans-serif">Activated</font></td>
-                <td width="35"><font color="#000000" face="Arial, Helvetica, sans-serif">ID</font></td>
-                <td width="200"><font color="#00000" face="Arial, Helvetica, sans-serif">Name</font></td>
-                <td width="200"><font color="#000000" face="Arial, Helvetica, sans-serif">Nickname</font></td>
-                <td width="50"><font color="#000000" face="Arial, Helvetica, sans-serif">Diff.</font></td>
-                <td width="50"><font color="#000000" face="Arial, Helvetica, sans-serif">CC Std</font></td>
-                <td width="50"><font color="#000000" face="Arial, Helvetica, sans-serif">Type</font></td>
+        <table class="altrows">
+            <tr class="rowheader">
+                <td>Activated</td>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Nickname</td>
+                <td>Difficulty</td>
+                <td>CC Std</td>
+                <td>Type</td>
             </tr>
+            <tr></tr> <%-- Prevents altrows from shading both the header and the first row --%>
 
             <%--@elvariable id="problems" type="edu.umass.ckc.wo.beans.SATProb[]"--%>
             <%--@elvariable id="prob" type="edu.umass.ckc.wo.content.Problem"--%>
+            <%--@elvariable id="problemStandards" type="edu.umass.ckc.wo.content.CCStandard[]"--%>
 
             <c:forEach var="problem" items="${problems}">
                 <%-- Get the Problem object that lives in the SATProblem--%>
                 <c:set var="prob" value="${problem.problem}"/>
+                <c:set var="problemStandards" value="${prob.standards}"/>
                 <tr>
-                    <!-- TODO checked state is determined from the problem -->
-
-                    <td><input type="checkbox" name="activated"
-                               <c:if test="${problem.activated}">checked="checked"</c:if>
-                               value="<c:out value="${problem.id}"/>">
-
-                    </td>
                     <td>
-                        <font color="#000000" face="Arial, Helvetica, sans-serif"><c:out value="${problem.id}"/></font>
+                        <input type="checkbox" name="activated"
+                               <c:if test="${problem.activated}">checked="checked"</c:if>
+                               value="<c:out value="${problem.id}"/>"
+                        >
                     </td>
+                    <td><c:out value="${problem.id}"/></td>
                     <td class="a2">
                         <c:choose>
                             <c:when test="${problem.externalURL}">)
-                                <a onclick="window.open('<c:out
-                                value="${problem.resource}"/>','ProblemPreview','width=750,height=550,status=yes,resizable=yes');">
-                                    <font color='#000000' face="Arial, Helvetica, sans-serif"><u><c:out value="${problem.name}"/></u></font>
+                                <a onclick="window.open('<c:out value="${problem.resource}"/>','ProblemPreview','width=750,height=550,status=yes,resizable=yes');">
+                                    <u><c:out value="${problem.name}"/></u>
                                 </a>
                             </c:when>
                             <c:otherwise>
@@ -67,58 +69,40 @@
                                     <c:when test="${problem.type=='flash'}">
                                         <a onclick="window.open('<c:out value="${probPlayerHost}"/>?questionNum=<c:out
                                         value="${problem.questNum}"/>','ProblemPreview','width=750,height=550,status=yes,resizable=yes');">
-                                            <font color='#000000' face="Arial, Helvetica, sans-serif"><u><c:out value="${problem.name}"/></u></font>
+                                            <u><c:out value="${problem.name}"/></u>
                                         </a>
                                     </c:when>
                                     <c:when test="${(prob.form != null) && (prob.form=='quickAuth')}">
                                         <a onclick="window.open('${pageContext.request.contextPath}/WoAdmin?action=AdminGetQuickAuthSkeleton&probId=${problem.id}&teacherId=${teacherId}',
                                                 'ProblemPreview','width=750,height=550,status=yes,resizable=yes');">
-                                            <font color='#000000' face="Arial, Helvetica, sans-serif"><u><c:out value="${problem.name}"/></u></font>
+                                            <u><c:out value="${problem.name}"/></u>
                                         </a>
                                     </c:when>
                                     <c:otherwise>
                                         <a onclick="window.open('${html5ProblemURI}${prob.getHTMLDir()}/${problem.resource}','ProblemPreview','width=750,height=550,status=yes,resizable=yes');">
-                                            <font color='#000000' face="Arial, Helvetica, sans-serif"><u><c:out value="${problem.name}"/></u></font>
+                                            <u><c:out value="${problem.name}"/></u>
                                         </a>
                                     </c:otherwise>
                                 </c:choose>
                             </c:otherwise>
                         </c:choose>
-
-
-
                     </td>
+                    <td><c:out value="${problem.nickname}"/></td>
+                    <td><c:out value="${problem.difficulty}"/></td>
                     <td>
-                        <font color="#000000" face="Arial, Helvetica, sans-serif"><c:out
-                                value="${problem.nickname}"/></font>
+                        <c:forEach var="standard" varStatus="status" items="${problemStandards}">
+                            <a href="<c:out value="${standard.url}"/>"><c:out value="${standard.code}"/></a><c:if test="${!status.last}">,</c:if>
+                        </c:forEach>
                     </td>
-                    <td>
-                        <font color="#000000" face="Arial, Helvetica, sans-serif"><c:out
-                                value="${problem.difficulty}"/></font>
-                    </td>
-                    <td>
-                        <font color="#000000" face="Arial, Helvetica, sans-serif"><c:out
-                                value="${prob.standardsString}"/></font>
-                    </td>
-                    <td>
-                        <font color="#000000" face="Arial, Helvetica, sans-serif"><c:out
-                                value="${problem.type}"/></font>
-                    </td>
+                    <td><c:out value="${problem.type}"/></td>
                 </tr>
-
-
             </c:forEach>
         </table>
-
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-        <table width="200" border="1">
-            <tr>
-                <td><input type="submit" name="Submit" value="Save Changes"/>
-                    <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
-                    <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
-
-                </td>
+        <div style="height:54px"></div>
+        <input type="submit" name="Submit" value="Save Changes" style="font-size:16px;padding:10px"/>
+        <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
+        <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
+        <div style="height:54px"></div>
     </form>
     </tr>
     </table>

@@ -109,9 +109,9 @@ public class DbTeacher {
      */
     public static void deleteTeachers(Connection conn, int[] teacherIds) throws SQLException {
         for (int tid: teacherIds) {
-            List<ClassInfo> classes = DbClass.getTeacherClasses(conn,tid);
-            for (ClassInfo c : classes)
-                DbClass.deleteClass(conn,c.getClassid());
+            List<Integer> classIds = DbClass.getTeacherClassIds(conn,tid);
+            for (int cid : classIds)
+                DbClass.deleteClass(conn,cid);
             // once all the classes are gone there should be no other tables related to a teacher and now we delete the teacher row.
             deleteTeacher(conn, tid);
         }
@@ -128,6 +128,17 @@ public class DbTeacher {
         } finally {
             if (stmt != null)
                 stmt.close();
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            Connection c = DbUtil.getAConnection("rose.cs.umass.edu");
+            deleteTeachers(c,new int[] {554} );
+            System.out.println("Teachers deleted");
+
+        } catch (Exception exc) {
+            exc.printStackTrace();
         }
     }
 }

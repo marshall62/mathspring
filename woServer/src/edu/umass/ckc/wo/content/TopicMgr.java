@@ -145,10 +145,10 @@ public class TopicMgr {
 
     public List<Topic> moveTopic (Connection conn, AdminReorderTopicsEvent e) throws SQLException {
         int classId= e.getClassId();
-        int topicId= e.getTopicId();
-        String dir = e.getDirection();
+        int source = e.getSource();
+        int destination = e.getDestination();
         List<Topic> topics = DbTopics.getClassActiveTopics(conn,classId);
-        boolean swapped = moveTopicAux(topics, topicId, dir.equals("up")? -1 : 1);
+        boolean swapped = moveTopicAux(topics, source, destination);
         // if the swap happens in the list, the list elements (topics) are swapped and the seqPos field of each object is mutated.
         //  Then we remove all active topics from the classlessonplan and stick them all back in again.
         if (swapped) {
@@ -158,27 +158,20 @@ public class TopicMgr {
         return topics;
     }
 
-    private boolean moveTopicAux(List<Topic> topics, int topicId, int incr) {
-        for (int i = 0; i < topics.size(); i++) {
-            Topic topic = topics.get(i);
-            if (topic.getId() == topicId) {
-                if ((incr < 0 && i > 0) || (incr > 0 && i < topics.size()-1)) {
-                    int pos = topics.get(i).getSeqPos();
-                    topics.get(i).setSeqPos(topics.get(i+incr).getSeqPos());
-                    topics.get(i+incr).setSeqPos(pos);
-                    Collections.swap(topics,i,i+incr);
-
-                   return true;
-                }
-            }
+    private boolean moveTopicAux(List<Topic> topics, int source, int destination) {
+        if(Math.min(source, destination) < 0 || Math.max(source, destination) >= topics.size()) {
+            System.out.println("Error: attempted to move topic at position " + source
+                    + " outside of bounds of topic list to position " + destination
+                    + ", but there are only " + topics.size() + " topics.");
+            return false;
         }
-        return false;
+        int inc = (destination - source) / Math.abs(destination - source);
+        for(int i = source; i != destination; i += inc) {
+            int pos = topics.get(i).getSeqPos();
+            topics.get(i).setSeqPos(topics.get(i+inc).getSeqPos());
+            topics.get(i+inc).setSeqPos(pos);
+            Collections.swap(topics,i,i+inc);
+        }
+        return true;
     }
-
-
-
-
-
-
-
 }

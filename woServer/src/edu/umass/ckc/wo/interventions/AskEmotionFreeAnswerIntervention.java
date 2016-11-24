@@ -16,6 +16,8 @@ public class AskEmotionFreeAnswerIntervention extends InputResponseIntervention 
     public static final String REASON = "reason" ;
     public static final String FEELING = "feeling" ;
     public static final String CONTINUE = "continue" ;
+    public static final String GOAL = "goal" ;
+    public static final String RESULT = "result" ;
 
     public AskEmotionFreeAnswerIntervention() {
 
@@ -53,12 +55,15 @@ public class AskEmotionFreeAnswerIntervention extends InputResponseIntervention 
         String str = "<div>  " +
                                  getFormOpen() + " <p>We will ask these questions a <b>few</b> times, so its <b>OK</b> to change your mind.  " +
                 "Please be as <b>honest</b> as possible in answering these questions. <br><br>";
-        str += "1.  How do you feel about your work in Mathspring?";
+        str += "1.  How would you describe your emotions right now" +
+                " (as compared to the last time you were asked)?";
         str += "<textarea name=\"" + FEELING + "\" rows=\"3\" cols=\"40\"/>" ;
-        str += "<br><br>2. What led you to this feeling?";
+        str += "<br><br>2. Why do you feel that way?";
         str += "<textarea name=\"" + REASON + "\" rows=\"3\" cols=\"40\"/>" ;
-        str += "<br><br>3. Do you wish to continue working in Mathspring?  Why or why not?";
-        str += "<textarea name=\"" + CONTINUE + "\" rows=\"3\" cols=\"40\"/>" ;
+        str += "<br><br>3. What do you wish you could do to improve this class right now?";
+        str += "<textarea name=\"" + GOAL + "\" rows=\"3\" cols=\"40\"/>" ;
+//        str += "<br><br>3. What do you want to happen?";
+//        str += "<textarea name=\"" + RESULT + "\" rows=\"3\" cols=\"40\"/>" ;
         str+= "</p>";
 
         str+="</form></div>";

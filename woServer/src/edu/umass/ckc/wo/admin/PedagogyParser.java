@@ -261,10 +261,12 @@ public class PedagogyParser {
         Attribute defaultAttr = pedElt.getAttribute("default");
         if (defaultAttr != null)
             p.setDefault(defaultAttr.getBooleanValue());
-
+        // id shouldn't be necessary anymore since pedagogies are now coming from a table
         e = pedElt.getChild("id");
-        String id = e.getValue();
-        p.setId(id);
+        if (e != null) {
+            String id = e.getValue();
+            p.setId(id);
+        }
 
 
         e = pedElt.getChild("comment");
@@ -278,18 +280,21 @@ public class PedagogyParser {
             p.setSimpleConfigName(n);
         }
 
-        e = pedElt.getChild("login");
-        if (e != null) {
-            p.setLoginXMLName(e.getTextTrim());
-            p.setLoginXML(Settings.loginMap.get(p.getLoginXMLName()));
-        }
-        else p.setLoginXML(null);
+        // Hoping we can eliminate the below since they are now coming from the fields of the pedagogy table rather
+        // than XML
 
-        e = pedElt.getChild("lesson");
-        if (e != null) {
-            p.setLessonName(e.getTextTrim());
-        }
-        p.setLessonXML(Settings.lessonMap.get(p.getLessonName()));
+//        e = pedElt.getChild("login");
+//        if (e != null) {
+//            p.setLoginXMLName(e.getTextTrim());
+//            p.setLoginXML(Settings.loginMap.get(p.getLoginXMLName()));
+//        }
+//        else p.setLoginXML(null);
+
+//        e = pedElt.getChild("lesson");
+//        if (e != null) {
+//            p.setLessonName(e.getTextTrim());
+//        }
+//        p.setLessonXML(Settings.lessonMap.get(p.getLessonName()));
 
         e = pedElt.getChild("interventions");
         if (e != null) {

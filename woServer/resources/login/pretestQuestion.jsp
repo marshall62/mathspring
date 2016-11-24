@@ -152,10 +152,17 @@
     <input type="hidden" name="probId" value="${question.id}"/>
     <input id="elapsedTimeInput" type="hidden" name="elapsedTime" value="0"/>
 
+
     <p>&nbsp;</p>
+    <c:if test="${question.hasImage}">
+        <%-- If we have the image as a file in the folder we'd do this--%>
+        <%--<img src="${pageContext.request.contextPath}${question.url}"/>--%>
+        <img src="${pageContext.request.contextPath}/getImage?table=prePostProblem&column=image&id=${question.id}"/>
+        <br/>
+    </c:if>
+    <p><b>${question.descr}</b></p>
     <c:choose>
         <c:when test="${question.isMultiChoice()}">
-            <p><b>${question.descr}:</b></p>
             <c:if test="${question.aAns != null}">
                 <input id="a" type="radio" name="answer" value="${question.aAns}"> ${question.aAns}</input>
             </c:if>
@@ -168,7 +175,7 @@
             <c:if test="${question.dAns != null}">
                 <br/><input id="d" type="radio" name="answer" value="${question.dAns}"> ${question.dAns}</input>
             </c:if>
-            <c:if test="${question.eAns != null} ">
+            <c:if test="${question.eAns != null}">
                 <br/> <input id="e" type="radio" name="answer" value="${question.eAns}"> ${question.eAns}</input>
             </c:if>
             <br/>
@@ -179,23 +186,11 @@
             <br>
         </c:when>
         <c:when test="${question.isLongAnswer()}">
-            <c:if test="${question.hasImage}">
-                <img src="${pageContext.request.contextPath}/getImage?table=prePostProblem&column=image&id=${question.id}"/>
-                <br/>
-            </c:if>
-            <p><b>${question.descr}</b></p>
             <textarea id="ta" rows="4" cols="50" name="answer"> </textarea>
             </br>
             <br>
         </c:when>
         <c:otherwise>
-            <c:if test="${question.hasImage}">
-                <%-- If we have the image as a file in the folder we'd do this--%>
-                <%--<img src="${pageContext.request.contextPath}${question.url}"/>--%>
-                <img src="${pageContext.request.contextPath}/getImage?table=prePostProblem&column=image&id=${question.id}"/>
-                <br/>
-            </c:if>
-            <p><b>${question.descr}</b></p>
             <input id="f" type="text" name="answer"/>
             </br>
             <br>
