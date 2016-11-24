@@ -58,6 +58,7 @@ public class DbLCRule {
                 double priority = rs.getDouble(5);
                 LCRule rule = new LCRule(id,name,descr,onEvent,priority);
                 readRuleConditions(rule,conn,id);
+                readRuleMetaruleOverrides(rule,conn,id);
                 readRuleAction(rule,conn,id);
                 rules.add(rule);
             }
@@ -91,6 +92,7 @@ public class DbLCRule {
                 double priority = rs.getDouble(5);
                 LCRule rule = new LCRule(id,name,descr,onEvent,priority);
                 readRuleConditions(rule,conn,id);
+                readRuleMetaruleOverrides(rule,conn,id);
                 readRuleAction(rule,conn,id);
                 ruleset.addRule(rule);
             }
@@ -112,7 +114,7 @@ public class DbLCRule {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select id,name,value,units from lcmetarule where rulesetid=? and status=1";
+            String q = "select id,name,value,units,status from lcmetarule where rulesetid=? and status=1";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,ruleSetId);
             rs = stmt.executeQuery();
@@ -121,7 +123,8 @@ public class DbLCRule {
                 String name = rs.getString(2);
                 String value = rs.getString(3);
                 String units = rs.getString(4);
-                LCMetaRule mr = new LCMetaRule(name,units,value);
+                boolean status = rs.getBoolean(5);
+                LCMetaRule mr = new LCMetaRule(name,units,value,status);
                 ruleset.addMetaRule(mr);
             }
         }
@@ -235,6 +238,7 @@ public class DbLCRule {
         if (id != -1) {
             updateRule(conn, rule);
             updateRuleConditions(conn,rule);
+            updateRuleMetaruleOverrides(conn,rule);
             updateRuleAction(conn, rule);
         }
         else {
@@ -242,6 +246,7 @@ public class DbLCRule {
             rule.setId(id);
             insertRulesetRule(conn, ruleset, rule);
             insertRuleConditions(conn, rule);
+            insertRuleMetaruleOverrides(conn, rule);
             insertRuleAction(conn, rule);
         }
         return id;
@@ -297,6 +302,14 @@ public class DbLCRule {
         return -1;
     }
 
+    private static void insertRuleMetaruleOverrides(Connection conn, LCRule rule) throws SQLException {
+        final List<LCMetaRule> mrs = rule.getMetaRuleOverrides();
+        int i=0;
+        for (LCMetaRule mr: mrs) {
+            insertRuleMetaruleOverride(conn,mr,rule.getId(),i++);
+        }
+    }
+
     private static void insertRuleConditions(Connection conn, LCRule rule) throws SQLException {
         final List<LCCondition> conditions = rule.getConditions();
         int i=0;
@@ -345,6 +358,38 @@ public class DbLCRule {
         return -1;
     }
 
+    private static int insertRuleMetaruleOverride(Connection conn, LCMetaRule mr, int ruleId, int order) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "insert into lcmetarule (name, value, units,  ruleId)" +
+                    " values (?,?,?,?)";
+            stmt = conn.prepareStatement(q,PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt.setString(1,mr.getName());
+            stmt.setString(2,mr.getValue());
+            stmt.setString(3, mr.getUnits());
+            stmt.setInt(4,ruleId);
+
+            stmt.execute();
+            rs = stmt.getGeneratedKeys();
+            rs.next();
+            return rs.getInt(1);
+        }
+        catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            if (e.getErrorCode() == Settings.duplicateRowError ||e.getErrorCode() == Settings.keyConstraintViolation )
+                ;
+            else throw e;
+        }
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return -1;
+    }
+
 
 
     // A rule that exists may have some conditions modified, some deleted, some added.
@@ -361,6 +406,20 @@ public class DbLCRule {
                 ps.close();
         }
         insertRuleConditions(conn,rule);
+    }
+
+    private static void updateRuleMetaruleOverrides(Connection conn, LCRule rule) throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            String q = "delete from lcmetarule where ruleid=?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1, rule.getId());
+            int n = ps.executeUpdate();
+        } finally {
+            if (ps != null)
+                ps.close();
+        }
+        insertRuleMetaruleOverrides(conn,rule);
     }
 
     private static void updateRuleCondition(Connection conn, LCCondition c, int ruleId, int order) {
@@ -470,6 +529,33 @@ public class DbLCRule {
             if (rs != null)
                 rs.close();
         } 
+    }
+
+    private static void readRuleMetaruleOverrides(LCRule rule, Connection conn, int ruleId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id,name,value,units,status from lcmetarule where ruleid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,ruleId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                boolean applyNot = false;
+                int mrid= rs.getInt(1);
+                String name = rs.getString(2);
+                String value = rs.getString(3);
+                String units = rs.getString(4);
+                boolean status = rs.getBoolean(5);
+                LCMetaRule mr = new LCMetaRule(name,units,value,status);
+                rule.addMetaRuleOverride(mr);
+            }
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
     }
 
     private static void readRuleConditions(LCRule rule, Connection conn, int ruleId) throws SQLException {

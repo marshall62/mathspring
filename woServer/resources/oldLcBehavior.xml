@@ -1,6 +1,6 @@
 <lc_ruleset name="OldLCBehavior" description="Behavior of LC as programmed by Ivon in Java" notes="created by Dave in XML file oldLcBehavior.xml">
     <meta_rule name="thisRuleNotFiredInPastMinutes" value="8" units="minutes" />
-    <meta_rule name="noMessageFiredInPastMinutes" value="10" units="seconds" />
+    <meta_rule name="noMessageFiredInPastMinutes" value="30" units="seconds" />
     <rule>22</rule>
     <rule>23</rule>
     <rule>24</rule>

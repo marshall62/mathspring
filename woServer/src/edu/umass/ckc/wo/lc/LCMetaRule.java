@@ -16,6 +16,7 @@ public class LCMetaRule {
     private String name;
     private String units;
     private String value;
+    private boolean status;   // true means active
     private int vali;
 
     // tell how long to wait until a the same rule can fire again
@@ -23,10 +24,11 @@ public class LCMetaRule {
     // tell how long to wait before giving another message from a rule set.
     private static final String AVOID_TOO_MANY_MESSAGES = "noMessageFiredInPastMinutes";
 
-    public LCMetaRule(String name, String units, String value) {
+    public LCMetaRule(String name, String units, String value, boolean status) {
         this.name = name;
         this.units = units;
         this.value = value;
+        this.status = status;
         if (units.equalsIgnoreCase("milliseconds"))
             this.vali = Integer.parseInt(value);
         else if (units.equalsIgnoreCase("seconds"))
@@ -35,11 +37,17 @@ public class LCMetaRule {
             this.vali = Integer.parseInt(value) * 60 * 1000;
     }
 
+
     public static LCMetaRule createFromRuleXML (Element mrOverrideElt) {
         String name = mrOverrideElt.getAttributeValue("name");
         String value = mrOverrideElt.getAttributeValue("value");
         String units = mrOverrideElt.getAttributeValue("units");
-        return new LCMetaRule(name,units,value);
+        String status = mrOverrideElt.getAttributeValue("status");
+        return new LCMetaRule(name,units,value,status == null ? true : Boolean.parseBoolean(status));
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 
     public String getName() {
@@ -54,6 +62,9 @@ public class LCMetaRule {
         return value;
     }
 
+    public String toString () {
+        return "metaRule-override: " + getName() + " " + getValue() + " " + getUnits();
+    }
 
 
     public List<LCRule> apply(StudentRuleHistory hist, List<LCRule> candidates, long now) {

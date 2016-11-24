@@ -1,6 +1,6 @@
 <lc_ruleset name="BasedOnLastProblem" description="Based on Last Problem" notes="created by Dave in XML file lc_lastProblem.xml">
     <meta_rule name="thisRuleNotFiredInPastMinutes" value="8" units="minutes" />
-    <meta_rule name="noMessageFiredInPastMinutes" value="3" units="minutes" />
+    <meta_rule name="noMessageFiredInPastMinutes" value="30" units="seconds" />
     <rule>52</rule>
     <rule>53</rule>
     <rule>54</rule>
