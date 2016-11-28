@@ -164,19 +164,55 @@
     <c:choose>
         <c:when test="${question.isMultiChoice()}">
             <c:if test="${question.aAns != null}">
-                <input id="a" type="radio" name="answer" value="${question.aAns}"> ${question.aAns}</input>
+                <c:choose>
+                    <c:when test="${not fn:containsIgnoreCase(question.aAns, '<img')}">
+                        <input id="a" type="radio" name="answer" value="${question.aAns}"> ${question.aAns}</input>
+                    </c:when>
+                    <c:otherwise>
+                        <input id="a" type="radio" name="answer" value="a"> ${question.aAns}</input>
+                    </c:otherwise>
+                </c:choose>
+
             </c:if>
             <c:if test="${question.bAns != null}">
-                <br/><input id="b" type="radio" name="answer" value="${question.bAns}"> ${question.bAns}</input>
+                <c:choose>
+                    <c:when test="${not fn:containsIgnoreCase(question.bAns, '<img')}">
+                        <input id="b" type="radio" name="answer" value="${question.bAns}"> ${question.bAns}</input>
+                    </c:when>
+                    <c:otherwise>
+                        <input id="b" type="radio" name="answer" value="b"> ${question.bAns}</input>
+                    </c:otherwise>
+                </c:choose>
             </c:if>
             <c:if test="${question.cAns != null}">
-                <br/><input id="c" type="radio" name="answer" value="${question.cAns}"> ${question.cAns}</input>
+                <c:choose>
+                    <c:when test="${not fn:containsIgnoreCase(question.cAns, '<img')}">
+                        <input id="c" type="radio" name="answer" value="${question.cAns}"> ${question.cAns}</input>
+                    </c:when>
+                    <c:otherwise>
+                        <input id="c" type="radio" name="answer" value="c"> ${question.cAns}</input>
+                    </c:otherwise>
+                </c:choose>
             </c:if>
             <c:if test="${question.dAns != null}">
-                <br/><input id="d" type="radio" name="answer" value="${question.dAns}"> ${question.dAns}</input>
+                <c:choose>
+                    <c:when test="${not fn:containsIgnoreCase(question.dAns, '<img')}">
+                        <input id="d" type="radio" name="answer" value="${question.dAns}"> ${question.dAns}</input>
+                    </c:when>
+                    <c:otherwise>
+                        <input id="d" type="radio" name="answer" value="d"> ${question.dAns}</input>
+                    </c:otherwise>
+                </c:choose>
             </c:if>
             <c:if test="${question.eAns != null}">
-                <br/> <input id="e" type="radio" name="answer" value="${question.eAns}"> ${question.eAns}</input>
+                <c:choose>
+                    <c:when test="${not fn:containsIgnoreCase(question.eAns, '<img')}">
+                        <input id="e" type="radio" name="answer" value="${question.eAns}"> ${question.eAns}</input>
+                    </c:when>
+                    <c:otherwise>
+                        <input id="e" type="radio" name="answer" value="e"> ${question.eAns}</input>
+                    </c:otherwise>
+                </c:choose>
             </c:if>
             <br/>
             <input id="IDontKnowRadioButton" type="radio" name="answer" value="I dont know">
