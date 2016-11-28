@@ -60,7 +60,7 @@ public class AskEmotionFreeAnswerIntervention extends InputResponseIntervention 
         str += "<textarea name=\"" + FEELING + "\" rows=\"3\" cols=\"40\"/>" ;
         str += "<br><br>2. Why do you feel that way?";
         str += "<textarea name=\"" + REASON + "\" rows=\"3\" cols=\"40\"/>" ;
-        str += "<br><br>3. Please tell us what you have been trying to accomplish";
+        str += "<br><br>3. What do you wish you could do to improve this class right now?";
         str += "<textarea name=\"" + GOAL + "\" rows=\"3\" cols=\"40\"/>" ;
 //        str += "<br><br>3. What do you want to happen?";
 //        str += "<textarea name=\"" + RESULT + "\" rows=\"3\" cols=\"40\"/>" ;
