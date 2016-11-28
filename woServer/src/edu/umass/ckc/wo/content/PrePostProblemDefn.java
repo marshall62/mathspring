@@ -40,6 +40,7 @@ public class PrePostProblemDefn extends Problem {
     private int preNumProbsCorrect=0;
     private int postNumProbsCorrect=0;
     private int waitTimeSecs;  // how many seconds we wait before warning student they need to answer.
+    private String answerString;
 
     public PrePostProblemDefn () {
         id = -1;
@@ -372,5 +373,25 @@ public class PrePostProblemDefn extends Problem {
 
     public Blob getImg() {
         return img;
+    }
+
+    public String getAnswerString() {
+        String correctChoice = this.answer;
+        if (correctChoice.equalsIgnoreCase("a"))
+            return this.aAns;
+        else if (correctChoice.equalsIgnoreCase("b"))
+            return this.bAns;
+        else if (correctChoice.equalsIgnoreCase("c"))
+            return this.cAns;
+        else if (correctChoice.equalsIgnoreCase("d"))
+            return this.dAns;
+        else if (correctChoice.equalsIgnoreCase("e"))
+            return this.eAns;
+        else return "";
+    }
+
+    public boolean isImageAnswer () {
+        String ans = getAnswerString();
+        return ans.toLowerCase().contains("<img");
     }
 }

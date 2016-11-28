@@ -241,7 +241,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         Response r = new Response();
         this.studentModel.beginProblem(smgr, e); // this sets state.curProb to the new probid
 //        System.out.println("After StudentModel.beginProblem " + (System.currentTimeMillis() - t));
-        new TutorLogger(smgr).logBeginProblem(e, r);  // this relies on the above being done first
 //        System.out.println("After TutorLogger.beginProblem " + (System.currentTimeMillis() - t));
 
         if (learningCompanion != null )   {
@@ -249,15 +248,17 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //            System.out.println("After learningCompanion.processUncategorizedEvent " + (System.currentTimeMillis() - t));
 
         }
+        new TutorLogger(smgr).logBeginProblem(e, r);  // this relies on the above being done first
         return r;
     }
 
     @Override
     public Response processResumeProblemEvent(ResumeProblemEvent e) throws Exception {
         Response r = new Response();
-        new TutorLogger(smgr).logResumeProblem(e,r);  // this relies on the above being done first
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logResumeProblem(e,r);  // this relies on the above being done first
         return r;
     }
 
@@ -269,7 +270,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 //        this.studentModel.updateEmotionalState(this.smgr,e.getProbElapsedTime(),e.getElapsedTime());
         this.studentModel.endProblem(smgr, smgr.getStudentId(),e.getProbElapsedTime(),e.getElapsedTime());
         r.setEffort(this.studentModel.getEffort());
-        new TutorLogger(smgr).logEndProblem(e, r);
+
         if (Settings.usingAssistments)
         {
             CoopUser assu = DbCoopUsers.getUserFromWayangStudId(smgr.getConnection(), smgr.getStudentId());
@@ -281,6 +282,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         if (learningCompanion != null )
             learningCompanion.processEndProblem(smgr,(EndProblemEvent) e,r);
+        new TutorLogger(smgr).logEndProblem(e, r);
         return r;
     }
 
@@ -331,9 +333,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         }
         else r= new ExampleResponse(null);
 
-        new TutorLogger(smgr).logShowExample((ShowExampleEvent) e, (ExampleResponse) r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logShowExample((ShowExampleEvent) e, (ExampleResponse) r);
         return r;
     }
 
@@ -344,11 +347,12 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         String vid = p.getVideo();
 
         Response r = new Video(vid);
-        new TutorLogger(smgr).logShowVideoTransaction((ShowVideoEvent) e, r);
+
         if (vid != null && !vid.equals(""))
             studentModel.videoGiven(smgr.getStudentState());
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logShowVideoTransaction((ShowVideoEvent) e, r);
 
         return r;
     }
@@ -767,9 +771,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         // Prefer an intervType passed by the client to one coming from memory state.
         String interv;
         interv = (intervType != null && !intervType.equals("")) ? intervType : lastInterv;
-        new TutorLogger(smgr).logShowIntervention(e, r, interv);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logShowIntervention(e, r, interv);
         return r;
     }
 
@@ -777,9 +782,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processEndInterventionEvent(EndInterventionEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logEndIntervention(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logEndIntervention(e, r);
         return r;
     }
 
@@ -787,9 +793,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processBeginExampleEvent(BeginExampleEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logBeginExample(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logBeginExample(e, r);
         return r;
     }
 
@@ -797,27 +804,30 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processEndExampleEvent(EndExampleEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logEndExample( e, r);
+
         if (learningCompanion != null )
             learningCompanion.processEndExample(smgr,(EndExampleEvent) e,r);
+        new TutorLogger(smgr).logEndExample( e, r);
         return r;
     }
 
     @Override
     public Response processBeginExternalActivityEvent(BeginExternalActivityEvent e) throws Exception {
         Response r = new Response();
-        new TutorLogger(smgr).logBeginExternalActivity(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logBeginExternalActivity(e, r);
         return r;
     }
 
     @Override
     public Response processEndExternalActivityEvent(EndExternalActivityEvent e) throws Exception {
         Response r = new Response();
-        new TutorLogger(smgr).logEndExternalActivity(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logEndExternalActivity(e, r);
         return r;
     }
 
@@ -825,17 +835,20 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processClickCharacterEvent(ClickCharacterEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
+
+        r = learningCompanion.processClickCharacterEvent(smgr,e);
         new TutorLogger(smgr).logClickCharacter(e, r);
-        return learningCompanion.processClickCharacterEvent(smgr,e);
+        return r;
     }
 
     @Override
     public Response processMuteCharacterEvent(MuteCharacterEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logMuteCharacter(e, r);
+
         if (learningCompanion != null)
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logMuteCharacter(e, r);
         return r;
     }
 
@@ -843,9 +856,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processUnMuteCharacterEvent(UnMuteCharacterEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logUnMuteCharacter(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logUnMuteCharacter(e, r);
         return r;
     }
 
@@ -853,9 +867,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processEliminateCharacterEvent(EliminateCharacterEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logEliminateCharacter(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logEliminateCharacter(e, r);
         return r;
     }
 
@@ -863,9 +878,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public Response processShowCharacterEvent(ShowCharacterEvent e) throws Exception {
         smgr.getStudentState().setProblemIdleTime(0);
         Response r = new Response();
-        new TutorLogger(smgr).logShowCharacter(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logShowCharacter(e, r);
         return r;
     }
 
@@ -874,9 +890,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         smgr.getStudentState().setProblemIdleTime(0);
         smgr.getStudentState().setIsTextReaderUsed(true);
         Response r = new Response();
-        new TutorLogger(smgr).logReadProblem(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logReadProblem(e, r);
         return r;
     }
 
@@ -908,9 +925,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             else
                 r= new Response("grade=true&isCorrect=false");
         }
-        new TutorLogger(smgr).logContinueAttemptIntervention(e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logContinueAttemptIntervention(e, r);
         return r;
     }
 
@@ -987,9 +1005,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
         if (intervention != null) {
             r= new InterventionResponse(intervention);
-            new TutorLogger(smgr).logTimedIntervention(e, r);
+
             if (learningCompanion != null )
                 learningCompanion.processUncategorizedEvent(e,r);
+            new TutorLogger(smgr).logTimedIntervention(e, r);
             return r;
         }
         // this does not want to generate another intervention.  So select a new prob
@@ -1050,9 +1069,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
             studentModel.newProblem(state, ((ProblemResponse) r).getProblem());
         }
 
-        new TutorLogger(smgr).logInputResponseNextProblemIntervention( e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logInputResponseNextProblemIntervention( e, r);
         return r;
     }
 
@@ -1101,9 +1121,10 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                     r= new Response("&grade=true&isCorrect=false");
             }
         }
-        new TutorLogger(smgr).logInputResponseAttemptIntervention( e, r);
+
         if (learningCompanion != null )
             learningCompanion.processUncategorizedEvent(e,r);
+        new TutorLogger(smgr).logInputResponseAttemptIntervention( e, r);
         return r;
     }
 

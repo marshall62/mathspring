@@ -83,6 +83,7 @@ public class Pretest extends LoginInterventionSelector {
     private String startMessage;
     protected String testType;
     private String terminationPredicate;
+    private Object answerString;
 
 
     public Pretest(SessionManager smgr) throws SQLException {
@@ -200,15 +201,27 @@ public class Pretest extends LoginInterventionSelector {
     }
 
     // If a problem has an expected answer (e.g. the answer field is non-null) we grade it.
-    // pretest problems that are multi-choice do not rely on a,b,c as the userAnswer.  What comes back as the userInput from the HTML form is
+    // Pretest problems that are multi-choice have answers returned in different forms:  What comes back as the userInput from the HTML form is
     // something like "2 - I don't like this".   So to check correctness of a multi-choice question, the correct answer needs
     // to be stored in the database as "2 - I don't like this" rather than "b".  We then do a string match.   Short answer questions
     // just use a string match and remove spaces and upper case.
+    // One hitch:  if its a multi-choice answer we allow authors to put in <img> tags to include images (rather than using the aURL, bURL fields)
+    // We have
+    // some special-case checking for this situation and send back the letter of the multi-choice when there is an img tag.  This means
+    // the grader needs to switch to checking against the letter if the problem choice contains the string "<img"
     private boolean gradeProb(PrePostProblemDefn thisProb, String userAnswer) {
 
         // For short-answer questions we do a string match.  The string match algorithm does nothing more than remove trailing spaces and upper case.
         if (thisProb.isMultiChoice() && thisProb.getAnswer() != null) {
-            return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
+            String a= thisProb.getAnswerString(); // the text of the correct answer
+            // img answers will send back the letter of the choice (a,b,c...) so we can simply compare the choice with the correct answer
+            if (thisProb.isImageAnswer())
+                return userAnswer.equals(thisProb.getAnswer());
+            // non img sends back the text (stored in the value attribute) of the input so we get the text of the correct answer and compare
+            else {
+                return userAnswer.equals(thisProb.getAnswerString());
+            }
+//            return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
         }
         // if its a short-answer problem with an expected answer, check it
         else if (thisProb.getAnswer() != null) {
