@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%--
   Created by IntelliJ IDEA.
   User: david
@@ -172,7 +173,7 @@
                         <input id="a" type="radio" name="answer" value="a"> ${question.aAns}</input>
                     </c:otherwise>
                 </c:choose>
-
+                <br>
             </c:if>
             <c:if test="${question.bAns != null}">
                 <c:choose>
@@ -183,6 +184,7 @@
                         <input id="b" type="radio" name="answer" value="b"> ${question.bAns}</input>
                     </c:otherwise>
                 </c:choose>
+                <br>
             </c:if>
             <c:if test="${question.cAns != null}">
                 <c:choose>
@@ -193,6 +195,7 @@
                         <input id="c" type="radio" name="answer" value="c"> ${question.cAns}</input>
                     </c:otherwise>
                 </c:choose>
+                <br>
             </c:if>
             <c:if test="${question.dAns != null}">
                 <c:choose>
@@ -203,6 +206,7 @@
                         <input id="d" type="radio" name="answer" value="d"> ${question.dAns}</input>
                     </c:otherwise>
                 </c:choose>
+                <br>
             </c:if>
             <c:if test="${question.eAns != null}">
                 <c:choose>
@@ -213,6 +217,7 @@
                         <input id="e" type="radio" name="answer" value="e"> ${question.eAns}</input>
                     </c:otherwise>
                 </c:choose>
+                <br>
             </c:if>
             <br/>
             <input id="IDontKnowRadioButton" type="radio" name="answer" value="I dont know">
