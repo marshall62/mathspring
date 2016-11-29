@@ -207,8 +207,8 @@
       <file leaf-file-name="releaseNotes.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="54" column="15" selection-start-line="54" selection-start-column="15" selection-end-line="54" selection-end-column="15" />
+            <state relative-caret-position="214">
+              <caret line="38" column="101" selection-start-line="38" selection-start-column="101" selection-end-line="38" selection-end-column="101" />
               <folding />
             </state>
           </provider>
@@ -318,6 +318,9 @@
       <map>
         <entry key="$PROJECT_DIR$" value="production" />
       </map>
+    </option>
+    <option name="PUSH_TAGS">
+      <GitPushTagMode />
     </option>
   </component>
   <component name="GitLogSettings">
@@ -1724,14 +1727,7 @@
       <workItem from="1478649028135" duration="1168000" />
       <workItem from="1479400951062" duration="11124000" />
       <workItem from="1480001045510" duration="8440000" />
-      <workItem from="1480354860587" duration="5559000" />
-    </task>
-    <task id="LOCAL-00173" summary="Begin the debugging of topix&#10;">
-      <created>1427150872206</created>
-      <option name="number" value="00173" />
-      <option name="presentableId" value="LOCAL-00173" />
-      <option name="project" value="LOCAL" />
-      <updated>1427150872206</updated>
+      <workItem from="1480354860587" duration="5930000" />
     </task>
     <task id="LOCAL-00174" summary="Got it to the point where it shows a topic intro and an example and then dies trying to select the first practice problem">
       <created>1427235490061</created>
@@ -2069,11 +2065,18 @@
       <option name="project" value="LOCAL" />
       <updated>1480459116928</updated>
     </task>
-    <option name="localTasksCounter" value="222" />
+    <task id="LOCAL-00222" summary="test to see if I can tag within intellij">
+      <created>1480459233072</created>
+      <option name="number" value="00222" />
+      <option name="presentableId" value="LOCAL-00222" />
+      <option name="project" value="LOCAL" />
+      <updated>1480459233072</updated>
+    </task>
+    <option name="localTasksCounter" value="223" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="275678000" />
+    <option name="totallyTimeSpent" value="276049000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2188,7 +2191,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Fixed lastIntervention being saved when FinishCollaborationIntervention is returned" />
     <MESSAGE value="Fixed bug in ProblemDiffuclty report so it only counts problmes that are shown as practice problems." />
     <MESSAGE value="Fixed null pointer bug in collabIS" />
     <MESSAGE value="Upgraded to Intellij 2016.   &#10;Using Tomcat 8&#10;and Java 8&#10;Eliminated some hibernate dependencies and cleaned up artifacts&#10;Added Jersey RESTful framework and handle requests in /rest/MathspringService." />
@@ -2213,7 +2215,8 @@
     <MESSAGE value="Eliminated 4th OPEN question in AskEmotion." />
     <MESSAGE value="Made sure that pretests show questions correctly with new multi-choice allowing images.   Also fixed bug in BasePedModel where learning companion media&#10;was not logged into event log." />
     <MESSAGE value="change release notes to document how to do release management with github." />
-    <option name="LAST_COMMIT_MESSAGE" value="change release notes to document how to do release management with github." />
+    <MESSAGE value="test to see if I can tag within intellij" />
+    <option name="LAST_COMMIT_MESSAGE" value="test to see if I can tag within intellij" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3104,8 +3107,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="54" column="15" selection-start-line="54" selection-start-column="15" selection-end-line="54" selection-end-column="15" />
+        <state relative-caret-position="214">
+          <caret line="38" column="101" selection-start-line="38" selection-start-column="101" selection-end-line="38" selection-end-column="101" />
           <folding />
         </state>
       </provider>

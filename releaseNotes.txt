@@ -36,7 +36,7 @@ Release Management (begun 11/28/16 - better late than never)
     -  The commit comment should BEGIN with the ISSUE NUMBER!
     -  When closing out the issue I would know the next release # (based on the last one) so it should be mentioned
     - Release numbers should go like v2.1.X when bugs are fixed and 2.X.0 when new features go in (and maybe bug fixes too).
-    -  Tag the final commit before releasing (git tag -a v2.1.4 -m 'message' )
+    -  Tag the final commit before releasing (VCS | Git | Tag... and then commit with the tag created)  git tag -a v2.1.4 -m 'message' )
     -  If I want to know what issues have been taken care of in a release I can look at the
        commits since a given tag. (git log v2.1.4..HEAD --oneline)
 
@@ -52,7 +52,7 @@ Release Management (begun 11/28/16 - better late than never)
     git log v2.1..HEAD or git log v2.1..HEAD --oneline
 
 
-Releases (test)
+Releases (test again)
 
 11/28/16: First Git Release (tag v2.1)    Has fixes to the FullEmpathicLC and SemiEmpathicLC which were
 completely non-working.  Also a fix to make AskEmotion wait correctly after user response.
