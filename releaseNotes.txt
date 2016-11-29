@@ -52,7 +52,7 @@ Release Management (begun 11/28/16 - better late than never)
     git log v2.1..HEAD or git log v2.1..HEAD --oneline
 
 
-Releases:
+Releases (test)
 
 11/28/16: First Git Release (tag v2.1)    Has fixes to the FullEmpathicLC and SemiEmpathicLC which were
 completely non-working.  Also a fix to make AskEmotion wait correctly after user response.

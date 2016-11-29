@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="Made sure that pretests show questions correctly with new multi-choice allowing images.   Also fixed bug in BasePedModel where learning companion media&#10;was not logged into event log.">
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/releaseNotes.txt" afterPath="$PROJECT_DIR$/releaseNotes.txt" />
@@ -207,8 +207,8 @@
       <file leaf-file-name="releaseNotes.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="57" column="90" selection-start-line="57" selection-start-column="90" selection-end-line="57" selection-end-column="90" />
+            <state relative-caret-position="282">
+              <caret line="54" column="15" selection-start-line="54" selection-start-column="15" selection-end-line="54" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -1724,14 +1724,7 @@
       <workItem from="1478649028135" duration="1168000" />
       <workItem from="1479400951062" duration="11124000" />
       <workItem from="1480001045510" duration="8440000" />
-      <workItem from="1480354860587" duration="5447000" />
-    </task>
-    <task id="LOCAL-00172" summary="More refactoring to eliminate topics from BasePedModel">
-      <created>1426543061060</created>
-      <option name="number" value="00172" />
-      <option name="presentableId" value="LOCAL-00172" />
-      <option name="project" value="LOCAL" />
-      <updated>1426543061060</updated>
+      <workItem from="1480354860587" duration="5559000" />
     </task>
     <task id="LOCAL-00173" summary="Begin the debugging of topix&#10;">
       <created>1427150872206</created>
@@ -2069,11 +2062,18 @@
       <option name="project" value="LOCAL" />
       <updated>1480354889432</updated>
     </task>
-    <option name="localTasksCounter" value="221" />
+    <task id="LOCAL-00221" summary="change release notes to document how to do release management with github.">
+      <created>1480459116928</created>
+      <option name="number" value="00221" />
+      <option name="presentableId" value="LOCAL-00221" />
+      <option name="project" value="LOCAL" />
+      <updated>1480459116928</updated>
+    </task>
+    <option name="localTasksCounter" value="222" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="275566000" />
+    <option name="totallyTimeSpent" value="275678000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2188,7 +2188,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Removed survey buttons on login page" />
     <MESSAGE value="Fixed lastIntervention being saved when FinishCollaborationIntervention is returned" />
     <MESSAGE value="Fixed bug in ProblemDiffuclty report so it only counts problmes that are shown as practice problems." />
     <MESSAGE value="Fixed null pointer bug in collabIS" />
@@ -2213,7 +2212,8 @@
     <MESSAGE value="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore" />
     <MESSAGE value="Eliminated 4th OPEN question in AskEmotion." />
     <MESSAGE value="Made sure that pretests show questions correctly with new multi-choice allowing images.   Also fixed bug in BasePedModel where learning companion media&#10;was not logged into event log." />
-    <option name="LAST_COMMIT_MESSAGE" value="Made sure that pretests show questions correctly with new multi-choice allowing images.   Also fixed bug in BasePedModel where learning companion media&#10;was not logged into event log." />
+    <MESSAGE value="change release notes to document how to do release management with github." />
+    <option name="LAST_COMMIT_MESSAGE" value="change release notes to document how to do release management with github." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3104,8 +3104,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="57" column="90" selection-start-line="57" selection-start-column="90" selection-end-line="57" selection-end-column="90" />
+        <state relative-caret-position="282">
+          <caret line="54" column="15" selection-start-line="54" selection-start-column="15" selection-end-line="54" selection-end-column="15" />
           <folding />
         </state>
       </provider>
