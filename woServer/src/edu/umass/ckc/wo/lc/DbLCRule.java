@@ -79,7 +79,8 @@ public class DbLCRule {
         String name="";
         try {
             loadRulesetMetaRules(conn,ruleSetId, ruleset);
-            String q = "select r.id, r.name, r.description, r.onEvent, r.priority from rule r, rulesetmap m where m.rulesetid=? and m.ruleid=r.id";
+            String q = "select r.id, r.name, r.description, r.onEvent, r.priority from rule r, rulesetmap m " +
+                    "where m.rulesetid=? and m.ruleid=r.id";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,ruleSetId);
             rs = stmt.executeQuery();

@@ -23,6 +23,11 @@ represents the woj release.   I think I can then fix bugs in each and merge one 
 
 
 Releases:
+
+11/28/16:  Both systems.  Added in a fix so that img tags can be put in pretest multichoice area.
+Fixed bug in event logging (had first call learning companion and THEN log in most events).
+11/24/16 (Thanksgiving):  Have fixed all reported bugs in pretests and ask-emotion queries.  New pedaogies
+that include Meta-cognitive (rule-based) LCs.  Both MS and WOJ system are the same and checked into git.
 11/8/16:  Added LC rules from Ivon which includes some fixes to the XMLLCRule tool for adding to the db and making rules and rulesets
 that have one rule file and many ruleset files that just point to rules.   Tested the rules coming from oldLCBehavior.   This release also
 includes Rafaels additions to the topic editor in the teacher tools.   Built some new ant scripts (auto-gened)  and then wrote buildSugaree.xml
