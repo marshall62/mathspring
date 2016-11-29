@@ -207,8 +207,8 @@
       <file leaf-file-name="releaseNotes.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="38" column="101" selection-start-line="38" selection-start-column="101" selection-end-line="38" selection-end-column="101" />
+            <state relative-caret-position="231">
+              <caret line="39" column="9" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -1727,14 +1727,7 @@
       <workItem from="1478649028135" duration="1168000" />
       <workItem from="1479400951062" duration="11124000" />
       <workItem from="1480001045510" duration="8440000" />
-      <workItem from="1480354860587" duration="5930000" />
-    </task>
-    <task id="LOCAL-00174" summary="Got it to the point where it shows a topic intro and an example and then dies trying to select the first practice problem">
-      <created>1427235490061</created>
-      <option name="number" value="00174" />
-      <option name="presentableId" value="LOCAL-00174" />
-      <option name="project" value="LOCAL" />
-      <updated>1427235490061</updated>
+      <workItem from="1480354860587" duration="6054000" />
     </task>
     <task id="LOCAL-00175" summary="topic internal state was not being saved in db">
       <created>1427827282659</created>
@@ -2072,11 +2065,18 @@
       <option name="project" value="LOCAL" />
       <updated>1480459233072</updated>
     </task>
-    <option name="localTasksCounter" value="223" />
+    <task id="LOCAL-00223" summary="testing IDEA tagging">
+      <created>1480459574902</created>
+      <option name="number" value="00223" />
+      <option name="presentableId" value="LOCAL-00223" />
+      <option name="project" value="LOCAL" />
+      <updated>1480459574902</updated>
+    </task>
+    <option name="localTasksCounter" value="224" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="276049000" />
+    <option name="totallyTimeSpent" value="276173000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2191,7 +2191,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Fixed bug in ProblemDiffuclty report so it only counts problmes that are shown as practice problems." />
     <MESSAGE value="Fixed null pointer bug in collabIS" />
     <MESSAGE value="Upgraded to Intellij 2016.   &#10;Using Tomcat 8&#10;and Java 8&#10;Eliminated some hibernate dependencies and cleaned up artifacts&#10;Added Jersey RESTful framework and handle requests in /rest/MathspringService." />
     <MESSAGE value="Added Child assent stuff" />
@@ -2216,7 +2215,8 @@
     <MESSAGE value="Made sure that pretests show questions correctly with new multi-choice allowing images.   Also fixed bug in BasePedModel where learning companion media&#10;was not logged into event log." />
     <MESSAGE value="change release notes to document how to do release management with github." />
     <MESSAGE value="test to see if I can tag within intellij" />
-    <option name="LAST_COMMIT_MESSAGE" value="test to see if I can tag within intellij" />
+    <MESSAGE value="testing IDEA tagging" />
+    <option name="LAST_COMMIT_MESSAGE" value="testing IDEA tagging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3107,8 +3107,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="38" column="101" selection-start-line="38" selection-start-column="101" selection-end-line="38" selection-end-column="101" />
+        <state relative-caret-position="231">
+          <caret line="39" column="9" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
           <folding />
         </state>
       </provider>
