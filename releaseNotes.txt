@@ -18,12 +18,45 @@ To make sure production is updated with master branch
 4.  run it to make sure it works.  Fix as necessary
 5.  commit and push to production
 
+See https://git-scm.com/book/en/v2/Git-Basics-Tagging about tagging commits in Git.  Good
+for release numbers.
+
+
+
 Goal:  Make sure that production branch represents the code in the ms release and that master branch
 represents the woj release.   I think I can then fix bugs in each and merge one branch into the other.
 
+Release Management (begun 11/28/16 - better late than never)
+  It would be nice to name and number each release and to know each of the new commits that go into it
+ come with GitHub issues numbers.   THis way I could say that release v2.3.4 fixed such and such bugs
+ So here is how one must work to achieve this:
 
-Releases:
+    - Require that before I do anything (bug fix or feature), it be entered into GitHub as an issue with a number.
+    -  I'd then have to do a commit that contains code for only a single issue.
+    -  The commit comment should BEGIN with the ISSUE NUMBER!
+    -  When closing out the issue I would know the next release # (based on the last one) so it should be mentioned
+    - Release numbers should go like v2.1.X when bugs are fixed and 2.X.0 when new features go in (and maybe bug fixes too).
+    -  Tag the final commit before releasing (VCS | Git | Tag... and then commit/push tag button selected)
+         OR git tag -a v2.1.4 -m 'message' )
+    -  If I want to know what issues have been taken care of in a release I can look at the
+       commits since a given tag. (git log v2.1.4..HEAD --oneline)
 
+    https://git-scm.com/book/en/v2/Git-Basics-Tagging
+    Commands to tag a release:
+    After the last commit:  use git tag -a v2.1 -m "comment here" OR tag a specific commit by using
+    git log --pretty=oneline to see all commits and then git tag -a v1.2 9fceb02 with first 7 digits of commit #.
+    git show v2.1 will give info about the tagged commit.
+    git tag will show all the tags
+
+   How to find all the commits after a particular tag (v2.1)
+
+    git log v2.1..HEAD or git log v2.1..HEAD --oneline
+
+
+Releases (test again)
+
+11/28/16: First Git Release (tag v2.1)    Has fixes to the FullEmpathicLC and SemiEmpathicLC which were
+completely non-working.  Also a fix to make AskEmotion wait correctly after user response.
 11/28/16:  Both systems.  Added in a fix so that img tags can be put in pretest multichoice area.
 Fixed bug in event logging (had first call learning companion and THEN log in most events).
 11/24/16 (Thanksgiving):  Have fixed all reported bugs in pretests and ask-emotion queries.  New pedaogies
