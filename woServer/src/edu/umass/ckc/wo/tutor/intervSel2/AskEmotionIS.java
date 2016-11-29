@@ -175,6 +175,12 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
      */
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
+        long now = System.currentTimeMillis();
+        // There are two state vars that control the next time this intervention can be played.  They are set when the intervention is selected
+        // and then we overwrite the time based var to hold the time at which the intervention was answered.   This prevents situations where
+        // the user sits in the intervention a LONG time and then submits it (which had the bug of generating the intervention again without
+        // this fix)
+        state.setTimeOfLastIntervention(now);
         if (inputType.equals("freeAnswer")) {
             processFreeAnswerInputs(e);
             return null;
