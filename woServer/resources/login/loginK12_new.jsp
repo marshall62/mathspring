@@ -23,12 +23,22 @@
             <div class="col-md-8 col-md-offset-2 login-box">
                 <div class="row sign-in-up-box">
                     <div class="col-md-6">
-                        <button
-                                class="btn btn-primary btn-lg btn-block signup-btn teacher-sign-up-btn"
-                                type="button">Sign up for Teacher</button>
-                        <button
-                                class="btn btn-primary btn-lg btn-block signup-btn student-sign-up-btn"
-                                type="button">Sign up for Student</button>
+                        <form
+                                method="post"
+                                action="${pageContext.request.contextPath}/WoAdmin?action=AdminTeacherLogin">
+                            <button
+                                    class="btn btn-primary btn-lg btn-block signup-btn teacher-sign-up-btn"
+                                    type="submit"
+                                    name="register" value="Register"
+                            >Sign up for Teacher</button>
+                        </form>
+                        <form action="${pageContext.request.contextPath}/WoAdmin">
+                            <button
+                                    class="btn btn-primary btn-lg btn-block signup-btn student-sign-up-btn"
+                                    type="button"
+                                    onClick="javascript:signup();"
+                            >Sign up for Student</button>
+                        </form>
                         <form name="guest" action="${pageContext.request.contextPath}/WoLoginServlet">
                             <input type="hidden" name="action" value="GuestLogin"/>
                             <input type="hidden" name="clientType" value="${clientType}"/>
