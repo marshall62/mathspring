@@ -1,6 +1,11 @@
 package edu.umass.ckc.wo.login;
 
 
+import edu.umass.ckc.wo.woserver.ServletInfo;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 /**
  * Created by IntelliJ IDEA.
  * User: david
@@ -22,6 +27,11 @@ public class LoginK12_2 extends Login2 {
         this.login_existingSess_jsp = "login/loginExistingSessionK12.jsp";
     }
 
-
-
+    @Override
+    public LoginResult process(ServletInfo servletInfo) throws Exception {
+        if (!"a".equals(servletInfo.getRequest().getParameter("var"))) {
+            this.login_existingSess_jsp = "login/loginExistingSessionK12_new.jsp";
+        }
+        return super.process(servletInfo);
+    }
 }

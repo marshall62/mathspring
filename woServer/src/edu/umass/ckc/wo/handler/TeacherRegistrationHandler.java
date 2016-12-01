@@ -30,14 +30,18 @@ public class TeacherRegistrationHandler {
             req.setAttribute("message","You must supply values for required fields");
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("isAdmin",adminId != null ? true : false);
-            req.getRequestDispatcher("/teacherTools/teacherRegister.jsp").forward(req ,resp);
+            req.getRequestDispatcher("a".equals(req.getParameter("var"))
+                    ? "/teacherTools/teacherRegister.jsp"
+                    : "/teacherTools/teacherRegister_new.jsp").forward(req ,resp);
         }
         else if (!event.getPw1().equals(event.getPw2()))
         {
             req.setAttribute("message","Passwords must match");
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("isAdmin",adminId != null ? true : false);
-            req.getRequestDispatcher("/teacherTools/teacherRegister.jsp").forward(req ,resp);
+            req.getRequestDispatcher("a".equals(req.getParameter("var"))
+                    ? "/teacherTools/teacherRegister.jsp"
+                    : "/teacherTools/teacherRegister_new.jsp").forward(req ,resp);
         }
         // show userName created and give a button to proceed to class creation
         else {
