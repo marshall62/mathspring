@@ -4,6 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>MathSpring Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/common_new.css" rel="stylesheet" type="text/css" />
     <link href="login/css/loginK12_new.css" rel="stylesheet" type="text/css" />
@@ -17,7 +18,7 @@
 </head>
 <body>
     <div class="main-content">
-        <c:if test="${message != null}">
+        <c:if test="${message != null && not empty message}">
             <div class="alert alert-danger msg-bar" role="alert">${message}</div>
         </c:if>
         <div class="row">
