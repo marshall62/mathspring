@@ -1,0 +1,32 @@
+html {
+    min-height: 700px;
+}
+
+.registration-box {
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: solid 1px #979797;
+}
+
+@media screen and (min-width: 768px) {
+    html {
+        min-height: 605px;
+    }
+
+    .registration-box {
+        width: 550px;
+        left: 50%;
+        margin-left: -275px;
+    }
+
+    .student-registration-form {
+        width: 400px;
+        margin: 0 59px;
+    }
+}
+
+.form-label {
+    font-size: 3.375em;
+    font-weight: 300;
+    margin-bottom: 30px;
+}

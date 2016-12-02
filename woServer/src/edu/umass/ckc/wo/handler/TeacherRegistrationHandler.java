@@ -30,7 +30,7 @@ public class TeacherRegistrationHandler {
             req.setAttribute("message","You must supply values for required fields");
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("isAdmin",adminId != null ? true : false);
-            req.getRequestDispatcher("a".equals(req.getParameter("var"))
+            req.getRequestDispatcher("b".equals(req.getParameter("var"))
                     ? "/teacherTools/teacherRegister.jsp"
                     : "/teacherTools/teacherRegister_new.jsp").forward(req ,resp);
         }
@@ -39,7 +39,7 @@ public class TeacherRegistrationHandler {
             req.setAttribute("message","Passwords must match");
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("isAdmin",adminId != null ? true : false);
-            req.getRequestDispatcher("a".equals(req.getParameter("var"))
+            req.getRequestDispatcher("b".equals(req.getParameter("var"))
                     ? "/teacherTools/teacherRegister.jsp"
                     : "/teacherTools/teacherRegister_new.jsp").forward(req ,resp);
         }
