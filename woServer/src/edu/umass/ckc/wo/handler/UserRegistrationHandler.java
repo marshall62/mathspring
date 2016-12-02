@@ -104,7 +104,9 @@ public class UserRegistrationHandler {
                 req.getServerPort());
         String startPage = e.getStartPage();
         req.setAttribute("startPage",startPage);
-        RequestDispatcher disp = req.getRequestDispatcher(UserRegistrationHandler.REGISTER1);
+        RequestDispatcher disp = req.getRequestDispatcher("b".equals(req.getParameter("var"))
+                ? "login/userregistration_new.jsp"
+                : UserRegistrationHandler.REGISTER1);
         disp.forward(req,resp);
 //        return new UserRegistrationAuthenticationInfoPage(url, null, e);
         return null;
