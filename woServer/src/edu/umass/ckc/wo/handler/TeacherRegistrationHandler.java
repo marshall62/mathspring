@@ -52,7 +52,9 @@ public class TeacherRegistrationHandler {
                     " creating classes and getting reports about how your students are doing." ;
             req.setAttribute("isAdmin",adminId != null ? true : false);
             req.setAttribute("message",msg);
-            req.getRequestDispatcher("/teacherTools/teacherLogin.jsp").forward(req ,resp);
+            req.getRequestDispatcher("b".equals(req.getParameter("var"))
+                            ? "/login/loginK12_new.jsp"
+                            : "/teacherTools/teacherLogin.jsp").forward(req ,resp);
         }
     }
 
