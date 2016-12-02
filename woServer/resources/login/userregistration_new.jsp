@@ -13,7 +13,7 @@
         <div class="row">
             <h1 class="logo"><span>M</span>ath<span>S</span>pring</h1>
         </div>
-        <div class="row">
+        <div class="row registration-box-wrapper">
             <div class="col-sm-6 col-sm-offset-3 registration-box">
                 <div class="alert alert-danger msg-bar hidden" role="alert"></div>
                 <h1 class="text-center form-label">Sign up for students</h1>
