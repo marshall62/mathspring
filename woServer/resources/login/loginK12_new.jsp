@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/common_new.css" rel="stylesheet" type="text/css" />
     <link href="login/css/loginK12_new.css" rel="stylesheet" type="text/css" />
+    <link href="login/css/switcher-button.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="login/js/p7EHCscripts.js"></script>
     <script type="text/javascript">
         function signup() {
@@ -78,7 +79,19 @@
                                 />
                             </div>
                             <div class="row">
-                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6">
+                                    <div class="onoffswitch">
+                                        <input
+                                                type="checkbox"
+                                                name="onoffswitch"
+                                                class="onoffswitch-checkbox"
+                                                id="myonoffswitch" checked>
+                                        <label class="onoffswitch-label" for="myonoffswitch">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
                                 <div class="col-sm-6">
                                     <button type="submit" class="btn btn-default btn-block sign-in-btn">Login</button>
                                 </div>

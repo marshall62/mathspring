@@ -2,10 +2,30 @@ html {
     min-height: 700px;
 }
 
+.registration-box-wrapper {
+    padding: 25px 0;
+    background: url(../images/tree.png) no-repeat center;
+    position: relative;
+    height: 650px;
+    z-index: -2;
+}
+
+.registration-box-wrapper:after {
+    content: "";
+    background: #078A68 no-repeat;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    height: 650px;
+    width: 100%;
+    z-index: -1;
+    opacity: 0.8;
+}
+
 .registration-box {
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.8);
     border: solid 1px #979797;
+    z-index: 0;
 }
 
 @media screen and (min-width: 768px) {
@@ -22,6 +42,11 @@ html {
     .student-registration-form {
         width: 400px;
         margin: 0 59px;
+    }
+
+    .registration-box-wrapper,
+    .registration-box-wrapper:after {
+        height: 550px;
     }
 }
 
