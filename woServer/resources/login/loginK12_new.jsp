@@ -4,7 +4,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>MathSpring Login</title>
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="css/common_new.css" rel="stylesheet" type="text/css" />
     <link href="login/css/loginK12_new.css" rel="stylesheet" type="text/css" />
