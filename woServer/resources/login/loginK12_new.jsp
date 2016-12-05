@@ -46,6 +46,7 @@
                         <form name="guest" action="${pageContext.request.contextPath}/WoLoginServlet">
                             <input type="hidden" name="action" value="GuestLogin"/>
                             <input type="hidden" name="clientType" value="${clientType}"/>
+                            <input type="hidden" name="var" value="b"/>
                             <button
                                     class="btn btn-primary btn-lg btn-block signup-btn guest-try-out-btn"
                                     type="submit">Try out as Guest</button>

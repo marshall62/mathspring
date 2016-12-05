@@ -190,7 +190,23 @@ public class TutorBrainHandler {
                 return false;
             }
             else if (e instanceof HomeEvent) {
-                new DashboardHandler(this.servletInfo.getServletContext(),smgr,smgr.getConnection(),servletInfo.getRequest(),servletInfo.getResponse()).showSplashPage(LandingPage.JSP,false);
+                if ("b".equals(servletInfo.getRequest().getParameter("var"))) {
+                    new DashboardHandler(
+                            this.servletInfo.getServletContext(),
+                            smgr,
+                            smgr.getConnection(),
+                            servletInfo.getRequest(),
+                            servletInfo.getResponse()
+                    ).showNewSplashPage(LandingPage.JSP_NEW,false);
+                } else {
+                    new DashboardHandler(
+                            this.servletInfo.getServletContext(),
+                            smgr,
+                            smgr.getConnection(),
+                            servletInfo.getRequest(),
+                            servletInfo.getResponse()
+                    ).showSplashPage(LandingPage.JSP, false);
+                }
                 new TutorLogger(smgr).logHomeEvent((HomeEvent) e);
                 return false;
             }

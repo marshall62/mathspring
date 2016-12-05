@@ -29,7 +29,7 @@ public class LoginK12_2 extends Login2 {
 
     @Override
     public LoginResult process(ServletInfo servletInfo) throws Exception {
-        if (!"a".equals(servletInfo.getRequest().getParameter("var"))) {
+        if ("b".equals(servletInfo.getRequest().getParameter("var"))) {
             this.login1_jsp = "login/loginK12_new.jsp";
             this.login_existingSess_jsp = "login/loginExistingSessionK12_new.jsp";
         }

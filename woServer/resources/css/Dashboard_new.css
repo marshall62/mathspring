@@ -1,0 +1,156 @@
+.site-header {
+    padding: 1.8em 1.8em;
+    height: 120px;
+}
+
+.custom-dropdown-toggle {
+    color: black;
+    text-transform: uppercase;
+}
+
+.custom-dropdown-toggle img {
+    height: 45px;
+    width: 45px;
+}
+
+.dropdown-position {
+    position: relative;
+    top: -17px;
+}
+
+.dropdown-menu {
+    text-align: center;
+    width: 100%;
+    border-radius: 10px;
+}
+
+/*Important:*/
+.link-spanner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    /* edit: fixes overlap error in IE7/8,
+       make sure you have an empty gif
+    background-image: url('empty.gif');*/
+}
+
+#big-working-button {
+    position: relative;
+    text-align: center;
+    background: #006739;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    color: white;
+    transition: background-color 0.5s ease;
+}
+#big-working-button:after {
+    content: "";
+    background: url(../img/pot-wallpaper.png) repeat;
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: 0;
+}
+#big-working-button h1 {
+    letter-spacing: 2px;
+}
+#big-working-button p {
+    margin-top: 20px;
+    letter-spacing: 1px;
+}
+#big-working-button:hover {
+    text-decoration: none;
+    background: #2ECC71;
+}
+
+#math-section {
+    background: url(../img/wallpaper-icon.png) repeat, #F2F2F2;
+}
+
+.section-panel {
+    width: 90%;
+    height: 200px;
+    position: relative;
+    color: white;
+    transition: all 0.5s;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.section-panel:after {
+    border-radius: 0;
+    content: '\A';
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: all 0.5s ease;
+    z-index: 1;
+}
+.section-panel:hover:after {
+    opacity: 0.5;
+}
+.section-panel h4 {
+    padding: 0 10px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+    font-size: 1.5em;
+    top: 30%;
+    transition: all 0.5s ease;
+    line-height: 1.5em;
+    letter-spacing: 0.1em;
+}
+.section-panel:hover {
+    cursor: pointer;
+}
+.section-panel:hover h4 {
+    top: 10%;
+}
+.section-panel:hover div {
+    opacity: 0.95;
+}
+.section-panel .num-questions {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    z-index: 2;
+    bottom: 18px;
+    font-size: 3em;
+    opacity: 0;
+    transition: all 1s ease;
+}
+.section-panel .num-questions p {
+    font-size: 0.4em;
+    text-align: center;
+    z-index: 2;
+}
+.section-panel .progress {
+    border-radius: 0;
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    z-index: 2;
+    bottom: -20px;
+}
+
+.zero-progress {
+    background-color: #D72D00;
+}
+
+.thirty-three-progress {
+    background-color: #FF8F0D;
+}
+
+.sixty-six-progress {
+    background-color: #2ECC71;
+}
