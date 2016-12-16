@@ -8,8 +8,26 @@
     <link href="css/common_new.css" rel="stylesheet" type="text/css" />
     <link href="login/css/loginK12_new.css" rel="stylesheet" type="text/css" />
     <link href="login/css/switcher-button.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="login/js/p7EHCscripts.js"></script>
     <script type="text/javascript">
+        $(document).ready(function() {
+            var $userSwitcher = $('#usertypeswitcher');
+            var $userLoginForm = $('.user-login-form');
+            var $userLoginFormUsername = $('.user-login-form-username');
+            var $loginSubmitBtn = $('.js-login-btn');
+            $userSwitcher.change(function() {
+                if ($(this).is(':checked')) {
+                    $userLoginForm.attr('action', '${pageContext.request.contextPath}/WoLoginServlet');
+                    $userLoginFormUsername.attr('name', 'uname');
+                } else {
+                    $userLoginForm.attr('action', '${pageContext.request.contextPath}/WoAdmin?action=AdminTeacherLogin');
+                    $userLoginFormUsername.attr('name', 'userName');
+                    $loginSubmitBtn.attr('name', 'login');
+                    $loginSubmitBtn.attr('value', 'Login');
+                }
+            });
+        });
         function signup() {
             location.href = '${pageContext.request.contextPath}/WoAdmin?action=UserRegistrationStart&var=b&startPage=${startPage}';
         }
@@ -55,6 +73,7 @@
                     <div class="col-sm-6 login-form">
                         <p>Have a username and password already? Enter them here!</p>
                         <form
+                                class="user-login-form"
                                 method="post"
                                 name="login"
                                 action="${pageContext.request.contextPath}/WoLoginServlet">
@@ -66,7 +85,7 @@
                                         type="text"
                                         name="uname"
                                         value="${userName}"
-                                        class="form-control nav-login"
+                                        class="form-control nav-login user-login-form-username"
                                         placeholder="Username"
                                 />
                             </div>
@@ -84,17 +103,19 @@
                                     <div class="onoffswitch">
                                         <input
                                                 type="checkbox"
-                                                name="onoffswitch"
+                                                name="usertype"
                                                 class="onoffswitch-checkbox"
-                                                id="myonoffswitch" checked>
-                                        <label class="onoffswitch-label" for="myonoffswitch">
+                                                id="usertypeswitcher" checked>
+                                        <label class="onoffswitch-label" for="usertypeswitcher">
                                             <span class="onoffswitch-inner"></span>
                                             <span class="onoffswitch-switch"></span>
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-default btn-block sign-in-btn">Login</button>
+                                    <button
+                                            type="submit"
+                                            class="btn btn-default btn-block sign-in-btn js-login-btn">Login</button>
                                 </div>
                             </div>
                         </form>
