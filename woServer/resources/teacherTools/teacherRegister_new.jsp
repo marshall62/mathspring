@@ -69,6 +69,6 @@
             </div>
         </div>
     </div>
-    <footer>&copy; 2016 University of Massachusetts Amherst ~ All Rights Reserved.</footer>
+    <footer>&copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.</footer>
 </body>
 </html>
