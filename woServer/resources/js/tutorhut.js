@@ -141,6 +141,7 @@ function setGlobalProblemInfo (activity) {
 
 function updateTimers () {
     var now = new Date().getTime();
+    globals.clickTime= now;
     globals.probElapsedTime += now - globals.clock;
     globals.elapsedTime += now - globals.clock;
     globals.clock = now;
@@ -150,6 +151,7 @@ function updateTimers () {
 
 function incrementTimers(globals) {
     var now = new Date().getTime();
+    globals.clickTime = now;
     globals.probElapsedTime += now - globals.clock;
     globals.elapsedTime += now - globals.clock;
     globals.clock = now;
@@ -877,6 +879,7 @@ function exampleDialogCloseHandler () {
 var DELAY = 700, clicks = 0, timer = null;
 function clickHandling () {
     var agreed=false;
+    globals.clickTime = new Date().getTime();
     $("#"+LEARNING_COMPANION_CONTAINER).dialog(  {
             autoOpen: false,
             width:300,

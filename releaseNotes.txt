@@ -55,6 +55,7 @@ Release Management (begun 11/28/16 - better late than never)
 
 Releases (test again)
 
+TODO:  Add LCRuleFireLog and eventlog.clickTime (datetime(3) to rose db.
 11/28/16: First Git Release (tag v2.1)    Has fixes to the FullEmpathicLC and SemiEmpathicLC which were
 completely non-working.  Also a fix to make AskEmotion wait correctly after user response.
 11/28/16:  Both systems.  Added in a fix so that img tags can be put in pretest multichoice area.

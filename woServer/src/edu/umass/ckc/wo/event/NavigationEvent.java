@@ -18,6 +18,7 @@ public class NavigationEvent extends SessionEvent {
   private static final String TO = "to";
   private static final String FROM = "from";
   private static final String ELAPSED_TIME = "elapsedTime";
+  private static final String CLICK_TIME = "clickTime";
   private static final String PROB_ELAPSED_TIME = "probElapsedTime";
   private static final String PROBID = "probId";
   private static final String TOPICID = "topicId";
@@ -75,6 +76,7 @@ public class NavigationEvent extends SessionEvent {
   private String testType;
   private String data;
   private long elapsedTime;
+  private long clickTime; // timestamp given by Javascript
   private long probElapsedTime;
   private String probId;
   private String topicId;
@@ -98,6 +100,7 @@ public class NavigationEvent extends SessionEvent {
     this.setFrom(p.getString(FROM));
     this.setTo(p.getString(TO));
     this.setElapsedTime(p.getString(ELAPSED_TIME,"0"));
+    this.clickTime = p.getLong(CLICK_TIME,0);
     this.setProbElapsedTime(p.getString(PROB_ELAPSED_TIME,"0"));
     this.setProbId(p.getString(PROBID,null));
     this.setTopicId(p.getString(TOPICID,null));
@@ -216,7 +219,11 @@ public class NavigationEvent extends SessionEvent {
       this.clientVersion = client ;
   }
 
-    public long getProbElapsedTime() {
+  public long getClickTime() {
+    return clickTime;
+  }
+
+  public long getProbElapsedTime() {
         return probElapsedTime;
     }
 

@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,9 +55,14 @@ public class DbStudentProblemHistory {
     public static final String IS_SOLVED = "isSolved";
     public static final String TIME_TO_SOLVE = "timeToSolve";
     public static final String TIME_TO_FIRST_ATTEMPT = "timeToFirstAttempt";
+    public static final String TIME_TO_SECOND_ATTEMPT = "timeToSecondAttempt";
+    public static final String TIME_TO_THIRD_ATTEMPT = "timeToThirdAttempt";
     public static final String TIME_TO_FIRST_HINT = "timeToFirstHint";
+    public static final String TIME_TO_SECOND_HINT = "timeToSecondHint";
+    public static final String TIME_TO_THIRD_HINT = "timeToThirdHint";
     public static final String SOLUTION_HINT_GIVEN = "solutionHintGiven";
     public static final String EFFORT = "effort";
+    public static final String PROB_DIFFICULTY = "probDiff";
 
     private static Logger logger =   Logger.getLogger(DbStudentProblemHistory.class);
 
@@ -92,15 +96,16 @@ public class DbStudentProblemHistory {
     /** Called when a problem begins.   If this is the first encounter with the problem, it creates the row in the studentProblemHistory.
      * If this is a return to a problem that was previously unsolved (the only reason for  */
     public static int beginProblem(Connection conn, int sessId, int studId, int probId, int topicId, long startTime,
-                                   long timeInSession, long timeInTutor, String mode, String p, int collabWithStudId) throws SQLException {
+                                   long timeInSession, long timeInTutor, String mode, String p, int collabWithStudId,
+                                   double probDifficulty) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
 
 
             String q = "insert into " +SPHTBL+
-                    " (problemID, studID, sessionID, topicID, problemBeginTime, timeInTutor, timeInSession, mode,collaboratedWith) " +
-                    "values (?,?,?,?,?,?,?,?,?)";
+                    " (problemID, studID, sessionID, topicID, problemBeginTime, timeInTutor, timeInSession, mode,collaboratedWith, probDiff) " +
+                    "values (?,?,?,?,?,?,?,?,?,?)";
             stmt = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1,probId);
             stmt.setInt(2, studId);
@@ -113,6 +118,7 @@ public class DbStudentProblemHistory {
             if (collabWithStudId != -1)
                 stmt.setInt(9,collabWithStudId);
             else stmt.setNull(9,Types.INTEGER);
+            stmt.setDouble(10,probDifficulty);
             stmt.execute();
             rs = stmt.getGeneratedKeys();
             rs.next();
@@ -169,8 +175,7 @@ public class DbStudentProblemHistory {
     /** When the problem ends, the student has either solved it or has given up.   If he is giving up,  this record may be updated
      * in the future if the problem is resumed.
      *
-     *
-     * @param conn
+     *  @param conn
      * @param historyRecId
      * @param numHintsBeforeSolve
      * @param numAttemptsToSolve
@@ -185,12 +190,16 @@ public class DbStudentProblemHistory {
      * @param mastery
      * @param effort     @return
      * @param seenVideo
-     * * @param textReaderUsed @throws SQLException                                       */
+     * @param timeToSecondHint
+     * @param timeToThirdHint
+     * @param timeToSecondAttempt
+     * @param timeToThirdAttempt              */
     public static int endProblem(Connection conn, int historyRecId, int numHintsBeforeSolve, int numAttemptsToSolve,
                                  long timeToSolve, long timeToFirstHint, long timeToFirstAttempt, boolean isCorrect,
                                  long problemEndTime, int numMistakes, int numHints,
                                  boolean solutionHintGiven, double mastery,
-                                 String effort, boolean seenVideo, int examplesSeen, boolean textReaderUsed) throws SQLException {
+                                 String effort, boolean seenVideo, int examplesSeen, boolean textReaderUsed,
+                                 long timeToSecondHint, long timeToThirdHint, long timeToSecondAttempt, long timeToThirdAttempt) throws SQLException {
 
         PreparedStatement ps=null;
         try {
@@ -210,7 +219,11 @@ public class DbStudentProblemHistory {
                     "textReaderUsed=?, " +
                     "numHintsBeforeSolve=?, " +
                     "problemEndTime=?," +
-                    "isSolved=? " +
+                    "isSolved=?," +
+                    "timeToSecondAttempt=?, " +
+                    "timeToThirdAttempt=?, " +
+                    "timeToSecondHint=?, " +
+                    "timeToThirdHint=? " +
                     "where id=?";
             ps = conn.prepareStatement(q);
             ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
@@ -229,7 +242,14 @@ public class DbStudentProblemHistory {
             ps.setInt(14, numHintsBeforeSolve);
             ps.setTimestamp(15, new Timestamp(problemEndTime));
             ps.setBoolean(16, isCorrect);
-            ps.setInt(17, historyRecId);
+
+            ps.setLong(17, timeToSecondAttempt);
+            ps.setLong(18, timeToThirdAttempt);
+            ps.setLong(19, timeToSecondHint);
+            ps.setLong(20, timeToThirdHint);
+
+
+            ps.setInt(21, historyRecId);
 
             return ps.executeUpdate();
         } finally {
@@ -305,7 +325,8 @@ public class DbStudentProblemHistory {
             String q = "select ID,sessionId,problemId,topicId,problemBeginTime,problemEndTime,timeInSession," +
                     "timeInTutor,timeToFirstAttempt,timeToFirstHint,timeToSolve,numMistakes,numHints,videoSeen," +
                     "numAttemptsToSolve,solutionHintGiven,mode,mastery,emotionAfter,emotionLevel,effort,exampleSeen," +
-                    "textReaderUsed,numHintsBeforeSolve,isSolved from " +SPHTBL+ " where studId=? order by ID";
+                    "textReaderUsed,numHintsBeforeSolve,isSolved,timeToSecondAttempt,timeToThirdAttempt,timeToSecondHint," +
+                    "timeToThirdHint,probDiff from " +SPHTBL+ " where studId=? order by ID";
             ps = conn.prepareStatement(q);
             ps.setInt(1,studId );
 
@@ -324,7 +345,11 @@ public class DbStudentProblemHistory {
                 d.setTimeInSession(rs.getInt("timeInSession"));
                 d.setTimeInTutor(rs.getInt("timeInTutor"));
                 d.setTimeToFirstAttempt(rs.getInt("timeToFirstAttempt"));
+                d.setTimeToSecondAttempt(rs.getInt("timeToSecondAttempt"));
+                d.setTimeToThirdAttempt(rs.getInt("timeToThirdAttempt"));
                 d.setTimeToFirstHint(rs.getInt("timeToFirstHint"));
+                d.setTimeToSecondHint(rs.getInt("timeToSecondHint"));
+                d.setTimeToThirdHint(rs.getInt("timeToThirdHint"));
                 d.setTimeToSolve(rs.getInt("timeToSolve"));
                 d.setNumMistakes(rs.getInt("numMistakes"));
                 d.setNumHints(rs.getInt("numHints"));
@@ -340,6 +365,7 @@ public class DbStudentProblemHistory {
                 d.setUsedTextReader(rs.getBoolean("textReaderUsed"));
                 d.setNumHintsBeforeCorrect(rs.getInt("numHintsBeforeSolve"));
                 d.setSolved(rs.getBoolean("isSolved"));
+                d.setProbDifficulty(rs.getDouble("probDiff"));
                 history.add(d);
             }
         }

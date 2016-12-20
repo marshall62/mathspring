@@ -66,17 +66,24 @@ public class LCRule extends LCRuleComponent implements Comparable<LCRule>{
     /**
      * Test to see if a rule has all conditions true
      * @return true if all the rule conditions are true
+     * Writes information about the condition and the data it matches into the ruleDataInfo String
      * @throws Exception
      */
-    public boolean test () throws Exception {
+    public boolean test (StringBuilder ruleDataInfo) throws Exception {
         try {
             for (LCCondition cond : conditions) {
                 cond.setup(smgr, event, cache);
                 boolean res = cond.eval();
                 if (!res)
                     return false;
+                // If the condition succeeds, add info about the test and data to the info string (for logging)
+                ruleDataInfo.append(cond.getConditionInfo() + ",");
             }
             action.setup(smgr, event, cache);
+            // if there's data in the string delete the trailing comma
+            if (ruleDataInfo.length() > 0) {
+                ruleDataInfo.deleteCharAt(ruleDataInfo.length()-1);
+            }
             return true;    // if all conditions are true, return true
         } catch (Exception ee) {
             System.out.println("Failed to evaluate rule: " + this.getName());

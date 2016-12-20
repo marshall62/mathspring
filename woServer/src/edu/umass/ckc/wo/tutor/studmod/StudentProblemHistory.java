@@ -63,7 +63,8 @@ public class StudentProblemHistory {
             params = state.getProblemBinding();
         }
         DbStudentProblemHistory.beginProblem(smgr.getConnection(), e.getSessionId(), smgr.getStudentId(), state.getCurProblem(), topicId,
-            now, smgr.getTimeInSession(), now - state.getTutorEntryTime(), state.getCurProblemMode(), params, smgr.getCollaboratingWith());
+            now, smgr.getTimeInSession(), now - state.getTutorEntryTime(), state.getCurProblemMode(), params, smgr.getCollaboratingWith(),
+                p.getDifficulty());
 
         curProb = new StudentProblemData(state.getCurProblem(),state.getCurTopic(),e.getSessionId(),
                 now,smgr.getTimeInSession(), now-state.getTutorEntryTime(),state.getCurProblemMode());
@@ -116,11 +117,15 @@ public class StudentProblemHistory {
                 state.getNumMistakesOnCurProblem(),
                 state.getNumHintsGivenOnCurProblem(), state.isSolutionHintGiven(),
                 smgr.getStudentModel().getTopicMastery(topicId),
-                effort,state.isVideoShown(),state.getProbExamplesShown(),state.isTextReaderUsed());
+                effort,state.isVideoShown(),state.getProbExamplesShown(),state.isTextReaderUsed(),
+                state.getTimeToSecondHint(), state.getTimeToThirdHint(), state.getTimeToSecondAttempt(), state.getTimeToThirdAttempt());
+
         curProbData.setNumAttemptsToSolve(numAttemptsToSolve);
         curProbData.setNumHintsBeforeCorrect(state.getNumHintsBeforeCorrect());
         curProbData.setTimeToSolve(state.getTimeToSolve());  // should be zero if problem has not been solved.
         curProbData.setTimeToFirstHint(state.getTimeToFirstHint());
+        curProbData.setTimeToSecondHint(state.getTimeToSecondHint());
+        curProbData.setTimeToThirdHint(state.getTimeToThirdHint());
         curProbData.setTimeToFirstAttempt(state.getTimeToFirstAttempt());
         curProbData.setSolved(state.isProblemSolved());
         curProbData.setProblemEndTime(now);
@@ -135,11 +140,21 @@ public class StudentProblemHistory {
 
     }
 
-    public void attempt (SessionManager smgr, boolean isCorrect, long probElapsedTime) throws SQLException {
+    public void attempt (SessionManager smgr, boolean isCorrect, long probElapsedTime, int numAttempts) throws SQLException {
         int histRecId = DbStudentProblemHistory.getMostRecentStudentProblemHistoryRecord(smgr.getConnection(),smgr.getStudentId());
-        if (curProb.getNumAttemptsToSolve() == 0) {
+        if (numAttempts==1) {
             curProb.setTimeToFirstAttempt(probElapsedTime);
             DbStudentProblemHistory.updateVar(histRecId, smgr.getConnection(),DbStudentProblemHistory.TIME_TO_FIRST_ATTEMPT,probElapsedTime) ;
+
+        }
+        else if (numAttempts==2) {
+            curProb.setTimeToSecondAttempt(probElapsedTime);
+            DbStudentProblemHistory.updateVar(histRecId, smgr.getConnection(),DbStudentProblemHistory.TIME_TO_SECOND_ATTEMPT,probElapsedTime) ;
+
+        }
+        else if (numAttempts==3) {
+            curProb.setTimeToThirdAttempt(probElapsedTime);
+            DbStudentProblemHistory.updateVar(histRecId, smgr.getConnection(),DbStudentProblemHistory.TIME_TO_THIRD_ATTEMPT,probElapsedTime) ;
 
         }
 
@@ -162,6 +177,14 @@ public class StudentProblemHistory {
         if (curProb.getNumHints() == 0) {
             curProb.setTimeToFirstHint(probElapsedTime);
             DbStudentProblemHistory.updateVar(histRecId, smgr.getConnection(),DbStudentProblemHistory.TIME_TO_FIRST_HINT,probElapsedTime) ;
+        }
+        else  if (curProb.getNumHints() == 1) {
+            curProb.setTimeToSecondHint(probElapsedTime);
+            DbStudentProblemHistory.updateVar(histRecId, smgr.getConnection(),DbStudentProblemHistory.TIME_TO_SECOND_HINT,probElapsedTime) ;
+        }
+        else  if (curProb.getNumHints() == 2) {
+            curProb.setTimeToThirdHint(probElapsedTime);
+            DbStudentProblemHistory.updateVar(histRecId, smgr.getConnection(),DbStudentProblemHistory.TIME_TO_THIRD_HINT,probElapsedTime) ;
         }
         curProb.setGivenAnswerHint(givesSolution);
         DbStudentProblemHistory.updateVar(histRecId, smgr.getConnection(),DbStudentProblemHistory.SOLUTION_HINT_GIVEN,curProb.getGivenAnswerHint()) ;

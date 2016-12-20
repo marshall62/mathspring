@@ -19,7 +19,11 @@ public class StudentProblemData {
     private long timeInSession;
     private long timeInTutor;
     private long timeToFirstAttempt;
+    private long timeToSecondAttempt;
+    private long timeToThirdAttempt;
     private long timeToFirstHint;
+    private long timeToSecondHint;
+    private long timeToThirdHint;
     private long timeToSolve;
     private int numHints;
     private int numHintsBeforeCorrect;
@@ -36,6 +40,7 @@ public class StudentProblemData {
     private boolean seenVideo=false;
     private boolean seenExample=false;
     private boolean usedTextReader=false;
+    private double probDifficulty=-1;
 
     public StudentProblemData () {}
 
@@ -122,11 +127,22 @@ public class StudentProblemData {
     public void setTimeToFirstHint(long timeToFirstHint) {
         this.timeToFirstHint = timeToFirstHint;
     }
+    public void setTimeToSecondHint(long timeToHint2) {
+        this.timeToSecondHint = timeToHint2;
+    }
+    public void setTimeToThirdHint(long timeToHint3) {
+        this.timeToThirdHint = timeToHint3;
+    }
 
     public void setTimeToFirstAttempt(long timeToFirstAttempt) {
         this.timeToFirstAttempt = timeToFirstAttempt;
     }
-
+    public void setTimeToSecondAttempt(long timeToAttempt2) {
+        this.timeToSecondAttempt = timeToAttempt2;
+    }
+    public void setTimeToThirdAttempt(long timeToAttempt3) {
+        this.timeToThirdAttempt = timeToAttempt3;
+    }
     public void setProblemEndTime(long problemEndTime) {
         this.problemEndTime = problemEndTime;
     }
@@ -289,5 +305,13 @@ public class StudentProblemData {
 
     public long getTimeInProblemSeconds () {
         return Math.max(0,this.getProblemEndTime() - this.getProblemBeginTime()) / 1000;
+    }
+
+    public void setProbDifficulty(double probDifficulty) {
+        this.probDifficulty = probDifficulty;
+    }
+
+    public double getProbDifficulty() {
+        return probDifficulty;
     }
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class TutorHutEvent extends SessionEvent {
     protected long elapsedTime;
+    protected long clickTime; //  timestamp given by Javascript (ms since Jan 1, 1970 midnight)
     protected static String ELAPSED_TIME = "elapsedTime";
     protected int eventCounter;
 
@@ -30,6 +31,7 @@ public abstract class TutorHutEvent extends SessionEvent {
         super(p);
         String et = p.getString(ELAPSED_TIME,"0");
         this.eventCounter = p.getInt("eventCounter",-1);
+        this.clickTime = p.getLong("clickTime",0);
         long etl=0;
         try {
             etl = Long.parseLong(et);
@@ -65,5 +67,9 @@ public abstract class TutorHutEvent extends SessionEvent {
 
     public int getEventCounter() {
         return eventCounter;
+    }
+
+    public long getClickTime() {
+        return clickTime;
     }
 }
