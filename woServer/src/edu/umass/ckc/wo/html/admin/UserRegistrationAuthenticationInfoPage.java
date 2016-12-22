@@ -41,7 +41,7 @@ public class UserRegistrationAuthenticationInfoPage implements View {
                         "    </font> &nbsp;<br>\n"+
                         "    <font color=\"#FFFFFF\">User Name: </font> \n"+
                         "    <input type=\"text\" name=\"uname\">\n"+
-                        "    &nbsp;<font color=\"#FFFFFF\">Password: &nbsp; \n"+
+                        "    &nbsp;<font color=\"#FFFFFF\">PasswordAuthentication: &nbsp; \n"+
                         "    <input type=\"password\" name=\"password\">\n"+
                         "    </font> &nbsp;<br>\n"+
                         "    <font color=\"#FFFFFF\">Email: &nbsp; \n"+

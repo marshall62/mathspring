@@ -26,9 +26,9 @@ public class AdminPage implements View {
     "    <input type=\"text\" name=\"fname\" size=\"50\">\n"+
     "    <br>\n"+"LastName: \n" +
     "    <input type=\"text\" name=\"lname\" size=\"50\">\n"+
-    "    <br>\n"+"Password: \n" +
+    "    <br>\n"+"PasswordAuthentication: \n" +
     "    <input type=\"password\" name=\"password1\" size=\"50\">\n"+
-    "    <br>\n"+ "Retype Password: \n" +
+    "    <br>\n"+ "Retype PasswordAuthentication: \n" +
     "    <input type=\"password\" name=\"password2\" size=\"50\">\n"+
     "    <br>\n"+
     "    Class Name: \n"+
