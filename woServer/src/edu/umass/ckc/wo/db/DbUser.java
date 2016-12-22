@@ -1033,7 +1033,7 @@ public class DbUser {
 
     public static void main(String[] args) {
         try {
-            Connection conn = DbUtil.getAConnection("localhost");
+            Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
             PreparedStatement ps = null;
             ResultSet rs = null;
             PreparedStatement stmt = null;
