@@ -40,6 +40,7 @@
             <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteClasses&teacherId=${teacherId}"  >Delete Classes</a>    <br>
             <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteTeachers&teacherId=${teacherId}" >Delete Teachers</a>    <br>
             <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminDeleteStudents&teacherId=${teacherId}"  >Delete Students</a>    <br>
+            <a href="${pageContext.request.contextPath}/WoAdmin?action=AdminEditTeacher&teacherId=${teacherId}"  >Edit Teacher</a>    <br>
             <p><c:out value="${message}"/></p>
         </form>
         <form style="display:inline" name="form2" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=AdminMainPage&teacherId=<c:out value="${teacherId}"/>">
