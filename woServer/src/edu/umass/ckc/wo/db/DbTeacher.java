@@ -29,7 +29,7 @@ public class DbTeacher {
         if (rs.next()) {
             int id =  rs.getInt("ID");
             String token = rs.getString("password");
-            boolean m = PasswordAuthentication.getInstance().authenticate(token.toCharArray(),pw);
+            boolean m = PasswordAuthentication.getInstance().authenticate(pw.toCharArray(),token);
             if (m)
                 return id;
             else return -1;
@@ -177,14 +177,15 @@ public class DbTeacher {
             ResultSet rs = null;
             PreparedStatement stmt = null;
             try {
-                String q = "select id, password  from administrator";
+                String q = "select id, password,oldpw  from teacher where id=70";
                 stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE);
                 rs = stmt.executeQuery();
                 while (rs.next()) {
                     int c = rs.getInt(1);
                     String pw = rs.getString("password");
-                    String token = PasswordAuthentication.getInstance(0).hash(pw.toCharArray());
+                    String opw = rs.getString("oldpw");
+                    String token = PasswordAuthentication.getInstance(0).hash(opw.toCharArray());
                     rs.updateString("password",token);
                     rs.updateRow();
                     System.out.println(token);
