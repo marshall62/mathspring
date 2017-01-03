@@ -24,7 +24,7 @@ public class DbTeacher {
 
         PreparedStatement ps = conn.prepareStatement("select ID,password from Teacher where userName=?");
 
-        ps.setString(3,username);
+        ps.setString(1,username);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             int id =  rs.getInt("ID");
