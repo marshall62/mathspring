@@ -55,7 +55,9 @@ Release Management (begun 11/28/16 - better late than never)
 
 Releases (test again)
 
-TODO:  Add LCRuleFireLog and eventlog.clickTime (datetime(3) to rose db.
+TODO:  Change eventlog.clickTime to (datetime(3) on rose db after updating Mysql to new version.
+12/22/16:  Put in eventlog clickTime which is the time in Javascript of click in an event.  Added timeTOsecondhint, timetoThirdHint,
+timeToSecondAttempt, timeToThirdAttempt in stduentproblemhistory.  Made passwords encrypted with salt.
 11/28/16: First Git Release (tag v2.1)    Has fixes to the FullEmpathicLC and SemiEmpathicLC which were
 completely non-working.  Also a fix to make AskEmotion wait correctly after user response.
 11/28/16:  Both systems.  Added in a fix so that img tags can be put in pretest multichoice area.
