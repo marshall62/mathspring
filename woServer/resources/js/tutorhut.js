@@ -394,6 +394,7 @@ function processShowExample (responseText, textStatus, XMLHttpRequest) {
     }
 
     var mode = activity.mode; // this will be 'example'
+    var form = activity.form; // quickAuth or null
     var pid = activity.id;
     var resource =activity.resource;
     var ans = activity.answer;
@@ -403,6 +404,8 @@ function processShowExample (responseText, textStatus, XMLHttpRequest) {
     // solution is an array of hints.   Each hint has a label that we want to pull out and put in globals.example_hint_sequence
     if (isFlashExample())
         showFlashProblem(resource,ans,solution,EXAMPLE_FRAME, MODE_EXAMPLE) ;
+    else if (form === 'quickAuth')
+        showQuickAuthProblem(pid,solution,resource,mode,activity.questType);    
     else showHTMLProblem(pid,solution,resource,MODE_EXAMPLE);
 
 }
@@ -552,17 +555,10 @@ function showHTMLProblem (pid, solution, resource, mode) {
 
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
     if (!isDemo)  {
-        if (globals.form!=="quickAuth")  {
-            var dir = resource.split(".")[0];
-            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
-        }
-        else {
-            // uses Melissa's engine
-//            loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
-            // commented out on 3/16/15 to move to Melissa's engine
-//            loadIframe(PROBLEM_WINDOWID,  "problem_skeleton.jsp");  // uses Jess's engine
-            loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
-        }
+        var dir = resource.split(".")[0];
+        loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+
+    
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
 //        $(PROBLEM_WINDOWID).load(function () {
@@ -573,16 +569,9 @@ function showHTMLProblem (pid, solution, resource, mode) {
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
     else {
-        if (globals.form!=="quickAuth") {
-            var dir = resource.split(".")[0];
-            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
-        }
-        else {
-//            loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/problem_skeleton/problem_skeleton.html");
-            // commented out on 3/16/15 to move to Melissa's engine
-//            loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp");     // uses Jess's engine
-            loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
-        }
+        var dir = resource.split(".")[0];
+        loadIframe(EXAMPLE_FRAMEID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
+
     }
 
 
@@ -1177,7 +1166,9 @@ function showHTMLProblemAtStart () {
 
     if (globals.showAnswer)
         showAnswer(ans);
-    showHTMLProblem(pid,solution,resource, mode);
+    if (form==="quickAuth")
+        showQuickAuthProblem(pid,solution,resource,mode,activity.questType);
+    else showHTMLProblem(pid,solution,resource, mode);
 }
 
 // TODO need to create a test for this.
