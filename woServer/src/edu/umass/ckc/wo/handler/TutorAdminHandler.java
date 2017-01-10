@@ -84,5 +84,42 @@ public class TutorAdminHandler {
             servletRequest.setAttribute("sideMenu", "adminSideMenu.jsp");
             servletRequest.getRequestDispatcher("/teacherTools/deleteStudents.jsp").forward(servletRequest, servletResponse);
         }
+        else if (e instanceof AdminEditTeacherEvent) {
+            Teacher t = DbTeacher.getTeacher(conn,((AdminEditTeacherEvent) e).getTeacherId());
+            List<Teacher> teachers = DbTeacher.getAllTeachers(conn, false);
+            servletRequest.setAttribute("sideMenu","adminSideMenu.jsp");
+            servletRequest.setAttribute("teacher",t);
+            servletRequest.setAttribute("teacherId",t == null ? -1 : t.getId());
+            servletRequest.setAttribute("teachers",teachers);
+            servletRequest.getRequestDispatcher("/teacherTools/editTeacher.jsp").forward(servletRequest, servletResponse);
+        }
+        else if (e instanceof AdminEditTeacherSubmitEvent) {
+            AdminEditTeacherSubmitEvent e2 = (AdminEditTeacherSubmitEvent) e;
+            Teacher t = DbTeacher.getTeacher(conn,e2.getTeacherId());
+            List<Teacher> teachers = DbTeacher.getAllTeachers(conn, false);
+            boolean success = DbTeacher.modifyTeacher(conn,e2.getTeacherId(),e2.getFname(),e2.getLname(),e2.getUname(),e2.getPw());
+            if (success)
+                servletRequest.setAttribute("message","Successfully edited teacher");
+            else
+                servletRequest.setAttribute("message","Failed to modify teacher!");
+            servletRequest.setAttribute("teacher",t);
+            servletRequest.setAttribute("teacherId",t == null ? -1 : t.getId());
+            servletRequest.setAttribute("teachers",teachers);
+            servletRequest.setAttribute("sideMenu","adminSideMenu.jsp");
+            servletRequest.getRequestDispatcher("/teacherTools/editTeacher.jsp").forward(servletRequest, servletResponse);
+        }
+        else if (e instanceof AdminEditTeacherSetTeacherEvent) {
+            AdminEditTeacherSetTeacherEvent e2 = (AdminEditTeacherSetTeacherEvent) e;
+            Teacher t = null;
+            if (e2.getTeacherId() != -1)
+                t = DbTeacher.getTeacher(conn,e2.getTeacherId());
+            List<Teacher> teachers = DbTeacher.getAllTeachers(conn, false);
+            servletRequest.setAttribute("teacher",t);
+            servletRequest.setAttribute("message","Please select a teacher first");
+            servletRequest.setAttribute("teacherId",t == null ? -1 : t.getId());
+            servletRequest.setAttribute("teachers",teachers);
+            servletRequest.setAttribute("sideMenu","adminSideMenu.jsp");
+            servletRequest.getRequestDispatcher("/teacherTools/editTeacher.jsp").forward(servletRequest, servletResponse);
+        }
     }
 }

@@ -24,6 +24,7 @@ public class LCExpr extends LCRuleComponent {
     private String strVal;
     private int iVal;
     private double dVal;
+    private Object val;
 
     public static int STR = 0;
     public static int INT = 1;
@@ -84,7 +85,7 @@ public class LCExpr extends LCRuleComponent {
     public boolean eval () throws Exception {
         //  Use the relop to compare the result of the function to the value
         this.fn.setup(smgr,event, cache);
-        Object val;
+
         try {
             val = this.fn.eval();
         } catch (Exception ee) {
@@ -125,6 +126,11 @@ public class LCExpr extends LCRuleComponent {
             return evalMasteryExpr(relop,this.strVal,((Double) val));
 
         return false;
+    }
+
+    // Called after running eval.  Returns the name of the function and the value it fetched.
+    String getValInfo () {
+        return this.fn.getFnName() + ":" + this.val.toString();
     }
 
     // A kind of hack way of offering the ability to have a function like:

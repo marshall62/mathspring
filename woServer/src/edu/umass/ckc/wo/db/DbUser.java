@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.db;
 
 import com.mysql.jdbc.Statement;
 import edu.umass.ckc.wo.log.RequestActions;
+import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
  * Time: 4:38:15 PM
  */
 public class DbUser {
-
 
 
     public static User getStudent(Connection conn, int studId) throws SQLException {
@@ -146,8 +146,8 @@ public class DbUser {
 
     // This is for a one-time clean-up converting XML pedagogies to db ones.
     public static void insertStudentOverridePedagogy(Connection conn, int studId, int pedId, LessonModelParameters lparams) throws SQLException {
-        ResultSet rs=null;
-        PreparedStatement stmt=null;
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
         TopicModelParameters params = (TopicModelParameters) lparams;
         try {
             String q = "insert into userpedagogyparameters (studId, overridePedagogy, showIntro,maxtime,maxprobs,mode," +
@@ -158,15 +158,13 @@ public class DbUser {
             stmt.setInt(2, pedId);
             TopicModelParameters.frequency f = params.getTopicIntroFrequency();
             // need to set a string value in here. not a number.  Add new cols
-            stmt.setBoolean(3,params.getTopicIntroFrequency() != TopicModelParameters.frequency.never);
-            stmt.setLong(4,params.getMaxTimeInTopic());
-            stmt.setInt(5,params.getMaxNumberProbs());
-            stmt.setDouble(6,params.getTopicMastery());
+            stmt.setBoolean(3, params.getTopicIntroFrequency() != TopicModelParameters.frequency.never);
+            stmt.setLong(4, params.getMaxTimeInTopic());
+            stmt.setInt(5, params.getMaxNumberProbs());
+            stmt.setDouble(6, params.getTopicMastery());
             stmt.execute();
 
-        }
-
-        finally {
+        } finally {
             if (rs != null)
                 rs.close();
             if (stmt != null)
@@ -175,13 +173,13 @@ public class DbUser {
     }
 
 
-    public static boolean isAssistmentsUser (Connection conn, int studId) throws SQLException {
+    public static boolean isAssistmentsUser(Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             String q = "select uid from assistmentsuser where studId=?";
             ps = conn.prepareStatement(q);
-            ps.setInt(1,studId);
+            ps.setInt(1, studId);
             rs = ps.executeQuery();
             if (rs.next())
                 return true;
@@ -195,47 +193,44 @@ public class DbUser {
     }
 
 
-
-
-    public static boolean isKeepUser (Connection conn, int studId) throws SQLException {
-        boolean[] flags = getUserFlags(conn,studId);
+    public static boolean isKeepUser(Connection conn, int studId) throws SQLException {
+        boolean[] flags = getUserFlags(conn, studId);
         if (flags != null)
             return flags[0];
         else return true;
     }
 
     public static boolean isKeepData(Connection conn, int studId) throws SQLException {
-        boolean[] flags = getUserFlags(conn,studId);
+        boolean[] flags = getUserFlags(conn, studId);
         if (flags != null)
             return flags[1];
         else return true;
     }
 
     public static boolean isUpdateStats(Connection conn, int studId) throws SQLException {
-        boolean[] flags = getUserFlags(conn,studId);
+        boolean[] flags = getUserFlags(conn, studId);
         if (flags != null)
             return flags[2];
         else return true;
     }
 
     public static boolean isShowTestControls(Connection conn, int studId) throws SQLException {
-        boolean[] flags = getUserFlags(conn,studId);
+        boolean[] flags = getUserFlags(conn, studId);
         if (flags != null)
             return flags[3];
         else return false;
     }
 
 
-    public static boolean isTestUser (Connection conn, int studId) throws SQLException {
-        boolean[] flags = getUserFlags(conn,studId);
+    public static boolean isTestUser(Connection conn, int studId) throws SQLException {
+        boolean[] flags = getUserFlags(conn, studId);
         if (flags != null)
             return flags[4];
         else return false;
     }
 
 
-
-    public static boolean[] getUserFlags (Connection conn, int studId) throws SQLException {
+    public static boolean[] getUserFlags(Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -250,7 +245,7 @@ public class DbUser {
                 boolean showTestControls = rs.getBoolean(4);
                 boolean trialUser = rs.getBoolean(5);
                 boolean isGuest = rs.getBoolean(6);
-                return new boolean[] {keepUser,keepData,updateStats,showTestControls,trialUser,isGuest};
+                return new boolean[]{keepUser, keepData, updateStats, showTestControls, trialUser, isGuest};
             }
             return null;
         } finally {
@@ -275,14 +270,17 @@ public class DbUser {
 
 
     public static int getStudent(Connection conn, String userName, String password) throws Exception {
-        String q = "select id from Student where userName=? AND password=?";
+        String q = "select id, password from Student where userName=?";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setString(1, userName);
-        ps.setString(2, password);
         ResultSet rs = ps.executeQuery();
-        if (rs.next())
-            return rs.getInt(1);
-        else return -1;
+        if (rs.next()) {
+            String token = rs.getString("password");
+            boolean pwMatch = PasswordAuthentication.getInstance().authenticate(password.toCharArray(), token);
+            if (pwMatch)
+                return rs.getInt(1);
+            else return -1;
+        } else return -1;
     }
 
 
@@ -341,7 +339,8 @@ public class DbUser {
         ps.setString(2, lname);
         ps.setString(3, userName);
         ps.setString(4, email);
-        ps.setString(5, password);
+        String token = PasswordAuthentication.getInstance().hash(password.toCharArray());
+        ps.setString(5, token);
         if (isGuest)
             ps.setInt(6, 1);
         else ps.setInt(6, 0);
@@ -375,16 +374,17 @@ public class DbUser {
         ps.setString(2, lname);
         ps.setString(3, userName);
         ps.setString(4, email);
-        ps.setString(5, password);
+        String token = PasswordAuthentication.getInstance().hash(password.toCharArray());
+        ps.setString(5, token);
         ps.setInt(6, keepUser ? 1 : 0);
         ps.setInt(7, keepData ? 1 : 0);
         ps.setInt(8, updateStats ? 1 : 0);
         ps.setInt(9, showTestControls ? 1 : 0);
         boolean isTrialUser = User.isTrialUser(userType);
-        ps.setInt(10,isTrialUser?1:0);
-        ps.setInt(11,userType== User.UserType.guest ? 1 : 0);
+        ps.setInt(10, isTrialUser ? 1 : 0);
+        ps.setInt(11, userType == User.UserType.guest ? 1 : 0);
         ps.setInt(12, age.length() > 0 ? Integer.parseInt(age) : 0);
-        ps.setString(13,gender);
+        ps.setString(13, gender);
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
         if (rs.next())
@@ -566,26 +566,26 @@ public class DbUser {
 
     /**
      * Determine if a student has been in the system before based on an entry in the EventLog table
+     *
      * @param conn
      * @param studId
      * @return
      * @throws SQLException
      */
-    public static boolean isFirstLogin (Connection conn, int studId, int curSessId) throws SQLException {
-        ResultSet rs=null;
-        PreparedStatement stmt=null;
+    public static boolean isFirstLogin(Connection conn, int studId, int curSessId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
         try {
             String q = "select * from eventlog where studId=? and sessNum!=?";
             stmt = conn.prepareStatement(q);
-            stmt.setInt(1,studId);
-            stmt.setInt(2,curSessId);
+            stmt.setInt(1, studId);
+            stmt.setInt(2, curSessId);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 return false;
             }
             return true;
-        }
-        finally {
+        } finally {
             if (stmt != null)
                 stmt.close();
             if (rs != null)
@@ -606,7 +606,7 @@ public class DbUser {
         try {
             deleteSessions(conn, studId); // this happens in a transaction
             conn.setAutoCommit(false);
-            deleteStudentData(conn,studId);  // get rid of the data about the student
+            deleteStudentData(conn, studId);  // get rid of the data about the student
             deleteUserProfile(conn, studId);
             deleteFromPedagogyGroup(conn, studId);
 
@@ -622,7 +622,7 @@ public class DbUser {
             System.out.println("deleteStudent Rolled back");
             throw e;
         } finally {
-            if (!error)  {
+            if (!error) {
                 conn.commit();
             }
             conn.setAutoCommit(true);
@@ -650,7 +650,7 @@ public class DbUser {
         deletePrePostEvents(conn, studId);
         deleteSessions(conn, studId);
         deleteTopicMastery(conn, studId);
-        new StudentState(conn,null).clearTutorHutState();
+        new StudentState(conn, null).clearTutorHutState();
         deleteWoProps(conn, studId);
 
     }
@@ -791,13 +791,13 @@ public class DbUser {
             stmt = conn.prepareStatement(q);
             stmt.setInt(1, studId);
             rs = stmt.executeQuery();
-            int count=0;
+            int count = 0;
             while (rs.next()) {
                 int sessId = rs.getInt(1);
                 DbSession.deleteSession(conn, sessId);
                 count++;
             }
-            return  count;
+            return count;
         } finally {
             if (stmt != null)
                 stmt.close();
@@ -905,7 +905,8 @@ public class DbUser {
 
             stmt.setString(1, fname);
             stmt.setString(2, uname);
-            stmt.setString(3, password);
+            String token = PasswordAuthentication.getInstance().hash(password.toCharArray());
+            stmt.setString(3, token);
             stmt.setInt(4, pedagogyId);
             stmt.setInt(5, studId);
             return stmt.executeUpdate();
@@ -984,7 +985,7 @@ public class DbUser {
         try {
             String q = "select studId from session where id=?";
             ps = conn.prepareStatement(q);
-            ps.setInt(1,sessId);
+            ps.setInt(1, sessId);
             rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
@@ -1000,18 +1001,19 @@ public class DbUser {
 
     /**
      * Go through all users sessions and figure out how much time they've been logged into the tutor for and return that number in minutes.
+     *
      * @param conn
      * @param studId
      * @return
      */
     public static int getLoggedInTimeInMinutes(Connection conn, int studId) throws SQLException {
-        ResultSet rs=null;
-        PreparedStatement stmt=null;
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
         try {
             long totalLoggedTime = 0;
             String q = "select beginTime, lastAccessTime from session where studId=?";
             stmt = conn.prepareStatement(q);
-            stmt.setInt(1,studId);
+            stmt.setInt(1, studId);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Timestamp bt = rs.getTimestamp(1);
@@ -1019,13 +1021,47 @@ public class DbUser {
                 long sessLen = lt.getTime() - bt.getTime();
                 totalLoggedTime += sessLen;
             }
-            return (int) totalLoggedTime / 60000 ;  // converts from ms to min
-        }
-        finally {
+            return (int) totalLoggedTime / 60000;  // converts from ms to min
+        } finally {
             if (stmt != null)
                 stmt.close();
             if (rs != null)
                 rs.close();
         }
+    }
+
+
+    public static void main(String[] args) {
+        try {
+            Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            PreparedStatement stmt = null;
+            try {
+                String q = "select id, password, oldpw from student";
+                stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    int c = rs.getInt(1);
+                    String pw = rs.getString("password");
+                    String token = PasswordAuthentication.getInstance(0).hash(pw.toCharArray());
+                    rs.updateString("password",token);
+                    rs.updateString("oldpw",pw);
+                    rs.updateRow();
+                    System.out.println(token);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (stmt != null)
+                    stmt.close();
+                if (rs != null)
+                    rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

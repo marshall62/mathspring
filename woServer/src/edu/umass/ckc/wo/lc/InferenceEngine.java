@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import org.apache.log4j.Logger;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +47,28 @@ public class InferenceEngine {
 
     }
 
+    private void logRuleFiring (LCRule rule, String info) throws Exception {
+        ResultSet rs=null;
+        PreparedStatement ps=null;
+        Connection conn = smgr.getConnection();
+        try {
+            String q = "insert into lcrulefirelog (ruleid, sessid, time, info) values (?,?,?,?)";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1,rule.getId());
+            ps.setInt(2,smgr.getSessionNum());
+            ps.setTimestamp(3,new Timestamp(System.currentTimeMillis()));
+            ps.setString(4, info);
+            ps.execute();
+        }
+
+        finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+                ps.close();
+        }
+    }
+
     /**
      * Given a bunch of rulesets and an event, return the rule that applies.   A Pedagogy is defined to have a learning companion
      * and a group of rule-sets.   Each rule-set has meta-rules that control the rules in that set.
@@ -84,12 +107,14 @@ public class InferenceEngine {
         Collections.sort(rulesThatApply); // sorts rules according to their priority
         for (LCRule r : rulesThatApply) {
             r.setup(smgr,event, cache);
-            boolean res = r.test();
+            StringBuilder ruleFireInfo = new StringBuilder();
+            boolean res = r.test(ruleFireInfo);
             // if the result of testing the rule is true, then we stop testing rules and return it
             if (res) {
                 logger.debug("Rule" + r.getName() + " is true");
                 LCAction act = r.getAction();
                 logger.debug("Action: " + act.getMsgText());
+                logRuleFiring(r, ruleFireInfo.toString());
                 RuleHistoryCache.getInstance().addRuleInstantiation(smgr.getSessionNum(),r);
                 return r;
             }

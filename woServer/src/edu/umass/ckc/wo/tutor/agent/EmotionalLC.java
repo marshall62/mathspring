@@ -178,8 +178,8 @@ public abstract class EmotionalLC extends BaseLearningCompanion
     public Response processInputResponse(SessionManager smgr, InputResponseEvent e, Response r) throws Exception {
         // the above line might add characterControl clips to the response
         List<String> l = selectEmotions(smgr.getStudentModel(),r);
-        String[] clips = l.toArray(new String[l.size()]);
-        for (String c: clips)
+        String[] myclips = l.toArray(new String[l.size()]);
+        for (String c: myclips)
             addEmotion(c);
         // a hack.   Flash doesn't want idea followed by idle and the selectEmotions is returning
         // idle as a failsafe default.
@@ -190,6 +190,7 @@ public abstract class EmotionalLC extends BaseLearningCompanion
             getClips().remove("idle");
             addEmotion("idle");
         }
+        getBestClip(clips);
         addLearningCompanionToResponse(r);
         return r;
     }
@@ -197,8 +198,8 @@ public abstract class EmotionalLC extends BaseLearningCompanion
     public Response processContinueRequest(SessionManager smgr, ContinueEvent e, Response r) throws Exception {
         // the above line might add characterControl clips to the response
         List<String> l = selectEmotions(smgr.getStudentModel(),r);
-        String[] clips = l.toArray(new String[l.size()]);
-        for (String c: clips)
+        String[] myclips = l.toArray(new String[l.size()]);
+        for (String c: myclips)
             addEmotion(c);
         // a hack.   Flash doesn't want idea followed by idle and the selectEmotions is returning
         // idle as a failsafe default.
@@ -209,6 +210,7 @@ public abstract class EmotionalLC extends BaseLearningCompanion
             getClips().remove("idle");
             addEmotion("idle");
         }
+        getBestClip(clips);
         addLearningCompanionToResponse(r);
         return r;
     }
@@ -328,6 +330,7 @@ public abstract class EmotionalLC extends BaseLearningCompanion
                 // If there was No Effort: chosen incorrectly, fast, on the first attempt
                 if ( java.lang.Math.random() > .5 ) {//state.getProbElapsedTime() < LOWEFFORT_TIME_THRESHOLD ) {
                     r=getIncorrectNoEffortResponse(r, smgr) ;
+                    getBestClip(clips);
                     addLearningCompanionToResponse(r);
                     return r;
                 }
@@ -335,15 +338,18 @@ public abstract class EmotionalLC extends BaseLearningCompanion
                 //Incorrect with Effort: Incorrect on the first attempt, but spent a long time on the problem so far
                 if (  java.lang.Math.random() > .5 ) { //state.getProbElapsedTime() > HIGHEFFORT_TIME_THRESHOLD ) {
                     r= getIncorrectEffortResponse(r, smgr) ;
+                    getBestClip(clips);
                     addLearningCompanionToResponse(r);
                     return r;
                 }
                 r= getIncorrectResponse(r, smgr) ;
+                getBestClip(clips);
                 addLearningCompanionToResponse(r);
                 return r;
             }
 
             addEmotion("idle") ;
+            getBestClip(clips);
             addLearningCompanionToResponse(r);
             return r ;
         }
@@ -352,6 +358,7 @@ public abstract class EmotionalLC extends BaseLearningCompanion
             // If there was No Effort: answer one answer fast, and it was correct
             if ( state.getProbElapsedTime() < LOWEFFORT_TIME_THRESHOLD && state.getNumAttemptsOnCurProblem() == 1) {
                  r= getCorrectNoEffortResponse(r, smgr) ;
+                getBestClip(clips);
                 addLearningCompanionToResponse(r);
                 return r;
             }
@@ -359,12 +366,14 @@ public abstract class EmotionalLC extends BaseLearningCompanion
             if (   /*state.getProbElapsedTime() > HIGHEFFORT_TIME_THRESHOLD && */ state.getNumHintsGivenOnCurProblem() > 0 &&
                     state.getNumAttemptsOnCurProblem()<3) {
                 r= getCorrectEffortResponse(r, smgr) ;
+                getBestClip(clips);
                 addLearningCompanionToResponse(r);
                 return r;
             }
 
         }
         r= getCorrectResponse(r, smgr) ;
+        getBestClip(clips);
         addLearningCompanionToResponse(r);
         return r;
     }

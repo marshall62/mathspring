@@ -90,13 +90,13 @@ public class TeacherRegistrationPage implements View {
                 "        </td>\n" +
                 "      </tr>\n" +
                 "      <tr> \n" +
-                "        <td width=\"140\"><font color=\"#FFFFFF\">* Password:</font></td>\n" +
+                "        <td width=\"140\"><font color=\"#FFFFFF\">* PasswordAuthentication:</font></td>\n" +
                 "        <td width=\"185\">\n" +
                 "          <input type=\"password\" name=\"pw1\">\n" +
                 "        </td>\n" +
                 "      </tr>\n" +
                 "      <tr> \n" +
-                "        <td width=\"140\"><font color=\"#FFFFFF\">* Retype Password:</font></td>\n" +
+                "        <td width=\"140\"><font color=\"#FFFFFF\">* Retype PasswordAuthentication:</font></td>\n" +
                 "        <td width=\"185\">\n" +
                 "          <input type=\"password\" name=\"pw2\">\n" +
                 "        </td>\n" +

@@ -43,7 +43,7 @@ function servletFormPost (action, args, callbackFn) {
 // args is assumed to begin with an &  and is a string of parameters like &p1=44&p2=8484 ...
 function getTutorServletURL (action, args) {
     return "/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++ + args ;
+        + globals.elapsedTime + "&clickTime="+ globals.clickTime + "&eventCounter="+ sysGlobals.eventCounter++ + args ;
 }
 
 // Makes a synchronous call to the server.
@@ -97,12 +97,12 @@ function sendEndEvent(globals) {
     else if (globals.lastProbType == HTML_PROB_TYPE || globals.lastProbType == FLASH_PROB_TYPE )
     {
         isExample = isDemoOrExampleMode()
-        servletGetWait("EndProblem",{probId: globals.lastProbId, probElapsedTime: globals.probElapsedTime,  isExample: isExample},processEndProblem);
+        servletGetWait("EndProblem",{probId: globals.lastProbId, probElapsedTime: globals.probElapsedTime,  clickTime: globals.clickTime, isExample: isExample},processEndProblem);
     }
     else if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
         ; // Topic Intros are no longer problems and thus we don't need to end them
     else
-        servletGetWait("EndExternalActivity", {xactId: globals.lastProbId,probElapsedTime: globals.probElapsedTime});
+        servletGetWait("EndExternalActivity", {xactId: globals.lastProbId, clickTime: globals.clickTime, probElapsedTime: globals.probElapsedTime});
 
 
 }
@@ -111,20 +111,20 @@ function sendEndEvent(globals) {
 function sendBeginEvent(globals, probId, mode, callbackFn) {
     incrementTimers(globals);
     globals.probElapsedTime=0;
-    servletGetWait("BeginProblem", {probElapsedTime: globals.probElapsedTime, probId: probId, mode: mode}, callbackFn);
+    servletGetWait("BeginProblem", {probElapsedTime: globals.probElapsedTime, probId: probId, clickTime: globals.clickTime, mode: mode}, callbackFn);
 
 }
 
 function sendResumeProblemEvent (globals) {
     incrementTimers(globals);
-    servletGetWait("ResumeProblem", {probElapsedTime: globals.probElapsedTime, probId: globals.lastProbId})
+    servletGetWait("ResumeProblem", {probElapsedTime: globals.probElapsedTime, clickTime: globals.clickTime, probId: globals.lastProbId})
 }
 
 
 // don't send an endExternalActivity if the last prob was 4mality.  4mality sends its own begin/ends
 function sendSimpleNotificationEvent(globals, eventName) {
     updateTimers();
-    servletGetWait(eventName,{probId: globals.lastProbId, probElapsedTime: globals.probElapsedTime});
+    servletGetWait(eventName,{probId: globals.lastProbId, clickTime: globals.clickTime, probElapsedTime: globals.probElapsedTime});
 }
 
 

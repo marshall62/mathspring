@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.tutor.response.*;
 import edu.umass.ckc.wo.tutor.studmod.AffectStudentModel;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -158,7 +159,35 @@ public class BaseLearningCompanion extends LearningCompanion {
             }
         }
         clips.add("idle");
+        return clips;
+    }
 
+    protected boolean containsClips (List<String> clips) {
+        if (clips == null)
+            return false;
+        for (String clip: clips) {
+            if (!clip.equalsIgnoreCase("idle"))
+                return true;
+        }
+        return false;
+    }
+
+    // This is a repair-the-output hack to remove idle from clip lists and hopefully get it down to one video.
+    // Note: if there are two non-idle clips in the list it will return them both and the Javascript will choose to play
+    // only the first one in the list.
+    protected List<String> getBestClip (List<String> clips) {
+
+        if (clips == null)
+            return null;
+        if (clips.size() <= 1)
+            return clips;
+        Iterator<String> itr = clips.iterator();
+        while (itr.hasNext())
+        {
+            String c = itr.next();
+            if (c.equalsIgnoreCase("idle"))
+                itr.remove();
+        }
         return clips;
     }
 

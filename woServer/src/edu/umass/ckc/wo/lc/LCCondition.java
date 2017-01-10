@@ -65,11 +65,17 @@ public class LCCondition  extends LCRuleComponent {
         try {
             expr.setup(smgr, event, cache);
             boolean v = expr.eval();
-            return applyNot ? !v : v;
+            boolean res = applyNot ? !v : v;
+            return res;
         } catch (Exception ee) {
             System.out.println("Failed to test condition " + expr.toString());
             throw ee;
         }
+    }
+
+    // Returns info about the data the condition was tested on.  Called AFTER the eval method.
+    String getConditionInfo () {
+        return this.expr.getValInfo();
     }
 
     public String getRelop() {

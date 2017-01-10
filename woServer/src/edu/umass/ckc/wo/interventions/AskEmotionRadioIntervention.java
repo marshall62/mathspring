@@ -13,6 +13,9 @@ public class AskEmotionRadioIntervention extends InputResponseIntervention imple
     private AskEmotionIS.Emotion emotion;
     protected boolean buildProblem=false;
     private boolean askWhy=false;
+    // the default question this thing asks has an emotion plugged into the string
+    private String question = "Based on the last few problems tell us about your level of %s in solving math problems.";
+    private String questionHeader = "Please tell us how you are feeling.";
 
     public static final String LEVEL = "level" ;
     public static final String EMOTION = "emotion" ;
@@ -52,8 +55,8 @@ public class AskEmotionRadioIntervention extends InputResponseIntervention imple
 
     public String getDialogHTML() {
         String str = "<div>  " +
-                                 getFormOpen() + " <p>Please tell us how you are feeling.  <br>" +
-                "Based on the last few problems tell us about your level of " + this.emotion.getName() + " in solving math problems";
+                                 getFormOpen() + " <p>" + this.questionHeader + "<br>" +
+                String.format(question,emotion.getName());
 
         str += "<br><input type=\"hidden\" name=\"" + EMOTION + "\" value=\"" + emotion.getName() + "\"><br>";
         for (int i =0;i<emotion.getLabels().size();i++)

@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.handler;
 
 import edu.umass.ckc.wo.event.admin.AdminTeacherRegistrationEvent;
+import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.email.Emailer;
 
@@ -130,7 +131,7 @@ public class TeacherRegistrationHandler {
         PreparedStatement ps = conn.prepareStatement(s);
         ps.setString(1, event.getFname());
         ps.setString(2, event.getLname());
-        ps.setString(3, event.getPw1());
+        ps.setString(3, PasswordAuthentication.getInstance().hash(event.getPw1()));
         ps.setString(4, userName);
         ps.setString(5, event.getEmail());
         int x = ps.executeUpdate();

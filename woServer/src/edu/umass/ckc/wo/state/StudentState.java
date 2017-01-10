@@ -597,6 +597,14 @@ public class StudentState extends State implements TutorEventHandler {
         return problemState.getTimeToFirstHint();
     }
 
+    public long getTimeToSecondHint() {
+        return problemState.getTimeToSecondHint();
+    }
+
+    public long getTimeToThirdHint() {
+        return problemState.getTimeToThirdHint();
+    }
+
 
     public long getTimeInHintsBeforeCorrect() {
         return problemState.getTimeInHintsBeforeCorrect();
@@ -1111,6 +1119,12 @@ public class StudentState extends State implements TutorEventHandler {
         if (!isProblemSolved() && getNumHintsGivenOnCurProblem() == 1) {
             problemState.setTimeToFirstHint(this.getProbElapsedTime());
         }
+        else if (!isProblemSolved() && getNumHintsGivenOnCurProblem() == 2) {
+            problemState.setTimeToSecondHint(this.getProbElapsedTime());
+        }
+        else if (!isProblemSolved() && getNumHintsGivenOnCurProblem() == 3) {
+            problemState.setTimeToThirdHint(this.getProbElapsedTime());
+        }
         if (this.getTimeToFirstEvent() < 0) {
             problemState.setTimeToFirstEvent(this.getProbElapsedTime());
         }
@@ -1198,7 +1212,7 @@ public class StudentState extends State implements TutorEventHandler {
             problemState.setAvgTimeBetweenAttempts(x);
         }
         if (!previouslySolved)
-            smgr.getStudentModel().getStudentProblemHistory().attempt(smgr,isCorrect,probElapsed);
+            smgr.getStudentModel().getStudentProblemHistory().attempt(smgr,isCorrect,probElapsed,problemState.getNumAttempts());
 
     }
 

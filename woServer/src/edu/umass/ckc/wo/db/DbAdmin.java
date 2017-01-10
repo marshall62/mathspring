@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.db;
 
 import edu.umass.ckc.wo.beans.Teacher;
+import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.tutor.Settings;
 
 import java.sql.*;
@@ -51,15 +52,17 @@ public class DbAdmin {
      * @throws SQLException
      */
     public static Teacher getAdminSession (Connection conn, String username, String pw) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("select ID,fname,lname from administrator where userName=? and password=?");
+        PreparedStatement ps = conn.prepareStatement("select ID,fname,lname,password from administrator where userName=?");
         ps.setString(1,username);
-        ps.setString(2,pw);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             int uid = rs.getInt(1);
             String fname = rs.getString(2);
             String lname = rs.getString(3);
-            return new Teacher(null,uid,fname,lname,username,pw);
+            String token = rs.getString(4);
+            if (PasswordAuthentication.getInstance().authenticate(pw.toCharArray(),token))
+                return new Teacher(null,uid,fname,lname,username,token);
+            else return null;
 
         }
         else return null;

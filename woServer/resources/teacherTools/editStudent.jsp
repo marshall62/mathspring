@@ -41,7 +41,7 @@
             <tr> <td width="50"><span class="whArial">First Name</span></td>
                 <td> <input name="fname" type="text" value="<c:out value="${student.fname}"/>"> </td></tr>
             <tr> <td width="50"><span class="whArial">Password</span></td>
-                <td> <input name="password" type="text" value="<c:out value="${student.password}"/>"> </td></tr>
+                <td> <input name="password" type="password" > </td></tr>
             <tr> <td width="50"><span class="whArial">Pedagogy Id</span></td>
                 <%-- <td> <input name="pedagogyId" type="text" value="<c:out value="${student.pedagogyId}"/>"> </td></tr>   --%>
 

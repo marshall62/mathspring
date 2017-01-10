@@ -9,7 +9,8 @@ function prepareForData(doc, components) {
         doc.getElementById("Hint"+i.toString()).style.display = "none";
         addHintHandler(doc, i.toString());
     }
-    if (components.mode === 'demo') {
+    // DM 1/10/16 added in check for example mode
+    if (components.mode === 'demo' || components.mode === 'example') {
         hideAnswers(doc, 0)
     }
     if (!isMultiChoice(components.questType)) {

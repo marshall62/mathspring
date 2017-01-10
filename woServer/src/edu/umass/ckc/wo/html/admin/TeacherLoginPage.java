@@ -38,7 +38,7 @@ public class TeacherLoginPage implements View {
             "        </td>\n" +
             "      </tr>\n" +
             "      <tr>\n" +
-            "        <td width=\"93\"><font color=\"#FFFFFF\">Password:</font></td>\n" +
+            "        <td width=\"93\"><font color=\"#FFFFFF\">PasswordAuthentication:</font></td>\n" +
             "        <td width=\"245\">\n" +
             "          <input type=\"password\" name=\"password\" size=\"30\">\n" +
             "        </td>\n" +
