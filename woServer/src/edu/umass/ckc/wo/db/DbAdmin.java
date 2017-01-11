@@ -82,4 +82,27 @@ public class DbAdmin {
         else return null;
     }
 
+    public static String getPassword (Connection conn, String username) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select password from administrator where username=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setString(1,username);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                String token= rs.getString(1);
+                return token;
+            }
+            else
+                return null;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
 }
