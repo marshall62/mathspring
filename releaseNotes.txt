@@ -56,6 +56,8 @@ Release Management (begun 11/28/16 - better late than never)
 Releases (test again)
 
 TODO:  Change eventlog.clickTime to (datetime(3) on rose db after updating Mysql to new version.
+1/11/17: tag 2.1.4.  Added MathspringService with URL /rest/admin/username/{uname}/pw/{pw} as a restful service so that testauth can use it to
+login admins rather than having to recode the PasswordAuthentication stuff.
 1/10/17:  tag 2.1.3.  Has fixes to quickAuth playing as example/demo and automatically read-aloud on Edge probs playing as demo/example
 1/3/17:  Changed administrator and teacher table to have an encrypted password.  Added an edit-teacher page
 in the admin side of teacher tools.  Added password editing in teacher tools in the edit-student page.
