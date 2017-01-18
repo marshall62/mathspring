@@ -178,7 +178,9 @@ public class AdminHandler {
             sess.setAttribute("teacherId",teacherId);
             Integer adminId = (Integer) sess.getAttribute("adminId");
             Teacher t = DbTeacher.getTeacher(conn,teacherId);
-            Teacher a = DbAdmin.getAdmin(conn, adminId);
+            Teacher a = null;
+            if (adminId != null)
+                a = DbAdmin.getAdmin(conn, adminId);
 
             v =  new ReportHandler(t,a).handleEvent(sc, e, conn, servletRequest,servletResponse);
             // If ReportHandler forward to a JSP we get back a null View, so return false, o/w fall out and return the HTML produced.
