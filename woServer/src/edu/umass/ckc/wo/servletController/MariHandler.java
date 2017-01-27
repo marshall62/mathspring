@@ -35,6 +35,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -60,6 +61,36 @@ import java.util.List;
  * Date: 9/13/13
  * Time: 11:16 AM
  * To change this template use File | Settings | File Templates.
+ *
+ * How to test this stuff:
+ *
+ * Goal: We need to test that MARi can invoke Mathspring for a user and see some problems.  After each problem
+ * Mathspring writes stuff back to MARi about the users problem solving.
+ *
+ * 1.  MARi calls mathspring http://tutor.mathspring.org/woj/mathspringSubSession?ccss=4.MD.3&access_token=XYZ
+ *    How to get a valid/working access_token:
+ *    Goto the MARi website and login and navigate to the page for testing Mathspring.  Click Launch App button.
+ *    A page is generated with some simple text in it that shows it called mathspring.  View the page source and go to the very
+ *    bottom.  There will be a URL like http://tutor.mathspring.org?access_token=941633e7-6a9b-428c-8f7a-c888a5a761f2
+ *    .  Grab this access_token
+ *
+ * 2.  In the location box of the browser use:
+ *    http://tutor.mathspring.org/woj/mathspringSubSession?ccss=4.MD.3&access_token=941633e7-6a9b-428c-8f7a-c888a5a761f2
+ *    http://localhost:8080/mt/mathspringSubSession?ccss=4.MD.3&access_token=941633e7-6a9b-428c-8f7a-c888a5a761f2
+ *    Fire it off as a GET request
+ *    You should enter Mathspring viewing a problem that is in the requested ccss 4.MD.3
+ *    Set a breakpoint in the method  logToMariProblemEnd and see what happens after working with each problem.
+ * 3.  If logging back to MARi fails it will be necessary to use Google Postman REST tool and put in POST requets like:
+ *     https://api.mari.com/v2/developer/write    with a JSON payload like:
+ *     {
+ "session_token": "21de47c291dbd81aed27f0f1e64bc8e4ee1cb675bc16475b237e522b8bc83367",
+ "data" : [{
+ 'pa': '4.MD.3',
+ 'value': '0.85',
+ 'confidence': 1.0,
+ }]
+ }
+ *
  */
 public class MariHandler extends Handler {
 
@@ -346,7 +377,10 @@ public class MariHandler extends Handler {
       'value': '0.85',
       'confidence': 1.0,
     }]
+  "local-context": {prop1: 1, prop2: 2, ....}
 }
+
+     TODO local-context is a String of JSON that has fields and values that are not understood by MARi but may be used by it
      */
     public static void logToMariProblemEnd(SessionManager smgr, EndProblemEvent e, CoopUser u) throws Exception {
         PedagogyParams params = DbUserPedagogyParams.getPedagogyParams(smgr.getConnection(), smgr.getStudentId());
@@ -373,8 +407,10 @@ public class MariHandler extends Handler {
     'pa': '4.MD.3',
     'value': '0.85',
     'confidence': 1.0,
+    'local-context': "{\"a\": 10, \"b\": \"Hi there\"}"
     }]
     }
+    The local-context has to have all its double quotes escaped with \
     */
     public static String getJSONForMari(CoopUser u, StudentStandardMastery ccssMastery, StudentProblemData lastProb) {
         JSONObject o = new JSONObject();
@@ -386,12 +422,33 @@ public class MariHandler extends Handler {
 //        a1.element("pa", "bdzL-hVx7-TnFb-CqC8");
         a1.element("value", Double.toString(ccssMastery.getVal()));
         a1.element("confidence", 1.0);
-
-        a.add(a1);
+        boolean includeExtra = true;
+        if (includeExtra)
+            a1.element("local-context", getLocalContextJSON(lastProb));
+        a.add(a1);   // because we are only returning one record we have to had it to A
         o.element("data", a);
-        return o.toString();
+        String r = o.toString();
+        logger.debug(r);
+        return r;
     }
 
+    private static String getLocalContextJSON(StudentProblemData lastProb) {
+        JSONObject x = new JSONObject();
+        x.element("probId",lastProb.getProbId());
+        x.element("effort",lastProb.getEffort());
+        x.element("numHintsBeforeCorrect", lastProb.getNumHintsBeforeCorrect());
+        x.element("numAttemptsToSolve",lastProb.getNumAttemptsToSolve());
+        x.element("problemDifficulty",lastProb.getProbDifficulty());
+        x.element("timeToSolveMs",lastProb.getTimeToSolve());
+        x.element("timeToFirstHintMs",lastProb.getTimeToFirstHint());
+        x.element("timeToFirstAttemptMs",lastProb.getTimeToFirstAttempt());
+        x.element("timeInProblemSeconds",lastProb.getTimeInProblemSeconds());
+        x.element("numHints",lastProb.getNumHints());
+        x.element("numMistakes",lastProb.getNumMistakes());
+        String r = x.toString();
+        r = StringEscapeUtils.escapeJava(r);
+        return r;
+    }
 
 
     static void post(String logbackURL, String json) throws IOException {

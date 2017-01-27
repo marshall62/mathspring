@@ -3,10 +3,10 @@ package edu.umass.ckc.wo.handler;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Classes;
+import edu.umass.ckc.wo.beans.Teacher;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.event.admin.AdminViewReportEvent;
 import edu.umass.ckc.wo.html.admin.SelectClassPage;
-import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.woreports.*;
 import ckc.servlet.servbase.View;
 import ckc.servlet.servbase.ServletEvent;
@@ -28,7 +28,10 @@ import java.util.ArrayList;
  *
  */
 public class ReportHandler {
+    private Teacher teacher;
+    private Teacher admin;
     private int teacherId;
+    private int adminId;
 
     public static final int PER_SKILL_HTML = 2 ;
     public static final int OVERALL_HTML = 3;
@@ -68,8 +71,13 @@ public class ReportHandler {
 
     }
 
-    public ReportHandler (int teacherId) {
-        this.teacherId = teacherId;
+    public ReportHandler(Teacher teacher, Teacher admin) {
+        // It is possible that we get an admin but not a teacher, a teacher but not an admin, or both.
+        // If we get both, use the teacher info.  If we get just an admin, then put out a page with selections that are all classes.
+        this.teacher=teacher;
+        this.admin = admin;
+        this.teacherId = teacher != null ? teacher.getId() : -1;
+        this.adminId = admin != null ? admin.getId() : -1;
     }
 
     public View handleEvent(ServletContext sc, ServletEvent se, Connection conn, HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -77,7 +85,7 @@ public class ReportHandler {
 
         // e.getState() will be null
         if (e.getState() == null)  {
-            ClassInfo[] classes1 = DbClass.getClasses(conn, e.getTeacherId());
+            ClassInfo[] classes1 = teacher != null ? DbClass.getClasses(conn,teacher.getId()) : DbClass.getAllClasses(conn, false);
             Classes bean1 = new Classes(classes1);
 
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session

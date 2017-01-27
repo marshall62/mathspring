@@ -39,6 +39,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     public static final String CONFIDENT = AffectStudentModel.CONFIDENT;
     public static final String FRUSTRATED = AffectStudentModel.FRUSTRATED;
     public static final String INTERESTED = AffectStudentModel.INTERESTED;
+    public static final String HARDWORK = AffectStudentModel.HARDWORK;
 
     private static Logger logger = Logger.getLogger(AskEmotionIS.class);
     private List<Emotion> emotions;
@@ -49,6 +50,9 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private String probInterval ;
     private String numVals ;
     private String inputType ;
+    private String question ;
+    private String questionHeader ;
+
 
     public AskEmotionIS(SessionManager smgr) throws SQLException {
         super(smgr);
@@ -88,6 +92,9 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
                 this.askWhy= b;
             }
         }
+        question = getConfigParameter("question");
+        questionHeader = getConfigParameter("questionHeader");
+
     }
 
 
@@ -126,7 +133,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
             Emotion emotionToQuery;
             if (inputType.equals("slider"))  {
                 emotionToQuery= getEmotionToQueryRandom();
-                intervention = new AskEmotionSliderIntervention(emotionToQuery, numVals, this.askWhy);
+                intervention = new AskEmotionSliderIntervention(emotionToQuery,this.numVals,this.askWhy,this.questionHeader, this.question);
             }
             else if (inputType.equals("freeAnswer"))
                 intervention = new AskEmotionFreeAnswerIntervention();
@@ -175,6 +182,12 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
      */
     public Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception {
         ServletParams params = e.getServletParams();
+        long now = System.currentTimeMillis();
+        // There are two state vars that control the next time this intervention can be played.  They are set when the intervention is selected
+        // and then we overwrite the time based var to hold the time at which the intervention was answered.   This prevents situations where
+        // the user sits in the intervention a LONG time and then submits it (which had the bug of generating the intervention again without
+        // this fix)
+        state.setTimeOfLastIntervention(now);
         if (inputType.equals("freeAnswer")) {
             processFreeAnswerInputs(e);
             return null;
@@ -204,10 +217,10 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String feeling = params.getString(AskEmotionFreeAnswerIntervention.FEELING);
         String reason = params.getString(AskEmotionFreeAnswerIntervention.REASON);
         String goal = params.getString(AskEmotionFreeAnswerIntervention.GOAL);
-        String desiredResult = params.getString(AskEmotionFreeAnswerIntervention.RESULT);
+//        String desiredResult = params.getString(AskEmotionFreeAnswerIntervention.RESULT);
         setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel><reason><![CDATA[" + reason + "]]></reason>" +
-                "<goal><![CDATA[" + goal + "]]></goal><desiredResult><![CDATA[" + desiredResult + "]]></desiredResult></emotion>", e);
-        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), null, reason, goal, desiredResult);
+                "<goal><![CDATA[" + goal + "]]></goal></emotion>", e);
+        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), null, reason, goal, null);
     }
 
 

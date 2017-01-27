@@ -138,7 +138,8 @@ public class XMLLCRule {
         String n = mr.getAttributeValue("name");
         String v = mr.getAttributeValue("value");
         String u = mr.getAttributeValue("units");
-        LCMetaRule r = new LCMetaRule(n,u,v);
+        String st = mr.getAttributeValue("status");
+        LCMetaRule r = new LCMetaRule(n,u,v, st != null?Boolean.parseBoolean(st): true);
         return r;
     }
 
@@ -263,13 +264,13 @@ public class XMLLCRule {
                     LCRuleset rs = DbLCRule.getRuleSet(conn, rulesetName);
                     System.out.println("Ruleset: " + rs.getName() + " : " + rs.getId());
                     for (LCRule r : rs.getRules())
-                        System.out.println(r);
+                        System.out.println(r + "\n");
                 }
                 // no rs option given , print them all
                 else {
                     System.out.println("All rules in the system");
                     for (LCRule r : DbLCRule.getAllRules(conn))
-                        System.out.println(r);
+                        System.out.println(r+"\n");
                 }
                 System.exit(0);
             }

@@ -83,7 +83,8 @@
             answers: null ,
             numHintsSeen: 0,
             numHints: 0 ,
-            destinationInterventionSelector: null
+            destinationInterventionSelector: null ,
+            clickTime: 0
 
         }
 

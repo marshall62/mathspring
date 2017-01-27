@@ -27,7 +27,8 @@ public class SemiEmpathicLC extends EmotionalLC {
         } catch (Exception ex) {
             throw new DeveloperException("You must use an AffectStudentModel when learning companions are part of the pedagogy");
         }
-        List<String> l = selectEmotions(sm,r,smgr);
+        selectEmotions(sm,r,smgr); // adds media to clips property
+        getBestClip(clips);
         addCharacterControl(r);
         return r;
 
@@ -41,25 +42,23 @@ public class SemiEmpathicLC extends EmotionalLC {
                 clips.add("idle");
                 return clips;
             }
-            // 12/22/14 DM:  This block of code is repeated in FullEmpathicLC, SemiEmpathicLC, NoEmpathicLC.   This was
-            // done this way because of a request and the desire to make the simplest change necessary to achieve the behavior.
-
             else if (r instanceof ProblemResponse)
-                return super.selectEmotions(m,r,smgr);
+                clips = super.selectEmotions(m,r,smgr);
+            // If no clips other than idle are returned by the super, do the below.
+            if (!containsClips(clips)) {
+                //Every 5 problems, it trains attributions
+                if (java.lang.Math.random() < 0.10) {
+                    List genAttrList = Arrays.asList(generalAttribution);
+                    Collections.shuffle(genAttrList);
 
-            //Every 5 problems, it trains attributions
-            if (java.lang.Math.random() < 0.10) {
-                List genAttrList = Arrays.asList(generalAttribution);
-                Collections.shuffle(genAttrList);
+                    clips.add((String) genAttrList.get(0));
+                }
 
-                clips.add((String) genAttrList.get(0));
+                if (clips.size() == 0) {
+                    clips.add("idle");
+                    return clips;
+                }
             }
-
-            if (clips.size() == 0) {
-                clips.add("idle");
-                return clips;
-            }
-
             return clips;
         }
 

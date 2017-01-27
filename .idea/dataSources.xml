@@ -11,5 +11,19 @@
         </library>
       </libraries>
     </data-source>
+    <data-source source="LOCAL" name="MySQL - wayangoutpostdb@rose.cs.umass.edu" uuid="0204f55f-89e2-4dde-860f-b10697b768e2">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://rose.cs.umass.edu:3306/wayangoutpostdb</jdbc-url>
+      <driver-properties>
+        <property name="autoReconnect" value="true" />
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+        <property name="characterEncoding" value="utf8" />
+        <property name="characterSetResults" value="utf8" />
+        <property name="yearIsDateType" value="false" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>

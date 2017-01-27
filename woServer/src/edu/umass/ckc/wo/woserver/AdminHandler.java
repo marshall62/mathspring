@@ -13,8 +13,6 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTeacher;
 import edu.umass.ckc.wo.event.admin.*;
 import ckc.servlet.servbase.UserException;
-import edu.umass.ckc.wo.event.tutorhut.GetQuickAuthProblemEvent;
-import edu.umass.ckc.wo.event.tutorhut.GetQuickAuthProblemSkeletonEvent;
 import edu.umass.ckc.wo.handler.*;
 import edu.umass.ckc.wo.html.admin.Variables;
 import ckc.servlet.servbase.ServletEvent;
@@ -175,8 +173,16 @@ public class AdminHandler {
         }
 
         else if (e instanceof AdminViewReportEvent) {
+            HttpSession sess = servletRequest.getSession();
             int teacherId = ((AdminViewReportEvent) e).getTeacherId();
-            v =  new ReportHandler(teacherId).handleEvent(sc, e, conn, servletRequest,servletResponse);
+            sess.setAttribute("teacherId",teacherId);
+            Integer adminId = (Integer) sess.getAttribute("adminId");
+            Teacher t = DbTeacher.getTeacher(conn,teacherId);
+            Teacher a = null;
+            if (adminId != null)
+                a = DbAdmin.getAdmin(conn, adminId);
+
+            v =  new ReportHandler(t,a).handleEvent(sc, e, conn, servletRequest,servletResponse);
             // If ReportHandler forward to a JSP we get back a null View, so return false, o/w fall out and return the HTML produced.
             if (v == null)
                 return false;
@@ -267,10 +273,12 @@ public class AdminHandler {
             return false;
         }
         else if (e instanceof AdminDeleteTeachersEvent || e instanceof AdminDeleteClassesEvent || e instanceof AdminDeleteStudentsEvent
-                || e instanceof AdminDeleteClassesSubmitEvent || e instanceof AdminDeleteTeachersSubmitEvent ) {
+                || e instanceof AdminDeleteClassesSubmitEvent || e instanceof AdminDeleteTeachersSubmitEvent ||
+                e instanceof AdminEditTeacherEvent || e instanceof AdminEditTeacherSubmitEvent || e instanceof AdminEditTeacherSetTeacherEvent) {
             new TutorAdminHandler().processEvent(servletRequest, servletResponse, e, conn);
             return false;
         }
+
         else
             throw new UserException("Unknown event " + e);
         servletOutput.append(v.getView());

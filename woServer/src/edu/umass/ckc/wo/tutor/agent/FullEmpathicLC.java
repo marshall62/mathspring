@@ -48,7 +48,8 @@ public abstract class FullEmpathicLC extends EmotionalLC {
         } catch (Exception ex) {
             throw new DeveloperException("You must use an AffectStudentModel when learning companions are part of the pedagogy");
         }
-        List<String> l = selectEmotions(sm,r, smgr);
+        selectEmotions(sm,r, smgr);  // adds media into clips property
+        getBestClip(clips);
         addCharacterControl(r);
         return r;
     }
@@ -63,69 +64,61 @@ public abstract class FullEmpathicLC extends EmotionalLC {
             return clips;
         }
         else if (r instanceof ProblemResponse)
-            return super.selectEmotions(sm,r,smgr);
+            clips = super.selectEmotions(sm,r,smgr);
+        // If no clips other than idle are returned by the super, do the below.
+        if (!containsClips(clips)) {
+            // only make the character react 25% of the time.
+            if (java.lang.Math.random() < 0.25) {
 
-        // only make the character react 25% of the time.
-        if (java.lang.Math.random() < 0.25) {
+                if (sm.getLastReportedEmotion().equals(AffectStudentModel.FRUSTRATED)) {
+                    if (isHigh(sm.getLastReportedEmotionValue())) {    //Highly frustrated
+                        if (java.lang.Math.random() < 0.5) {
+                            clips.add(frustratedCombo1);
+                            return clips;
+                        } else {
+                            clips.add(frustratedCombo2);
+                            return clips;
+                        }
 
-            if (sm.getLastReportedEmotion().equals(AffectStudentModel.FRUSTRATED)) {
-                if ( isHigh(sm.getLastReportedEmotionValue()) ) {    //Highly frustrated
-                    if (java.lang.Math.random() < 0.5) {
-                        clips.add(frustratedCombo1);
-                        return clips;
-                    }
-
-                    else {
-                        clips.add(frustratedCombo2);
-                        return clips;
-                    }
-
+                    } else if (isLow(sm.getLastReportedEmotionValue()))   //Not frustrated
+                        clips.add(emotions[FLOW]);
+                } else if (sm.getLastReportedEmotion().equals(AffectStudentModel.EXCITED)) {
+                    if (isLow(sm.getLastReportedEmotionValue()))
+                        clips.add(emotions[EXCITED]);
+                } else if (sm.getLastReportedEmotion().equals(AffectStudentModel.INTERESTED)) {
+                    if (isHigh(sm.getLastReportedEmotionValue()))
+                        clips.add(emotions[INTERESTED]);
                 }
-                else if ( isLow(sm.getLastReportedEmotionValue()) )   //Not frustrated
-                    clips.add(emotions[FLOW]);
-            }
 
-            else if (sm.getLastReportedEmotion().equals(AffectStudentModel.EXCITED)) {
-                if ( isLow ( sm.getLastReportedEmotionValue()) )
-                    clips.add(emotions[EXCITED]);
-            }
+                if (sm.getLastReportedEmotion().equals(AffectStudentModel.CONFIDENT)) {
+                    if (isHigh(sm.getLastReportedEmotionValue()))
+                        clips.add(emotions[CONFIDENT]);
 
-            else if (sm.getLastReportedEmotion().equals(AffectStudentModel.INTERESTED)) {
-                if ( isHigh(sm.getLastReportedEmotionValue()) )
-                    clips.add(emotions[INTERESTED]);
-            }
-
-            if (sm.getLastReportedEmotion().equals(AffectStudentModel.CONFIDENT)) {
-                if ( isHigh(sm.getLastReportedEmotionValue()) )
-                    clips.add(emotions[CONFIDENT]);
-
-                else if ( isLow(sm.getLastReportedEmotionValue()) ) {
-                    if (java.lang.Math.random() < 0.5) {
-                        clips.add(anxiousCombo1);
-                        return clips;
-                    }
-
-                    else {
-                        clips.add(anxiousCombo2);
-                        return clips;
+                    else if (isLow(sm.getLastReportedEmotionValue())) {
+                        if (java.lang.Math.random() < 0.5) {
+                            clips.add(anxiousCombo1);
+                            return clips;
+                        } else {
+                            clips.add(anxiousCombo2);
+                            return clips;
+                        }
                     }
                 }
             }
-        }
-        // If nothing from above is returned
-        // 10% of the time it gives a message learning and attitudes
-        if (java.lang.Math.random() < 0.10) {
-            List genAttrList = Arrays.asList(generalAttribution);
-            Collections.shuffle(genAttrList);
+            // If nothing from above is returned
+            // 10% of the time it gives a message learning and attitudes
+            if (java.lang.Math.random() < 0.10) {
+                List genAttrList = Arrays.asList(generalAttribution);
+                Collections.shuffle(genAttrList);
 
-            clips.add((String) genAttrList.get(0));
-        }
+                clips.add((String) genAttrList.get(0));
+            }
 
-        if (clips.size() == 0) {
-            clips.add("idle");
-            return clips;
+            if (clips.size() == 0) {
+                clips.add("idle");
+                return clips;
+            }
         }
-
         return clips;
     }
 

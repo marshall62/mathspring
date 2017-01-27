@@ -28,6 +28,7 @@ public class NoEmpathicLC extends EmotionalLC {
             throw new DeveloperException("You must use an AffectStudentModel when learning companions are part of the pedagogy");
         }
         List<String> l = selectEmotions(sm,r, smgr);
+        getBestClip(clips);
         addCharacterControl(r);
         return r;
 
@@ -43,16 +44,19 @@ public class NoEmpathicLC extends EmotionalLC {
         if ( ! attemptEvent.isCorrect())   {
             if ( smgr.getStudentState().getNumAttemptsOnCurProblem() >= 2 ) { //Only the first time
                 r= getIncorrectResponse(r, smgr) ;
+                getBestClip(clips);
                 addLearningCompanionToResponse(r);
                 return r;
             }
 
             addEmotion("idle") ;
+            getBestClip(clips);
             addLearningCompanionToResponse(r);
             return r ;
         }
 
         r= getCorrectResponse(r, smgr) ;
+        getBestClip(clips);
         addLearningCompanionToResponse(r);
         return r;
     }

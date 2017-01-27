@@ -28,7 +28,7 @@
         tr.append('<td> <input name="prefix" type="text"> </td>');
         tab.append(tr);
         tr = $('<tr></tr>');
-        tr.append('<td width="50"><span class="whArial">Password</span></td>');
+        tr.append('<td width="50"><span class="whArial">PasswordAuthentication</span></td>');
         tr.append('<td> <input name="password" type="text"> </td>');
         tab.append(tr);
         tr = $('<tr></tr>');

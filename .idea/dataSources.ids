@@ -3,4 +3,7 @@
   <data-source name="Data Source" uuid="10765447-be55-49aa-960c-8d195063fbaf">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
+  <data-source name="MySQL - wayangoutpostdb@rose.cs.umass.edu" uuid="0204f55f-89e2-4dde-860f-b10697b768e2">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
 </component>

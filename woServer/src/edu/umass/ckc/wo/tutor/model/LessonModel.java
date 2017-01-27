@@ -76,7 +76,7 @@ public class LessonModel implements TutorEventProcessor {
         this.pedagogicalMoveListener = pedagogicalMoveListener;
         this.studentState = smgr.getStudentState();
         this.studentModel= smgr.getStudentModel();
-        LessonXML x = pedagogy.getLessonXML();
+        LessonXML x = Settings.lessonMap.get(this.pedagogy.getLessonName());
         interventionGroup = new InterventionGroup(x.getInterventions());
         interventionGroup.buildInterventions(smgr,pedagogicalModel);
     }
@@ -90,7 +90,7 @@ public class LessonModel implements TutorEventProcessor {
      * @throws SQLException
      */
     public static LessonModel buildModel(SessionManager smgr, Pedagogy ped , int classId, int studId) throws SQLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        LessonXML lx  = ped.getLessonXML();
+        LessonXML lx  = Settings.lessonMap.get(ped.getLessonName().trim());
         String lessonModelClassname = lx.getLessonModelClassname();
         Class cl = Class.forName(lessonModelClassname);
         Constructor constr = cl.getConstructor(new Class[] {SessionManager.class}) ;

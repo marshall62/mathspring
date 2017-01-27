@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.db;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Teacher;
+import edu.umass.ckc.wo.login.PasswordAuthentication;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,12 +21,19 @@ import java.util.List;
 public class DbTeacher {
 
     public static int getTeacherId (Connection conn, String username, String pw) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("select ID from Teacher where userName=? and password=?");
+
+        PreparedStatement ps = conn.prepareStatement("select ID,password from Teacher where userName=?");
+
         ps.setString(1,username);
-        ps.setString(2,pw);
         ResultSet rs = ps.executeQuery();
-        if (rs.next())
-            return rs.getInt(1);
+        if (rs.next()) {
+            int id =  rs.getInt("ID");
+            String token = rs.getString("password");
+            boolean m = PasswordAuthentication.getInstance().authenticate(pw.toCharArray(),token);
+            if (m)
+                return id;
+            else return -1;
+        }
         else return -1;
     }
 
@@ -101,6 +109,37 @@ public class DbTeacher {
         }
     }
 
+    public static boolean modifyTeacher(Connection conn, int teacherId, String fname, String lname, String uname, String pw) throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            if (pw.length() > 0) {
+                String q = "update teacher set username=?, lname=?, fname=?,password=? where id=?";
+                ps = conn.prepareStatement(q);
+                ps.setString(1, uname);
+                ps.setString(2, lname);
+                ps.setString(3, fname);
+                ps.setString(4, PasswordAuthentication.getInstance().hash(pw.toCharArray()));
+                ps.setInt(5, teacherId);
+                int n = ps.executeUpdate();
+                return n == 1;
+            } else {
+                String q = "update teacher set username=?, lname=?, fname=? where id=?";
+                ps = conn.prepareStatement(q);
+                ps.setString(1, uname);
+                ps.setString(2, lname);
+                ps.setString(3, fname);
+                ps.setInt(4, teacherId);
+                int n = ps.executeUpdate();
+                return n == 1;
+            }
+        }
+            finally{
+                if (ps != null)
+                    ps.close();
+            }
+
+    }
+
     /**
      * Deleting teachers depends on first deleting their classes
      * @param conn
@@ -133,12 +172,37 @@ public class DbTeacher {
 
     public static void main(String[] args) {
         try {
-            Connection c = DbUtil.getAConnection("rose.cs.umass.edu");
-            deleteTeachers(c,new int[] {554} );
-            System.out.println("Teachers deleted");
-
-        } catch (Exception exc) {
-            exc.printStackTrace();
+            Connection conn = DbUtil.getAConnection("rose.cs.umass.edu");
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            PreparedStatement stmt = null;
+            try {
+                String q = "select id, password,oldpw  from teacher where id=70";
+                stmt = conn.prepareStatement(q,ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_UPDATABLE);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    int c = rs.getInt(1);
+                    String pw = rs.getString("password");
+                    String opw = rs.getString("oldpw");
+                    String token = PasswordAuthentication.getInstance(0).hash(opw.toCharArray());
+                    rs.updateString("password",token);
+                    rs.updateRow();
+                    System.out.println(token);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (stmt != null)
+                    stmt.close();
+                if (rs != null)
+                    rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
     }
+
+
 }

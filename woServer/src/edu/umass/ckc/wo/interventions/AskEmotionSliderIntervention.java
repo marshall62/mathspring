@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.interventions;
 
 import edu.umass.ckc.wo.tutor.intervSel2.AskEmotionIS;
+import org.jdom.Element;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,12 +17,26 @@ public class AskEmotionSliderIntervention extends InputResponseIntervention impl
     public static final String EMOTION = "emotion" ;
     public static final String REASON = "reason" ;
     private boolean askWhy;
+    // the default question this thing asks has an emotion plugged into the string
+    private String question = "Based on the last few problems tell us about your level of %s in solving math problems.";
+    private String questionHeader = "Please tell us how you are feeling.";
 
-    public AskEmotionSliderIntervention(AskEmotionIS.Emotion emotionToQuery, String numVals, boolean askWhy) {
+    public AskEmotionSliderIntervention(AskEmotionIS.Emotion emotionToQuery, String numVals, boolean askWhy, String questionHeader, String question) {
         this.emotion = emotionToQuery;
         this.askWhy=askWhy;
         if (numVals != null)
             this.numVals = Integer.parseInt(numVals);
+
+        // allow config to set the question that this thing asks.
+        if (questionHeader != null)
+            this.questionHeader = questionHeader;
+        if (question != null)
+            this.question = question;
+    }
+
+
+    public void configure (Element configXML) {
+
     }
 
     @Override
@@ -53,8 +68,8 @@ public class AskEmotionSliderIntervention extends InputResponseIntervention impl
         String str = "<div>  " +
                 "<link href=\"css/simple-slider.css\" rel=\"stylesheet\" type=\"text/css\" />" +
                 "<script type=\"text/javascript\" src=\"js/simple-slider.js\"></script>"
-                + getFormOpen() + " <p>Please tell us how you are feeling.  <br>" +
-                "Based on the last few problems tell us about your level of " + this.emotion.getName() + " in solving math problems.";
+                + getFormOpen() + " <p>"+ questionHeader +" <br>" +
+                String.format(question,this.emotion.getName());
 
         str += "<br><br>";
         str += "<input name=\"" + EMOTION + "\" type=\"hidden\" value=\"" + emotion.getName() + "\"/>";

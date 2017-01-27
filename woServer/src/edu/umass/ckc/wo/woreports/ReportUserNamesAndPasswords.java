@@ -31,7 +31,7 @@ public class ReportUserNamesAndPasswords extends Report {
             " <tr>\n" +
             "<th width=140>Student</th>\n" +
             "  <th>User Name</th>\n" +
-            "  <th>Password</th>\n" +
+            "  <th>PasswordAuthentication</th>\n" +
             " </tr>\n" +
             "<tbody id='data'>\n";
         StringBuffer rows = new StringBuffer();

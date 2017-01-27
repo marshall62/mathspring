@@ -37,6 +37,8 @@ public class ProblemState2 extends State {
     private static final String TIME_TO_SOLVE = "timeToSolve";
     private static final String TIME_TO_FIRST_EVENT = "timeToFirstEvent";
     private static final String TIME_TO_FIRST_HINT = "timeToFirstHint";
+    private static final String TIME_TO_SECOND_HINT = "timeToSecondHint";
+    private static final String TIME_TO_THIRD_HINT = "timeToThirdHint";
     private static final String TIME_TO_FIRST_ATTEMPT = "timeToFirstAttempt";
     private static final String TIME_TO_SECOND_ATTEMPT = "timeToSecondAttempt";
     private static final String TIME_TO_THIRD_ATTEMPT = "timeToThirdAttempt";
@@ -61,7 +63,7 @@ public class ProblemState2 extends State {
     private static final String  TABLE_NAME= "studentproblemstate";
     public static final String[] TABLE_COLS  = new String[] { CUR_HINT, CUR_HINT_ID, PROB_ELAPSED_TIME, PROB_START_TIME, HINT_START_TIME, ATTEMPT_START_TIME,
             CUR_PROB_NUM_ATTEMPTS, CUR_PROB_AVG_TIME_BETWEEN_ATTEMPTS, CUR_PROB_NUM_MISTAKES, CUR_PROB_NUM_HINTS_GIVEN, CUR_PROB_NUM_HELPAIDS_GIVEN,
-            CUR_PROB_MAX_HINTS, PROBLEM_SOLVED, TIME_TO_SOLVE, TIME_TO_FIRST_EVENT, TIME_TO_FIRST_HINT, TIME_TO_FIRST_ATTEMPT, TIME_TO_SECOND_ATTEMPT, TIME_TO_THIRD_ATTEMPT,
+            CUR_PROB_MAX_HINTS, PROBLEM_SOLVED, TIME_TO_SOLVE, TIME_TO_FIRST_EVENT, TIME_TO_FIRST_HINT, TIME_TO_SECOND_HINT, TIME_TO_THIRD_HINT, TIME_TO_FIRST_ATTEMPT, TIME_TO_SECOND_ATTEMPT, TIME_TO_THIRD_ATTEMPT,
             TIME_IN_HINTS_BEFORE_CORRECT,
             NUM_HINTS_BEFORE_CORRECT, NUM_HELPAIDS_BEFORE_CORRECT, FIRST_EVENT, LAST_EVENT, STRATEGIC_HINT_SHOWN, PROB_IDLE_TIME, VIDEO_SHOWN,
             TEXT_READER_USED, SOLUTION_HINT_GIVEN, CUR_INTERVENTION, INTERVENTION_START_TIME, PROB_EXAMPLES_SHOWN, PROBLEM_BINDING, PROBLEM_ANSWER,POSSIBLE_SHORT_ANSWERS};
@@ -84,6 +86,8 @@ public class ProblemState2 extends State {
     private int problemSolved;
     private long timeToFirstEvent;
     private long timeToFirstHint;
+    private long timeToSecondHint;
+    private long timeToThirdHint;
     private long timeToFirstAttempt;
     private long timeToSecondAttempt;
     private long timeToThirdAttempt;
@@ -215,6 +219,8 @@ public class ProblemState2 extends State {
         this.setHintStartTime(-1);
         this.setSolutionHintGiven(false);
         this.setTimeToFirstHint(-1);
+        this.setTimeToSecondHint(-1);
+        this.setTimeToThirdHint(-1);
         this.setInterventionStartTime(-1);
         this.setIdleTime(0);
         this.setCurIntervention(null);   // no current intervention on beginning a problem
@@ -373,8 +379,22 @@ public class ProblemState2 extends State {
         this.timeToFirstHint = timeToFirstHint;
     }
 
+    public void setTimeToSecondHint(long timeToHint2) throws SQLException {
+        this.timeToSecondHint = timeToHint2;
+    }
+
+    public void setTimeToThirdHint(long timeToHint3) throws SQLException {
+        this.timeToThirdHint = timeToHint3;
+    }
+
     public long getTimeToFirstHint() {
         return timeToFirstHint;
+    }
+    public long getTimeToSecondHint() {
+        return timeToSecondHint;
+    }
+    public long getTimeToThirdHint() {
+        return timeToThirdHint;
     }
 
     public void setTimeToFirstAttempt(long timeToFirstAttempt) throws SQLException {
