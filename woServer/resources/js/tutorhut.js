@@ -859,6 +859,13 @@ function hideHTMLProblem (isHide) {
 //////////////////////////////////////////////////////////////////////////
 
 function exampleDialogCloseHandler () {
+    if (isDemoMode())   {
+        // turn off demo mode
+        globals.probMode = null;
+        globals.probType = null;
+        globals.exampleProbType = null;
+        nextProb(globals);
+    }
     sysGlobals.exampleWindowActive = false;
     globals.probMode = MODE_PRACTICE;
     //sendEndEvent(globals);
@@ -1007,6 +1014,7 @@ function clickHandling () {
         width:650,
         height:675,
         open: function () {
+            $(".ui-dialog-titlebar-close").hide();
             sysGlobals.exampleWindowActive = true;
             $(EXAMPLE_CONTAINER_DIV_ID).css('overflow', 'hidden'); //this line does the actual hiding
             var id_exists = document.getElementById('play_button');
@@ -1047,13 +1055,6 @@ function clickHandling () {
             {
                 text: "Done",
                 click: function() {
-                    if (isDemoMode())   {
-                        // turn off demo mode
-                        globals.probMode = null;
-                        globals.probType = null;
-                        globals.exampleProbType = null;
-                        nextProb(globals);
-                    }
                     $( this ).dialog( "close" );
                 }
             }
