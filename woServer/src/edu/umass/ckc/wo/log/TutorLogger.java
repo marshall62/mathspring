@@ -359,7 +359,7 @@ public class TutorLogger {
     }
 
     public void logShowIntervention(BeginInterventionEvent e, Response r, String intervention) throws Exception {
-        insertLogEntry(RequestActions.SHOW_INTERVENTION,null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.SHOW_INTERVENTION,null, smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),0,null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
     }
 
     public void logEndIntervention(EndInterventionEvent e, Response r) throws Exception {
