@@ -38,9 +38,13 @@
         <c:if test="${message != null && not empty message}">
             <div class="alert alert-danger msg-bar" role="alert">${message}</div>
         </c:if>
-        <div class="row">
-            <h1 class="logo"><span>M</span>ath<span>S</span>pring</h1>
-        </div>
+        <header class="site-header" role="banner">
+            <div class="row" id="wrapper">
+                <div class="navbar-header">
+                    <img class="logo" src="img/ms_mini_logo_new.svg">
+                </div><!-- navbar-header -->
+            </div>
+        </header>
         <div class="row login-box-wrapper">
             <div class="col-sm-6 col-sm-offset-3 login-box">
                 <div class="row sign-in-up-box">
@@ -87,6 +91,7 @@
                                         value="${userName}"
                                         class="form-control nav-login user-login-form-username"
                                         placeholder="Username"
+                                        autofocus
                                 />
                             </div>
                             <div class="form-group <c:if test="${message != null}">has-error</c:if>">
@@ -127,6 +132,8 @@
             </div>
         </div>
     </div>
-    <footer>&copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.</footer>
+    <footer class="bottom-sticky-footer">
+        &copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.
+    </footer>
 </body>
 </html>

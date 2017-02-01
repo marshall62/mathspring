@@ -335,7 +335,12 @@ public class TutorBrainHandler {
                 RequestDispatcher disp=null;
                 if (clientType == null)
                     clientType = LoginParams.K12;
-                String loginJSP = clientType.equals(LoginParams.ADULT) ? LoginAdult_2.LOGIN_JSP : LoginK12_2.LOGIN_JSP;
+                String loginJSP = clientType.equals(LoginParams.ADULT)
+                        ? LoginAdult_2.LOGIN_JSP
+                        : "b".equals(servletInfo.getRequest().getParameter("var"))
+                            ? LoginK12_2.LOGIN_JSP_NEW
+                            : LoginK12_2.LOGIN_JSP;
+                servletInfo.request.setAttribute("var", e.getServletParams().getString("var"));
                 if (clientType.equals(LoginParams.ADULT) )
                     servletInfo.request.setAttribute("startPage","LoginAdult_1");
                 else

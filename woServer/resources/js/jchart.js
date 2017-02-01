@@ -633,7 +633,9 @@ var Chart = {
         }
         }
 
-        this.giveFeedback(remarksDiv, topicState, topicState_pepperPlant, topicMastery, studentState_disengaged);
+        if (remarksDiv != null) {
+            this.giveFeedback(remarksDiv, topicState, topicState_pepperPlant, topicMastery, studentState_disengaged);
+        }
         this.givePlants(plantDiv, pepperPlant);
     },
 
@@ -774,7 +776,10 @@ giveFeedback	: function(remarksDiv, topic_state,topicState_pepperPlant,topicMast
 
         var plantImage = document.createElement("IMG");
         if (pepperPlant.length!=0){plantImage.src="img/pp/"+pepperPlant+".png" ;
-        document.getElementById(plant_div).appendChild(plantImage);
+        if (document.getElementById(plant_div) == null)
+            console.log(plant_div);
+        else
+            document.getElementById(plant_div).appendChild(plantImage);
 
 
         }

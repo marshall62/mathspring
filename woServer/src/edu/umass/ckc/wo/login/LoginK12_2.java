@@ -21,6 +21,7 @@ import java.io.IOException;
 public class LoginK12_2 extends Login2 {
 
     public static final String LOGIN_JSP = "login/loginK12.jsp";
+    public static final String LOGIN_JSP_NEW = "login/loginK12_new.jsp";
 
     public LoginK12_2() {
         this.login1_jsp = LOGIN_JSP;
@@ -30,7 +31,7 @@ public class LoginK12_2 extends Login2 {
     @Override
     public LoginResult process(ServletInfo servletInfo) throws Exception {
         if ("b".equals(servletInfo.getRequest().getParameter("var"))) {
-            this.login1_jsp = "login/loginK12_new.jsp";
+            this.login1_jsp = LOGIN_JSP_NEW;
             this.login_existingSess_jsp = "login/loginExistingSessionK12_new.jsp";
         }
         return super.process(servletInfo);
