@@ -143,7 +143,9 @@ public class UserRegistrationHandler {
         req.setAttribute("studId",studId);
         ClassInfo[] classes = DbClass.getRecentClasses(conn);
         req.setAttribute("classes",classes);
-        RequestDispatcher disp = req.getRequestDispatcher(UserRegistrationHandler.REGISTER2);
+        RequestDispatcher disp = req.getRequestDispatcher("b".equals(req.getParameter("var"))
+                ? "login/userRegSelectClass_new.jsp"
+                : UserRegistrationHandler.REGISTER2);
         disp.forward(req,resp);
 //        return new UserRegistrationAuthenticationInfoPage(url, null, e);
         return null;
@@ -296,7 +298,9 @@ public class UserRegistrationHandler {
         req.setAttribute("teacher", classInfo.getTeacherName());
         req.setAttribute("className", classInfo.getName());
         req.setAttribute("startPage",e.getStartPage());
-        RequestDispatcher disp = req.getRequestDispatcher(UserRegistrationHandler.REGISTER3);
+        RequestDispatcher disp = req.getRequestDispatcher("b".equals(req.getParameter("var"))
+                ? "login/userRegComplete_new.jsp"
+                : UserRegistrationHandler.REGISTER3);
         disp.forward(req,resp);
         return null;
     }

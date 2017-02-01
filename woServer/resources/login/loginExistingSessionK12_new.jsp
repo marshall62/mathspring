@@ -9,10 +9,15 @@
     <link href="login/css/loginExistingSessionK12_new.css" rel="stylesheet">
 </head>
 <body>
+
 <div class="main-content">
-    <div class="row">
-        <h1 class="logo"><span>M</span>ath<span>S</span>pring</h1>
-    </div>
+    <header class="site-header" role="banner">
+        <div class="row" id="wrapper">
+            <div class="navbar-header">
+                <img class="logo" src="img/ms_mini_logo_new.svg">
+            </div><!-- navbar-header -->
+        </div>
+    </header>
     <div class="row system-message-box-wrapper">
         <div class="col-sm-6 col-sm-offset-3 system-message-box">
             <h1 class="system-message-title">
@@ -45,6 +50,8 @@
         </div>
     </div>
 </div>
-<footer>&copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.</footer>
+<footer class="bottom-sticky-footer">
+    &copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.
+</footer>
 </body>
 </html>

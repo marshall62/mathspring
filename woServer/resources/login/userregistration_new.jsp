@@ -10,9 +10,13 @@
 </head>
 <body>
     <div class="main-content">
-        <div class="row">
-            <h1 class="logo"><span>M</span>ath<span>S</span>pring</h1>
-        </div>
+        <header class="site-header" role="banner">
+            <div class="row" id="wrapper">
+                <div class="navbar-header">
+                    <img class="logo" src="img/ms_mini_logo_new.svg">
+                </div><!-- navbar-header -->
+            </div>
+        </header>
         <div class="row registration-box-wrapper">
             <div class="col-sm-6 col-sm-offset-3 registration-box">
                 <div class="alert alert-danger msg-bar hidden" role="alert"></div>
@@ -80,7 +84,9 @@
             </div>
         </div>
     </div>
-    <footer>&copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.</footer>
+    <footer class="bottom-sticky-footer">
+        &copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.
+    </footer>
     <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -117,7 +123,8 @@
                                     + "&age=" + age
                                     + "&gender=" + gender
                                     + "&userType=" + userType
-                                    + "&startPage=${startPage}";
+                                    + "&startPage=${startPage}"
+                                    + "&var=b";
                         } else {
                             messageBar.removeClass('hidden');
                             messageBar.text(responseText);
