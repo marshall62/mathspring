@@ -74,7 +74,7 @@
             initChart();
 
             function tryThisComplete (problemId) {
-                window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&elapsedTime='+updateElapsedTime()+'&learningCompanion=${learningCompanion}&mode=practice&topicId='+currentTopic+'&problemIdString='+problemId;
+                window.location='${backToVillageURL}&sessionId=${sessionId}&learningHutChoice=true&elapsedTime='+updateElapsedTime()+'&learningCompanion=${learningCompanion}&mode=practice&topicId='+currentTopic+'&problemIdString='+problemId+'&var=b';
             }
 
             $('#wrapperList li').each(function(index) {
@@ -82,9 +82,9 @@
                 $(this)
                     .click(function() {
                         if (useHybridTutor)
-                            window.location= "${pageContext.request.contextPath}/TutorBrain?action=MPPTryProblem&elapsedTime="+updateElapsedTime()+"&sessionId=${sessionId}&problemId="+currentProblemId+"&topicId="+currentTopic+"&studentAction=tryThis&mode=practice&comment=";
+                            window.location= "${pageContext.request.contextPath}/TutorBrain?action=MPPTryProblem&elapsedTime="+updateElapsedTime()+"&sessionId=${sessionId}&problemId="+currentProblemId+"&topicId="+currentTopic+"&studentAction=tryThis&mode=practice&var=b&comment=";
                         else
-                            $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPTryProblem&elapsedTime="+updateElapsedTime()+"&sessionId=${sessionId}&problemId="+currentProblemId+"&topicId="+currentTopic+"&studentAction=tryThis&comment=",tryThisComplete(currentProblemId));
+                            $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPTryProblem&elapsedTime="+updateElapsedTime()+"&sessionId=${sessionId}&problemId="+currentProblemId+"&topicId="+currentTopic+"&studentAction=tryThis&var=b&comment=",tryThisComplete(currentProblemId));
                     })
                     .hover(function() {
                         loadProblem($(this));
@@ -164,8 +164,7 @@
 
         <nav id="main_nav" class="nav navbar-nav navbar-right">
             <li class="dropdown dropdown-position custom-dropdown">
-                <a href="#"
-                   class="dropdown-toggle custom-dropdown-toggle"
+                <a class="dropdown-toggle custom-dropdown-toggle"
                    data-toggle="dropdown"
                    role=button
                    aria-haspopup="true"
@@ -178,7 +177,7 @@
                 </a><!-- dropdown-toggle -->
 
                 <ul class="dropdown-menu">
-                    <li><a href="">HELP</a></li>
+                    <li><a>HELP</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">LOGOUT</a>
                     </li>
