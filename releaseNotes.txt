@@ -46,16 +46,41 @@ Release Management (begun 11/28/16 - better late than never)
     After the last commit:  use git tag -a v2.1 -m "comment here" OR tag a specific commit by using
     git log --pretty=oneline to see all commits and then git tag -a v1.2 9fceb02 with first 7 digits of commit #.
     git show v2.1 will give info about the tagged commit.
+
+
+  After the last commit:  use
+     git tag -a v2.1 -m "comment here" OR tag a specific commit by using
+
     git tag will show all the tags
 
    How to find all the commits after a particular tag (v2.1)
 
-    git log v2.1..HEAD or git log v2.1..HEAD --oneline
+    git log v2.1..HEAD  or git log v2.1..HEAD --oneline
+
+
+   To show all commits with tags since a given tag and put in file:
+     git log v2.1.5..HEAD --oneline --decorate > fixes.txt
+
 
 
 Releases (test again)
 
 TODO:  Change eventlog.clickTime to (datetime(3) on rose db after updating Mysql to new version.
+2/3/17 : tag v2.1.6
+    8da031a FIx bug 320.   External activities only play once per request.   After that they will not be played again.
+    c5a4667 FIx bug 315.  Errors surrounding the use of the Home button. Many problems were encountered including loss of probId, topicId, getting these values from the topicState rather than lessonState, etc. Added UseCases.txt to contain tests run to verify fixes work.
+    b34d92e FIx bug 316.   ReadProblem events now correctly set the isCorrect field.
+    ba34661 Fix for bug 317.  Eliminated the close X button in the upper right of the demo-problem dialog.
+    8db897a Fix for bug 318.  TopicIntro events in eventLog are now all set to problemID = 899 a dummy problem. StudentState was not saved after being inited during EnterTutor events.
+    eb6ef27 Merge remote-tracking branch 'origin/master'
+    212eec7 Changed class ordering on new user class selection screen to show recent classes first
+    b89321f Changed class ordering on new user class selection screen to show recent classes first
+    f721533 Merge branch 'master' of https://github.com/marshall62/mathspring
+    67651c8 Fixed bug going to reports if logged in as teacher
+    3637d75 MARi local-context included
+    de921b8 Teacher Tools: fixed issue where topic selection crashed when class had no grade
+    cb51ba2 added drag and drop images to version control
+1/12/17: tag v2.1.5  Write back to MARi now includes local-context JSON for stuff like probDiff, effort, numHints
 1/11/17: tag 2.1.4.  Added MathspringService with URL /rest/admin/username/{uname}/pw/{pw} as a restful service so that testauth can use it to
 login admins rather than having to recode the PasswordAuthentication stuff.
 1/10/17:  tag 2.1.3.  Has fixes to quickAuth playing as example/demo and automatically read-aloud on Edge probs playing as demo/example

@@ -315,8 +315,8 @@ public class TutorLogger {
         AuxilaryEventLogger auxLogger = e.getAuxInfo();
         int probId = smgr.getStudentState().getCurProblem();
         // if the input response is processed and returns a new problem, we want to log the inputResponse with the LAST probID
-        if (r instanceof ProblemResponse)
-            probId = smgr.getStudentState().getLastProblem();
+//        if (r instanceof ProblemResponse)
+//            probId = smgr.getStudentState().getLastProblem();
 
         int auxId= -1;
         String auxTable=null;
@@ -359,7 +359,7 @@ public class TutorLogger {
     }
 
     public void logShowIntervention(BeginInterventionEvent e, Response r, String intervention) throws Exception {
-        insertLogEntry(RequestActions.SHOW_INTERVENTION,null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.SHOW_INTERVENTION,null, smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),0,null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
     }
 
     public void logEndIntervention(EndInterventionEvent e, Response r) throws Exception {
@@ -446,7 +446,8 @@ public class TutorLogger {
     }
 
     public void logHomeEvent(HomeEvent e) throws Exception {
-        insertLogEntry(RequestActions.HOME,null,false,e.getElapsedTime(),0,null,-1,null,null,-1,null,-1, e.getClickTime());
+        insertLogEntry(RequestActions.HOME,null,false,e.getElapsedTime(),0,null,-1,null,null,
+                -1,null,smgr.getStudentState().getCurTopic(), e.getClickTime());
     }
 
     public void logDynamicChange(TutorHutEvent e, String change) throws Exception {

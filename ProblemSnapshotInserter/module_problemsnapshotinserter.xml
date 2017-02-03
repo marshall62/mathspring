@@ -55,15 +55,15 @@
   
   <target name="compile.module.problemsnapshotinserter" depends="compile.module.problemsnapshotinserter.production,compile.module.problemsnapshotinserter.tests" description="Compile module ProblemSnapshotInserter"/>
   
-  <target name="compile.module.problemsnapshotinserter.production" depends="register.custom.compilers" description="Compile module ProblemSnapshotInserter; production classes">
+  <target name="compile.module.problemsnapshotinserter.production" description="Compile module ProblemSnapshotInserter; production classes">
     <mkdir dir="${problemsnapshotinserter.output.dir}"/>
-    <javac2 destdir="${problemsnapshotinserter.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.problemsnapshotinserter}/javac">
+    <javac destdir="${problemsnapshotinserter.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.problemsnapshotinserter}/javac">
       <compilerarg line="${compiler.args.problemsnapshotinserter}"/>
       <bootclasspath refid="problemsnapshotinserter.module.bootclasspath"/>
       <classpath refid="problemsnapshotinserter.module.production.classpath"/>
       <src refid="problemsnapshotinserter.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.problemsnapshotinserter"/>
-    </javac2>
+    </javac>
     
     <copy todir="${problemsnapshotinserter.output.dir}">
       <fileset dir="${module.problemsnapshotinserter.basedir}/src">
@@ -73,7 +73,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.problemsnapshotinserter.tests" depends="register.custom.compilers,compile.module.problemsnapshotinserter.production" description="compile module ProblemSnapshotInserter; test classes" unless="skip.tests"/>
+  <target name="compile.module.problemsnapshotinserter.tests" depends="compile.module.problemsnapshotinserter.production" description="compile module ProblemSnapshotInserter; test classes" unless="skip.tests"/>
   
   <target name="clean.module.problemsnapshotinserter" description="cleanup module">
     <delete dir="${problemsnapshotinserter.output.dir}"/>

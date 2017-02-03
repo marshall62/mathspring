@@ -59,15 +59,15 @@
   
   <target name="compile.module.emailer" depends="compile.module.emailer.production,compile.module.emailer.tests" description="Compile module emailer"/>
   
-  <target name="compile.module.emailer.production" depends="register.custom.compilers" description="Compile module emailer; production classes">
+  <target name="compile.module.emailer.production" description="Compile module emailer; production classes">
     <mkdir dir="${emailer.output.dir}"/>
-    <javac2 destdir="${emailer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.emailer}/javac">
+    <javac destdir="${emailer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.emailer}/javac">
       <compilerarg line="${compiler.args.emailer}"/>
       <bootclasspath refid="emailer.module.bootclasspath"/>
       <classpath refid="emailer.module.production.classpath"/>
       <src refid="emailer.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.emailer"/>
-    </javac2>
+    </javac>
     
     <copy todir="${emailer.output.dir}">
       <fileset dir="${module.emailer.basedir}/src">
@@ -77,7 +77,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.emailer.tests" depends="register.custom.compilers,compile.module.emailer.production" description="compile module emailer; test classes" unless="skip.tests"/>
+  <target name="compile.module.emailer.tests" depends="compile.module.emailer.production" description="compile module emailer; test classes" unless="skip.tests"/>
   
   <target name="clean.module.emailer" description="cleanup module">
     <delete dir="${emailer.output.dir}"/>

@@ -230,7 +230,7 @@ public class TutorPage {
         info.getRequest().setAttribute("probElapsedTime", probElapsedTime);
         info.getRequest().setAttribute("topicId", topicId);
         appendLogMsg("topicId",topicId);
-        info.getRequest().setAttribute("probId", -1);
+        info.getRequest().setAttribute("probId", lastProbId); // Going back to tutor needs to have an id set 
         appendLogMsg("probId",-1);
         info.getRequest().setAttribute("lastProbId",lastProbId);
         info.getRequest().setAttribute("isForceProblem", true);

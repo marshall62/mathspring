@@ -60,6 +60,7 @@ public class MPPTutorHandler {
             PedagogicalModel pedMod = smgr.getPedagogicalModel();
             NextProblemEvent npe = new NextProblemEvent(e.getElapsedTime(),0);
             Response r = pedMod.processNextProblemRequest(npe);
+            smgr.getStudentState().save();
             if (r instanceof ProblemResponse)
                 new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (ProblemResponse) r, "practice",
                         state.getCurProbType(), true, ((ProblemResponse) r).getProblem().getResource(), null, false, state.getCurProblem(), this.showMPP);
