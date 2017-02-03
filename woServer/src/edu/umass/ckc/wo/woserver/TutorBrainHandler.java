@@ -144,6 +144,7 @@ public class TutorBrainHandler {
                 smgr.getStudentState().newSession(smgr);
                 boolean showMPP = smgr.getPedagogicalModel().isShowMPP();
                 smgr.getPedagogicalModel().newSession(smgr.getSessionNum());
+                smgr.getStudentState().save();
                 new TutorPage(servletInfo,smgr).createTutorPageFromState(ee.getElapsedTime(), 0, -1, -1,
                         Problem.PRACTICE, Problem.PRACTICE, null, true, null, null, true, showMPP);
                 return false;

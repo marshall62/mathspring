@@ -20,9 +20,56 @@ import java.util.List;
  */
 public class DbExternalActivity {
     
+    
+    public static List<Integer> getActivitiesForTopic (Connection conn, int topicId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        List res = new ArrayList<Integer>();
+        try {
+            String q = "select xactid from externalactivitytopic where topicid=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,topicId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int c= rs.getInt(1);
+                res.add(c);
+            }
+            return res;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        } 
+    }
+
+    public static List<Integer> getActivitiesForStudent (Connection conn, int studId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        List res = new ArrayList<Integer>();
+        try {
+            String q = "select auxid from eventlog where studId=? and action='BeginExternalActivity'";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studId);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int c= rs.getInt(1);
+                res.add(c);
+            }
+            return res;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
 
     // Get external activities within the topic that has not been shown to the student before (look in the event log to find
-    // BEGIN events with that xactID
+    // BeginExternalActivity events with that xactID
     public static List<ExternalActivity> getActivitiesForStudent (Connection conn, int topicId, int studId) throws SQLException {
        ResultSet rs=null;
        PreparedStatement stmt=null;

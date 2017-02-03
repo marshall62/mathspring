@@ -884,6 +884,7 @@ public class DbProblem extends BaseMgr {
      * @return The column number for displaying this grade
      */
     public static int getGradeNum(String grade) {
+        if(grade == null) return -1;
         int gradeNum = -1;
         if (grade.equals("K"))
             gradeNum = 0;

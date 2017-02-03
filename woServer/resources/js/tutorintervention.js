@@ -170,9 +170,9 @@ function checkIfInputIntervention (interv) {
     return globals.isInputIntervention;
 }
 
-function interventionDialogYesClickOld () {
-    myprogress(globals)  ;
-}
+// function interventionDialogYesClickOld () {
+//     myprogress(globals)  ;
+// }
 
 //  The intervention dialog can be opened with either an OK button or a Yes-No buttons.  When those buttons are clicked, one of the three buttons below is
 // called.

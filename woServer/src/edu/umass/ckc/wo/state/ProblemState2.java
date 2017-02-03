@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.state;
 
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbStateTableMgr;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -59,6 +60,7 @@ public class ProblemState2 extends State {
     private static final String PROBLEM_BINDING = "problemBinding";
     private static final String PROBLEM_ANSWER = "answer";
     private static final String POSSIBLE_SHORT_ANSWERS = "possibleShortAnswers";
+    private static final String PROBLEM_TYPE = "problemType";
 
     private static final String  TABLE_NAME= "studentproblemstate";
     public static final String[] TABLE_COLS  = new String[] { CUR_HINT, CUR_HINT_ID, PROB_ELAPSED_TIME, PROB_START_TIME, HINT_START_TIME, ATTEMPT_START_TIME,
@@ -66,7 +68,7 @@ public class ProblemState2 extends State {
             CUR_PROB_MAX_HINTS, PROBLEM_SOLVED, TIME_TO_SOLVE, TIME_TO_FIRST_EVENT, TIME_TO_FIRST_HINT, TIME_TO_SECOND_HINT, TIME_TO_THIRD_HINT, TIME_TO_FIRST_ATTEMPT, TIME_TO_SECOND_ATTEMPT, TIME_TO_THIRD_ATTEMPT,
             TIME_IN_HINTS_BEFORE_CORRECT,
             NUM_HINTS_BEFORE_CORRECT, NUM_HELPAIDS_BEFORE_CORRECT, FIRST_EVENT, LAST_EVENT, STRATEGIC_HINT_SHOWN, PROB_IDLE_TIME, VIDEO_SHOWN,
-            TEXT_READER_USED, SOLUTION_HINT_GIVEN, CUR_INTERVENTION, INTERVENTION_START_TIME, PROB_EXAMPLES_SHOWN, PROBLEM_BINDING, PROBLEM_ANSWER,POSSIBLE_SHORT_ANSWERS};
+            TEXT_READER_USED, SOLUTION_HINT_GIVEN, CUR_INTERVENTION, INTERVENTION_START_TIME, PROB_EXAMPLES_SHOWN, PROBLEM_BINDING, PROBLEM_ANSWER,POSSIBLE_SHORT_ANSWERS,PROBLEM_TYPE};
          // N.B.  If you add a new field above,  make sure clearState deletes its value
 
 
@@ -115,7 +117,7 @@ public class ProblemState2 extends State {
     private String answer;
     private String possibleShortAnswers;   // comma separated as coming out of db
     private List<String> possibleShortAnswersList;    // parsed version of below
-
+    private String problemType;  // HTML, Flash, or some other.
     private DbStateTableMgr dbWorker;
 
 
@@ -202,7 +204,7 @@ public class ProblemState2 extends State {
 //    }
 
 
-
+    // May be given a null problem at beginning of session so correctly initialize either way.
     void initializeState() throws SQLException {
 
         this.setNumHintsBeforeCorrect(0);
@@ -239,6 +241,7 @@ public class ProblemState2 extends State {
         this.setIsTextReaderUsed(false);
         this.possibleShortAnswers = null;
         this.setProblemBinding("");
+        this.setProblemType("");
 
     }
 
@@ -661,5 +664,13 @@ public class ProblemState2 extends State {
 
     public int getInProblem() {
         return inProblem;
+    }
+
+    public String getProblemType() {
+        return problemType;
+    }
+
+    public void setProblemType(String problemType) {
+        this.problemType = problemType;
     }
 }
