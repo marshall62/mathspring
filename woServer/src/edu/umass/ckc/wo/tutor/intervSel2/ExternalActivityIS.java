@@ -98,37 +98,26 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
         // shown to this student
         int topicId = smgr.getStudentState().getCurTopic();
         int studId = smgr.getStudentId();
-        double topicMastery = smgr.getStudentModel().getTopicMastery(topicId);
-        // Get all the external activities about this topic.
-        List<ExternalActivity> acts =
-                DbExternalActivity.getActivitiesForStudent(smgr.getConnection(), topicId, studId);
-        int s = acts.size();
-        // The current heuristic for external activity selection is to not repeat one that has been previously
-        // been given.   Until we've put meta-information on the activities this is the best we can do.
-        List<String> shownIds = smgr.getStudentState().getExternalActivitiesGiven();
 
-        // select one that hasn't been shown to this student
-        for (ExternalActivity a: acts) {
-            int id = a.getId();
-            if (shownIds.size() == 0) {
-                a.setTopicId(smgr.getStudentState().getCurTopic());
-                return a;
-            }
-            boolean shown = false;
-            for (String xid : shownIds) {
-                if (id == Integer.parseInt(xid))   {
-                    shown=true;
+        // Get all the external activities about this topic.
+        List<Integer> xactIds = DbExternalActivity.getActivitiesForTopic(conn,topicId);
+        List<Integer> xactIdsGiven = DbExternalActivity.getActivitiesForStudent(conn,studId);
+        // select an xact that hasn't been given previously
+        for (int xid: xactIds) {
+            boolean fail = false;
+            for (int gid: xactIdsGiven)
+                if (xid == gid) {
+                    fail = true;
                     break;
                 }
-            }
-            if (!shown){
-                a.setTopicId(smgr.getStudentState().getCurTopic());
-                return a;
-            }
-
+             if (! fail) {
+                ExternalActivity ea = DbExternalActivity.getExternalActivity(conn,xid);
+                return ea;
+             }
         }
-
         return null;
+
+
     }
 
 
