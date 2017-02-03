@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Hmngo Dev Master Ant Builder">
+    <property file="buildHmngoDev.properties"/>
+
+
+    <import file="${basedir}/build.xml"/>
+
+    <!-- cleans up before creating a new war for rose-->
+    <target name="clean.artifact.rose_war" description="clean rose war file">
+        <property name="artifact.output.woserver:woj_war" value="${basedir}/out/artifacts/woj"/>
+        <delete dir="${artifact.output.woserver:woj_war}/rose"/>
+    </target>
+
+    <!-- The below is taken from build.xml after it gets generated and then I add NO_RESOURCES to the name
+    and then make the zip file have the added line to omit resources -->
+    <target name="artifact.woserver_war_rose_DEV_NO_RESOURCES" depends="init.artifacts, artifact.woserver:webforrose_exploded" description="Build &#39;woServer war Rose&#39; artifact">
+        <property name="artifact.temp.output.woserver_war_rose" value="${artifacts.temp.dir}/woServer_war_Rose"/>
+
+        <mkdir dir="${artifact.temp.output.woserver_war_rose}"/>
+        <zip destfile="${temp.jar.path.woj.war}">
+            <zipfileset dir="${artifact.output.woserver:webforrose_exploded}">
+                <!--  DM 6/21/16 Added this so that the contents of the resources don't get put in.-->
+                <exclude name="**/mathspring/**"></exclude>
+            </zipfileset>
+        </zip>
+        <copy file="${temp.jar.path.woj.war}" tofile="${artifact.temp.output.woserver_war_rose}/woj.war"/>
+        <copy file="${temp.jar.path.woj.war}" tofile="${artifact.output.woserver_war_rose}/woj.war"/>
+
+    </target>
+
+    <!-- CLipped from build.xml but edited to make ms.war instead of woj.war -->
+    <target name="artifact.woserver_war_rose_PRODUCTION_NO_RESOURCES" depends="init.artifacts, artifact.woserver:webforrose_exploded" description="Build &#39;woServer war Rose&#39; artifact">
+        <property name="artifact.temp.output.woserver_war_rose" value="${artifacts.temp.dir}/woServer_war_Rose"/>
+        <property name="temp.jar.path.ms.war" value="${artifacts.temp.dir}/ms.war"/>
+        <mkdir dir="${artifact.temp.output.woserver_war_rose}"/>
+        <zip destfile="${temp.jar.path.ms.war}">
+            <zipfileset dir="${artifact.output.woserver:webforrose_exploded}">
+                <!--  DM 6/21/16 Added this so that the contents of the resources don't get put in.-->
+                <exclude name="**/mathspring/**"></exclude>
+            </zipfileset>
+        </zip>
+        <copy file="${temp.jar.path.ms.war}" tofile="${artifact.temp.output.woserver_war_rose}/ms.war"/>
+        <copy file="${temp.jar.path.ms.war}" tofile="${artifact.output.woserver_war_rose}/ms.war"/>
+
+    </target>
+
+    <target name="ZipMathspringApacheResources" depends="init.artifacts" description="Build a zip of Apache resources">
+        <!--<delete dir="${artifact.output.woserver_war_rose}/mathspring"></delete>-->
+        <zip destfile="${artifact.output.woserver_war_rose}/mathspring.zip">
+            <zipfileset dir="${module.woserver.basedir}/woServer/resources/mathspring"/>
+            <!--<zipfileset file="${basedir}/woServer/libs/opencsv-2.3.jar" prefix="WEB-INF/lib"/>-->
+        </zip>
+        <!--<delete dir="${artifact.output.woserver:exploded_for_rose}/mathspring"></delete>-->
+    </target>
+
+    <target name="DeployRoseWar" description="Build the woj.war file for rose that includes resources"
+            depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose, ZipMathspringApacheResources"/>
+
+    <!--  Make sure to run DeployRose_WOJ_WarWithoutContent first.  Makes a copy of the woj.war as ms.war -->
+    <target depends="init.artifacts" name="Copy_WOJ_to_MS_war" description="Build the ms.war file for rose">
+        <copy file="${artifact.output.woserver_war_rose}/woj.war" tofile="${artifact.output.woserver_war_rose}/ms.war"/>
+    </target>
+
+    <!-- This builds a development release (WOJ) of Mathspring (use when on Master branch).   It puts a woj.war in the output dirs -->
+    <target name="DeployRose_WOJ_WarWithoutContent" description="Build the woj.war file for rose without resources"
+            depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose_DEV_NO_RESOURCES"/>
+
+    <!-- This builds a production release (MS) of Mathspring (should only be used when on production branch).   It uses same build process as woj above but writes ms.war-->
+    <target name="DeployRose_PRODUCTION_WarWithoutContent" description="Build the woj.war file for rose without resources"
+            depends="clean.module.woserver, clean.artifact.rose_war, artifact.woserver_war_rose_PRODUCTION_NO_RESOURCES"/>
+
+    <target name="DeploySugareeWar" description="Build the woj.war file for sugaree"
+            depends="clean.module.woserver, artifact.woserver_war_sugaree">
+
+        <!--property sugaree.webapps in build.properties file-->
+        <copy file="${artifact.output.woserver_war_sugaree}/woj.war" todir="${sugaree.webapps}">
+        </copy>
+
+    </target>
+
+
+    <target name="GetMsContentLearningCompanions" description="Gets Learning companions from mscontent">
+        <!--Assumes that mscontent is on the same directory level as mathspring-->
+        <property name="mscontent.dir" value="../mscontent"/>
+        <property name="content.dir" value="${module.woserver.basedir}/woServer/resources/mathspring/"/>
+        <mkdir dir="${content.dir}/LearningCompanion/"/>
+
+        <copy todir="${content.dir}/LearningCompanion">
+            <!--<copy todir="${module.woserver.basedir}/woServer/resources/mathspring/LearningCompanion">-->
+            <fileset dir="${mscontent.dir}/LearningCompanion"/>
+        </copy>
+    </target>
+
+
+    <target name="GetMsContentFlash" description="Gets the Flash mscontent and removes FLA files">
+        <!--Assumes that mscontent is on the same directory level as mathspring-->
+        <property name="mscontent.dir" value="../mscontent"/>
+        <property name="content.dir" value="${module.woserver.basedir}/woServer/resources/mathspring/"/>
+        <mkdir dir="${content.dir}/Problems/"/>
+        <!--<copy todir="${module.woserver.basedir}/woServer/resources/mathspring/Problems">-->
+        <copy todir="${content.dir}/Problems">
+            <fileset dir="${mscontent.dir}/Problems" excludes="**/*.fla"/>
+        </copy>
+    </target>
+
+    <target name="GetMsContentHTML" description="Gets the HTML mscontent and removes FLA files">
+        <!--Assumes that mscontent is on the same directory level as mathspring-->
+        <property name="mscontent.dir" value="../mscontent"/>
+        <property name="content.dir" value="${module.woserver.basedir}/woServer/resources/mathspring/"/>
+        <mkdir dir="${content.dir}/html5Probs/"/>
+        <!--<copy todir="${module.woserver.basedir}/woServer/resources/mathspring/Problems">-->
+        <copy todir="${content.dir}/html5Probs">
+            <fileset dir="${mscontent.dir}/html5Probs"/>
+        </copy>
+    </target>
+
+    <target name="GetMsContent" depends="GetMsContentLearningCompanions, GetMsContentFlash, GetMsContentHTML" description="Gets the Flash and HTML from mscontent and removes FLA files">
+
+    </target>
+</project>
