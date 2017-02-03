@@ -72,15 +72,15 @@
   
   <target name="compile.module.servletframework" depends="compile.module.servletframework.production,compile.module.servletframework.tests" description="Compile module servletFramework"/>
   
-  <target name="compile.module.servletframework.production" depends="register.custom.compilers,compile.module.emailer" description="Compile module servletFramework; production classes">
+  <target name="compile.module.servletframework.production" depends="compile.module.emailer" description="Compile module servletFramework; production classes">
     <mkdir dir="${servletframework.output.dir}"/>
-    <javac2 destdir="${servletframework.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.servletframework}/javac">
+    <javac destdir="${servletframework.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.servletframework}/javac">
       <compilerarg line="${compiler.args.servletframework}"/>
       <bootclasspath refid="servletframework.module.bootclasspath"/>
       <classpath refid="servletframework.module.production.classpath"/>
       <src refid="servletframework.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.servletframework"/>
-    </javac2>
+    </javac>
     
     <copy todir="${servletframework.output.dir}">
       <fileset dir="${module.servletframework.basedir}/src">
@@ -90,7 +90,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.servletframework.tests" depends="register.custom.compilers,compile.module.servletframework.production" description="compile module servletFramework; test classes" unless="skip.tests"/>
+  <target name="compile.module.servletframework.tests" depends="compile.module.servletframework.production" description="compile module servletFramework; test classes" unless="skip.tests"/>
   
   <target name="clean.module.servletframework" description="cleanup module">
     <delete dir="${servletframework.output.dir}"/>

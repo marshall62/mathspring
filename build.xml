@@ -340,18 +340,6 @@
   
   
   <!-- Application Server Libraries -->
-  <!-- Register Custom Compiler Taskdefs -->
-  <property name="javac2.home" value="${idea.home}/lib"/>
-  <path id="javac2.classpath">
-    <pathelement location="${javac2.home}/javac2.jar"/>
-    <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm-all.jar"/>
-    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
-  </path>
-  <target name="register.custom.compilers">
-    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
-  </target>
   
   <!-- Modules -->
   
@@ -505,6 +493,7 @@
     <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
     <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/json-20140107.jar"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
@@ -577,7 +566,6 @@
     <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
     <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/json-20140107.jar"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/rose/web.xml" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/web.xml"/>
     <copy todir="${artifact.output.woserver:webforrose_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
@@ -633,7 +621,6 @@
     <copy todir="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.servletframework:jar}"/>
     </copy>
-    <copy file="${basedir}/woServer/web/WEB-INF/sugaree/web.xml" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/web.xml"/>
     <copy todir="${artifact.output.woserver:webforsugaree_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
