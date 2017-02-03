@@ -13,8 +13,12 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/common_new.css" rel="stylesheet" type="text/css" />
     <link href="css/Dashboard_new.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/jchart.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/vex.min.js"></script>
     <script>
         $(document).ready(function() {
             <c:forEach var="ts" items="${topicSummaries}">
@@ -45,6 +49,93 @@
                     problemsDone,
                     problemsSolved);
             </c:forEach>
+
+            $('.plant-garden').slick({
+                slidesToShow: 6,
+                dots: true,
+                infinite: false
+            });
+
+            function showOverlay(title, numComplete, numTotal) {
+                var percentage = numComplete / numTotal;
+                console.log(percentage);
+                var className = '';
+                if (percentage <= 0.33) {
+                    className = 'zero-progress';
+                } else if (percentage > 0.33 && percentage <= 0.66) {
+                    className = 'thirty-three-progress';
+                } else {
+                    className = 'sixty-six-progress';
+                }
+
+                var buttons = [];
+                if (Number(numComplete) === 0) {
+                    buttons = [
+                        $.extend({}, vex.   dialog.buttons.NO, {
+                            className: 'class-name',
+                            text: 'Button1',
+                            click: function($vexContent, event) {
+                                window.location='http://www.example.com';
+                            }
+                        })
+                    ];
+                } else {
+                    buttons = [
+                        $.extend({}, vex.dialog.buttons.NO, {
+                            className: 'class-name',
+                            text: 'Button1',
+                            click: function($vexContent, event) {
+                                window.location='http://www.example.com';
+                            }
+                        }),
+                        $.extend({}, vex.dialog.buttons.NO, {
+                            className: 'class-name',
+                            text: 'Button2',
+                            click: function($vexContent, event) {
+                                console.log("Hello world");
+                            }
+                        }),
+                        $.extend({}, vex.dialog.buttons.NO, {
+                            className: 'class-name',
+                            text: 'Button3',
+                            click: function($vexContent, event) {
+                                console.log("Hello world");
+                            }
+                        })
+                    ];
+                }
+
+                vex.dialog.open({
+                    buttons: buttons,
+                    input: [
+                        '<style>',
+                        '.vex-custom-field-wrapper {',
+                        'margin: 1em 0;',
+                        '}',
+                        '.vex-custom-field-wrapper > label {',
+                        'display: inline-block;',
+                        'margin-bottom: .2em;',
+                        '}',
+                        '.topic-title {',
+                        'font-weight: bold;',
+                        '}',
+                        '</style>',
+                        '<div>',
+                        '<h3 class="topic-title">' + title + '</h3>',
+                        '<div class="visible num-questions">',
+                        '<p>' + numComplete + ' / ' + numTotal + ' problems done</p>',
+                        '</div>',
+                        '<div class="progress overlay">',
+                        '<div class="progress-bar ' + className + '" role="progressbar" aria-valuenow="' + percentage + '"',
+                        'aria-valuemin="0" aria-valuemax="100" style="width:' + percentage * 100 + '%">',
+                        '</div><!-- progress-bar -->',
+                        '</div><!-- progress -->',
+                        '</div><!-- section-panel -->',
+                    ].join(''),
+                    onSubmit: function() {
+                    },
+                });
+            }
         });
     </script>
 </head>
@@ -66,7 +157,7 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                 >
-                    <i><img src="img/avatar.svg" alt=""></i>
+                    <i><img src="img/avatar.svg" alt="Avatar"></i>
                     &nbsp;
                     ${studentFirstName}&nbsp;${studentLastName}
                     <span class="caret"></span>
@@ -99,18 +190,19 @@
         <!-- ALL POTS SECTION -->
         <section id="pots">
             <div class="container">
-                <div class="row">
+                <div class="row plant-garden">
                     <c:forEach var="ts" items="${topicSummaries}">
                         <c:set var="topicName" value="${ts.topicName}"/>
                         <c:set var="numProblemsDone" value="${ts.problemsDone}"/>
                         <c:set var="numTotalProblems" value="${ts.numProbsSolved}"/>
                         <c:set var="plantDiv" value="plant_${ts.topicId}"/>
                         <c:if test="${ts.problemsDone != 0}">
-                            <div class="col-md-3 text-center topic"
+                            <div class="col-md-2 text-center topic"
+                                 id=${plantDiv}
                                  topicTitle="${topicName}"
                                  totalProblem="${numTotalProblems}"
                                  completeProblem="${numProblemsDone}">
-                                <a href="#" id=${plantLink}><div id=${plantDiv}></div></a>
+                                <%--<a href="#" id=${plantLink}><div id=${plantDiv}></div></a>--%>
                                 <%--<img class="pot-image"--%>
                                      <%--onclick="showOverlay(--%>
                                         <%--this.parentElement.getAttribute('topicTitle'),--%>
@@ -133,18 +225,31 @@
     </div>
 </div><!-- tab-content -->
 
-
 <!-- FIXED FOOTER, BUTTON FOR GETTING STARTED -->
-<footer id="big-working-button">
-    <div class="container">
-        <div class="row">
-            <h1>Continue Practicing</h1>
-            <p>Have a good time working on these math problems</p>
-        </div><!-- row -->
-    </div><!-- container -->
-    <a href="#">
-        <span class="link-spanner"></span>
-</footer>
+<div id="big-working-button">
+    <c:choose>
+        <c:when test="${newSession}">
+            <div class="container">
+                <div class="row">
+                    <h1>Start Practicing</h1>
+                    <p>Have a good time working on these math problems</p>
+                </div><!-- row -->
+            </div><!-- container -->
+            <a onclick="window.location='TutorBrain?action=EnterTutor&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&eventCounter=0&var=b'"><span class="link-spanner"></span></a>
+        </c:when>
+        <c:otherwise>
+            <div class="container">
+                <div class="row">
+                    <h1>Continue Practicing</h1>
+                    <p>Have a good time working on these math problems</p>
+                </div><!-- row -->
+            </div><!-- container -->
+            <a onclick="window.location='TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&eventCounter=${eventCounter}' + '&probId=${probId}&topicId=-1' + '&learningCompanion=${learningCompanion}&var=b'"><span class="link-spanner"></span></a>
+        </c:otherwise>
+    </c:choose>
+
+</div>
+
 
 <!-- SCRIPT - LIBRARIES -->
 <script src="js/bootstrap.min.js"></script>

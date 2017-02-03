@@ -1,0 +1,114 @@
+#navigation-back {
+    display: inline-block;
+    color: white;
+    margin-top: -10px;
+    font-weight: bold;
+    font-size: 1.3em;
+    width: 100%;
+}
+#navigation-back div {
+    text-align: center;
+    padding: 10px 0;
+    transition: all .4s ease;
+}
+#navigation-back div:hover {
+    cursor: pointer;
+}
+#navigation-back div:nth-child(1) {
+    background: #2ECC71;
+}
+#navigation-back div:nth-child(1):hover {
+    background: #1ab85d;
+}
+#navigation-back div:nth-child(2) {
+    background: #FFE234;
+}
+#navigation-back div:nth-child(2):hover {
+    background: #ebce20;
+}
+
+#main-tutoring {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), rgba(0, 0, 0, 0.4) url("../img/background-tree.jpg") no-repeat center;
+    background-size: cover;
+    color: #fff;
+    text-rendering: optimizeLegibility;
+    margin-top: -5px;
+    padding-top: 60px;
+    min-height: 680px;
+    max-height: 100%;
+}
+#main-tutoring .vertical-button {
+    list-style: none;
+    display: inline-block;
+}
+#main-tutoring .vertical-button div {
+    background: white;
+    margin-bottom: 20px;
+    width: 50px;
+    height: 50px;
+}
+#main-tutoring .vertical-button div img {
+    display: block;
+    margin: 0 auto;
+}
+#main-tutoring .vertical-button div:nth-child(1) > a > img {
+    padding-top: 13px;
+}
+#main-tutoring .vertical-button div:nth-child(2) > a > img {
+    padding-top: 10px;
+}
+#main-tutoring .vertical-button div:nth-child(3) > a > img {
+    padding-top: 15px;
+}
+#main-tutoring .main-tutoring-frame {
+    min-height: 500px;
+    margin-right: 75px;
+}
+#main-tutoring .main-tutoring-frame .main-tutoring-panel {
+    min-height: 500px;
+}
+#main-tutoring .virtual-character {
+    height: 500px;
+    background: blue;
+}
+#main-tutoring .buttons-below {
+    margin-top: 25px;
+    margin-left: 25px;
+    color: black;
+}
+.problem-control-button:focus,
+.problem-control-button:hover {
+    text-decoration: none;
+}
+#main-tutoring .buttons-below .col-sm-3 {
+    height: 50px;
+    background: #fff;
+    border: 1px solid black;
+    text-align: center;
+    padding-top: 14px;
+}
+#main-tutoring .buttons-below .col-sm-3:hover {
+    background: #F1F1F1;
+    cursor: pointer;
+}
+#main-tutoring .buttons-below .col-sm-3 img {
+    transform: scale(0.8);
+    position: absolute;
+    left: 10px;
+}
+#main-tutoring .buttons-below .col-sm-3:nth-child(1) a > img {
+    top: 5px;
+}
+#main-tutoring .buttons-below .col-sm-3:nth-child(2) a > img {
+    top: 9px;
+}
+#main-tutoring .buttons-below .col-sm-3:nth-child(3) a > img {
+    top: 8px;
+}
+
+.problemDiv,
+#flashContainer1 {
+    background: #fff;
+    border: solid 1px #979797;
+    border-radius: 4px;
+}
