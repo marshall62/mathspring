@@ -126,7 +126,8 @@ Main.prototype.clickHandling = function() {
     $("#instructions").click(instructions);
 
     $("#myProg").click(function () {
-        myprogress(globals)
+        // myprogress(globals)
+        myprogress()
     });
 }
 

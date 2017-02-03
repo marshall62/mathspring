@@ -150,11 +150,12 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public void setCurProbType(String type) throws SQLException {
-        topicState.setCurProbType(type);
+        problemState.setProblemType(type);
+
     }
 
     public String getCurProbType() {
-        return topicState.getCurProbType();
+        return problemState.getProblemType();
     }
 
     public boolean isTopicIntroShown() {
@@ -1002,7 +1003,7 @@ public class StudentState extends State implements TutorEventHandler {
 
 
 
-    // This is called when a problem is put on-screen in Flash.
+    // This is called when a problem is put on-screen in client
     public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
         long t = System.currentTimeMillis();
         this.setInProblem(true);
@@ -1014,16 +1015,17 @@ public class StudentState extends State implements TutorEventHandler {
 
 
         this.setCurProblemMode(getNextProblemMode());
-        Problem prob = ProblemMgr.getProblem(topicState.getNextProblem());
+        Problem prob = ProblemMgr.getProblem(this.getNextProblem());
 //        System.out.println("In StudentState.beginProblem, after ProblemMgr.getProblem " + (System.currentTimeMillis() - t));
 
+        initializeProblemState(ProblemMgr.getProblem(this.getCurProblem()));
         //  a TOpicIntro won't be found here.
         if (prob != null) {
             this.setCurProbType(prob.getType());
         }
         else if (this.getCurProblemMode().equals(Problem.TOPIC_INTRO))
             this.setCurProbType(Problem.TOPIC_INTRO_PROB_TYPE);
-        initializeProblemState(new DbProblem().getProblem(conn, topicState.getCurProblem()));
+
 //        System.out.println("In StudentState.beginProblem, after initializeState " + (System.currentTimeMillis() - t));
 
 
@@ -1032,7 +1034,8 @@ public class StudentState extends State implements TutorEventHandler {
     // When an EndProblem comes in at the end of a topic there are usually several interventions that play between
     // the NextProblem event and this EndProblem event.   They are usually TopicSwitchAsk and TopicIntro interventions
     // At the beginning of the new topic the lesson state is wiped clean.  This means that this EndProblem event
-    // might have
+    // might have ....
+    // This gets called in places where there may not be a previous problem so its best not to assume a cur problem.
     public void endProblem(SessionManager smgr, int studId,long probElapsedTime, long elapsedTime) throws SQLException {
         // At the end of each problem the timeInTopic is increased by the time spent in the problem.
         this.setTimeInTopic(this.getTimeInTopic()+ probElapsedTime);
@@ -1046,7 +1049,7 @@ public class StudentState extends State implements TutorEventHandler {
         setLastProblemMode(getCurProblemMode());
         // We save the current problem into the workspace state only when it is completed.   This means that the next time a user logs in (who is using
         // common core pedagogy) they will use the current problem to find a location in the lesson structure.
-        if (this.getCurProblemMode().equals(Problem.PRACTICE))
+        if (this.getCurProblemMode() != null && this.getCurProblemMode().equals(Problem.PRACTICE))
             workspaceState.setCurProb(this.getCurProblem());
         else workspaceState.setCurProb(-1); // If its not practice remove the probId from workspace state.
         this.setInProblem(false);  // DM 1/25/10

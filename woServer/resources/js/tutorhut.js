@@ -285,12 +285,12 @@ function instructions () {
     return false;
 }
 
-function myprogress(globals) {
-    debugAlert("in myprogress");
-    globals.lastProbType = globals.probType;
-    globals.lastProbId = globals.probId;
-    document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId + "&eventCounter="+ sysGlobals.eventCounter++;
-}
+// function myprogress(globals) {
+//     debugAlert("in myprogress");
+//     globals.lastProbType = globals.probType;
+//     globals.lastProbId = globals.probId;
+//     document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId + "&eventCounter="+ sysGlobals.eventCounter++;
+// }
 
 // A newer version of the above. Arg has been removed so this function can easily be passed as an argument to other functions (the interventionDialog buttons
 // click handlers)
