@@ -140,6 +140,61 @@ public class DbClass {
         }
     }
 
+    public static ClassInfo[] getRecentClasses(Connection conn) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement s = null;
+
+        try {
+            List<ClassInfo> classes = new ArrayList<ClassInfo>();
+            String q = "select teacherId,school,schoolYear,name,town,section,teacher,propgroupid,logType,pretestPoolId," +
+                    "f.statusReportIntervalDays, f.statusReportPeriodDays,f.studentEmailPeriodDays,f.studentEmailIntervalDays, c.flashClient, c.grade," +
+                    "f.simplelc, f.simplecollab, f.simplelowdiff, f.simplehighdiff, f.simplediffRate, f.showPostSurvey, c.id from class c, classconfig f" +
+                    " where f.classid=c.id and c.createTimeStamp > date_add(now(), interval -2 year) order by c.id desc";
+            s = conn.prepareStatement(q);
+            rs = s.executeQuery();
+            while (rs.next()) {
+                int teacherId = rs.getInt(1);
+                String sch = rs.getString(2);
+                int yr = rs.getInt(3);
+                String name = rs.getString(4);
+                String town = rs.getString(5);
+                String sec = rs.getString(6);
+                String teacherName = rs.getString(7);
+                int propgroupid = rs.getInt(8);
+                int logType = rs.getInt(9);
+                int pretestPoolId = rs.getInt(10);
+                int emailInterval = rs.getInt(11);
+                int statusReportPeriodDays = rs.getInt(12);
+                int studentEmailPeriodDays = rs.getInt(13);
+                int studentEmailIntervalDays = rs.getInt(14);
+                String flashClient = rs.getString(15); // k12 or college
+                String grade = rs.getString(16); // grade
+                String simpleLc = rs.getString(17);
+                String simpleCollab = rs.getString(18);
+                String simpleLowDiff = rs.getString(19);
+                String simpleHighDiff = rs.getString(20);
+                String simpleDiffRate = rs.getString(21);
+                boolean showPostSurvey = rs.getBoolean(22);
+                int classId = rs.getInt(23);
+                ClassInfo ci = new ClassInfo(sch, yr, name, town, sec, classId, teacherId, teacherName, propgroupid, logType,
+                        pretestPoolId, emailInterval, statusReportPeriodDays, studentEmailIntervalDays,
+                        studentEmailPeriodDays,flashClient,grade);
+                ci.setSimpleLC(simpleLc);
+                ci.setSimpleCollab(simpleCollab);
+                ci.setSimpleLowDiff(simpleLowDiff);
+                ci.setSimpleHighDiff(simpleHighDiff);
+                ci.setSimpleDiffRate(simpleDiffRate);
+                ci.setShowPostSurvey(showPostSurvey);
+                classes.add(ci);
+            }
+            return classes.toArray(new ClassInfo[classes.size()]);
+        } finally {
+            if (s != null)
+                s.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 
     /**
      * Given a name of a propgroup (typically "default") this will return the id
