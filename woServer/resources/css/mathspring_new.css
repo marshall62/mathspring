@@ -112,3 +112,15 @@
     border: solid 1px #979797;
     border-radius: 4px;
 }
+
+/* Override CSS rules of jQuery Widget UI */
+.ui-widget-content {
+    border: 1px solid #2ECC71;
+}
+.ui-widget {
+    font-family: inherit;
+}
+.ui-widget-header {
+    border: none;
+    background: #2ECC71;
+}

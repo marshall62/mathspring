@@ -5,15 +5,14 @@
 <head>
     <meta charset="utf-8">
     <title>MathSpring | Tutoring</title>
+    <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/common_new.css" rel="stylesheet">
     <link href="css/mathspring_new.css" rel="stylesheet">
-    <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script type="text/javascript" src="js/simple-slider.js"></script>
-
     <script type="text/javascript" src="js/tutorutils.js"></script>
     <script type="text/javascript" src="js/tutorAnswer.js"></script>
     <script type="text/javascript" src="js/tutorhint.js"></script>
@@ -101,11 +100,12 @@
 
 
         // Unfortunately the back button will run this function too which means that it can generate a BeginExternalActivity
-        $(document).ready(
-                function () {
-                    tutorhut_main(globals,sysGlobals,transients, "${learningCompanionMovie}");
-                }
-        );
+        $(document).ready(function () {
+            tutorhut_main(globals,sysGlobals,transients, "${learningCompanionMovie}");
+            $('.ui-dialog-buttonset > button').each(function() {
+                $(this).addClass('btn btn-lg mathspring-btn');
+            });
+        });
     </script>
 
 
