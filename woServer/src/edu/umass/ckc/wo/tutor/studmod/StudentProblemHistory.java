@@ -110,7 +110,13 @@ public class StudentProblemHistory {
         String hint = state.getCurHint();
         EffortHeuristic effortComputer = new EffortHeuristic();
        // TODO do not set effort if the current problem is Topic Intro or Example
-        String effort = effortComputer.computeEffort(state);
+        // Special case:  If starting a problem or topic from MPP, it first does an EndProblem on the old problem.
+        // But some of the topicState got reset so we can't compute effort.  So just leave the effort as it was
+        String effort = null;
+        if (state.getCurProblemMode() != null)
+            effort = effortComputer.computeEffort(state);
+        else
+            effort =  curProbData.getEffort();
         DbStudentProblemHistory.endProblem(smgr.getConnection(),studProbHistId,state.getNumHintsBeforeCorrect(),
                 numAttemptsToSolve,state.getTimeToSolve(),
                state.getTimeToFirstHint(),state.getTimeToFirstAttempt(),state.isProblemSolved(), now,
