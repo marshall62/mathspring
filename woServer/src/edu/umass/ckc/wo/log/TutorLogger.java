@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.log;
 
+import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.NavigationEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.event.tutorhut.*;
@@ -381,7 +382,7 @@ public class TutorLogger {
 
     public void logBeginExternalActivity(BeginExternalActivityEvent e, Response r) throws Exception {
         if (!hasOpenBegin(conn, e))
-            insertLogEntry(RequestActions.BEGIN_XACT,899,null,false,e.getElapsedTime(),0,null,-1,null,r.logEventName(),e.getXactId(),"externalactivity", getTopic(), e.getClickTime());
+            insertLogEntry(RequestActions.BEGIN_XACT, DbProblem.DUMMY_PROBLEM_ID,null,false,e.getElapsedTime(),0,null,-1,null,r.logEventName(),e.getXactId(),"externalactivity", getTopic(), e.getClickTime());
     }
 
     /**

@@ -32,6 +32,8 @@ import org.apache.log4j.Logger;
 public class DbProblem extends BaseMgr {
     private static final Logger logger = Logger.getLogger(DbProblem.class);
 
+    public static final int DUMMY_PROBLEM_ID = 899;
+
     /**
      * Given a problem return a list of Topic objects that this problem is associated with.
      * @param conn
