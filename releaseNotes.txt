@@ -65,6 +65,10 @@ Release Management (begun 11/28/16 - better late than never)
 
 Releases (test again)
 
+2/5/17: tag v2.1.7
+ fad3ba9 Added extension for Jquery UI so that I can make the learning companion dialog minimize or close and then reopen automatically when it has something to say.
+ 6aca1a7 Fixed unreported bug where MPP would cause failure when trying or resuming a topic because the last problem mode was no longer stored in the student state because it had been reset
+ 46d8ee4 got rid of main module, redid ant builds, made release notes
 TODO:  Change eventlog.clickTime to (datetime(3) on rose db after updating Mysql to new version.
 2/3/17 : tag v2.1.6
     8da031a FIx bug 320.   External activities only play once per request.   After that they will not be played again.
