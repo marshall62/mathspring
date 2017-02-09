@@ -4,4 +4,5 @@
 /emailer/target/
 /servletFramework/target/
 /woServer/target/
+/woServer/web/META-INF/context.xml
 *.swd
