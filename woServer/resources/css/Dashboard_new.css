@@ -5,12 +5,25 @@ html {
 
 #pots {
     min-height: 100%;
-    padding: 50px;
-    background: url(../images/background-garden.png);
+    padding: 50px 50px 150px 50px;
+    background: url(../img/bgv1.png);
+    background-size: cover;
 }
 
 #pots .row {
-    margin-bottom: 121px;
+    margin-bottom: 80px;
+}
+
+#pots img {
+    padding: 20px;
+    border: 1px solid #2ECC71;
+    border-radius: 15%;
+    background-color: rgba(46, 204, 113, 0.3);
+    transition: all 0.4s ease;
+}
+
+#pots img:hover {
+    background-color: rgba(46, 204, 113, 0.8);
 }
 
 #fixed-footer {
@@ -66,14 +79,6 @@ html {
     border-left: 13px solid transparent;
 }
 
-.pot-image {
-    transition: all .4s ease-in-out;
-}
-
-.pot-image:hover {
-    transform: scale(1.2);
-}
-
 div[topicTitle] img:hover {
     cursor: pointer;
 }
@@ -92,6 +97,7 @@ div[topicTitle] > div {
 }
 
 #big-working-button {
+    padding-top: 15px;
     position: fixed;
     bottom: 0;
     z-index: 150;
@@ -100,13 +106,13 @@ div[topicTitle] > div {
     _top: expression(eval(document.documentElement.scrollTop+ (document.documentElement.clientHeight-this.offsetHeight)));
     height: 150px;
     text-align: center;
-    background: #006739;
+    background: #1ab85d;
     color: white;
     transition: background-color 0.5s ease;
 }
 #big-working-button:after {
     content: "";
-    background: url(../img/pot-wallpaper.png) repeat;
+    background: #2ECC71;
     opacity: 0.1;
     top: 0;
     left: 0;
@@ -125,6 +131,7 @@ div[topicTitle] > div {
 #big-working-button:hover {
     text-decoration: none;
     background: #2ECC71;
+    cursor: pointer;
 }
 
 /*Important:*/
