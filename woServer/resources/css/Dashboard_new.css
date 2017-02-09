@@ -147,42 +147,6 @@ div[topicTitle] > div {
     background-image: url('empty.gif');*/
 }
 
-#big-working-button {
-    position: relative;
-    text-align: center;
-    background: #006739;
-    padding-top: 30px;
-    padding-bottom: 50px;
-    color: white;
-    transition: background-color 0.5s ease;
-}
-#big-working-button:after {
-    content: "";
-    background: url(../img/pot-wallpaper.png) repeat;
-    opacity: 0.1;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: 0;
-}
-#big-working-button h1 {
-    letter-spacing: 2px;
-}
-#big-working-button p {
-    margin-top: 20px;
-    letter-spacing: 1px;
-}
-#big-working-button:hover {
-    text-decoration: none;
-    background: #2ECC71;
-}
-
-#math-section {
-    background: url(../img/wallpaper-icon.png) repeat, #F2F2F2;
-}
-
 .section-panel {
     width: 90%;
     height: 200px;
