@@ -13,9 +13,12 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/common_new.css" rel="stylesheet" type="text/css" />
     <link href="css/Dashboard_new.css" rel="stylesheet" type="text/css" />
+    <link href="css/vex.css" rel="stylesheet" type="text/css" />
+    <link href="css/vex-theme-os.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/jchart.js"></script>
-    <script src="js/vex.min.js"></script>
+    <script src="js/vex.combined.min.js"></script>
+    <script>vex.defaultOptions.className = 'vex-theme-os'</script>
+    <script src="js/jchart_new.js"></script>
     <script>
         $(document).ready(function() {
             <c:forEach var="ts" items="${topicSummaries}">
