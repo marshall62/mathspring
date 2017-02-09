@@ -26,6 +26,10 @@ html {
     background-color: rgba(46, 204, 113, 0.8);
 }
 
+.plant-garden-pot-wrapper {
+    margin-top: 20px;
+}
+
 #fixed-footer {
     bottom: 0;
     position: fixed;
