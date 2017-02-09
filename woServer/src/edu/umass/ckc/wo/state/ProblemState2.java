@@ -1,15 +1,20 @@
 package edu.umass.ckc.wo.state;
 
+import com.google.gson.Gson;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbSession;
 import edu.umass.ckc.wo.db.DbStateTableMgr;
+import edu.umass.ckc.wo.db.DbUtil;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.util.State;
+import edu.umass.ckc.wo.util.WoProps;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,7 +67,7 @@ public class ProblemState2 extends State {
     private static final String POSSIBLE_SHORT_ANSWERS = "possibleShortAnswers";
     private static final String PROBLEM_TYPE = "problemType";
 
-    private static final String  TABLE_NAME= "studentproblemstate";
+    static final String  TABLE_NAME= "studentproblemstate";
     public static final String[] TABLE_COLS  = new String[] { CUR_HINT, CUR_HINT_ID, PROB_ELAPSED_TIME, PROB_START_TIME, HINT_START_TIME, ATTEMPT_START_TIME,
             CUR_PROB_NUM_ATTEMPTS, CUR_PROB_AVG_TIME_BETWEEN_ATTEMPTS, CUR_PROB_NUM_MISTAKES, CUR_PROB_NUM_HINTS_GIVEN, CUR_PROB_NUM_HELPAIDS_GIVEN,
             CUR_PROB_MAX_HINTS, PROBLEM_SOLVED, TIME_TO_SOLVE, TIME_TO_FIRST_EVENT, TIME_TO_FIRST_HINT, TIME_TO_SECOND_HINT, TIME_TO_THIRD_HINT, TIME_TO_FIRST_ATTEMPT, TIME_TO_SECOND_ATTEMPT, TIME_TO_THIRD_ATTEMPT,
@@ -118,47 +123,47 @@ public class ProblemState2 extends State {
     private String possibleShortAnswers;   // comma separated as coming out of db
     private List<String> possibleShortAnswersList;    // parsed version of below
     private String problemType;  // HTML, Flash, or some other.
-    private DbStateTableMgr dbWorker;
 
 
-    public ProblemState2(Connection conn) throws SQLException {
-        this.conn = conn;
-        dbWorker = new DbStateTableMgr(conn);
-    }
 
-    public void load( int studId) throws SQLException {
-        this.objid = studId;
+//    public ProblemState2(Connection conn) throws SQLException {
+//        this.conn = conn;
+//        dbWorker = new DbStateTableMgr(conn);
+//    }
 
-        try {
-            dbWorker.load(studId,this, TABLE_NAME, TABLE_COLS, this.getClass());
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IntrospectionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        setShortAnswerList();
-    }
+//    public void load( int studId) throws SQLException {
+//        this.objid = studId;
+//
+//        try {
+//            dbWorker.load(studId,this, TABLE_NAME, TABLE_COLS, this.getClass());
+//        } catch (NoSuchFieldException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (IntrospectionException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+//        setShortAnswerList();
+//    }
 
-    /**
-     * Persist this object to the db.  This is called during StudentModel.save.
-     * @return
-     * @throws SQLException
-     */
-    public boolean save () throws SQLException {
-        dbWorker.save(this,this.objid, TABLE_NAME, TABLE_COLS, this.getClass());
-
-        // because the topicmasterylevels are updated in the db by this classes access method, we don't need to write them when the
-        // student model is saved.
-        return true;
-    }
+//    /**
+//     * Persist this object to the db.  This is called during StudentModel.save.
+//     * @return
+//     * @throws SQLException
+//     */
+//    public boolean save () throws SQLException {
+//        dbWorker.save(this,this.objid, TABLE_NAME, TABLE_COLS, this.getClass());
+//
+//        // because the topicmasterylevels are updated in the db by this classes access method, we don't need to write them when the
+//        // student model is saved.
+//        return true;
+//    }
 
     // The instance var shortAnswers is a String that has the possible short answers separated by a tab char.  This
     // converts that into a list of strings
-    private void setShortAnswerList () {
+    void setShortAnswerList () {
         if (possibleShortAnswers != null) {
             String[] answers = possibleShortAnswers.split("\t");
             this.possibleShortAnswersList = Arrays.asList(answers);
@@ -245,16 +250,16 @@ public class ProblemState2 extends State {
 
     }
 
-    public static void clearState (Connection conn, int studId) throws SQLException {
-        DbStateTableMgr.clear(conn, TABLE_NAME, studId);
-    }
+//    public static void clearState (Connection conn, int studId) throws SQLException {
+//        DbStateTableMgr.clear(conn, TABLE_NAME, studId);
+//    }
 
 
 
-    // This is called when a problem is put on-screen in Flash.
-    public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
-        this.setStartTime(e.getElapsedTime());
-    }
+//    // This is called when a problem is put on-screen in Flash.
+//    public void beginProblem(SessionManager smgr, BeginProblemEvent e) throws SQLException {
+//        this.setStartTime(e.getElapsedTime());
+//    }
 
 
 
@@ -673,4 +678,6 @@ public class ProblemState2 extends State {
     public void setProblemType(String problemType) {
         this.problemType = problemType;
     }
+
+
 }

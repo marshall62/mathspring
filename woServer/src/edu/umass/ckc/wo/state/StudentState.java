@@ -42,7 +42,7 @@ public class StudentState extends State implements TutorEventHandler {
    // variables that are only needed for the duration of the student's session
 
 
-    private ProblemState2 problemState;
+    private ProblemState problemState;
     private TopicState topicState;
     private LessonState2 lessonState;
     private SessionState sessionState;
@@ -57,7 +57,7 @@ public class StudentState extends State implements TutorEventHandler {
     public StudentState(Connection conn, SessionManager smgr) throws SQLException {
         this.smgr = smgr;
         this.conn = conn;
-        this.problemState = new ProblemState2(conn);
+        this.problemState = new ProblemState(conn);
         this.topicState = new TopicState(conn);
         this.lessonState = new LessonState2(conn);
         this.sessionState = new SessionState(conn);
@@ -66,7 +66,9 @@ public class StudentState extends State implements TutorEventHandler {
     }
 
 
-
+     ProblemState getProblemState () {
+        return this.problemState;
+     }
 
     public void extractProps(WoProps props) throws SQLException {
 //        problemState.extractProps(props);
@@ -150,12 +152,12 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public void setCurProbType(String type) throws SQLException {
-        problemState.setProblemType(type);
+        problemState.getPojo().setProblemType(type);
 
     }
 
     public String getCurProbType() {
-        return problemState.getProblemType();
+        return problemState.getPojo().getProblemType();
     }
 
     public boolean isTopicIntroShown() {
@@ -497,212 +499,212 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public int getProbExamplesShown() {
-        return problemState.getExamplesShown();
+        return problemState.getPojo().getExamplesShown();
     }
 
     public long getProbElapsedTime() {
-        return problemState.getElapsedTime();
+        return problemState.getPojo().getElapsedTime();
     }
 
 
     public void setProbElapsedTime(long probElapsed) throws SQLException {
-        problemState.setProbElapsedTime(probElapsed);
+        problemState.getPojo().setProbElapsedTime(probElapsed);
     }
 
     public void setStrategicHintShown(boolean b) throws SQLException {
-        problemState.setStrategicHintShown(b);
+        problemState.getPojo().setStrategicHintShown(b);
     }
 
     public void setCurIntervention(String s) throws SQLException {
-        problemState.setCurIntervention(s);
+        problemState.getPojo().setCurIntervention(s);
     }
 
     public void setIsTextReaderUsed(boolean b) throws SQLException {
-        problemState.setIsTextReaderUsed(b);
+        problemState.getPojo().setIsTextReaderUsed(b);
     }
 
 
 
     public void setIsVideoShown(boolean b) throws SQLException {
-        problemState.setIsVideoShown(b);
+        problemState.getPojo().setIsVideoShown(b);
     }
 
     public void setProblemIdleTime(int t) throws SQLException {
-        problemState.setIdleTime(t);
+        problemState.getPojo().setIdleTime(t);
     }
 
 
     public int getCurHintId () {
-        return problemState.getCurHintId();
+        return problemState.getPojo().getCurHintId();
     }
 
     public String getCurHint () {
-        return problemState.getCurHint();
+        return problemState.getPojo().getCurHint();
     }
 
     public long getProbStartTime() {
-        return problemState.getStartTime();
+        return problemState.getPojo().getStartTime();
     }
 
     public long getHintStartTime() {
-        return problemState.getHintStartTime();
+        return problemState.getPojo().getHintStartTime();
     }
 
     public long getAttemptStartTime() {
-        return problemState.getAttemptStartTime();
+        return problemState.getPojo().getAttemptStartTime();
     }
 
     public double getCurProblemAvgTimeBetweenAttempts() {
-        return problemState.getAvgTimeBetweenAttempts();
+        return problemState.getPojo().getAvgTimeBetweenAttempts();
     }
 
     public long getInterventionStartTime() {
-        return problemState.getInterventionStartTime();
+        return problemState.getPojo().getInterventionStartTime();
     }
 
     public int getNumAttemptsOnCurProblem() {
-        return problemState.getNumAttempts();
+        return problemState.getPojo().getNumAttempts();
     }
 
     public int getNumMistakesOnCurProblem() {
-        return problemState.getNumMistakes();
+        return problemState.getPojo().getNumMistakes();
     }
 
 
     public int getNumHintsGivenOnCurProblem() {
-        return problemState.getNumHintsGiven();
+        return problemState.getPojo().getNumHintsGiven();
     }
 
 
     public int getNumHelpAidsGivenOnCurProblem() {
-        return problemState.getNumHelpAidsGiven();
+        return problemState.getPojo().getNumHelpAidsGiven();
     }
 
     // Returns true only if they solved it correctly
     public boolean isProblemSolved() {
-        return problemState.isProblemSolved();
+        return problemState.getPojo().isProblemSolved();
     }
 
 
     public long getTimeToSolve() {
-        return problemState.getTimeToSolve();
+        return problemState.getPojo().getTimeToSolve();
     }
 
 
     public long getTimeToFirstEvent() {
-        return problemState.getTimeToFirstEvent();
+        return problemState.getPojo().getTimeToFirstEvent();
     }
 
 
     public long getTimeToFirstHint() {
-        return problemState.getTimeToFirstHint();
+        return problemState.getPojo().getTimeToFirstHint();
     }
 
     public long getTimeToSecondHint() {
-        return problemState.getTimeToSecondHint();
+        return problemState.getPojo().getTimeToSecondHint();
     }
 
     public long getTimeToThirdHint() {
-        return problemState.getTimeToThirdHint();
+        return problemState.getPojo().getTimeToThirdHint();
     }
 
 
     public long getTimeInHintsBeforeCorrect() {
-        return problemState.getTimeInHintsBeforeCorrect();
+        return problemState.getPojo().getTimeInHintsBeforeCorrect();
     }
 
     public long getTimeToFirstAttempt() {
-        return problemState.getTimeToFirstAttempt();
+        return problemState.getPojo().getTimeToFirstAttempt();
     }
     public long getTimeToSecondAttempt() {
-        return problemState.getTimeToSecondAttempt();
+        return problemState.getPojo().getTimeToSecondAttempt();
     }
     public long getTimeToThirdAttempt() {
-        return problemState.getTimeToThirdAttempt();
+        return problemState.getPojo().getTimeToThirdAttempt();
     }
 
     public int getNumHintsBeforeCorrect() {
-        return problemState.getNumHintsBeforeCorrect();
+        return problemState.getPojo().getNumHintsBeforeCorrect();
     }
 
     public int getNumHelpAidsBeforeCorrect() {
-        return problemState.getNumHelpAidsBeforeCorrect();
+        return problemState.getPojo().getNumHelpAidsBeforeCorrect();
     }
 
     public String getFirstEvent() {
-        return problemState.getFirstEvent();
+        return problemState.getPojo().getFirstEvent();
     }
 
     public String getLastEvent() {
-        return problemState.getLastEvent();
+        return problemState.getPojo().getLastEvent();
     }
 
 
     public boolean isStrategicHintShown () {
-        return problemState.isStrategicHintShown();
+        return problemState.getPojo().isStrategicHintShown();
     }
 
 
     public boolean isVideoShown () {
-        return problemState.isVideoShown();
+        return problemState.getPojo().isVideoShown();
     }
 
 
 
     public boolean isTextReaderUsed () {
-        return problemState.isTextReaderUsed();
+        return problemState.getPojo().isTextReaderUsed();
     }
 
     public boolean isSolutionHintGiven() {
-        return problemState.isSolutionHintGiven();
+        return problemState.getPojo().isSolutionHintGiven();
     }
 
     public String getCurIntervention () {
-        return problemState.getCurIntervention();
+        return problemState.getPojo().getCurIntervention();
     }
 
 
     public void setInProblem(boolean inProblem) {
-        problemState.setInProblem(inProblem);
+        problemState.getPojo().setInProblem(inProblem);
     }
 
     public boolean isInProblem() {
-        return problemState.isInProblem();
+        return problemState.getPojo().isInProblem();
     }
 
     public boolean isLastEvent(String ev) {
-        return (problemState.getLastEvent() != NO_EVENT && problemState.getLastEvent().equals(ev));
+        return (problemState.getPojo().getLastEvent() != NO_EVENT && problemState.getPojo().getLastEvent().equals(ev));
     }
 
 
     public void interventionGiven(StudentState state, Intervention intervention) throws SQLException {
-        problemState.setInterventionStartTime(getTime());
+        problemState.getPojo().setInterventionStartTime(getTime());
     }
 
     public void setProblemBinding(String binding) throws SQLException {
-        problemState.setProblemBinding(binding);
+        problemState.getPojo().setProblemBinding(binding);
     }
 
     public String getProblemBinding()
     {
-        return problemState.getProblemBinding();
+        return problemState.getPojo().getProblemBinding();
     }
 
     public void setProblemAnswer(String ans) throws SQLException {
-        problemState.setAnswer(ans);
+        problemState.getPojo().setAnswer(ans);
     }
 
     public String getProblemAnswer() {
-        return problemState.getAnswer();
+        return problemState.getPojo().getAnswer();
     }
 
 
     public List<String> getPossibleShortAnswers() {
-        return problemState.getPossibleShortAnswersList();
+        return problemState.getPojo().getPossibleShortAnswersList();
     }
 
     public void setPossibleShortAnswers(List<String> possibleShortAnswers) throws SQLException {
-        problemState.setPossibleShortAnswersList(possibleShortAnswers);
+        problemState.getPojo().setPossibleShortAnswersList(possibleShortAnswers);
     }
 
 
@@ -1043,9 +1045,9 @@ public class StudentState extends State implements TutorEventHandler {
        if ((this.isLastEvent(HINT_EVENT)) && (! isProblemSolved())) {
             long curr_hint_time = this.getTimeInHintsBeforeCorrect();
             long extra_hint_time = this.getProbElapsedTime() - this.getHintStartTime();
-            problemState.setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
+            problemState.getPojo().setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
         }
-        problemState.setLastEvent(END_PROBLEM_EVENT);
+        problemState.getPojo().setLastEvent(END_PROBLEM_EVENT);
         setLastProblemMode(getCurProblemMode());
         // We save the current problem into the workspace state only when it is completed.   This means that the next time a user logs in (who is using
         // common core pedagogy) they will use the current problem to find a location in the lesson structure.
@@ -1065,35 +1067,35 @@ public class StudentState extends State implements TutorEventHandler {
 
 
     public void helpAidGiven(StudentState s) throws SQLException {
-        problemState.setNumHelpAidsGiven(problemState.getNumHelpAidsGiven() + 1);
+        problemState.getPojo().setNumHelpAidsGiven(problemState.getPojo().getNumHelpAidsGiven() + 1);
         if (this.getTimeToFirstEvent() < 0) {
-            problemState.setTimeToFirstEvent(this.getProbElapsedTime());
+            problemState.getPojo().setTimeToFirstEvent(this.getProbElapsedTime());
         }
         if ( ! isProblemSolved() )
-            problemState.setNumHelpAidsBeforeCorrect(this.getNumHelpAidsBeforeCorrect() + 1) ;
+            problemState.getPojo().setNumHelpAidsBeforeCorrect(this.getNumHelpAidsBeforeCorrect() + 1) ;
 
     }
 
     public void videoGiven (StudentState s) throws SQLException {
-        problemState.setNumHelpAidsGiven(problemState.getNumHelpAidsGiven() + 1);
+        problemState.getPojo().setNumHelpAidsGiven(problemState.getPojo().getNumHelpAidsGiven() + 1);
         smgr.getStudentState().setIsVideoShown(true);
         if (this.getTimeToFirstEvent() < 0) {
-            problemState.setTimeToFirstEvent(this.getProbElapsedTime());
+            problemState.getPojo().setTimeToFirstEvent(this.getProbElapsedTime());
         }
         if ( ! isProblemSolved() )
-            problemState.setNumHelpAidsBeforeCorrect(this.getNumHelpAidsBeforeCorrect() + 1) ;
+            problemState.getPojo().setNumHelpAidsBeforeCorrect(this.getNumHelpAidsBeforeCorrect() + 1) ;
     }
 
     public void exampleGiven(StudentState s, int exampleId) throws SQLException {
-        problemState.setNumHelpAidsGiven(problemState.getNumHelpAidsGiven() + 1);
+        problemState.getPojo().setNumHelpAidsGiven(problemState.getPojo().getNumHelpAidsGiven() + 1);
         setIsExampleShown(true);   // this says whether an example is seen within the topic.
-        problemState.setExamplesShown(problemState.getExamplesShown() + 1); // counts how many examples given in the cur problem
+        problemState.getPojo().setExamplesShown(problemState.getPojo().getExamplesShown() + 1); // counts how many examples given in the cur problem
         addExampleProblemGiven(exampleId);
         if (this.getTimeToFirstEvent() < 0) {
-            problemState.setTimeToFirstEvent(this.getProbElapsedTime());
+            problemState.getPojo().setTimeToFirstEvent(this.getProbElapsedTime());
         }
         if ( ! isProblemSolved() )
-            problemState.setNumHelpAidsBeforeCorrect(this.getNumHelpAidsBeforeCorrect() + 1) ;
+            problemState.getPojo().setNumHelpAidsBeforeCorrect(this.getNumHelpAidsBeforeCorrect() + 1) ;
     }
 
 
@@ -1103,38 +1105,38 @@ public class StudentState extends State implements TutorEventHandler {
         if ((this.isLastEvent(HINT_EVENT)) && (! isProblemSolved())) {
             long curr_hint_time = this.getTimeInHintsBeforeCorrect();
             long extra_hint_time = this.getProbElapsedTime() - this.getHintStartTime();
-            problemState.setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
+            problemState.getPojo().setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
         }
         // now update things
-        problemState.setLastEvent(HINT_EVENT);
+        problemState.getPojo().setLastEvent(HINT_EVENT);
         if (hint == null) return;
-        problemState.setIdleTime(0);
-        problemState.setNumHintsGiven(problemState.getNumHintsGiven() + 1);
+        problemState.getPojo().setIdleTime(0);
+        problemState.getPojo().setNumHintsGiven(problemState.getPojo().getNumHintsGiven() + 1);
         if (!isProblemSolved()) {
-            problemState.setNumHintsBeforeCorrect(problemState.getNumHintsBeforeCorrect() + 1);
+            problemState.getPojo().setNumHintsBeforeCorrect(problemState.getPojo().getNumHintsBeforeCorrect() + 1);
         }
-        problemState.setHintStartTime(this.getProbElapsedTime());
-        boolean atEnd = hint.getLabel().equals(problemState.getCurHint());
-        problemState.setCurHint(hint.getLabel());
-        problemState.setCurHintId(hint.getId());
+        problemState.getPojo().setHintStartTime(this.getProbElapsedTime());
+        boolean atEnd = hint.getLabel().equals(problemState.getPojo().getCurHint());
+        problemState.getPojo().setCurHint(hint.getLabel());
+        problemState.getPojo().setCurHintId(hint.getId());
         if (!isProblemSolved() && hint.getGivesAnswer())
-            problemState.setSolutionHintGiven(true);
+            problemState.getPojo().setSolutionHintGiven(true);
         if (!isProblemSolved() && getNumHintsGivenOnCurProblem() == 1) {
-            problemState.setTimeToFirstHint(this.getProbElapsedTime());
+            problemState.getPojo().setTimeToFirstHint(this.getProbElapsedTime());
         }
         else if (!isProblemSolved() && getNumHintsGivenOnCurProblem() == 2) {
-            problemState.setTimeToSecondHint(this.getProbElapsedTime());
+            problemState.getPojo().setTimeToSecondHint(this.getProbElapsedTime());
         }
         else if (!isProblemSolved() && getNumHintsGivenOnCurProblem() == 3) {
-            problemState.setTimeToThirdHint(this.getProbElapsedTime());
+            problemState.getPojo().setTimeToThirdHint(this.getProbElapsedTime());
         }
         if (this.getTimeToFirstEvent() < 0) {
-            problemState.setTimeToFirstEvent(this.getProbElapsedTime());
+            problemState.getPojo().setTimeToFirstEvent(this.getProbElapsedTime());
         }
         // for jeff
         if (this.getFirstEvent() == null) {
-            problemState.setFirstEvent(HINT_EVENT);
-            problemState.setTimeToFirstEvent(this.getProbElapsedTime());
+            problemState.getPojo().setFirstEvent(HINT_EVENT);
+            problemState.getPojo().setTimeToFirstEvent(this.getProbElapsedTime());
         }
         // don't tamper with the problem history if this hint is requested after the problem has been solved or all hints are given
         if (!isProblemSolved() && !atEnd)
@@ -1148,7 +1150,7 @@ public class StudentState extends State implements TutorEventHandler {
      * @throws java.sql.SQLException
      */
     public void studentNonIdleEvent () throws SQLException {
-        problemState.setIdleTime(0);
+        problemState.getPojo().setIdleTime(0);
     }
 
 
@@ -1167,69 +1169,69 @@ public class StudentState extends State implements TutorEventHandler {
         if ((this.isLastEvent(HINT_EVENT)) && (! isProblemSolved())) {
             long curr_hint_time = this.getTimeInHintsBeforeCorrect();
             long extra_hint_time = probElapsed - this.getHintStartTime();
-            problemState.setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
+            problemState.getPojo().setTimeInHintsBeforeCorrect(curr_hint_time + extra_hint_time);
         }
         this.setLastAnswer(answer);
         if ( ! isProblemSolved())
-            problemState.setNumAttempts(problemState.getNumAttempts() + 1);
+            problemState.getPojo().setNumAttempts(problemState.getPojo().getNumAttempts() + 1);
         long lastAttemptTime = this.getAttemptStartTime();
-        problemState.setAttemptStartTime(this.getTime());
-        problemState.setIdleTime(0);
-        problemState.setHintStartTime(-1); // once an attempt is given, we need to reset the last hint
+        problemState.getPojo().setAttemptStartTime(this.getTime());
+        problemState.getPojo().setIdleTime(0);
+        problemState.getPojo().setHintStartTime(-1); // once an attempt is given, we need to reset the last hint
 //        this.setCurHint(null);
 //        this.setCurHintId(-1);
-        problemState.setLastEvent(ATTEMPT_EVENT);
+        problemState.getPojo().setLastEvent(ATTEMPT_EVENT);
         if (this.getTimeToFirstAttempt() == -1)
-            problemState.setTimeToFirstAttempt(probElapsed);
+            problemState.getPojo().setTimeToFirstAttempt(probElapsed);
         else if (this.getTimeToSecondAttempt() == -1)
-            problemState.setTimeToSecondAttempt(probElapsed);
+            problemState.getPojo().setTimeToSecondAttempt(probElapsed);
         else if (this.getTimeToThirdAttempt() == -1)
-            problemState.setTimeToThirdAttempt(probElapsed);
+            problemState.getPojo().setTimeToThirdAttempt(probElapsed);
         if (this.getTimeToFirstEvent() < 0) {
-            problemState.setTimeToFirstEvent(probElapsed);
+            problemState.getPojo().setTimeToFirstEvent(probElapsed);
         }
         // for jeff
         if (this.getFirstEvent() == null) {
             if (isCorrect)
-                problemState.setFirstEvent(CORRECT_ATTEMPT_EVENT);
+                problemState.getPojo().setFirstEvent(CORRECT_ATTEMPT_EVENT);
             else
-                problemState.setFirstEvent(INCORRECT_ATTEMPT_EVENT);
-            problemState.setTimeToFirstEvent(probElapsed);
+                problemState.getPojo().setFirstEvent(INCORRECT_ATTEMPT_EVENT);
+            problemState.getPojo().setTimeToFirstEvent(probElapsed);
         }
         if (isCorrect) {
             // for jeff  - when correct, note the number of hints prior
-            problemState.setNumHintsBeforeCorrect(this.getNumHintsGivenOnCurProblem());
-            problemState.setProblemSolved(true);
-            problemState.setTimeToSolve(this.getProbElapsedTime());
+            problemState.getPojo().setNumHintsBeforeCorrect(this.getNumHintsGivenOnCurProblem());
+            problemState.getPojo().setProblemSolved(true);
+            problemState.getPojo().setTimeToSolve(this.getProbElapsedTime());
 
         }
         else if (! isProblemSolved()) {
-            problemState.setNumMistakes(problemState.getNumMistakes() + 1);
+            problemState.getPojo().setNumMistakes(problemState.getPojo().getNumMistakes() + 1);
         }
         if (lastAttemptTime == -1 && !previouslySolved ) {
-            problemState.setAttemptStartTime(now);
-            problemState.setAvgTimeBetweenAttempts(probElapsed);
+            problemState.getPojo().setAttemptStartTime(now);
+            problemState.getPojo().setAvgTimeBetweenAttempts(probElapsed);
         } else if (!previouslySolved) {
             long diff = now - lastAttemptTime;
-            double x = updateRunningAverage(problemState.getAvgTimeBetweenAttempts(), diff);
-            problemState.setAvgTimeBetweenAttempts(x);
+            double x = updateRunningAverage(problemState.getPojo().getAvgTimeBetweenAttempts(), diff);
+            problemState.getPojo().setAvgTimeBetweenAttempts(x);
         }
         if (!previouslySolved)
-            smgr.getStudentModel().getStudentProblemHistory().attempt(smgr,isCorrect,probElapsed,problemState.getNumAttempts());
+            smgr.getStudentModel().getStudentProblemHistory().attempt(smgr,isCorrect,probElapsed,problemState.getPojo().getNumAttempts());
 
     }
 
     private double updateRunningAverage(double runningAvg, double curVal) {
-        if (problemState.getNumAttempts() == 0) {
+        if (problemState.getPojo().getNumAttempts() == 0) {
             // when a variable's curVal has an initialization value of -1 , we want to return 0 for the avg.
             if (curVal < 0)
                 return 0.0;
             else
                 return curVal;
-        } else if (problemState.getNumAttempts() == 1)
+        } else if (problemState.getPojo().getNumAttempts() == 1)
             return curVal;
         else
-            return (runningAvg * problemState.getNumAttempts() + curVal) / (problemState.getNumAttempts() + 1);
+            return (runningAvg * problemState.getPojo().getNumAttempts() + curVal) / (problemState.getPojo().getNumAttempts() + 1);
 
     }
 

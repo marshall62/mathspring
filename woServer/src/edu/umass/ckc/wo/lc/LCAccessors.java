@@ -4,6 +4,7 @@ import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Hint;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbPedagogy;
+import edu.umass.ckc.wo.db.DbUtil;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -389,7 +390,7 @@ public class LCAccessors {
 
     public static void main(String[] args) {
         try {
-            Connection conn = SessionManager.getAConnection();
+            Connection conn = DbUtil.getAConnection();
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
             Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,null);
