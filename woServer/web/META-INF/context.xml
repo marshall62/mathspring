@@ -25,7 +25,7 @@
               numTestsPerEvictionRun="10"
               validationQuery="SELECT 1"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://rose.cs.umass.edu/wayangoutpostdb?autoReconnect=true" />
+              url="jdbc:mysql://mathseeds.wpi.edu/wayangoutpostdb?autoReconnect=true" />
 
     <Resource name="jdbc/wodblocal" type="javax.sql.DataSource"
             auth="Container" description="Mysql database for Mathforum"
