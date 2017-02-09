@@ -188,7 +188,7 @@
                         <c:set var="numTotalProblems" value="${ts.numProbsSolved}"/>
                         <c:set var="plantDiv" value="plant_${ts.topicId}"/>
                         <c:if test="${ts.problemsDone != 0}">
-                            <div class="col-md-2 text-center topic"
+                            <div class="col-md-3 text-center topic"
                                  id=${plantDiv}
                                  topicTitle="${topicName}"
                                  totalProblem="${numTotalProblems}"
