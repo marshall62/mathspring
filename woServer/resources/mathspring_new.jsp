@@ -197,10 +197,51 @@
         <div class="row">
             <div class="col-md-1 vertical-button">
                 <div><a id="read"><img src="img/speaker.svg" alt=""></a></div>
-                <div><a id="instructions"><img src="img/question-mark.svg" alt=""></a></div>
-                <div><a><img src="img/menu.svg" alt=""></a></div>
+                <div><a id="instructions"><img src="img/info.svg" alt=""></a></div>
+                <div class="dropdown custom-dropdown">
+                    <a  href="#"
+                        class="dropdown-toggle custom-dropdown-toggle"
+                        data-toggle="dropdown" 
+                        role=button
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        <img src="img/menu.svg" alt="">
+                    </a><!-- dropdown-toggle -->
+
+                    <ul class="dropdown-menu">
+                        
+                        <li><a id="example" href="">Show Example</a></li>
+                        <li role="separator" class="divider"></li>
+
+                        <li><a id="video" href="">Show Video</a></li>
+                        <li role="separator" class="divider"></li>
+
+                        <li><a id="formulas" href="">Fomular</a></li>
+                        <li role="separator" class="divider"></li>
+
+                        <li><a id="glossary" href="">Glossary</a></li>
+                    </ul><!-- dropdown-menu -->
+                </div>
             </div>
             <div class="col-md-7 main-tutoring-frame">
+                <div class="row buttons-below">
+                    <div class="col-sm-3 main-tutoring-button">
+                        <a id="hint" class="problem-control-button">
+                            <img src="img/lightbulb.svg" alt=""><span id="hint_label">Hint</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-3 col-md-offset-1 main-tutoring-button">
+                        <a id="replay" class="problem-control-button">
+                            <img src="img/reload.svg" alt="">Replay Hint
+                        </a>
+                    </div>
+                    <div class="col-sm-3 col-md-offset-1 main-tutoring-button">
+                        <a id="nextProb" class="problem-control-button">
+                            <img src="img/right-arrow.svg" alt="">Next Problem
+                        </a>
+                    </div>
+                </div>
                 <div id="frameContainer" class="problemDiv">
                     <iframe id="problemWindow" class="probWindow"
                             name="iframe1"
@@ -213,23 +254,6 @@
                 </div>
                 <div id="flashContainer1">
                     <div id="flashContainer2"></div>
-                </div>
-                <div class="row buttons-below">
-                    <div class="col-sm-3">
-                        <a id="hint" class="problem-control-button">
-                            <img src="img/lightbulb.svg" alt=""><span id="hint_label">Hint</span>
-                        </a>
-                    </div>
-                    <div class="col-sm-3 col-md-offset-1">
-                        <a id="replay" class="problem-control-button">
-                            <img src="img/reload.svg" alt="">Replay Hint
-                        </a>
-                    </div>
-                    <div class="col-sm-3 col-md-offset-1">
-                        <a id="nextProb" class="problem-control-button">
-                            <img src="img/right-arrow.svg" alt="">Next Problem
-                        </a>
-                    </div>
                 </div>
             </div>
             <div class="col-md-3">

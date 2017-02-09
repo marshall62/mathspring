@@ -28,20 +28,22 @@
 }
 
 #main-tutoring {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), rgba(0, 0, 0, 0.4) url("../img/background-tree.jpg") no-repeat center;
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), rgba(0, 0, 0, 0.4) url("../img/background-tree.jpg") no-repeat center;
     background-size: cover;
     color: #fff;
     text-rendering: optimizeLegibility;
     margin-top: -5px;
     padding-top: 60px;
-    min-height: 680px;
+    min-height: 750px;
     max-height: 100%;
 }
 #main-tutoring .vertical-button {
     list-style: none;
     display: inline-block;
+    margin-top: 75px;
 }
 #main-tutoring .vertical-button div {
+    border-radius: 5px;
     background: white;
     margin-bottom: 20px;
     width: 50px;
@@ -57,8 +59,14 @@
 #main-tutoring .vertical-button div:nth-child(2) > a > img {
     padding-top: 10px;
 }
-#main-tutoring .vertical-button div:nth-child(3) > a > img {
+#main-tutoring .vertical-button div .custom-dropdown-toggle img {
     padding-top: 15px;
+    width: 35px;
+    height: 35px;
+}
+#main-tutoring .vertical-button div:hover {
+  cursor: pointer;
+  background: whitesmoke;
 }
 #main-tutoring .main-tutoring-frame {
     min-height: 500px;
@@ -69,26 +77,25 @@
 }
 #main-tutoring .virtual-character {
     height: 500px;
-    background: blue;
 }
 #main-tutoring .buttons-below {
-    margin-top: 25px;
-    margin-left: 25px;
+    margin-left: 30px;
+    margin-bottom: 25px;
     color: black;
 }
 .problem-control-button:focus,
 .problem-control-button:hover {
     text-decoration: none;
 }
-#main-tutoring .buttons-below .col-sm-3 {
+#main-tutoring .buttons-below .main-tutoring-button {
     height: 50px;
     background: #fff;
-    border: 1px solid black;
     text-align: center;
     padding-top: 14px;
+    border-radius: 5px;
 }
-#main-tutoring .buttons-below .col-sm-3:hover {
-    background: #F1F1F1;
+#main-tutoring .buttons-below .main-tutoring-button:hover {
+    background: whitesmoke;
     cursor: pointer;
 }
 #main-tutoring .buttons-below .col-sm-3 img {
