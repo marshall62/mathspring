@@ -188,7 +188,7 @@
                     <c:forEach var="ts" items="${topicSummaries}">
                         <c:set var="topicName" value="${ts.topicName}"/>
                         <c:set var="numProblemsDone" value="${ts.problemsDone}"/>
-                        <c:set var="numTotalProblems" value="${ts.numProbsSolved}"/>
+                        <c:set var="numTotalProblems" value="${ts.totalProblems}"/>
                         <c:set var="plantDiv" value="plant_${ts.topicId}"/>
                         <c:if test="${ts.problemsDone != 0}">
                             <div class="col-md-3 text-center topic plant-garden-pot-wrapper"
