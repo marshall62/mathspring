@@ -779,7 +779,7 @@ giveFeedback	: function(remarksDiv, topic_state,topicState_pepperPlant,topicMast
         if (document.getElementById(plant_div) == null)
             console.log(plant_div);
         else
-            document.getElementById(plant_div).appendChild(plantImage);
+            document.getElementById(plant_div).prepend(plantImage);
 
 
         }
