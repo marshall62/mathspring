@@ -232,4 +232,5 @@ div[topicTitle] > div {
 /* Override vex dialog font */
 .vex.vex-theme-os .vex-content {
     font-family: inherit;
+    border-top: 20px solid #2ECC71;
 }
