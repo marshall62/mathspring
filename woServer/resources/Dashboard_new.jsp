@@ -49,87 +49,6 @@
                     problemsDone,
                     problemsSolved);
             </c:forEach>
-
-            function showOverlay(title, numComplete, numTotal) {
-                var percentage = numComplete / numTotal;
-                console.log(percentage);
-                var className = '';
-                if (percentage <= 0.33) {
-                    className = 'zero-progress';
-                } else if (percentage > 0.33 && percentage <= 0.66) {
-                    className = 'thirty-three-progress';
-                } else {
-                    className = 'sixty-six-progress';
-                }
-
-                var buttons = [];
-                if (Number(numComplete) === 0) {
-                    buttons = [
-                        $.extend({}, vex.   dialog.buttons.NO, {
-                            className: 'class-name',
-                            text: 'Button1',
-                            click: function($vexContent, event) {
-                                window.location='http://www.example.com';
-                            }
-                        })
-                    ];
-                } else {
-                    buttons = [
-                        $.extend({}, vex.dialog.buttons.NO, {
-                            className: 'class-name',
-                            text: 'Button1',
-                            click: function($vexContent, event) {
-                                window.location='http://www.example.com';
-                            }
-                        }),
-                        $.extend({}, vex.dialog.buttons.NO, {
-                            className: 'class-name',
-                            text: 'Button2',
-                            click: function($vexContent, event) {
-                                console.log("Hello world");
-                            }
-                        }),
-                        $.extend({}, vex.dialog.buttons.NO, {
-                            className: 'class-name',
-                            text: 'Button3',
-                            click: function($vexContent, event) {
-                                console.log("Hello world");
-                            }
-                        })
-                    ];
-                }
-
-                vex.dialog.open({
-                    buttons: buttons,
-                    input: [
-                        '<style>',
-                        '.vex-custom-field-wrapper {',
-                        'margin: 1em 0;',
-                        '}',
-                        '.vex-custom-field-wrapper > label {',
-                        'display: inline-block;',
-                        'margin-bottom: .2em;',
-                        '}',
-                        '.topic-title {',
-                        'font-weight: bold;',
-                        '}',
-                        '</style>',
-                        '<div>',
-                        '<h3 class="topic-title">' + title + '</h3>',
-                        '<div class="visible num-questions">',
-                        '<p>' + numComplete + ' / ' + numTotal + ' problems done</p>',
-                        '</div>',
-                        '<div class="progress overlay">',
-                        '<div class="progress-bar ' + className + '" role="progressbar" aria-valuenow="' + percentage + '"',
-                        'aria-valuemin="0" aria-valuemax="100" style="width:' + percentage * 100 + '%">',
-                        '</div><!-- progress-bar -->',
-                        '</div><!-- progress -->',
-                        '</div><!-- section-panel -->',
-                    ].join(''),
-                    onSubmit: function() {
-                    },
-                });
-            }
         });
     </script>
 </head>
@@ -190,21 +109,30 @@
                         <c:set var="numProblemsDone" value="${ts.problemsDone}"/>
                         <c:set var="numTotalProblems" value="${ts.totalProblems}"/>
                         <c:set var="plantDiv" value="plant_${ts.topicId}"/>
+                        <c:choose>
+                            <c:when test="${ts.problemsDone>0 && ts.hasAvailableContent}">
+                                <c:set var="challengeTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&comment=" />
+                                <c:set var="continueTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=continue&comment=" />
+                                <c:set var="reviewTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&comment=" />
+                            </c:when>
+                            <c:when test="${ts.problemsDone==0}">
+                            </c:when>
+                            <%--The tutor sometimes can't continue a topic if some criteria are satisfied, so we only offer review and challenge--%>
+                            <c:otherwise>
+                                <c:set var="challengeTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&comment=" />
+                                <c:set var="reviewTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&comment=" />
+                            </c:otherwise>
+                        </c:choose>
                         <c:if test="${ts.problemsDone != 0}">
                             <div class="col-md-3 text-center topic plant-garden-pot-wrapper"
                                  id=${plantDiv}
                                  topicTitle="${topicName}"
                                  totalProblem="${numTotalProblems}"
-                                 completeProblem="${numProblemsDone}">
-                                <%--<a href="#" id=${plantLink}><div id=${plantDiv}></div></a>--%>
-                                <%--<img class="pot-image"--%>
-                                     <%--onclick="showOverlay(--%>
-                                        <%--this.parentElement.getAttribute('topicTitle'),--%>
-                                        <%--this.parentElement.getAttribute('completeProblem'),--%>
-                                        <%--this.parentElement.getAttribute('totalProblem')--%>
-                                    <%--)"--%>
-                                     <%--alt="Plant pot"--%>
-                                <%-->--%>
+                                 completeProblem="${numProblemsDone}"
+                                 challengeTopicLink="${challengeTopicLink}"
+                                 continueTopicLink="${continueTopicLink}"
+                                 reviewTopicLink="${reviewTopicLink}"
+                                 >
                                 <div class="talkbubble">
                                     <p>${topicName}</p>
                                 </div>

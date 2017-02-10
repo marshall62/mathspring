@@ -781,43 +781,40 @@ giveFeedback    : function(remarksDiv, topic_state,topicState_pepperPlant,topicM
             }
 
             var buttons = [];
-            if (Number(numComplete) === 0) {
-                buttons = [
-                    $.extend({}, vex.dialog.buttons.NO, {
-                        className: 'class-name',
-                        text: 'Button1',
-                        click: function($vexContent, event) {
-                            window.location='http://www.example.com';
-                        }
-                    })
-                ];
-            } else {
-                buttons = [
-                    $.extend({}, vex.dialog.buttons.NO, {
-                        className: 'class-name',
-                        text: 'Button1',
-                        click: function($vexContent, event) {
-                            window.location='http://www.example.com';
-                        }
-                    }),
-                    $.extend({}, vex.dialog.buttons.NO, {
-                        className: 'class-name',
-                        text: 'Button2',
-                        click: function($vexContent, event) {
-                            console.log("Hello world");
-                        }
-                    }),
-                    $.extend({}, vex.dialog.buttons.NO, {
-                        className: 'class-name',
-                        text: 'Button3',
-                        click: function($vexContent, event) {
-                            console.log("Hello world");
-                        }
-                    })
-                ];
+            var $plantDiv = $('#' + plant_div);
+            var challengeTopicLink = $plantDiv.attr('challengeTopicLink');
+            var continueTopicLink = $plantDiv.attr('continueTopicLink');
+            var reviewTopicLink = $plantDiv.attr('reviewTopicLink');
+            if (challengeTopicLink !== undefined) {
+                buttons[buttons.length] = $.extend({}, vex.dialog.buttons.NO, {
+                    className: 'btn btn-lg mathspring-important-btn',
+                    text: 'Challenge',
+                    click: function($vexContent, event) {
+                        window.location = challengeTopicLink;
+                    }
+                });
+            }
+            if (reviewTopicLink !== undefined) {
+                buttons[buttons.length] = $.extend({}, vex.dialog.buttons.NO, {
+                    className: 'btn btn-lg mathspring-warning-btn',
+                    text: 'Review',
+                    click: function($vexContent, event) {
+                        window.location = reviewTopicLink;
+                    }
+                });
+            }
+            if (continueTopicLink !== undefined) {
+                buttons[buttons.length] = $.extend({}, vex.dialog.buttons.NO, {
+                    className: 'btn btn-lg mathspring-btn',
+                    text: 'Continue',
+                    click: function($vexContent, event) {
+                        window.location = continueTopicLink;
+                    }
+                });
             }
 
             vex.dialog.open({
+                message: '',
                 buttons: buttons,
                 input: [
                     '<style>',
