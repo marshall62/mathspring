@@ -513,18 +513,30 @@
 
                 <c:choose>
                     <c:when test="${ts.problemsDone>0 && ts.hasAvailableContent}">
-                        <li class="btn mathspring-btn" id="continue_${topicId}"><a href="#">Continue</a></li>
-                        <li class="btn mathspring-warning-btn" id="review_${topicId}"><a href="#">Review</a></li>
-                        <li class="btn mathspring-important-btn" id="challenge_${topicId}"><a href="#"><span class="colorPink">Challenge</span></a></li>
+                        <li class="btn mathspring-btn" id="continue_${topicId}">
+                            <a href="#">Continue</a>
+                        </li>
+                        <li class="btn mathspring-warning-btn" id="review_${topicId}">
+                            <a href="#">Review</a>
+                        </li>
+                        <li class="btn mathspring-important-btn" id="challenge_${topicId}">
+                            <a href="#"><span class="colorPink">Challenge</span></a>
+                        </li>
                         </ul></td></tr>
                     </c:when>
                     <c:when test="${ts.problemsDone==0}">
-                        <li class="btn mathspring-btn" id="tryThis_${topicId}"><a href="#">Try this</a></li>
+                        <li class="btn mathspring-btn" id="tryThis_${topicId}">
+                            <a href="#">Try this</a>
+                        </li>
                     </c:when>
                     <%--The tutor sometimes can't continue a topic if some criteria are satisfied, so we only offer review and challenge--%>
                     <c:otherwise>
-                        <li class="btn mathspring-warning-btn" id="review_${topicId}"><a href="#">Review</a></li>
-                        <li class="btn mathspring-important-btn" id="challenge_${topicId}"><a href="#"><span class="colorPink">Challenge</span></a></li>
+                        <li class="btn mathspring-warning-btn" id="review_${topicId}">
+                            <a href="#">Review</a>
+                        </li>
+                        <li class="btn mathspring-important-btn" id="challenge_${topicId}">
+                            <a href="#"><span class="colorPink">Challenge</span></a>
+                        </li>
                         </ul></td></tr>
                     </c:otherwise>
                 </c:choose>

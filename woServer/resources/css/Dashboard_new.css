@@ -96,10 +96,6 @@ div[topicTitle] > div {
     transition: all .4s ease;
 }
 
-.class-name {
-    background: red;
-}
-
 #big-working-button {
     padding-top: 15px;
     position: fixed;
@@ -231,4 +227,9 @@ div[topicTitle] > div {
 
 .sixty-six-progress {
     background-color: #2ECC71;
+}
+
+/* Override vex dialog font */
+.vex.vex-theme-os .vex-content {
+    font-family: inherit;
 }
