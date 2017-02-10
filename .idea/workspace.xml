@@ -9,9 +9,6 @@
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/BeginInterventionEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/BeginInterventionEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/EndInterventionEvent.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/event/tutorhut/EndInterventionEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -1623,14 +1620,7 @@
       <workItem from="1485897747235" duration="18359000" />
       <workItem from="1486144820588" duration="13742000" />
       <workItem from="1486393222374" duration="16421000" />
-      <workItem from="1486485684163" duration="23719000" />
-    </task>
-    <task id="LOCAL-00191" summary="commented out alerts in problem_skeleton_load.js">
-      <created>1448986934705</created>
-      <option name="number" value="00191" />
-      <option name="presentableId" value="LOCAL-00191" />
-      <option name="project" value="LOCAL" />
-      <updated>1448986934705</updated>
+      <workItem from="1486485684163" duration="24361000" />
     </task>
     <task id="LOCAL-00192" summary="Removed survey buttons on login page">
       <created>1448987293512</created>
@@ -1968,11 +1958,18 @@
       <option name="project" value="LOCAL" />
       <updated>1486742224845</updated>
     </task>
-    <option name="localTasksCounter" value="240" />
+    <task id="LOCAL-00240" summary="BeginIntervention events were logged with probElapsedTime of 0.   Made it pull the probElapsed from&#10;the event and add to db.">
+      <created>1486743055590</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1486743055590</updated>
+    </task>
+    <option name="localTasksCounter" value="241" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="376449000" />
+    <option name="totallyTimeSpent" value="377091000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2092,7 +2089,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Affectiva API" />
     <MESSAGE value="Working AffectivaService with jersey 1.9.   Cannot get jersey 2.3 working" />
     <MESSAGE value="sync with master" />
     <MESSAGE value="Generated new ant scripts one for each module.  Created buildSugaree.xml&#10;which is a master file that uses what was generated" />
@@ -2117,7 +2113,8 @@
     <MESSAGE value="adding jquery ui extensions for dialogs that close and minimize" />
     <MESSAGE value="removed workspace.xml from git repo and added to gitignore.   Goes with the change in previous commit to read the db user stuff from the context.xml file." />
     <MESSAGE value="Fixed problem with generated test-users not having hashed passwords." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed problem with generated test-users not having hashed passwords." />
+    <MESSAGE value="BeginIntervention events were logged with probElapsedTime of 0.   Made it pull the probElapsed from&#10;the event and add to db." />
+    <option name="LAST_COMMIT_MESSAGE" value="BeginIntervention events were logged with probElapsedTime of 0.   Made it pull the probElapsed from&#10;the event and add to db." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
