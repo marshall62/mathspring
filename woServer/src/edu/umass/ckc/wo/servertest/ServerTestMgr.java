@@ -52,7 +52,7 @@ public class ServerTestMgr {
 
     public void init() {
         try {
-            SessionManager.loadDbDriver();
+            DbUtil.loadDbDriver();
             this.conn = DbUtil.getAConnection();
             this.smgr = new SessionManager(conn);
             this.conn = conn;

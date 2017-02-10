@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.beans.ClassConfig;
 import edu.umass.ckc.wo.exc.AdminException;
 
 import edu.umass.ckc.wo.handler.UserRegistrationHandler;
+import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
@@ -987,10 +988,11 @@ public class DbClass {
             StringBuffer testUser = new StringBuffer(testUserPrefix + "-" + (thisUser + startIx));
             stmt = null;
             try {
+                String pwhash = new PasswordAuthentication().hash(testUserPassword);
                 String q = "INSERT into STUDENT (username, password, classid, pedagogyid, keepUser,keepData,updateStats,showTestControls, trialUser) values (?,?,?,?,1,1,0,1,1)";
                 stmt = conn.prepareStatement(q);
                 stmt.setString(1, testUser.toString());
-                stmt.setString(2, testUserPassword);
+                stmt.setString(2, pwhash);
                 stmt.setInt(3, classInfo.getClassid());
                 stmt.setInt(4, Integer.parseInt(pedIds.get(thisUser)));
                 stmt.execute();
