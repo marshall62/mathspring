@@ -11,10 +11,10 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ffffff">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/common_new.css" rel="stylesheet" type="text/css" />
-    <link href="css/Dashboard_new.css" rel="stylesheet" type="text/css" />
     <link href="css/vex.css" rel="stylesheet" type="text/css" />
     <link href="css/vex-theme-os.css" rel="stylesheet" type="text/css" />
+    <link href="css/common_new.css" rel="stylesheet" type="text/css" />
+    <link href="css/Dashboard_new.css" rel="stylesheet" type="text/css" />
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/vex.combined.min.js"></script>
     <script>vex.defaultOptions.className = 'vex-theme-os'</script>
