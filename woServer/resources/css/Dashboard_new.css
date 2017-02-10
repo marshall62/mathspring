@@ -88,11 +88,11 @@ div[topicTitle] img:hover {
 }
 
 div[topicTitle] img:hover ~ div {
-    opacity: 1;
+    display: block;
 }
 
 div[topicTitle] > div {
-    opacity: 0;
+    display: none;
     transition: all .4s ease;
 }
 
