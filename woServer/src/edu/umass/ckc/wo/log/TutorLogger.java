@@ -360,11 +360,11 @@ public class TutorLogger {
     }
 
     public void logShowIntervention(BeginInterventionEvent e, Response r, String intervention) throws Exception {
-        insertLogEntry(RequestActions.SHOW_INTERVENTION,null, smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),0,null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.SHOW_INTERVENTION,null, smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
     }
 
     public void logEndIntervention(EndInterventionEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.END_INTERVENTION,null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.END_INTERVENTION,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
 
     public void logBeginExample(BeginExampleEvent e, Response r) throws Exception {
