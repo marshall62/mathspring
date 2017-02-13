@@ -21,7 +21,11 @@
     <script src="js/jchart_new.js"></script>
     <script>
         $(document).ready(function() {
+            var hasPots = false;
             <c:forEach var="ts" items="${topicSummaries}">
+                <c:if test="${ts.problemsDone != 0}">
+                    hasPots = true;
+                </c:if>
                 var topicState = "${ts.topicState}";
                 var topicId = ${ts.topicId};
                 var topicMastery = ${ts.mastery};
@@ -49,6 +53,12 @@
                     problemsDone,
                     problemsSolved);
             </c:forEach>
+            if (!hasPots) {
+                var el = document.getElementById('pots-overlay');
+                el.style.display = 'block';
+                el.firstElementChild.style.display = 'block';
+                el.classList.add('pots-overlay');
+            }
         });
     </script>
 </head>
@@ -140,6 +150,13 @@
                         </c:if>
                     </c:forEach>
             </div><!-- container -->
+            <div id="pots-overlay" style="display: none">
+                <div id="overlay-content" style="display: none">
+                    <p>Start Practicing to fill your garden with plants</p>
+                    <img src="img/pp/smallpot.png" alt="">
+                    <img src="img/pp/smallpot.png" alt="">
+                </div>
+            </div>
         </section>
     </div><!-- student -->
 
