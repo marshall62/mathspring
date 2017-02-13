@@ -7,6 +7,7 @@
     <title>MathSpring | Tutoring</title>
     <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/balloon.min.css" rel="stylesheet">
     <link href="css/common_new.css" rel="stylesheet">
     <link href="css/mathspring_new.css" rel="stylesheet">
     
@@ -196,9 +197,19 @@
     <div class="container">
         <div class="row">
             <div class="col-md-1 vertical-button">
-                <div><a id="read"><img src="img/speaker.svg" alt=""></a></div>
-                <div><a id="instructions"><img src="img/info.svg" alt=""></a></div>
-                <div class="dropdown custom-dropdown">
+                <div data-balloon="Read Problem" data-balloon-pos="right">
+                    <a id="read">
+                        <img src="img/speaker.svg" alt="Read Problem">
+                    </a>
+                </div>
+                <div data-balloon="Show Instruction" data-balloon-pos="right">
+                    <a id="instructions" data-balloon="Show Instruction" data-balloon-pos="right">
+                        <img src="img/info.svg" alt="Show Instruction">
+                    </a>
+                </div>
+                <div class="dropdown custom-dropdown"
+                     data-balloon="More Resources"
+                     data-balloon-pos="right">
                     <a  href="#"
                         class="dropdown-toggle custom-dropdown-toggle"
                         data-toggle="dropdown" 
