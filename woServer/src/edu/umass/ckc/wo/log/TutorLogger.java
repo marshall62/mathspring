@@ -263,7 +263,10 @@ public class TutorLogger {
 
     public void logAttempt(AttemptEvent e, AttemptResponse r) throws Exception {
         String curHint = smgr.getStudentState().getCurHint();
-        insertLogEntry(RequestActions.ATTEMPT,e.getUserInput(),r.isCorrect(),e.getElapsedTime(),e.getProbElapsedTime(),
+        // Bug 327:  Ivon complains that wrong attempts are graded as incorrect after the problem has been solved.  So now attempts
+        // are marked as isCorrect=true once the problem is solved.
+        boolean isProbSolved = smgr.getStudentState().isProblemSolved() || r.isCorrect();
+        insertLogEntry(RequestActions.ATTEMPT,e.getUserInput(),isProbSolved,e.getElapsedTime(),e.getProbElapsedTime(),
                 (curHint!= null && curHint.equals("0")) ? null : curHint ,smgr.getStudentState().getCurHintId(),r.getCharacterControl(),null, getTopic(), e.getClickTime());
     }
 
