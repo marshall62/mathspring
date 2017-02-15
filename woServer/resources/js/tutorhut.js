@@ -310,8 +310,10 @@ function myprogress() {
 
 function callReadProb() {
     debugAlert("In  callReadProb");
-    if (isFlashProblem() || isHTML5Problem())
+    if (isFlashProblem() || isHTML5Problem())   {
+        incrementTimers(globals);
         servletGet("ReadProblem", {probElapsedTime: globals.probElapsedTime});
+    }
     if (isHTML5Problem())
         document.getElementById(PROBLEM_WINDOW).contentWindow.prob_readProblem();
     else if (isFlashProblem())
