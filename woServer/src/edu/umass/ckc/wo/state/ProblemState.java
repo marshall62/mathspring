@@ -1,6 +1,6 @@
 package edu.umass.ckc.wo.state;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
@@ -96,9 +96,9 @@ public class ProblemState extends State {
             ExtendedStudentState extStudState = new ExtendedStudentState(smgr);
             ProblemState ps = studState.getProblemState();
             ProblemState2 pojo = ps.getPojo();
-            Gson gson = new Gson();
-            String json = gson.toJson(pojo);
-            System.out.println(json);
+//            Gson gson = new Gson();
+//            String json = gson.toJson(pojo);
+//            System.out.println(json);
         } catch (Exception e) {
             e.printStackTrace();
         }

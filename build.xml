@@ -350,16 +350,15 @@
   <import file="${basedir}/servletFramework/module_servletframework.xml"/>
   
   <import file="${basedir}/woServer/module_woserver.xml"/>
-  
-  <import file="${basedir}/main/module_main.xml"/>
+
   
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.emailer, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver, clean.module.main, clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
+  <target name="clean" depends="clean.module.emailer, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver,  clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
   
-  <target name="build.modules" depends="init, clean, compile.module.emailer, compile.module.problemsnapshotinserter, compile.module.servletframework, compile.module.woserver, compile.module.main" description="build all modules"/>
+  <target name="build.modules" depends="init, clean, compile.module.emailer, compile.module.problemsnapshotinserter, compile.module.servletframework, compile.module.woserver" description="build all modules"/>
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
