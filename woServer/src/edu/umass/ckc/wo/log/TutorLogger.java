@@ -265,9 +265,10 @@ public class TutorLogger {
         String curHint = smgr.getStudentState().getCurHint();
         // Bug 327:  Ivon complains that wrong attempts are graded as incorrect after the problem has been solved.  So now attempts
         // are marked as isCorrect=true once the problem is solved.
+        // Bug 328:  Ivon complains that attempts should not have a hintStep logged.  Wants NULL.
         boolean isProbSolved = smgr.getStudentState().isProblemSolved() || r.isCorrect();
         insertLogEntry(RequestActions.ATTEMPT,e.getUserInput(),isProbSolved,e.getElapsedTime(),e.getProbElapsedTime(),
-                (curHint!= null && curHint.equals("0")) ? null : curHint ,smgr.getStudentState().getCurHintId(),r.getCharacterControl(),null, getTopic(), e.getClickTime());
+                null ,-1,r.getCharacterControl(),null, getTopic(), e.getClickTime());
     }
 
 
