@@ -128,7 +128,7 @@
 <header class="site-header" role="banner">
     <div id="wrapper">
         <div class="navbar-header">
-            <img class="logo" src="img/ms_mini_logo_new.svg" alt="MathSpring Logo">
+            <img class="logo" src="img/ms_mini_logo_new.png" alt="MathSpring Logo">
         </div><!-- navbar-header -->
 
         <nav id="main_nav" class="nav navbar-nav navbar-right">
@@ -203,7 +203,7 @@
                     </a>
                 </div>
                 <div data-balloon="Show Instruction" data-balloon-pos="right">
-                    <a id="instructions" data-balloon="Show Instruction" data-balloon-pos="right">
+                    <a id="instructions">
                         <img src="img/info.svg" alt="Show Instruction">
                     </a>
                 </div>
