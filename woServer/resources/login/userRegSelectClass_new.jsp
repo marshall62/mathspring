@@ -20,7 +20,7 @@
         <header class="site-header" role="banner">
             <div class="row" id="wrapper">
                 <div class="navbar-header">
-                    <img class="logo" src="img/ms_mini_logo_new.svg">
+                    <img class="logo" src="img/ms_mini_logo_new.png">
                 </div><!-- navbar-header -->
             </div>
         </header>
