@@ -21,15 +21,13 @@ html {
     content: "";
     position: fixed;
     width: 100px;
-    height: 20%;
-    top: 0;
     left: 0;
-    bottom: -460px;
+    bottom: 150px;
     right: 0;
     border-right: 50px solid transparent;
     border-top: 60px solid white;
     border-left: 50px solid transparent;
-    margin: auto;
+    margin: 0 auto;
     z-index: 2;
 }
 
@@ -53,8 +51,7 @@ html {
     height: 150px;
     color: black;
     left: 0;
-    bottom: -150px;
-    top: 0;
+    bottom: 200px;
     right: 0;
     z-index: 2;
     margin: auto;
