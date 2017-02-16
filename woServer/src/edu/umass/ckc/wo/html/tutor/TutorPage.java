@@ -29,7 +29,7 @@ public class TutorPage {
     private String servContext;
     private StringBuilder logMsg;
 
-    public static final String TUTOR_MAIN_JSP = "mathspring_new.jsp"; // this is the HTML page that is the tutor hut (plugged with global variables below)
+    public static final String TUTOR_MAIN_JSP = "mathspring.jsp"; // this is the HTML page that is the tutor hut (plugged with global variables below)
     public static final String TUTOR_MAIN_JSP_NEW = "mathspring_new.jsp";
 //    public static final String INITIAL_TUTOR_FRAME_CONTENT = "welcome.html"; // when it first comes up it has this welcome HTML content
     public static final String INITIAL_TUTOR_FRAME_CONTENT = "TutorBrain?action=SplashPage"; // show the MPP as the first iframe contents
