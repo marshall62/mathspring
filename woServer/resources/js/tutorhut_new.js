@@ -2,29 +2,21 @@ var globals;
 var sysGlobals;
 var transients;
 
-//var EXTERNAL = 'External';
-//var FLASH = 'flash';
-//var HTML5 = 'html5';
-//var FORMALITY = '4Mality';
 var MODE_DEMO = "demo";
 var MODE_EXAMPLE = "example";
 var MODE_PRACTICE = "practice";
 var FLASH_CONTAINER_OUTER = "flashContainer1";
 var FLASH_CONTAINER_INNER = "flashContainer2";
-var FLASH_CONTAINER_OUTERID = "#"+FLASH_CONTAINER_OUTER;
-var FLASH_CONTAINER_INNERID = "#"+FLASH_CONTAINER_INNER;
-var PROBLEM_CONTAINER = "frameContainer";
-var PROBLEM_CONTAINERID = "#"+PROBLEM_CONTAINER;
+var FLASH_CONTAINER_OUTERID = "#" + FLASH_CONTAINER_OUTER;
 var PROBLEM_WINDOW = "problemWindow";
-var PROBLEM_WINDOWID = "#"+PROBLEM_WINDOW;
+var PROBLEM_WINDOWID = "#" + PROBLEM_WINDOW;
 var LEARNING_COMPANION_CONTAINER = "learningCompanionContainer";
 var LEARNING_COMPANION_WINDOW = "learningCompanionWindow";
-var LEARNING_COMPANION_WINDOW_ID = "#"+LEARNING_COMPANION_WINDOW;
-var EXAMPLE_WINDOW = "exampleWindow";
+var LEARNING_COMPANION_WINDOW_ID = "#" + LEARNING_COMPANION_WINDOW;
 var EXAMPLE_CONTAINER_DIV = "exampleContainer";
-var EXAMPLE_CONTAINER_DIV_ID = "#"+EXAMPLE_CONTAINER_DIV;
+var EXAMPLE_CONTAINER_DIV_ID = "#" + EXAMPLE_CONTAINER_DIV;
 var EXAMPLE_FRAME = "exampleFrame";
-var EXAMPLE_FRAMEID = "#"+EXAMPLE_FRAME;
+var EXAMPLE_FRAMEID = "#" + EXAMPLE_FRAME;
 var FLASH_PROB_PLAYER = "flashprobplayer"; // the id we put on the swfobject tags in the main window
 var EXAMPLE_FLASH_PROB_PLAYER = "xflashprobplayer"; // the id we put on the swfobject tags in the example dialog
 var UTIL_DIALOG = "utilDialog";
@@ -32,7 +24,7 @@ var INTERVENTION_DIALOG = "interventionDialog";
 var INTERVENTION_DIALOG_CONTENT = "interventionDialogContent";
 var INSTRUCTIONS_DIALOG = "instructionsDialog";
 var SELECT_PROBLEM_DIALOG = "selectProblemDialog";
-var INSTRUCTIONS_TEXT_ELT= "#instructionsP";
+var INSTRUCTIONS_TEXT_ELT = "#instructionsP";
 var UTIL_DIALOG_IFRAME = "utilDialogIframe";
 var NO_MORE_PROBLEMS = "noMoreProblems";
 var NO_MORE_REVIEW_PROBLEMS = "noMoreReviewProblems";
@@ -46,7 +38,6 @@ var EXTERNAL_PROB_TYPE = "EexternalActivity";
 var TOPIC_INTRO_PROB_TYPE = "TopicIntro";
 var INTERVENTION = "intervention";
 var NEXT_PROBLEM_INTERVENTION = "NextProblemIntervention";
-var IS_INPUT_INTERVENTION ="isInputIntervention";
 var ATTEMPT_INTERVENTION = "AttemptIntervention";
 var SAME_INTERVENTION = "SameIntervention"
 
@@ -67,15 +58,15 @@ function isHTML5Example() {
     return globals.exampleProbType === HTML_PROB_TYPE;
 }
 
-function isDemoMode () {
+function isDemoMode() {
     return globals.probMode === MODE_DEMO;
 }
 
-function isDemoOrExampleMode () {
+function isDemoOrExampleMode() {
     return globals.probMode === MODE_DEMO || globals.probMode === MODE_EXAMPLE;
 }
 
-function isIntervention () {
+function isIntervention() {
     return globals.probType === INTERVENTION;
 }
 
@@ -133,21 +124,19 @@ function getNewAnswer() {
 }
 
 // each time we start a new problem, set global variables that contain info about its state.
-function setGlobalProblemInfo (activity) {
+function setGlobalProblemInfo(activity) {
     globals.numHints = activity.numHints;
     globals.numHintsSeen = 0;
 }
 
 
-function updateTimers () {
+function updateTimers() {
     var now = new Date().getTime();
-    globals.clickTime= now;
+    globals.clickTime = now;
     globals.probElapsedTime += now - globals.clock;
     globals.elapsedTime += now - globals.clock;
     globals.clock = now;
 }
-
-
 
 function incrementTimers(globals) {
     var now = new Date().getTime();
@@ -172,54 +161,55 @@ function unlockGui() {
 }
 
 function showHourglassCursor(b) {
-     if (b) {
-         lockGui();
-         $("body").css("cursor", "wait");
-     }
+    if (b) {
+        lockGui();
+        $("body").css("cursor", "wait");
+    }
     else {
-         unlockGui();
-         $("body").css("cursor", "default");
-     }
+        unlockGui();
+        $("body").css("cursor", "default");
+    }
 }
 
-function displayHintCount () {
-    if (globals.numHints >= 0 && globals.numHintsSeen == 0)
+function displayHintCount() {
+    if (globals.numHints >= 0 && globals.numHintsSeen == 0) {
         $("#hint_label").html("Hint (" + globals.numHints + ")");
-    else if (globals.numHintsSeen <= globals.numHints)
+    } else if (globals.numHintsSeen <= globals.numHints) {
         $("#hint_label").html("Hint (" + globals.numHintsSeen + "/" + globals.numHints + ")");
+    }
 }
 
-function showProblemInfo (pid, name, topic, standards) {
+function showProblemInfo(pid, name, topic, standards) {
     $("#pid").text(pid + ":" + name);  // shows the problem ID + resource
     $("#problemTopicAndStandards").html("Topic:" + topic + "<br>Standards:" + standards);
     displayHintCount();
 }
 
-function showUserInfo (userName) {
+function showUserInfo(userName) {
     $("#userDisplay").text("Logged in as: " + userName);
 }
 
-function showEffortInfo (effort) {
+function showEffortInfo(effort) {
     $("#effort").text(effort);  // shows the effort of the last three problems (given as a string)
 }
 
-function showAnswer (ans) {
+function showAnswer(ans) {
     $("#answer").text("Answer: " + ans);
 }
 
-function showVarBindings (varBindings) {
+function showVarBindings(varBindings) {
     if (varBindings == undefined) {
         $("#varBindings").text("No Var Bindings");
     }
     else {
-        var s='';
+        var s = '';
         for (var k in varBindings)
             s = s + k + ":" + varBindings[k] + ',';
         $("#varBindings").text("Var Bindings: " + s);
     }
 }
 
-function loadIframe (iframeId, url) {
+function loadIframe(iframeId, url) {
     $(iframeId).attr("src", url);
 }
 
@@ -231,57 +221,71 @@ function loadIframe (iframeId, url) {
 
 function nextProb(globals) {
     toggleSolveDialogue(false);
-    if (!globals.showMPP)
+    if (!globals.showMPP) {
         hideMPP()
-    if (globals.trace)
+    }
+    if (globals.trace) {
         debugAlert("in NextProb ");
+    }
     incrementTimers(globals);
     // call the server with a nextProblem event and the callback fn processNextProblemResult will deal with result
     showHourglassCursor(true);
     // A HACK.  Because the Topic Intro is an intervention but it doesn't show in a dialog, it is ended by clicking on New Problem button
     // which comes in here.  We want to send back an InputResponse though becuase thats what TopicIntros should get back.
     // TODO:  Probably should replace NewProblem button when a topic intro shows.  It could have the correct handler on it.
-    if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
+    if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE) {
         servletGet("InputResponseNextProblemIntervention",
-            {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode, destination:globals.destinationInterventionSelector},
-            processNextProblemResult) ;
-    // Normal Processing
-    else
-        servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode}, processNextProblemResult);
+            {
+                probElapsedTime: globals.probElapsedTime,
+                mode: globals.tutoringMode,
+                destination: globals.destinationInterventionSelector
+            },
+            processNextProblemResult);
+    }// Normal Processing
+    else {
+        servletGet("NextProblem", {
+            probElapsedTime: globals.probElapsedTime,
+            mode: globals.tutoringMode
+        }, processNextProblemResult);
+    }
 }
 
 // This function can only be called if the button is showing
-function selectProblemDialog () {
-    $("#"+SELECT_PROBLEM_DIALOG).dialog('open');
-    var url = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=GetProblemListForTester&sessionId=" + globals.sessionId +"&elapsedTime="+ globals.elapsedTime + "&eventCounter="+ sysGlobals.eventCounter++;
-    loadIframe("#selectProblemDialogIframe",url)
+function selectProblemDialog() {
+    $("#" + SELECT_PROBLEM_DIALOG).dialog('open');
+    var url = "/" + sysGlobals.wayangServletContext + "/TutorBrain?action=GetProblemListForTester&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&eventCounter=" + sysGlobals.eventCounter++;
+    loadIframe("#selectProblemDialogIframe", url)
 }
 
 // only used by test-users from a special dialog that allows selecting problems.
-function forceNextProblem (id) {
-    $("#"+SELECT_PROBLEM_DIALOG).dialog('close');
-     // send a NextProblemEvent that forces a particular problem
+function forceNextProblem(id) {
+    $("#" + SELECT_PROBLEM_DIALOG).dialog('close');
+    // send a NextProblemEvent that forces a particular problem
     incrementTimers(globals);
     // call the server with a nextProblem event and the callback fn processNextProblemResult will deal with result
     showHourglassCursor(true);
-    servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode, probID: id}, processNextProblemResult);
+    servletGet("NextProblem", {
+        probElapsedTime: globals.probElapsedTime,
+        mode: globals.tutoringMode,
+        probID: id
+    }, processNextProblemResult);
 }
 
-function showInstructionsDialog (instructions) {
+function showInstructionsDialog(instructions) {
     $(INSTRUCTIONS_TEXT_ELT).text(instructions);
-    $("#"+INSTRUCTIONS_DIALOG).dialog('open');
+    $("#" + INSTRUCTIONS_DIALOG).dialog('open');
 }
 
-function instructions () {
+function instructions() {
     // probably want something slicker than this alert dialog.
-    if (globals.instructions == "")
+    if (globals.instructions == "") {
         alert("Sorry.  There are no instructions for this problem.");
-    else {
+    } else {
         showInstructionsDialog(globals.instructions)
 //        $(INSTRUCTIONS_TEXT_ELT).text(globals.instructions);
 //        $("#"+INSTRUCTIONS_DIALOG).dialog('open');
     }
-    sendSimpleNotificationEvent(globals,"ShowInstructions");
+    sendSimpleNotificationEvent(globals, "ShowInstructions");
     return false;
 }
 
@@ -290,13 +294,13 @@ function myprogress() {
     debugAlert("in myprogress");
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/" + sysGlobals.wayangServletContext + "/TutorBrain?action=navigation" 
+    document.location.href = "/" + sysGlobals.wayangServletContext + "/TutorBrain?action=navigation"
         + "&sessionId=" + globals.sessionId
         + "&elapsedTime=" + globals.elapsedTime
         + "&probElapsedTime=" + globals.probElapsedTime
-        + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId
+        + "&from=sat_hut&to=my_progress&topicId=" + globals.topicId
         + "&probId=" + globals.probId
-        + "&eventCounter="+ sysGlobals.eventCounter++
+        + "&eventCounter=" + sysGlobals.eventCounter++
         + "&var=b";
 }
 
@@ -307,12 +311,14 @@ function myprogress() {
 
 function callReadProb() {
     debugAlert("In  callReadProb");
-    if (isFlashProblem() || isHTML5Problem())
+    if (isFlashProblem() || isHTML5Problem()) {
         servletGet("ReadProblem", {probElapsedTime: globals.probElapsedTime});
-    if (isHTML5Problem())
+    }
+    if (isHTML5Problem()) {
         document.getElementById(PROBLEM_WINDOW).contentWindow.prob_readProblem();
-    else if (isFlashProblem())
+    } else if (isFlashProblem()) {
         document.getElementById(FLASH_PROB_PLAYER).readProblem();
+    }
 
 }
 
@@ -326,61 +332,59 @@ function requestHint(globals) {
 
 // fields the click on the solve problem button
 function requestSolution(globals) {
-    if (isFlashProblem() || isHTML5Problem())
-    {
+    if (isFlashProblem() || isHTML5Problem()) {
         incrementTimers(globals);
         servletGet("ShowSolveProblem", {probElapsedTime: globals.probElapsedTime}, processRequestSolutionResult);
     }
 }
 
-function showExample (globals) {
+function showExample(globals) {
     if (isFlashProblem() || isHTML5Problem()) {
         updateTimers();
-        servletGet("ShowExample",{probElapsedTime: globals.probElapsedTime},processShowExample);
+        servletGet("ShowExample", {probElapsedTime: globals.probElapsedTime}, processShowExample);
     }
 }
 
-function showVideo (globals) {
+function showVideo(globals) {
     if (isFlashProblem() || isHTML5Problem()) {
         updateTimers();
-        servletGet("ShowVideo",{probElapsedTime: globals.probElapsedTime },processShowVideo);
+        servletGet("ShowVideo", {probElapsedTime: globals.probElapsedTime}, processShowVideo);
     }
 }
 
 // TODO this should be changed to use a non-modal dialog
-function showGlossary (globals) {
+function showGlossary(globals) {
     var glossURL = "http://www.amathsdictionaryforkids.com/dictionary.html";
     utilDialogOpen(glossURL, "Glossary");
-    sendSimpleNotificationEvent(globals,"ShowGlossary");
+    sendSimpleNotificationEvent(globals, "ShowGlossary");
 //    window.open(glossURL, "width=500, height=500");
 }
 
 // TODO this should be changed to use a non-modal dialog
-function showFormulas (globals) {
+function showFormulas(globals) {
     var formURL = "http://math2.org/math/geometry/areasvols.htm";
     utilDialogOpen(formURL, "Formulas");
-    sendSimpleNotificationEvent(globals,"ShowFormulas");
+    sendSimpleNotificationEvent(globals, "ShowFormulas");
 //    window.open(formURL, "width=500, height=500");
 }
 
-function showUserPreferences (globals) {
+function showUserPreferences(globals) {
     alert("Coming soon.  Editable user preferences!");
 }
 
-function showDashboard () {
+function showDashboard() {
     sendEndEvent(globals);
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
-    document.location.href = "/" + sysGlobals.wayangServletContext + "/TutorBrain?action=Home&sessionId=" + globals.sessionId 
+    document.location.href = "/" + sysGlobals.wayangServletContext + "/TutorBrain?action=Home&sessionId=" + globals.sessionId
         + "&elapsedTime=" + globals.elapsedTime
         + "&probElapsedTime=" + globals.probElapsedTime
-        + "&probId="+ globals.probId
+        + "&probId=" + globals.probId
         + "&learningCompanion=" + globals.learningCompanion
-        + "&eventCounter="+ sysGlobals.eventCounter++
+        + "&eventCounter=" + sysGlobals.eventCounter++
         + "&var=b";
 
 }
-
 
 
 //////////////////////////////////////////////////////////////////////
@@ -388,9 +392,7 @@ function showDashboard () {
 //////////////////////////////////////////////////////////////////////
 
 
-
-
-function processShowExample (responseText, textStatus, XMLHttpRequest) {
+function processShowExample(responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     if (activity.activityType === NO_MORE_PROBLEMS) {
         alert("There is not an example to show for this problem");
@@ -400,35 +402,38 @@ function processShowExample (responseText, textStatus, XMLHttpRequest) {
     var mode = activity.mode; // this will be 'example'
     var form = activity.form; // quickAuth or null
     var pid = activity.id;
-    var resource =activity.resource;
+    var resource = activity.resource;
     var ans = activity.answer;
     var solution = activity.solution;
 
     globals.exampleProbType = activity.activityType;
     // solution is an array of hints.   Each hint has a label that we want to pull out and put in globals.example_hint_sequence
-    if (isFlashExample())
-        showFlashProblem(resource,ans,solution,EXAMPLE_FRAME, MODE_EXAMPLE) ;
-    else if (form === 'quickAuth')
-        showQuickAuthProblem(pid,solution,resource,mode,activity.questType);    
-    else showHTMLProblem(pid,solution,resource,MODE_EXAMPLE);
+    if (isFlashExample()) {
+        showFlashProblem(resource, ans, solution, EXAMPLE_FRAME, MODE_EXAMPLE);
+    } else if (form === 'quickAuth') {
+        showQuickAuthProblem(pid, solution, resource, mode, activity.questType);
+    } else {
+        showHTMLProblem(pid, solution, resource, MODE_EXAMPLE);
+    }
 
 }
 
 
-
-function processShowVideo (responseText, textStatus, XMLHttpRequest) {
+function processShowVideo(responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     var video = activity.video;
     // khanacademy won't play inside an iFrame because it sets X-Frame-Options to SAMEORIGIN.
-    if (video != null)
+    if (video != null) {
         window.open(video, "width=500, height=500");
-    else alert("There is no video to show for this problem");
+    } else {
+        alert("There is no video to show for this problem");
+    }
 }
 
-function openExampleDialog(solution){
+function openExampleDialog(solution) {
     if (solution != 'undefined' && solution != null) {
         globals.exampleHintSequence = new Array(solution.length);
-        for (i=0;i<solution.length;i++) {
+        for (i = 0; i < solution.length; i++) {
             globals.exampleHintSequence[i] = solution[i].label;
         }
         globals.exampleCurHint = globals.exampleHintSequence[0];
@@ -440,8 +445,7 @@ function openExampleDialog(solution){
 }
 
 
-
-function showFlashProblem (resource,ans,solution, containerElement, mode) {
+function showFlashProblem(resource, ans, solution, containerElement, mode) {
     // examples are requested by user during a practice problem so we don't want to mess up timers and properties
     globals.probMode = mode;
     if (mode != MODE_EXAMPLE) {
@@ -450,12 +454,13 @@ function showFlashProblem (resource,ans,solution, containerElement, mode) {
         globals.lastProbId = globals.probId;
         globals.lastProbType = FLASH_PROB_TYPE;
     }
-    var isExample = (mode === MODE_DEMO || mode===MODE_EXAMPLE);
-    if (typeof(isExample)==='undefined') {
+    var isExample = (mode === MODE_DEMO || mode === MODE_EXAMPLE);
+    if (typeof(isExample) === 'undefined') {
         isExample = false;
     }
-    if (isExample)
+    if (isExample) {
         openExampleDialog(solution);
+    }
     var questionNum = resource.substring(resource.indexOf("_") + 1, resource.length);
     var flashvars = {
 //        hostURL: sysGlobals.isDevEnv ? 'mathspring/' : sysGlobals.webContentPath,
@@ -470,7 +475,7 @@ function showFlashProblem (resource,ans,solution, containerElement, mode) {
         allowscriptaccess: "always"
     }
     var attributes = {
-        id:  isExample ? EXAMPLE_FLASH_PROB_PLAYER : FLASH_PROB_PLAYER ,
+        id: isExample ? EXAMPLE_FLASH_PROB_PLAYER : FLASH_PROB_PLAYER,
         name: isExample ? EXAMPLE_FLASH_PROB_PLAYER : FLASH_PROB_PLAYER
     }
     debugAlert("its a flash problem:" + resource + " The number is:" + questionNum);
@@ -489,15 +494,15 @@ function showFlashProblem (resource,ans,solution, containerElement, mode) {
 
 }
 
-function showQuickAuthProblem (pid, solution, resource, mode, questType) {
+function showQuickAuthProblem(pid, solution, resource, mode, questType) {
     hideHTMLProblem(false);
     globals.probMode = mode;
-    transients.answersChosenSoFar=[];
-    var probParams,hints ;
-    if (globals.params)  {
+    transients.answersChosenSoFar = [];
+    var probParams, hints;
+    if (globals.params) {
         probParams = JSON.stringify(globals.params);
     }
-    if (globals.hints)  {
+    if (globals.hints) {
         hints = JSON.stringify(globals.hints);
         var h = JSON.parse(hints);
     }
@@ -507,11 +512,12 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
         globals.lastProbId = pid;
     }
     var isDemo = mode === MODE_DEMO || mode == MODE_EXAMPLE;
-    if (isDemo)
+    if (isDemo) {
         openExampleDialog(solution);
+    }
 
-    if (!isDemo)  {
-        loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
+    if (!isDemo) {
+        loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton", "&probId=" + pid));
 //        loadIframe(PROBLEM_WINDOWID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
 //            "&figure=" +  encodeURIComponent(globals.questionImage) +
 //            "&audio="+ encodeURIComponent(globals.questionAudio) +
@@ -527,8 +533,9 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
 //             "&problemParams="+ encodeURIComponent(probParams));
         $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
     }
-    else
-        loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
+    else {
+        loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton", "&probId=" + pid));
+    }
 //        loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
 //            "&figure=" +  encodeURIComponent(globals.questionImage) +
 //            "&audio="+ encodeURIComponent(globals.questionAudio) +
@@ -544,25 +551,26 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
 //            "&problemParams="+ encodeURIComponent(probParams));
 }
 
-function showHTMLProblem (pid, solution, resource, mode) {
+function showHTMLProblem(pid, solution, resource, mode) {
     hideHTMLProblem(false);
     globals.probMode = mode;
-    transients.answersChosenSoFar=[];
+    transients.answersChosenSoFar = [];
     if (mode != MODE_EXAMPLE) {
         globals.probElapsedTime = 0;
         globals.lastProbType = HTML_PROB_TYPE;
         globals.lastProbId = pid;
     }
     var isDemo = mode === MODE_DEMO || mode == MODE_EXAMPLE;
-    if (isDemo)
+    if (isDemo) {
         openExampleDialog(solution);
+    }
 
     // the name of the problem (e.g. problem090.html) is stripped off to find a directory (e.g. problem090)
-    if (!isDemo)  {
+    if (!isDemo) {
         var dir = resource.split(".")[0];
         loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
 
-    
+
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
 //        $(PROBLEM_WINDOWID).load(function () {
@@ -583,7 +591,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
 
 
 // On EndProblem event we know the effort of the last problem so we get it and display it.
-function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
+function processEndProblem(responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     showEffortInfo(activity.effort);
 }
@@ -591,57 +599,57 @@ function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
 // When a TimeoutIntervention gets a result from the server, this processes it.
 // It can either be an intervention, a problem, or an indication to keep running the current TimeoutIntervention
 //   6/15 DM - Not doing anything with this yet.  Melissa will need to complete this.
-function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequest) {
+function processInterventionTimeoutResult(responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     var activityType = activity.activityType;
 
-    if (activityType == INTERVENTION){
-        if(activity.interventionType == SAME_INTERVENTION){
+    if (activityType == INTERVENTION) {
+        if (activity.interventionType == SAME_INTERVENTION) {
             setTimeout(continueInterventionTimeout, 5000);
         }
-        else{
+        else {
             processNextProblemIntervention(activity);
         }
     }
-    else{
-        processNextProblemResult(responseText,textStatus,XMLHttpRequest);
+    else {
+        processNextProblemResult(responseText, textStatus, XMLHttpRequest);
     }
 }
 
 // after a BeginProblem event is sent to server, we need to show any learning companion message it returns
-function processBeginProblemResult (responseText, textStatus, XMLHttpRequest) {
+function processBeginProblemResult(responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     showLearningCompanion(activity);
 }
 
 function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     debugAlert("Server returns " + responseText);
-    // empty out the flashContainer div of any swfobjects and clear the iframe of any problems
-    $(FLASH_CONTAINER_OUTERID).html('<div id="' +FLASH_CONTAINER_INNER+ '"></div>');
-    $(PROBLEM_WINDOWID).attr("src","");
-    // Replaceing the example div for the same reason as the above.
-    $(EXAMPLE_CONTAINER_DIV_ID).html('<iframe id="'+EXAMPLE_FRAME+'" name="iframe2" width="600" height="600" src="" frameborder="no" scrolling="no"></iframe>');
+    var $flashContainer = $(FLASH_CONTAINER_OUTERID);
+    $flashContainer.html('<div id="' + FLASH_CONTAINER_INNER + '"></div>');
+    $flashContainer.show();
+    $(PROBLEM_WINDOWID).attr("src", "");
+
+    $(EXAMPLE_CONTAINER_DIV_ID).html('<iframe id="' + EXAMPLE_FRAME + '" name="iframe2" width="600" height="600" src="" frameborder="no" scrolling="no"></iframe>');
     var activity = JSON.parse(responseText);
     var mode = activity.mode;
     var activityType = activity.activityType;
     var type = activity.type;
 
-    if (activityType == NO_MORE_PROBLEMS || activityType == NO_MORE_CHALLENGE_PROBLEMS || activityType == NO_MORE_REVIEW_PROBLEMS)  {
+    if (activityType == NO_MORE_PROBLEMS || activityType == NO_MORE_CHALLENGE_PROBLEMS || activityType == NO_MORE_REVIEW_PROBLEMS) {
         // send EndEvent for previous problem
         sendEndEvent(globals);
         hideHTMLProblem(false);
         var url = activity.endPage;
-        loadIframe(PROBLEM_WINDOWID,url);
-    }
-    else  {
+        loadIframe(PROBLEM_WINDOWID, url);
+    } else {
         var pid = activity.id;
-        var resource =activity.resource;
+        var resource = activity.resource;
         var topic = activity.topicName;
         var standards = activity.standards;
         var varBindings = activity.parameters;
         setGlobalProblemInfo(activity);
 
-        showProblemInfo(pid,resource,topic,standards);
+        showProblemInfo(pid, resource, topic, standards);
         showEffortInfo(activity.effort);
         if (globals.showAnswer) {
             // If server shuffles the answer to a different position, then newAnswer contains this position
@@ -650,19 +658,17 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.answer = activity.answer
                 showAnswer(activity.newAnswer);
                 showVarBindings(varBindings);
-            }
-            else {
+            } else {
                 globals.newAnswer = activity.newAnswer;
                 globals.answer = activity.answer;
                 // The answer may be in the var bindings  as  $Best_Answer
                 if (varBindings != undefined) {
-                    alert("Varbindings are:"+ varBindings);
+                    alert("Varbindings are:" + varBindings);
                     var bestAns = varBindings.$Best_Answer;
-                    alert("Best answer is: "+ bestAns);
+                    alert("Best answer is: " + bestAns);
                     showAnswer(bestAns);
                     showVarBindings(varBindings);
-                }
-                else {
+                } else {
                     showAnswer(activity.answer);
                     showVarBindings(varBindings);
                 }
@@ -672,7 +678,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         globals.resource = activity.resource;
         // hardwired instructions since what comes from the server is mostly useless.
 //        globals.instructions = activity.instructions;
-        globals.instructions =  "Read, think and try to solve this problem (please use paper and pencil to write down the solution as many of these are hard!). Use the tools on the left to help you solve the problem (read aloud, hints, examples, videos). Don't be afraid of asking for help! We know that using the help tools is how you get to learn.";
+        globals.instructions = "Read, think and try to solve this problem (please use paper and pencil to write down the solution as many of these are hard!). Use the tools on the left to help you solve the problem (read aloud, hints, examples, videos). Don't be afraid of asking for help! We know that using the help tools is how you get to learn.";
         updateTimers();
         globals.probType = activityType;
 
@@ -680,9 +686,8 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         if (isIntervention()) {
             processNextProblemIntervention(activity);
 
-        }
-
-        else if (isHTML5Problem()) {
+        } else if (isHTML5Problem()) {
+            $flashContainer.hide();
             // send EndEvent for previous problem
             sendEndEvent(globals);
 //            showProblemInfo(pid,resource);
@@ -693,7 +698,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             if (mode == MODE_DEMO) {
                 globals.exampleProbType = activityType;
             }
-            if (activity.form==="quickAuth") {
+            if (activity.form === "quickAuth") {
                 globals.form = "quickAuth";
                 globals.statementHTML = activity.statementHTML;
                 globals.questionAudio = activity.questionAudio;
@@ -701,8 +706,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.hints = activity.hints;
                 globals.answers = activity.answers;
                 globals.units = activity.units;
-            }
-            else {
+            } else {
                 globals.form = null;
                 globals.statementHTML = null;
                 globals.questionAudio = null;
@@ -711,32 +715,33 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.hints = null;
                 globals.answers = null;
             }
-            sendBeginEvent(globals,pid,mode, processBeginProblemResult);
-            if (activity.form==='quickAuth')
-                showQuickAuthProblem(pid,solution,resource,mode,activity.questType);
-            else showHTMLProblem(pid,solution,resource,mode);
+            sendBeginEvent(globals, pid, mode, processBeginProblemResult);
+            if (activity.form === 'quickAuth') {
+                showQuickAuthProblem(pid, solution, resource, mode, activity.questType);
+            } else {
+                showHTMLProblem(pid, solution, resource, mode);
+            }
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
             }
             globals.topicId = activity.topicId;
             globals.probId = pid;
-        }
-        else if (isFlashProblem()) {
+        } else if (isFlashProblem()) {
             // send EndEvent for previous problem
             sendEndEvent(globals);
 //            showProblemInfo(pid,resource);
             var ans = activity.answer;
             var solution = activity.solution;
             var container;
-            if (mode == MODE_DEMO)  {
+            if (mode == MODE_DEMO) {
                 container = EXAMPLE_FRAME;
                 globals.exampleProbType = activityType;
             }
             else {
-                container =FLASH_CONTAINER_INNER;
+                container = FLASH_CONTAINER_INNER;
             }
-            sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
-            showFlashProblem(resource,ans,solution,container,mode);
+            sendBeginEvent(globals, pid, mode, processBeginProblemResult);
+            showFlashProblem(resource, ans, solution, container, mode);
             if (activity.intervention != null) {
                 processNextProblemIntervention(activity.intervention);
             }
@@ -771,58 +776,62 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         // NextProblem is sent and gets back an 'idle' message, then EndProblem is sent then BeginProblem is sent (which gets back a real message) but then the last thing done by in the NextProblem processing is 
         // to show the lc idle message.   A global var says if the lc is rule-based or programmatic in its message selection.   If it's programmatic we will show messages
         // in this position - o/w all messages must be returned by rules on events that are documented to support running rules (i.e. NextProblem is not one).
-        if (globals.learningCompanionMessageSelectionStrategy == "programmatic")
+        if (globals.learningCompanionMessageSelectionStrategy == "programmatic") {
             showLearningCompanion(activity);
+        }
     }
     showHourglassCursor(false);
 }
 
-function newBrowserWindow (url,w, h) {
+function newBrowserWindow(url, w, h) {
     posx = window.screenLeft + window.innerWidth - w;
     posy = window.screenTop + window.innerHeight - h;
-    newwindow=window.open(url,'name','height=600,width=260,location=no,scrollbars=no,left='+posx+',top='+posy);
-    if (window.focus) {newwindow.focus()}
+    newwindow = window.open(url, 'name', 'height=600,width=260,location=no,scrollbars=no,left=' + posx + ',top=' + posy);
+    if (window.focus) {
+        newwindow.focus()
+    }
     return false;
 }
 
 //  Called when the learning companion animations end
-function learningCompanionDone () {
+function learningCompanionDone() {
     // temporarily commented out because some of the lc animations are actually calling this
     // alert("This idiot is done jabbering!") ;
     // $("#"+LEARNING_COMPANION_CONTAINER).dialog('close');
 }
 
 
-
-function successfulLCResult (url) {
+function successfulLCResult(url) {
     console.log("Showing LC " + url);
     loadIframe(LEARNING_COMPANION_WINDOW_ID, url);
     //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
 
 }
 
-function failureLCResult (url) {
+function failureLCResult(url) {
     alert("Cannot find the learning companion URL " + url + "  Message: " + transients.learningCompanionTextMessage);
 }
 
 
-function showLearningCompanion (json) {
+function showLearningCompanion(json) {
 
     var files = json.learningCompanionFiles;
     var url;
     transients.learningCompanionTextMessage = json.lcTextMessage;
-    if (files != undefined && files != null)  {
+    if (files != undefined && files != null) {
 
-        $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+        $("#" + LEARNING_COMPANION_CONTAINER).dialog("open");
     }
-    else return;
+    else {
+        return;
+    }
 //    alert("learning companion file: " + files);
-    if (files instanceof Array)    {
+    if (files instanceof Array) {
         if (files[0] != globals.learningCompanionClip) {
             globals.learningCompanionClip = files[0];
             url = sysGlobals.problemContentPath + "/LearningCompanion/" + files[0];
             console.log("Attempting to show LC animation: " + url);
-            httpHead(url,successfulLCResult,failureLCResult) ;
+            httpHead(url, successfulLCResult, failureLCResult);
 //            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],260,600);
 
         }
@@ -833,7 +842,7 @@ function showLearningCompanion (json) {
             globals.learningCompanionClip = files;
             url = sysGlobals.problemContentPath + "/LearningCompanion/" + files;
             console.log("Attempting to show LC animation: " + url);
-            httpHead(url, successfulLCResult,failureLCResult);
+            httpHead(url, successfulLCResult, failureLCResult);
 //            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files, 260,600);
 
         }
@@ -841,28 +850,28 @@ function showLearningCompanion (json) {
 }
 
 
-function showMPP () {
+function showMPP() {
     $("#mppButton").show();
 }
 
-function hideMPP () {
+function hideMPP() {
     $("#mppButton").hide();
 }
 
-function hideHTMLProblem (isHide) {
-    if (isHide)
+function hideHTMLProblem(isHide) {
+    if (isHide) {
         $(PROBLEM_WINDOWID).hide();
-    else
+    } else {
         $(PROBLEM_WINDOWID).show();
+    }
 }
-
 
 
 ///////////////////////////////////////////////////////////////////////
 //////   Main event loop established by tutorMain.hsp in its jquery onReady function
 //////////////////////////////////////////////////////////////////////////
 
-function exampleDialogCloseHandler () {
+function exampleDialogCloseHandler() {
     sysGlobals.exampleWindowActive = false;
     globals.probMode = MODE_PRACTICE;
     //sendEndEvent(globals);
@@ -870,12 +879,12 @@ function exampleDialogCloseHandler () {
 }
 
 var DELAY = 700, clicks = 0, timer = null;
-function clickHandling () {
-    var agreed=false;
+function clickHandling() {
+    var agreed = false;
     globals.clickTime = new Date().getTime();
-    $("#"+LEARNING_COMPANION_CONTAINER).dialog(  {
+    $("#" + LEARNING_COMPANION_CONTAINER).dialog({
             autoOpen: false,
-            width:300,
+            width: 300,
             height: 700,
             closeOnEscape: false,
             position: ['right', 'bottom'],
@@ -888,7 +897,9 @@ function clickHandling () {
 //                effect: { effect: "scale", scale: "both", percent: "5", origin: "bottom", direction: "vertical" },
                 duration: 1000
             },
-            open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); }
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+            }
         }
     );
 
@@ -917,8 +928,8 @@ function clickHandling () {
 
     $("#hint").click(function () {
         clicks++;  //count clicks
-        if(clicks === 1) {
-            timer = setTimeout(function() {
+        if (clicks === 1) {
+            timer = setTimeout(function () {
 //                alert("Single click");
                 requestHint(globals);  // perform single-click action
                 clicks = 0;             //after action performed, reset counter
@@ -956,7 +967,7 @@ function clickHandling () {
     $("#glossary").click(function () {
         showGlossary(globals)
     });
-    $('#'+INSTRUCTIONS_DIALOG).dialog({
+    $('#' + INSTRUCTIONS_DIALOG).dialog({
 //        autoOpen: ((globals.instructions == "") ? false : true),
         autoOpen: false,
         width: 600,
@@ -966,7 +977,7 @@ function clickHandling () {
             }
         }
     });
-    $("#"+SELECT_PROBLEM_DIALOG).dialog( {
+    $("#" + SELECT_PROBLEM_DIALOG).dialog({
         autoOpen: false,
         modal: true,
         width: 600,
@@ -974,17 +985,17 @@ function clickHandling () {
         buttons: [
             {
                 text: "Cancel",
-                click: function() {
-                    $( this ).dialog( "close" );
+                click: function () {
+                    $(this).dialog("close");
                 }
             }
         ]
     });
-    $( "#"+INTERVENTION_DIALOG).dialog( {
+    $("#" + INTERVENTION_DIALOG).dialog({
         autoOpen: false,
-        modal:true,
+        modal: true,
         width: 500,
-        height:500,
+        height: 500,
         buttons: [
             {
                 id: "yesButton",
@@ -1004,34 +1015,36 @@ function clickHandling () {
         ]
     });
 
-    $( EXAMPLE_CONTAINER_DIV_ID).dialog({
-        autoOpen:false,
+    $(EXAMPLE_CONTAINER_DIV_ID).dialog({
+        autoOpen: false,
 
-        modal:true,
-        width:650,
-        height:675,
+        modal: true,
+        width: 650,
+        height: 675,
         open: function () {
             sysGlobals.exampleWindowActive = true;
             $(EXAMPLE_CONTAINER_DIV_ID).css('overflow', 'hidden'); //this line does the actual hiding
             var id_exists = document.getElementById('play_button');
-            if (id_exists)  {
+            if (id_exists) {
                 document.getElementById('play_button').id = 'pulsate_play_button';
             }
 
         },
-        close: function () { exampleDialogCloseHandler(); } ,
+        close: function () {
+            exampleDialogCloseHandler();
+        },
         buttons: [
             {
                 id: 'play_button',
                 text: "Play next step",
-                click: function() {
+                click: function () {
                     var id_exists = document.getElementById('pulsate_play_button');
-                    if (id_exists)  {
+                    if (id_exists) {
                         document.getElementById('pulsate_play_button').id = 'play_button';
                     }
                     clicks++;  //count clicks
-                    if(clicks === 1) {
-                        timer = setTimeout(function() {
+                    if (clicks === 1) {
+                        timer = setTimeout(function () {
                             example_solveNextHint();  // perform single-click action
                             clicks = 0;             //after action performed, reset counter
 
@@ -1042,38 +1055,38 @@ function clickHandling () {
                         clearTimeout(timer);    //prevent single-click action
                         example_solveNextHint();  //perform double-click action
                         clicks = 0;             //after action performed, reset counter
-                        }
-                    },
+                    }
+                },
                 dblclick: (function (e) {
                     e.preventDefault();
                 })
             },
             {
                 text: "Done",
-                click: function() {
-                    if (isDemoMode())   {
+                click: function () {
+                    if (isDemoMode()) {
                         // turn off demo mode
                         globals.probMode = null;
                         globals.probType = null;
                         globals.exampleProbType = null;
                         nextProb(globals);
                     }
-                    $( this ).dialog( "close" );
+                    $(this).dialog("close");
                 }
             }
         ]
     });
-    $("#"+UTIL_DIALOG).dialog({
+    $("#" + UTIL_DIALOG).dialog({
         autoOpen: false,
-        modal:false,
-        width:750,
-        height:700,
+        modal: false,
+        width: 750,
+        height: 700,
 
         buttons: [
             {
                 text: "Close",
-                click: function() {
-                    $( this ).dialog( "close" );
+                click: function () {
+                    $(this).dialog("close");
                 }
             }
         ]
@@ -1089,9 +1102,8 @@ function clickHandling () {
 }
 
 
-
 // This is called only when entering the tutor with specific problem (either from MPP or TeachTopic event from Assistments)
-function showFlashProblemAtStart () {
+function showFlashProblemAtStart() {
     var activity = globals.activityJSON;
     var mode = activity.mode;
     var activityType = activity.activityType;
@@ -1103,7 +1115,7 @@ function showFlashProblemAtStart () {
     var ans = activity.answer;
     var solution = activity.solution;
     setGlobalProblemInfo(activity);
-    var isExample =  (mode == MODE_DEMO || mode == MODE_EXAMPLE);
+    var isExample = (mode == MODE_DEMO || mode == MODE_EXAMPLE);
     var container;
     if (isExample) {
         globals.exampleProbType = activityType;
@@ -1119,20 +1131,22 @@ function showFlashProblemAtStart () {
     }
     // end the last problem
     else {
-        if (globals.lastProbId != -1)
+        if (globals.lastProbId != -1) {
             sendEndEvent(globals);
-        sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
+        }
+        sendBeginEvent(globals, pid, mode, processBeginProblemResult);
     }
-    showProblemInfo(pid,resource,topicName,standards);
-    if (globals.showAnswer)
+    showProblemInfo(pid, resource, topicName, standards);
+    if (globals.showAnswer) {
         showAnswer(ans);
-    showFlashProblem(resource,ans,solution,container, mode);
+    }
+    showFlashProblem(resource, ans, solution, container, mode);
 }
 
-function showHTMLProblemAtStart () {
+function showHTMLProblemAtStart() {
     var activity = globals.activityJSON;
     var mode = activity.mode;
-    var isExample =  (mode == MODE_DEMO || mode == MODE_EXAMPLE);
+    var isExample = (mode == MODE_DEMO || mode == MODE_EXAMPLE);
     var pid = activity.id;
     var resource = activity.resource;
     var topicName = activity.topicName;
@@ -1143,7 +1157,7 @@ function showHTMLProblemAtStart () {
     var ans = activity.answer;
 
     var form = activity.form;
-    if (form==="quickAuth") {
+    if (form === "quickAuth") {
         globals.isQuickAuth = true;
         globals.statementHTML = activity.statementHTML;
         globals.questionAudio = activity.questionAudio;
@@ -1162,37 +1176,44 @@ function showHTMLProblemAtStart () {
     }
     // end the last problem
     else {
-        if (globals.lastProbId != -1)
+        if (globals.lastProbId != -1) {
             sendEndEvent(globals);
-        sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
+        }
+        sendBeginEvent(globals, pid, mode, processBeginProblemResult);
     }
-    showProblemInfo(pid,resource,topicName,standards);
+    showProblemInfo(pid, resource, topicName, standards);
 
-    if (globals.showAnswer)
+    if (globals.showAnswer) {
         showAnswer(ans);
-    if (form==="quickAuth")
-        showQuickAuthProblem(pid,solution,resource,mode,activity.questType);
-    else showHTMLProblem(pid,solution,resource, mode);
+    }
+    if (form === "quickAuth") {
+        showQuickAuthProblem(pid, solution, resource, mode, activity.questType);
+    } else {
+        showHTMLProblem(pid, solution, resource, mode);
+    }
 }
 
 // TODO need to create a test for this.
 // This came up after being in a problem and attempting it (correctly), going to MPP, then return to hut.
-function showInterventionAtStart () {
-    if (sysGlobals.isDevEnv)
+function showInterventionAtStart() {
+    if (sysGlobals.isDevEnv) {
         ;
+    }
 //        alert("Returning to Mathspring and playing intervention: " + globals.activityJSON);
 
 //        var ajson = globals.activityJSON;
 //        var qt = '\\"';
 //        var re = new RegExp(qt,'g');
 //        var cleanJSON = ajson.replace(re,'\\\"');
-        var activity = globals.activityJSON;
-        if (sysGlobals.isDevEnv)
-            ;
+    var activity = globals.activityJSON;
+    if (sysGlobals.isDevEnv) {
+        ;
+    }
 //            alert("Activity is " + activity);
-        if (globals.lastProbId != -1)
-            sendEndEvent(globals);
-        processNextProblemIntervention(activity);
+    if (globals.lastProbId != -1) {
+        sendEndEvent(globals);
+    }
+    processNextProblemIntervention(activity);
 
 
 }
@@ -1213,10 +1234,9 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
     // If this is the first time the tutor is loaded (i.e. from a login) then we send a navigation event so the server initializes
     // correctly based on the student now being in the tutor page.
     // If not the first time, then we are re-entering the tutor page and we want to show a particular problem or intervention
-    if (globals.isBeginningOfSession)
+    if (globals.isBeginningOfSession) {
         nextProb(globals);
-
-    else if (globals.activityJSON != null && (globals.probType === FLASH_PROB_TYPE || globals.probType === SWF_TYPE)) {
+    } else if (globals.activityJSON != null && (globals.probType === FLASH_PROB_TYPE || globals.probType === SWF_TYPE)) {
         showFlashProblemAtStart();
     }
     else if (globals.activityJSON != null && globals.probType === HTML_PROB_TYPE) {
@@ -1226,13 +1246,14 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
         showInterventionAtStart();
     }
     else {
-        if (sysGlobals.isDevEnv)
+        if (sysGlobals.isDevEnv) {
             alert("making a cyclic call to nextprob from a new mathspring.jsp");
+        }
         nextProb(globals);
     }
-    if (learningCompanionMovieClip != '')  {
-        $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+    if (learningCompanionMovieClip != '') {
+        $("#" + LEARNING_COMPANION_CONTAINER).dialog("open");
     }
-    globals.isBeginningOfSession=false;
+    globals.isBeginningOfSession = false;
 
 }

@@ -116,8 +116,19 @@
 .problemDiv,
 #flashContainer1 {
     background: #fff;
-    border: solid 1px #979797;
     border-radius: 4px;
+}
+
+#flashContainer1 {
+    position: relative;
+    width: 650px;
+    height: 500px;
+}
+
+#flashprobplayer {
+    position: absolute;
+    top: 0px;
+    left: 25px;
 }
 
 /* Override CSS rules of jQuery Widget UI */
