@@ -785,7 +785,7 @@ giveFeedback    : function(remarksDiv, topic_state,topicState_pepperPlant,topicM
             var challengeTopicLink = $plantDiv.attr('challengeTopicLink');
             var continueTopicLink = $plantDiv.attr('continueTopicLink');
             var reviewTopicLink = $plantDiv.attr('reviewTopicLink');
-            if (challengeTopicLink !== undefined) {
+            if (challengeTopicLink !== "") {
                 buttons[buttons.length] = $.extend({}, vex.dialog.buttons.NO, {
                     className: 'btn btn-lg mathspring-important-btn',
                     text: 'Challenge',
@@ -794,7 +794,7 @@ giveFeedback    : function(remarksDiv, topic_state,topicState_pepperPlant,topicM
                     }
                 });
             }
-            if (reviewTopicLink !== undefined) {
+            if (reviewTopicLink !== "") {
                 buttons[buttons.length] = $.extend({}, vex.dialog.buttons.NO, {
                     className: 'btn btn-lg mathspring-warning-btn',
                     text: 'Review',
@@ -803,7 +803,7 @@ giveFeedback    : function(remarksDiv, topic_state,topicState_pepperPlant,topicM
                     }
                 });
             }
-            if (continueTopicLink !== undefined) {
+            if (continueTopicLink !== "") {
                 buttons[buttons.length] = $.extend({}, vex.dialog.buttons.NO, {
                     className: 'btn btn-lg mathspring-btn',
                     text: 'Continue',

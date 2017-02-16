@@ -27,6 +27,16 @@
     background: #ebce20;
 }
 
+.important-btn-label {
+    color: #FFE234;
+    font-weight: bold;
+}
+
+.problem-control-button {
+    outline: none;
+    font-size: 1.1em;
+}
+
 #main-tutoring {
     background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), rgba(0, 0, 0, 0.4) url("../img/background-tree.jpg") no-repeat center;
     background-size: cover;

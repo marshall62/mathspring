@@ -7,6 +7,7 @@
     <title>MathSpring | Tutoring</title>
     <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
     <link href="css/balloon.min.css" rel="stylesheet">
     <link href="css/common_new.css" rel="stylesheet">
     <link href="css/mathspring_new.css" rel="stylesheet">
@@ -19,7 +20,7 @@
     <script type="text/javascript" src="js/tutorhint.js"></script>
     <script type="text/javascript" src="js/tutorhut_new.js"></script>
     <script type="text/javascript" src="js/tutorintervention.js"></script>
-    <script type="text/javascript" src="js/intervhandlers.js"></script>
+    <script type="text/javascript" src="js/intervhandlers_new.js"></script>
     <script type="text/javascript" src="js/swfobject.js"></script>
     <script type="text/javascript">
         var globals = {
@@ -239,7 +240,7 @@
                 <div class="row buttons-below">
                     <div class="col-sm-3 main-tutoring-button">
                         <a id="hint" class="problem-control-button">
-                            <img src="img/lightbulb.svg" alt=""><span id="hint_label">Hint</span>
+                            <img id="hint-lightbulb" src="img/lightbulb.svg" alt=""><span id="hint_label">Hint</span>
                         </a>
                     </div>
                     <div class="col-sm-3 col-md-offset-1 main-tutoring-button">
