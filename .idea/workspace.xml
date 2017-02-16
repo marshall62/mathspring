@@ -8,11 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" afterPath="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" afterPath="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java" afterPath="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -176,15 +173,132 @@
     <favorites_list name="mathspring" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="Dashboard_new.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="releaseNotes.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5">
-              <caret line="50" column="20" selection-start-line="50" selection-start-column="20" selection-end-line="50" selection-end-column="20" />
+            <state relative-caret-position="197">
+              <caret line="52" column="43" selection-start-line="52" selection-start-column="43" selection-end-line="52" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReportHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="73" column="11" selection-start-line="73" selection-start-column="11" selection-end-line="73" selection-end-column="11" />
               <folding>
-                <marker date="1486961574000" expanded="true" signature="3044:3143" placeholder="{...}" />
+                <marker date="1484070839116" expanded="true" signature="5776:5906" ph="SELECT id,sc... " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdminHandler.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="62">
+              <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TutorBrainHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/TutorBrainHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2686">
+              <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <marker date="1477584662241" expanded="true" signature="1791:1825" ph="select count... administrator" />
+                <marker date="1477584662241" expanded="true" signature="2413:2485" ph="select count... woproperty" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AskEmotionIS.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2822">
+              <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#11559#11560#0" expanded="false" />
+                <element signature="e#11594#11595#0" expanded="false" />
+                <element signature="e#11637#11638#0" expanded="false" />
+                <element signature="e#11674#11675#0" expanded="false" />
+                <element signature="e#11716#11717#0" expanded="false" />
+                <element signature="e#11751#11752#0" expanded="false" />
+                <element signature="e#13305#13306#0" expanded="false" />
+                <element signature="e#13373#13374#0" expanded="false" />
+                <element signature="e#13425#13426#0" expanded="false" />
+                <element signature="e#13478#13479#0" expanded="false" />
+                <element signature="e#13785#13786#0" expanded="false" />
+                <element signature="e#13837#13838#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DbAdmin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbAdmin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="70" column="12" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
+              <folding>
+                <marker date="1484156345992" expanded="true" signature="551:625" ph="insert into adminsession... " />
+                <marker date="1484156345992" expanded="true" signature="1796:1862" ph="select ID,fn... administrator" />
+                <marker date="1484156345992" expanded="true" signature="2515:2572" ph="select fname... administrator" />
+                <marker date="1484156345992" expanded="true" signature="3115:3166" ph="select passw... administrator" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BasePedagogicalModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4913">
+              <caret line="325" column="80" selection-start-line="325" selection-start-column="80" selection-end-line="325" selection-end-column="80" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#52640#52641#0" expanded="false" />
+                <element signature="e#52667#52668#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tutorhut.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="9214">
+              <caret line="542" column="58" selection-start-line="542" selection-start-column="58" selection-end-line="542" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WoAdminServlet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="488">
+              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tutorintervention.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1224">
+              <caret line="72" column="8" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -236,6 +350,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/woServer/resources/problem_skeleton.jsp" />
+        <option value="$PROJECT_DIR$/woServer/buildCerulean.xml" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/MathspringService.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/AffectivaRequest.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/temp/MyResource.java" />
@@ -278,22 +394,21 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/agent/EmotionalLC.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUser.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbTeacher.java" />
+        <option value="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" />
         <option value="$PROJECT_DIR$/woServer/resources/mathspring/mscontent/html5Probs/js/problemUtils.js" />
         <option value="$PROJECT_DIR$/woServer/resources/js/params.js" />
         <option value="$PROJECT_DIR$/woServer/resources/js/tutorhut.js" />
         <option value="$PROJECT_DIR$/releaseNotes.txt" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbAdmin.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java" />
-        <option value="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" />
-        <option value="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" />
-        <option value="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" />
-  <component name="JsBuildToolPackageJson" detection-done="true" />
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -345,8 +460,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1920" />
-    <option name="height" value="1075" />
+    <option name="x" value="30" />
+    <option name="y" value="109" />
+    <option name="width" value="1558" />
+    <option name="height" value="936" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
@@ -382,7 +499,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -401,111 +517,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="img" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="img" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mathspring" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="woServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="All">
           <PATH>
@@ -530,6 +543,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -673,6 +688,117 @@
       <recent name="edu.umass.ckc.wo.tutor.intervSel" />
     </key>
   </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/woServer/web/WEB-INF/localhost/classes/log4j.properties</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
+  </component>
   <component name="RunManager" selected="Tomcat Server.Wayang Tutor Login">
     <configuration default="false" name="HintOrdering" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
@@ -797,31 +923,21 @@
     </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
       <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
       <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
-      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
-      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
-      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -831,27 +947,15 @@
       <option name="METHOD_NAME" value="" />
       <option name="CLASS_NAME" value="" />
       <option name="PACKAGE_NAME" value="" />
+      <option name="EXTRA_OPTIONS" value="" />
       <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
-      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
-      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
-      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
-      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
-      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
       <method />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
@@ -1022,13 +1126,12 @@
       <method />
     </configuration>
     <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
-      <module name="" />
       <setting name="vmparams" value="" />
       <setting name="cmdLine" value="run-app" />
-      <setting name="depsClasspath" value="false" />
       <setting name="passParentEnv" value="true" />
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <setting name="launchBrowser" value="true" />
+      <setting name="depsClasspath" value="false" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -1193,6 +1296,7 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
       <node-options />
       <gulpfile />
       <tasks />
@@ -1203,6 +1307,7 @@
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
       <command value="run-script" />
       <scripts />
+      <node-interpreter value="project" />
       <envs />
       <method />
     </configuration>
@@ -1468,7 +1573,7 @@
         <option name="BuildArtifacts" enabled="true" />
       </method>
     </configuration>
-    <configuration default="false" name="Wayang Tutor Login" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.0.38" ALTERNATIVE_JRE_ENABLED="false">
+    <configuration default="false" name="Wayang Tutor Login" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.0.32" ALTERNATIVE_JRE_ENABLED="false">
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/mt/index.html" />
       <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
       <option name="UPDATING_POLICY" value="update-resources" />
@@ -1548,12 +1653,12 @@
       <item index="2" class="java.lang.String" itemvalue="Tomcat Server.TutorBrainSystemTest" />
       <item index="3" class="java.lang.String" itemvalue="Tomcat Server.WoAdmin" />
       <item index="4" class="java.lang.String" itemvalue="Tomcat Server.MathSpringTutorServlet" />
-      <item index="5" class="java.lang.String" itemvalue="Application.HintOrdering" />
-      <item index="6" class="java.lang.String" itemvalue="Application.DbPedagogy" />
-      <item index="7" class="java.lang.String" itemvalue="Application.XMLLCRule" />
-      <item index="8" class="java.lang.String" itemvalue="Application.DbUser" />
-      <item index="9" class="java.lang.String" itemvalue="Application.DbTeacher" />
-      <item index="10" class="java.lang.String" itemvalue="Tomcat Server.Wayang Tutor Login" />
+      <item index="5" class="java.lang.String" itemvalue="Tomcat Server.Wayang Tutor Login" />
+      <item index="6" class="java.lang.String" itemvalue="Application.HintOrdering" />
+      <item index="7" class="java.lang.String" itemvalue="Application.DbPedagogy" />
+      <item index="8" class="java.lang.String" itemvalue="Application.XMLLCRule" />
+      <item index="9" class="java.lang.String" itemvalue="Application.DbUser" />
+      <item index="10" class="java.lang.String" itemvalue="Application.DbTeacher" />
     </list>
     <recent_temporary>
       <list size="5">
@@ -1569,7 +1674,9 @@
       <Port>5050</Port>
     </configuration>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
   <component name="StructureViewFactory">
     <option name="ACTIVE_ACTIONS" value="VISIBILITY_SORTER,ALPHA_COMPARATOR" />
   </component>
@@ -1582,6 +1689,7 @@
       <changelist id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="altered email sending" />
       <created>1368642188690</created>
       <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
       <updated>1368642188690</updated>
       <workItem from="1466529229075" duration="20576000" />
       <workItem from="1466782596218" duration="3812000" />
@@ -1617,299 +1725,347 @@
       <workItem from="1483552683654" duration="11297000" />
       <workItem from="1484070860901" duration="1473000" />
       <workItem from="1484156360141" duration="2132000" />
-      <workItem from="1486952115618" duration="9173000" />
     </task>
     <task id="LOCAL-00182" summary="Converted Attempt intervention seleecrs to return Response objects">
       <created>1436983369292</created>
       <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
       <option name="project" value="LOCAL" />
       <updated>1436983369292</updated>
     </task>
     <task id="LOCAL-00183" summary="Some debugging statements and small fixes to get jcharts reports working">
       <created>1441296443542</created>
       <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
       <option name="project" value="LOCAL" />
       <updated>1441296443542</updated>
     </task>
     <task id="LOCAL-00184" summary="Some debugging statements and small fixes to get jcharts reports working">
       <created>1442257972754</created>
       <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
       <option name="project" value="LOCAL" />
       <updated>1442257972754</updated>
     </task>
     <task id="LOCAL-00185" summary="Added Teacher Tools Pre/Post page for activating post surveys">
       <created>1445425290567</created>
       <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
       <option name="project" value="LOCAL" />
       <updated>1445425290567</updated>
     </task>
     <task id="LOCAL-00186" summary="User registration is all JSP based to fix URL bugs.   Teacher registration has been added as an action within the teacher tools for admins.">
       <created>1445471448927</created>
       <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
       <option name="project" value="LOCAL" />
       <updated>1445471448927</updated>
     </task>
     <task id="LOCAL-00187" summary="User registration is all JSP based to fix URL bugs.   Teacher registration has been added as an action within the teacher tools for admins.">
       <created>1445472059065</created>
       <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
       <option name="project" value="LOCAL" />
       <updated>1445472059065</updated>
     </task>
     <task id="LOCAL-00188" summary="commit to get in sync">
       <created>1445882108038</created>
       <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
       <option name="project" value="LOCAL" />
       <updated>1445882108038</updated>
     </task>
     <task id="LOCAL-00189" summary="commit to get in sync">
       <created>1445882482928</created>
       <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
       <option name="project" value="LOCAL" />
       <updated>1445882482928</updated>
     </task>
     <task id="LOCAL-00190" summary="Got delete classes working.  Added some more info on logging associated with the InputEvents coming from intervention dialogs.  Should now have XML in user input indicating yes, no, ok.">
       <created>1446590171922</created>
       <option name="number" value="00190" />
+      <option name="presentableId" value="LOCAL-00190" />
       <option name="project" value="LOCAL" />
       <updated>1446590171922</updated>
     </task>
     <task id="LOCAL-00191" summary="commented out alerts in problem_skeleton_load.js">
       <created>1448986934705</created>
       <option name="number" value="00191" />
+      <option name="presentableId" value="LOCAL-00191" />
       <option name="project" value="LOCAL" />
       <updated>1448986934705</updated>
     </task>
     <task id="LOCAL-00192" summary="Removed survey buttons on login page">
       <created>1448987293512</created>
       <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
       <option name="project" value="LOCAL" />
       <updated>1448987293512</updated>
     </task>
     <task id="LOCAL-00193" summary="Fixed lastIntervention being saved when FinishCollaborationIntervention is returned">
       <created>1449012336137</created>
       <option name="number" value="00193" />
+      <option name="presentableId" value="LOCAL-00193" />
       <option name="project" value="LOCAL" />
       <updated>1449012336137</updated>
     </task>
     <task id="LOCAL-00194" summary="Fixed bug in ProblemDiffuclty report so it only counts problmes that are shown as practice problems.">
       <created>1449606244582</created>
       <option name="number" value="00194" />
+      <option name="presentableId" value="LOCAL-00194" />
       <option name="project" value="LOCAL" />
       <updated>1449606244582</updated>
     </task>
     <task id="LOCAL-00195" summary="Fixed null pointer bug in collabIS">
       <created>1450211258748</created>
       <option name="number" value="00195" />
+      <option name="presentableId" value="LOCAL-00195" />
       <option name="project" value="LOCAL" />
       <updated>1450211258748</updated>
     </task>
     <task id="LOCAL-00196" summary="Fixed null pointer bug in collabIS">
       <created>1451344159126</created>
       <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
       <option name="project" value="LOCAL" />
       <updated>1451344159126</updated>
     </task>
     <task id="LOCAL-00197" summary="Upgraded to Intellij 2016.   &#10;Using Tomcat 8&#10;and Java 8&#10;Eliminated some hibernate dependencies and cleaned up artifacts&#10;Added Jersey RESTful framework and handle requests in /rest/MathspringService.">
       <created>1466540678423</created>
       <option name="number" value="00197" />
+      <option name="presentableId" value="LOCAL-00197" />
       <option name="project" value="LOCAL" />
       <updated>1466540678424</updated>
     </task>
     <task id="LOCAL-00198" summary="Added Child assent stuff">
       <created>1466948101624</created>
       <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
       <option name="project" value="LOCAL" />
       <updated>1466948101625</updated>
     </task>
     <task id="LOCAL-00199" summary="Added a new method to the MARI service for checking how many problems a student can work on in a standard">
       <created>1467841848963</created>
       <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
       <option name="project" value="LOCAL" />
       <updated>1467841848968</updated>
     </task>
     <task id="LOCAL-00200" summary="Added Pair class">
       <created>1467842396930</created>
       <option name="number" value="00200" />
+      <option name="presentableId" value="LOCAL-00200" />
       <option name="project" value="LOCAL" />
       <updated>1467842396931</updated>
     </task>
     <task id="LOCAL-00201" summary="Added Pair class">
       <created>1467842865205</created>
       <option name="number" value="00201" />
+      <option name="presentableId" value="LOCAL-00201" />
       <option name="project" value="LOCAL" />
       <updated>1467842865205</updated>
     </task>
     <task id="LOCAL-00202" summary="Added more rules and conditions to support messages that happen at BeginProblem events.">
       <created>1470251086229</created>
       <option name="number" value="00202" />
+      <option name="presentableId" value="LOCAL-00202" />
       <option name="project" value="LOCAL" />
       <updated>1470251086230</updated>
     </task>
     <task id="LOCAL-00203" summary="Added built-in pretests at login time.">
       <created>1470770223528</created>
       <option name="number" value="00203" />
+      <option name="presentableId" value="LOCAL-00203" />
       <option name="project" value="LOCAL" />
       <updated>1470770223528</updated>
     </task>
     <task id="LOCAL-00204" summary="Added Posttest and javascript form validation of pre/post test questions.">
       <created>1470844764707</created>
       <option name="number" value="00204" />
+      <option name="presentableId" value="LOCAL-00204" />
       <option name="project" value="LOCAL" />
       <updated>1470844764708</updated>
     </task>
     <task id="LOCAL-00205" summary="All pretest and posttest features working including warning messages about taking too long, progress bars and dynamically added buttons.   This means that authoring a problem needs to have a waitTime (in seconds) to tell the system how long to wait until popping up a message.    For many questions there is no correct answer.  For those questions that are math and short answer is the type of the input,  we can really only do a simple string comparison">
       <created>1471878094977</created>
       <option name="number" value="00205" />
+      <option name="presentableId" value="LOCAL-00205" />
       <option name="project" value="LOCAL" />
       <updated>1471878094979</updated>
     </task>
     <task id="LOCAL-00206" summary="added grading of pretest problems.   If the answer field of the question is non-null,  it will do a string match to see if the user-input matches the correct answer (note that we DO NOT USE a,b,c for multi-choice answers - it will be the actual text string that sits next to the radio button)">
       <created>1471880026944</created>
       <option name="number" value="00206" />
+      <option name="presentableId" value="LOCAL-00206" />
       <option name="project" value="LOCAL" />
       <updated>1471880026944</updated>
     </task>
     <task id="LOCAL-00207" summary="Made images for pretests come from blobs in the db.  This meant adding a ImageFetchServlet to get them.&#10;">
       <created>1472146849197</created>
       <option name="number" value="00207" />
+      <option name="presentableId" value="LOCAL-00207" />
       <option name="project" value="LOCAL" />
       <updated>1472146849198</updated>
     </task>
     <task id="LOCAL-00208" summary="Made pretest problem have a -1 waitTime if its null in the db and then eliminate the popup dialogs if this is the value for the question.">
       <created>1472823690079</created>
       <option name="number" value="00208" />
+      <option name="presentableId" value="LOCAL-00208" />
       <option name="project" value="LOCAL" />
       <updated>1472823690079</updated>
     </task>
     <task id="LOCAL-00209" summary="Trying to fix layout problems in quickAuth">
       <created>1474726463354</created>
       <option name="number" value="00209" />
+      <option name="presentableId" value="LOCAL-00209" />
       <option name="project" value="LOCAL" />
       <updated>1474726463355</updated>
     </task>
     <task id="LOCAL-00210" summary="Working AffectivaService with jersey 1.9.   Cannot get jersey 2.3 working">
       <created>1476733004098</created>
       <option name="number" value="00210" />
+      <option name="presentableId" value="LOCAL-00210" />
       <option name="project" value="LOCAL" />
       <updated>1476733004100</updated>
     </task>
     <task id="LOCAL-00211" summary="sync with master">
       <created>1477675371439</created>
       <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
       <option name="project" value="LOCAL" />
       <updated>1477675371439</updated>
     </task>
     <task id="LOCAL-00212" summary="Generated new ant scripts one for each module.  Created buildSugaree.xml&#10;which is a master file that uses what was generated">
       <created>1478637794304</created>
       <option name="number" value="00212" />
+      <option name="presentableId" value="LOCAL-00212" />
       <option name="project" value="LOCAL" />
       <updated>1478637794304</updated>
     </task>
     <task id="LOCAL-00213" summary="Added some build scripts for production">
       <created>1478639182164</created>
       <option name="number" value="00213" />
+      <option name="presentableId" value="LOCAL-00213" />
       <option name="project" value="LOCAL" />
       <updated>1478639182164</updated>
     </task>
     <task id="LOCAL-00214" summary="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore">
       <created>1479427394461</created>
       <option name="number" value="00214" />
+      <option name="presentableId" value="LOCAL-00214" />
       <option name="project" value="LOCAL" />
       <updated>1479427394462</updated>
     </task>
     <task id="LOCAL-00215" summary="Fixed bug in pretestquestion so it shows answer E now.&#10;LessonXML was not being fetched from its DB table.  It was getting it from the XML&#10;inside the pedagogy XML.   Now we get it from DB.">
       <created>1479507058361</created>
       <option name="number" value="00215" />
+      <option name="presentableId" value="LOCAL-00215" />
       <option name="project" value="LOCAL" />
       <updated>1479507058361</updated>
     </task>
     <task id="LOCAL-00216" summary="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore">
       <created>1479507096018</created>
       <option name="number" value="00216" />
+      <option name="presentableId" value="LOCAL-00216" />
       <option name="project" value="LOCAL" />
       <updated>1479507096018</updated>
     </task>
     <task id="LOCAL-00217" summary="Eliminated 4th OPEN question in AskEmotion.">
       <created>1479507333023</created>
       <option name="number" value="00217" />
+      <option name="presentableId" value="LOCAL-00217" />
       <option name="project" value="LOCAL" />
       <updated>1479507333023</updated>
     </task>
     <task id="LOCAL-00218" summary="Eliminated 4th OPEN question in AskEmotion.">
       <created>1479908448757</created>
       <option name="number" value="00218" />
+      <option name="presentableId" value="LOCAL-00218" />
       <option name="project" value="LOCAL" />
       <updated>1479908448757</updated>
     </task>
     <task id="LOCAL-00219" summary="Made sure that pretests show questions correctly with new multi-choice allowing images.   Also fixed bug in BasePedModel where learning companion media&#10;was not logged into event log.">
       <created>1480353883774</created>
       <option name="number" value="00219" />
+      <option name="presentableId" value="LOCAL-00219" />
       <option name="project" value="LOCAL" />
       <updated>1480353883774</updated>
     </task>
     <task id="LOCAL-00220" summary="Made sure that pretests show questions correctly with new multi-choice allowing images.   Also fixed bug in BasePedModel where learning companion media&#10;was not logged into event log.">
       <created>1480354889432</created>
       <option name="number" value="00220" />
+      <option name="presentableId" value="LOCAL-00220" />
       <option name="project" value="LOCAL" />
       <updated>1480354889432</updated>
     </task>
     <task id="LOCAL-00221" summary="change release notes to document how to do release management with github.">
       <created>1480459116928</created>
       <option name="number" value="00221" />
+      <option name="presentableId" value="LOCAL-00221" />
       <option name="project" value="LOCAL" />
       <updated>1480459116928</updated>
     </task>
     <task id="LOCAL-00222" summary="test to see if I can tag within intellij">
       <created>1480459233072</created>
       <option name="number" value="00222" />
+      <option name="presentableId" value="LOCAL-00222" />
       <option name="project" value="LOCAL" />
       <updated>1480459233072</updated>
     </task>
     <task id="LOCAL-00223" summary="testing IDEA tagging">
       <created>1480459574902</created>
       <option name="number" value="00223" />
+      <option name="presentableId" value="LOCAL-00223" />
       <option name="project" value="LOCAL" />
       <updated>1480459574902</updated>
     </task>
     <task id="LOCAL-00224" summary="making sure I understand tagging">
       <created>1480459699558</created>
       <option name="number" value="00224" />
+      <option name="presentableId" value="LOCAL-00224" />
       <option name="project" value="LOCAL" />
       <updated>1480459699558</updated>
     </task>
     <task id="LOCAL-00225" summary="making sure I understand tagging">
       <created>1482444773182</created>
       <option name="number" value="00225" />
+      <option name="presentableId" value="LOCAL-00225" />
       <option name="project" value="LOCAL" />
       <updated>1482444773182</updated>
     </task>
     <task id="LOCAL-00226" summary="making sure I understand tagging">
       <created>1482444986866</created>
       <option name="number" value="00226" />
+      <option name="presentableId" value="LOCAL-00226" />
       <option name="project" value="LOCAL" />
       <updated>1482444986866</updated>
     </task>
     <task id="LOCAL-00227" summary="fixed sql query for teacher login">
       <created>1483475760347</created>
       <option name="number" value="00227" />
+      <option name="presentableId" value="LOCAL-00227" />
       <option name="project" value="LOCAL" />
       <updated>1483475760347</updated>
     </task>
     <task id="LOCAL-00228" summary="Fixed bugs 311 and 312&#10;Changed ShowExample so that it uses ShowQuickAuthProblem if the problem is quickAuth and ShowHTMLProblem otherwise&#10;Added check in params.js to not do a maybeStop() call if the problem is demo or example">
       <created>1484069486971</created>
       <option name="number" value="00228" />
+      <option name="presentableId" value="LOCAL-00228" />
       <option name="project" value="LOCAL" />
       <updated>1484069486971</updated>
     </task>
     <task id="LOCAL-00229" summary="Fixed bugs 311 and 312&#10;Changed ShowExample so that it uses ShowQuickAuthProblem if the problem is quickAuth and ShowHTMLProblem otherwise&#10;Added check in params.js to not do a maybeStop() call if the problem is demo or example">
       <created>1484071455082</created>
       <option name="number" value="00229" />
+      <option name="presentableId" value="LOCAL-00229" />
       <option name="project" value="LOCAL" />
       <updated>1484071455082</updated>
     </task>
     <task id="LOCAL-00230" summary="MARi local-context included">
       <created>1484238808694</created>
       <option name="number" value="00230" />
+      <option name="presentableId" value="LOCAL-00230" />
       <option name="project" value="LOCAL" />
       <updated>1484238808694</updated>
     </task>
@@ -1917,7 +2073,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="308188000" />
+    <option name="totallyTimeSpent" value="299015000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1929,29 +2085,32 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1075" extended-state="6" />
+    <frame x="30" y="109" width="1558" height="936" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32629108" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24440117" sideWeight="0.6967841" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24462366" sideWeight="0.6967841" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2971098" sideWeight="0.2151608" order="18" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31609195" sideWeight="0.4977521" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20689656" sideWeight="0.77526754" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.80924857" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.315482" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20425029" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21614583" sideWeight="0.5576102" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21628839" sideWeight="0.56363636" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21998562" sideWeight="0.7364532" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21614583" sideWeight="0.44238976" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19739583" sideWeight="0.2635468" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21628839" sideWeight="0.43636364" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19759679" sideWeight="0.2635468" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29211295" sideWeight="0.7848392" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29305914" sideWeight="0.7848392" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.49120122" order="17" side_tool="false" content_ui="tabs" />
@@ -1960,10 +2119,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39973873" sideWeight="0.3344788" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294621" sideWeight="0.75170845" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.49736643" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962631" sideWeight="0.68037605" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29496402" sideWeight="0.49965918" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902467" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
@@ -1972,7 +2129,6 @@
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22451317" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962963" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2216,16 +2372,108 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/lc/DbLCRule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="534" column="24" selection-start-line="534" selection-start-column="24" selection-end-line="534" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/PrePostProblemDefn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/login/pretestQuestion.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3723">
+          <caret line="219" column="20" selection-start-line="219" selection-start-column="20" selection-end-line="219" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/Pretest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2958">
+          <caret line="187" column="39" selection-start-line="187" selection-start-column="39" selection-end-line="187" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/agent/RuleDrivenLearningCompanion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1768">
+          <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/incorrectNoEffort1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="6" selection-start-line="19" selection-start-column="4" selection-end-line="22" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/generalAttribution3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/generalAttribution3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/video.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/video.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/LearningCompanion/Jane/generalAttribution1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/agent/JaneEmpathicLC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="11" column="44" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/agent/EmotionalLC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="330" column="0" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="822">
           <caret line="1059" column="17" selection-start-line="1059" selection-start-column="17" selection-end-line="1059" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/buildSugaree.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="1020">
           <caret line="60" column="39" selection-start-line="60" selection-start-column="39" selection-end-line="60" selection-end-column="39" />
           <folding />
         </state>
@@ -2233,7 +2481,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="6460">
           <caret line="380" column="20" selection-start-line="380" selection-start-column="20" selection-end-line="380" selection-end-column="20" />
           <folding />
         </state>
@@ -2241,147 +2489,189 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/log/TutorLogger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="2754">
           <caret line="175" column="41" selection-start-line="175" selection-start-column="41" selection-end-line="175" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/AdminToolLoginHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="374">
           <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/PasswordAuthentication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="1904">
           <caret line="127" column="0" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbTeacher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="272">
           <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="759">
+          <caret line="60" column="34" selection-start-line="60" selection-start-column="34" selection-end-line="60" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PreSurvey.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="183">
           <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/interv/PostSurvey.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="183">
           <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/interventions/AskEmotionSliderIntervention.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="325">
           <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/html5Probs/problem_6RPA2_1/problem_6RPA2_1.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="136">
           <caret line="8" column="63" selection-start-line="8" selection-start-column="61" selection-end-line="8" selection-end-column="63" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/html5Probs/problem_6RPA2_1/problem_6RPA2_1_edgeActions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="434">
           <caret line="76" column="14" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/problemUtils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="306">
           <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/servletController/MariHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="157">
           <caret line="92" column="0" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/html5Probs/js/problemUtils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="357">
           <caret line="87" column="38" selection-start-line="87" selection-start-column="23" selection-end-line="87" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/agent/FullEmpathicLC.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="217">
           <caret line="50" column="48" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/problem_skeleton.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="-989">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/problem_skeleton_load.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="425">
           <caret line="73" column="6" selection-start-line="73" selection-start-column="6" selection-end-line="73" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/params.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="308">
           <caret line="227" column="60" selection-start-line="227" selection-start-column="48" selection-end-line="227" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/Binding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="-186">
           <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/ProblemBinding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="238">
           <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/QuickAuthProb.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="171">
           <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/cache/ProblemMgr.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="7276">
           <caret line="455" column="22" selection-start-line="455" selection-start-column="22" selection-end-line="455" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1675#1676#0" expanded="false" />
+            <element signature="e#1704#1705#0" expanded="false" />
+            <element signature="e#2488#2489#0" expanded="false" />
+            <element signature="e#2518#2519#0" expanded="false" />
+            <element signature="e#4370#4397#0" expanded="false" />
+            <element signature="e#10044#10059#0" expanded="false" />
+            <element signature="e#11256#11268#0" expanded="false" />
+            <element signature="e#12316#12317#0" expanded="false" />
+            <element signature="e#12363#12364#0" expanded="false" />
+            <element signature="e#14030#14031#0" expanded="false" />
+            <element signature="e#14069#14070#0" expanded="false" />
+            <element signature="e#14625#14634#0" expanded="false" />
+            <element signature="e#14973#14982#0" expanded="false" />
+            <element signature="e#16003#16012#0" expanded="false" />
+            <element signature="e#17062#17084#0" expanded="false" />
+            <element signature="e#18880#18889#0" expanded="false" />
+            <element signature="e#20714#20723#0" expanded="false" />
+            <element signature="e#22439#22440#0" expanded="false" />
+            <element signature="e#22471#22472#0" expanded="false" />
+            <marker date="1477584661920" expanded="true" signature="3199:3263" ph="select id, d... problemgroup" />
+            <marker date="1477584661920" expanded="true" signature="4123:4186" ph="select p.nam... ProblemParamSet" />
+            <marker date="1477584661920" expanded="true" signature="5187:5613" ph="select p.id,... Problem" />
+            <marker date="1477584661920" expanded="true" signature="9763:9872" ph="select a.val... problemanswers" />
+            <marker date="1477584661920" expanded="true" signature="12653:12938" ph="select p.id,... problem" />
+            <marker date="1477584661920" expanded="true" signature="15006:15179" ph="select p.id problem" />
+            <marker date="1477584661920" expanded="true" signature="16036:16216" ph="select count... problem" />
+            <marker date="1477584661920" expanded="true" signature="17112:17230" ph="select m.std... probstdmap" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/fmt.tld">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -2389,38 +2679,219 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/content/Problem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="3315">
           <caret line="216" column="22" selection-start-line="216" selection-start-column="22" selection-end-line="216" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4514#4515#0" expanded="false" />
+            <element signature="e#4592#4593#0" expanded="false" />
+            <element signature="e#4649#4650#0" expanded="false" />
+            <element signature="e#4676#4677#0" expanded="false" />
+            <element signature="e#6648#6649#0" expanded="false" />
+            <element signature="e#6689#6690#0" expanded="false" />
+            <element signature="e#6723#6724#0" expanded="false" />
+            <element signature="e#6754#6755#0" expanded="false" />
+            <element signature="e#7021#7022#0" expanded="false" />
+            <element signature="e#7054#7055#0" expanded="false" />
+            <element signature="e#7093#7094#0" expanded="false" />
+            <element signature="e#7128#7129#0" expanded="false" />
+            <element signature="e#9890#9891#0" expanded="false" />
+            <element signature="e#9918#9919#0" expanded="false" />
+            <element signature="e#10695#10696#0" expanded="false" />
+            <element signature="e#10722#10723#0" expanded="false" />
+            <element signature="e#10753#10754#0" expanded="false" />
+            <element signature="e#10780#10781#0" expanded="false" />
+            <element signature="e#10815#10816#0" expanded="false" />
+            <element signature="e#10846#10847#0" expanded="false" />
+            <element signature="e#10878#10879#0" expanded="false" />
+            <element signature="e#10909#10910#0" expanded="false" />
+            <element signature="e#10954#10955#0" expanded="false" />
+            <element signature="e#10994#10995#0" expanded="false" />
+            <element signature="e#11035#11036#0" expanded="false" />
+            <element signature="e#11074#11075#0" expanded="false" />
+            <element signature="e#11107#11108#0" expanded="false" />
+            <element signature="e#11136#11137#0" expanded="false" />
+            <element signature="e#11177#11178#0" expanded="false" />
+            <element signature="e#11209#11210#0" expanded="false" />
+            <element signature="e#11241#11242#0" expanded="false" />
+            <element signature="e#11268#11269#0" expanded="false" />
+            <element signature="e#11892#11893#0" expanded="false" />
+            <element signature="e#11927#11928#0" expanded="false" />
+            <element signature="e#11962#11963#0" expanded="false" />
+            <element signature="e#12011#12012#0" expanded="false" />
+            <element signature="e#12045#12046#0" expanded="false" />
+            <element signature="e#12090#12091#0" expanded="false" />
+            <element signature="e#12123#12124#0" expanded="false" />
+            <element signature="e#12157#12158#0" expanded="false" />
+            <element signature="e#12192#12193#0" expanded="false" />
+            <element signature="e#12235#12236#0" expanded="false" />
+            <element signature="e#12286#12287#0" expanded="false" />
+            <element signature="e#12325#12326#0" expanded="false" />
+            <element signature="e#12356#12357#0" expanded="false" />
+            <element signature="e#12393#12394#0" expanded="false" />
+            <element signature="e#12438#12439#0" expanded="false" />
+            <element signature="e#12480#12481#0" expanded="false" />
+            <element signature="e#12936#12937#0" expanded="false" />
+            <element signature="e#12966#12967#0" expanded="false" />
+            <element signature="e#13000#13001#0" expanded="false" />
+            <element signature="e#13028#13029#0" expanded="false" />
+            <element signature="e#13081#13082#0" expanded="false" />
+            <element signature="e#13122#13123#0" expanded="false" />
+            <element signature="e#13166#13167#0" expanded="false" />
+            <element signature="e#13212#13213#0" expanded="false" />
+            <element signature="e#13252#13253#0" expanded="false" />
+            <element signature="e#13320#13321#0" expanded="false" />
+            <element signature="e#13359#13360#0" expanded="false" />
+            <element signature="e#13392#13393#0" expanded="false" />
+            <element signature="e#13444#13445#0" expanded="false" />
+            <element signature="e#13488#13489#0" expanded="false" />
+            <element signature="e#13521#13522#0" expanded="false" />
+            <element signature="e#13553#13554#0" expanded="false" />
+            <element signature="e#13600#13601#0" expanded="false" />
+            <element signature="e#13642#13643#0" expanded="false" />
+            <element signature="e#13695#13696#0" expanded="false" />
+            <element signature="e#13737#13738#0" expanded="false" />
+            <element signature="e#13783#13784#0" expanded="false" />
+            <element signature="e#13815#13816#0" expanded="false" />
+            <element signature="e#13858#13859#0" expanded="false" />
+            <element signature="e#13915#13916#0" expanded="false" />
+            <element signature="e#13975#13976#0" expanded="false" />
+            <element signature="e#14017#14018#0" expanded="false" />
+            <element signature="e#14048#14049#0" expanded="false" />
+            <element signature="e#14108#14109#0" expanded="false" />
+            <element signature="e#14140#14141#0" expanded="false" />
+            <element signature="e#14201#14202#0" expanded="false" />
+            <element signature="e#14242#14243#0" expanded="false" />
+            <element signature="e#14274#14275#0" expanded="false" />
+            <element signature="e#14306#14307#0" expanded="false" />
+            <element signature="e#14338#14339#0" expanded="false" />
+            <element signature="e#15120#15121#0" expanded="false" />
+            <element signature="e#15150#15151#0" expanded="false" />
+            <element signature="e#15209#15210#0" expanded="false" />
+            <element signature="e#15247#15248#0" expanded="false" />
+            <element signature="e#15308#15309#0" expanded="false" />
+            <element signature="e#15369#15370#0" expanded="false" />
+            <element signature="e#15545#15546#0" expanded="false" />
+            <element signature="e#15574#15575#0" expanded="false" />
+            <element signature="e#15618#15619#0" expanded="false" />
+            <element signature="e#15654#15655#0" expanded="false" />
+            <element signature="e#15699#15700#0" expanded="false" />
+            <element signature="e#15728#15729#0" expanded="false" />
+            <element signature="e#15800#15801#0" expanded="false" />
+            <element signature="e#15859#15860#0" expanded="false" />
+            <element signature="e#16063#16064#0" expanded="false" />
+            <element signature="e#16091#16092#0" expanded="false" />
+            <element signature="e#16128#16129#0" expanded="false" />
+            <element signature="e#16190#16191#0" expanded="false" />
+            <element signature="e#16230#16231#0" expanded="false" />
+            <element signature="e#16262#16263#0" expanded="false" />
+            <element signature="e#16302#16303#0" expanded="false" />
+            <element signature="e#16338#16339#0" expanded="false" />
+            <element signature="e#16396#16397#0" expanded="false" />
+            <element signature="e#16446#16447#0" expanded="false" />
+            <element signature="e#16486#16487#0" expanded="false" />
+            <element signature="e#16522#16523#0" expanded="false" />
+            <element signature="e#16559#16560#0" expanded="false" />
+            <element signature="e#16598#16599#0" expanded="false" />
+            <element signature="e#16656#16657#0" expanded="false" />
+            <element signature="e#16706#16707#0" expanded="false" />
+            <element signature="e#16741#16742#0" expanded="false" />
+            <element signature="e#16772#16773#0" expanded="false" />
+            <element signature="e#16820#16821#0" expanded="false" />
+            <element signature="e#16860#16861#0" expanded="false" />
+            <element signature="e#18358#18359#0" expanded="false" />
+            <element signature="e#18411#18412#0" expanded="false" />
+            <element signature="e#18452#18453#0" expanded="false" />
+            <element signature="e#18514#18515#0" expanded="false" />
+            <element signature="e#18552#18553#0" expanded="false" />
+            <element signature="e#18613#18614#0" expanded="false" />
+            <element signature="e#18652#18653#0" expanded="false" />
+            <element signature="e#18714#18715#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/TutorHutEventHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="510">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#680#681#0" expanded="false" />
+            <element signature="e#712#713#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="2448">
           <caret line="196" column="0" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#3457#3458#0" expanded="false" />
+            <element signature="e#3496#3497#0" expanded="false" />
+            <element signature="e#3550#3551#0" expanded="false" />
+            <element signature="e#3584#3585#0" expanded="false" />
+            <element signature="e#3648#3649#0" expanded="false" />
+            <element signature="e#3684#3685#0" expanded="false" />
+            <element signature="e#3746#3747#0" expanded="false" />
+            <element signature="e#3794#3795#0" expanded="false" />
+            <element signature="e#3865#3866#0" expanded="false" />
+            <element signature="e#3919#3920#0" expanded="false" />
+            <element signature="e#3981#3982#0" expanded="false" />
+            <element signature="e#4029#4030#0" expanded="false" />
+            <element signature="e#4074#4075#0" expanded="false" />
+            <element signature="e#4109#4110#0" expanded="false" />
+            <element signature="e#4157#4158#0" expanded="false" />
+            <element signature="e#4189#4190#0" expanded="false" />
+            <element signature="e#4650#4651#0" expanded="false" />
+            <element signature="e#4704#4705#0" expanded="false" />
+            <element signature="e#4769#4770#0" expanded="false" />
+            <element signature="e#4819#4820#0" expanded="false" />
+            <element signature="e#5173#5174#0" expanded="false" />
+            <element signature="e#5208#5209#0" expanded="false" />
+            <element signature="e#5254#5255#0" expanded="false" />
+            <element signature="e#5281#5282#0" expanded="false" />
+            <element signature="e#5322#5323#0" expanded="false" />
+            <element signature="e#5350#5351#0" expanded="false" />
+            <element signature="e#18445#18446#0" expanded="false" />
+            <element signature="e#18485#18486#0" expanded="false" />
+            <element signature="e#21773#21774#0" expanded="false" />
+            <element signature="e#21822#21823#0" expanded="false" />
+            <element signature="e#21887#21888#0" expanded="false" />
+            <element signature="e#21933#21934#0" expanded="false" />
+            <element signature="e#21985#21986#0" expanded="false" />
+            <element signature="e#22028#22029#0" expanded="false" />
+            <element signature="e#22693#22694#0" expanded="false" />
+            <element signature="e#22726#22727#0" expanded="false" />
+            <element signature="e#22782#22783#0" expanded="false" />
+            <element signature="e#22826#22827#0" expanded="false" />
+            <element signature="e#22873#22874#0" expanded="false" />
+            <element signature="e#22909#22910#0" expanded="false" />
+            <element signature="e#22958#22959#0" expanded="false" />
+            <element signature="e#22997#22998#0" expanded="false" />
+            <element signature="e#23035#23036#0" expanded="false" />
+            <element signature="e#23071#23072#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/TutorBrainHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="2686">
           <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="false" />
+            <marker date="1477584662241" expanded="true" signature="1791:1825" ph="select count... administrator" />
+            <marker date="1477584662241" expanded="true" signature="2413:2485" ph="select count... woproperty" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="4913">
           <caret line="325" column="80" selection-start-line="325" selection-start-column="80" selection-end-line="325" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="false" />
@@ -2432,61 +2903,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.8947369">
+        <state relative-caret-position="1224">
           <caret line="72" column="8" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
-          <folding>
-            <marker date="1478494882000" expanded="true" signature="0:156" placeholder="/** Created with IntelliJ IDEA. ...*/" />
-            <marker date="1478494882000" expanded="true" signature="212:2568" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="618:683" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="873:1012" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="1067:1132" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="2620:3485" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="2852:3101" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="3544:3889" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="3937:4445" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="3963:4443" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="4447:4650" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="4707:4975" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="4977:5160" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="5195:5399" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="5401:5585" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="5626:6028" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="6031:6137" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="6182:6483" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="6544:7876" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="7419:7594" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="7604:7788" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="7879:8021" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="8065:8398" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="8442:8472" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="8474:8879" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="8881:9050" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="9090:9451" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="9453:9620" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="9659:10018" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="10021:10188" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="10227:10265" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="10315:11855" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="10321:10908" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="10914:11415" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="11895:12072" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="12282:12452" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="12540:12757" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="12843:13120" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="13209:13452" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="13514:13792" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="13795:13953" placeholder="//..." />
-            <marker date="1478494882000" expanded="true" signature="14022:14644" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="14646:14839" placeholder="/** Yes/No and confirm dialogs for interventions that request a response will not have an HTML form.  So we simply ...*/" />
-            <marker date="1478494882000" expanded="true" signature="14920:15125" placeholder="{...}" />
-            <marker date="1478494882000" expanded="true" signature="15228:15377" placeholder="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/intervSel2/AskEmotionIS.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="2822">
           <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="false" />
@@ -2508,7 +2933,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="9214">
           <caret line="542" column="58" selection-start-line="542" selection-start-column="58" selection-end-line="542" selection-end-column="58" />
           <folding />
         </state>
@@ -2516,7 +2941,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/releaseNotes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="197">
           <caret line="52" column="43" selection-start-line="52" selection-start-column="43" selection-end-line="52" selection-end-column="43" />
           <folding />
         </state>
@@ -2524,7 +2949,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/WoAdminServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="488">
           <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
           <folding />
         </state>
@@ -2532,314 +2957,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbAdmin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="174">
           <caret line="70" column="12" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
-          <folding />
+          <folding>
+            <marker date="1484156345992" expanded="true" signature="551:625" ph="insert into adminsession... " />
+            <marker date="1484156345992" expanded="true" signature="1796:1862" ph="select ID,fn... administrator" />
+            <marker date="1484156345992" expanded="true" signature="2515:2572" ph="select fname... administrator" />
+            <marker date="1484156345992" expanded="true" signature="3115:3166" ph="select passw... administrator" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/handler/ReportHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="174">
           <caret line="73" column="11" selection-start-line="73" selection-start-column="11" selection-end-line="73" selection-end-column="11" />
-          <folding />
+          <folding>
+            <marker date="1484070839116" expanded="true" signature="5776:5906" ph="SELECT id,sc... " />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/woserver/AdminHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="62">
           <caret line="175" column="0" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03846154">
-          <caret line="60" column="34" selection-start-line="60" selection-start-column="34" selection-end-line="60" selection-end-column="34" />
-          <folding>
-            <marker date="1486952274000" expanded="true" signature="43:139" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="486:11016" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="804:915" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="935:1063" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="1083:1207" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="1273:1381" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="1457:1558" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="1580:1696" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="1754:1874" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="1884:2044" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="2066:2241" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="2262:2429" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="2449:2555" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="2576:2888" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="2908:3057" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="3077:3234" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="3463:4167" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="4189:4300" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="4412:4521" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="4543:4676" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="4766:5790" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="5060:5178" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="5198:5339" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="5356:5484" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="5506:5777" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="5808:6565" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="5954:6075" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="6096:6219" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="6240:6402" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="6423:6550" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="6581:6778" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="6794:7489" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="6975:7137" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="7159:7312" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="7333:7473" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="7506:7654" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="7669:7821" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="7836:7982" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="7997:8650" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="8263:8409" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="8430:8589" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="8673:8799" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="8827:8972" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="8994:9110" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="9132:9262" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="9284:9412" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="9434:9560" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="9574:9723" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="9745:9875" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="9889:10036" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="10058:10186" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="10201:10356" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="10379:10515" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="10539:10657" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="10682:10794" placeholder="..." />
-            <marker date="1486952274000" expanded="true" signature="10895:10963" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pot-wallpaper.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/jchart_new.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1486952039000" expanded="true" signature="0:8" placeholder="/**...*/" />
-            <marker date="1486952039000" expanded="true" signature="21:33414" placeholder="{&quot;o&quot;: null...}" />
-            <marker date="1486952039000" expanded="true" signature="28:111" placeholder="/** The graph object. Short-hand for &quot;this&quot;. Set in the init-method. ...*/" />
-            <marker date="1486952039000" expanded="true" signature="145:242" placeholder="/** The graph's container element. Passed as a string argument to the init-method. ...*/" />
-            <marker date="1486952039000" expanded="true" signature="276:294" placeholder="/** ...*/" />
-            <marker date="1486952039000" expanded="true" signature="328:379" placeholder="/** The chart type, bars or columns. ...*/" />
-            <marker date="1486952039000" expanded="true" signature="413:459" placeholder="/** The graph data as an array. ...*/" />
-            <marker date="1486952039000" expanded="true" signature="548:658" placeholder="/** The delimiter used for separating the data string passed ...*/" />
-            <marker date="1486952039000" expanded="true" signature="694:741" placeholder="/** Initialize the graph object. ...*/" />
-            <marker date="1486952039000" expanded="true" signature="779:954" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="1009:1180" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="1187:1309" placeholder="/** Set the chart data from a delimited string in the following format: ...*/" />
-            <marker date="1486952039000" expanded="true" signature="1364:3182" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="1530:3175" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="1687:1821" placeholder="/*...*/" />
-            <marker date="1486952039000" expanded="true" signature="1870:3165" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="2171:3149" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="2680:3100" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="2748:3003" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="2831:2977" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="3189:3391" placeholder="/** Render the graph on screen. Appends elements to the container element. ...*/" />
-            <marker date="1486952039000" expanded="true" signature="3455:6873" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="3627:6865" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="4449:6689" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="5803:5910" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="6947:7083" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="7124:7729" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="7271:7720" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="7736:7827" placeholder="/** Generates a column representing a data item. ...*/" />
-            <marker date="1486952039000" expanded="true" signature="7884:13590" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="8269:8569" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="8664:8965" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="9060:9372" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="9508:9805" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="9941:10236" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="10352:10649" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="10671:13512" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="10789:13464" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="11077:11342" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="11175:11220" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="11459:13158" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="12024:13136" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="12313:13135" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="12398:12670" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="12732:13134" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="13658:14332" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="14381:14620" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="14842:18924" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="15015:18697" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="15054:15545" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="15586:16400" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="15627:15778" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="15825:15958" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="16005:16164" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="16210:16390" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="16441:16564" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="16613:16733" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="16780:17126" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="16821:16964" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="16983:17116" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="17172:17981" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="17213:17365" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="17411:17577" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="17623:17810" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="17828:17970" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="18029:18687" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="18070:18212" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="18258:18409" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="18455:18627" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="18731:18860" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="19057:29026" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="20107:20623" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="24350:25620" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="26034:26622" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="27211:27839" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="28389:28950" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="29090:33194" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="29151:32465" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="29311:29371" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="29422:29490" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="29496:29561" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="29908:30274" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="29988:30258" placeholder="{&quot;className&quot;: 'btn btn-lg mathspring-important-btn'...}" />
-            <marker date="1486952039000" expanded="true" signature="30155:30240" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="30322:30680" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="30402:30664" placeholder="{&quot;className&quot;: 'btn btn-lg mathspring-warning-btn'...}" />
-            <marker date="1486952039000" expanded="true" signature="30564:30646" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="30730:31084" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="30810:31068" placeholder="{&quot;className&quot;: 'btn btn-lg mathspring-btn'...}" />
-            <marker date="1486952039000" expanded="true" signature="30966:31050" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="31114:32453" placeholder="{&quot;message&quot;: ''...}" />
-            <marker date="1486952039000" expanded="true" signature="31202:32371" placeholder="[...]" />
-            <marker date="1486952039000" expanded="true" signature="32419:32438" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="32556:33188" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="32676:32731" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="32737:33178" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="32864:33162" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="33287:33411" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="33449:33887" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="33477:33810" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="33662:33783" placeholder="{...}" />
-            <marker date="1486952039000" expanded="true" signature="33841:33885" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_w.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_m.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_6.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_5.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_4.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_3.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_2.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/pepper_1.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/img/pp/smallpot.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65384614">
-          <caret line="150" column="32" selection-start-line="150" selection-start-column="32" selection-end-line="150" selection-end-column="32" />
-          <folding>
-            <marker date="1486959331000" expanded="true" signature="162:9870" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="169:2862" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="1138:2854" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="1177:2839" placeholder="{...}" />
-            <marker date="1486959331000" expanded="true" signature="1269:2564" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="1323:1383" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="2592:2829" placeholder="{...}" />
-            <marker date="1486959331000" expanded="true" signature="2869:9862" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="2937:4168" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="2960:4142" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="2996:3073" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="3160:4131" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="3228:4099" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="3257:3726" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="3794:4059" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4195:4704" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4225:4693" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4278:4357" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4393:4683" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4427:4669" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4731:8534" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4788:8450" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4850:8439" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4886:8429" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="4933:8043" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="5000:8024" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="5350:7117" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="5441:6238" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="6304:6342" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="6533:7081" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="7179:7991" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="7273:7959" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="7829:7924" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8119:8420" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8184:8401" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8516:8527" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8635:9779" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8650:9771" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8688:9159" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8724:8933" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="8758:8902" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="9181:9755" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="9217:9429" placeholder="..." />
-            <marker date="1486959331000" expanded="true" signature="9251:9398" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5">
-          <caret line="50" column="20" selection-start-line="50" selection-start-column="20" selection-end-line="50" selection-end-column="20" />
-          <folding>
-            <marker date="1486961574000" expanded="true" signature="3044:3143" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
