@@ -130,6 +130,10 @@
     <pathelement location="${path.variable.maven_repository}/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.3.2/jackson-module-jaxb-annotations-2.3.2.jar"/>
   </path>
   
+  <path id="library.maven:_com.google.code.gson:gson:2.8.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar"/>
+  </path>
+  
   <path id="library.maven:_com.sun.jersey:jersey-bundle:1.19.classpath">
     <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar"/>
   </path>
@@ -176,14 +180,6 @@
   
   <path id="library.maven:_dom4j:dom4j:1.6.1.classpath">
     <pathelement location="${path.variable.maven_repository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
-  </path>
-  
-  <path id="library.maven:_edu.umass.ckc:emailer:0.1.0.classpath">
-    <pathelement location="${path.variable.maven_repository}/edu/umass/ckc/emailer/0.1.0/emailer-0.1.0.jar"/>
-  </path>
-  
-  <path id="library.maven:_edu.umass.ckc:servlet-framework:0.1.0.classpath">
-    <pathelement location="${path.variable.maven_repository}/edu/umass/ckc/servlet-framework/0.1.0/servlet-framework-0.1.0.jar"/>
   </path>
   
   <path id="library.maven:_javax.activation:activation:1.1.1.classpath">
@@ -345,20 +341,21 @@
   
   <import file="${basedir}/emailer/module_emailer.xml"/>
   
+  <import file="${basedir}/module_main.xml"/>
+  
   <import file="${basedir}/ProblemSnapshotInserter/module_problemsnapshotinserter.xml"/>
   
   <import file="${basedir}/servletFramework/module_servletframework.xml"/>
   
   <import file="${basedir}/woServer/module_woserver.xml"/>
-
   
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.emailer, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver,  clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
+  <target name="clean" depends="clean.module.emailer, clean.module.main, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver, clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
   
-  <target name="build.modules" depends="init, clean, compile.module.emailer, compile.module.problemsnapshotinserter, compile.module.servletframework, compile.module.woserver" description="build all modules"/>
+  <target name="build.modules" depends="init, clean, compile.module.emailer, compile.module.main, compile.module.problemsnapshotinserter, compile.module.servletframework, compile.module.woserver" description="build all modules"/>
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
@@ -498,17 +495,17 @@
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
   </target>
   
   <target name="artifact.woserver:webforrose_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForRose exploded&#39; artifact">

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ProblemSnapshotInserter/ProblemSnapshotInserter.iml" filepath="$PROJECT_DIR$/ProblemSnapshotInserter/ProblemSnapshotInserter.iml" />
       <module fileurl="file://$PROJECT_DIR$/emailer/emailer.iml" filepath="$PROJECT_DIR$/emailer/emailer.iml" />
+      <module fileurl="file://$PROJECT_DIR$//main.iml" filepath="$PROJECT_DIR$//main.iml" />
       <module fileurl="file://$PROJECT_DIR$/servletFramework/servletFramework.iml" filepath="$PROJECT_DIR$/servletFramework/servletFramework.iml" />
       <module fileurl="file://$PROJECT_DIR$/woServer/woServer.iml" filepath="$PROJECT_DIR$/woServer/woServer.iml" />
     </modules>

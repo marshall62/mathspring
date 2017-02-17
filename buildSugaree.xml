@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Sugaree Master Ant Builder">
-    <property file="build.properties"/>
+    <!--<property file="build.properties"/>-->
+    <property file="buildSugaree.properties"/>
 
 
     <import file="${basedir}/build.xml"/>

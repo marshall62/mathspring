@@ -22,6 +22,8 @@
     <path refid="library.maven:_xerces:xercesimpl:2.4.0.classpath"/>
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
     <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
   </path>
   
   <path id="servletframework.runtime.production.module.classpath">
@@ -30,7 +32,9 @@
     <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
     <path refid="library.maven:_xerces:xercesimpl:2.4.0.classpath"/>
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
-    <path refid="emailer.runtime.production.module.classpath"/>
+    <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
   </path>
   
   <path id="servletframework.module.classpath">
@@ -42,6 +46,8 @@
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
     <pathelement location="${emailer.testoutput.dir}"/>
     <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
   </path>
   
   <path id="servletframework.runtime.module.classpath">
@@ -51,7 +57,10 @@
     <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
     <path refid="library.maven:_xerces:xercesimpl:2.4.0.classpath"/>
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
-    <path refid="emailer.runtime.module.classpath"/>
+    <pathelement location="${emailer.testoutput.dir}"/>
+    <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
   </path>
   
   

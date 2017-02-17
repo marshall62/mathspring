@@ -50,6 +50,7 @@ Release Management (begun 11/28/16 - better late than never)
 
   After the last commit:  use
      git tag -a v2.1 -m "comment here" OR tag a specific commit by using
+       git tag -a v2.1
 
     git tag will show all the tags
 
@@ -65,6 +66,22 @@ Release Management (begun 11/28/16 - better late than never)
 
 Releases (test again)
 
+2/14/17: tag v2.1.8
+    c1e8b00 (HEAD, origin/master, origin/HEAD, master) Merge remote-tracking branch 'origin/master'
+    5945b59 Added useCaseTests.txt for showing the use-cases that have tests and log results.
+    1ffbc8c Bug 330:  tutorhut was not updating timers before sending the readProblem event.
+    c49adcb Bug 329:  Some logged entries did not have the isCorrect value set correctly.   All events now log the value for isCorrect based on whether the current problem is solved or not.
+    67d3535 Bug 328:   When logging attempts, no hintstep or hintid is put in the log.
+    13684d0 Bug 327:   When logging attempts, the attempt is marked isCorrect=true if the problem has been solved or if the current attempt is correct.
+    455841a Merge remote-tracking branch 'origin/master'
+    39389eb Fix bug 306; better handling of the classlessonplan table, to be followed by cleaning that table in the database
+    785aa51 added in case gson dependency is and maven stuff is in here.
+    19f36e4 BeginIntervention events were logged with probElapsedTime of 0.   Made it pull the probElapsed from the event and add to db.
+    72ac161 Fixed problem with generated test-users not having hashed passwords.
+    ff0d830 removed workspace.xml from git repo and added to gitignore.   Goes with the change in previous commit to read the db user stuff from the context.xml file.
+    c517099 adding jquery ui extensions for dialogs that close and minimize
+    b87dcd4 Merge remote-tracking branch 'origin/master'
+    539d377 adding jquery ui extensions for dialogs that close and minimize
 2/5/17: tag v2.1.7
  fad3ba9 Added extension for Jquery UI so that I can make the learning companion dialog minimize or close and then reopen automatically when it has something to say.
  6aca1a7 Fixed unreported bug where MPP would cause failure when trying or resuming a topic because the last problem mode was no longer stored in the student state because it had been reset
