@@ -65,8 +65,9 @@ Release Management (begun 11/28/16 - better late than never)
 
 
 Releases (test again)
-
-2/14/17: tag v2.1.8
+ 2/17/17: tag v2.1.8
+    I changed the database password on rose and am putting in a new context.xml that has this password in the release and have
+    removed context.xml from github and only keep local copies.
     c1e8b00 (HEAD, origin/master, origin/HEAD, master) Merge remote-tracking branch 'origin/master'
     5945b59 Added useCaseTests.txt for showing the use-cases that have tests and log results.
     1ffbc8c Bug 330:  tutorhut was not updating timers before sending the readProblem event.
