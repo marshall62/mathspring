@@ -60,7 +60,7 @@ Release Management (begun 11/28/16 - better late than never)
 
 
    To show all commits with tags since a given tag and put in file:
-     git log v2.1.5..HEAD --oneline --decorate > fixes.txt
+     git log v2.1.5..HEAD --oneline --decorate > u:/mathspring/fixes.txt
 
 
 
@@ -68,7 +68,15 @@ Releases (test again)
  2/17/17: tag v2.1.8
     I changed the database password on rose and am putting in a new context.xml that has this password in the release and have
     removed context.xml from github and only keep local copies.
-    c1e8b00 (HEAD, origin/master, origin/HEAD, master) Merge remote-tracking branch 'origin/master'
+    a6e32e8 (HEAD, origin/master, origin/HEAD, master) added pom.xmls to maven structure and hoping that this commit retains that definition
+    0a6c91f Merge remote-tracking branch 'origin/master'
+    aa726b3 added main module files to project
+    6d6318c updated ant build scripts so they are correct for both machines.
+    7cfa440 added main module files to project
+    c9b56b9 added main module back to the project and fixed ant and pom files.
+    6ffc6b9 getting rid overlay
+    4e628c3 eliminated gson from problem state files because I cannot get ant to build
+    c1e8b00 Merge remote-tracking branch 'origin/master'
     5945b59 Added useCaseTests.txt for showing the use-cases that have tests and log results.
     1ffbc8c Bug 330:  tutorhut was not updating timers before sending the readProblem event.
     c49adcb Bug 329:  Some logged entries did not have the isCorrect value set correctly.   All events now log the value for isCorrect based on whether the current problem is solved or not.
