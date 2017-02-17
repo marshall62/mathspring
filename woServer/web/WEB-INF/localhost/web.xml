@@ -59,7 +59,7 @@ The results of this go into out/artifacts/MathSpring_exploded
     <context-param>
         <param-name>wodb.datasource</param-name>
         <param-value>jdbc/wodbrose</param-value>
-        <!--<param-value>jdbc/wodbrose</param-value>-->
+        <!--<param-value>jdbc/wodblocal</param-value>-->
     </context-param>
 
     <context-param>

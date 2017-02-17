@@ -9,7 +9,11 @@
 
     <!-- tag::joda[] -->
     <dependencies>
-
+        <dependency>
+            <groupId>edu.umass.ckc</groupId>
+            <artifactId>woServer</artifactId>
+            <version>0.1.0</version>
+        </dependency>
 
     </dependencies>
     <!-- end::joda[] -->

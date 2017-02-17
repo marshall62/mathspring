@@ -40,40 +40,47 @@ public class TopicMgr {
     }
 
     public List<Topic> omitTopic (Connection conn,  int classId, int topicId) throws SQLException {
-        List<Topic> topics = DbTopics.getClassActiveTopics(conn,classId);
-        DbTopics.removeClassActiveTopics(conn,classId);
-
-        Iterator<Topic> itr = topics.iterator();
-        while (itr.hasNext()) {
-            Topic t =  itr.next();
-            if (t.getId() == topicId)  {
-                DbTopics.insertClassInactiveTopic(conn,classId,t);
-                itr.remove();
-            }
+        PreparedStatement stmt = null;
+        try {
+                    //Get the position of the topic to omit
+            String q = "SELECT @deletedSeqPos := seqPos FROM classlessonplan WHERE classId = ? AND probGroupId = ?;" +
+                    //Remove the topic from the class
+                    "DELETE FROM classlessonplan WHERE classId = ? AND probGroupId = ?;" +
+                    //Update the positions of the topics after it to fill in the gap
+                    "UPDATE classlessonplan SET seqpos = seqpos-1 WHERE classId = ? AND seqPos > @deletedSeqPos";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, classId);
+            stmt.setInt(2, topicId);
+            stmt.setInt(3, classId);
+            stmt.setInt(4, topicId);
+            stmt.setInt(5, classId);
+            stmt.executeUpdate();
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
-        DbTopics.insertTopics(conn,classId,topics);
-        return topics;
+        return DbTopics.getClassActiveTopics(conn,classId);
     }
 
     public void reactivateTopic (Connection conn,  AdminReorderTopicsEvent e) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
+            //Find the last topic's seqPos for this class so we can insert at the end
             String q = "select max(seqPos)+1 from classLessonPlan where classId=?";
-            stmt =conn.prepareStatement(q);
+            stmt = conn.prepareStatement(q);
             stmt.setInt(1,e.getClassId());
-            int seqPos=-1;
-            rs =stmt.executeQuery();
-            if (rs.next()) {
-                seqPos = rs.getInt(1);
-                if ( seqPos == 0 )
-                    seqPos=1 ;
+            int seqPos = 1;
+            rs = stmt.executeQuery();
+            if(rs.next()) {
+                seqPos = Math.max(1, rs.getInt(1));
             }
             rs.close();
             stmt.close();
-            if (isTopicInactiveInPlan(conn,e.getTopicId(),e.getClassId()))
-                updateLessonPlanMakeTopicActive(conn,e.getTopicId(),e.getClassId(),seqPos);
-            else insertLessonPlanActiveTopic(conn,e.getTopicId(),e.getClassId(),seqPos);
+            if(!isTopicInPlan(conn,e.getTopicId(),e.getClassId()))
+                insertLessonPlanActiveTopic(conn,e.getTopicId(),e.getClassId(),seqPos);
+                //If the lesson is in the plan, we shouldn't reposition it, because that would leave a gap
+//            else updateLessonPlanMakeTopicActive(conn,e.getTopicId(),e.getClassId(),seqPos);
         } finally {
             if (rs != null)
                 rs.close();
@@ -119,7 +126,7 @@ public class TopicMgr {
         }
     }
 
-    private boolean isTopicInactiveInPlan (Connection conn, int topicId, int classId) throws SQLException {
+    private boolean isTopicInPlan (Connection conn, int topicId, int classId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -130,7 +137,7 @@ public class TopicMgr {
             rs = ps.executeQuery();
             if (rs.next()) {
                 int pos = rs.getInt(1);
-                return pos < 0;
+                return pos > 0;
             }
             return false;
         } finally {

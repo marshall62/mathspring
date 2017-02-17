@@ -49,7 +49,8 @@ var NEXT_PROBLEM_INTERVENTION = "NextProblemIntervention";
 var IS_INPUT_INTERVENTION ="isInputIntervention";
 var ATTEMPT_INTERVENTION = "AttemptIntervention";
 var SAME_INTERVENTION = "SameIntervention"
-
+const LCDIALOG_WIDTH = 300;
+const LCDIALOG_HEIGHT = 700;
 var DELAY = 700, clicks = 0, timer = null; //Variables required for determining the difference between single and double clicks
 
 
@@ -309,8 +310,10 @@ function myprogress() {
 
 function callReadProb() {
     debugAlert("In  callReadProb");
-    if (isFlashProblem() || isHTML5Problem())
+    if (isFlashProblem() || isHTML5Problem())   {
+        incrementTimers(globals);
         servletGet("ReadProblem", {probElapsedTime: globals.probElapsedTime});
+    }
     if (isHTML5Problem())
         document.getElementById(PROBLEM_WINDOW).contentWindow.prob_readProblem();
     else if (isFlashProblem())
@@ -789,51 +792,90 @@ function learningCompanionDone () {
 }
 
 
+// unused.  If lc were a simple div and not an iframe, we'd load it into the div like this.
+function loadLCFile (url) {
+    $("#learningCompanionContainer").load(url);
+}
 
+// When a non-idle video is shown, we expand the LC window (in case it was shrunk or closed).
+// After 10 seconds we reveal the close button so the user can get rid of the window if necessary
 function successfulLCResult (url) {
     console.log("Showing LC " + url);
-    loadIframe(LEARNING_COMPANION_WINDOW_ID, url);
-    //$("#"+LEARNING_COMPANION_CONTAINER).dialog('option','title',files);     // shows the media clip in the title of the dialog
+    // if the lc dialog is minified, expand it to original size if not an idle message.
+    if (url.indexOf('idle.html') == -1) {
+        expandLC();
+        loadIframe(LEARNING_COMPANION_WINDOW_ID, url);
+    }
+}
 
+// When the iframe is done loading the HTML file, we need to go into it and find the canvas element and change its margins because
+// its not well laid out to fit inside the iframe without having some gray space around it.
+function lcLoaded () {
+    var iframe = document.getElementById(LEARNING_COMPANION_WINDOW);
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var canvs = innerDoc.getElementsByTagName("canvas");
+    var canv = canvs[0];
+    // TODO not working in some cases.   The iframe probably has no content at the time this was called
+    if (canv)
+        canv.style.margin = "-10px -10px";
 }
 
 function failureLCResult (url) {
     alert("Cannot find the learning companion URL " + url + "  Message: " + transients.learningCompanionTextMessage);
 }
 
+// unused
+function addCloseButton () {
+    $(".ui-dialog-titlebar-close").show();
+}
+
+// if the learning companion is being shown we need to set it to the correct state from its given state.
+function expandLC () {
+    switch ($("#"+LEARNING_COMPANION_CONTAINER).dialogExtend("state")) {
+        case "minimized":
+            $("#" + LEARNING_COMPANION_CONTAINER).dialogExtend("restore");
+            break;
+        default:
+            if  ( ! $("#" + LEARNING_COMPANION_CONTAINER).dialog("isOpen")) {
+                $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+                $("#"+LEARNING_COMPANION_CONTAINER).dialog( "option", "width", LCDIALOG_WIDTH );
+                $("#"+LEARNING_COMPANION_CONTAINER).dialog( "option", "height", LCDIALOG_HEIGHT );
+            }
+    }
+
+}
 
 function showLearningCompanion (json) {
 
     var files = json.learningCompanionFiles;
+    var file = undefined;
     var url;
     transients.learningCompanionTextMessage = json.lcTextMessage;
     if (files != undefined && files != null)  {
-
-        $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
+        if (files instanceof Array)
+            file = files[0];
+        else file = files;
     }
     else return;
-//    alert("learning companion file: " + files);
-    if (files instanceof Array)    {
-        if (files[0] != globals.learningCompanionClip) {
-            globals.learningCompanionClip = files[0];
-            url = sysGlobals.problemContentPath + "/LearningCompanion/" + files[0];
-            console.log("Attempting to show LC animation: " + url);
-            httpHead(url,successfulLCResult,failureLCResult) ;
-//            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files[0],260,600);
 
-        }
+    if (file != globals.learningCompanionClip) {
+        globals.learningCompanionClip = file;
+        url = sysGlobals.problemContentPath + "/LearningCompanion/" + file;
+        console.log("Attempting to show LC animation: " + url);
+        httpHead(url, successfulLCResult, failureLCResult);
 
-    }
-    else {
-        if (files != globals.learningCompanionClip) {
-            globals.learningCompanionClip = files;
-            url = sysGlobals.problemContentPath + "/LearningCompanion/" + files;
-            console.log("Attempting to show LC animation: " + url);
-            httpHead(url, successfulLCResult,failureLCResult);
 //            newBrowserWindow(sysGlobals.problemContentPath + "/LearningCompanion/" + files, 260,600);
 
-        }
+
     }
+}
+
+// when the lc dialog is closed we need remove the src of the iframe because
+// jquery retriggers the HTML5 file within to begin playing again.
+function lcBeforeClose (event, ui) {
+    // alert("Closing the LC Iframe");
+    $(LEARNING_COMPANION_WINDOW_ID).attr("src","")
+
 }
 
 
@@ -874,26 +916,92 @@ function exampleDialogCloseHandler () {
 
 var DELAY = 700, clicks = 0, timer = null;
 function clickHandling () {
-    var agreed=false;
+    var width = Math.min(document.documentElement.clientWidth, window.innerWidth || 0);
+    var height = Math.min(document.documentElement.clientHeight, window.innerHeight || 0);
+    var lcx = width - 268 - 10;  // subtract off the width of the learning companion div + some extra for its close button
+    var agreed = false;
     globals.clickTime = new Date().getTime();
-    $("#"+LEARNING_COMPANION_CONTAINER).dialog(  {
+
+    $("#" + LEARNING_COMPANION_CONTAINER).dialog({
+            classes: {
+                "ui-dialog-titlebar": "lcdialogTitleBar"
+            },
             autoOpen: false,
-            width:300,
-            height: 700,
+            resizable: true,
+            minHeight: 100,
+            minWidth: 100,
+            width: LCDIALOG_WIDTH,
+            height: LCDIALOG_HEIGHT,
             closeOnEscape: false,
             position: ['right', 'bottom'],
             show: {
                 effect: "blind",
                 duration: 1000
             },
+            // open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+            // when close dialog remove iframe contents so it doesn't trigger playing it again (a bug)
+            beforeClose: lcBeforeClose,
             hide: {
                 effect: "blind",
 //                effect: { effect: "scale", scale: "both", percent: "5", origin: "bottom", direction: "vertical" },
                 duration: 1000
-            },
-            open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); }
+            }
+
         }
-    );
+    )
+        // based on https://github.com/ROMB/jquery-dialogextend
+        .dialogExtend({
+            "closable": true,
+            "maximizable": false,
+            "minimizable": true,
+            "collapsable": false,
+            "dblclick": "collapse",
+            "titlebar": "transparent",
+            "minimizeLocation": "right",
+            "icons": {
+                "close": "ui-icon-circle-close",
+                "maximize": "ui-icon-circle-plus",
+                "minimize": "ui-icon-circle-minus",
+                "collapse": "ui-icon-triangle-1-s",
+                "restore": "ui-icon-bullet"
+            },
+            "load": function (evt, dlg) {
+                return;
+            },
+            "beforeCollapse": function (evt, dlg) {
+                return;
+            },
+            "beforeMaximize": function (evt, dlg) {
+                return;
+            },
+            "beforeMinimize": function (evt, dlg) {
+                return;
+            },
+            "beforeRestore": function (evt, dlg) {
+                return;
+            },
+            "collapse": function (evt, dlg) {
+                return;
+            },
+            "maximize": function (evt, dlg) {
+                return;
+            },
+            "minimize": function (evt, dlg) {
+                return;
+            },
+            "restore": function (evt, dlg) {
+                return;
+            }
+        });
+
+    // $("#"+LEARNING_COMPANION_CONTAINER + " .ui-dialog-titlebar").css({
+    //     "background-color" : "transparent",
+    //     "border" : "0px none"
+    // });
+
+    // $( "#"+LEARNING_COMPANION_CONTAINER ).on( "dialogopen", function( event, ui ) {} );
+           //   This will hide the title bar on just the lc dialog but we want the close button too so can't
+    // $(".ui-dialog-titlebar").hide();
 
 //    $("#"+LEARNING_COMPANION_CONTAINER).draggable(
 //        {
@@ -988,6 +1096,9 @@ function clickHandling () {
         modal:true,
         width: 500,
         height:500,
+        open: function (event, ui) {
+            $(".ui-dialog-titlebar-close", this.parentNode).hide();
+        } ,
         buttons: [
             {
                 id: "yesButton",
@@ -1013,8 +1124,8 @@ function clickHandling () {
         modal:true,
         width:650,
         height:675,
-        open: function () {
-            $(".ui-dialog-titlebar-close").hide();
+        open: function (event, ui) {
+            $(".ui-dialog-titlebar-close", this.parentNode).hide();
             sysGlobals.exampleWindowActive = true;
             $(EXAMPLE_CONTAINER_DIV_ID).css('overflow', 'hidden'); //this line does the actual hiding
             var id_exists = document.getElementById('play_button');

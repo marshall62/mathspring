@@ -10,7 +10,15 @@ import ckc.servlet.servbase.ServletParams;
  * To change this template use File | Settings | File Templates.
  */
 public class EndInterventionEvent extends TutorHutEvent {
+
+    private int probElapsedTime;
+
    public EndInterventionEvent(ServletParams p) throws Exception {
        super(p);
+       probElapsedTime = p.getInt("probElapsedTime",0);
    }
+
+    public int getProbElapsedTime() {
+        return probElapsedTime;
+    }
 }

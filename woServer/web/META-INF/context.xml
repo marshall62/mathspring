@@ -17,7 +17,7 @@
     <Resource name="jdbc/wodbrose" type="javax.sql.DataSource"
               auth="Container" description="Mysql database for wayang"
               maxActive="100" maxIdle="30" maxWait="10000" username="WayangServer"
-              password="jupiter" removeAbandoned="true" removeAbandonedTimeout="60"
+              password="m4thspr1ng!" removeAbandoned="true" removeAbandonedTimeout="60"
               logAbandoned="true"  testWhileIdle="true"
               testOnBorrow="true"
               testOnReturn="true"

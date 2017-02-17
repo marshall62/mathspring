@@ -691,38 +691,6 @@ public class SessionManager {
     }
 
 
-    public static void loadDbDriver() {
-        String dbDriver = "com.mysql.jdbc.Driver";
-        try {
-            Driver d = (Driver) Class.forName(dbDriver).newInstance(); // MySql
-            System.out.println(d);
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    public static Connection getAConnection() throws SQLException {
-        String dbPrefix = "jdbc:mysql";
-        String dbHost = Settings.dbhost;
-        String dbSource = "wayangoutpostdb";
-        String dbUser = "WayangServer";
-        String dbPassword = "jupiter";
-
-        String url;
-        if (dbPrefix.equals("jdbc:mysql"))
-            url = dbPrefix + "://" + dbHost + "/" + dbSource + "?user=" + dbUser + "&password=" + dbPassword; // preferred by MySQL
-        else // JDBCODBCBridge
-            url = dbPrefix + ":" + dbSource;
-//        url = "jdbc:mysql://localhost:3306/test";
-//        url = "jdbc:mysql://localhost/rashidb"; // this works
-        try {
-            logger.info("connecting to db on url " + url);
-            return DriverManager.getConnection(url, dbUser, dbPassword);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            throw e;
-        }
-    }
 
     private void checkSessionTimes(Connection conn, int id) throws SQLException {
         String s = "select beginTime, endTime, lastAccessTime from session where id=?";
@@ -743,8 +711,7 @@ public class SessionManager {
 
     public static void main(String[] args) {
         try {
-            loadDbDriver();
-            Connection conn = getAConnection();
+            Connection conn = DbUtil.getAConnection();
             SessionManager smgr = new SessionManager(conn);
             smgr.checkSessionTimes(conn, 15574);
 //            DbSession.cleanupStaleSessions(conn);

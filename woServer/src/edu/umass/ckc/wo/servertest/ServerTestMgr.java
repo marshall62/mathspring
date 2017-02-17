@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.servertest;
 
 import edu.umass.ckc.wo.db.DbUser;
+import edu.umass.ckc.wo.db.DbUtil;
 import edu.umass.ckc.wo.event.NavigationEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
@@ -51,8 +52,8 @@ public class ServerTestMgr {
 
     public void init() {
         try {
-            SessionManager.loadDbDriver();
-            this.conn = SessionManager.getAConnection();
+            DbUtil.loadDbDriver();
+            this.conn = DbUtil.getAConnection();
             this.smgr = new SessionManager(conn);
             this.conn = conn;
         } catch (SQLException e) {

@@ -62,7 +62,6 @@ public class TopicEditorHandler {
                 topicMgr.reactivateTopic(conn, ee);
                 topics = DbTopics.getClassActiveTopics(conn,ee.getClassId());
             }
-//            List<Topic> activetopics = DbTopics.getClassActiveTopics(conn,e.getClassId());
             params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
             DbClass.setProblemSelectorParameters(conn,e.getClassId(), params);
         }

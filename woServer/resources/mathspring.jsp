@@ -19,12 +19,14 @@
     <link href="css/button.css" rel="stylesheet" type="text/css">
     <link href="css/simple-slider.css" rel="stylesheet" type="text/css" />
 
-
+    <link href="css/tutorhut.css" rel="stylesheet" type="text/css">
     <%--<link href="css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet">--%>
     <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     <script src="js/jquery-1.10.2.js"></script>
     <%--<script src="js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>--%>
     <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="js/jquery.dialogextend.min.js"></script>
+
     <script type="text/javascript" src="js/simple-slider.js"></script>
 
     <script type="text/javascript" src="js/tutorutils.js"></script>
@@ -130,6 +132,11 @@
         }
 
         .empty {
+        }
+
+        .lcdialogTitleBar {
+            background-color: transparent;
+            border: 0px none;
         }
 
     </style>
@@ -281,11 +288,13 @@
             <div  id="learningCompanionContainer">
                 <iframe id="learningCompanionWindow"
                         name="lciframe"
-                        width="260"
-                        height="600"
+                        width="258"
+                        height="588"
                         src="${learningCompanionMovie}"
                         frameborder="yes"
-                        scrolling="no">
+                        scrolling="no"
+                        onload="lcLoaded(this)"
+                        >
                 </iframe>
             </div>
 

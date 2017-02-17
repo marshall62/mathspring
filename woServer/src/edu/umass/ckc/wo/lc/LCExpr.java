@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.lc;
 
 import edu.umass.ckc.wo.db.DbPedagogy;
+import edu.umass.ckc.wo.db.DbUtil;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.event.tutorhut.AttemptEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
@@ -188,7 +189,7 @@ public class LCExpr extends LCRuleComponent {
     public static void main(String[] args) {
         Connection conn = null;
         try {
-            conn = SessionManager.getAConnection();
+            conn = DbUtil.getAConnection();
             Settings.lessonMap = DbPedagogy.buildAllLessons(conn);
             Settings.loginMap = DbPedagogy.buildAllLoginSequences(conn);
             Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(conn,null);

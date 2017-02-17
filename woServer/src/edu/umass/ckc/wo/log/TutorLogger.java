@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.log;
 
+import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.NavigationEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.event.tutorhut.*;
@@ -262,8 +263,12 @@ public class TutorLogger {
 
     public void logAttempt(AttemptEvent e, AttemptResponse r) throws Exception {
         String curHint = smgr.getStudentState().getCurHint();
-        insertLogEntry(RequestActions.ATTEMPT,e.getUserInput(),r.isCorrect(),e.getElapsedTime(),e.getProbElapsedTime(),
-                (curHint!= null && curHint.equals("0")) ? null : curHint ,smgr.getStudentState().getCurHintId(),r.getCharacterControl(),null, getTopic(), e.getClickTime());
+        // Bug 327:  Ivon complains that wrong attempts are graded as incorrect after the problem has been solved.  So now attempts
+        // are marked as isCorrect=true once the problem is solved.
+        // Bug 328:  Ivon complains that attempts should not have a hintStep logged.  Wants NULL.
+        boolean isProbSolved = smgr.getStudentState().isProblemSolved() || r.isCorrect();
+        insertLogEntry(RequestActions.ATTEMPT,e.getUserInput(),isProbSolved,e.getElapsedTime(),e.getProbElapsedTime(),
+                null ,-1,r.getCharacterControl(),null, getTopic(), e.getClickTime());
     }
 
 
@@ -341,37 +346,37 @@ public class TutorLogger {
     }
 
     public void logEliminateCharacter(EliminateCharacterEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.ELIMINATE_CHARACTER,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.ELIMINATE_CHARACTER,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
     public void logShowCharacter(ShowCharacterEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.SHOW_CHARACTER,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(),getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.SHOW_CHARACTER,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(),getTopic(), e.getClickTime());
     }
 
     public void logMuteCharacter(MuteCharacterEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.MUTE_CHARACTER,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.MUTE_CHARACTER,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
     public void logUnMuteCharacter(UnMuteCharacterEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.UN_MUTE_CHARACTER,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.UN_MUTE_CHARACTER,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
 
     public void logReadProblem(ReadProblemEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.READ_PROBLEM,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.READ_PROBLEM,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
 
     public void logShowIntervention(BeginInterventionEvent e, Response r, String intervention) throws Exception {
-        insertLogEntry(RequestActions.SHOW_INTERVENTION,null, smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),0,null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.SHOW_INTERVENTION,null, smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),intervention, getTopic(), e.getClickTime());
     }
 
     public void logEndIntervention(EndInterventionEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.END_INTERVENTION,null,false,e.getElapsedTime(),0,null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.END_INTERVENTION,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
 
     public void logBeginExample(BeginExampleEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.BEGIN_EXAMPLE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.BEGIN_EXAMPLE,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
 
     public void logEndExample(EndExampleEvent e, Response r) throws Exception {
-        insertLogEntry(RequestActions.END_EXAMPLE,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
+        insertLogEntry(RequestActions.END_EXAMPLE,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,r.getCharacterControl(),r.logEventName(), getTopic(), e.getClickTime());
     }
 
 
@@ -381,7 +386,7 @@ public class TutorLogger {
 
     public void logBeginExternalActivity(BeginExternalActivityEvent e, Response r) throws Exception {
         if (!hasOpenBegin(conn, e))
-            insertLogEntry(RequestActions.BEGIN_XACT,899,null,false,e.getElapsedTime(),0,null,-1,null,r.logEventName(),e.getXactId(),"externalactivity", getTopic(), e.getClickTime());
+            insertLogEntry(RequestActions.BEGIN_XACT, DbProblem.DUMMY_PROBLEM_ID,null,false,e.getElapsedTime(),0,null,-1,null,r.logEventName(),e.getXactId(),"externalactivity", getTopic(), e.getClickTime());
     }
 
     /**
@@ -438,15 +443,15 @@ public class TutorLogger {
     }
 
     public void logShowInstructions(ShowInstructionsEvent e, Response r) throws Exception {
-        insertLogEntry("ShowInstructions",null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,null,null,smgr.getStudentState().getCurTopic(), e.getClickTime());
+        insertLogEntry("ShowInstructions",null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,null,null,smgr.getStudentState().getCurTopic(), e.getClickTime());
     }
 
     public void logIntraProblemEvent (IntraProblemEvent e, String action, Response r) throws Exception {
-        insertLogEntry(action,null,false,e.getElapsedTime(),e.getProbElapsedTime(),null,-1,null,null,smgr.getStudentState().getCurTopic(), e.getClickTime());
+        insertLogEntry(action,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),e.getProbElapsedTime(),null,-1,null,null,smgr.getStudentState().getCurTopic(), e.getClickTime());
     }
 
     public void logHomeEvent(HomeEvent e) throws Exception {
-        insertLogEntry(RequestActions.HOME,null,false,e.getElapsedTime(),0,null,-1,null,null,
+        insertLogEntry(RequestActions.HOME,null,smgr.getStudentState().isProblemSolved(),e.getElapsedTime(),0,null,-1,null,null,
                 -1,null,smgr.getStudentState().getCurTopic(), e.getClickTime());
     }
 

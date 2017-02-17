@@ -30,6 +30,11 @@
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
         </dependency>
+        <dependency>
+            <groupId>edu.umass.ckc</groupId>
+            <artifactId>emailer</artifactId>
+            <version>0.1.0</version>
+        </dependency>
 
     </dependencies>
     <!-- end::joda[] -->

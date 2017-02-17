@@ -12,11 +12,17 @@ import ckc.servlet.servbase.ServletParams;
 public class BeginInterventionEvent extends TutorHutEvent {
 
    private String interventionType;
+   private int probElapsedTime;
 
    public BeginInterventionEvent (ServletParams p) throws Exception {
        super(p);
        interventionType = p.getString("interventionType");
+       probElapsedTime = p.getInt("probElapsedTime",0);
    }
+
+    public int getProbElapsedTime() {
+        return probElapsedTime;
+    }
 
     public String getInterventionType () {
         return this.interventionType;
