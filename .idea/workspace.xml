@@ -6,23 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/buildSugaree.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" afterPath="$PROJECT_DIR$/woServer/resources/mathspring/mscontent" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="added main module back to the project and fixed ant and pom files.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/module_main.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProblemSnapshotInserter/module_problemsnapshotinserter.xml" afterPath="$PROJECT_DIR$/ProblemSnapshotInserter/module_problemsnapshotinserter.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.properties" afterPath="$PROJECT_DIR$/build.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/buildCerulean.properties" afterPath="$PROJECT_DIR$/buildCerulean.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/buildCerulean.xml" afterPath="$PROJECT_DIR$/buildCerulean.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/buildSugaree.xml" afterPath="$PROJECT_DIR$/buildSugaree.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/emailer/module_emailer.xml" afterPath="$PROJECT_DIR$/emailer/module_emailer.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/releaseNotes.txt" afterPath="$PROJECT_DIR$/releaseNotes.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/servletFramework/module_servletframework.xml" afterPath="$PROJECT_DIR$/servletFramework/module_servletframework.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/module_woserver.xml" afterPath="$PROJECT_DIR$/woServer/module_woserver.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/woServer.iml" afterPath="$PROJECT_DIR$/woServer/woServer.iml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -1770,14 +1757,7 @@
       <workItem from="1478638483462" duration="3798000" />
       <workItem from="1478649028135" duration="1168000" />
       <workItem from="1479400951062" duration="11124000" />
-      <workItem from="1486166181370" duration="12444000" />
-    </task>
-    <task id="LOCAL-00171" summary="Bug fixes from Melissa (untested) to fix some issues in collab">
-      <created>1426539797368</created>
-      <option name="number" value="00171" />
-      <option name="presentableId" value="LOCAL-00171" />
-      <option name="project" value="LOCAL" />
-      <updated>1426539797368</updated>
+      <workItem from="1486166181370" duration="12703000" />
     </task>
     <task id="LOCAL-00172" summary="More refactoring to eliminate topics from BasePedModel">
       <created>1426543061060</created>
@@ -2115,11 +2095,18 @@
       <option name="project" value="LOCAL" />
       <updated>1486425838161</updated>
     </task>
-    <option name="localTasksCounter" value="220" />
+    <task id="LOCAL-00220" summary="added main module back to the project and fixed ant and pom files.">
+      <created>1487338946782</created>
+      <option name="number" value="00220" />
+      <option name="presentableId" value="LOCAL-00220" />
+      <option name="project" value="LOCAL" />
+      <updated>1487338946782</updated>
+    </task>
+    <option name="localTasksCounter" value="221" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="274123000" />
+    <option name="totallyTimeSpent" value="274382000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2132,7 +2119,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="21" y="34" width="1662" height="1011" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32629108" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -2148,7 +2135,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19600499" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19600499" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22032829" sideWeight="0.75179" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2216418" sideWeight="0.2964427" order="3" side_tool="true" content_ui="tabs" />
@@ -2234,7 +2221,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Removed survey buttons on login page" />
     <MESSAGE value="Fixed lastIntervention being saved when FinishCollaborationIntervention is returned" />
     <MESSAGE value="Fixed bug in ProblemDiffuclty report so it only counts problmes that are shown as practice problems." />
     <MESSAGE value="Fixed null pointer bug in collabIS" />
@@ -2259,7 +2245,8 @@
     <MESSAGE value="fixed bugs in pedagogy parsing so it doesn't care about old fields that aren't used anymore" />
     <MESSAGE value="Eliminated 4th OPEN question in AskEmotion." />
     <MESSAGE value="release v2.1.7" />
-    <option name="LAST_COMMIT_MESSAGE" value="release v2.1.7" />
+    <MESSAGE value="added main module back to the project and fixed ant and pom files." />
+    <option name="LAST_COMMIT_MESSAGE" value="added main module back to the project and fixed ant and pom files." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
