@@ -18,6 +18,7 @@ import java.sql.SQLException;
  */
 public class MathAttitudes extends LoginInterventionSelector {
     private static final String JSP = "mathAttitudes.jsp";
+    private static final String JSP_NEW = "mathAttitudes_new.jsp";
 
     // This intervention is declared as run-once so it gets entered into the RunOnceInterventionLog once it plays for
     // a student.
@@ -32,7 +33,8 @@ public class MathAttitudes extends LoginInterventionSelector {
             return null;
         else {
             super.selectIntervention(e);
-            return new LoginIntervention(JSP);
+            return new LoginIntervention(
+                "b".equals(this.servletInfo.getRequest().getParameter("var")) ? JSP_NEW : JSP);
         }
     }
 
@@ -55,6 +57,6 @@ public class MathAttitudes extends LoginInterventionSelector {
 
 
     public String f (SessionManager smgr) {
-        return JSP;
+        return "b".equals(this.servletInfo.getRequest().getParameter("var")) ? JSP_NEW : JSP;
     }
 }

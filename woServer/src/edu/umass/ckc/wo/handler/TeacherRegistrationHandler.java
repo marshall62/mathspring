@@ -31,8 +31,8 @@ public class TeacherRegistrationHandler {
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("isAdmin",adminId != null ? true : false);
             req.getRequestDispatcher("b".equals(req.getParameter("var"))
-                    ? "/teacherTools/teacherRegister.jsp"
-                    : "/teacherTools/teacherRegister_new.jsp").forward(req ,resp);
+                    ? "/teacherTools/teacherRegister_new.jsp"
+                    : "/teacherTools/teacherRegister.jsp").forward(req ,resp);
         }
         else if (!event.getPw1().equals(event.getPw2()))
         {
@@ -40,8 +40,8 @@ public class TeacherRegistrationHandler {
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("isAdmin",adminId != null ? true : false);
             req.getRequestDispatcher("b".equals(req.getParameter("var"))
-                    ? "/teacherTools/teacherRegister.jsp"
-                    : "/teacherTools/teacherRegister_new.jsp").forward(req ,resp);
+                    ? "/teacherTools/teacherRegister_new.jsp"
+                    : "/teacherTools/teacherRegister.jsp").forward(req ,resp);
         }
         // show userName created and give a button to proceed to class creation
         else {

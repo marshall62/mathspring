@@ -94,9 +94,9 @@ public class AdminToolLoginHandler {
         }
         else if (event.isReg()) {
             servletRequest.setAttribute("message","");
-            servletRequest.getRequestDispatcher("a".equals(servletRequest.getParameter("var"))
-                    ? "/teacherTools/teacherRegister.jsp"
-                    : "/teacherTools/teacherRegister_new.jsp").forward(servletRequest,servletResponse);
+            servletRequest.getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                    ? "/teacherTools/teacherRegister_new.jsp"
+                    : "/teacherTools/teacherRegister.jsp").forward(servletRequest,servletResponse);
 
         }
     }
