@@ -43,7 +43,7 @@
                            <input type="text" class="form-control" id="age" placeholder="Age" name="age">
                         </div><!-- form-group -->
                         <div class="form-group col-sm-6">
-                            <select class="form-control" id="sel1" name="gender">
+                            <select class="form-control" id="gender" name="gender">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>

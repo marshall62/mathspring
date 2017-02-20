@@ -7,10 +7,10 @@
 
             </intervention>
 
-            <intervention on="Login" weight="2" class="GetMathAttitudes" showOnce="true">
-                <jsp>loginGetMathAttitudes.jsp</jsp>
+            <!--<intervention on="Login" weight="2" class="GetMathAttitudes" showOnce="true">-->
+                <!--<jsp>loginGetMathAttitudes.jsp</jsp>-->
 
-            </intervention>
+            <!--</intervention>-->
 
             <intervention on="Login" weight="3" class="GetNeighbors" showOnce="true">
                 <jsp>loginGetNeighbors.jsp</jsp>

@@ -129,7 +129,7 @@
 <header class="site-header" role="banner">
     <div id="wrapper">
         <div class="navbar-header">
-            <img class="logo" src="img/ms_mini_logo_new.png" alt="MathSpring Logo">
+            <img class="logo goto-dashboard-js" src="img/ms_mini_logo_new.png" alt="MathSpring Logo">
         </div><!-- navbar-header -->
 
         <nav id="main_nav" class="nav navbar-nav navbar-right">
@@ -223,16 +223,16 @@
 
                     <ul class="dropdown-menu">
                         
-                        <li><a id="example" href="">Show Example</a></li>
+                        <li><a id="example" href="#">Show Example</a></li>
                         <li role="separator" class="divider"></li>
 
-                        <li><a id="video" href="">Show Video</a></li>
+                        <li><a id="video" href="#">Show Video</a></li>
                         <li role="separator" class="divider"></li>
 
-                        <li><a id="formulas" href="">Fomular</a></li>
+                        <li><a id="formulas" href="#">Fomular</a></li>
                         <li role="separator" class="divider"></li>
 
-                        <li><a id="glossary" href="">Glossary</a></li>
+                        <li><a id="glossary" href="#">Glossary</a></li>
                     </ul><!-- dropdown-menu -->
                 </div>
             </div>
@@ -250,7 +250,7 @@
                     </div>
                     <div class="col-sm-3 col-md-offset-1 main-tutoring-button">
                         <a id="nextProb" class="problem-control-button">
-                            <img src="img/right-arrow.svg" alt="">Next Problem
+                            <img src="img/right-arrow.svg" alt="">New Problem
                         </a>
                     </div>
                 </div>

@@ -312,6 +312,7 @@ function myprogress() {
 function callReadProb() {
     debugAlert("In  callReadProb");
     if (isFlashProblem() || isHTML5Problem()) {
+        incrementTimers(globals);
         servletGet("ReadProblem", {probElapsedTime: globals.probElapsedTime});
     }
     if (isHTML5Problem()) {
@@ -592,8 +593,12 @@ function showHTMLProblem(pid, solution, resource, mode) {
 
 // On EndProblem event we know the effort of the last problem so we get it and display it.
 function processEndProblem(responseText, textStatus, XMLHttpRequest) {
-    var activity = JSON.parse(responseText);
-    showEffortInfo(activity.effort);
+    try {
+        var activity = JSON.parse(responseText);
+        showEffortInfo(activity.effort);
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 // When a TimeoutIntervention gets a result from the server, this processes it.
@@ -639,6 +644,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
         // send EndEvent for previous problem
         sendEndEvent(globals);
         hideHTMLProblem(false);
+        $flashContainer.hide();
         var url = activity.endPage;
         loadIframe(PROBLEM_WINDOWID, url);
     } else {
@@ -1094,6 +1100,7 @@ function clickHandling() {
     $("#selectProb").click(selectProblemDialog);
     $("#prefs").click(showUserPreferences);
     $("#home").click(showDashboard);
+    $(".goto-dashboard-js").click(showDashboard);
     $("#instructions").click(instructions);
 
     $("#myProg").click(function () {

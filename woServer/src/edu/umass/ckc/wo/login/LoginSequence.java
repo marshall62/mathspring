@@ -87,11 +87,16 @@ public class LoginSequence {
     public void processAction (ServletParams params, LoginIntervention li) throws Exception {
 
         if (li != null) {
+            final boolean isUsingNewUI = "b".equals(servletInfo.getRequest().getParameter("var"));
             String innerJSP = li.getView();
             String skin = params.getString(SKIN);
-            String loginJSP="login/logink12Outer.jsp" ;
+            String loginJSP = isUsingNewUI
+                ? "login/logink12Outer_new.jsp"
+                : "login/logink12Outer.jsp";
             if (skin != null && skin.equalsIgnoreCase("adult"))
-                loginJSP = "login/loginAdultOuter.jsp";
+                loginJSP = isUsingNewUI
+                    ? "login/loginAdultOuter_new.jsp"
+                    : "login/loginAdultOuter.jsp";
             servletInfo.getRequest().setAttribute(INNERJSP,innerJSP);
             servletInfo.getRequest().setAttribute(SERVLET_CONTEXT,servletInfo.getServletContext().getContextPath());
             servletInfo.getRequest().setAttribute(SERVLET_NAME,servletInfo.getServletName());
