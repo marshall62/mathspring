@@ -258,6 +258,14 @@
     <pathelement location="${path.variable.maven_repository}/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar"/>
   </path>
   
+  <path id="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar"/>
+  </path>
+  
   <path id="library.maven:_org.glassfish.hk2.external:aopalliance-repackaged:2.4.0-b10.classpath">
     <pathelement location="${path.variable.maven_repository}/org/glassfish/hk2/external/aopalliance-repackaged/2.4.0-b10/aopalliance-repackaged-2.4.0-b10.jar"/>
   </path>
@@ -495,17 +503,17 @@
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
-    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
     <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
+    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
-    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
     <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
+    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
   </target>
   
   <target name="artifact.woserver:webforrose_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForRose exploded&#39; artifact">
