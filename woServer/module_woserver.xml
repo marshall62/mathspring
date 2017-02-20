@@ -78,6 +78,8 @@
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
   
   <path id="woserver.runtime.production.module.classpath">
@@ -144,6 +146,8 @@
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
   
   <path id="woserver.module.classpath">
@@ -212,6 +216,8 @@
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
   
   <path id="woserver.runtime.module.classpath">
@@ -281,6 +287,8 @@
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
   
   
