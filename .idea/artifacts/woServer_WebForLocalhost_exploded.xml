@@ -49,6 +49,8 @@
           <element id="library" level="project" name="Maven: com.sun.jersey:jersey-server:1.19" />
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
           <element id="library" level="project" name="Maven: org.json:json:20140107" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
         </element>
         <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" />
       </element>
