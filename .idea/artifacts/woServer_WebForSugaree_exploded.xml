@@ -43,6 +43,8 @@
           <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.4c" />
           <element id="artifact" artifact-name="emailer:jar" />
           <element id="artifact" artifact-name="servletFramework:jar" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
         </element>
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/woServer/resources" />
