@@ -56,7 +56,7 @@
                     <div class="col-sm-6">
                         <form
                                 method="post"
-                                action="${pageContext.request.contextPath}/WoAdmin?action=AdminTeacherLogin">
+                                action="${pageContext.request.contextPath}/WoAdmin?action=AdminTeacherLogin&var=b">
                             <button
                                     class="btn btn-primary btn-lg btn-block signup-btn teacher-sign-up-btn"
                                     type="submit"
