@@ -107,6 +107,11 @@
             $('.ui-dialog-buttonset > button').each(function() {
                 $(this).addClass('btn btn-lg mathspring-btn');
             });
+            if (!globals.showAnswer) {
+                $(".dev-view").remove();
+            } else {
+                $(".dev-view").show();
+            }
         });
     </script>
 
@@ -280,6 +285,18 @@
         </div>
     </div>
 </section>
+
+<div class="dev-view">
+    <p>
+        Developer Info >>
+        <span class="dev-view-label">Problem ID: </span>
+        <span id="pid">${probId}</span> ||
+        <span class="dev-view-label">Effort: </span>
+        <span id="effort">${effort}</span> ||
+        <span class="dev-view-label">Answer: </span>
+        <span id="answer">${globals.answer}</span>
+    </p>
+</div>
 
 <div style="z-index:100;" id="instructionsDialog" title="Instructions">
     <p id="instructionsP">${instructions}</p>

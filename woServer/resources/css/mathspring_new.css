@@ -152,3 +152,20 @@
     border: none;
     background: #2ECC71;
 }
+
+.dev-view {
+    display: none; /* Always hidden initially */
+    padding: 0 10px;
+    line-height: 50px;
+    vertical-align: middle;
+    background: #000;
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    bottom: 0;
+    color: #fff;
+}
+
+.dev-view-label {
+    font-weight: bold;
+}

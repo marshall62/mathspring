@@ -194,7 +194,7 @@ function showEffortInfo(effort) {
 }
 
 function showAnswer(ans) {
-    $("#answer").text("Answer: " + ans);
+    $("#answer").text(ans);
 }
 
 function showVarBindings(varBindings) {
