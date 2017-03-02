@@ -7,6 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="mainPageMargin">
+  <style type="text/css">@import url("css/dragdroptable.css");</style>
   <div id="Layer1" align="center" >
       <p class="a2"><b>Active Topic Order</b></p>
       <p>Topics will be presented in the order below.</p>
