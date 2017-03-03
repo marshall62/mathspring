@@ -237,25 +237,30 @@
     </div>
     <div class="container">
         <div class="content">
-
-            <ul class="buttons">
-                <li class="prob1">
-                    <a id="nextProb" href="#" class="button">New Problem</a>
-                </li>
-                <li class="inst2">
-                    <a id="instructions" href="#" class="button">Instructions</a>
-                </li>
-                <li id="mppButton" class="inst2">
-                    <a id="myProg" href="#" class="button">My Progress</a>
-                </li>
-                <c:if test="${showProblemSelector}">
-                    <li id="selectProblemButton" class="probSel">
-                        <a id="selectProb" href="#" class="button">Select Problem</a>
-                        <a id="getEventLogs" href="#" class="button">View Event Log</a>
+            <div>
+                <ul class="buttons">
+                    <li class="prob1">
+                        <a id="nextProb" href="#" class="button">New Problem</a>
                     </li>
-                </c:if>
+                    <li class="inst2">
+                        <a id="instructions" href="#" class="button">Instructions</a>
+                    </li>
+                    <li id="mppButton" class="inst2">
+                        <a id="myProg" href="#" class="button">My Progress</a>
+                    </li>
+                    <c:if test="${showProblemSelector}">
+                        <li id="selectProblemButton" class="inst2">
+                            <a id="selectProb" href="#" class="button">Select Problem</a>
+                        </li>
 
-            </ul>
+                        <li id="selectProblemButton" class="inst2">
+                            <a id="getEventLogs" href="#" class="button">View Event Log</a>
+                        </li>
+
+                    </c:if>
+
+                </ul>
+            </div>
 
             <div class="leftCol">
                 <div class="mntop">
