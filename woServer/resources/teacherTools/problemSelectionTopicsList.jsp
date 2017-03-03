@@ -7,6 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="mainPageMargin">
+  <style type="text/css">@import url("css/dragdroptable.css");</style>
   <div id="Layer1" align="center">
       <p class="a2"><b>Problem Topic Selection</b></p>
       <p>To select problems you must click on a topic below.</p>

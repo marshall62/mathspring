@@ -11,6 +11,7 @@
 
 
 <div id="Layer1" align="center">
+    <style type="text/css">@import url("css/dragdroptable.css");</style>
     <p class="a2"><b>Problem Selection</b></p>
     <div align="left" style="margin-left:15px">
         <b>Topic: </b><c:out value="${topicName}"/><br/>
