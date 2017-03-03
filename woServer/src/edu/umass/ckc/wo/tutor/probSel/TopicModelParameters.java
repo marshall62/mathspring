@@ -101,6 +101,24 @@ public class TopicModelParameters extends LessonModelParameters {
         return this;
     }
 
+    // USed to take in inputs from the teacher tools where we set the class config topic (lesson) parameters that get
+    // inserted into the classconfig table.
+    public TopicModelParameters(long maxTimeInTopic, int contentFailureThreshold, double topicMastery, int minNumberProbs,
+                                long minTimeInTopic, double difficultyRate,  int maxNumberProbs, long externalActivityWaitTime
+                                ) {
+        this.maxProbs = maxNumberProbs;
+        this.maxTimeMs = maxTimeInTopic;
+        this.contentFailureThreshold = contentFailureThreshold;
+        this.desiredMastery = topicMastery;
+        this.minProbs= minNumberProbs;
+        this.minTimeMs= minTimeInTopic;
+        this.difficultyRate= difficultyRate;
+        this.topicIntroFrequency = null;
+        this.topicExampleFrequency = null;
+        this.lessonStyle = "topics";
+        this.externalActivityWaitTimeMs = externalActivityWaitTime;
+    }
+
 
 
     // Called with parameters read from TeacherAdmin's class config

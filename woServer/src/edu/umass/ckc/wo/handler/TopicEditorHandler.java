@@ -49,7 +49,6 @@ public class TopicEditorHandler {
 
     public View handleEvent(ServletContext sc, Connection conn, AdminEditTopicsEvent e, HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
         List<Topic> topics = null;
-        PedagogicalModelParameters params = null;
         TopicModelParameters classParams= (TopicModelParameters) DbClass.getClassConfigLessonModelParameters(conn, e.getClassId());
         if (e instanceof AdminReorderTopicsEvent) {
             TopicMgr topicMgr = new TopicMgr();
@@ -65,31 +64,20 @@ public class TopicEditorHandler {
                 topicMgr.reactivateTopic(conn, ee);
                 topics = DbTopics.getClassActiveTopics(conn,ee.getClassId());
             }
-            params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
-            DbClass.setProblemSelectorParameters(conn,e.getClassId(), params);
+            DbClass.setClassConfigTopicParameters(conn,e.getClassId(), classParams);
         }
         else if (e instanceof AdminTopicControlEvent) {
             AdminTopicControlEvent ee = (AdminTopicControlEvent) e;
             topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
             // send to constructor but time in topic is in incorrect units
-            params = new PedagogicalModelParameters(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(), ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(), ee.getExternalActivityTimeThreshold(), ee.getMaxNumProbsPerTopic(),
-                    true, true);
-            params.setMaxTimeInTopicMinutes(ee.getMaxTimeInTopic());  // now pass in as minutes
-            params.setMinTimeInTopicMinutes(ee.getMinTimeInTopic());  // now pass in as minutes
-            DbClass.setProblemSelectorParameters(conn,e.getClassId(), params);
+            classParams = new TopicModelParameters(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(),
+                    ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(),
+                     ee.getMaxNumProbsPerTopic(),ee.getExternalActivityTimeThreshold());
+            DbClass.setClassConfigTopicParameters(conn,e.getClassId(), classParams);
         }
         else {
             // fetch a list of topics for the class sorted in the order they will be presented
             topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
-            // If parameters are not stored for this particular class, a default set should be stored
-            // in classconfig table for classId=1.   If nothing there, then use the defaults created
-            // in the default PedagogicalModelParameters constructor
-            if (params == null) {
-                params = DbClass.getPedagogicalModelParameters(conn, 1);
-                if (params == null)
-                    params = new PedagogicalModelParameters();
-            }
         }
         ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
         Classes bean = new Classes(classes);
@@ -112,7 +100,6 @@ public class TopicEditorHandler {
         req.setAttribute("teacherId",e.getTeacherId());
         req.setAttribute("classId",e.getClassId());
         CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
-        req.setAttribute("params",params);
         req.setAttribute("topicModelParams",classParams);
         req.getRequestDispatcher(JSP).forward(req,resp);
 

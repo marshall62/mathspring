@@ -680,6 +680,7 @@ public class DbClass {
     }
 
 
+
     // DM reworked on 3/1/17.   This now returns an object with -1 or null values in areas that the classConfig table doesn't
     // provide override values.   This means that people have to correctly set up the class config table to have NULL values
     // in the fields where they do not want to override values in the lessondefinition that is part of the pedagogy.
@@ -692,7 +693,7 @@ public class DbClass {
             String q = "select maxNumberProbsToShowPerTopic,maxTimeInTopic,contentFailureThreshold,topicMastery," +
                     "minNumberProbsToShowPerTopic," +
                     "minTimeInTopic,difficultyRate,topicIntroFrequency," +
-                    "exampleFrequency" +
+                    "exampleFrequency, externalActivityTimeThreshold" +
                     " from classconfig where classId=?";
             stmt = conn.prepareStatement(q);
             // create a parameters object will all -1 or null values in its slots
@@ -738,6 +739,9 @@ public class DbClass {
                 else {
                     exampleFreq = null;
                 }
+                int extActThresh = rs.getInt("externalActivityTimeThreshold");
+                if (!rs.wasNull())
+                    classConfigParams.setExternalActivityWaitTimeMs(extActThresh*1000*60);
                 return classConfigParams;
             }
             return null;
@@ -836,20 +840,36 @@ public class DbClass {
         return params;
     }
 
-    public static void setProblemSelectorParameters(Connection conn, int classId, PedagogicalModelParameters params) throws SQLException {
+    public static void setClassConfigTopicParameters(Connection conn, int classId, TopicModelParameters params) throws SQLException {
         PreparedStatement stmt = null;
         try {
             String q = "update classconfig set maxNumberProbsToShowPerTopic=?, maxTimeInTopic=?, contentFailureThreshold=?, topicMastery=?," +
                     "minNumberProbsToShowPerTopic=?, minTimeInTopic=?, difficultyRate=?, externalActivityTimeThreshold=? where classid=?";
             stmt = conn.prepareStatement(q);
-            stmt.setInt(1, params.getMaxNumberProbs());
-            stmt.setLong(2, params.getMaxTimeInTopic());
-            stmt.setInt(3, params.getContentFailureThreshold());
-            stmt.setDouble(4, params.getTopicMastery());
-            stmt.setInt(5, params.getMinNumberProbs());
-            stmt.setLong(6, params.getMinTimeInTopic());
-            stmt.setDouble(7, params.getDifficultyRate());
-            stmt.setInt(8, params.getExternalActivityTimeThreshold());
+            if ( params.getMaxProbs() != -1)
+                stmt.setInt(1, params.getMaxProbs());
+            else stmt.setNull(1,Types.INTEGER);
+            if ( params.getMaxTimeMs() != -1)
+                stmt.setLong(2, params.getMaxTimeMs());
+            else stmt.setNull(2,Types.INTEGER);
+            if ( params.getContentFailureThreshold() != -1)
+                stmt.setInt(3, params.getContentFailureThreshold());
+            else stmt.setNull(3,Types.INTEGER);
+            if ( params.getDesiredMastery() != -1)
+                stmt.setDouble(4, params.getDesiredMastery());
+            else stmt.setNull(4,Types.DOUBLE);
+            if ( params.getMinProbs() != -1)
+                stmt.setInt(5, params.getMinProbs());
+            else stmt.setNull(5,Types.INTEGER);
+            if ( params.getMinTimeMs() != -1)
+                stmt.setLong(6, params.getMinTimeMs());
+            else stmt.setNull(6,Types.INTEGER);
+            if ( params.getDifficultyRate() != -1)
+                stmt.setDouble(7, params.getDifficultyRate());
+            else stmt.setNull(6,Types.DOUBLE);
+            if ( params.getExternalActivityWaitTimeMin() != -1)
+                stmt.setInt(8, params.getExternalActivityWaitTimeMin());
+            else stmt.setNull(8,Types.INTEGER);
             stmt.setInt(9, classId);
             stmt.executeUpdate();
         } finally {

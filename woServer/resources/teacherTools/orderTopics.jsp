@@ -3,7 +3,6 @@
 <jsp:include page="${sideMenu}" />
 
 
-<jsp:useBean id="params" scope="request" type="edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters"/>
 <jsp:useBean id="topicModelParams" scope="request" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -101,101 +100,8 @@
       </table>
      </c:if>
     <br>
-      <c:if test="${isAdmin}">
-
-    <%--@elvariable id="params" type="edu.umass.ckc.wo.tutor.probSel.ProblemSelectorParamters"--%>
-    <%--@elvariable id="topicModelParams" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"--%>
-    <script
-                  src="https://code.jquery.com/jquery-1.12.4.min.js"
-                  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-                  crossorigin="anonymous"></script>
-  <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
-  <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
-
-     <script type="javascript">
-         $( function() {
-             $( "#slider" ).slider({
-                 value:100,
-                 min: 0,
-                 max: 30,
-                 step: 1,
-                 slide: function( event, ui ) {
-                     $( "#maxNumberProbsPerTopic" ).val( "$" + ui.value );
-                 }
-             });
-             $( "#maxNumberProbsPerTopic" ).val( "$" + $( "#slider" ).slider( "value" ) );
-             } );
-     </script>
-          
-      <table>
-      <tr>
-          <td>Max Number of Problems Per Topic: </td>
-          <td>  <div id="slider"></div>
-          </td>
-          <%--<td><input id="maxNumberProbsPerTopic" type="text" size="3" name="maxNumberProbsPerTopic" value="${topicModelParams.maxProbs}"/>--%>
-          <td>
-              <%--<input id="maxNumberProbsPerTopic" type="text" size="3" name="maxNumberProbsPerTopic" value="13"/>--%>
-              <input type="text" size="3" id="maxNumberProbsPerTopic" value="${topicModelParams.maxProbs}" >
-
-          </td>
-      </tr>
-
-      <tr>
-          <td>Min Number of Problems Per Topic: </td>
-           <td>          </td>
-          <td><input type="text" size="3" name="minNumberProbsPerTopic" value="<c:out value="${topicModelParams.minProbs}"/>"/>
-          </td>
-      </tr>
-
-      <tr>
-          <td>Max Time In a Topic (min): </td>
-          <td>
 
 
-          </td>
-          <td><input type="text" size="3" name="maxTimeInTopic"value="<c:out value="${topicModelParams.maxTimeMinutes}"/>"/> </td>
-      </tr>
-
-      <tr>
-          <td>Min Time In a Topic (min): </td>
-          <td>
-
-          </td>
-          <td><input type="text" size="3" name="minTimeInTopic"value="<c:out value="${topicModelParams.minTimeMinutes}"/>"/> </td>
-      </tr>
-
-      <tr>
-          <td>Content Failure Threshold: </td>
-          <td>
-
-          </td>
-          <td><input type="text" size="3" name="contentFailureThreshold"value="<c:out value="${topicModelParams.contentFailureThreshold}"/>"/> </td>
-      </tr>
-      <tr>
-          <td>Topic Mastery: </td>
-          <td>
-
-          </td>
-          <td><input type="text" size="3" name="topicMastery" value="<c:out value="${topicModelParams.desiredMastery}"/>"/> </td> </tr>
-
-
-      <tr>
-          <td>Difficulty Rate: </td>
-          <td>
-
-          </td>
-          <td><input type="text" size="3" name="difficultyRate" value="<c:out value="${topicModelParams.difficultyRate}"/>"/> </td> </tr>
-
-
-      <tr>
-          <td>Time Before External Activities Begin: </td>
-          <td>
-             
-          </td>
-          <td><input type="text" size="3" name="externalActivityTimeThreshold" value="<c:out value="${params.externalActivityTimeThreshold}"/>"/> </td> </tr>
-      </table>
-          <input type="submit" name="submit" value="Save Topic Control Params"/>
-      </c:if>
     </form>
 
     <div style="height:54px"></div>
@@ -204,6 +110,217 @@
           <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
           <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
     </form>
+
+<c:if test="${isAdmin}">
+     <form method="post" action="${pageContext.request.contextPath}/WoAdmin?action=AdminTopicControl">
+         <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
+         <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
+        <%--@elvariable id="topicModelParams" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"--%>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+         <script>
+
+             function checkClicked(t, amountText, slider) {
+                 if (t.is(':checked')) {
+                     $(amountText).val(-1);
+                     $(slider).slider('disable');
+                 } else {
+                     $(amountText).val($(slider).slider('option','value'));
+                     $(slider).slider('enable');
+                 }
+
+             }
+
+             $( function() {
+                 $( "#maxNumProbsSlider" ).slider({
+                     min: -1,
+                     max: 100,
+                     value: ${topicModelParams.maxProbs},
+                     slide: function( event, ui ) {
+                         $( "#maxNumberProbsPerTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#minNumProbsSlider" ).slider({
+                     min: -1,
+                     max: 100,
+                     step: 1,
+                     value: ${topicModelParams.minProbs},
+                     slide: function( event, ui ) {
+                         $( "#minNumberProbsPerTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#maxTimeSlider" ).slider({
+                     min: -1,
+                     max: 60,
+                     step: 1,
+                     value: ${topicModelParams.maxTimeMinutes},
+                     slide: function( event, ui ) {
+                         $( "#maxTimeInTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#minTimeSlider" ).slider({
+                     min: -1,
+                     max: 60,
+                     step: 1,
+                     value: ${topicModelParams.minTimeMinutes},
+                     slide: function( event, ui ) {
+                         $( "#minTimeInTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#contentFailureSlider" ).slider({
+                     min: -1,
+                     max: 5,
+                     step: 1,
+                     value: ${topicModelParams.contentFailureThreshold},
+                     slide: function( event, ui ) {
+                         $( "#contentFailureThreshold" ).val( ui.value );
+                     }
+                 });
+                 $( "#masterySlider" ).slider({
+                     min: -1,
+                     max: 1.2,
+                     step: 0.05,
+                     value: ${topicModelParams.desiredMastery},
+                     slide: function( event, ui ) {
+                         $( "#mastery" ).val( ui.value );
+                     }
+                 });
+                 $( "#diffRateSlider" ).slider({
+                     min: -1,
+                     max: 5.0,
+                     step: 0.1,
+                     value: ${topicModelParams.difficultyRate},
+                     slide: function( event, ui ) {
+                         $( "#difficultyRate" ).val( ui.value );
+                     }
+                 });
+                 $( "#extActSlider" ).slider({
+                     min: -1,
+                     max: 30,
+                     step: 1,
+                     value: ${topicModelParams.externalActivityWaitTimeMin},
+                     slide: function( event, ui ) {
+                         $( "#externalActivityTimeThreshold" ).val( ui.value );
+                     }
+                 });
+                 $( "#maxNumberProbsPerTopic" ).val( $( "#maxNumProbsSlider" ).slider( "value" ) );
+                 $( "#minNumberProbsPerTopic" ).val( $( "#minNumProbsSlider" ).slider( "value" ) );
+                 $( "#maxTimeInTopic" ).val( $( "#maxTimeSlider" ).slider( "value" ) );
+                 $( "#minTimeInTopic" ).val( $( "#minTimeSlider" ).slider( "value" ) );
+                 $( "#contentFailureThreshold" ).val( $( "#contentFailureSlider" ).slider( "value" ) );
+                 $( "#mastery" ).val( $( "#masterySlider" ).slider( "value" ) );
+                 $( "#difficultyRate" ).val( $( "#diffRateSlider" ).slider( "value" ) );
+                 $( "#externalActivityTimeThreshold" ).val( $( "#extActSlider" ).slider( "value" ) );
+             } );
+         </script>
+
+         <table>
+             <tr><th></th><th>Omit</th><th/><th/></tr>
+             <tr>
+                 <td>Max Number of Problems Per Topic:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#maxNumberProbsPerTopic','#maxNumProbsSlider');"></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="maxNumProbsSlider" style="width:100px;"></div>
+
+                 </td>
+
+                 <td>
+                     <input type="text" id="maxNumberProbsPerTopic" name="maxNumberProbsPerTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+
+             </tr>
+
+             <tr>
+                 <td>Min Number of Problems Per Topic:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#minNumberProbsPerTopic','#minNumProbsSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="minNumProbsSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="minNumberProbsPerTopic" name="minNumberProbsPerTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Max Time in Topic (minutes):</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#maxTimeInTopic','#maxTimeSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="maxTimeSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="maxTimeInTopic" name="maxTimeInTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Min Time in Topic (minutes):</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#minTimeInTopic','#minTimeSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="minTimeSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="minTimeInTopic" name="minTimeInTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Content Failure Threshold (#problems):</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#contentFailureThreshold','#contentFailureSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="contentFailureSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="contentFailureThreshold" name="contentFailureThreshold" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Desired Topic Mastery:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#mastery','#masterySlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="masterySlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="mastery" name="mastery" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Difficulty Rate:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#difficultyRate','#diffRateSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="diffRateSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="difficultyRate" name="difficultyRate" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+             <tr>
+                 <td>Time Before External Activities begin:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#externalActivityTimeThreshold','#extActSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="extActSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="externalActivityTimeThreshold" name="externalActivityTimeThreshold" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+         </table>
+
+
+        <input type="submit" name="submit" value="Save Topic Control Params"/>
+
+     </form>
+</c:if>
     <div style="height:54px"></div>
 </div>
 </div>

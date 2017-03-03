@@ -90,9 +90,6 @@ public class MPPTutorHandler {
             InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
             TutorModel tutMod = pedMod.getTutorModel();
             Response r =  tutMod.processInternalEvent(beginningOfTopicEvent);
-
-
-            int temp = smgr.getStudentState().getCurProblem();
             new TutorPage(info,smgr).createTutorPageForResponse(e.getElapsedTime(), 0, e.getTopicId(), r, "practice", typ, true, null, false, lastProbId, this.showMPP);
             new TutorLogger(smgr).logMPPEvent(e,lastProbId);
 //            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), -1, "practice", Problem.PRACTICE, state.getCurProbType(), true, null, null, false);
@@ -146,11 +143,17 @@ public class MPPTutorHandler {
             smgr.getStudentState().setInChallengeMode(false);
             NextProblemEvent npe = new NextProblemEvent(e.getElapsedTime(),0,Integer.toString(ee.getProbId()),Problem.PRACTICE);
             npe.setTopicToForce(e.getTopicId());  // N.B. Student is NOT FORCING THIS TOPIC.   It is passed for information only
+            e.setUserInput(Integer.toString(e.getTopicId())); // for logging
             PedagogicalModel pedMod = smgr.getPedagogicalModel();
             int lastProbId =  smgr.getStudentState().getCurProblem();
             // When user was in topicIntro prior to going to MPP this isn't correct.
             String typ = smgr.getStudentState().getCurProbType();
             //ProblemResponse r = pedMod.getProblemSelectedByStudent(npe);
+            
+            // They request that trying a problem have the effect of switching to that topic
+            InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
+            TutorModel tutMod = pedMod.getTutorModel();
+            Response xx =  tutMod.processInternalEvent(beginningOfTopicEvent);
             ProblemResponse r = (ProblemResponse) pedMod.processMPPSelectProblemRequest(npe);
             Problem p = r.getProblem();
             smgr.getStudentModel().newProblem(state,r.getProblem());

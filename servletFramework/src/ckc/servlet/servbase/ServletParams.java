@@ -45,6 +45,10 @@ public class ServletParams {
         return Integer.parseInt(request.getParameter(key).trim());
     }
 
+    public double getDouble (String key) {
+        return Double.parseDouble(request.getParameter(key).trim());
+    }
+
      public long getLong (String key) {
         return Long.parseLong(request.getParameter(key).trim());
     }
@@ -70,6 +74,12 @@ public class ServletParams {
         String r = request.getParameter(key);
         return (r == null || r.trim().equals("")) ? dflt : Float.parseFloat(r.trim());
     }
+
+    public double getDouble(String key, double dflt) {
+        String r = request.getParameter(key);
+        return (r == null || r.trim().equals("")) ? dflt : Double.parseDouble(r.trim());
+    }
+
 
     public String[] getStrings (String key) {
         return request.getParameterValues(key);

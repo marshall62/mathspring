@@ -23,6 +23,7 @@ public class LessonModelParameters {
     protected double desiredMastery = 0.95;  // default to 95%
     protected double difficultyRate = 2; // 2 gives the splitting denominator in the binary search using 1/2 as the fraction
     protected int contentFailureThreshold ;
+    protected long externalActivityWaitTimeMs= -1;
 
     public LessonModelParameters () {
 
@@ -99,11 +100,11 @@ public class LessonModelParameters {
     }
 
     public int getMaxTimeMinutes() {
-        return (int) (this.maxTimeMs / (1000*60));
+        return (int) (this.maxTimeMs == -1 ? -1 : (this.maxTimeMs / (1000*60)));
     }
 
     public long getMinTimeMinutes() {
-        return (int) (this.minTimeMs / (1000*60));
+        return (int) (this.minTimeMs == -1 ? -1 : (this.minTimeMs / (1000*60)));
     }
 
     public void setMinTimeMinutes (int minutes) {
@@ -160,5 +161,16 @@ public class LessonModelParameters {
 
     public void setDifficultyRate(double difficultyRate) {
         this.difficultyRate = difficultyRate;
+    }
+
+    public long getExternalActivityWaitTimeMs() {
+        return externalActivityWaitTimeMs;
+    }
+    public int getExternalActivityWaitTimeMin() {
+        return (int) (externalActivityWaitTimeMs == -1 ? -1 : externalActivityWaitTimeMs / (60 * 1000));
+    }
+
+    public void setExternalActivityWaitTimeMs(long externalActivityWaitTimeMs) {
+        this.externalActivityWaitTimeMs = externalActivityWaitTimeMs;
     }
 }
