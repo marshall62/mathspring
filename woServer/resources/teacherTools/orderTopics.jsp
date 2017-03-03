@@ -4,6 +4,7 @@
 
 
 <jsp:useBean id="params" scope="request" type="edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters"/>
+<jsp:useBean id="topicModelParams" scope="request" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="mainPageMargin">
@@ -100,280 +101,99 @@
      </c:if>
     <br>
       <c:if test="${isAdmin}">
+
     <%--@elvariable id="params" type="edu.umass.ckc.wo.tutor.probSel.ProblemSelectorParamters"--%>
+    <%--@elvariable id="topicModelParams" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"--%>
+    <script
+                  src="https://code.jquery.com/jquery-1.12.4.min.js"
+                  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+                  crossorigin="anonymous"></script>
+  <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+  <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+
+     <script type="javascript">
+         $( function() {
+             $( "#slider" ).slider({
+                 value:100,
+                 min: 0,
+                 max: 30,
+                 step: 1,
+                 slide: function( event, ui ) {
+                     $( "#maxNumberProbsPerTopic" ).val( "$" + ui.value );
+                 }
+             });
+             $( "#maxNumberProbsPerTopic" ).val( "$" + $( "#slider" ).slider( "value" ) );
+             } );
+     </script>
+          
       <table>
       <tr>
           <td>Max Number of Problems Per Topic: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'maxNumberProbsPerTopic',
-                      'n_minValue' : 0,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.maxNumberProbs}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-
-
-
+          <td>  <div id="slider"></div>
           </td>
-          <td><input type="text" size="3" name="maxNumberProbsPerTopic" value="<c:out value="${params.maxNumberProbs}"/>"/>
+          <%--<td><input id="maxNumberProbsPerTopic" type="text" size="3" name="maxNumberProbsPerTopic" value="${topicModelParams.maxProbs}"/>--%>
+          <td>
+              <%--<input id="maxNumberProbsPerTopic" type="text" size="3" name="maxNumberProbsPerTopic" value="13"/>--%>
+              <input type="text" size="3" id="maxNumberProbsPerTopic" value="${topicModelParams.maxProbs}" >
+
           </td>
       </tr>
 
       <tr>
           <td>Min Number of Problems Per Topic: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'minNumberProbsPerTopic',
-                      'n_minValue' : 0,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.minNumberProbs}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-
-
-
-          </td>
-          <td><input type="text" size="3" name="minNumberProbsPerTopic" value="<c:out value="${params.minNumberProbs}"/>"/>
+           <td>          </td>
+          <td><input type="text" size="3" name="minNumberProbsPerTopic" value="<c:out value="${topicModelParams.minProbs}"/>"/>
           </td>
       </tr>
 
       <tr>
           <td>Max Time In a Topic (min): </td>
           <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
 
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'maxTimeInTopic',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.maxTimeInTopicMinutes}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
 
           </td>
-          <td><input type="text" size="3" name="maxTimeInTopic"value="<c:out value="${params.maxTimeInTopicMinutes}"/>"/> </td>
+          <td><input type="text" size="3" name="maxTimeInTopic"value="<c:out value="${topicModelParams.maxTimeMinutes}"/>"/> </td>
       </tr>
 
       <tr>
           <td>Min Time In a Topic (min): </td>
           <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'minTimeInTopic',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.minTimeInTopicMinutes}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
 
           </td>
-          <td><input type="text" size="3" name="minTimeInTopic"value="<c:out value="${params.minTimeInTopicMinutes}"/>"/> </td>
+          <td><input type="text" size="3" name="minTimeInTopic"value="<c:out value="${topicModelParams.minTimeMinutes}"/>"/> </td>
       </tr>
 
       <tr>
           <td>Content Failure Threshold: </td>
           <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
 
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'contentFailureThreshold',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 5,
-                      'n_value' : <c:out value="${params.contentFailureThreshold}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
           </td>
-          <td><input type="text" size="3" name="contentFailureThreshold"value="<c:out value="${params.contentFailureThreshold}"/>"/> </td>
+          <td><input type="text" size="3" name="contentFailureThreshold"value="<c:out value="${topicModelParams.contentFailureThreshold}"/>"/> </td>
       </tr>
       <tr>
           <td>Topic Mastery: </td>
           <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
 
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'topicMastery',
-                      'n_minValue' : 0.5,
-                      'n_maxValue' : 1.2,
-                      'n_value' : <c:out value="${params.topicMastery}"/>,
-                      'n_step' : 0.05
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
           </td>
-          <td><input type="text" size="3" name="mastery" value="<c:out value="${params.topicMastery}"/>"/> </td> </tr>
+          <td><input type="text" size="3" name="topicMastery" value="<c:out value="${topicModelParams.desiredMastery}"/>"/> </td> </tr>
 
 
       <tr>
           <td>Difficulty Rate: </td>
           <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
 
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'difficultyRate',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 10,
-                      'n_value' : <c:out value="${params.difficultyRate}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
           </td>
-          <td><input type="text" size="3" name="difficultyRate" value="<c:out value="${params.difficultyRate}"/>"/> </td> </tr>
+          <td><input type="text" size="3" name="difficultyRate" value="<c:out value="${topicModelParams.difficultyRate}"/>"/> </td> </tr>
 
 
       <tr>
           <td>Time Before External Activities Begin: </td>
           <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'externalActivityTimeThreshold',
-                      'n_minValue' : -1,
-                      'n_maxValue' : 20,
-                      'n_value' : <c:out value="${params.externalActivityTimeThreshold}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
+             
           </td>
           <td><input type="text" size="3" name="externalActivityTimeThreshold" value="<c:out value="${params.externalActivityTimeThreshold}"/>"/> </td> </tr>
       </table>
+          <input type="submit" name="submit" value="Save Topic Control Params"/>
       </c:if>
     </form>
 

@@ -258,10 +258,12 @@ public class BaseServlet extends HttpServlet {
             logger.info("Database is " + datasource);
             if (datasource != null)
                 tomcatDataSourceURL  = datasource;
-
+            Connection conn = getConnection();
+            if (conn == null)
+                throw new Exception("Failed to connect to database.");
             //setDbParams();
             //loadDbDriver();
-            initialize(servletConfig,this.getServletContext(),getConnection());
+            initialize(servletConfig,this.getServletContext(),conn);
             logger.debug("completed initializing servlet");
         }  catch (Exception e) {
             logger.error("initializing servlet failed");

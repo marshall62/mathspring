@@ -211,8 +211,9 @@ public class LessonModel implements TutorEventProcessor {
         // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
         // see if this user has a set of parameters and if so use them to configure the pedagogy.
         // these params come from settings in the WoAdmin tool for the class.
-        LessonModelParameters classParams = DbClass.getLessonModelParameters(connection, classId);
-        // overload the defaults with stuff defined for the class.
+        LessonModelParameters classParams = DbClass.getClassConfigLessonModelParameters(connection, classId);
+        // overload the defaults with stuff defined for the class.  Note this will not overload values where
+        // the classconfig specified -1 or null values in a parameter
         lmParams.overload(classParams);
 //       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
         // these params are the ones that were passed in by Assistments and saved for the user

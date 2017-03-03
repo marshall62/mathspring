@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.state;
 
-//import com.google.gson.Gson;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbSession;
 import edu.umass.ckc.wo.db.DbStateTableMgr;

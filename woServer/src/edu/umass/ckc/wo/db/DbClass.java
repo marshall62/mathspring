@@ -650,7 +650,7 @@ public class DbClass {
                 // TODO this makes no sense.   These are values set in teacher tools.   If some aren't set, shouldn't
                 // we keep the defaults that were defined the control params of the Pedagogy defined the in the XML file?
                 if (rs.wasNull())
-                    return new TopicModelParameters();
+                    return new TopicModelParameters(true);
                 long maxTimeInTopic = rs.getLong("maxTimeInTopic");
                 int thresh = rs.getInt("contentFailureThreshold");
                 double mastery = rs.getDouble("topicMastery");
@@ -678,6 +678,77 @@ public class DbClass {
                 rs.close();
         }
     }
+
+
+    // DM reworked on 3/1/17.   This now returns an object with -1 or null values in areas that the classConfig table doesn't
+    // provide override values.   This means that people have to correctly set up the class config table to have NULL values
+    // in the fields where they do not want to override values in the lessondefinition that is part of the pedagogy.
+    // In places where they do want a different value, this will get that value and use it to override what came from the
+    // lesson definition.
+    public static LessonModelParameters getClassConfigLessonModelParameters(Connection conn, int classId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            String q = "select maxNumberProbsToShowPerTopic,maxTimeInTopic,contentFailureThreshold,topicMastery," +
+                    "minNumberProbsToShowPerTopic," +
+                    "minTimeInTopic,difficultyRate,topicIntroFrequency," +
+                    "exampleFrequency" +
+                    " from classconfig where classId=?";
+            stmt = conn.prepareStatement(q);
+            // create a parameters object will all -1 or null values in its slots
+            TopicModelParameters classConfigParams = new TopicModelParameters(false);
+            stmt.setInt(1, classId);
+            rs = stmt.executeQuery();
+            PedagogicalModelParameters params;
+            if (rs.next()) {
+                int maxProbsInTopic = rs.getInt(1);
+                // Pull values from classconfig.  If non-null, overwrite the -1 value in the classConfigParams
+                if (!rs.wasNull())
+                    classConfigParams.setMaxProbs(maxProbsInTopic);
+                long maxTimeInTopic = rs.getLong("maxTimeInTopic");
+                if (!rs.wasNull())
+                    classConfigParams.setMaxTimeMs(maxTimeInTopic);
+                int thresh = rs.getInt("contentFailureThreshold");
+                if (!rs.wasNull())
+                    classConfigParams.setContentFailureThreshold(thresh);
+                double mastery = rs.getDouble("topicMastery");
+                if (!rs.wasNull())
+                    classConfigParams.setDesiredMastery(mastery);
+                int minProbsInTopic = rs.getInt("minNumberProbsToShowPerTopic");
+                if (!rs.wasNull())
+                    classConfigParams.setMinProbs(minProbsInTopic);
+                long minTimeInTopic = rs.getLong("minTimeInTopic");
+                if (!rs.wasNull())
+                    classConfigParams.setMinTimeMs(minTimeInTopic);
+                double difficultyRate = rs.getDouble("difficultyRate");
+                if (!rs.wasNull())
+                    classConfigParams.setDifficultyRate(difficultyRate);
+                String topicIntroFreq= rs.getString("topicIntroFrequency");
+                if (!rs.wasNull()) {
+                    classConfigParams.setTopicIntroFrequency(topicIntroFreq);
+                }
+                else {
+                    topicIntroFreq = null;
+                }
+
+                String exampleFreq= rs.getString("exampleFrequency");
+                if (!rs.wasNull()) {
+                    classConfigParams.setTopicExampleFrequency(exampleFreq);
+                }
+                else {
+                    exampleFreq = null;
+                }
+                return classConfigParams;
+            }
+            return null;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
 
     public static PedagogicalModelParameters getPedagogicalModelParameters(Connection conn, int classId) throws SQLException {
         ResultSet rs = null;
@@ -760,7 +831,7 @@ public class DbClass {
         if (params == null) {
             params = DbClass.getLessonModelParameters(conn, 1);
             if (params == null)
-                params = new TopicModelParameters();
+                params = new TopicModelParameters(true);
         }
         return params;
     }

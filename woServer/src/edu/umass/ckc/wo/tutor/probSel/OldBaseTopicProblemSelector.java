@@ -109,7 +109,7 @@ package edu.umass.ckc.wo.tutor.probSel;
 //
 //    public BaseTopicProblemSelector(PedagogicalModelParameters params) {
 //        this.maxNumberProbs = params.getMaxNumberProbs();
-//        this.maxTimeInTopic = params.getMaxTimeInTopic();
+//        this.maxTimeInTopic = params.getMaxTimeMs();
 //        this.contentFailureThreshold = params.getContentFailureThreshold();
 //        this.topicMastery = params.getMastery();
 //        this.minNumberProbs = params.getMinNumberProbs();

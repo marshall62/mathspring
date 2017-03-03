@@ -32,17 +32,9 @@ public class TopicModelParameters extends LessonModelParameters {
     }
 
 
-    private frequency topicIntroFrequency;
-    private frequency topicExampleFrequency;
+    private frequency topicIntroFrequency;    //  These frequencies are no longer set in the lesson
+    private frequency topicExampleFrequency;  // They are now set in the Interventions that are part of the lesson
     private String ccss;
-    private double difficultyRate ; // this is the divisor that the problem selector uses to find increase/decrease its index into the
-    private int maxNumberProbs ;   // list of available problems
-    private int minNumberProbs ;
-    private long maxTimeInTopic;   // this is in milliseconds
-    private long minTimeInTopic;    // in milliseconds
-    private int contentFailureThreshold ; // the number of times it will select a problem within this topic when it can't meet
-    // the easier/harder/same criteria.   Once exceeded, jump topics
-    private double topicMastery;
     private String lessonStyle;
     private boolean singleTopicMode;
     private InterleavedProblemSetParams interleaveParams=null;  // If interleaved problem sets are part of the lesson, this will be non-null
@@ -53,32 +45,35 @@ public class TopicModelParameters extends LessonModelParameters {
         if (classParams == null) return this;
         if (classParams.getDifficultyRate() > 0)
             this.difficultyRate =classParams.getDifficultyRate();
-        if (classParams.getMaxNumberProbs() > 0)
-            this.maxNumberProbs =classParams.getMaxNumberProbs();
-        if (classParams.getMinNumberProbs() > 0)
-            this.minNumberProbs =classParams.getMinNumberProbs();
+        if (classParams.getMaxProbs() > 0)
+            this.maxProbs =classParams.getMaxProbs();
+        if (classParams.getMinProbs() > 0)
+            this.minProbs =classParams.getMinProbs();
         // class params has maxTime given in MS.
-        if (classParams.getMaxTimeInTopic() > 0)
-            this.maxTimeInTopic =classParams.getMaxTimeInTopic();
+        if (classParams.getMaxTimeMs() > 0)
+            this.maxTimeMs =classParams.getMaxTimeMs();
         // class params has minTime in MS
-        if (classParams.getMinTimeInTopic() > 0)
-            this.minTimeInTopic =classParams.getMinTimeInTopic();
+        if (classParams.getMinTimeMs() > 0)
+            this.minTimeMs = classParams.getMinTimeMs();
         if (classParams.getContentFailureThreshold() > 0)
             this.contentFailureThreshold =classParams.getContentFailureThreshold();
-        if (classParams.getTopicMastery() > 0)
-            this.topicMastery =classParams.getTopicMastery();
-
+        if (classParams.getDesiredMastery() > 0)
+            this.desiredMastery =classParams.getDesiredMastery();
+        if (classParams.getLessonStyle() != null )
+            this.lessonStyle = classParams.getLessonStyle();
+        this.singleTopicMode = classParams.isSingleTopicMode();
+        
+        // frequency is no longer relevant since they are set in the lessons interventions rather than lesson config
         if (classParams.getTopicIntroFrequency() != null)
             this.topicIntroFrequency =classParams.getTopicIntroFrequency();
         if (classParams.getTopicExampleFrequency() != null)
             this.topicExampleFrequency =classParams.getTopicExampleFrequency();
-        if (classParams.getLessonStyle() != null )
-            this.lessonStyle = classParams.getLessonStyle();
-        this.singleTopicMode = classParams.isSingleTopicMode();
+
         return this;
 
     }
 
+    // only used for ASssistments users who have params saved on a per user basis
     public TopicModelParameters overload (PedagogyParams userParams) {
         if (userParams == null)
             return this;
@@ -94,63 +89,63 @@ public class TopicModelParameters extends LessonModelParameters {
             topicExampleFrequency = frequency.oncePerSession;
         }
         topicIntroFrequency = userParams.isShowIntro() ? frequency.oncePerSession : frequency.never;
-        int minutes= (int) userParams.getMaxTime();  // userPedagogyParameters table has maxTime in minutes, we want MS
-        maxTimeInTopic =minutes;
-        minTimeInTopic = 0;
-        maxNumberProbs = userParams.getMaxProbs();
-        topicMastery = userParams.getMastery();
-        minNumberProbs = 1;
+        setMaxTimeMinutes((int) userParams.getMaxTime());  // userPedagogyParameters table has maxTime in minutes, we want MS
+        this.maxProbs = userParams.getMaxProbs();
+        this.desiredMastery = userParams.getMastery();
+        this.minProbs = 1;
         this.singleTopicMode = userParams.isSingleTopicMode();
         // If we get passed no topic from Assistments, then this translates into setting the maxtime in the topic to 0
         // so we'll show the one forced problem and out.
         if (userParams.getTopicId() == -1)
-            this.setMaxTimeInTopic(0);
+            this.setMaxTimeMs(0);
         return this;
     }
 
 
-    public TopicModelParameters(long maxTimeInTopic, int contentFailureThreshold, double topicMastery, int minNumberProbs,
-                                long minTimeInTopic, int difficultyRate,  int maxNumberProblem
-                               ) {
-        this.maxNumberProbs = maxNumberProbs;
-        this.maxTimeInTopic = maxTimeInTopic;
-        this.contentFailureThreshold = contentFailureThreshold;
-        this.topicMastery = topicMastery;
-        this.minNumberProbs= minNumberProbs;
-        this.minTimeInTopic= minTimeInTopic;
-        this.difficultyRate= difficultyRate;
-        this.topicIntroFrequency = DEFAULT_TOPIC_INTRO_FREQ;
-        this.topicExampleFrequency = DEFAULT_EXAMPLE_FREQ;
-    }
 
     // Called with parameters read from TeacherAdmin's class config
     public TopicModelParameters(long maxTimeInTopic, int contentFailureThreshold, double topicMastery, int minNumberProbs,
                                 long minTimeInTopic, double difficultyRate,  int maxNumberProbs,
                                 frequency topicIntroFreq, frequency exampleFreq,
                                 String lessonStyle) {
-        this.maxNumberProbs = maxNumberProbs;
-        this.maxTimeInTopic = maxTimeInTopic;
+        this.maxProbs = maxNumberProbs;
+        this.maxTimeMs = maxTimeInTopic;
         this.contentFailureThreshold = contentFailureThreshold;
-        this.topicMastery = topicMastery;
-        this.minNumberProbs= minNumberProbs;
-        this.minTimeInTopic= minTimeInTopic;
+        this.desiredMastery = topicMastery;
+        this.minProbs= minNumberProbs;
+        this.minTimeMs= minTimeInTopic;
         this.difficultyRate= difficultyRate;
         this.topicIntroFrequency = topicIntroFreq;
         this.topicExampleFrequency = exampleFreq;
         this.lessonStyle = lessonStyle;
     }
 
-    public TopicModelParameters() {
-        this.maxNumberProbs = MAX_NUM_PROBS_PER_TOPIC;
-        this.maxTimeInTopic = MAX_TIME_IN_TOPIC;
-        this.contentFailureThreshold = CONTENT_FAILURE_THRESHOLD;
-        this.topicMastery = TOPIC_MASTERY;
-        this.minNumberProbs=MIN_NUM_PROBS_PER_TOPIC;
-        this.minTimeInTopic=MIN_TIME_IN_TOPIC;
-        this.difficultyRate=DIFFICULTY_RATE;
-        this.topicIntroFrequency = DEFAULT_TOPIC_INTRO_FREQ;
-        this.topicExampleFrequency = DEFAULT_EXAMPLE_FREQ;
+    public TopicModelParameters(boolean setDefaultValues) {
+        if (setDefaultValues) {
+            this.maxProbs = MAX_NUM_PROBS_PER_TOPIC;
+            this.maxTimeMs = MAX_TIME_IN_TOPIC;
+            this.contentFailureThreshold = CONTENT_FAILURE_THRESHOLD;
+            this.desiredMastery = TOPIC_MASTERY;
+            this.minProbs = MIN_NUM_PROBS_PER_TOPIC;
+            this.minTimeMs = MIN_TIME_IN_TOPIC;
+            this.difficultyRate = DIFFICULTY_RATE;
+            this.topicIntroFrequency = DEFAULT_TOPIC_INTRO_FREQ;
+            this.topicExampleFrequency = DEFAULT_EXAMPLE_FREQ;
+        }
+        else {
+            this.maxProbs = -1;
+            this.maxTimeMs = -1;
+            this.contentFailureThreshold = -1;
+            this.desiredMastery = -1;
+            this.minProbs = -1;
+            this.minTimeMs = -1;
+            this.difficultyRate = -1;
+            this.topicIntroFrequency = null;
+            this.topicExampleFrequency = null;
+        }
     }
+
+
 
     /**
      * This constructor is the one that is used to parse the XML in a the lesson definition.
@@ -174,9 +169,6 @@ public class TopicModelParameters extends LessonModelParameters {
             int maxTimeSecs = Integer.parseInt(s);
             this.setMaxTimeInTopicSecs(maxTimeSecs);
         }
-
-
-
         c = p.getChild("contentFailureThreshold");
         if (c != null) {
             s = c.getValue();
@@ -188,21 +180,21 @@ public class TopicModelParameters extends LessonModelParameters {
         if (c != null) {
             s = c.getValue();
             double topicMastery = Double.parseDouble(s);
-            this.setTopicMastery(topicMastery);
+            this.setDesiredMastery(topicMastery);
         }
 
         c = p.getChild("minNumberProbs");
         if (c != null) {
             s = c.getValue();
             int minNumberProbs = Integer.parseInt(s);
-            this.setMinNumberProbs(minNumberProbs);
+            this.setMinProbs(minNumberProbs);
         }
 
         c = p.getChild("maxNumberProbs");
         if (c != null) {
             s = c.getValue();
             int maxNumberProbs = Integer.parseInt(s);
-            this.setMaxNumberProbs(maxNumberProbs);
+            this.setMaxProbs(maxNumberProbs);
         }
 
         c = p.getChild("minTimeInTopicSecs");
@@ -215,19 +207,19 @@ public class TopicModelParameters extends LessonModelParameters {
         c = p.getChild("difficultyRate");
         if (c != null) {
             s = c.getValue();
-            int difficultyRate = Integer.parseInt(s);
+            double difficultyRate = Double.parseDouble(s);
             this.setDifficultyRate(difficultyRate);
         }
 
 
-        // this will replace showTopicIntro
+        // Setting frequency here no longer has an effect since frequency is set in the TopicIntroIS rather than lesson config
         c = p.getChild("topicIntroFrequency");
         if (c != null) {
             s = c.getValue();
             this.setTopicIntroFrequency(s);
         }
 
-        // this will replace showExampleFirst
+        // Setting frequency here no longer has an effect since frequency is set in the ShowDemoIS rather than lesson config
         c = p.getChild("topicExampleFrequency");
         if (c != null) {
             s = c.getValue();
@@ -313,77 +305,6 @@ public class TopicModelParameters extends LessonModelParameters {
     }
 
 
-
-
-    public int getMaxNumberProbs() {
-        return maxNumberProbs;
-    }
-
-    public void setMaxNumberProbs(int maxNumberProbs) {
-        this.maxNumberProbs = maxNumberProbs;
-    }
-
-    public long getMaxTimeInTopic() {
-        return maxTimeInTopic;
-    }
-
-    public void setMaxTimeInTopic(long maxTimeInTopic) {
-        this.maxTimeInTopic = maxTimeInTopic;
-    }
-
-    public int getMaxTimeInTopicMinutes () {
-        return (int) (maxTimeInTopic / 60000);
-    }
-
-
-    public void setMaxTimeInTopicMinutes (double minutes) {
-        maxTimeInTopic = (long) (minutes * 1000 * 60);
-    }
-
-    public void setMinTimeInTopicMinutes (double minutes) {
-        minTimeInTopic = (long) (minutes * 1000 * 60);
-    }
-
-    public int getContentFailureThreshold() {
-        return contentFailureThreshold;
-    }
-
-    public void setContentFailureThreshold(int contentFailureThreshold) {
-        this.contentFailureThreshold = contentFailureThreshold;
-    }
-
-    public double getTopicMastery() {
-        return topicMastery;
-    }
-
-    public void setTopicMastery(double topicMastery) {
-        this.topicMastery = topicMastery;
-    }
-
-    public int getMinNumberProbs() {
-        return minNumberProbs;
-    }
-
-    public long getMinTimeInTopic() {
-        return minTimeInTopic;
-    }
-
-    public long getMinTimeInTopicMinutes() {
-        return minTimeInTopic/60000;
-    }
-
-    public double getDifficultyRate() {
-        return difficultyRate;
-    }
-
-    public void setDifficultyRate(int difficultyRate) {
-        this.difficultyRate = difficultyRate;
-    }
-
-
-
-
-
     public boolean isSingleTopicMode() {
         return singleTopicMode;
     }
@@ -394,17 +315,14 @@ public class TopicModelParameters extends LessonModelParameters {
     }
 
     public void setMaxTimeInTopicSecs(int maxTimeInTopicSecs) {
-        this.maxTimeInTopic = maxTimeInTopicSecs * 1000;
-    }
-
-    public void setMinNumberProbs(int minNumberProbs) {
-        this.minNumberProbs = minNumberProbs;
+        this.maxTimeMs = maxTimeInTopicSecs * 1000;
     }
 
 
 
     public void setMinTimeInTopicSecs(int minTimeInTopicSecs) {
-        this.minTimeInTopic = minTimeInTopicSecs * 1000;
+
+        this.minTimeMs = minTimeInTopicSecs * 1000;
     }
 
     public void setTopicIntroFrequency(String topicIntroFrequency) {

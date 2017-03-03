@@ -52,7 +52,6 @@
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
         </element>
-        <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml" />
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/woServer/web/META-INF/context.xml" />

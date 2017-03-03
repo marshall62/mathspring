@@ -159,9 +159,9 @@ public class DbUser {
             TopicModelParameters.frequency f = params.getTopicIntroFrequency();
             // need to set a string value in here. not a number.  Add new cols
             stmt.setBoolean(3, params.getTopicIntroFrequency() != TopicModelParameters.frequency.never);
-            stmt.setLong(4, params.getMaxTimeInTopic());
-            stmt.setInt(5, params.getMaxNumberProbs());
-            stmt.setDouble(6, params.getTopicMastery());
+            stmt.setLong(4, params.getMaxTimeMs());
+            stmt.setInt(5, params.getMaxProbs());
+            stmt.setDouble(6, params.getDesiredMastery());
             stmt.execute();
 
         } finally {

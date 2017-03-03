@@ -11,7 +11,9 @@ import edu.umass.ckc.wo.event.admin.AdminTopicControlEvent;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.db.DbClass;
+import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -48,6 +50,7 @@ public class TopicEditorHandler {
     public View handleEvent(ServletContext sc, Connection conn, AdminEditTopicsEvent e, HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
         List<Topic> topics = null;
         PedagogicalModelParameters params = null;
+        TopicModelParameters classParams= (TopicModelParameters) DbClass.getClassConfigLessonModelParameters(conn, e.getClassId());
         if (e instanceof AdminReorderTopicsEvent) {
             TopicMgr topicMgr = new TopicMgr();
             AdminReorderTopicsEvent ee = (AdminReorderTopicsEvent) e;
@@ -110,6 +113,7 @@ public class TopicEditorHandler {
         req.setAttribute("classId",e.getClassId());
         CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
         req.setAttribute("params",params);
+        req.setAttribute("topicModelParams",classParams);
         req.getRequestDispatcher(JSP).forward(req,resp);
 
         return null;  //To change body of created methods use File | Settings | File Templates.

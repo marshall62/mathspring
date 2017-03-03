@@ -6,3 +6,9 @@
 /woServer/target/
 /woServer/web/META-INF/context.xml
 *.swd
+.idea/dataSources/0204f55f-89e2-4dde-860f-b10697b768e2/_src_/
+.idea/dataSources/0204f55f-89e2-4dde-860f-b10697b768e2/_staging_/
+.idea/inspectionProfiles/
+out/
+src/
+woServer/web/META-INF/
