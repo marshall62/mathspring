@@ -26,7 +26,7 @@ public class DbExternalActivity {
         PreparedStatement stmt=null;
         List res = new ArrayList<Integer>();
         try {
-            String q = "select xactid from externalactivitytopic where topicid=?";
+            String q = "select t.xactid from externalactivitytopic t,externalactivity a where t.topicid=? and t.xactid=a.id and a.ready=1";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1,topicId);
             rs = stmt.executeQuery();
