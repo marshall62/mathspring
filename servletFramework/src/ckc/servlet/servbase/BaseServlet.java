@@ -109,6 +109,7 @@ public class BaseServlet extends HttpServlet {
         }
     }
 
+    //
 
     /**
      * New-style connection creation based on Tomcat data source that is defined in the META-INF/context.xml file.   The advantage

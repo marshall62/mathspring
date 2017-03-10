@@ -866,7 +866,7 @@ public class DbClass {
             else stmt.setNull(6,Types.INTEGER);
             if ( params.getDifficultyRate() != -1)
                 stmt.setDouble(7, params.getDifficultyRate());
-            else stmt.setNull(6,Types.DOUBLE);
+            else stmt.setNull(7,Types.DOUBLE);
             if ( params.getExternalActivityWaitTimeMin() != -1)
                 stmt.setInt(8, params.getExternalActivityWaitTimeMin());
             else stmt.setNull(8,Types.INTEGER);
