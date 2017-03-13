@@ -7,12 +7,11 @@ import edu.umass.ckc.wo.content.TopicMgr;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.admin.AdminEditTopicsEvent;
 import edu.umass.ckc.wo.event.admin.AdminReorderTopicsEvent;
+import edu.umass.ckc.wo.event.admin.AdminSetTopicModelParametersEvent;
 import edu.umass.ckc.wo.event.admin.AdminTopicControlEvent;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 
 import javax.servlet.ServletContext;
@@ -73,6 +72,17 @@ public class TopicEditorHandler {
             classParams = new TopicModelParameters(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(),
                     ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(),
                      ee.getMaxNumProbsPerTopic(),ee.getExternalActivityTimeThreshold());
+        }
+        // 3/13/17 Added this event because reorder portion of the orderTopics page may be sending the AdminTopicControlEvent (above) and
+        // we only want to set the paramters if the submit button in that form is clicked.
+        else if (e instanceof AdminSetTopicModelParametersEvent) {
+            AdminSetTopicModelParametersEvent ee = (AdminSetTopicModelParametersEvent) e;
+            topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
+            // send to constructor but time in topic is in incorrect units
+            classParams = new TopicModelParameters(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(),
+                    ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(),
+                    ee.getMaxNumProbsPerTopic(),ee.getExternalActivityTimeThreshold());
+
             DbClass.setClassConfigTopicParameters(conn,e.getClassId(), classParams);
         }
         else {

@@ -112,7 +112,7 @@
     </form>
 
 <c:if test="${isAdmin}">
-     <form method="post" action="${pageContext.request.contextPath}/WoAdmin?action=AdminTopicControl">
+     <form method="post" action="${pageContext.request.contextPath}/WoAdmin?action=AdminSetTopicModelParameters">
          <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
          <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
         <%--@elvariable id="topicModelParams" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"--%>
