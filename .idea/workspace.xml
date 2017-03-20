@@ -9,7 +9,9 @@
     <bookmark url="file://$PROJECT_DIR$/WorkingWithMSContent.txt" line="28" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="" />
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
     <list id="cbdb92af-da20-4277-baa9-bbda95685c0e" name="Failed commit: Default (3)" comment="Affectiva API" />
@@ -175,7 +177,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="435">
               <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -184,7 +188,7 @@
         <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="465">
-              <caret line="31" column="80" lean-forward="true" selection-start-line="31" selection-start-column="80" selection-end-line="31" selection-end-column="80" />
+              <caret line="31" column="80" lean-forward="false" selection-start-line="31" selection-start-column="80" selection-end-line="31" selection-end-column="80" />
               <folding />
             </state>
           </provider>
@@ -193,9 +197,55 @@
       <file leaf-file-name="PedagogicalModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
+            <state relative-caret-position="1335">
               <caret line="141" column="20" lean-forward="false" selection-start-line="141" selection-start-column="20" selection-end-line="141" selection-end-column="20" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#3457#3458#0" expanded="false" />
+                <element signature="e#3496#3497#0" expanded="false" />
+                <element signature="e#3550#3551#0" expanded="false" />
+                <element signature="e#3584#3585#0" expanded="false" />
+                <element signature="e#3648#3649#0" expanded="false" />
+                <element signature="e#3684#3685#0" expanded="false" />
+                <element signature="e#3746#3747#0" expanded="false" />
+                <element signature="e#3794#3795#0" expanded="false" />
+                <element signature="e#3865#3866#0" expanded="false" />
+                <element signature="e#3919#3920#0" expanded="false" />
+                <element signature="e#3981#3982#0" expanded="false" />
+                <element signature="e#4029#4030#0" expanded="false" />
+                <element signature="e#4074#4075#0" expanded="false" />
+                <element signature="e#4109#4110#0" expanded="false" />
+                <element signature="e#4157#4158#0" expanded="false" />
+                <element signature="e#4189#4190#0" expanded="false" />
+                <element signature="e#4650#4651#0" expanded="false" />
+                <element signature="e#4704#4705#0" expanded="false" />
+                <element signature="e#4769#4770#0" expanded="false" />
+                <element signature="e#4819#4820#0" expanded="false" />
+                <element signature="e#5173#5174#0" expanded="false" />
+                <element signature="e#5208#5209#0" expanded="false" />
+                <element signature="e#5254#5255#0" expanded="false" />
+                <element signature="e#5281#5282#0" expanded="false" />
+                <element signature="e#5322#5323#0" expanded="false" />
+                <element signature="e#5350#5351#0" expanded="false" />
+                <element signature="e#18445#18446#0" expanded="false" />
+                <element signature="e#18485#18486#0" expanded="false" />
+                <element signature="e#21773#21774#0" expanded="false" />
+                <element signature="e#21822#21823#0" expanded="false" />
+                <element signature="e#21887#21888#0" expanded="false" />
+                <element signature="e#21933#21934#0" expanded="false" />
+                <element signature="e#21985#21986#0" expanded="false" />
+                <element signature="e#22028#22029#0" expanded="false" />
+                <element signature="e#22693#22694#0" expanded="false" />
+                <element signature="e#22726#22727#0" expanded="false" />
+                <element signature="e#22782#22783#0" expanded="false" />
+                <element signature="e#22826#22827#0" expanded="false" />
+                <element signature="e#22873#22874#0" expanded="false" />
+                <element signature="e#22909#22910#0" expanded="false" />
+                <element signature="e#22958#22959#0" expanded="false" />
+                <element signature="e#22997#22998#0" expanded="false" />
+                <element signature="e#23035#23036#0" expanded="false" />
+                <element signature="e#23071#23072#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -203,9 +253,13 @@
       <file leaf-file-name="BasePedagogicalModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
+            <state relative-caret-position="1740">
               <caret line="152" column="20" lean-forward="false" selection-start-line="152" selection-start-column="20" selection-end-line="152" selection-end-column="20" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#52640#52641#0" expanded="false" />
+                <element signature="e#52667#52668#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -213,9 +267,17 @@
       <file leaf-file-name="LessonModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/LessonModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
+            <state relative-caret-position="1305">
               <caret line="115" column="20" lean-forward="false" selection-start-line="115" selection-start-column="20" selection-end-line="115" selection-end-column="20" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#2013#2014#0" expanded="false" />
+                <element signature="e#2044#2045#0" expanded="false" />
+                <element signature="e#6143#6144#0" expanded="false" />
+                <element signature="e#6189#6190#0" expanded="false" />
+                <element signature="e#10600#10601#0" expanded="false" />
+                <element signature="e#10650#10651#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -225,7 +287,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
               <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#648#649#0" expanded="false" />
+                <element signature="e#683#684#0" expanded="false" />
+                <element signature="e#721#722#0" expanded="false" />
+                <element signature="e#755#756#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -235,7 +303,10 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
               <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-              <folding />
+              <folding>
+                <element signature="e#540#541#0" expanded="false" />
+                <element signature="e#570#571#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -243,10 +314,13 @@
       <file leaf-file-name="TutorPage.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
+            <state relative-caret-position="4695">
               <caret line="317" column="0" lean-forward="false" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#6649#6650#0" expanded="false" />
+                <element signature="e#6712#6713#0" expanded="false" />
+                <element signature="e#6766#6767#0" expanded="false" />
+                <element signature="e#6829#6830#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -255,7 +329,7 @@
       <file leaf-file-name="tutorhut.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
+            <state relative-caret-position="27150">
               <caret line="1810" column="15" lean-forward="false" selection-start-line="1810" selection-start-column="15" selection-end-line="1810" selection-end-column="15" />
               <folding>
                 <marker date="1490043313329" expanded="true" signature="50238:50249" ph="..." />
@@ -282,8 +356,8 @@
       <file leaf-file-name="tutorintervention.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="75" column="74" lean-forward="true" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="74" />
+            <state relative-caret-position="1125">
+              <caret line="75" column="74" lean-forward="false" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="74" />
               <folding />
             </state>
           </provider>
@@ -470,7 +544,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="193" />
     <option name="y" value="118" />
-    <option name="width" value="1653" />
+    <option name="width" value="1377" />
     <option name="height" value="938" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -501,31 +575,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope">
-        <subPane subId="All">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="woServer">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="woServer">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -594,6 +643,31 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="META-INF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope">
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="woServer">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="woServer">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1459,6 +1533,7 @@
       <workItem from="1489069320467" duration="615000" />
       <workItem from="1489069957077" duration="10649000" />
       <workItem from="1489412098847" duration="20302000" />
+      <workItem from="1490045464166" duration="45000" />
     </task>
     <task id="LOCAL-00180" summary="fixed the dir for html problems">
       <created>1432851989281</created>
@@ -1807,7 +1882,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="320198000" />
+    <option name="totallyTimeSpent" value="320243000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1819,30 +1894,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="193" y="118" width="1653" height="938" extended-state="0" />
+    <frame x="193" y="118" width="1377" height="938" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32629108" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2555066" sideWeight="0.64" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28982037" sideWeight="0.2724573" order="18" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31609195" sideWeight="0.4977521" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16212946" sideWeight="0.46551725" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16194627" sideWeight="0.46107784" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3165299" sideWeight="0.79026216" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28303966" sideWeight="0.70509803" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17725348" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1771968" sideWeight="0.705036" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22032829" sideWeight="0.75179" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26946107" sideWeight="0.7275427" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2216418" sideWeight="0.2964427" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16212946" sideWeight="0.5344828" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16194627" sideWeight="0.53892213" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30538923" sideWeight="0.7619699" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.49120122" order="17" side_tool="false" content_ui="tabs" />
@@ -1853,9 +1924,12 @@
       <window_info id="SVN Properties" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.49736643" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962631" sideWeight="0.68037605" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30538923" sideWeight="0.7619699" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29496402" sideWeight="0.49965918" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2555066" sideWeight="0.64" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28303966" sideWeight="0.70509803" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902467" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1863,6 +1937,7 @@
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22451317" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962963" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26946107" sideWeight="0.7275427" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
@@ -2231,7 +2306,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="64">
           <caret line="111" column="6" lean-forward="false" selection-start-line="111" selection-start-column="6" selection-end-line="111" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2352,7 +2426,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2360,7 +2433,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2368,7 +2440,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2408,7 +2479,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="457">
           <caret line="65" column="55" lean-forward="false" selection-start-line="65" selection-start-column="55" selection-end-line="65" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2416,7 +2486,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="62" column="19" lean-forward="false" selection-start-line="62" selection-start-column="19" selection-end-line="62" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2424,7 +2493,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2440,7 +2508,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="53" column="47" lean-forward="false" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2448,7 +2515,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="24" lean-forward="false" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2457,7 +2523,6 @@
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="0">
             <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            <folding />
           </first_editor>
           <second_editor />
         </state>
@@ -2477,7 +2542,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2485,7 +2549,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="367">
           <caret line="77" column="66" lean-forward="false" selection-start-line="77" selection-start-column="66" selection-end-line="77" selection-end-column="66" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2493,7 +2556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="321">
           <caret line="56" column="55" lean-forward="false" selection-start-line="56" selection-start-column="55" selection-end-line="56" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2517,7 +2579,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
           <caret line="45" column="20" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2557,7 +2618,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2578,7 +2638,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
           <caret line="130" column="0" lean-forward="false" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2621,7 +2680,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="23" column="11" lean-forward="false" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2629,7 +2687,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="385">
           <caret line="114" column="86" lean-forward="true" selection-start-line="114" selection-start-column="12" selection-end-line="114" selection-end-column="86" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2637,10 +2694,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="481" column="22" lean-forward="true" selection-start-line="481" selection-start-column="22" selection-end-line="481" selection-end-column="22" />
-          <folding>
-            <element signature="e#14361#14362#0" expanded="false" />
-            <element signature="e#14393#14394#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2654,8 +2707,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorintervention.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="75" column="74" lean-forward="true" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="74" />
+        <state relative-caret-position="1125">
+          <caret line="75" column="74" lean-forward="false" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="74" />
           <folding />
         </state>
       </provider>
@@ -2664,7 +2717,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="e#540#541#0" expanded="false" />
+            <element signature="e#570#571#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2672,47 +2728,114 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#648#649#0" expanded="false" />
+            <element signature="e#683#684#0" expanded="false" />
+            <element signature="e#721#722#0" expanded="false" />
+            <element signature="e#755#756#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/model/LessonModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
+        <state relative-caret-position="1305">
           <caret line="115" column="20" lean-forward="false" selection-start-line="115" selection-start-column="20" selection-end-line="115" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2013#2014#0" expanded="false" />
+            <element signature="e#2044#2045#0" expanded="false" />
+            <element signature="e#6143#6144#0" expanded="false" />
+            <element signature="e#6189#6190#0" expanded="false" />
+            <element signature="e#10600#10601#0" expanded="false" />
+            <element signature="e#10650#10651#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/BasePedagogicalModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
+        <state relative-caret-position="1740">
           <caret line="152" column="20" lean-forward="false" selection-start-line="152" selection-start-column="20" selection-end-line="152" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#52640#52641#0" expanded="false" />
+            <element signature="e#52667#52668#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/pedModel/PedagogicalModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
+        <state relative-caret-position="1335">
           <caret line="141" column="20" lean-forward="false" selection-start-line="141" selection-start-column="20" selection-end-line="141" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#3457#3458#0" expanded="false" />
+            <element signature="e#3496#3497#0" expanded="false" />
+            <element signature="e#3550#3551#0" expanded="false" />
+            <element signature="e#3584#3585#0" expanded="false" />
+            <element signature="e#3648#3649#0" expanded="false" />
+            <element signature="e#3684#3685#0" expanded="false" />
+            <element signature="e#3746#3747#0" expanded="false" />
+            <element signature="e#3794#3795#0" expanded="false" />
+            <element signature="e#3865#3866#0" expanded="false" />
+            <element signature="e#3919#3920#0" expanded="false" />
+            <element signature="e#3981#3982#0" expanded="false" />
+            <element signature="e#4029#4030#0" expanded="false" />
+            <element signature="e#4074#4075#0" expanded="false" />
+            <element signature="e#4109#4110#0" expanded="false" />
+            <element signature="e#4157#4158#0" expanded="false" />
+            <element signature="e#4189#4190#0" expanded="false" />
+            <element signature="e#4650#4651#0" expanded="false" />
+            <element signature="e#4704#4705#0" expanded="false" />
+            <element signature="e#4769#4770#0" expanded="false" />
+            <element signature="e#4819#4820#0" expanded="false" />
+            <element signature="e#5173#5174#0" expanded="false" />
+            <element signature="e#5208#5209#0" expanded="false" />
+            <element signature="e#5254#5255#0" expanded="false" />
+            <element signature="e#5281#5282#0" expanded="false" />
+            <element signature="e#5322#5323#0" expanded="false" />
+            <element signature="e#5350#5351#0" expanded="false" />
+            <element signature="e#18445#18446#0" expanded="false" />
+            <element signature="e#18485#18486#0" expanded="false" />
+            <element signature="e#21773#21774#0" expanded="false" />
+            <element signature="e#21822#21823#0" expanded="false" />
+            <element signature="e#21887#21888#0" expanded="false" />
+            <element signature="e#21933#21934#0" expanded="false" />
+            <element signature="e#21985#21986#0" expanded="false" />
+            <element signature="e#22028#22029#0" expanded="false" />
+            <element signature="e#22693#22694#0" expanded="false" />
+            <element signature="e#22726#22727#0" expanded="false" />
+            <element signature="e#22782#22783#0" expanded="false" />
+            <element signature="e#22826#22827#0" expanded="false" />
+            <element signature="e#22873#22874#0" expanded="false" />
+            <element signature="e#22909#22910#0" expanded="false" />
+            <element signature="e#22958#22959#0" expanded="false" />
+            <element signature="e#22997#22998#0" expanded="false" />
+            <element signature="e#23035#23036#0" expanded="false" />
+            <element signature="e#23071#23072#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/html/tutor/TutorPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
+        <state relative-caret-position="4695">
           <caret line="317" column="0" lean-forward="false" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#6649#6650#0" expanded="false" />
+            <element signature="e#6712#6713#0" expanded="false" />
+            <element signature="e#6766#6767#0" expanded="false" />
+            <element signature="e#6829#6830#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
+        <state relative-caret-position="27150">
           <caret line="1810" column="15" lean-forward="false" selection-start-line="1810" selection-start-column="15" selection-end-line="1810" selection-end-column="15" />
           <folding>
             <marker date="1490043313329" expanded="true" signature="50238:50249" ph="..." />
@@ -2739,14 +2862,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
           <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
-          <caret line="31" column="80" lean-forward="true" selection-start-line="31" selection-start-column="80" selection-end-line="31" selection-end-column="80" />
+          <caret line="31" column="80" lean-forward="false" selection-start-line="31" selection-start-column="80" selection-end-line="31" selection-end-column="80" />
           <folding />
         </state>
       </provider>
