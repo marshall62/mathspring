@@ -9,10 +9,7 @@
     <bookmark url="file://$PROJECT_DIR$/WorkingWithMSContent.txt" line="28" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="alterred artifacts to include codehaus.org stuff and regenerated ant build">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/web/META-INF/context.xml" afterPath="$PROJECT_DIR$/woServer/web/META-INF/context.xml" />
-    </list>
+    <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="" />
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
     <list id="cbdb92af-da20-4277-baa9-bbda95685c0e" name="Failed commit: Default (3)" comment="Affectiva API" />
@@ -186,8 +183,8 @@
       <file leaf-file-name="context.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="65" lean-forward="true" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
+            <state relative-caret-position="465">
+              <caret line="31" column="80" lean-forward="true" selection-start-line="31" selection-start-column="80" selection-end-line="31" selection-end-column="80" />
               <folding />
             </state>
           </provider>
@@ -1461,14 +1458,7 @@
       <workItem from="1487349126748" duration="12554000" />
       <workItem from="1489069320467" duration="615000" />
       <workItem from="1489069957077" duration="10649000" />
-      <workItem from="1489412098847" duration="19376000" />
-    </task>
-    <task id="LOCAL-00179" summary="changed a probability of collab to .1">
-      <created>1432066669061</created>
-      <option name="number" value="00179" />
-      <option name="presentableId" value="LOCAL-00179" />
-      <option name="project" value="LOCAL" />
-      <updated>1432066669061</updated>
+      <workItem from="1489412098847" duration="20302000" />
     </task>
     <task id="LOCAL-00180" summary="fixed the dir for html problems">
       <created>1432851989281</created>
@@ -1806,11 +1796,18 @@
       <option name="project" value="LOCAL" />
       <updated>1490043631299</updated>
     </task>
-    <option name="localTasksCounter" value="228" />
+    <task id="LOCAL-00228" summary="reverted password for rose db in context">
+      <created>1490044363747</created>
+      <option name="number" value="00228" />
+      <option name="presentableId" value="LOCAL-00228" />
+      <option name="project" value="LOCAL" />
+      <updated>1490044363748</updated>
+    </task>
+    <option name="localTasksCounter" value="229" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="319272000" />
+    <option name="totallyTimeSpent" value="320198000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1931,7 +1928,6 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
-    <MESSAGE value="Added Pair class" />
     <MESSAGE value="Added more rules and conditions to support messages that happen at BeginProblem events." />
     <MESSAGE value="Added built-in pretests at login time." />
     <MESSAGE value="Added Posttest and javascript form validation of pre/post test questions." />
@@ -1956,7 +1952,8 @@
     <MESSAGE value="Fixed typo in DbClass where it put difficultyRate in column 6 ." />
     <MESSAGE value="Added new AdminSetTopicMOdelParametersEvent so that the orderTopics page will correctly submit those parameters only when that button is clicked." />
     <MESSAGE value="Fixed bug 341" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bug 341" />
+    <MESSAGE value="reverted password for rose db in context" />
+    <option name="LAST_COMMIT_MESSAGE" value="reverted password for rose db in context" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2748,8 +2745,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="65" lean-forward="true" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
+        <state relative-caret-position="465">
+          <caret line="31" column="80" lean-forward="true" selection-start-line="31" selection-start-column="80" selection-end-line="31" selection-end-column="80" />
           <folding />
         </state>
       </provider>
