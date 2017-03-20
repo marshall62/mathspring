@@ -458,40 +458,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
 
 
-//    protected LessonModelParameters getLessonModelParametersForUser(Connection connection, Pedagogy ped, int classId, int studId) throws SQLException {
-//
-//        String lessonName = ped.getLessonName();
-//        LessonXML lx =  Settings.lessonMap.get(lessonName);
-//        // first we get the parameters out of the Pedagogy's lesson as defined in the XML lessons.xml
-//        lessonModelParameters = lx.getLessonModelParams();
-//
-//        // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
-//        // see if this user has a set of parameters and if so use them to configure the pedagogy.
-//        // these params come from settings in the WoAdmin tool for the class.
-//        LessonModelParameters classParams = DbClass.getLessonModelParameters(connection, classId);
-//        // overload the defaults with stuff defined for the class.
-//        lessonModelParameters.overload(classParams);
-////       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
-//        // these params are the ones that were passed in by Assistments and saved for the user
-//
-//        PedagogyParams userParams = DbUserPedagogyParams.getPedagogyParams(connection, studId);
-//        lessonModelParameters.overload(userParams);
-//        // overload the params with anything provided for the user.
-////        defaultParams.overload(userParams);
-//        return lessonModelParameters;
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
     public void setChallengeModeProblemSelector (ChallengeModeProblemSelector challengeModeProblemSelector)  {
         this.challengeModeSelector = challengeModeProblemSelector;
     }
