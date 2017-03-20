@@ -35,6 +35,7 @@ public class Problem implements Activity {
         longAnswer
     }
 
+    public static final String TOPIC_INTRO_ID = "999";
     public static final String DEMO = "demo";
     public static final String EXAMPLE = "example";
     public static final String PRACTICE = "practice";

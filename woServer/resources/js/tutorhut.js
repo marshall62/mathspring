@@ -1808,7 +1808,6 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
     // If not the first time, then we are re-entering the tutor page and we want to show a particular problem or intervention
     if (globals.isBeginningOfSession)
         nextProb(globals);
-
     else if (globals.activityJSON != null && (globals.probType === FLASH_PROB_TYPE || globals.probType === SWF_TYPE)) {
         showFlashProblemAtStart();
     }

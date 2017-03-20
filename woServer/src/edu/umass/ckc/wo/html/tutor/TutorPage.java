@@ -2,7 +2,6 @@ package edu.umass.ckc.wo.html.tutor;
 
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbUser;
-import edu.umass.ckc.wo.event.tutorhut.MPPTopicEvent;
 import edu.umass.ckc.wo.event.tutorhut.TutorHomeEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
@@ -15,11 +14,6 @@ import edu.umass.ckc.wo.woserver.ServletInfo;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -217,6 +211,7 @@ public class TutorPage {
     }
 
 
+
     // This builds a tutor page that is going to show an intervention
     public void createTutorPageFromState(long elapsedTime, long probElapsedTime, int topicId,
                                          InterventionResponse intervResponse, String chalRevOrPracticeMode, String lastProbType,
@@ -305,7 +300,7 @@ public class TutorPage {
         // renamed to probMode (from mode) so it is clear that this is the mode of the problem being played (or requested to
         // be played) - For some reason the JSP wasn't even settings its globals.probMode to this value until now.
         info.getRequest().setAttribute("probMode", problem.getMode());
-        info.getRequest().setAttribute("form",problem.getForm());
+        info.getRequest().setAttribute("form", problem.getForm());
         info.getRequest().setAttribute("resource", resource);
         info.getRequest().setAttribute("answer", answer);
         appendLogMsg("answer",answer);
@@ -319,7 +314,6 @@ public class TutorPage {
                 info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
 
         else  info.getRequest().setAttribute("learningCompanionMovie","");
-
         info.getRequest().setAttribute("lastProbType", lastProbType==null ? "" : lastProbType);
 
 

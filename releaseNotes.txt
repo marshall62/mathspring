@@ -62,6 +62,9 @@ Release Management (begun 11/28/16 - better late than never)
    To show all commits with tags since a given tag and put in file:
      git log v2.1.5..HEAD --oneline --decorate > u:/mathspring/fixes.txt
 
+Neeraj's github project:
+
+   https://github.com/nsmenon/mathspring-maven
 
 
 Releases (test again)

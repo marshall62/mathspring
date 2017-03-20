@@ -2,6 +2,8 @@ package edu.umass.ckc.wo.handler;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.content.TopicIntro;
+import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.internal.BeginningOfTopicEvent;
 import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
@@ -40,7 +42,9 @@ public class MPPTutorHandler {
         if (e instanceof MPPReturnToHutEvent) {
 //            Response r = new ProblemResponse(p,smgr.getStudentModel().getTopicMasteries(),smgr.getStudentState().getCurTopic(), e.getElapsedTime());
             String lastProbType = state.getCurProbType();
-            if (lastProbType != null) {
+            // If the last problem is resumable and not a topic intro
+            if (lastProbType != null && !((MPPReturnToHutEvent) e).getProbId().equals(Problem.TOPIC_INTRO_ID)) {
+
                 if (lastProbType.equalsIgnoreCase(Problem.FLASH_PROB_TYPE) || lastProbType.equalsIgnoreCase(Problem.HTML_PROB_TYPE) )  {
                     Problem p = ProblemMgr.getProblem(Integer.parseInt(((MPPReturnToHutEvent) e).getProbId()));
                     ProblemResponse r = new ProblemResponse(p);
@@ -65,7 +69,6 @@ public class MPPTutorHandler {
                 new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (ProblemResponse) r, "practice",
                         state.getCurProbType(), true, ((ProblemResponse) r).getProblem().getResource(), null, false, state.getCurProblem(), this.showMPP);
 
-            // TODO have not tested that this actually works
             else if (r instanceof InterventionResponse)
                 new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (InterventionResponse) r, "practice",
                         state.getCurProbType(), true, null, null, false, state.getCurProblem(), this.showMPP);
