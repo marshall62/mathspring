@@ -132,13 +132,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         this.pedagogicalMoveListeners.add(listener);
     }
 
-//    private InterventionSelector newInstance (InterventionSelectorSpec interventionSelectorSpec, SessionManager smgr) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-//        InterventionSelector sel= (InterventionSelector) Class.forName(interventionSelectorSpec.getClassName()).getConstructor(SessionManager.class, PedagogicalModel.class).newInstance(smgr,this);
-//        sel.setParams(interventionSelectorSpec.getParams());
-//        sel.setConfigXML(interventionSelectorSpec.getConfigXML());
-//        sel.setServletInfo(smgr,this);
-//        return sel;
-//    }
 
 
 
