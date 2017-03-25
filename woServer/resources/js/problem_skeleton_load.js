@@ -38,21 +38,21 @@ function getTutorServletURL (action, args) {
 
 function pluginProblem (responseText, textStatus, XMLHttpRequest) {
 //    alert("In pluginProblem ");
-      var activity = JSON.parse(responseText);
+    var activity = JSON.parse(responseText);
     var problem = activity.problem;
     var problemParams = activity.binding;
     var probContentPath = activity.probContentPath;
-     var stmt = problem.statementHTML;
+    var stmt = problem.statementHTML;
     var audio = problem.questionAudio;
     var fig = problem.questionImage;
     var hints = problem.hints;
-    var   answers = problem.answers;
-    var  newAnswer = problem.newAnswer;
+    var answers = problem.answers;
+    var newAnswer = problem.newAnswer;
     var answer = problem.answer;
-    var  units = problem.units;
-    var  mode = problem.mode;
+    var units = problem.units;
+    var mode = problem.mode;
     var questType = problem.questType;
-    var  resource = problem.resource;
+    var resource = problem.resource;
 
 
 //    alert("stmt:" + stmt + ":\n" +
