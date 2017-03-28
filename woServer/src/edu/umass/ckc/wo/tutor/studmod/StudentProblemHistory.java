@@ -64,17 +64,18 @@ public class StudentProblemHistory {
             params = state.getProblemBinding();
         }
         // The time since this session began
-        long timeInSession = now - DbSession.getSessionBeginTime(smgr.getConnection(),smgr.getSessionId());
+        long timeInSessionMS = now - DbSession.getSessionBeginTime(smgr.getConnection(),smgr.getSessionId());
         // The time since the first time this student ever logged into mathspring
-        long timeInTutor = timeInSession + DbSession.getTimeInAllSessions(smgr.getConnection(),smgr.getStudentId());
-
+        long timeInTutorMS = timeInSessionMS + DbSession.getTimeInAllSessions(smgr.getConnection(),smgr.getStudentId());
+        long timeInSessionSec = timeInSessionMS / 1000;
+        long timeInTutorMin = timeInTutorMS / 60000;
 
         DbStudentProblemHistory.beginProblem(smgr.getConnection(), e.getSessionId(), smgr.getStudentId(), state.getCurProblem(), topicId,
-            now, timeInSession, timeInTutor, state.getCurProblemMode(), params, smgr.getCollaboratingWith(),
+            now, timeInSessionSec, timeInTutorMin, state.getCurProblemMode(), params, smgr.getCollaboratingWith(),
                 p.getDifficulty());
 
         curProb = new StudentProblemData(state.getCurProblem(),state.getCurTopic(),e.getSessionId(),
-                now,timeInSession, timeInTutor,state.getCurProblemMode());
+                now,timeInSessionSec, timeInTutorMin,state.getCurProblemMode());
         addProblem(curProb);
         return curProb;
 
