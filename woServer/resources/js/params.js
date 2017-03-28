@@ -5,8 +5,6 @@ var shown = {};
 
 function prepareForData(doc, components) {
     for (i = 1; i <= maxHints; ++i) {
-        doc.getElementById("Hint"+i.toString()+"Thumb").style.display="none";
-        doc.getElementById("Hint"+i.toString()).style.display = "none";
         addHintHandler(doc, i.toString());
     }
     // DM 1/10/16 added in check for example mode
@@ -27,8 +25,6 @@ function prepareForData(doc, components) {
     }
 }
 
-
-
 function isMultiChoice(questType) {
     return (questType === 'multiChoice');
 
@@ -40,6 +36,7 @@ function isArray(parsedItem) {
 }
 
 function hideAnswers(doc, numAnswers) {
+    //TODO: Clean this up
     doc.getElementById('ShortAnswerBox').style.display="none";
     switch (numAnswers) {
         case 4:
@@ -86,6 +83,7 @@ function hideAnswers(doc, numAnswers) {
 }
 
 function addAnswerClickedHandlers(doc, numAnswers){
+    //TODO: Clean this up
     switch (numAnswers) {
         case 1:
             doc.getElementById('AButton').addEventListener("click", function(){answerClicked(doc, 'a');});
@@ -147,11 +145,6 @@ function plug(doc, components) {
     }
     if(probFigure != null && probFigure != undefined && probFigure != ""){
         doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure, components), problemParams);
-        // var finalTop = parseInt(window.getComputedStyle(doc.getElementById("ProblemFigure")).getPropertyValue("top"),10) + statementHeight;
-        // DM Not sure why the above is so complex - shouldn't we just come down by the height of the stmt?
-        var finalTop =  statementHeight;
-        doc.getElementById("ProblemFigure").style.top = finalTop + "px";
-        var top = doc.getElementById("ProblemFigure").style.top;
     }
     if(probSound != null && probSound != undefined && probSound != "") {
         //TODO I don't think the below lines do what I want them to.
@@ -166,18 +159,17 @@ function plug(doc, components) {
     var hintID = "";
     if (hints != undefined && hints != null) {
         for (i=0; i<hints.length;++i)  {
-            if(hints[i] )
             hintID = getElementCorrespondingToHint(hints[i].label);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML, components), problemParams);
-                var finalTop = parseInt(window.getComputedStyle(doc.getElementById(hintID)).getPropertyValue("top"),10) + statementHeight;
-                doc.getElementById(hintID).style.top = finalTop + "px";
-                var top = doc.getElementById(hintID).style.top;
             }
             else{
                 alert("text missing for hint: "+i);
             }
-            doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText, components), problemParams));
+            var hintthumb = doc.getElementById(hintID+"Thumb");
+            if(typeof(hints[i].hoverText) != 'undefined'){
+                hintthumb.setAttribute("title", parametrizeText(format(hints[i].hoverText, components), problemParams));
+            }
             //TODO I don't think this does what I want
             if (hints[i].audioResource != undefined && hints[i].audioResource != "")  {
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));

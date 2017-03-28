@@ -130,6 +130,7 @@ function prob_readProblem() {
 }
 
 function prob_playHint (hintLabel) {
+    document.getElementById("HintContainer").style.display = "initial";
     hint = getElementCorrespondingToHint(hintLabel);
     clearHintStage();
     stopAudio();
