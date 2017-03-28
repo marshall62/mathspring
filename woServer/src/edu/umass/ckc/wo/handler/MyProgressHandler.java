@@ -99,8 +99,8 @@ public class MyProgressHandler {
 
             request.setAttribute("topicName", topicName);
 
-            request.setAttribute("problemsDone", problemsDone);
-            request.setAttribute("totalProblems", totalProblems);
+            request.setAttribute("problemsDone", td.getProblemsSolved());
+            request.setAttribute("totalProblems", td.getTotalProblems());
             request.setAttribute("sessionId", sessionId);
 
             request.setAttribute("td", td);

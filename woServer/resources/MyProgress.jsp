@@ -131,7 +131,7 @@
             chart.init();
 
             chart.renderMastery("masteryChart_"+topicId,topicMastery,problemsDone);
-            chart.problemsDone("problemsDone_"+topicId,problemsDone,totalProblems,problemsSolved);
+            chart.problemsDone("problemsDone_"+topicId,problemsSolved,totalProblems);
             chart.giveFeedbackAndPlant ("remarks_"+topicId,"plant_"+topicId,topicState,studentState_disengaged,topicMastery,problemsDoneWithEffort,SHINT_SOF_sequence,SOF_SOF_sequence,neglectful_count,problemsDone,problemsSolved);
 
 

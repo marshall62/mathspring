@@ -220,6 +220,11 @@ var Chart = {
                     effortFeedback="You gave up this problem.";
                     cell.innerHTML="_";
                     break;
+                case "SKIP":
+                    table.className ="giveupCard";
+                    effortFeedback="You gave up this problem.";
+                    cell.i;
+                    break;
 
                 case "SHINT":
                     table.className ="correctWithHintsCard";
@@ -779,7 +784,7 @@ giveFeedback	: function(remarksDiv, topic_state,topicState_pepperPlant,topicMast
 
 
 
-    problemsDone: function(problemsDone_div,problemsDone,totalProblems,problemsSolved) {
+    problemsDone: function(problemsDone_div,problemsDone,totalProblems) {
 
         document.getElementById(problemsDone_div).innerHTML="Problems Done : " + problemsDone + "/"+totalProblems ;
     }

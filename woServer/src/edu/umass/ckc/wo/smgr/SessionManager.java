@@ -565,6 +565,11 @@ public class SessionManager {
             throw new UserException("Attempt to get a session failed.  Make sure you are logged in");
     }
 
+    // call this to get around the exception throw when you know there is a session.
+    public int getSessionId () {
+        return sessionId;
+    }
+
     public long getElapsedTime() {
         return elapsedTime;
     }

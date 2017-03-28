@@ -77,6 +77,8 @@ public class PedagogicalModelParameters {
             this.topicExampleFrequency =classParams.getTopicExampleFrequency();
         if (classParams.getProblemReuseIntervalSessions() > 0)
             this.problemReuseIntervalSessions =classParams.getProblemReuseIntervalSessions();
+        if (classParams.getProblemReuseIntervalDays() > 0)
+            this.problemReuseIntervalDays =classParams.getProblemReuseIntervalDays();
         if (classParams.getLessonStyle() != null )
             this.lessonStyle = classParams.getLessonStyle();
         return this;

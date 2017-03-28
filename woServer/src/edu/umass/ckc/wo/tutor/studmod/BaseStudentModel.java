@@ -11,6 +11,7 @@ import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.StudentEffort;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
@@ -300,64 +301,80 @@ public class BaseStudentModel extends StudentModel {
      */
     public void endProblem(SessionManager smgr, int studId, long probElapsedTime, long elapsedTime) throws Exception {
         StudentState state = smgr.getStudentState();
+        // If the student forced this problem + topic, then topic is stored in the state until this prob ends
+        int topicId = (state.getStudentSelectedTopic() != -1) ? state.getStudentSelectedTopic() : state.getCurTopic();
+        int probId =-1, mistakes=0;
+        boolean isCorrect=false;
+        // demos and examples send EndProblem events when done.   Don't want to update certain things if this is the case.
+        boolean isExample = Problem.isExampleOrDemo(state.getCurProblemMode());
         long timeInLastProb = state.getProbElapsedTime();
-        if (state.getNumHintsGivenOnCurProblem() > 0)
-            this.numProbsReceivedAssistance++;
+        if (!isExample) {
+            if (state.getNumHintsGivenOnCurProblem() > 0)
+                this.numProbsReceivedAssistance++;
 
 
         // running averages that must be computed before numProbsSeen is incremented
-        this.avgTimeInProb = perProbAvg(avgTimeInProb, timeInLastProb);
-        // we update the avgTimeBetweenAttempts on each problem - The StudentState maintains an avgTimeBetweeAttempts
-        // for the current problem.  We don't do the update if no attempts were made on the last problem
+
+            this.avgTimeInProb = perProbAvg(avgTimeInProb, timeInLastProb);
+
+            // we update the avgTimeBetweenAttempts on each problem - The StudentState maintains an avgTimeBetweeAttempts
+            // for the current problem.  We don't do the update if no attempts were made on the last problem
 //        if (state.getCurProblemAvgTimeBetweenAttempts() > 0)
 //            this.avgTimeBetweenAttempts = perProbAvg(avgTimeBetweenAttempts, state.getCurProblemAvgTimeBetweenAttempts());
-        avgHintsGivenPerProb = (numProbsSeen > 0) ? ((double) numHintsTotal / (double) numProbsSeen) : 0;
+            avgHintsGivenPerProb = (numProbsSeen > 0) ? ((double) numHintsTotal / (double) numProbsSeen) : 0;
 
-        if (state.getTimeToSolve() > 0)
-            this.numProbsSolved++;
-            // if student fails to solve problem add in full time spent in problem to total solve time
-            // this insures that the avgSolveTime increases when problems are not solved.
-        else
-            this.totalSolveTime += state.getProbElapsedTime();
-        this.avgSolveTime = (numProbsSeen > 0) ? ((double) totalSolveTime / (double) numProbsSeen) : 0;
-        this.avgMistakesInProblem = (numProbsSeen > 0) ? ((double) totalProbMistakes / (double) numProbsSeen) : 0;
-        // if student received hints on last problem update avgSecondsInAssistedProblems
-        if (state.getNumHintsGivenOnCurProblem() > 0)
-            this.avgTimeInAssistedProb = perAssistedProbAvg(avgTimeInAssistedProb, timeInLastProb);
-        this.avgAttemptsInProb = perProbAvg(avgAttemptsInProb, state.getNumAttemptsOnCurProblem());
-        // update variables that are about problems with assistance
-        if (state.getNumHintsGivenOnCurProblem() > 0) {
-            this.avgAttemptsInAssistedProb = perAssistedProbAvg(avgAttemptsInAssistedProb, state.getNumAttemptsOnCurProblem());
-            avgHintsGivenPerAssistedProb = perAssistedProbAvg(avgHintsGivenPerAssistedProb, state.getNumHintsGivenOnCurProblem());
+            if (state.getTimeToSolve() > 0)
+                this.numProbsSolved++;
+                // if student fails to solve problem add in full time spent in problem to total solve time
+                // this insures that the avgSolveTime increases when problems are not solved.
+            else
+                this.totalSolveTime += state.getProbElapsedTime();
+            this.avgSolveTime = (numProbsSeen > 0) ? ((double) totalSolveTime / (double) numProbsSeen) : 0;
+            this.avgMistakesInProblem = (numProbsSeen > 0) ? ((double) totalProbMistakes / (double) numProbsSeen) : 0;
+            // if student received hints on last problem update avgSecondsInAssistedProblems
+            if (state.getNumHintsGivenOnCurProblem() > 0)
+                this.avgTimeInAssistedProb = perAssistedProbAvg(avgTimeInAssistedProb, timeInLastProb);
+            this.avgAttemptsInProb = perProbAvg(avgAttemptsInProb, state.getNumAttemptsOnCurProblem());
+            // update variables that are about problems with assistance
+            if (state.getNumHintsGivenOnCurProblem() > 0) {
+                this.avgAttemptsInAssistedProb = perAssistedProbAvg(avgAttemptsInAssistedProb, state.getNumAttemptsOnCurProblem());
+                avgHintsGivenPerAssistedProb = perAssistedProbAvg(avgHintsGivenPerAssistedProb, state.getNumHintsGivenOnCurProblem());
 
-        }
-        // increments totalHintTime if student was previously in a hint .
-        // N.B. The above may be true but if user went to MPP probElapsedTime will be 0 resulting in a negative number.
-        if (state.isLastEvent(StudentState.HINT_EVENT)) {
-            long probElapsed=  state.getProbElapsedTime();
-            long hintStart =  state.getHintStartTime();
-            if ((probElapsed - hintStart) > 0)
-                totalHintTime += probElapsed - hintStart;
-        }
-        this.avgHintTime = (numProbsSeen > 0) ? (totalHintTime / numProbsSeen) : 0;
-        // update these variables after computations about the last problem are made
-        int probId = state.getCurProblem();
-        // If the student forced this problem + topic, then topic is stored in the state until this prob ends
-        int topicId = (state.getStudentSelectedTopic() != -1) ? state.getStudentSelectedTopic() : state.getCurTopic();
-        int numHelpAids = state.getNumHelpAidsBeforeCorrect() ;
-        int numHints = state.getNumHintsBeforeCorrect();
-        int mistakes = state.getNumMistakesOnCurProblem() ;
-        boolean isCorrect = state.isProblemSolved();
-        if (!isCorrect) {
-            this.topicUpdate(state, probId,topicId, numHints+numHelpAids, isCorrect, mistakes, probElapsedTime);
-            this.standardUpdate(state, probId,numHints+numHelpAids, isCorrect, mistakes, probElapsedTime);
+            }
+            // increments totalHintTime if student was previously in a hint .
+            // N.B. The above may be true but if user went to MPP probElapsedTime will be 0 resulting in a negative number.
+            if (state.isLastEvent(StudentState.HINT_EVENT)) {
+                long probElapsed = state.getProbElapsedTime();
+                long hintStart = state.getHintStartTime();
+                if ((probElapsed - hintStart) > 0)
+                    totalHintTime += probElapsed - hintStart;
+            }
+            this.avgHintTime = (numProbsSeen > 0) ? (totalHintTime / numProbsSeen) : 0;
+            // update these variables after computations about the last problem are made
+            probId = state.getCurProblem();
+
+            int numHelpAids = state.getNumHelpAidsBeforeCorrect();
+            int numHints = state.getNumHintsBeforeCorrect();
+            mistakes = state.getNumMistakesOnCurProblem();
+            isCorrect = state.isProblemSolved();
+            if (!isCorrect) {
+                // We only update mastery if the problem has not been seen recently (either never seen before or when it was is outside
+                // the problemReuseInterval)
+                PedagogicalModelParameters pmParams = smgr.getPedagogicalModel().getParams();
+                if (!getStudentProblemHistory().answeredRecently(probId, smgr.getSessionId(),
+                        pmParams.getProblemReuseIntervalDays(), pmParams.getProblemReuseIntervalSessions())) {
+
+                    this.topicUpdate(state, probId, topicId, numHints + numHelpAids, isCorrect, mistakes, probElapsedTime);
+                    this.standardUpdate(state, probId, numHints + numHelpAids, isCorrect, mistakes, probElapsedTime);
+                }
+            }
         }
         state.endProblem(smgr, studId, probElapsedTime, elapsedTime);  // this call resets state.studentSelectedTopic to -1
         this.problemHistory.endProblem(smgr,problemHistory.getCurProblem(), topicId);
         this.effort = this.problemHistory.getEffort(smgr.getSessionNum());
 
         // Only update the statistics about a problem if the user is allowed to
-        if (DbUser.isUpdateStats(conn,studId) )  {
+        if (!isExample && DbUser.isUpdateStats(conn,studId) )  {
             if (state.getCurProblemMode().equals(Problem.PRACTICE))
                 // TODO temporary protection to make sure we don't try to update stats on an empty problem
                 //  The CommonCOre ped model has a bad interaction with this that causes an error.   Because
@@ -504,8 +521,13 @@ public class BaseStudentModel extends StudentModel {
         // When the student is correct,   we update the mastery stats for this student immediately so that
         // if they see an MPP or move to another topic by force,  the mastery is correctly set.
         if (isCorrect)  {
-            this.topicUpdate(state, probId,topicId, numHints+numHelpAids, isCorrect, mistakes, probElapsed);
-            this.standardUpdate(state,probId,numHints+numHelpAids,isCorrect,mistakes,probElapsed);
+            // We only update mastery if the problem has not been seen recently (either never seen before or when it was is outside
+            // the problemReuseInterval)
+            PedagogicalModelParameters pmParams = smgr.getPedagogicalModel().getParams();
+            if (!getStudentProblemHistory().answeredRecently(probId,smgr.getSessionId(), pmParams.getProblemReuseIntervalDays(),pmParams.getProblemReuseIntervalSessions())) {
+                this.topicUpdate(state, probId, topicId, numHints + numHelpAids, isCorrect, mistakes, probElapsed);
+                this.standardUpdate(state, probId, numHints + numHelpAids, isCorrect, mistakes, probElapsed);
+            }
         }
         state.studentAttempt(null, answer, isCorrect, probElapsed);  // set/initialize student state variables based on student attempt event
         EffortHeuristic effortComputer = new EffortHeuristic();

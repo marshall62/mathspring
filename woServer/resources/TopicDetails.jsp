@@ -1,7 +1,6 @@
 <%@ page import="edu.umass.ckc.wo.tutormeta.TopicMastery" %>
 <%@ page import="java.util.List" %>
 <%@ page import="edu.umass.ckc.wo.smgr.SessionManager" %>
-<%--
   Created by IntelliJ IDEA.
   User: Dovan
   Date: Aug 12, 2012

@@ -518,7 +518,7 @@ public class Problem implements Activity {
     }
 
     public static boolean isExampleOrDemo (String mode) {
-        return mode.equalsIgnoreCase(EXAMPLE) || mode.equalsIgnoreCase(DEMO);
+        return mode != null && (mode.equalsIgnoreCase(EXAMPLE) || mode.equalsIgnoreCase(DEMO));
     }
 
     public String getStatus() {
