@@ -21,7 +21,8 @@ To make sure production is updated with master branch
 See https://git-scm.com/book/en/v2/Git-Basics-Tagging about tagging commits in Git.  Good
 for release numbers.
 
-
+Git command to ignore files that constantly change locally (e.g. workspace.xml)
+git update-index --assume-unchanged .idea\workspace.xml
 
 Goal:  Make sure that production branch represents the code in the ms release and that master branch
 represents the woj release.   I think I can then fix bugs in each and merge one branch into the other.
@@ -64,6 +65,7 @@ Release Management (begun 11/28/16 - better late than never)
 
 git log v2.1.13..HEAD --oneline
 git tag -a v2.1.14 -m "comment here"
+
 
 Releases (test again)
 3/12/17 v2.1.14
