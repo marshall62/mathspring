@@ -85,6 +85,11 @@ public class AdminHandler {
             AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t, -1);
             return false;
         }
+        else if(e instanceof AdminEditProblemFormatEvent) {
+            new EditProblemFormatHandler().handleEvent(sc, conn, servletRequest, servletResponse);
+            return false;
+        }
+
         if (Settings.useAdminServletSession && !(e instanceof UserRegistrationEvent)) {
             HttpSession sess = servletRequest.getSession(false);
             if (sess == null) {

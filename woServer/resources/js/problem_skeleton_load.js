@@ -37,7 +37,6 @@ function getTutorServletURL (action, args) {
 }
 
 function pluginProblem (responseText, textStatus, XMLHttpRequest) {
-//    alert("In pluginProblem ");
     var activity = JSON.parse(responseText);
     var problem = activity.problem;
     var problemParams = activity.binding;
@@ -53,6 +52,7 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var mode = problem.mode;
     var questType = problem.questType;
     var resource = problem.resource;
+    var format = problem.format;
 
 
 //    alert("stmt:" + stmt + ":\n" +
@@ -69,11 +69,11 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
 //        "probContentPath:" + probContentPath + ":\n" +
 //        "problemParams:" + problemParams + ":\n");
     var g = {stmt: stmt, fig: fig, audio: audio, hints: hints, answers: answers, newAnswer: newAnswer,
-        answer: answer, units: units, mode: mode, questType: questType, resource: resource, probContentPath: probContentPath, problemParams: problemParams};
+        answer: answer, units: units, mode: mode, questType: questType, resource: resource,
+        probContentPath: probContentPath, problemParams: problemParams, format: format};
     prepareForData(document, g);
     plug(document, g);
     probUtilsInit(document, g);
-    console.log("Loaded libraries successfully");
 
 }
 

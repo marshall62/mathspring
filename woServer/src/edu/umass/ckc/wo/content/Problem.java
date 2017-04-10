@@ -63,6 +63,7 @@ public class Problem implements Activity {
     private int exampleID; // an example problem that is used to prepare for this one
     private int[] topicIds; // ids of the problem groups this problems is in
     private List<Topic> topics;
+    private String problemFormat; //for QuickAuth problems, contains a JSON string with layout/styling parameters
 
     public static final String SAT_PROBLEM="satProblem";
     public static final String ADV_PROBLEM="advProblem";
@@ -109,6 +110,7 @@ public class Problem implements Activity {
     public static final String IS_EXTERNAL_ACTIVITY = "isExternalActivity";
     public static final String HAS_VARS = "hasVars";
     public static final String SCREENSHOT_URL = "screenShotURL";
+    public static String defaultFormat;
     private String video=null;
     private boolean HTML5;
     private ProblemParameters params;
@@ -128,20 +130,20 @@ public class Problem implements Activity {
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
                    String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL,
-                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units)
+                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units, String problemFormat)
     {
         this.id = id;
         this.resource = resource;
         if (answer != null)
             this.answer = answer.trim();
         this.name = name;
-        this.nickname=nickname;
-        this.hasStrategicHint= hasStrategicHint;
-        this.diff_level=diff;
+        this.nickname = nickname;
+        this.hasStrategicHint = hasStrategicHint;
+        this.diff_level = diff;
         this.topicIds = topicIds;
         this.allHints = new ArrayList<Hint>();
-        this.form = form  ;
-        this.instructions = _instructions ;
+        this.form = form;
+        this.instructions = _instructions;
         if (type != null)
             this.type = type;
         this.status = status;
@@ -154,6 +156,8 @@ public class Problem implements Activity {
         this.imageURL = imageURL;
         this.questionAudio = audioResource;
         this.units = units;
+        this.problemFormat = problemFormat;
+        if(problemFormat == null) this.problemFormat = Problem.defaultFormat;
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
@@ -161,7 +165,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
     }
 
     public int getId () { return id; }
@@ -248,9 +252,15 @@ public class Problem implements Activity {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
             if (isMultiChoice()) {
+                JSONObject answers = new JSONObject();
                 for (ProblemAnswer ans : getAnswers()) {
-                   jo.accumulate("answers", ans.getJSON(new JSONObject()));
+                    ans.getJSON(answers);
+//                    jo.accumulate("answers", ans.getJSON(new JSONObject()));
                 }
+                jo.element("answers", answers);
+            }
+            if(problemFormat != null) {
+                jo.accumulate("format", JSONObject.fromObject(problemFormat));
             }
         }
         if (solution != null) {
@@ -603,7 +613,7 @@ public class Problem implements Activity {
     }
 
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();

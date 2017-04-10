@@ -23,6 +23,7 @@ function probUtilsInit(doc, components) {
 }
 
 function shuffleAnswers(doc, components) {
+    //TODO(rezecib): rewrite this because it actually doesn't do anything...... and then verify that it scores correctly
     answer = components.answer;
     newAnswer = components.newAnswer;
 
@@ -130,13 +131,12 @@ function prob_readProblem() {
 }
 
 function prob_playHint (hintLabel) {
-    document.getElementById("HintContainer").style.display = "initial";
+    document.getElementById("HintContainer").style.display = "block";
     hint = getElementCorrespondingToHint(hintLabel);
     clearHintStage();
     stopAudio();
-    document.getElementById(hint+"Thumb").style.display = "initial";
-    document.getElementById(hint+"ThumbImg").style.display = "none";
-    document.getElementById(hint+"ThumbImgPressed").style.display = "initial";
+    document.getElementById(hint+"Thumb").style.visibility = "visible";
+    document.getElementById(hint+"Thumb").className = "hint-thumb-selected";
     document.getElementById(hint).style.display = "initial";
     //Animate the hints coming in.  We want them to alternate sliding in from the left or the bottom
 /*    if(hint == "Hint10"){
@@ -167,9 +167,8 @@ function prob_playHint (hintLabel) {
 
 function clearHintStage(){
     for(i = 1; i <= maxHints; ++i){
-        document.getElementById("Hint"+i.toString()).style.display = "none";
-        document.getElementById("Hint"+i+"ThumbImg").style.display = "initial";
-        document.getElementById("Hint"+i+"ThumbImgPressed").style.display = "none";
+        document.getElementById("Hint"+i).style.display = "none";
+        document.getElementById("Hint"+i+"Thumb").className = "hint-thumb";
     }
 }
 
