@@ -3,11 +3,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="css/problem_skeleton.css"/>
+        <link rel="stylesheet" type="text/css" href="css/quickAuthProblem.css"/>
         <script src="js/jquery-1.10.2.js"></script>
 
         <script src="js/problemUtils.js"></script>
         <%--<script src="js/tutorutils.js"></script>--%>
+        <script src="js/buildQuickAuth.js"></script>
         <script src="js/params.js"></script>
         <script src="js/problem_skeleton_load.js"></script>
         <script type="text/javascript">
@@ -53,37 +54,33 @@
     </head>
 
     <%--<body onload="plugin(stmt,fig,audio,hints,answers,newAnswer,answer,units,mode,questType,resource,probContentPath,params)">--%>
-    <body onload="plugin(${problem.id}, sessId, elapsedTime, eventCounter, servContext, servletName, ${previewMode}, ${teacherId})" style="width: 584px; height: 584px;">
+    <body onload="plugin(${problem.id}, sessId, elapsedTime, eventCounter, servContext, servletName, ${previewMode}, ${teacherId})">
+    <div id="ProblemContainer">
         <c:forTokens items="10,9,8,7,6,5,4,3,2,1" delims="," var="num">
             <c:out escapeXml = "false" value="<audio id = \"Hint${num}Sound\"></audio>"/>
         </c:forTokens>
         <audio id = "QuestionSound"></audio>
         <div id="HintContainer" style="display: none">
-            <c:forTokens items="1,2,3,4,5,6,7,8,9" delims="," var="num">
-                <c:out escapeXml = "false" value="
-                <div id=\"Hint${num}Thumb\" class=\"hint_thumb\" style=\"display: none\">
-                    <div id=\"Hint${num}ThumbText\" class=\"hint_thumb_text\">Hint ${num}</div>
-                    <div id=\"Hint${num}ThumbImg\" class=\"hint_thumb_img\"></div>
-                    <div id=\"Hint${num}ThumbImgPressed\" class=\"hint_thumb_img_pressed\"></div>
-                </div>"/>
-            </c:forTokens>
-            <div id = "Hint10Thumb" class="hint_thumb" style="display: none">
-                <div id="Hint10ThumbText" class="hint_thumb_text">Answer</div>
-                <div id="Hint10ThumbImg" class="hint_thumb_img"></div>
-                <div id="Hint10ThumbImgPressed" class="hint_thumb_img_pressed"></div>
+            <div class="hint-thumbs">
+                <c:forTokens items="1,2,3,4,5,6,7,8,9" delims="," var="num">
+                    <c:out escapeXml = "false" value="
+                <div id=\"Hint${num}Thumb\" class=\"hint-thumb\" style=\"visibility:hidden;display:none;\">${num}</div>"/>
+                </c:forTokens>
+                <div id = "Hint10Thumb" class="hint-thumb" style="visibility:hidden;display:none">A
+                </div>
             </div>
             <div class="clear"></div>
-            <div style="position: relative">
+            <div class="hint-content">
                 <c:forTokens items="1,2,3,4,5,6,7,8,9,10" delims="," var="num">
                     <c:out escapeXml = "false" value="
                         <div id=\"Hint${num}\" class=\"hint\"></div>"/>
                 </c:forTokens>
             </div>
         </div>
-        <div id="ProblemContainer">
-            <div id="ProblemStatement"></div>
-            <div id="ProblemFigure"></div>
-            <div id="ShortAnswerBox">
+        <div id="ProblemStatement"></div>
+        <div id="ProblemFigure"></div>
+        <div id="Answers">
+            <div id="ShortAnswerBox" style="display: none">
                 <!-- if you're getting weird bugs later, remember that you removed a div here, and there may be references to it that you missed-->
                 <input id="answer_field" type="text"/>
                 <span id="Units"></span><br/>
@@ -91,10 +88,10 @@
                 <div id="Grade_Check" class="short_answer_check"></div>
                 <div id="Grade_X" class="short_answer_x"></div>
             </div>
-            <div id="Answers">
+            <div id="MultipleChoiceAnswers" style = "display: none">
                 <c:forTokens items="A,B,C,D,E" delims="," var="letter">
                     <c:out escapeXml = "false" value="
-                <div class=\"answer_row\">
+                <div class=\"answer-row\" style=\"display:none;\">
                     <div id=\"${letter}Button\" class=\"button\">
                         <div id=\"${letter}Check\" class=\"check\"></div>
                         <div id=\"${letter}X\" class=\"x\"></div>
@@ -106,5 +103,6 @@
                 </c:forTokens>
             </div>
         </div>
+    </div>
     </body>
 </html>

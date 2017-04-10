@@ -12,16 +12,12 @@ function prepareForData(doc, components) {
         hideAnswers(doc, 0)
     }
     if (!isMultiChoice(components.questType)) {
-        showShortAnswerBox(doc);
+        doc.getElementById("ShortAnswerBox").style.display = "block";
         addShortAnswerHandler(doc);
     }
     else {
-//        var answers = getAnswers();
-        var answers =components.answers;
-        if (answers != undefined && answers != null){
-            hideAnswers(doc, answers.length);
-            addAnswerClickedHandlers(doc, answers.length);
-        }
+        doc.getElementById("MultipleChoiceAnswers").style.display = "block";
+        //individual answer event listeners and display will get set later in plug()
     }
 }
 
@@ -33,84 +29,6 @@ function isMultiChoice(questType) {
 
 function isArray(parsedItem) {
     return Object.prototype.toString.call(parsedItem) === '[object Array]';
-}
-
-function hideAnswers(doc, numAnswers) {
-    //TODO: Clean this up
-    doc.getElementById('ShortAnswerBox').style.display="none";
-    switch (numAnswers) {
-        case 4:
-            doc.getElementById('EButton').style.display="none";
-            doc.getElementById('AnswerE').style.display="none";
-            break;
-        case 3:
-            doc.getElementById('DButton').style.display="none";
-            doc.getElementById('AnswerD').style.display="none";
-            doc.getElementById('EButton').style.display="none";
-            doc.getElementById('AnswerE').style.display="none";
-            break;
-        case 2:
-            doc.getElementById('CButton').style.display="none";
-            doc.getElementById('AnswerC').style.display="none";
-            doc.getElementById('DButton').style.display="none";
-            doc.getElementById('AnswerD').style.display="none";
-            doc.getElementById('EButton').style.display="none";
-            doc.getElementById('AnswerE').style.display="none";
-            break;
-        case 1:
-            doc.getElementById('BButton').style.display="none";
-            doc.getElementById('AnswerB').style.display="none";
-            doc.getElementById('CButton').style.display="none";
-            doc.getElementById('AnswerC').style.display="none";
-            doc.getElementById('DButton').style.display="none";
-            doc.getElementById('AnswerD').style.display="none";
-            doc.getElementById('EButton').style.display="none";
-            doc.getElementById('AnswerE').style.display="none";
-            break;
-        case 0:
-            doc.getElementById('AButton').style.display="none";
-            doc.getElementById('AnswerA').style.display="none";
-            doc.getElementById('BButton').style.display="none";
-            doc.getElementById('AnswerB').style.display="none";
-            doc.getElementById('CButton').style.display="none";
-            doc.getElementById('AnswerC').style.display="none";
-            doc.getElementById('DButton').style.display="none";
-            doc.getElementById('AnswerD').style.display="none";
-            doc.getElementById('EButton').style.display="none";
-            doc.getElementById('AnswerE').style.display="none";
-            break;
-    }
-}
-
-function addAnswerClickedHandlers(doc, numAnswers){
-    //TODO: Clean this up
-    switch (numAnswers) {
-        case 1:
-            doc.getElementById('AButton').addEventListener("click", function(){answerClicked(doc, 'a');});
-            break;
-        case 2:
-            doc.getElementById('AButton').addEventListener("click", function(){answerClicked(doc, 'a');});
-            doc.getElementById('BButton').addEventListener("click", function(){answerClicked(doc, 'b');});
-            break;
-        case 3:
-            doc.getElementById('AButton').addEventListener("click", function(){answerClicked(doc, 'a');});
-            doc.getElementById('BButton').addEventListener("click", function(){answerClicked(doc, 'b');});
-            doc.getElementById('CButton').addEventListener("click", function(){answerClicked(doc, 'c');});
-            break;
-        case 4:
-            doc.getElementById('AButton').addEventListener("click", function(){answerClicked(doc, 'a');});
-            doc.getElementById('BButton').addEventListener("click", function(){answerClicked(doc, 'b');});
-            doc.getElementById('CButton').addEventListener("click", function(){answerClicked(doc, 'c');});
-            doc.getElementById('DButton').addEventListener("click", function(){answerClicked(doc, 'd');});
-            break;
-        case 5:
-            doc.getElementById('AButton').addEventListener("click", function(){answerClicked(doc, 'a');});
-            doc.getElementById('BButton').addEventListener("click", function(){answerClicked(doc, 'b');});
-            doc.getElementById('CButton').addEventListener("click", function(){answerClicked(doc, 'c');});
-            doc.getElementById('DButton').addEventListener("click", function(){answerClicked(doc, 'd');});
-            doc.getElementById('EButton').addEventListener("click", function(){answerClicked(doc, 'e');});
-            break;
-    }
 }
 
 function addShortAnswerHandler(doc){
@@ -126,38 +44,39 @@ function addHintHandler(doc, hintLabel){
     }
 }
 
+function isNotEmpty(value) {
+    //note that simple equality considers null == undefined, so this will catch both
+    return value != null && value != "";
+}
+
 function plug(doc, components) {
-//    var probStatement = getProblemStatement();
-//    var probFigure = getProblemFigure();
-//    var probSound = getProblemSound();
-//    var probUnits = getUnits();
     var probStatement = components.stmt;
     var probFigure = components.fig;
     var probSound = components.audio;
     var probUnits = components.units;
-    var problemParams =components.problemParams;
-    var statementHeight = 0;
+    var problemParams = components.problemParams;
+    var problemFormat = components.format;
+    buildProblem(document.getElementById("ProblemContainer"), problemFormat, true, false, false);
 
-    if(probStatement != null && probStatement != undefined && probStatement != ""){
+    if(isNotEmpty(probStatement)){
         doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(probStatement, components), problemParams);
-        statementHeight = window.getComputedStyle(doc.getElementById("ProblemStatement")).getPropertyValue("height");
-        statementHeight = parseInt(statementHeight, 10);
     }
-    if(probFigure != null && probFigure != undefined && probFigure != ""){
+    if(isNotEmpty(probFigure)){
         doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure, components), problemParams);
     }
-    if(probSound != null && probSound != undefined && probSound != "") {
-        //TODO I don't think the below lines do what I want them to.
+    if(isNotEmpty(probSound)) {
+        //I don't think the below lines do what I want them to.
+        //#rafael: not sure what they meant above, sound seems to be working fine
         doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".ogg", components.resource, components.probContentPath));
         doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".mp3", components.resource, components.probContentPath));
     }
-    if (probUnits != null && probUnits != undefined && probUnits != "") {
+    if(isNotEmpty(probUnits)) {
         doc.getElementById("Units").innerHTML = parametrizeText(format(getUnits(), components), problemParams);
     }
     var hints=components.hints;
 
     var hintID = "";
-    if (hints != undefined && hints != null) {
+    if(isNotEmpty(hints)) {
         for (i=0; i<hints.length;++i)  {
             hintID = getElementCorrespondingToHint(hints[i].label);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
@@ -166,45 +85,35 @@ function plug(doc, components) {
             else{
                 alert("text missing for hint: "+i);
             }
-            var hintthumb = doc.getElementById(hintID+"Thumb");
-            if(typeof(hints[i].hoverText) != 'undefined'){
-                hintthumb.setAttribute("title", parametrizeText(format(hints[i].hoverText, components), problemParams));
+            if(isNotEmpty(hints[i].hoverText)){
+                doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText, components), problemParams));
+                doc.getElementById(hintID+"Thumb").style.display = "block";
             }
-            //TODO I don't think this does what I want
-            if (hints[i].audioResource != undefined && hints[i].audioResource != "")  {
+            //I don't think this does what I want
+            //#rafael: not sure what they meant above, sound seems to be working fine
+            if (isNotEmpty(hints[i].audioResource)) {
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));
                 doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".mp3", components.resource, components.probContentPath));
             }
         }
 
-        if(hints[0] == undefined && hints.label != undefined && hints.label != ""){
+        if(hints[0] == undefined && isNotEmpty(hints.label)){
             doc.getElementById(getElementCorrespondingToHint(hints.label)+"Sound").load();
         }
-        else if(hints[0].audioResource != undefined && hints[0].audioResource != ""){
+        else if(isNotEmpty(hints[0].audioResource)){
             doc.getElementById(getElementCorrespondingToHint(hints[0].label)+"Sound").load();
         }
     }
 
-    if (isMultiChoice(components.questType)) {
-//        var answers = getAnswers();
+    if(isMultiChoice(components.questType)) {
         var answers = components.answers;
-        if (answers != null && answers != undefined) {
-            for(i=0;i<answers.length;++i) {
-                if (answers[i].a != null && answers[i].a != undefined) {
-                    doc.getElementById("AnswerA").innerHTML = parametrizeText(format(answers[i].a, components), problemParams);
-                }
-                if (answers[i].b != null && answers[i].b != undefined) {
-                    doc.getElementById("AnswerB").innerHTML = parametrizeText(format(answers[i].b, components), problemParams);
-                }
-                if (answers[i].c != null && answers[i].c != undefined) {
-                    doc.getElementById("AnswerC").innerHTML = parametrizeText(format(answers[i].c, components), problemParams);
-                }
-                if (answers[i].d != null && answers[i].d != undefined) {
-                    doc.getElementById("AnswerD").innerHTML = parametrizeText(format(answers[i].d, components), problemParams);
-                }
-                if (answers[i].e != null && answers[i].e != undefined) {
-                    doc.getElementById("AnswerE").innerHTML = parametrizeText(format(answers[i].e, components), problemParams);
-                }
+        if(isNotEmpty(answers)) {
+            for(var letter in answers) {
+                if(!answers.hasOwnProperty(letter)) continue;
+                var answerElt = doc.getElementById("Answer" + letter.toUpperCase());
+                answerElt.parentNode.style.display = "block";
+                answerElt.innerHTML = parametrizeText(format(answers[letter], components), problemParams);
+                doc.getElementById(letter.toUpperCase() + "Button").addEventListener("click", function(){answerClicked(doc, letter);});
             }
         }
     }
@@ -405,7 +314,7 @@ function replaceWithHTML(file, ext, resource, probContentPath){
     }
 
     else{
-        alert("invalid image or video");
+        console.log("invalid image or video", file + "." + ext, resource, probContentPath);
     }
     return toInsert;
 }
@@ -601,13 +510,4 @@ function getHints() {
 
 function getUnits() {
     return window.parent.getUnits();
-}
-
-function showShortAnswerBox(doc) {
-    doc.getElementById('Answers').style.display="none";
-    doc.getElementById('AnswerA').style.display="none";
-    doc.getElementById('AnswerB').style.display="none";
-    doc.getElementById('AnswerC').style.display="none";
-    doc.getElementById('AnswerD').style.display="none";
-    doc.getElementById('AnswerE').style.display="none";
 }
