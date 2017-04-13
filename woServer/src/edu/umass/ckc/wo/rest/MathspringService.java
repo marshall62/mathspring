@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 import edu.umass.ckc.wo.woserver.ServletUtil;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -31,6 +32,7 @@ import java.sql.SQLException;
  */
 @Path("/admin")
 public class MathspringService {
+    private final static Logger logger = Logger.getLogger(MathspringService.class);
 
     @javax.ws.rs.core.Context
     ServletContext servletContext;
@@ -75,12 +77,15 @@ public class MathspringService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/username/{username}/pw/{pw}")
     public Response authenticateUser(@PathParam("username")String username, @PathParam("pw")String pw) throws Exception {
+        logger.debug("lookup user:" + username + " pw: " + pw);
         JSONObject jsonObject = new JSONObject();
         Connection conn = getConnection(servletContext);
+        logger.debug("connection: " + conn);
         // If the service is called before any of the tutor servlets initialize the system, we do the servlet setServletInfo because we need static objects created for this
 //        serviceInit(conn);
         PasswordAuthentication auth = PasswordAuthentication.getInstance();
         String hashedPw = DbAdmin.getPassword(conn, username);
+        logger.debug("pw hash: " + hashedPw);
         boolean b= false;
         if (hashedPw != null)
             b = auth.authenticate(pw.toCharArray(),hashedPw);
