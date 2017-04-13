@@ -94,14 +94,6 @@
   
   <!-- Project Libraries -->
   
-  <path id="library.maven:_asm:asm:3.3.1.classpath">
-    <pathelement location="${path.variable.maven_repository}/asm/asm/3.3.1/asm-3.3.1.jar"/>
-  </path>
-  
-  <path id="library.maven:_cglib:cglib:2.2.classpath">
-    <pathelement location="${path.variable.maven_repository}/cglib/cglib/2.2/cglib-2.2.jar"/>
-  </path>
-  
   <path id="library.maven:_com.beust:jcommander:1.27.classpath">
     <pathelement location="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar"/>
   </path>
@@ -130,10 +122,6 @@
     <pathelement location="${path.variable.maven_repository}/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.3.2/jackson-module-jaxb-annotations-2.3.2.jar"/>
   </path>
   
-  <path id="library.maven:_com.google.code.gson:gson:2.8.0.classpath">
-    <pathelement location="${path.variable.maven_repository}/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar"/>
-  </path>
-  
   <path id="library.maven:_com.sun.jersey:jersey-bundle:1.19.classpath">
     <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar"/>
   </path>
@@ -146,16 +134,12 @@
     <pathelement location="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar"/>
   </path>
   
-  <path id="library.maven:_com.thoughtworks.xstream:xstream:1.4.7.classpath">
-    <pathelement location="${path.variable.maven_repository}/com/thoughtworks/xstream/xstream/1.4.7/xstream-1.4.7.jar"/>
-  </path>
-  
   <path id="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath">
     <pathelement location="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar"/>
   </path>
   
-  <path id="library.maven:_commons-cli:commons-cli:1.3.1.classpath">
-    <pathelement location="${path.variable.maven_repository}/commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar"/>
+  <path id="library.maven:_commons-cli:commons-cli:1.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-cli/commons-cli/1.4/commons-cli-1.4.jar"/>
   </path>
   
   <path id="library.maven:_commons-codec:commons-codec:1.6.classpath">
@@ -184,10 +168,6 @@
   
   <path id="library.maven:_javax.activation:activation:1.1.1.classpath">
     <pathelement location="${path.variable.maven_repository}/javax/activation/activation/1.1.1/activation-1.1.1.jar"/>
-  </path>
-  
-  <path id="library.maven:_javax.activation:activation:1.1.classpath">
-    <pathelement location="${path.variable.maven_repository}/javax/activation/activation/1.1/activation-1.1.jar"/>
   </path>
   
   <path id="library.maven:_javax.annotation:javax.annotation-api:1.2.classpath">
@@ -332,14 +312,6 @@
   
   <path id="library.maven:_xml-apis:xml-apis:1.0.b2.classpath">
     <pathelement location="${path.variable.maven_repository}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
-  </path>
-  
-  <path id="library.maven:_xmlpull:xmlpull:1.1.3.1.classpath">
-    <pathelement location="${path.variable.maven_repository}/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar"/>
-  </path>
-  
-  <path id="library.maven:_xpp3:xpp3_min:1.1.4c.classpath">
-    <pathelement location="${path.variable.maven_repository}/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar"/>
   </path>
   
   
@@ -730,42 +702,37 @@
   
   <path id="woserver.module.production.classpath">
     <path refid="${module.jdk.classpath.woserver}"/>
-    <path refid="library.maven:_commons-cli:commons-cli:1.3.1.classpath"/>
-    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
-    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-cli:commons-cli:1.4.classpath"/>
     <path refid="library.maven:_org.apache.directory.studio:org.apache.commons.io:2.4.classpath"/>
     <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
-    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
-    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
-    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
-    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
     <path refid="library.maven:_org.apache.httpcomponents:httpmime:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
     <path refid="library.maven:_jcharts:jcharts:0.7.5.classpath"/>
     <path refid="library.maven:_org.jdom:jdom:1.1.classpath"/>
     <path refid="library.maven:_org.apache.servicemix.bundles:org.apache.servicemix.bundles.json-lib:2.4_1.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
     <path refid="library.maven:_jstl:jstl:1.2.classpath"/>
     <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
-    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
-    <path refid="library.maven:_javax.activation:activation:1.1.classpath"/>
     <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
     <path refid="library.maven:_net.sf.opencsv:opencsv:2.3.classpath"/>
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
     <path refid="library.maven:_taglibs:standard:1.1.2.classpath"/>
     <path refid="library.maven:_xerces:xercesimpl:2.4.0.classpath"/>
-    <path refid="library.maven:_xpp3:xpp3_min:1.1.4c.classpath"/>
-    <path refid="library.maven:_com.thoughtworks.xstream:xstream:1.4.7.classpath"/>
-    <path refid="library.maven:_xmlpull:xmlpull:1.1.3.1.classpath"/>
     <path refid="library.maven:_org.testng:testng:6.8.8.classpath"/>
     <path refid="library.maven:_org.beanshell:bsh:2.0b4.classpath"/>
     <path refid="library.maven:_com.beust:jcommander:1.27.classpath"/>
     <path refid="library.maven:_dom4j:dom4j:1.6.1.classpath"/>
     <path refid="library.maven:_xml-apis:xml-apis:1.0.b2.classpath"/>
-    <path refid="library.maven:_cglib:cglib:2.2.classpath"/>
     <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
     <pathelement location="${servletframework.output.dir}"/>
-    <path refid="library.maven:_asm:asm:3.3.1.classpath"/>
     <path refid="library.maven:_com.sun.jersey:jersey-bundle:1.19.classpath"/>
     <path refid="library.maven:_javax.ws.rs:jsr311-api:1.1.1.classpath"/>
     <path refid="library.maven:_org.json:json:20140107.classpath"/>
@@ -790,50 +757,43 @@
     <path refid="library.maven:_com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
-    <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
   
   <path id="woserver.runtime.production.module.classpath">
     <pathelement location="${woserver.output.dir}"/>
-    <path refid="library.maven:_commons-cli:commons-cli:1.3.1.classpath"/>
-    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
-    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-cli:commons-cli:1.4.classpath"/>
     <path refid="library.maven:_org.apache.directory.studio:org.apache.commons.io:2.4.classpath"/>
     <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
-    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
-    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
-    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
-    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
     <path refid="library.maven:_org.apache.httpcomponents:httpmime:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
     <path refid="library.maven:_jcharts:jcharts:0.7.5.classpath"/>
     <path refid="library.maven:_org.jdom:jdom:1.1.classpath"/>
     <path refid="library.maven:_org.apache.servicemix.bundles:org.apache.servicemix.bundles.json-lib:2.4_1.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
     <path refid="library.maven:_jstl:jstl:1.2.classpath"/>
     <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
-    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
-    <path refid="library.maven:_javax.activation:activation:1.1.classpath"/>
     <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
     <path refid="library.maven:_net.sf.opencsv:opencsv:2.3.classpath"/>
     <path refid="library.maven:_taglibs:standard:1.1.2.classpath"/>
     <path refid="library.maven:_xerces:xercesimpl:2.4.0.classpath"/>
-    <path refid="library.maven:_xpp3:xpp3_min:1.1.4c.classpath"/>
-    <path refid="library.maven:_com.thoughtworks.xstream:xstream:1.4.7.classpath"/>
-    <path refid="library.maven:_xmlpull:xmlpull:1.1.3.1.classpath"/>
     <path refid="library.maven:_org.testng:testng:6.8.8.classpath"/>
     <path refid="library.maven:_org.beanshell:bsh:2.0b4.classpath"/>
     <path refid="library.maven:_com.beust:jcommander:1.27.classpath"/>
     <path refid="library.maven:_dom4j:dom4j:1.6.1.classpath"/>
     <path refid="library.maven:_xml-apis:xml-apis:1.0.b2.classpath"/>
-    <path refid="library.maven:_cglib:cglib:2.2.classpath"/>
     <pathelement location="${emailer.output.dir}"/>
     <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
     <pathelement location="${servletframework.output.dir}"/>
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
-    <path refid="library.maven:_asm:asm:3.3.1.classpath"/>
     <path refid="library.maven:_com.sun.jersey:jersey-bundle:1.19.classpath"/>
     <path refid="library.maven:_javax.ws.rs:jsr311-api:1.1.1.classpath"/>
     <path refid="library.maven:_org.json:json:20140107.classpath"/>
@@ -858,7 +818,6 @@
     <path refid="library.maven:_com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
-    <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
@@ -866,44 +825,39 @@
   <path id="woserver.module.classpath">
     <path refid="${module.jdk.classpath.woserver}"/>
     <pathelement location="${woserver.output.dir}"/>
-    <path refid="library.maven:_commons-cli:commons-cli:1.3.1.classpath"/>
-    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
-    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-cli:commons-cli:1.4.classpath"/>
     <path refid="library.maven:_org.apache.directory.studio:org.apache.commons.io:2.4.classpath"/>
     <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
-    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
-    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
-    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
-    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
     <path refid="library.maven:_org.apache.httpcomponents:httpmime:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
     <path refid="library.maven:_jcharts:jcharts:0.7.5.classpath"/>
     <path refid="library.maven:_org.jdom:jdom:1.1.classpath"/>
     <path refid="library.maven:_org.apache.servicemix.bundles:org.apache.servicemix.bundles.json-lib:2.4_1.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
     <path refid="library.maven:_jstl:jstl:1.2.classpath"/>
     <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
-    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
-    <path refid="library.maven:_javax.activation:activation:1.1.classpath"/>
     <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
     <path refid="library.maven:_net.sf.opencsv:opencsv:2.3.classpath"/>
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
     <path refid="library.maven:_taglibs:standard:1.1.2.classpath"/>
     <path refid="library.maven:_xerces:xercesimpl:2.4.0.classpath"/>
-    <path refid="library.maven:_xpp3:xpp3_min:1.1.4c.classpath"/>
-    <path refid="library.maven:_com.thoughtworks.xstream:xstream:1.4.7.classpath"/>
-    <path refid="library.maven:_xmlpull:xmlpull:1.1.3.1.classpath"/>
     <path refid="library.maven:_org.testng:testng:6.8.8.classpath"/>
     <path refid="library.maven:_org.beanshell:bsh:2.0b4.classpath"/>
     <path refid="library.maven:_com.beust:jcommander:1.27.classpath"/>
     <path refid="library.maven:_dom4j:dom4j:1.6.1.classpath"/>
     <path refid="library.maven:_xml-apis:xml-apis:1.0.b2.classpath"/>
-    <path refid="library.maven:_cglib:cglib:2.2.classpath"/>
     <pathelement location="${emailer.testoutput.dir}"/>
     <pathelement location="${emailer.output.dir}"/>
+    <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
     <pathelement location="${servletframework.testoutput.dir}"/>
     <pathelement location="${servletframework.output.dir}"/>
-    <path refid="library.maven:_asm:asm:3.3.1.classpath"/>
     <path refid="library.maven:_com.sun.jersey:jersey-bundle:1.19.classpath"/>
     <path refid="library.maven:_javax.ws.rs:jsr311-api:1.1.1.classpath"/>
     <path refid="library.maven:_org.json:json:20140107.classpath"/>
@@ -928,7 +882,6 @@
     <path refid="library.maven:_com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
-    <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
@@ -936,45 +889,39 @@
   <path id="woserver.runtime.module.classpath">
     <pathelement location="${woserver.testoutput.dir}"/>
     <pathelement location="${woserver.output.dir}"/>
-    <path refid="library.maven:_commons-cli:commons-cli:1.3.1.classpath"/>
-    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
-    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-cli:commons-cli:1.4.classpath"/>
     <path refid="library.maven:_org.apache.directory.studio:org.apache.commons.io:2.4.classpath"/>
     <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
-    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
-    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
-    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
-    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
-    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
     <path refid="library.maven:_org.apache.httpcomponents:httpmime:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.maven:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.6.classpath"/>
     <path refid="library.maven:_jcharts:jcharts:0.7.5.classpath"/>
     <path refid="library.maven:_org.jdom:jdom:1.1.classpath"/>
     <path refid="library.maven:_org.apache.servicemix.bundles:org.apache.servicemix.bundles.json-lib:2.4_1.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.0.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.maven:_commons-lang:commons-lang:2.5.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_net.sf.ezmorph:ezmorph:1.0.6.classpath"/>
     <path refid="library.maven:_jstl:jstl:1.2.classpath"/>
     <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
-    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
-    <path refid="library.maven:_javax.activation:activation:1.1.classpath"/>
     <path refid="library.maven:_mysql:mysql-connector-java:5.1.30.classpath"/>
     <path refid="library.maven:_net.sf.opencsv:opencsv:2.3.classpath"/>
     <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
     <path refid="library.maven:_taglibs:standard:1.1.2.classpath"/>
     <path refid="library.maven:_xerces:xercesimpl:2.4.0.classpath"/>
-    <path refid="library.maven:_xpp3:xpp3_min:1.1.4c.classpath"/>
-    <path refid="library.maven:_com.thoughtworks.xstream:xstream:1.4.7.classpath"/>
-    <path refid="library.maven:_xmlpull:xmlpull:1.1.3.1.classpath"/>
     <path refid="library.maven:_org.testng:testng:6.8.8.classpath"/>
     <path refid="library.maven:_org.beanshell:bsh:2.0b4.classpath"/>
     <path refid="library.maven:_com.beust:jcommander:1.27.classpath"/>
     <path refid="library.maven:_dom4j:dom4j:1.6.1.classpath"/>
     <path refid="library.maven:_xml-apis:xml-apis:1.0.b2.classpath"/>
-    <path refid="library.maven:_cglib:cglib:2.2.classpath"/>
     <pathelement location="${emailer.testoutput.dir}"/>
     <pathelement location="${emailer.output.dir}"/>
     <path refid="library.maven:_javax.activation:activation:1.1.1.classpath"/>
+    <path refid="library.maven:_javax.mail:mail:1.5.0-b01.classpath"/>
     <pathelement location="${servletframework.testoutput.dir}"/>
     <pathelement location="${servletframework.output.dir}"/>
-    <path refid="library.maven:_asm:asm:3.3.1.classpath"/>
     <path refid="library.maven:_com.sun.jersey:jersey-bundle:1.19.classpath"/>
     <path refid="library.maven:_javax.ws.rs:jsr311-api:1.1.1.classpath"/>
     <path refid="library.maven:_org.json:json:20140107.classpath"/>
@@ -999,7 +946,6 @@
     <path refid="library.maven:_com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.2.classpath"/>
     <path refid="library.maven:_com.fasterxml.jackson.core:jackson-annotations:2.3.2.classpath"/>
-    <path refid="library.maven:_com.google.code.gson:gson:2.8.0.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
     <path refid="library.maven:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
   </path>
@@ -1073,7 +1019,7 @@
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.emailer, clean.module.main, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver, clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
+  <target name="clean" depends="clean.module.emailer, clean.module.main, clean.module.problemsnapshotinserter, clean.module.servletframework, clean.module.woserver, clean.artifact.woserver:web_exploded, clean.artifact.woserver:webforlocalhost_exploded, clean.artifact.woserver:webforrose_beta_exploded, clean.artifact.woserver:webforrose_production_exploded, clean.artifact.woserver:webforsugaree_exploded" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.emailer, compile.module.main, compile.module.problemsnapshotinserter, compile.module.servletframework, compile.module.woserver" description="build all modules"/>
   
@@ -1082,26 +1028,38 @@
     <property name="artifact.output.emailer:jar" value="${basedir}/out/artifacts/emailer_jar"/>
     <property name="artifact.output.problemsnapshotinserter:jar" value="${basedir}/out/artifacts/ProblemSnapshotInserter_jar"/>
     <property name="artifact.output.servletframework:jar" value="${basedir}/out/artifacts/servletFramework_jar"/>
-    <property name="artifact.output.woserver_war_rose" value="${basedir}/out/artifacts/woj/rose"/>
+    <property name="artifact.output.war_rose_beta" value="${basedir}/out/artifacts/war_rose_BETA"/>
+    <property name="artifact.output.war_rose_production" value="${basedir}/out/artifacts/war_rose_PRODUCTION"/>
     <property name="artifact.output.woserver_war_sugaree" value="${basedir}/out/artifacts/woj/sugaree"/>
+    <property name="artifact.output.woserver:web_exploded" value="${basedir}/out/artifacts/woServer_Web_exploded"/>
     <property name="artifact.output.woserver:webforlocalhost_exploded" value="${basedir}/out/artifacts/woServer_WebForLocalhost_exploded"/>
-    <property name="artifact.output.woserver:webforrose_exploded" value="${basedir}/out/artifacts/woServer_WebForRose_exploded"/>
+    <property name="artifact.output.woserver:webforrose_beta_exploded" value="${basedir}/out/artifacts/woServer_WebForRose_BETA_exploded"/>
+    <property name="artifact.output.woserver:webforrose_production_exploded" value="${basedir}/out/artifacts/woServer_WebForRose_PRODUCTION_exploded"/>
     <property name="artifact.output.woserver:webforsugaree_exploded" value="${basedir}/out/artifacts/woServer_WebForSugaree_exploded"/>
     <mkdir dir="${artifacts.temp.dir}"/>
     <property name="temp.jar.path.emailer.jar" value="${artifacts.temp.dir}/emailer.jar"/>
     <property name="temp.jar.path.ProblemSnapshotInserter.jar" value="${artifacts.temp.dir}/ProblemSnapshotInserter.jar"/>
     <property name="temp.jar.path.servletFramework.jar" value="${artifacts.temp.dir}/servletFramework.jar"/>
     <property name="temp.jar.path.woj.war" value="${artifacts.temp.dir}/woj.war"/>
+    <property name="temp.jar.path.ms.war" value="${artifacts.temp.dir}/ms.war"/>
     <property name="temp.jar.path.woj.war2" value="${artifacts.temp.dir}/1/woj.war"/>
     <mkdir dir="${artifacts.temp.dir}/1"/>
+  </target>
+  
+  <target name="clean.artifact.woserver:web_exploded" description="clean woServer:Web exploded artifact output">
+    <delete dir="${artifact.output.woserver:web_exploded}"/>
   </target>
   
   <target name="clean.artifact.woserver:webforlocalhost_exploded" description="clean woServer:WebForLocalhost exploded artifact output">
     <delete dir="${artifact.output.woserver:webforlocalhost_exploded}"/>
   </target>
   
-  <target name="clean.artifact.woserver:webforrose_exploded" description="clean woServer:WebForRose exploded artifact output">
-    <delete dir="${artifact.output.woserver:webforrose_exploded}"/>
+  <target name="clean.artifact.woserver:webforrose_beta_exploded" description="clean woServer:WebForRose BETA exploded artifact output">
+    <delete dir="${artifact.output.woserver:webforrose_beta_exploded}"/>
+  </target>
+  
+  <target name="clean.artifact.woserver:webforrose_production_exploded" description="clean woServer:WebForRose PRODUCTION exploded artifact output">
+    <delete dir="${artifact.output.woserver:webforrose_production_exploded}"/>
   </target>
   
   <target name="clean.artifact.woserver:webforsugaree_exploded" description="clean woServer:WebForSugaree exploded artifact output">
@@ -1136,23 +1094,56 @@
     <copy file="${temp.jar.path.servletFramework.jar}" tofile="${artifact.temp.output.servletframework:jar}/servletFramework.jar"/>
   </target>
   
-  <target name="artifact.woserver_war_rose" depends="init.artifacts, artifact.woserver:webforrose_exploded" description="Build &#39;woServer war Rose&#39; artifact">
-    <property name="artifact.temp.output.woserver_war_rose" value="${artifacts.temp.dir}/woServer_war_Rose"/>
-    <mkdir dir="${artifact.temp.output.woserver_war_rose}"/>
+  <target name="artifact.war_rose_beta" depends="init.artifacts, artifact.woserver:webforrose_beta_exploded" description="Build &#39;war rose BETA&#39; artifact">
+    <property name="artifact.temp.output.war_rose_beta" value="${artifacts.temp.dir}/war_rose_BETA"/>
+    <mkdir dir="${artifact.temp.output.war_rose_beta}"/>
     <zip destfile="${temp.jar.path.woj.war}">
-      <zipfileset dir="${artifact.output.woserver:webforrose_exploded}"/>
+      <zipfileset dir="${artifact.output.woserver:webforrose_beta_exploded}"/>
     </zip>
-    <copy file="${temp.jar.path.woj.war}" tofile="${artifact.temp.output.woserver_war_rose}/woj.war"/>
+    <copy file="${temp.jar.path.woj.war}" tofile="${artifact.temp.output.war_rose_beta}/woj.war"/>
   </target>
   
-  <target name="artifact.woserver_war_sugaree" depends="init.artifacts, artifact.woserver:webforsugaree_exploded, compile.module.woserver" description="Build &#39;woServer war Sugaree&#39; artifact">
+  <target name="artifact.war_rose_production" depends="init.artifacts, artifact.woserver:webforrose_production_exploded" description="Build &#39;war rose PRODUCTION&#39; artifact">
+    <property name="artifact.temp.output.war_rose_production" value="${artifacts.temp.dir}/war_rose_PRODUCTION"/>
+    <mkdir dir="${artifact.temp.output.war_rose_production}"/>
+    <zip destfile="${temp.jar.path.ms.war}">
+      <zipfileset dir="${artifact.output.woserver:webforrose_production_exploded}"/>
+    </zip>
+    <copy file="${temp.jar.path.ms.war}" tofile="${artifact.temp.output.war_rose_production}/ms.war"/>
+  </target>
+  
+  <target name="artifact.woserver_war_sugaree" depends="init.artifacts, artifact.woserver:webforsugaree_exploded, compile.module.woserver, compile.module.servletframework, compile.module.emailer" description="Build &#39;woServer war Sugaree&#39; artifact">
     <property name="artifact.temp.output.woserver_war_sugaree" value="${artifacts.temp.dir}/woServer_war_Sugaree"/>
     <mkdir dir="${artifact.temp.output.woserver_war_sugaree}"/>
     <zip destfile="${temp.jar.path.woj.war2}">
       <zipfileset dir="${artifact.output.woserver:webforsugaree_exploded}"/>
       <zipfileset dir="${woserver.output.dir}" prefix="WEB-INF/classes"/>
+      <zipfileset dir="${servletframework.output.dir}" prefix="WEB-INF/lib"/>
+      <zipfileset dir="${emailer.output.dir}" prefix="WEB-INF/lib"/>
     </zip>
     <copy file="${temp.jar.path.woj.war2}" tofile="${artifact.temp.output.woserver_war_sugaree}/woj.war"/>
+  </target>
+  
+  <target name="artifact.woserver:web_exploded" depends="init.artifacts, compile.module.woserver, compile.module.servletframework, compile.module.emailer" description="Build &#39;woServer:Web exploded&#39; artifact">
+    <mkdir dir="${artifact.output.woserver:web_exploded}"/>
+    <mkdir dir="${artifact.output.woserver:web_exploded}/WEB-INF"/>
+    <mkdir dir="${artifact.output.woserver:web_exploded}/WEB-INF/classes"/>
+    <copy todir="${artifact.output.woserver:web_exploded}/WEB-INF/classes">
+      <fileset dir="${woserver.output.dir}"/>
+    </copy>
+    <copy todir="${artifact.output.woserver:web_exploded}/WEB-INF/classes">
+      <fileset dir="${servletframework.output.dir}"/>
+    </copy>
+    <copy todir="${artifact.output.woserver:web_exploded}/WEB-INF/classes">
+      <fileset dir="${emailer.output.dir}"/>
+    </copy>
+    <mkdir dir="${artifact.output.woserver:web_exploded}/WEB-INF/lib"/>
+    <copy file="${path.variable.maven_repository}/org/jdom/jdom/1.1/jdom-1.1.jar" tofile="${artifact.output.woserver:web_exploded}/WEB-INF/lib/jdom-1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar" tofile="${artifact.output.woserver:web_exploded}/WEB-INF/lib/log4j-1.2.17.jar"/>
+    <copy file="${path.variable.maven_repository}/xerces/xercesImpl/2.4.0/xercesImpl-2.4.0.jar" tofile="${artifact.output.woserver:web_exploded}/WEB-INF/lib/xercesImpl-2.4.0.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" tofile="${artifact.output.woserver:web_exploded}/WEB-INF/lib/servlet-api-2.5.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1.1/activation-1.1.1.jar" tofile="${artifact.output.woserver:web_exploded}/WEB-INF/lib/activation-1.1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" tofile="${artifact.output.woserver:web_exploded}/WEB-INF/lib/mail-1.5.0-b01.jar"/>
   </target>
   
   <target name="artifact.woserver:webforlocalhost_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForLocalhost exploded&#39; artifact">
@@ -1164,9 +1155,7 @@
     </copy>
     <copy file="${basedir}/woServer/web/WEB-INF/localhost/classes/log4j.properties" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/classes/log4j.properties"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib"/>
-    <copy file="${path.variable.maven_repository}/cglib/cglib/2.2/cglib-2.2.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/cglib-2.2.jar"/>
     <copy file="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jcommander-1.27.jar"/>
-    <copy file="${path.variable.maven_repository}/com/thoughtworks/xstream/xstream/1.4.7/xstream-1.4.7.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/xstream-1.4.7.jar"/>
     <copy file="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
     <copy file="${path.variable.maven_repository}/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/commons-codec-1.6.jar"/>
     <copy file="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/commons-collections-3.2.1.jar"/>
@@ -1174,7 +1163,6 @@
     <copy file="${path.variable.maven_repository}/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/commons-lang-2.5.jar"/>
     <copy file="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/commons-logging-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/dom4j-1.6.1.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1/activation-1.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/activation-1.1.jar"/>
     <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1.1/activation-1.1.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/activation-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/mail-1.5.0-b01.jar"/>
     <copy file="${path.variable.maven_repository}/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/servlet-api-2.5.jar"/>
@@ -1195,15 +1183,12 @@
     <copy file="${path.variable.maven_repository}/taglibs/standard/1.1.2/standard-1.1.2.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/standard-1.1.2.jar"/>
     <copy file="${path.variable.maven_repository}/xerces/xercesImpl/2.4.0/xercesImpl-2.4.0.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/xercesImpl-2.4.0.jar"/>
     <copy file="${path.variable.maven_repository}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
-    <copy file="${path.variable.maven_repository}/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/xmlpull-1.1.3.1.jar"/>
-    <copy file="${path.variable.maven_repository}/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.emailer:jar}"/>
     </copy>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.servletframework:jar}"/>
     </copy>
-    <copy file="${path.variable.maven_repository}/asm/asm/3.3.1/asm-3.3.1.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/asm-3.3.1.jar"/>
     <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jersey-bundle-1.19.jar"/>
     <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jersey-core-1.19.jar"/>
     <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
@@ -1211,86 +1196,144 @@
     <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/json-20140107.jar"/>
     <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
     <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
-    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
     <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/META-INF"/>
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/META-INF/context.xml"/>
+    <mkdir dir="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/localhost/web.xml" tofile="${artifact.output.woserver:webforlocalhost_exploded}/WEB-INF/web.xml"/>
+    <copy todir="${artifact.output.woserver:webforlocalhost_exploded}">
+      <fileset dir="${basedir}/woServer/webResources"/>
+    </copy>
   </target>
   
-  <target name="artifact.woserver:webforrose_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForRose exploded&#39; artifact">
-    <mkdir dir="${artifact.output.woserver:webforrose_exploded}"/>
-    <mkdir dir="${artifact.output.woserver:webforrose_exploded}/WEB-INF"/>
-    <mkdir dir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes"/>
-    <copy todir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes">
+  <target name="artifact.woserver:webforrose_beta_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForRose BETA exploded&#39; artifact">
+    <mkdir dir="${artifact.output.woserver:webforrose_beta_exploded}"/>
+    <mkdir dir="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF"/>
+    <mkdir dir="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/classes"/>
+    <copy todir="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/classes">
       <fileset dir="${woserver.output.dir}"/>
     </copy>
-    <copy file="${basedir}/woServer/web/WEB-INF/rose/log4j.properties" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/classes/log4j.properties"/>
-    <mkdir dir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib"/>
-    <copy file="${path.variable.maven_repository}/cglib/cglib/2.2/cglib-2.2.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/cglib-2.2.jar"/>
-    <copy file="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jcommander-1.27.jar"/>
-    <copy file="${path.variable.maven_repository}/com/thoughtworks/xstream/xstream/1.4.7/xstream-1.4.7.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/xstream-1.4.7.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/commons-codec-1.6.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/commons-collections-3.2.1.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-io/commons-io/2.4/commons-io-2.4.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/commons-io-2.4.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/commons-lang-2.5.jar"/>
-    <copy file="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/commons-logging-1.1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/dom4j-1.6.1.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1/activation-1.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/activation-1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1.1/activation-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/activation-1.1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/mail-1.5.0-b01.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/servlet-api-2.5.jar"/>
-    <copy file="${path.variable.maven_repository}/jcharts/jcharts/0.7.5/jcharts-0.7.5.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jcharts-0.7.5.jar"/>
-    <copy file="${path.variable.maven_repository}/jstl/jstl/1.2/jstl-1.2.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jstl-1.2.jar"/>
-    <copy file="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/log4j-1.2.17.jar"/>
-    <copy file="${path.variable.maven_repository}/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/mysql-connector-java-5.1.30.jar"/>
-    <copy file="${path.variable.maven_repository}/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/ezmorph-1.0.6.jar"/>
-    <copy file="${path.variable.maven_repository}/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/opencsv-2.3.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/directory/studio/org.apache.commons.io/2.4/org.apache.commons.io-2.4.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/org.apache.commons.io-2.4.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/httpclient-4.3.3.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/httpcore-4.3.2.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpmime/4.3.3/httpmime-4.3.3.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/httpmime-4.3.3.jar"/>
-    <copy file="${path.variable.maven_repository}/org/apache/servicemix/bundles/org.apache.servicemix.bundles.json-lib/2.4_1/org.apache.servicemix.bundles.json-lib-2.4_1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/org.apache.servicemix.bundles.json-lib-2.4_1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/bsh-2.0b4.jar"/>
-    <copy file="${path.variable.maven_repository}/org/jdom/jdom/1.1/jdom-1.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jdom-1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/testng/testng/6.8.8/testng-6.8.8.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/testng-6.8.8.jar"/>
-    <copy file="${path.variable.maven_repository}/taglibs/standard/1.1.2/standard-1.1.2.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/standard-1.1.2.jar"/>
-    <copy file="${path.variable.maven_repository}/xerces/xercesImpl/2.4.0/xercesImpl-2.4.0.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/xercesImpl-2.4.0.jar"/>
-    <copy file="${path.variable.maven_repository}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
-    <copy file="${path.variable.maven_repository}/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/xmlpull-1.1.3.1.jar"/>
-    <copy file="${path.variable.maven_repository}/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
-    <copy todir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib">
+    <copy file="${basedir}/woServer/web/WEB-INF/beta/log4j.properties" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/classes/log4j.properties"/>
+    <mkdir dir="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib"/>
+    <copy file="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/commons-collections-3.2.1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/directory/studio/org.apache.commons.io/2.4/org.apache.commons.io-2.4.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/org.apache.commons.io-2.4.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-io/commons-io/2.4/commons-io-2.4.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/commons-io-2.4.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/commons-lang-2.5.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/ezmorph-1.0.6.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/httpclient-4.3.3.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/commons-codec-1.6.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/httpcore-4.3.2.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpmime/4.3.3/httpmime-4.3.3.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/httpmime-4.3.3.jar"/>
+    <copy file="${path.variable.maven_repository}/jcharts/jcharts/0.7.5/jcharts-0.7.5.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jcharts-0.7.5.jar"/>
+    <copy file="${path.variable.maven_repository}/org/jdom/jdom/1.1/jdom-1.1.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jdom-1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/servicemix/bundles/org.apache.servicemix.bundles.json-lib/2.4_1/org.apache.servicemix.bundles.json-lib-2.4_1.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/org.apache.servicemix.bundles.json-lib-2.4_1.jar"/>
+    <copy file="${path.variable.maven_repository}/jstl/jstl/1.2/jstl-1.2.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jstl-1.2.jar"/>
+    <copy file="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/log4j-1.2.17.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/mail-1.5.0-b01.jar"/>
+    <copy file="${path.variable.maven_repository}/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/mysql-connector-java-5.1.30.jar"/>
+    <copy file="${path.variable.maven_repository}/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/opencsv-2.3.jar"/>
+    <copy file="${path.variable.maven_repository}/taglibs/standard/1.1.2/standard-1.1.2.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/standard-1.1.2.jar"/>
+    <copy file="${path.variable.maven_repository}/xerces/xercesImpl/2.4.0/xercesImpl-2.4.0.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/xercesImpl-2.4.0.jar"/>
+    <copy file="${path.variable.maven_repository}/org/testng/testng/6.8.8/testng-6.8.8.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/testng-6.8.8.jar"/>
+    <copy file="${path.variable.maven_repository}/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/bsh-2.0b4.jar"/>
+    <copy file="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jcommander-1.27.jar"/>
+    <copy file="${path.variable.maven_repository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/dom4j-1.6.1.jar"/>
+    <copy file="${path.variable.maven_repository}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jersey-bundle-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/json-20140107.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jersey-core-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.3.2/jackson-module-jaxb-annotations-2.3.2.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jackson-module-jaxb-annotations-2.3.2.jar"/>
+    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
+    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/servlet-api-2.5.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1.1/activation-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib/activation-1.1.1.jar"/>
+    <copy todir="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.emailer:jar}"/>
     </copy>
-    <copy todir="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib">
+    <copy todir="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.servletframework:jar}"/>
     </copy>
-    <copy file="${path.variable.maven_repository}/asm/asm/3.3.1/asm-3.3.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/asm-3.3.1.jar"/>
-    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jersey-bundle-1.19.jar"/>
-    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jersey-core-1.19.jar"/>
-    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
-    <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/json-20140107.jar"/>
-    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
-    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforrose_exploded}/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
-    <copy todir="${artifact.output.woserver:webforrose_exploded}">
+    <copy file="${basedir}/woServer/web/WEB-INF/beta/web.xml" tofile="${artifact.output.woserver:webforrose_beta_exploded}/WEB-INF/web.xml"/>
+    <mkdir dir="${artifact.output.woserver:webforrose_beta_exploded}/META-INF"/>
+    <copy todir="${artifact.output.woserver:webforrose_beta_exploded}/META-INF">
+      <fileset dir="${basedir}/woServer/web/META-INF"/>
+    </copy>
+    <copy todir="${artifact.output.woserver:webforrose_beta_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver:webforrose_exploded}/META-INF"/>
-    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforrose_exploded}/META-INF/context.xml"/>
+  </target>
+  
+  <target name="artifact.woserver:webforrose_production_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForRose PRODUCTION exploded&#39; artifact">
+    <mkdir dir="${artifact.output.woserver:webforrose_production_exploded}"/>
+    <mkdir dir="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF"/>
+    <mkdir dir="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/classes"/>
+    <copy todir="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/classes">
+      <fileset dir="${woserver.output.dir}"/>
+    </copy>
+    <copy file="${basedir}/woServer/web/WEB-INF/production/log4j.properties" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/classes/log4j.properties"/>
+    <mkdir dir="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib"/>
+    <copy file="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jcommander-1.27.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/commons-codec-1.6.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/commons-collections-3.2.1.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-io/commons-io/2.4/commons-io-2.4.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/commons-io-2.4.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/commons-lang-2.5.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/dom4j-1.6.1.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1.1/activation-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/activation-1.1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/mail-1.5.0-b01.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/servlet-api-2.5.jar"/>
+    <copy file="${path.variable.maven_repository}/jcharts/jcharts/0.7.5/jcharts-0.7.5.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jcharts-0.7.5.jar"/>
+    <copy file="${path.variable.maven_repository}/jstl/jstl/1.2/jstl-1.2.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jstl-1.2.jar"/>
+    <copy file="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/log4j-1.2.17.jar"/>
+    <copy file="${path.variable.maven_repository}/mysql/mysql-connector-java/5.1.30/mysql-connector-java-5.1.30.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/mysql-connector-java-5.1.30.jar"/>
+    <copy file="${path.variable.maven_repository}/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/ezmorph-1.0.6.jar"/>
+    <copy file="${path.variable.maven_repository}/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/opencsv-2.3.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/directory/studio/org.apache.commons.io/2.4/org.apache.commons.io-2.4.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/org.apache.commons.io-2.4.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpclient/4.3.3/httpclient-4.3.3.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/httpclient-4.3.3.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpcore/4.3.2/httpcore-4.3.2.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/httpcore-4.3.2.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpmime/4.3.3/httpmime-4.3.3.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/httpmime-4.3.3.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/servicemix/bundles/org.apache.servicemix.bundles.json-lib/2.4_1/org.apache.servicemix.bundles.json-lib-2.4_1.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/org.apache.servicemix.bundles.json-lib-2.4_1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/bsh-2.0b4.jar"/>
+    <copy file="${path.variable.maven_repository}/org/jdom/jdom/1.1/jdom-1.1.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jdom-1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/testng/testng/6.8.8/testng-6.8.8.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/testng-6.8.8.jar"/>
+    <copy file="${path.variable.maven_repository}/taglibs/standard/1.1.2/standard-1.1.2.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/standard-1.1.2.jar"/>
+    <copy file="${path.variable.maven_repository}/xerces/xercesImpl/2.4.0/xercesImpl-2.4.0.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/xercesImpl-2.4.0.jar"/>
+    <copy file="${path.variable.maven_repository}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
+    <copy todir="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib">
+      <fileset dir="${artifact.temp.output.emailer:jar}"/>
+    </copy>
+    <copy todir="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib">
+      <fileset dir="${artifact.temp.output.servletframework:jar}"/>
+    </copy>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jersey-bundle-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jersey-core-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/json-20140107.jar"/>
+    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
+    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/production/web.xml" tofile="${artifact.output.woserver:webforrose_production_exploded}/WEB-INF/web.xml"/>
+    <copy todir="${artifact.output.woserver:webforrose_production_exploded}">
+      <fileset dir="${basedir}/woServer/resources"/>
+    </copy>
+    <mkdir dir="${artifact.output.woserver:webforrose_production_exploded}/META-INF"/>
+    <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforrose_production_exploded}/META-INF/context.xml"/>
   </target>
   
   <target name="artifact.woserver:webforsugaree_exploded" depends="init.artifacts, compile.module.woserver, artifact.emailer:jar, artifact.servletframework:jar" description="Build &#39;woServer:WebForSugaree exploded&#39; artifact">
@@ -1302,9 +1345,10 @@
     </copy>
     <copy file="${basedir}/woServer/web/WEB-INF/sugaree/log4j.properties" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/classes/log4j.properties"/>
     <mkdir dir="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib"/>
-    <copy file="${path.variable.maven_repository}/cglib/cglib/2.2/cglib-2.2.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/cglib-2.2.jar"/>
     <copy file="${path.variable.maven_repository}/com/beust/jcommander/1.27/jcommander-1.27.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jcommander-1.27.jar"/>
-    <copy file="${path.variable.maven_repository}/com/thoughtworks/xstream/xstream/1.4.7/xstream-1.4.7.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/xstream-1.4.7.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-bundle/1.19/jersey-bundle-1.19.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jersey-bundle-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-core/1.19/jersey-core-1.19.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jersey-core-1.19.jar"/>
+    <copy file="${path.variable.maven_repository}/com/sun/jersey/jersey-server/1.19/jersey-server-1.19.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jersey-server-1.19.jar"/>
     <copy file="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/commons-beanutils-1.8.0.jar"/>
     <copy file="${path.variable.maven_repository}/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/commons-codec-1.6.jar"/>
     <copy file="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/commons-collections-3.2.1.jar"/>
@@ -1312,10 +1356,10 @@
     <copy file="${path.variable.maven_repository}/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/commons-lang-2.5.jar"/>
     <copy file="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/commons-logging-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/dom4j-1.6.1.jar"/>
-    <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1/activation-1.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/activation-1.1.jar"/>
     <copy file="${path.variable.maven_repository}/javax/activation/activation/1.1.1/activation-1.1.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/activation-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/mail-1.5.0-b01.jar"/>
     <copy file="${path.variable.maven_repository}/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/servlet-api-2.5.jar"/>
+    <copy file="${path.variable.maven_repository}/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
     <copy file="${path.variable.maven_repository}/jcharts/jcharts/0.7.5/jcharts-0.7.5.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jcharts-0.7.5.jar"/>
     <copy file="${path.variable.maven_repository}/jstl/jstl/1.2/jstl-1.2.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jstl-1.2.jar"/>
     <copy file="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/log4j-1.2.17.jar"/>
@@ -1328,21 +1372,21 @@
     <copy file="${path.variable.maven_repository}/org/apache/httpcomponents/httpmime/4.3.3/httpmime-4.3.3.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/httpmime-4.3.3.jar"/>
     <copy file="${path.variable.maven_repository}/org/apache/servicemix/bundles/org.apache.servicemix.bundles.json-lib/2.4_1/org.apache.servicemix.bundles.json-lib-2.4_1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/org.apache.servicemix.bundles.json-lib-2.4_1.jar"/>
     <copy file="${path.variable.maven_repository}/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/bsh-2.0b4.jar"/>
+    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
+    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
     <copy file="${path.variable.maven_repository}/org/jdom/jdom/1.1/jdom-1.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jdom-1.1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/json/json/20140107/json-20140107.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/json-20140107.jar"/>
     <copy file="${path.variable.maven_repository}/org/testng/testng/6.8.8/testng-6.8.8.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/testng-6.8.8.jar"/>
     <copy file="${path.variable.maven_repository}/taglibs/standard/1.1.2/standard-1.1.2.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/standard-1.1.2.jar"/>
     <copy file="${path.variable.maven_repository}/xerces/xercesImpl/2.4.0/xercesImpl-2.4.0.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/xercesImpl-2.4.0.jar"/>
     <copy file="${path.variable.maven_repository}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/xml-apis-1.0.b2.jar"/>
-    <copy file="${path.variable.maven_repository}/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/xmlpull-1.1.3.1.jar"/>
-    <copy file="${path.variable.maven_repository}/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
     <copy todir="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.emailer:jar}"/>
     </copy>
     <copy todir="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib">
       <fileset dir="${artifact.temp.output.servletframework:jar}"/>
     </copy>
-    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
-    <copy file="${path.variable.maven_repository}/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
+    <copy file="${basedir}/woServer/web/WEB-INF/sugaree/web.xml" tofile="${artifact.output.woserver:webforsugaree_exploded}/WEB-INF/web.xml"/>
     <copy todir="${artifact.output.woserver:webforsugaree_exploded}">
       <fileset dir="${basedir}/woServer/resources"/>
     </copy>
@@ -1350,7 +1394,7 @@
     <copy file="${basedir}/woServer/web/META-INF/context.xml" tofile="${artifact.output.woserver:webforsugaree_exploded}/META-INF/context.xml"/>
   </target>
   
-  <target name="build.all.artifacts" depends="artifact.emailer:jar, artifact.problemsnapshotinserter:jar, artifact.servletframework:jar, artifact.woserver_war_rose, artifact.woserver_war_sugaree, artifact.woserver:webforlocalhost_exploded, artifact.woserver:webforrose_exploded, artifact.woserver:webforsugaree_exploded" description="Build all artifacts">
+  <target name="build.all.artifacts" depends="artifact.emailer:jar, artifact.problemsnapshotinserter:jar, artifact.servletframework:jar, artifact.war_rose_beta, artifact.war_rose_production, artifact.woserver_war_sugaree, artifact.woserver:web_exploded, artifact.woserver:webforlocalhost_exploded, artifact.woserver:webforrose_beta_exploded, artifact.woserver:webforrose_production_exploded, artifact.woserver:webforsugaree_exploded" description="Build all artifacts">
     <mkdir dir="${artifact.output.emailer:jar}"/>
     <copy todir="${artifact.output.emailer:jar}">
       <fileset dir="${artifact.temp.output.emailer:jar}"/>
@@ -1363,9 +1407,13 @@
     <copy todir="${artifact.output.servletframework:jar}">
       <fileset dir="${artifact.temp.output.servletframework:jar}"/>
     </copy>
-    <mkdir dir="${artifact.output.woserver_war_rose}"/>
-    <copy todir="${artifact.output.woserver_war_rose}">
-      <fileset dir="${artifact.temp.output.woserver_war_rose}"/>
+    <mkdir dir="${artifact.output.war_rose_beta}"/>
+    <copy todir="${artifact.output.war_rose_beta}">
+      <fileset dir="${artifact.temp.output.war_rose_beta}"/>
+    </copy>
+    <mkdir dir="${artifact.output.war_rose_production}"/>
+    <copy todir="${artifact.output.war_rose_production}">
+      <fileset dir="${artifact.temp.output.war_rose_production}"/>
     </copy>
     <mkdir dir="${artifact.output.woserver_war_sugaree}"/>
     <copy todir="${artifact.output.woserver_war_sugaree}">

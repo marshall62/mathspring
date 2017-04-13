@@ -1,11 +1,11 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="woServer:WebForRose exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/woServer_WebForRose_exploded</output-path>
+  <artifact type="exploded-war" name="woServer:WebForRose PRODUCTION exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/woServer_WebForRose_PRODUCTION_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="woServer" />
-          <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/rose/log4j.properties" />
+          <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/production/log4j.properties" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: cglib:cglib:2.2" />
@@ -52,6 +52,7 @@
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
         </element>
+        <element id="file-copy" path="$PROJECT_DIR$/woServer/web/WEB-INF/production/web.xml" />
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/woServer/resources" />
       <element id="directory" name="META-INF">
