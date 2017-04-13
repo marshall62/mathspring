@@ -431,7 +431,6 @@ function buildSelector(options, current_value, callback) {
         if(opt == current_value) selector.selectedIndex = i;
     }
     selector.addEventListener("change", function() {
-        console.log("change", selector.options[selector.selectedIndex].value);
         callback(selector.options[selector.selectedIndex].value);
     });
     return selector;
@@ -586,6 +585,7 @@ function handleDrop(e) {
         }
         if(should_remove) {
             removeFromProblemFormatOrder(_problemFormat.order, block_to_insert);
+            dragparent.removeChild(_dragged);
         }
         var path = [];
         findLayoutTargetPath(path, document.getElementById("LayoutEditor"), e.target);
