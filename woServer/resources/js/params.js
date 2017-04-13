@@ -55,7 +55,7 @@ function plug(doc, components) {
     var probSound = components.audio;
     var probUnits = components.units;
     var problemParams = components.problemParams;
-    var problemFormat = components.format;
+    var problemFormat = components.problemFormat;
     buildProblem(document.getElementById("ProblemContainer"), problemFormat, true, false, false);
 
     if(isNotEmpty(probStatement)){
