@@ -1,3 +1,0 @@
-[submodule "woServer/webresources/mathspring/mscontent"]
-	path = woServer/webresources/mathspring/mscontent
-	url = git@rose.cs.umass.edu:mscontent
