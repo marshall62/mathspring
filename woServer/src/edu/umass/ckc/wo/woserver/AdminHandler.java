@@ -132,6 +132,9 @@ public class AdminHandler {
         else if (e instanceof AdminGetQuickAuthSkeletonEvent) {
             AdminGetQuickAuthSkeletonEvent ee = (AdminGetQuickAuthSkeletonEvent) e;
             RequestDispatcher disp=null;
+            if(ee.getServletParams().getBoolean("reload", false)) {
+                ProblemMgr.reloadProblem(conn, ee.getProbId());
+            }
             Problem p = ProblemMgr.getProblem(ee.getProbId());
             String quickAuthJSP = "problem_skeleton.jsp";
             disp = servletRequest.getRequestDispatcher(quickAuthJSP);

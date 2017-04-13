@@ -535,7 +535,7 @@ public class DbProblem extends BaseMgr {
         return skills + ")" ;
     }
 
-    public void deactivateProblem(Connection conn, int probId, String probName) throws SQLException {
+    public static void deactivateProblem(Connection conn, int probId, String probName) throws SQLException {
 
         String q;
         if (probId == -1)
