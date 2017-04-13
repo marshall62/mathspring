@@ -26,7 +26,7 @@ public class DbHint extends BaseMgr {
 
     // rewrote the above method to determine isRoot status of a hint based on solutionpath rather than the isRoot column in
     // the hint table which is error prone.
-    public static List<Hint> getHintsForProblem(Connection conn, int probId) throws Exception {
+    public static List<Hint> getHintsForProblem(Connection conn, int probId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
