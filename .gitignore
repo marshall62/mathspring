@@ -4,6 +4,7 @@
 /emailer/target/
 /servletFramework/target/
 /woServer/target/
+/woServer/webResources/*
 /woServer/web/META-INF/context.xml
 *.swd
 /.idea/dataSources/0204f55f-89e2-4dde-860f-b10697b768e2/_src_/
