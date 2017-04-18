@@ -24,7 +24,7 @@
     <context-param>
         <param-name>host</param-name>
         <!--<param-value>rose.cs.umass.edu</param-value>-->
-        <param-value>sugaree.cs.umass.edu</param-value>
+        <param-value>tutor.mathspring.org</param-value>
         <!--<param-value>cadmium.cs.umass.edu</param-value>-->
     </context-param>
     <!--
@@ -54,7 +54,7 @@
 
     <context-param>
         <param-name>webContentPath</param-name>
-        <param-value>http://sugaree.cs.umass.edu/mathspring/</param-value>
+        <param-value>http://tutor.mathspring.org/mathspring/mscontent/</param-value>
     </context-param>
 
     <!--YOU MUST SET THESE PARAMS TO BE APPROPRIATE FOR YOUR MACHINE.   You must reference the Flash
@@ -161,37 +161,51 @@
 
 
     </servlet>
+
+    <servlet>
+        <servlet-name>ImageFetch</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.ImageFetchServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>MathspringSubSessionServlet</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.MathspringSubSessionServlet</servlet-class>
+
+
+        <init-param>
+            <param-name>handlerClassName</param-name>
+            <param-value>edu.umass.ckc.wo.servletController.MariHandler</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>videoURI</param-name>
+            <param-value>http://cadmium.cs.umass.edu/mathspring/video/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>emailLogFilename</param-name>
+            <param-value>u:\\wayang\\emailErr.log</param-value>
+        </init-param>
+
+    </servlet>
+
     <servlet>
         <servlet-name>TestDbServlet</servlet-name>
         <servlet-class>edu.umass.ckc.wo.woserver.TestDbServlet</servlet-class>
 
     </servlet>
 
-    <servlet>
-        <servlet-name>Jersey Web Application</servlet-name>
-        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-        <!--<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>-->
-        <init-param>
-            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-            <param-value>true</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>edu.umass.ckc.wo.rest</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-
-    </servlet>
-
     <servlet-mapping>
-        <servlet-name>Jersey Web Application</servlet-name>
-        <url-pattern>/rest/*</url-pattern>
+        <servlet-name>ImageFetch</servlet-name>
+        <url-pattern>/getImage</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
            <servlet-name>TestDbServlet</servlet-name>
            <url-pattern>/TestDbServlet</url-pattern>
        </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MathspringSubSessionServlet</servlet-name>
+        <url-pattern>/mathspringSubSession</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>WoLoginServlet</servlet-name>
         <url-pattern>/WoLoginServlet</url-pattern>
@@ -217,6 +231,16 @@
         <servlet-name>BarChartServletIvon</servlet-name>
         <servlet-class>edu.umass.ckc.wo.charts.BarChartServletIvon</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>BarChartServletIvon</servlet-name>

@@ -242,7 +242,7 @@ public class ProblemDifficultyReport extends Report {
         addNavLinks(classId,cl.getTeachid());
 
 
-        generateTableBody(conn, classId, req, table, ps);
+        generateTableBody(conn, classId, e.getTeacherId(), req, table, ps);
 
         this.src.append(foot);
         return this;
@@ -257,7 +257,7 @@ public class ProblemDifficultyReport extends Report {
 
  Problem Name , Topic (if not type2), #students seen (unique students),
      */
-    private void generateTableBody(Connection conn, int classId, HttpServletRequest req, String table, PreparedStatement ps) throws SQLException {
+    private void generateTableBody(Connection conn, int classId, int teacherId, HttpServletRequest req, String table, PreparedStatement ps) throws SQLException {
         ResultSet rs = ps.executeQuery();
 //        List<ProblemInfo> probs = new ArrayList<ProblemInfo>();
         // Iterating through all problems or all problems w/in a topic
@@ -267,6 +267,7 @@ public class ProblemDifficultyReport extends Report {
             int pid = rs.getInt("id");
             String t = rs.getString("type");
             probInf.probType = t;
+            String form = rs.getString("form");
             String ar = rs.getString("animationResource");
             probInf.animationResource = ar;
             probData.put(pid, probInf); // insert into hash map
@@ -282,11 +283,21 @@ public class ProblemDifficultyReport extends Report {
             // TODO a Hack to fulfill a request by Ivon for using a different player to show problems in this report.
             probPlayerURL = probPlayerURL.replace("probplayer","problem_checker");
             String link = probPlayerURL + "?questionNum=" + probnumber;
-            if (probInf.probType.equalsIgnoreCase("html5")) {
-                String dir = "";
-                if (probInf.animationResource != null & probInf.animationResource.indexOf(".") >= 0)
-                    link = Settings.html5ProblemURI + probInf.animationResource.substring(0,probInf.animationResource.indexOf("."))+ "/" + probInf.animationResource;
+            String onclick = "";
+            if(form != null && form.equalsIgnoreCase("quickAuth")) {
+                link = "#";
+                onclick = "onclick=\"window.open('%s/WoAdmin?action=AdminGetQuickAuthSkeleton&probId=%d&teacherId=%d',"
+                        + "'ProblemPreview','width=750,height=550,status=yes,resizable=yes');event.preventDefault();\"";
+                onclick = String.format(onclick, req.getContextPath(), pid, teacherId);
+            } else if(probInf.probType.equalsIgnoreCase("html5")) {
+                link = "#";
+                onclick = "onclick=\"window.open('%s%s/%s',"
+                        + "'ProblemPreview','width=750,height=550,status=yes,resizable=yes');event.preventDefault();\"";
+                String folder = (ar.indexOf(".") == -1) ? ar : ar.substring(0, ar.indexOf("."));
+                String filename = (ar.indexOf(".") == -1) ? ar + ".html" : ar;
+                onclick = String.format(onclick, Settings.html5ProblemURI, folder, filename);
             }
+            link = String.format("href=\"%s\"", link);
             probInf.id = pid;
             if (this.topicName != null)
                 probInf.topic = topicName;
@@ -318,7 +329,7 @@ public class ProblemDifficultyReport extends Report {
                 if (probInf.nStudsSeen <= 3)
                     bgcolor = GREYCODE;
 
-                String cell3 = String.format("<td  bgcolor=\"%s\"><a href=\"%s\">%s</a></td>", bgcolor, link, probInf.name);
+                String cell3 = String.format("<td  bgcolor=\"%s\"><a %s %s>%s</a></td>", bgcolor, onclick, link, probInf.name);
 
                 String cell4 = intCell(null, probInf.nStudsSeen, null);
 

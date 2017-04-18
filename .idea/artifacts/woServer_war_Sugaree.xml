@@ -7,6 +7,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="woServer" />
         </element>
+        <element id="directory" name="lib">
+          <element id="module-output" name="servletFramework" />
+          <element id="module-output" name="emailer" />
+        </element>
       </element>
     </root>
   </artifact>

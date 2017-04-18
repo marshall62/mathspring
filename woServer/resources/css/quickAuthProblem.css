@@ -1,14 +1,35 @@
-#ProblemStatement{
-    font-family: Georgia, "Times New Roman", Times, serif;
+body {
+    background-color: #8ED8E0;
+    margin: 0;
+}
+.problem-block {
+    width: 100%;
+    font-family: Georgia, serif;
     font-size: 16px;
-    margin-bottom: 10px;
+    color: black;
+}
+#ProblemContainer {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    border: 8px solid transparent;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+#ProblemStatement{
 }
 #ProblemFigure{
-    width: 250px; /*Width is needed because it controls the overall size of vector graphic figures*/
-    background-color: rgba(248,250,248,0);
-    margin-bottom: 10px;
 }
-.answer_row{
+#HintContainer{
+    border: rgba(0,0,0,0) solid 5px;
+}
+.columns{
+}
+.columnR{
+    float: right;
+    width: 50%;
+}
+.answer-row{
     margin: 0 0 10px 20px;
     line-height: 27px;
     height: 27px;
@@ -17,6 +38,44 @@
     margin: 0 auto 10px auto;
     display: table;
 }
+.hint-thumbs{
+    display: flex;
+    flex-direction: row;
+    margin: -5px 5px 0 -5px;
+    font-size: 20px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    text-align: center;
+}
+.hint-thumb{
+    flex: 1 0 auto;
+    background-color: transparent;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+}
+.hint-thumb:hover{
+    background-color: rgba(255,255,255,0.9);
+}
+.hint-thumb-selected{
+    flex: 1 0 auto;
+    background-color: rgba(255,255,255,0.5);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.hint-content{
+    position: relative;
+    margin: 0 5px -5px -5px;
+    background-color: rgba(255,255,255,0.5);
+    border: 5px solid transparent;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+
+
+
+
+
 .button{
     float: left;
     width: 27px;
@@ -101,54 +160,6 @@
     background-image: url(../images/x2.png);
     background-size: 100% 100%;
     display: none;
-    z-index: 2;
-}
-#ProblemContainer{
-    position: relative;
-}
-#HintContainer{
-    float: right;
-    width: 50%;
-    background-color: rgba(255,255,255,0.25);
-    border: rgba(0,0,0,0) solid 5px;
-    border-radius: 15px;
-}
-.hint_thumb{
-    position: relative;
-    float: left;
-    width: 70px;
-    height: 30px;
-    display: none;
-}
-.hint_thumb_img{
-    position: absolute;
-    width: 70px;
-    height: 30px;
-    background-image: url(../images/hintbutton.png);
-    background-size: 100% 100%;
-    z-index: 1;
-}
-.hint_thumb_img_pressed{
-    position: absolute;
-    width: 70px;
-    height: 30px;
-    background-image: url(../images/hintpressed.png);
-    background-size: 100% 100%;
-    display: none;
-    z-index: 1;
-}
-.hint_thumb_text{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    line-height: 30px;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    font-size: 12px;
-    color: rgb(32, 61, 29);
-    font-weight: 700;
-    font-style: normal;
-    text-align: center;
     z-index: 2;
 }
 .hint{

@@ -85,6 +85,11 @@ public class AdminHandler {
             AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t, -1);
             return false;
         }
+        else if(e instanceof AdminEditProblemFormatEvent) {
+            new EditProblemFormatHandler().handleEvent(sc, conn, servletRequest, servletResponse);
+            return false;
+        }
+
         if (Settings.useAdminServletSession && !(e instanceof UserRegistrationEvent)) {
             HttpSession sess = servletRequest.getSession(false);
             if (sess == null) {
@@ -127,6 +132,9 @@ public class AdminHandler {
         else if (e instanceof AdminGetQuickAuthSkeletonEvent) {
             AdminGetQuickAuthSkeletonEvent ee = (AdminGetQuickAuthSkeletonEvent) e;
             RequestDispatcher disp=null;
+            if(ee.getServletParams().getBoolean("reload", false)) {
+                ProblemMgr.reloadProblem(conn, ee.getProbId());
+            }
             Problem p = ProblemMgr.getProblem(ee.getProbId());
             String quickAuthJSP = "problem_skeleton.jsp";
             disp = servletRequest.getRequestDispatcher(quickAuthJSP);
