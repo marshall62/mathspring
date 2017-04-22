@@ -55,14 +55,15 @@ function plug(doc, components) {
     var probSound = components.audio;
     var probUnits = components.units;
     var problemParams = components.problemParams;
+    var hints = components.hints;
     var problemFormat = components.problemFormat;
-    buildProblem(document.getElementById("ProblemContainer"), problemFormat, true, false, false);
 
+    buildProblem(document.getElementById("ProblemContainer"), problemFormat, true, false, false);
     if(isNotEmpty(probStatement)){
-        doc.getElementById("ProblemStatement").innerHTML = parametrizeText(format(probStatement, components), problemParams);
+        doc.getElementById("ProblemStatement").innerHTML = parameterizeText(format(probStatement, components), problemParams);
     }
     if(isNotEmpty(probFigure)){
-        doc.getElementById("ProblemFigure").innerHTML = parametrizeText(format(probFigure, components), problemParams);
+        doc.getElementById("ProblemFigure").innerHTML = parameterizeText(format(probFigure, components), problemParams);
     }
     if(isNotEmpty(probSound)) {
         //I don't think the below lines do what I want them to.
@@ -71,9 +72,8 @@ function plug(doc, components) {
         doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".mp3", components.resource, components.probContentPath));
     }
     if(isNotEmpty(probUnits)) {
-        doc.getElementById("Units").innerHTML = parametrizeText(format(getUnits(), components), problemParams);
+        doc.getElementById("Units").innerHTML = parameterizeText(format(getUnits(), components), problemParams);
     }
-    var hints=components.hints;
 
     var hintID = "";
     if(isNotEmpty(hints)) {
@@ -81,13 +81,13 @@ function plug(doc, components) {
             hintID = getIdCorrespondingToHint(hints[i].label);
             doc.getElementById(hintID+"Thumb").style.display = "block";
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
-                doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML, components), problemParams);
+                doc.getElementById(hintID).innerHTML = parameterizeText(format(hints[i].statementHTML, components), problemParams);
             }
             else{
                 alert("text missing for hint: "+i);
             }
             if(isNotEmpty(hints[i].hoverText)){
-                doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText, components), problemParams));
+                doc.getElementById(hintID+"Thumb").setAttribute("title", parameterizeText(format(hints[i].hoverText, components), problemParams));
             }
             //I don't think this does what I want
             //#rafael: not sure what they meant above, sound seems to be working fine
@@ -112,7 +112,7 @@ function plug(doc, components) {
                 if(!answers.hasOwnProperty(letter)) continue;
                 var answerElt = doc.getElementById("Answer" + letter.toUpperCase());
                 answerElt.parentNode.style.display = "block";
-                answerElt.innerHTML = parametrizeText(format(answers[letter], components), problemParams);
+                answerElt.innerHTML = parameterizeText(format(answers[letter], components), problemParams);
                 doc.getElementById(letter.toUpperCase() + "Button").addEventListener("click", function(){answerClicked(doc, letter);});
             }
         }
@@ -323,7 +323,7 @@ function replaceWithHTML(file, ext, resource, probContentPath){
 //Parses correctly formatted expressions containing only operators from the set {+,-,/,*,^}
 function parseSimpleExp(expression, components){
     //Convert parameters to their values
-    expression = parametrizeText(expression, components.problemParams);
+    expression = parameterizeText(expression, components.problemParams);
     //Remove white space to make processing easier
     expression = expression.replace(/\s/g,"");
 
@@ -433,53 +433,42 @@ function applyOperator(operator, opd1, opd2){
     }
 }
 
-function parametrizeText(rawText, problemParams) {
-    if (rawText == null || rawText == undefined)
+function parameterizeText(rawText, problemParams) {
+    if (rawText == null || problemParams == null)
         return rawText;
-    var constraints = getConstraints(problemParams);
-    if (constraints == null) {
+    if (problemParams == null) {
         return rawText;
     }
+    pickParams(problemParams);
 
-    var keys = Object.keys(constraints);
-    var len = keys.length;
+    var keys = Object.keys(problemParams);
     keys.sort().reverse();
 
-    var pastVars = "";
-    var parametrizedText = rawText;
-    for (k = 0; k < len; k++){
+    var parameterizedText = rawText;
+    for (k = 0; k < keys.length; k++){
         var key = keys[k];
         var regex = new RegExp("\\"+key, "gi");
-    //    while(parametrizedText.search(regex)!= -1){
-            parametrizedText = parametrizedText.replace(regex,constraints[key]);
-      //  }
+        parameterizedText = parameterizedText.replace(regex, problemParams[key]);
     }
-    return parametrizedText;
+    return parameterizedText;
 }
 
-function getConstraints(problemParams) {
+//From what I can tell, all this does is take each vlaue in problemParams,
+// and if it's an array, pick use the same random index to pick one of its elements
+//Originally called "getConstraints", which really doesn't make sense
+function pickParams(problemParams) {
     var rand = -1;
-    var constraints = {};
-    var constraints = problemParams;
-    if (constraints == null || constraints == undefined) {
-        return null;
-    }
-    data = constraints;
-    if (data == null) {
-        return null;
-    }
-    for(var key in data){
-        if (isArray(data[key])) {
+    for(var key in problemParams){
+        if (isArray(problemParams[key])) {
             if (rand == -1) {
-                rand = randomIntFromInterval(0, data[key].length-1);
+                rand = randomIntFromInterval(0, problemParams[key].length-1);
             }
-            constraints[key] = data[key][rand];
+            problemParams[key] = problemParams[key][rand];
         }
         else {
-            constraints[key] = data[key];
+            problemParams[key] = problemParams[key];
         }
     }
-    return constraints;
 }
 
 function getConstraintJSon() {
