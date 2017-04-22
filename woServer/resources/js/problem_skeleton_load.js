@@ -54,20 +54,6 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var resource = problem.resource;
     var problemFormat = problem.format;
 
-
-//    alert("stmt:" + stmt + ":\n" +
-//        "fig:" + fig + ":\n" +
-//        "audio:" + audio + ":\n" +
-//        "hints:" + hints + ":\n" +
-//        "answers:" + answers + ":\n" +
-//        "newAnswer:" + newAnswer + ":\n" +
-//        "answer:" + answer + ":\n" +
-//        "units:" + units + ":\n" +
-//        "mode:" + mode + ":\n" +
-//        "questType:" + questType + ":\n" +
-//        "resource:" + resource + ":\n" +
-//        "probContentPath:" + probContentPath + ":\n" +
-//        "problemParams:" + problemParams + ":\n");
     var g = {stmt: stmt, fig: fig, audio: audio, hints: hints, answers: answers, newAnswer: newAnswer,
         answer: answer, units: units, mode: mode, questType: questType, resource: resource,
         probContentPath: probContentPath, problemParams: problemParams, problemFormat: problemFormat};
@@ -75,12 +61,4 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     plug(document, g);
     probUtilsInit(document, g);
 
-}
-
-function checkParam(x) {
-    if (x === "null")
-        return null;
-    if (x === "undefined")
-        return undefined;
-    return x;
 }
