@@ -78,7 +78,7 @@ function plug(doc, components) {
     var hintID = "";
     if(isNotEmpty(hints)) {
         for (i=0; i<hints.length;++i)  {
-            hintID = getElementCorrespondingToHint(hints[i].label);
+            hintID = getIdCorrespondingToHint(hints[i].label);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML, components), problemParams);
             }
@@ -98,10 +98,10 @@ function plug(doc, components) {
         }
 
         if(hints[0] == undefined && isNotEmpty(hints.label)){
-            doc.getElementById(getElementCorrespondingToHint(hints.label)+"Sound").load();
+            doc.getElementById(getIdCorrespondingToHint(hints.label)+"Sound").load();
         }
         else if(isNotEmpty(hints[0].audioResource)){
-            doc.getElementById(getElementCorrespondingToHint(hints[0].label)+"Sound").load();
+            doc.getElementById(getIdCorrespondingToHint(hints[0].label)+"Sound").load();
         }
     }
 

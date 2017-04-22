@@ -132,7 +132,7 @@ function prob_readProblem() {
 
 function prob_playHint (hintLabel) {
     document.getElementById("HintContainer").style.display = "block";
-    hint = getElementCorrespondingToHint(hintLabel);
+    hint = getIdCorrespondingToHint(hintLabel);
     clearHintStage();
     stopAudio();
     document.getElementById(hint+"Thumb").style.visibility = "visible";
@@ -186,7 +186,7 @@ function stopAudio(){
     }
 }
 
-function getElementCorrespondingToHint(hintLabel){
+function getIdCorrespondingToHint(hintLabel){
         switch (hintLabel) {
             case "Hint 1":
                 return "Hint1";
