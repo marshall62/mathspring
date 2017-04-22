@@ -79,6 +79,7 @@ function plug(doc, components) {
     if(isNotEmpty(hints)) {
         for (i=0; i<hints.length;++i)  {
             hintID = getIdCorrespondingToHint(hints[i].label);
+            doc.getElementById(hintID+"Thumb").style.display = "block";
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 doc.getElementById(hintID).innerHTML = parametrizeText(format(hints[i].statementHTML, components), problemParams);
             }
@@ -87,7 +88,6 @@ function plug(doc, components) {
             }
             if(isNotEmpty(hints[i].hoverText)){
                 doc.getElementById(hintID+"Thumb").setAttribute("title", parametrizeText(format(hints[i].hoverText, components), problemParams));
-                doc.getElementById(hintID+"Thumb").style.display = "block";
             }
             //I don't think this does what I want
             //#rafael: not sure what they meant above, sound seems to be working fine
