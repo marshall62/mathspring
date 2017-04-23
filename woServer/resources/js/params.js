@@ -60,10 +60,10 @@ function plug(doc, components) {
 
     buildProblem(document.getElementById("ProblemContainer"), problemFormat, true, false, false);
     if(isNotEmpty(probStatement)){
-        doc.getElementById("ProblemStatement").innerHTML = parameterizeText(format(probStatement, components), problemParams);
+        doc.getElementById("ProblemStatement").innerHTML = parameterizeText(formatText(probStatement, components), problemParams);
     }
     if(isNotEmpty(probFigure)){
-        doc.getElementById("ProblemFigure").innerHTML = parameterizeText(format(probFigure, components), problemParams);
+        doc.getElementById("ProblemFigure").innerHTML = parameterizeText(formatText(probFigure, components), problemParams);
     }
     if(isNotEmpty(probSound)) {
         //I don't think the below lines do what I want them to.
@@ -72,28 +72,31 @@ function plug(doc, components) {
         doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".mp3", components.resource, components.probContentPath));
     }
     if(isNotEmpty(probUnits)) {
-        doc.getElementById("Units").innerHTML = parameterizeText(format(getUnits(), components), problemParams);
+        doc.getElementById("Units").innerHTML = parameterizeText(formatText(getUnits(), components), problemParams);
     }
 
-    var hintID = "";
     if(isNotEmpty(hints)) {
         for (i=0; i<hints.length;++i)  {
-            hintID = getIdCorrespondingToHint(hints[i].label);
-            doc.getElementById(hintID+"Thumb").style.display = "block";
+            var hintId = getIdCorrespondingToHint(hints[i].label);
+            hint_thumb = doc.getElementById(hintId+"Thumb");
+            hint_thumb.style.display = "block";
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
-                doc.getElementById(hintID).innerHTML = parameterizeText(format(hints[i].statementHTML, components), problemParams);
+                var image_parameters = {};
+                var formatted_text = formatTextWithImageParameters(hints[i].statementHTML, components, image_parameters, hintId);
+                hint_thumb.dataset.parameters = JSON.stringify(image_parameters);
+                doc.getElementById(hintId).innerHTML = parameterizeText(formatted_text, problemParams);
             }
             else{
                 alert("text missing for hint: "+i);
             }
             if(isNotEmpty(hints[i].hoverText)){
-                doc.getElementById(hintID+"Thumb").setAttribute("title", parameterizeText(format(hints[i].hoverText, components), problemParams));
+                doc.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, components), problemParams));
             }
             //I don't think this does what I want
             //#rafael: not sure what they meant above, sound seems to be working fine
             if (isNotEmpty(hints[i].audioResource)) {
-                doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));
-                doc.getElementById(hintID+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".mp3", components.resource, components.probContentPath));
+                doc.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));
+                doc.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".mp3", components.resource, components.probContentPath));
             }
         }
 
@@ -112,7 +115,7 @@ function plug(doc, components) {
                 if(!answers.hasOwnProperty(letter)) continue;
                 var answerElt = doc.getElementById("Answer" + letter.toUpperCase());
                 answerElt.parentNode.style.display = "block";
-                answerElt.innerHTML = parameterizeText(format(answers[letter], components), problemParams);
+                answerElt.innerHTML = parameterizeText(formatText(answers[letter], components), problemParams);
                 doc.getElementById(letter.toUpperCase() + "Button").addEventListener("click", function(){answerClicked(doc, letter);});
             }
         }
@@ -125,8 +128,47 @@ function getURL(filename, resource, probContentPath) {
     return probContentPath + "/html5Probs/" + resource.split(".")[0] + "/" + filename;
 }
 
-function format(rawText, components) {
-    if(rawText == null || rawText == undefined){
+//Just a wrapper for when you don't care about the parameters
+function formatText(text, components) {
+    return formatTextWithImageParameters(text, components, {}, null);
+}
+
+//Extracts images/video contained by {[]}
+// also processes and stores placement parameters for the image
+// e.g. whether to place it over the figure, side-by-side, or in the hint
+//text: string; the text to format
+//components: object; components of the problem
+//parameters: object; will be used to store parameters for each image, as a mapping of {image_id -> parameter}
+function formatTextWithImageParameters(text, components, parameters, base_id) {
+    // this is just a pattern to extract all occurrences of {[...]}
+    var matches = text.match(/\{\[[^\{\}\[\]]*\]\}/igm);
+    if(matches == null) matches = [];
+    for(var i = 0; i < matches.length; i++) {
+        //an image consists of {[image.png, parameter]}
+        // where parameter is supposed to specify where the image needs to be moved
+        // when the hint is displayed (e.g. overlay, side, hint)
+        var image_parameters = matches[i].slice(2, -2).split(","); // remove {[]}, split
+        var image_parts = image_parameters[0].trim().split("."); //separate into filename, extension
+        var image_id = null;
+        // currently assuming only one parameter
+        if (base_id != null && image_parameters.length > 1) {
+            image_id = base_id + "-" + i;
+            parameters[image_id] = image_parameters[1].trim();
+        }
+        var imageHtml = getImageHtml(image_parts[0], image_parts[1], components.resource, components.probContentPath, image_id);
+        text = text.replace(matches[i], imageHtml);
+        //Note that we don't need to worry about duplicates;
+        // replace will only do one replacement, and the matches are extracted in order
+    }
+    return text;
+}
+
+//This is Melissa's original format function
+//It seems way more complicated than it needs to be,
+// but perhaps has some additional behavior (expression parsing?),
+// so I'm keeping it around for now
+function formatTextOld(rawText, components) {
+    if(rawText == null){
         return rawText;
     }
 
@@ -143,9 +185,10 @@ function format(rawText, components) {
         if(j == maxLength-1 && startIndex != undefined)
             alert("unclosed '{[' or '{#'");
 
-        //TODO refactor this
         switch (rawText.charAt(j)) {
             case '\\':
+                //If not already escaped, adds a backlash
+                //Otherwise, marks as escaped
                 if(!escaped){
                     escaped = true;
                 }
@@ -198,7 +241,7 @@ function format(rawText, components) {
                     else if(startIndex != undefined){
                         j++;
                         endIndex = j;
-                        var toInsert  = replaceWithHTML(imgOrVid, extension, components.resource, components.probContentPath);
+                        var toInsert = getImageHtml(imgOrVid, extension, components.resource, components.probContentPath);
                         rawText = rawText.substring(0, startIndex) + toInsert + rawText.substring(endIndex+1, rawText.length);
                         var newLen = toInsert.toString().length;
                         j = startIndex + newLen;
@@ -294,23 +337,25 @@ function format(rawText, components) {
     return rawText;
 }
 
-function replaceWithHTML(file, ext, resource, probContentPath){
+function getImageHtml(file, ext, resource, probContentPath, id){
 
     var toInsert = "";
+    id = id == null ? "" : ' id="' + id + '"';
+
 
     //Replace and image file name inside {} with the appropriate html
     // DM 9/16 removed svg from the list of extensions because they correctly scale themselves
     if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" ){
-        toInsert = '<img style="max-height: 100%; max-width: 100%" src="' +getURL(file + "." + ext, resource, probContentPath)+ '">';
+        toInsert = '<img' + id + ' style="max-height: 100%; max-width: 100%" src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
     }
     // DM 9/16 added svg on its own without resizing
     else if (ext == 'svg')
-        toInsert = '<img src="' +getURL(file + "." + ext, resource, probContentPath)+ '" >'
+        toInsert = '<img' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" >'
 
 
     //Do the same for a video
     else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
-       toInsert = '<video src="' +getURL(file + "." + ext, resource, probContentPath)+ '" controls preload="auto"></video>';
+       toInsert = '<video' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
     }
 
     else{
@@ -319,7 +364,7 @@ function replaceWithHTML(file, ext, resource, probContentPath){
     return toInsert;
 }
 
-//TODO test try catches
+//TODO(mfrechet) test try catches
 //Parses correctly formatted expressions containing only operators from the set {+,-,/,*,^}
 function parseSimpleExp(expression, components){
     //Convert parameters to their values

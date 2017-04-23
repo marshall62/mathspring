@@ -171,7 +171,14 @@ function problemFormatToJson(problemFormat) {
         }
     }
 
-    var order = problemFormat.order;
+    storage_format.order = problemFormatOrderToJsonOrder(problemFormat.order);
+    var json = JSON.stringify(storage_format);
+    return json;
+}
+
+//Recursive helper that allows nested columns to be parsed
+//order: array; contains a list of blocks names and column objects
+function problemFormatOrderToJsonOrder(order) {
     var order_strings = [];
     for(var b = 0; b < order.length; b++) {
         if(typeof order[b] === "string") {
@@ -180,16 +187,15 @@ function problemFormatToJson(problemFormat) {
         } else {
             //this is a column object, process it into [width leftcol, rightcol] form
             var cols = order[b];
-            var lcol = cols.width + "%" + (cols.left.length > 0 ? " " : "") + cols.left.join(" ");
-            var rcol = cols.right.join(" ");
+            var lcol = cols.width + "%" + (cols.left.length > 0 ? " " : "");
+            lcol += problemFormatOrderToJsonOrder(cols.left);
+            var rcol = problemFormatOrderToJsonOrder(cols.right);
             order_strings.push("[" + lcol + ", " + rcol + "]");
         }
     }
-    var order_string = order_strings.join(" ");
-    storage_format.order = order_string;
-    var json = JSON.stringify(storage_format);
-    return json;
+    return order_strings.join(" ");
 }
+
 //json: string; containing the problemFormat json
 //      object; in some cases JSON.parse has already been run on it
 //return: object; with the properties from the json
@@ -213,58 +219,101 @@ function jsonToProblemFormat(json) {
     }
 
     //Now convert the "order" field to an inner Javascript object
-    var order_str = problemFormat.order;
-    //Extract out each column pair (by matching brackets)
-    var columns = order_str.match(/\[[^\[\]]*\]/g);
-    if(columns != null) {
-        for(var c = 0; c < columns.length; c++) {
-            var col_str = columns[c];
-            //In the string, replace columns by an index in the columns array
-            order_str = order_str.replace(col_str, c);
+    problemFormat.order = jsonOrderToProblemFormatOrder(problemFormat.order, 0)[0];
 
-            //Now convert our column string into an object storing its properties
-            var col_str = col_str.substring(1, col_str.length-1); //remove brackets
-            var cols = col_str.split(", "); //split into left and right columns
-            //split each column into its blocks
-            cols[0] = cols[0] == "" ? [] : cols[0].split(" ");
-            cols[1] = cols[1] == "" ? [] : cols[1].split(" ");
-            var width = cols[0][0]; //the left column's part has width at the beginning
-            width = width.substring(0, width.length-1); //remove the %
-            cols[0] = cols[0].slice(1); //remove width from the left column
-            col_obj = {
-                width: width,
-                height: Math.max(cols[0].length, cols[1].length),
-                left: cols[0],
-                right: cols[1]
-            };
-            columns[c] = col_obj;
-        }
-    }
-    //Split the overall ordering into vertical pieces
-    var blocks = order_str.split(" ");
-    //And substitute the column pairs back in as objects instead of indices
-    for(var b = 0; b < blocks.length; b++) {
-        if(!isNaN(blocks[b])) { //this is a number, so it's a column pair index
-            blocks[b] = columns[parseInt(blocks[b])];
-        }
-    }
-    problemFormat.order = blocks;
     return problemFormat;
+}
+
+//Recursive helper function for parsing the order string into an object
+//order: string; the order parameter in the stored json representation of problemFormat
+//i: integer; position in the order string that we are currently parsing
+//return: [blocks, i, column]; an array with the following:
+//	blocks: array; list of blocks and column objects
+//	i: integer; current position in the order string
+//	column: string; whether we finished a left or a right column
+function jsonOrderToProblemFormatOrder(order, i) {
+    var blocks = [];
+    var block_start = i;
+    while(i < order.length) {
+        if(order[i].match(/\s/)) { //whitespace, so we've completed a block
+            addBlockString(order, blocks, block_start, i);
+            block_start = i+1;
+        } else if(order[i] == "[") { //the start of a column object
+            var result = jsonOrderColumnToProblemFormatOrderColumn(order, i+1);
+            blocks.push(result[0]);
+            i = result[1];
+            block_start = i+1;
+        } else if(order[i] == ",") { //we were in a left column that ended, return
+            addBlockString(order, blocks, block_start, i);
+            return [blocks, i, "left"];
+        } else if(order[i] == "]") { //we were in a right column that ended, return
+            addBlockString(order, blocks, block_start, i);
+            return [blocks, i, "right"];
+        }
+        ++i;
+    }
+    addBlockString(order, blocks, block_start, i);
+    return [blocks, i, ""];
+}
+
+//This is only used by above, but to prevent copy-pasting code
+function addBlockString(order, blocks, start, end) {
+    if(start < end) { //don't add zero-length blocks, which could occur e.g. with multiple spaces
+        blocks.push(order.slice(start, end));
+    }
+}
+
+//Another part of the recursive helper above that builds the column objects
+//order: string; the order parameter in the stored json representation of problemFormat
+//i: integer; the position in the order string that we are currently parsing
+//return: [object, integer]; an array with the column object and the current position
+function jsonOrderColumnToProblemFormatOrderColumn(order, i) {
+    var columns = {};
+    var width_start = i;
+    while(i < order.length) {
+        if(order[i] == "]") { //the columns have ended here
+            return [columns, i];
+        } else if(order[i] == "%") { //we reached the end of the width
+            columns.width = parseInt(order.slice(width_start, i));
+            width_start = null; //set it to null so we know we've already gotten it
+        } else if(width_start == null) {
+            var result = jsonOrderToProblemFormatOrder(order, i);
+            columns[result[2]] = result[0];
+            i = result[1];
+            if(result[2] == "right") {
+                //we've done both columns, return to normal block assembly
+                columns.height = Math.max(columns.left.length, columns.right.length);
+                return [columns, i];
+            }
+        }
+        ++i;
+    }
+    console.log("problemFormat order error: columns started but didn't finish");
 }
 
 //Intended use: removeFromProblemFormatOrder(_problemFormat.order, block)
 //blocks: array; contains blocks and column objects
 //block: string; name of the block we're removing
+//return: boolean; whether a block was removed by this particular call
 function removeFromProblemFormatOrder(blocks, block) {
     for(var b = 0; b < blocks.length; b++) {
-        if(blocks[b] == block) {
+        if(blocks[b] == block) { //we found our block, cut it out
             blocks.splice(b, 1);
-            return;
+            return true;
         } else if(typeof blocks[b] === "object") {
-            removeFromProblemFormatOrder(blocks[b].left, block);
-            removeFromProblemFormatOrder(blocks[b].right, block);
+            //we found some columns, explore both sides
+            var removed = false;
+            removed = removed || removeFromProblemFormatOrder(blocks[b].left, block);
+            removed = removed || removeFromProblemFormatOrder(blocks[b].right, block);
+            if(removed && blocks[b].left.length == 0 && blocks[b].right.length == 0) {
+                //we removed a block from these columns, and left them both empty
+                //so we should also remove these columns
+                blocks.splice(b, 1);
+                return true;
+            }
         }
     }
+    return false;
 }
 
 //Intended use: insertIntoProblemFormatOrder(_problemFormat.order, block, before_element)
@@ -272,9 +321,11 @@ function removeFromProblemFormatOrder(blocks, block) {
 //block: string; name of the block we're removing
 //path: array; the path of indices to follow in blocks
 function insertIntoProblemFormatOrder(blocks, block, path) {
+    //Follow the path down to the next-to-last block
     for(var p = 0; p < path.length-1; p++) {
         blocks = blocks[path[p]];
     }
+    //Insert the new block into the parent, before the target block
     blocks.splice(path[path.length-1], 0, block);
 }
 
@@ -365,7 +416,7 @@ function setBlockForStyleEditing(block) {
 
 function onBlockStyleChanged(style, value) {
     _layoutEdited = true;
-    if(_styleEditorFormatColumn && style == "width") {
+    if(_styleEditorFormatColumn && style == "column_width") {
         //This requires special handling, because we actually want to change
         // the width of the containing column, and adjust the adjacent column to match
         value = parseInt(value); //convert from "67%" to 67
@@ -398,7 +449,7 @@ function rebuildStyleEditor() {
     font_selector.style.fontSize = "10px";
     editor.appendChild(font_selector);
     editor.appendChild(buildLabel("Font Size (px):"));
-    var current_font_size = parseInt(_styleEditorFormatObject.fontSize) || 16
+    var current_font_size = parseInt(_styleEditorFormatObject.fontSize) || 16;
     editor.appendChild(buildSliderField(8, 48, 1, current_font_size,
         function(value) { onBlockStyleChanged("fontSize", value + "px"); }));
     editor.appendChild(buildLabel("Font Color:"));
@@ -406,13 +457,16 @@ function rebuildStyleEditor() {
     editor.appendChild(buildSelector(COLORS, current_font_color,
         function(value) { onBlockStyleChanged("color", value); }));
     editor.appendChild(buildFontWeightStyleToggles());
-    var width_label = "Block width (%):";
-    var current_width = _styleEditorFormatObject.width || 100;
     if(_styleEditorFormatColumns) {
-        width_label = "Column width (%):"
-        current_width = _styleEditorFormatColumns.width;
-        if(_styleEditorFormatColumn == "right") current_width = 100 - current_width;
-        editor.appendChild(buildLabel(width_label));
+        var column_width = _styleEditorFormatColumns.width;
+        if(_styleEditorFormatColumn == "right") column_width = 100 - column_width;
+        editor.appendChild(buildLabel("Column width (%):"));
+        editor.appendChild(buildSliderField(0, 100, 1, current_width,
+            function(value) { onBlockStyleChanged("column_width", value + "%"); }));
+    }
+    if(_styleEditorBlock.dataset.blockname.match(/figure/i)) {
+        var current_width = _styleEditorFormatObject.width || 100;
+        editor.appendChild(buildLabel("Figure width (%):"));
         editor.appendChild(buildSliderField(0, 100, 1, current_width,
             function(value) { onBlockStyleChanged("width", value + "%"); }));
     }
@@ -569,9 +623,9 @@ function handleDrop(e) {
             dragparent.removeChild(_dragged);
         }
     } else if(_dragged != e.target && _dragged.nextElementSibling != e.target) {
+        //the above condition should filter out "moves" that don't actually rearrange anything
         var should_remove = true;
         var block_to_insert = _dragged.dataset.blockname;
-        //the above condition should filter out "moves" that don't actually rearrange anything
         if(_dragged.dataset.blockname == "columns") {
             e.target.parentNode.insertBefore(buildLayoutBlockSpace(), e.target);
             block_to_insert = {width:50,left:[],right:[]}
@@ -593,27 +647,15 @@ function handleDrop(e) {
         e.target.parentNode.insertBefore(_dragged, e.target);
         changed = true;
     }
-    if(dragparent.className == "layout-column") { //we dragged it out of a column
-        //check if the columns are both empty so we can delete them
+    while(dragparent.className == "layout-column"
+    && dragparent.parentNode.children[0].children.length == 1
+    && dragparent.parentNode.children[1].children.length == 1) {
+        //while this is true, we've just emptied out a pair of columns; delete them
         var columns = dragparent.parentNode;
-        if(columns.children[0].children.length == 1 && columns.children[1].children.length == 1) {
-            //The columns are both empty, remove them
-            //Remove the column part of the problemFormat order
-            var layout_editor_children = document.getElementById("LayoutEditor").children;
-            var child = columns.previousElementSibling;
-            var index_to_remove = 0;
-            while(child) {
-                if(!child.className.includes("layout-block-space")) {
-                    //only increment for real blocks, which would be in _problemFormat.order
-                    index_to_remove++;
-                }
-                child = child.previousElementSibling;
-            }
-            _problemFormat.order.splice(index_to_remove, 1);
-            //Remove this set of columns and the spacer before it
-            columns.parentNode.removeChild(columns.previousElementSibling);
-            columns.parentNode.removeChild(columns);
-        }
+        dragparent = columns.parentNode; //set it to the element containing the columns
+        //columns also have a spacer before them; remove that first
+        dragparent.removeChild(columns.previousElementSibling);
+        dragparent.removeChild(columns);
     }
     if(changed) {
         _layoutEdited = true;

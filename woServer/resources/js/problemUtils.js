@@ -130,36 +130,72 @@ function prob_readProblem() {
     document.getElementById("QuestionSound").play();
 }
 
+function getFirstFigureImage() {
+    var figure_block = document.getElementById("ProblemFigure");
+    for(var i = 0; i < figure_block.children.length; i++) {
+        if(figure_block.children[i].tagName.match(/img/i)) return figure_block.children[i];
+    }
+    return null;
+}
+
 function prob_playHint (hintLabel) {
     document.getElementById("HintContainer").style.display = "block";
-    hint = getIdCorrespondingToHint(hintLabel);
+    hintId = getIdCorrespondingToHint(hintLabel);
     clearHintStage();
     stopAudio();
-    document.getElementById(hint+"Thumb").style.visibility = "visible";
-    document.getElementById(hint+"Thumb").className = "hint-thumb-selected";
-    document.getElementById(hint).style.display = "initial";
+    var hint_thumb = document.getElementById(hintId+"Thumb");
+    hint_thumb.style.visibility = "visible";
+    hint_thumb.className = "hint-thumb-selected";
+    var figure = getFirstFigureImage();
+    //Clear any overlaid hint images
+    if(figure != null && figure.dataset.figureSrc != null) {
+        figure.setAttribute("src", figure.dataset.figureSrc);
+        delete figure.dataset.figureSrc;
+    }
+    //clear side images
+    var hintFigure = document.getElementById("HintFigure");
+    if(hintFigure != null) hintFigure.innerHTML = "";
+    var image_parameters = JSON.parse(hint_thumb.dataset.parameters);
+    //add overlay and side images
+    for(var image_id in image_parameters) {
+        var parameter = image_parameters[image_id];
+        var image = document.getElementById(image_id);
+        if(parameter == "overlay" && figure != null) {
+            // don't overwrite figureSrc if it's already been set, because then it would store a hint image instead
+            figure.dataset.figureSrc = figure.dataset.figureSrc || figure.getAttribute("src");
+            figure.setAttribute("src", image.getAttribute("src"));
+            image.style.display = "none"; //don't display the original in the hint area
+        } else if(parameter == "side" && hintFigure != null) {
+            var side_image = document.createElement("img");
+            side_image.setAttribute("src", image.getAttribute("src"));
+            hintFigure.appendChild(side_image);
+            image.style.display = "none"; //don't display the original in the hint area
+        }
+    }
+    var hint = document.getElementById(hintId);
+    hint.style.display = "initial";
     //Animate the hints coming in.  We want them to alternate sliding in from the left or the bottom
-/*    if(hint == "Hint10"){
-        document.getElementById(hint).className = "hint default";
+/*    if(hintId == "Hint10"){
+        document.getElementById(hintId).className = "hint default";
     }
     else{
         requestAnimationFrame(function(){
-            if(hint == "Hint1" ||
-                hint == "Hint3" ||
-                hint == "Hint5" ||
-                hint == "Hint7" ||
-                hint == "Hint9"){
-                document.getElementById(hint).className = "hint slide_left";
+            if(hintId == "Hint1" ||
+                hintId == "Hint3" ||
+                hintId == "Hint5" ||
+                hintId == "Hint7" ||
+                hintId == "Hint9"){
+                document.getElementById(hintId).className = "hint slide_left";
             }
             else{
-                document.getElementById(hint).className = "hint slide_up";
+                document.getElementById(hintId).className = "hint slide_up";
             }
-        }, document.getElementById(hint));
+        }, document.getElementById(hintId));
     }
   */
-    document.getElementById(hint+"Sound").play();
-    var preload = document.getElementById(getNextHint(hint) + "Sound");
-    if(preload != null && document.getElementById(hint+"Thumb").style.display != "initial"){
+    document.getElementById(hintId+"Sound").play();
+    var preload = document.getElementById(getNextHint(hintId) + "Sound");
+    if(preload != null && document.getElementById(hintId+"Thumb").style.display != "initial"){
         preload.load();
     }
 

@@ -23,11 +23,13 @@ body {
 #HintContainer{
     border: rgba(0,0,0,0) solid 5px;
 }
-.columns{
+.columnL{
+    overflow: hidden;
 }
 .columnR{
     float: right;
     width: 50%;
+    overflow: hidden;
 }
 .answer-row{
     margin: 0 0 10px 20px;
