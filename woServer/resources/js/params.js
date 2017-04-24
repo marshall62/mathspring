@@ -133,6 +133,7 @@ function plug(doc, components) {
             prob_playHint(hint_labels[hint_label_index]);
             if(hint_label_index < hint_labels.length - 1) ++hint_label_index;
         }
+        play_hint_button.style.zoom = document.getElementById("ProblemContainer").style.zoom;
         document.body.appendChild(play_hint_button);
     }
 }
