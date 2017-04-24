@@ -211,8 +211,7 @@ function jsonToProblemFormat(json) {
             var style = {};
             for (var i = 0; i < _fake_div.style.length; i++) {
                 var name = _fake_div.style[i];
-                var value = _fake_div.style.getPropertyValue(name);
-                style[name] = value;
+                style[name] = _fake_div.style.getPropertyValue(name);
             }
             problemFormat[key] = style;
         }
@@ -457,6 +456,10 @@ function rebuildStyleEditor() {
     editor.appendChild(buildSelector(COLORS, current_font_color,
         function(value) { onBlockStyleChanged("color", value); }));
     editor.appendChild(buildFontWeightStyleToggles());
+    var current_block_spacing = parseInt(_styleEditorFormatObject.borderWidth) || 5;
+    editor.appendChild(buildLabel("Block spacing (px):"));
+    editor.appendChild(buildSliderField(0, 50, 1, current_block_spacing,
+        function(value) { onBlockStyleChanged("borderWidth", value + "px"); }));
     if(_styleEditorFormatColumns) {
         var column_width = _styleEditorFormatColumns.width;
         if(_styleEditorFormatColumn == "right") column_width = 100 - column_width;
@@ -509,7 +512,7 @@ function buildSliderField(min, max, step, current_value, callback) {
     var field = document.createElement("input");
     field.type = "text";
     field.style.width = "30px";
-    field.style.flex = "0 0 auto"
+    field.style.flex = "0 0 auto";
     field.value = current_value;
     slider_container.appendChild(field);
     slider.addEventListener("input", function() {
@@ -760,8 +763,10 @@ function buildTemplateEditor() {
     stringifyObjectArray(TEMPLATES);
     var template_selector = document.getElementById("TemplateSelector");
     //Add a miniature button-version of each template to the template selector
+    var zoom = 375/(600 * TEMPLATES.length); //scales template buttons to fit in the space
     for(var i = 0; i < TEMPLATES.length; i++) {
         var template_button = buildTemplateButton(TEMPLATES[i]);
+        template_button.style.zoom = zoom;
         template_selector.appendChild(template_button);
     }
     var block_selector = document.getElementById("BlockSelector");
