@@ -86,7 +86,7 @@ public class AdminHandler {
             return false;
         }
         else if(e instanceof AdminEditProblemFormatEvent) {
-            new EditProblemFormatHandler().handleEvent(sc, conn, servletRequest, servletResponse);
+            EditProblemFormatHandler.handleEvent(e, sc, conn, servletRequest, servletResponse);
             return false;
         }
 
@@ -145,6 +145,9 @@ public class AdminHandler {
             servletRequest.setAttribute("elapsedTime",-1);
             servletRequest.setAttribute("previewMode",true);
             servletRequest.setAttribute("teacherId",ee.getTeacherId());
+            //Allows scaling the preview
+            servletRequest.setAttribute("zoom", ee.getServletParams().getDouble("zoom", 1.0));
+            servletRequest.setAttribute("addHintButton", true);
             String servContext= servletRequest.getContextPath();
             if (servContext != null && servContext.length()>1)
                 servContext=servContext.substring(1);    // strip off the leading /

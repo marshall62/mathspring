@@ -14,52 +14,21 @@
         <script type="text/javascript">
             <%--   When a quickAuth problem is shown it is URL with problem_skeleton.jsp including the params below.  The params
             contain the various components of a quickAuth problem on the URL string.  As the JSP runs, it plugs these in.--%>
-
-            <%--var stmt =  checkArg('${problem.statementHTML}');--%>
-            <%--var fig =  checkArg('${problem.imageURL}');--%>
-            <%--var audio =  checkArg('${problem.questionAudio}');--%>
-            <%--var answer =  checkArg('${problem.answer}');--%>
-//            var newAnswer;  // leave as undefined which means no shuffling
-            <%--var units =  checkArg('${problem.units}');--%>
-            <%--var mode =  checkArg('${problem.mode}');--%>
-            <%--var questType =  checkArg('${problem.questType}');--%>
-            <%--var resource =  checkArg('${problem.resource}');--%>
-            <%--var probContentPath =  checkArg('${probContentPath}');--%>
             var sessId = ${sessionId};
             var eventCounter = ${eventCounter};
             var elapsedTime = ${elapsedTime};
             var servContext = '${servletContext}';
             var servletName = '${servletName}';
-
-
-            <%--var x =  '${hints}';--%>
-            <%--var hints = x != '' ? checkArg(JSON.parse('${hints}')) : undefined ;--%>
-            <%--x = '${answers}';--%>
-            <%--var answers = x != '' ? checkArg(JSON.parse('${answers}')) : undefined ;--%>
-            <%--x = '${probParams}';--%>
-            <%--var params = x != '' ? checkArg(JSON.parse('${probParams}')) : undefined ;--%>
-            <%--var answers =  answers != undefined ? checkArg(JSON.parse('${answers}')) : answers;--%>
-            <%--var params = params != undefined ? checkArg(JSON.parse('${problem.params}')) : params ;--%>
-
-            function checkArg (x)  {
-                if (x === "null")
-                    return null;
-                else if (x === '')
-                    return undefined
-                else if (x === "undefined")
-                    return undefined;
-                else return x
-            }
         </script>
     </head>
 
     <%--<body onload="plugin(stmt,fig,audio,hints,answers,newAnswer,answer,units,mode,questType,resource,probContentPath,params)">--%>
-    <body onload="plugin(${problem.id}, sessId, elapsedTime, eventCounter, servContext, servletName, ${previewMode}, ${teacherId})">
-    <div id="ProblemContainer">
+    <body onload="plugin(${problem.id}, sessId, elapsedTime, eventCounter, servContext, servletName, ${previewMode}, ${teacherId}<c:if test="${not empty addHintButton}">, ${addHintButton}</c:if>)">
+    <div id="ProblemContainer" <c:if test="${not empty zoom}">style="zoom:${zoom}"</c:if>>
         <c:forTokens items="10,9,8,7,6,5,4,3,2,1" delims="," var="num">
             <c:out escapeXml = "false" value="<audio id = \"Hint${num}Sound\"></audio>"/>
         </c:forTokens>
-        <audio id = "QuestionSound"></audio>
+        <audio id="QuestionSound"></audio>
         <div id="HintContainer" style="display: none">
             <div class="hint-thumbs">
                 <c:forTokens items="1,2,3,4,5,6,7,8,9" delims="," var="num">

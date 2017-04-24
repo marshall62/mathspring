@@ -17,8 +17,9 @@
     user-select: none;
 }
 .problem-container {
-    width: 200px;
-    height: 200px;
+    width: 600px;
+    height: 600px;
+    zoom: 0.333;
     box-sizing: border-box;
     border-width: 2px;
     background-color: #8ED8E0;
@@ -50,8 +51,8 @@
     flex-direction: column;
 }
 .template-button {
-    width: 75px;
-    height: 75px;
+    width: 600px;
+    height: 600px;
     box-sizing: border-box;
     border: 1px solid transparent;
     margin: auto;
@@ -65,7 +66,7 @@
     opacity: 0.50;
 }
 .problem-block {
-    box-sizing: border-box;
+    background-clip: content-box;
 }
 .layout-block {
     margin: 3px;

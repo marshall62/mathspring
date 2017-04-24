@@ -7,6 +7,8 @@ body {
     font-family: Georgia, serif;
     font-size: 16px;
     color: black;
+    box-sizing: border-box;
+    border: 5px solid transparent;
 }
 #ProblemContainer {
     position: relative;
@@ -23,11 +25,13 @@ body {
 #HintContainer{
     border: rgba(0,0,0,0) solid 5px;
 }
-.columns{
+.columnL{
+    overflow: hidden;
 }
 .columnR{
     float: right;
     width: 50%;
+    overflow: hidden;
 }
 .answer-row{
     margin: 0 0 10px 20px;
@@ -69,6 +73,21 @@ body {
     border: 5px solid transparent;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+.play-hint-button{
+    width: 100px;
+    height: 600px;
+    box-sizing: border-box;
+    line-height: 600px;
+    font-size: 20px;
+    margin-left: 600px;
+    background-color: #444;
+    padding: 5px;
+    color: white;
+}
+.play-hint-button:hover{
+    background-color: #666;
+    transition: background-color 0.25s;
 }
 
 
