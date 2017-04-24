@@ -43,7 +43,6 @@
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
-          <element id="library" level="project" name="Maven: org.json:json:20140107" />
           <element id="library" level="project" name="Maven: org.testng:testng:6.8.8" />
           <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
           <element id="library" level="project" name="Maven: xerces:xercesImpl:2.4.0" />
