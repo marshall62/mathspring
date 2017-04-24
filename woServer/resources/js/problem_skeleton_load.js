@@ -1,14 +1,15 @@
-var pid, sessId, elapsedTime, eventCounter, servletContext, servletName,teacherId;
+var pid, sessId, elapsedTime, eventCounter, servletContext, servletName, teacherId, addHintButton;
 
 //function plugin(stmt, fig, audio, hints, answers, newAnswer, answer, units, mode, questType, resource, probContentPath, problemParams) {
-function plugin(probId, sessid, elapsedtime, eventcounter, servcontext, servname, previewMode, teacherid) {
-     pid = probId;
-    sessId= sessid;
+function plugin(probId, sessid, elapsedtime, eventcounter, servcontext, servname, previewMode, teacherid, addhintbutton) {
+    pid = probId;
+    sessId = sessid;
     elapsedTime = elapsedtime;
     eventCounter = eventcounter;
     servletContext = servcontext;
     servletName = servname;
-    teacherId=teacherid;
+    teacherId = teacherid;
+    addHintButton = addhintbutton;
 //    alert("In plugin: " + probId);
     if (!previewMode)
         servletGet(true, "GetQuickAuthProblem",{probId: pid},pluginProblem);
@@ -40,7 +41,7 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var activity = JSON.parse(responseText);
     var problem = activity.problem;
     var problemParams = activity.binding;
-    var probContentPath = activity.probContentPath;
+    var probContentPath = activity.probContentPath || problem.probContentPath;
     var stmt = problem.statementHTML;
     var audio = problem.questionAudio;
     var fig = problem.questionImage;
@@ -56,7 +57,8 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
 
     var g = {stmt: stmt, fig: fig, audio: audio, hints: hints, answers: answers, newAnswer: newAnswer,
         answer: answer, units: units, mode: mode, questType: questType, resource: resource,
-        probContentPath: probContentPath, problemParams: problemParams, problemFormat: problemFormat};
+        probContentPath: probContentPath, problemParams: problemParams, problemFormat: problemFormat,
+        addHintButton: addHintButton};
     prepareForData(document, g);
     plug(document, g);
     probUtilsInit(document, g);

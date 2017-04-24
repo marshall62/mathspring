@@ -75,8 +75,10 @@ function plug(doc, components) {
         doc.getElementById("Units").innerHTML = parameterizeText(formatText(getUnits(), components), problemParams);
     }
 
+    var hint_labels = [];
     if(isNotEmpty(hints)) {
         for (i=0; i<hints.length;++i)  {
+            hint_labels.push(hints[i].label);
             var hintId = getIdCorrespondingToHint(hints[i].label);
             hint_thumb = doc.getElementById(hintId+"Thumb");
             hint_thumb.style.display = "block";
@@ -120,6 +122,19 @@ function plug(doc, components) {
             }
         }
     }
+
+    if(components.addHintButton) {
+        document.getElementById("ProblemContainer").style.float = "left";
+        var play_hint_button = document.createElement("div");
+        play_hint_button.className = "play-hint-button";
+        play_hint_button.innerHTML = "Play Hint";
+        var hint_label_index = 0;
+        play_hint_button.onclick = function() {
+            prob_playHint(hint_labels[hint_label_index]);
+            if(hint_label_index < hint_labels.length - 1) ++hint_label_index;
+        }
+        document.body.appendChild(play_hint_button);
+    }
 }
 
 function getURL(filename, resource, probContentPath) {
@@ -131,6 +146,29 @@ function getURL(filename, resource, probContentPath) {
 //Just a wrapper for when you don't care about the parameters
 function formatText(text, components) {
     return formatTextWithImageParameters(text, components, {}, null);
+}
+
+function getImageHtml(file, ext, resource, probContentPath, id){
+    //if id is null, don't add an id to the image
+    id = id == null ? "" : ' id="' + id + '"';
+
+    //Replace and image file name inside {} with the appropriate html
+    // DM 9/16 removed svg from the list of extensions because they correctly scale themselves
+    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" ){
+        return '<img' + id + ' style="max-height: 100%; max-width: 100%" src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
+    }
+    // DM 9/16 added svg on its own without resizing
+    else if (ext == 'svg') {
+        return '<img' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" >';
+    }
+    //Do the same for a video
+    else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
+        return '<video' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
+    }
+    else{
+        console.log("invalid image or video", file + "." + ext, resource, probContentPath);
+    }
+    return "";
 }
 
 //Extracts images/video contained by {[]}
@@ -335,33 +373,6 @@ function formatTextOld(rawText, components) {
 
     }
     return rawText;
-}
-
-function getImageHtml(file, ext, resource, probContentPath, id){
-
-    var toInsert = "";
-    id = id == null ? "" : ' id="' + id + '"';
-
-
-    //Replace and image file name inside {} with the appropriate html
-    // DM 9/16 removed svg from the list of extensions because they correctly scale themselves
-    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" ){
-        toInsert = '<img' + id + ' style="max-height: 100%; max-width: 100%" src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
-    }
-    // DM 9/16 added svg on its own without resizing
-    else if (ext == 'svg')
-        toInsert = '<img' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" >'
-
-
-    //Do the same for a video
-    else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
-       toInsert = '<video' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
-    }
-
-    else{
-        console.log("invalid image or video", file + "." + ext, resource, probContentPath);
-    }
-    return toInsert;
 }
 
 //TODO(mfrechet) test try catches

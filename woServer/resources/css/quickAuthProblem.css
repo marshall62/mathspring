@@ -74,6 +74,21 @@ body {
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
 }
+.play-hint-button{
+    width: 100px;
+    height: 600px;
+    box-sizing: border-box;
+    line-height: 600px;
+    font-size: 20px;
+    margin-left: 600px;
+    background-color: #444;
+    padding: 5px;
+    color: white;
+}
+.play-hint-button:hover{
+    background-color: #666;
+    transition: background-color 0.25s;
+}
 
 
 
