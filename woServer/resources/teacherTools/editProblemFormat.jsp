@@ -20,7 +20,8 @@
             <%-- Pass the settings from the database to our javascript --%>
             TEMPLATES = ${templates};
             FONTS = ${fonts};
-            COLORS =${colors};
+            COLORS = ${colors};
+            PROBLEM_FORMAT = ${problemFormat};
             buildTemplateEditor();
         }
     </script>

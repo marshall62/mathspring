@@ -86,7 +86,7 @@ public class AdminHandler {
             return false;
         }
         else if(e instanceof AdminEditProblemFormatEvent) {
-            new EditProblemFormatHandler().handleEvent(sc, conn, servletRequest, servletResponse);
+            EditProblemFormatHandler.handleEvent(e, sc, conn, servletRequest, servletResponse);
             return false;
         }
 

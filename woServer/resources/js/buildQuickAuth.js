@@ -6,7 +6,7 @@
 //TODO(rezecib): luxury; add + button to templates, which clears any templates
 //TODO(rezecib): luxury; remove style from problemFormat when it holds a default value
 
-var TEMPLATES, FONTS, COLORS; //these get populated by editProblemFormat.jsp
+var TEMPLATES, FONTS, COLORS, PROBLEMFORMAT; //these get populated by editProblemFormat.jsp
 var BLOCK_ID = {
     statement: "ProblemStatement",
     figure: "ProblemFigure",
@@ -775,6 +775,9 @@ function buildTemplateEditor() {
         selection_block.id = "SelectionBlock-" + block;
         selection_block.dataset.blockname = block;
         block_selector.appendChild(selection_block);
+    }
+    if(PROBLEM_FORMAT != "") {
+        document.getElementById("ProblemFormatOutput").value = JSON.stringify(PROBLEM_FORMAT);
     }
 }
 
