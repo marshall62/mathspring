@@ -574,10 +574,7 @@ function setTemplateButtonOnClick(btn, enabled) {
                 return;
             }
             _layoutEdited = false;
-            _problemFormat = jsonToProblemFormat(btn.dataset.templateJson);
-            updateProblemPreview(btn.dataset.templateJson);
-            rebuildLayoutEditor();
-            setBlockForStyleEditing(null);
+            setProblemFormatJson(btn.dataset.templateJson);
             setTemplateButtonOnClick(btn, false);
             if(_last_template_btn) {
                 setTemplateButtonOnClick(_last_template_btn, true);
@@ -589,6 +586,15 @@ function setTemplateButtonOnClick(btn, enabled) {
         addClass(btn, "disabled");
         btn.onclick = null;
     }
+}
+
+//Sets the active problem format in all parts of the editor to the provided string
+//json: string; the problemFormat to use
+function setProblemFormatJson(json) {
+    _problemFormat = jsonToProblemFormat(json);
+    updateProblemPreview(json);
+    rebuildLayoutEditor();
+    setBlockForStyleEditing(null);
 }
 
 var _dragged;
@@ -777,7 +783,7 @@ function buildTemplateEditor() {
         block_selector.appendChild(selection_block);
     }
     if(PROBLEM_FORMAT != "") {
-        document.getElementById("ProblemFormatOutput").value = JSON.stringify(PROBLEM_FORMAT);
+        setProblemFormatJson(JSON.stringify(PROBLEM_FORMAT));
     }
 }
 
