@@ -26,10 +26,9 @@ public abstract class EditProblemFormatHandler {
         req.setAttribute("fonts", fonts);
         req.setAttribute("colors", colors);
         int problemId = e.getServletParams().getInt("problemId", -1);
-        if(problemId != -1) {
-            String problemFormat = getProblemFormat(conn, problemId);
-            if(problemFormat != null) req.setAttribute("problemFormat", problemFormat);
-        }
+        String problemFormat = "null"; //this looks weird but it will be output directly by jsp
+        if(problemId != -1) problemFormat = getProblemFormat(conn, problemId);
+        req.setAttribute("problemFormat", problemFormat);
         req.getRequestDispatcher(JSP).forward(req, resp);
     }
 
@@ -59,12 +58,14 @@ public abstract class EditProblemFormatHandler {
         ResultSet rs = ps.executeQuery();
         try {
             while(rs.next()) {
-                return rs.getString(1);
+                String problemFormat = rs.getString(1);
+                if(problemFormat == null) problemFormat = "null";
+                return problemFormat;
             }
         } finally {
             if (rs != null) rs.close();
             if (ps != null) ps.close();
         }
-        return null;
+        return "null";
     }
 }

@@ -782,9 +782,7 @@ function buildTemplateEditor() {
         selection_block.dataset.blockname = block;
         block_selector.appendChild(selection_block);
     }
-    if(PROBLEM_FORMAT != "") {
-        setProblemFormatJson(JSON.stringify(PROBLEM_FORMAT));
-    }
+    if(PROBLEM_FORMAT != null) setProblemFormatJson(JSON.stringify(PROBLEM_FORMAT));
 }
 
 function stringifyObjectArray(arr) {
