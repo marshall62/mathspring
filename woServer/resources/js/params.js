@@ -154,21 +154,14 @@ function getImageHtml(file, ext, resource, probContentPath, id){
     id = id == null ? "" : ' id="' + id + '"';
 
     //Replace and image file name inside {} with the appropriate html
-    // DM 9/16 removed svg from the list of extensions because they correctly scale themselves
-    if(ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg" ){
-        return '<img' + id + ' style="max-height: 100%; max-width: 100%" src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
+    if(ext != null) {
+        if(ext.match(/^(gif|png|jpe?g|svg)$/i)){
+            return '<img' + id + ' style="max-height: 100%; max-width: 100%" src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
+        } else if(ext.match(/^(mp4|ogg|webm)$/i)) { //Do the same for a video
+            return '<video' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
+        }
     }
-    // DM 9/16 added svg on its own without resizing
-    else if (ext == 'svg') {
-        return '<img' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" >';
-    }
-    //Do the same for a video
-    else if(ext == "mp4" || ext == "ogg" || ext == "WebM"){
-        return '<video' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
-    }
-    else{
-        console.log("invalid image or video", file + "." + ext, resource, probContentPath);
-    }
+    console.log("invalid image or video", file + "." + ext, resource, probContentPath);
     return "";
 }
 
