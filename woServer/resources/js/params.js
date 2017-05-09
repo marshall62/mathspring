@@ -55,6 +55,7 @@ function plug(doc, components) {
     var probSound = components.audio;
     var probUnits = components.units;
     var problemParams = components.problemParams;
+    pickParams(problemParams); //chooses which set of parameters to use
     var hints = components.hints;
     var problemFormat = components.problemFormat;
 
@@ -144,11 +145,6 @@ function getURL(filename, resource, probContentPath) {
     return probContentPath + "/html5Probs/" + resource.split(".")[0] + "/" + filename;
 }
 
-//Just a wrapper for when you don't care about the parameters
-function formatText(text, components) {
-    return formatTextWithImageParameters(text, components, {}, null);
-}
-
 function getImageHtml(file, ext, resource, probContentPath, id){
     //if id is null, don't add an id to the image
     id = id == null ? "" : ' id="' + id + '"';
@@ -162,7 +158,13 @@ function getImageHtml(file, ext, resource, probContentPath, id){
         }
     }
     console.log("invalid image or video", file + "." + ext, resource, probContentPath);
+    //TODO(rezecib): for test users (or admin preview?) display an "invalid image" directly
     return "";
+}
+
+//Just a wrapper for when you don't care about the parameters
+function formatText(text, components) {
+    return formatTextWithImageParameters(text, components, {}, null);
 }
 
 //Extracts images/video contained by {[]}
@@ -176,19 +178,26 @@ function formatTextWithImageParameters(text, components, parameters, base_id) {
     var matches = text.match(/\{\[[^\{\}\[\]]*\]\}/igm);
     if(matches == null) matches = [];
     for(var i = 0; i < matches.length; i++) {
-        //an image consists of {[image.png, parameter]}
-        // where parameter is supposed to specify where the image needs to be moved
-        // when the hint is displayed (e.g. overlay, side, hint)
-        var image_parameters = matches[i].slice(2, -2).split(","); // remove {[]}, split
-        var image_parts = image_parameters[0].trim().split("."); //separate into filename, extension
-        var image_id = null;
-        // currently assuming only one parameter
-        if (base_id != null && image_parameters.length > 1) {
-            image_id = base_id + "-" + i;
-            parameters[image_id] = image_parameters[1].trim();
+        var match = matches[i].slice(2, -2); //remove {[]}
+        var parameterized_match = parameterizeText(match, components.problemParams);
+        var replacement = matches[i];
+        if(parameterized_match != match) { //then this is an expression
+            replacement = parseSimpleExp(parameterized_match);
+        } else { //it's an image
+            //an image consists of {[image.png, parameter]}
+            // where parameter is supposed to specify where the image needs to be moved
+            // when the hint is displayed (e.g. overlay, side, hint)
+            var image_parameters = match.split(",");
+            var image_parts = image_parameters[0].trim().split("."); //separate into filename, extension
+            var image_id = null;
+            // currently assuming only one parameter
+            if (base_id != null && image_parameters.length > 1) {
+                image_id = base_id + "-" + i;
+                parameters[image_id] = image_parameters[1].trim();
+            }
+            replacement = getImageHtml(image_parts[0], image_parts[1], components.resource, components.probContentPath, image_id);
         }
-        var imageHtml = getImageHtml(image_parts[0], image_parts[1], components.resource, components.probContentPath, image_id);
-        text = text.replace(matches[i], imageHtml);
+        text = text.replace(matches[i], replacement);
         //Note that we don't need to worry about duplicates;
         // replace will only do one replacement, and the matches are extracted in order
     }
@@ -370,10 +379,9 @@ function formatTextOld(rawText, components) {
 }
 
 //TODO(mfrechet) test try catches
+//If we want fancier expressions it may make more sense to use something like math.js
 //Parses correctly formatted expressions containing only operators from the set {+,-,/,*,^}
-function parseSimpleExp(expression, components){
-    //Convert parameters to their values
-    expression = parameterizeText(expression, components.problemParams);
+function parseSimpleExp(expression){
     //Remove white space to make processing easier
     expression = expression.replace(/\s/g,"");
 
@@ -489,7 +497,6 @@ function parameterizeText(rawText, problemParams) {
     if (problemParams == null) {
         return rawText;
     }
-    pickParams(problemParams);
 
     var keys = Object.keys(problemParams);
     keys.sort().reverse();
@@ -503,10 +510,11 @@ function parameterizeText(rawText, problemParams) {
     return parameterizedText;
 }
 
-//From what I can tell, all this does is take each vlaue in problemParams,
-// and if it's an array, pick use the same random index to pick one of its elements
+//This takes all of the parameter sets for the problems and selects one set to use
+//It modifies the problemParams object to only have the selected parameter set
 //Originally called "getConstraints", which really doesn't make sense
 function pickParams(problemParams) {
+    if(problemParams == null) return;
     var rand = -1;
     for(var key in problemParams){
         if (isArray(problemParams[key])) {
