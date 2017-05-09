@@ -248,7 +248,7 @@ public class Problem implements Activity {
             jo.element("questionImage", imageURL);
             jo.element("units", units);
             jo.element("questType",this.questType.name());
-            for (Hint hint : getHints()) {
+            for (Hint hint : allHints) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
             if (isMultiChoice()) {
