@@ -29,8 +29,7 @@ function processFlashProblemAnswerChosenResult(responseText, textStatus, XMLHttp
     processAttemptIntervention(interv);
 }
 
-
-tutorhut_shortAnswerSubmitted  = function (sym, answer) {
+function tutorhut_shortAnswerSubmitted (sym, answer) {
     debugAlert("answerChosen CALLED! with: " + answer);
     transients.sym = sym;
     if (!isWaiting() && globals.probMode != MODE_DEMO) {
