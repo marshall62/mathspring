@@ -137,6 +137,8 @@ function plug(doc, components) {
         play_hint_button.style.zoom = document.getElementById("ProblemContainer").style.zoom;
         document.body.appendChild(play_hint_button);
     }
+    // Detects LaTeX code and turns it into nice HTML
+    MathJax.Hub.Typeset();
 }
 
 function getURL(filename, resource, probContentPath) {

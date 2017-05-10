@@ -198,7 +198,6 @@ function prob_playHint (hintLabel) {
     if(preload != null && document.getElementById(hintId+"Thumb").style.display != "initial"){
         preload.load();
     }
-
 }
 
 function clearHintStage(){
