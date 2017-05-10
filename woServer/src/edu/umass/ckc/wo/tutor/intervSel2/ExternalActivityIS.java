@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.wo.content.ExternalActivity;
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbExternalActivity;
 import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.interventions.ExternalActivityAskIntervention;
@@ -26,37 +27,116 @@ import java.util.Random;
  * User: marshall
  * Date: 11/14/13
  * Time: 12:37 PM
- * To change this template use File | Settings | File Templates.
+ *
+ * This will offer external activities (sometimes call mini-games) to the user within a topic.
+ * We find the available activities within the topic and select one.   This will either be forced on the
+ * user or offered to the them (based on the configuration mode).  There are 3 variables that control
+ * the selection interval:
+ * 1. frequencyPct: x   Select an xact as a random event that occurs x% of the time.
+ * 2. numProblemsBetweenOffers: p After solving p problems (not necessarily within one topic), make a selection
+ * 3. numMinutesBetweenOffers: m  After m minutes, make a selection
+ * mode: force / ask controls whether the user can elect not to go to the activity
+ * allowRepeat: true/false controls whether this will repeat activities that the user has already been given.   It will
+ * only repeat an activity once all the activities for a topic have been shown.   Once all have been shown once, this will
+ * randomly choose external activities within the selection interval
+ *
+ * Sample config:
+ *  <config>
+         <numProblemsBetweenOffers>10</numProblemsBetweenOffers>
+         <mode>ask</mode>
+         <allowRepeat>false</allowRepeat>
+    </config>
  */
 public class ExternalActivityIS extends NextProblemInterventionSelector {
     public static final String FORCE = "force";
     public static final String ASK = "ask";
+    // for now we leave this getting a default value which is non-zero so if no other method of
+    // configuring is used, this will be used with this number.
     private double percentTimeToSelectXact = Settings.externalActivityPercentage;
+    private int numProblemsBetweenOffers; // num problems to wait before selecting external activity
+    private int numMinutesBetweenOffers; // wait time in minutes before/between external activity selections
+    private boolean allowRepeat; // do we allow an external activity to be repeated
     private String mode =  FORCE;
     private MyState state;
 
 
 
-    public ExternalActivityIS(SessionManager smgr) {
+    public ExternalActivityIS(SessionManager smgr) throws SQLException {
+
         super(smgr);
+        this.state = new MyState(smgr);
     }
 
     @Override
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel) throws SQLException {
         this.pedagogicalModel=pedagogicalModel;
-        this.state = new MyState(smgr);
+        this.allowRepeat = false;
+        this.mode = FORCE;
         configure();
     }
 
     private void configure() {
+
+        // Configuration should only use ONE OF : frequencyPct, numProblemsBetweenOffers, numMinutesBetweenOffers.
         // the percentage of times that it should choose an external act.
+
+
         String freqpct = getConfigParameter("frequencyPct");
         if (freqpct != null)
             percentTimeToSelectXact = Double.parseDouble(freqpct);
+        String x = getConfigParameter("numProblemsBetweenOffers");
+        if (x != null)
+            numProblemsBetweenOffers = Integer.parseInt(x);
+        x = getConfigParameter("numMinutesBetweenOffers");
+        //Note: This can lead to some undesirable behavior if there is only one xact in the topic and they
+        // are allowed to repeat often.   If that can happen make sure that this ASKs about the activity rather
+        // than FORCEs it.
+        if (x != null)
+            numMinutesBetweenOffers = Integer.parseInt(x);
+        x = getConfigParameter("allowRepeat");
+        if (x != null)
+            allowRepeat = Boolean.parseBoolean(x);
         String m = getConfigParameter("mode");
         // will be force or ask
         if (m != null)
             mode = m;
+    }
+
+    /**
+     * Uses the method defined in the configuration to determine if we should attempt to
+     * select an activity.   Methods are percentTime, waitTime, numProblems
+     * @return
+     */
+    private boolean shouldSelectActivity () {
+        boolean c=false;
+        if (numProblemsBetweenOffers > 0) {
+            int probsSinceLast = state.getNumProblemsSinceLastIntervention();
+            c = probsSinceLast >= numProblemsBetweenOffers;
+        }
+        else if (numMinutesBetweenOffers > 0) {
+            long timeSinceLast = state.getTimeOfLastIntervention();
+            c = timeSinceLast >= this.numMinutesBetweenOffers * 60 * 1000;
+        }
+        else if (percentTimeToSelectXact > 0) {
+            double r = new Random(System.currentTimeMillis()).nextDouble();
+            c= r < ( percentTimeToSelectXact / 100.0);
+        }
+        return c;
+    }
+
+    // When an external activity is given,  update the internal state so that its counters
+    // and timers are reset.
+    private void updateState (ExternalActivity ea) throws SQLException {
+        if (numProblemsBetweenOffers > 0) {
+            state.setNumProblemsSinceLastIntervention(0);
+        }
+        else if (numMinutesBetweenOffers > 0) {
+            state.setTimeOfLastIntervention(System.currentTimeMillis());
+        }
+        else if (percentTimeToSelectXact > 0) {
+            state.setExternalActivityId(ea.getId());
+        }
+
     }
 
 
@@ -68,7 +148,7 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
         int curProbId = smgr.getStudentState().getCurProblem();
 
         if (curProbId > 0 &&
-                (r < ( percentTimeToSelectXact / 100.0)))  {
+                shouldSelectActivity())  {
             ExternalActivity ea = (ExternalActivity) getExternalActivity(m);
             if (ea != null) {
                 if (this.mode.equals(ASK)) {
@@ -82,7 +162,8 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
                 }
                 ea.setDestinationIS(this.getClass().getName());
                 ea.setAskMode(mode);
-                state.setExternalActivityId(ea.getId());
+                updateState(ea);
+
             }
             return ea;
         }
@@ -114,6 +195,16 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
                 ExternalActivity ea = DbExternalActivity.getExternalActivity(conn,xid);
                 return ea;
              }
+        }
+        // if we are allowed to repeat external activities and they've all been given, show a random one.
+        // Note: This can lead to some undesirable behavior if there is only one in the topic and they
+        // are allowed to repeat often.   If that can happen make sure that this OFFERs the activity rather
+        // than FORCEs it.
+        if (allowRepeat && xactIds.size() > 0) {
+            int ix = new Random().nextInt(xactIds.size());
+            int xid = xactIds.get(ix);
+            ExternalActivity ea = DbExternalActivity.getExternalActivity(conn,xid);
+            return ea;
         }
         return null;
 
@@ -158,23 +249,74 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
     }
 
 
+    @Override
+    // Necessary to keep this informed about when problems are given so it can update its internal states
+    // counters and timers
+    public void problemGiven(Problem p) throws SQLException {
+        state.setNumProblemsSinceLastIntervention(state.getNumProblemsSinceLastIntervention() + 1);
+    }
+
+    @Override
+    // When a new session starts we reset counters and timers
+    public void newSession (int sessionId) throws SQLException {
+        state.setTimeOfLastIntervention(System.currentTimeMillis());
+        state.setNumProblemsSinceLastIntervention(0);
+    }
+
+
 
 
     private class MyState extends State {
-        private final String XACTID =  ExternalActivityIS.this.getClass().getSimpleName() + ".currentExternalActivityId";
+        private final String XACTID = ExternalActivityIS.this.getClass().getSimpleName() + ".currentExternalActivityId";
 
+        private final String NUM_PROBS_SINCE_LAST_INTERVENTION = ExternalActivityIS.this.getClass().getSimpleName() + ".NumProbsSinceLastIntervention";
+        private final String TIME_OF_LAST_INTERVENTION = ExternalActivityIS.this.getClass().getSimpleName() + ".TimeOfLastIntervention";
+        private final String LAST_INTERVENTION_INDEX = ExternalActivityIS.this.getClass().getSimpleName() + ".LastInterventionIndex";
+        int numProblemsSinceLastIntervention;
+        int lastInterventionIndex; // keeps track of the index of the last Affect we asked about
+        long timeOfLastIntervention;
         int externalActivityId; // the id of the xact that we are giving
 
-        MyState (SessionManager smgr) throws SQLException {
+        MyState(SessionManager smgr) throws SQLException {
 
-            this.conn=smgr.getConnection();
+            this.conn = smgr.getConnection();
             this.objid = smgr.getStudentId();
             WoProps props = smgr.getStudentProperties();
             Map m = props.getMap();
-            externalActivityId =  mapGetPropInt(m, XACTID, -1);
+            numProblemsSinceLastIntervention = mapGetPropInt(m, NUM_PROBS_SINCE_LAST_INTERVENTION, 0);
+            lastInterventionIndex = mapGetPropInt(m, LAST_INTERVENTION_INDEX, -1);
+            timeOfLastIntervention = mapGetPropLong(m, TIME_OF_LAST_INTERVENTION, 0);
+            externalActivityId = mapGetPropInt(m, XACTID, -1);
 //            if (timeOfLastIntervention ==0)
 //                setTimeOfLastIntervention(System.currentTimeMillis());
 
+        }
+
+        void setNumProblemsSinceLastIntervention(int n) throws SQLException {
+            this.numProblemsSinceLastIntervention = n;
+            setProp(this.objid, NUM_PROBS_SINCE_LAST_INTERVENTION, n);
+        }
+
+        int getNumProblemsSinceLastIntervention() {
+            return this.numProblemsSinceLastIntervention;
+        }
+
+        private long getTimeOfLastIntervention() {
+            return timeOfLastIntervention;
+        }
+
+        private void setTimeOfLastIntervention(long timeOfLastIntervention) throws SQLException {
+            this.timeOfLastIntervention = timeOfLastIntervention;
+            setProp(this.objid, TIME_OF_LAST_INTERVENTION, timeOfLastIntervention);
+        }
+
+        private int getLastInterventionIndex() {
+            return lastInterventionIndex;
+        }
+
+        private void setLastInterventionIndex(int lastInterventionIndex) throws SQLException {
+            this.lastInterventionIndex = lastInterventionIndex;
+            setProp(this.objid, LAST_INTERVENTION_INDEX, lastInterventionIndex);
         }
 
         private int getExternalActivityId() {
@@ -183,9 +325,39 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
 
         private void setExternalActivityId(int xactId) throws SQLException {
             this.externalActivityId = xactId;
-            setProp(this.objid,XACTID,xactId);
+            setProp(this.objid, XACTID, xactId);
         }
-
     }
+
+
+
+
+//    private class MyState extends State {
+//        private final String XACTID =  ExternalActivityIS.this.getClass().getSimpleName() + ".currentExternalActivityId";
+//
+//        int externalActivityId; // the id of the xact that we are giving
+//
+//        MyState (SessionManager smgr) throws SQLException {
+//
+//            this.conn=smgr.getConnection();
+//            this.objid = smgr.getStudentId();
+//            WoProps props = smgr.getStudentProperties();
+//            Map m = props.getMap();
+//            externalActivityId =  mapGetPropInt(m, XACTID, -1);
+////            if (timeOfLastIntervention ==0)
+////                setTimeOfLastIntervention(System.currentTimeMillis());
+//
+//        }
+//
+//        private int getExternalActivityId() {
+//            return externalActivityId;
+//        }
+//
+//        private void setExternalActivityId(int xactId) throws SQLException {
+//            this.externalActivityId = xactId;
+//            setProp(this.objid,XACTID,xactId);
+//        }
+//
+//    }
 
 }
