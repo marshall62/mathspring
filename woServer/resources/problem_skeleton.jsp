@@ -22,6 +22,7 @@
         </script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
+                showMathMenu: false,
                 tex2jax: {inlineMath: [['$$', '$$']], displayMath: [['\\[', '\\]']]},
                 TeX: {extensions: ["color.js"]}
             });
