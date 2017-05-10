@@ -31,7 +31,7 @@ public class DbHint extends BaseMgr {
         ResultSet rs = null;
         try {
             String q = "select h.id, h.name, h.givesAnswer, h.statementHTML, h.audioResource, h.hoverText, h.order, h.is_root from Hint h " +
-                    "where h.problemid= ? and h.order is not null order by h.order";
+                    "where givesAnswer = 0 and h.problemid= ? and h.order is not null order by h.order";
             ps = conn.prepareStatement(q);
             ps.setInt(1, probId);
             rs = ps.executeQuery();

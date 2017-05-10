@@ -2,8 +2,6 @@
  * Created by rezecib on 4/10/2017.
  */
 
-//TODO(rezecib): luxury; add ? button to templates, switch to it when template has been edited
-//TODO(rezecib): luxury; add + button to templates, which clears any templates
 //TODO(rezecib): luxury; remove style from problemFormat when it holds a default value
 
 var TEMPLATES, FONTS, COLORS, PROBLEMFORMAT; //these get populated by editProblemFormat.jsp
@@ -27,6 +25,22 @@ var _problemFormat;
 //Stores whether the current layout has been edited
 // so we can warn the author if they are about to wipe it
 var _layoutEdited;
+//Stores the button that is selected when a template has been edited,
+// which is also the button that can be selected to open an empty template
+var _editedTemplateButton;
+//Stores the currently selected template button,
+// this lets us re-enable it when another one is select
+var _selectedTemplateButton;
+
+function setEdited() {
+    _layoutEdited = true;
+    if(_selectedTemplateButton != _editedTemplateButton) {
+        setTemplateButtonOnClick(_selectedTemplateButton, true);
+        addClass(_editedTemplateButton, "selected");
+        setTemplateButtonOnClick(_editedTemplateButton, false);
+        _selectedTemplateButton = _editedTemplateButton;
+    }
+}
 
 //elt: element; to which a class will be added
 //className: string; the class to add
@@ -414,7 +428,7 @@ function setBlockForStyleEditing(block) {
 }
 
 function onBlockStyleChanged(style, value) {
-    _layoutEdited = true;
+    setEdited();
     if(_styleEditorFormatColumn && style == "column_width") {
         //This requires special handling, because we actually want to change
         // the width of the containing column, and adjust the adjacent column to match
@@ -564,31 +578,13 @@ function buildCheckbox(container, label_text, style_key, style_value, style_defa
     container.appendChild(box_container);
 }
 
-var _last_template_btn; //last button clicked; lets us reenable it
-//btn: element; button to be configured
-//enabled: boolean; whether to enable or disable
-function setTemplateButtonOnClick(btn, enabled) {
-    if(enabled) {
-        btn.onclick = function() {
-            if(_layoutEdited && !confirm("You're about to clear any layout changes you've made. Are you sure you want to do this?")) {
-                return;
-            }
-            _layoutEdited = false;
-            _problemFormat = jsonToProblemFormat(btn.dataset.templateJson);
-            updateProblemPreview(btn.dataset.templateJson);
-            rebuildLayoutEditor();
-            setBlockForStyleEditing(null);
-            setTemplateButtonOnClick(btn, false);
-            if(_last_template_btn) {
-                setTemplateButtonOnClick(_last_template_btn, true);
-            }
-            _last_template_btn = btn;
-        };
-        removeClass(btn, "disabled");
-    } else {
-        addClass(btn, "disabled");
-        btn.onclick = null;
-    }
+//Sets the active problem format in all parts of the editor to the provided string
+//json: string; the problemFormat to use
+function setProblemFormatJson(json) {
+    _problemFormat = jsonToProblemFormat(json);
+    updateProblemPreview(json);
+    rebuildLayoutEditor();
+    setBlockForStyleEditing(null);
 }
 
 var _dragged;
@@ -661,12 +657,8 @@ function handleDrop(e) {
         dragparent.removeChild(columns);
     }
     if(changed) {
-        _layoutEdited = true;
+        setEdited();
         updateProblemPreview();
-        if(_last_template_btn) {
-            setTemplateButtonOnClick(_last_template_btn, true);
-            _last_template_btn = null;
-        }
     }
     _dragged = null;
 }
@@ -749,21 +741,11 @@ function rebuildLayoutEditor() {
     buildLayoutBlocks(editor, _problemFormat.order);
 }
 
-//template_json: string; json for the base template (to be stored in the button's data)
-function buildTemplateButton(template_json) {
-    var btn = document.createElement("div");
-    btn.className = "template-button selectable";
-    btn.dataset.templateJson = template_json;
-    buildProblem(btn, template_json, false, true, false);
-    setTemplateButtonOnClick(btn, true);
-    return btn;
-}
-
 function buildTemplateEditor() {
     stringifyObjectArray(TEMPLATES);
     var template_selector = document.getElementById("TemplateSelector");
     //Add a miniature button-version of each template to the template selector
-    var zoom = 375/(600 * TEMPLATES.length); //scales template buttons to fit in the space
+    var zoom = 375/(600 * (TEMPLATES.length + 1)); //scales template buttons to fit in the space
     for(var i = 0; i < TEMPLATES.length; i++) {
         var template_button = buildTemplateButton(TEMPLATES[i]);
         template_button.style.zoom = zoom;
@@ -776,8 +758,54 @@ function buildTemplateEditor() {
         selection_block.dataset.blockname = block;
         block_selector.appendChild(selection_block);
     }
-    if(PROBLEM_FORMAT != "") {
-        document.getElementById("ProblemFormatOutput").value = JSON.stringify(PROBLEM_FORMAT);
+    template_selector.appendChild(buildEditedTemplateButton(zoom));
+    if(PROBLEM_FORMAT != null) setProblemFormatJson(JSON.stringify(PROBLEM_FORMAT));
+}
+
+function buildEditedTemplateButton(zoom) {
+    _editedTemplateButton = buildTemplateButton('{"order":""}');
+    _editedTemplateButton.style.backgroundColor = "#8ED8E0";
+    _editedTemplateButton.style.zoom = zoom;
+    _editedTemplateButton.style.lineHeight = "600px";
+    _editedTemplateButton.style.fontSize = "600px";
+    _editedTemplateButton.style.fontWeight = "bolder";
+    _editedTemplateButton.style.textAlign = "center"
+    _editedTemplateButton.innerHTML = "+";
+    setTemplateButtonOnClick(_editedTemplateButton, true);
+    _editedTemplateButton.onclick();
+    return _editedTemplateButton;
+}
+
+//template_json: string; json for the base template (to be stored in the button's data)
+function buildTemplateButton(template_json) {
+    var btn = document.createElement("div");
+    btn.className = "template-button selectable";
+    btn.dataset.templateJson = template_json;
+    buildProblem(btn, template_json, false, true, false);
+    setTemplateButtonOnClick(btn, true);
+    return btn;
+}
+
+//btn: element; button to be configured
+//enabled: boolean; whether to enable or disable
+function setTemplateButtonOnClick(btn, enabled) {
+    if(enabled) {
+        btn.onclick = function() {
+            if(_layoutEdited && !confirm("You're about to clear any layout changes you've made. Are you sure you want to do this?")) {
+                return;
+            }
+            _layoutEdited = false;
+            setProblemFormatJson(btn.dataset.templateJson);
+            setTemplateButtonOnClick(btn, false);
+            if(_selectedTemplateButton) {
+                setTemplateButtonOnClick(_selectedTemplateButton, true);
+            }
+            _selectedTemplateButton = btn;
+        };
+        removeClass(btn, "disabled");
+    } else {
+        addClass(btn, "disabled");
+        btn.onclick = null;
     }
 }
 

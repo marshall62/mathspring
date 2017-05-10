@@ -169,7 +169,6 @@ public class ProblemMgr {
                 " where p.id=o.problemid" + problemFilter +
                 " and (status='Ready' or status='ready' or status='testable')" +
                 " order by p.id;";
-        System.out.println(s);
         PreparedStatement ps = conn.prepareStatement(s);
         return ps;
     }

@@ -20,6 +20,14 @@
             var servContext = '${servletContext}';
             var servletName = '${servletName}';
         </script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                showMathMenu: false,
+                tex2jax: {inlineMath: [['$$', '$$']], displayMath: [['\\[', '\\]']]},
+                TeX: {extensions: ["color.js"]}
+            });
+        </script>
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     </head>
 
     <%--<body onload="plugin(stmt,fig,audio,hints,answers,newAnswer,answer,units,mode,questType,resource,probContentPath,params)">--%>
