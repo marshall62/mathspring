@@ -175,10 +175,11 @@ function getImageHtml(file, ext, resource, probContentPath, id){
 
     //Replace and image file name inside {} with the appropriate html
     if(ext != null) {
+        var size_style = ' style="max-height: 100%; max-width: 100%"';
         if(ext.match(/^(gif|png|jpe?g|svg)$/i)){
-            return '<img' + id + ' style="max-height: 100%; max-width: 100%" src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
+            return '<img' + id + size_style + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
         } else if(ext.match(/^(mp4|ogg|webm)$/i)) { //Do the same for a video
-            return '<video' + id + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
+            return '<video' + id + size_style + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
         }
     }
     console.log("invalid image or video", file + "." + ext, resource, probContentPath);
@@ -188,7 +189,7 @@ function getImageHtml(file, ext, resource, probContentPath, id){
 
 //Just a wrapper for when you don't care about the parameters
 function formatText(text, components) {
-    return formatTextWithImageParameters(text, components, {}, null);
+    return formatTextWithImageParameters(text, components, {}, "x");
 }
 
 //Extracts images/video contained by {[]}
@@ -213,13 +214,15 @@ function formatTextWithImageParameters(text, components, parameters, base_id) {
             // when the hint is displayed (e.g. overlay, side, hint)
             var image_parameters = match.split(",");
             var image_parts = image_parameters[0].trim().split("."); //separate into filename, extension
-            var image_id = null;
+            var image_id = base_id + "-" + i;
             // currently assuming only one parameter
             if (base_id != null && image_parameters.length > 1) {
-                image_id = base_id + "-" + i;
                 parameters[image_id] = image_parameters[1].trim();
             }
             replacement = getImageHtml(image_parts[0], image_parts[1], components.resource, components.probContentPath, image_id);
+            if(replacement.match(/<video/)) {
+                parameters[image_id] = "play_video";
+            }
         }
         text = text.replace(matches[i], replacement);
         //Note that we don't need to worry about duplicates;

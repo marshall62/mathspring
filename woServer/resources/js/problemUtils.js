@@ -110,9 +110,14 @@ function prob_playHint (hintLabel) {
             image.style.display = "none"; //don't display the original in the hint area
         } else if(parameter == "side" && hintFigure != null) {
             var side_image = document.createElement("img");
+            side_image.style.width = "100%";
+            side_image.style.height = "100%";
             side_image.setAttribute("src", image.getAttribute("src"));
             hintFigure.appendChild(side_image);
             image.style.display = "none"; //don't display the original in the hint area
+        } else if(parameter == "play_video") {
+            image.currentTime = 0;
+            image.play();
         }
     }
     var hint = document.getElementById(hintId);
