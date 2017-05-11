@@ -111,7 +111,14 @@ function buildProblemBlocks(problemFormat, blocks, container, ids, placeholders,
             block_div = block_div || document.createElement("div");
             block_div.className = "problem-block";
             //Set its id so we can fill its contents later
-            if(ids) block_div.id = id;
+            if(ids) {
+                block_div.id = id;
+            } else if(block == "hints") {
+                //because this only executes for ids == false, it won't run on actual problems
+                //hints have a specific font just for them, because reasons
+                addClass(block_div, "hint");
+                addClass(block_div, "hint-content");
+            }
             //Set extra style defined in problemFormat, if there is any
             if(problemFormat[block]) {
                 for(var style_prop in problemFormat[block]) {
