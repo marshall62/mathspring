@@ -94,18 +94,7 @@ public class ProblemAnswer {
     }
 
     public JSONObject getJSON(JSONObject jo) {
-        Problem p = null;
-        try {
-            p = ProblemMgr.getProblem(getProbId());
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-        if (p != null && p.isQuickAuth() && p.isMultiChoice()) {
-            jo.element(letter, val);
-
-        }
-
+        jo.element(letter, val);
         return jo;
     }
 

@@ -2,6 +2,9 @@ body {
     background-color: #8ED8E0;
     margin: 0;
 }
+.clear{
+    clear: both;
+}
 .problem-block {
     width: 100%;
     font-family: Georgia, serif;
@@ -32,15 +35,6 @@ body {
     float: right;
     width: 50%;
     overflow: hidden;
-}
-.answer-row{
-    margin: 0 0 10px 20px;
-    line-height: 27px;
-    height: 27px;
-}
-#ShortAnswerBox{
-    margin: 0 auto 10px auto;
-    display: table;
 }
 .hint-thumbs{
     display: flex;
@@ -89,14 +83,42 @@ body {
     background-color: #666;
     transition: background-color 0.25s;
 }
-
-
-
-
-
-
+.hint{
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 14px;
+    color: blue;
+}
+.hint img{
+    max-width: 100%;
+}
+/* These .hint.blah are not used anymore, but just in case... */
+.hint.slide_left{
+    -o-transition: left 1s ease, top 0s ease;
+    -moz-transition: left 1s ease, top 0s ease;
+    -webkit-transition: left 1s ease, top 0s ease;
+    transition: left 1s ease, top 0s ease;
+    left: 270px;
+    top: 92px;
+}
+.hint.slide_up{
+    -o-transition: left 0s ease, top 1s ease;
+    -moz-transition: left 0s ease, top 1s ease;
+    -webkit-transition: left 0s ease, top 1s ease;
+    transition: left 0s ease, top 1s ease;
+    left: 270px;
+    top: 92px;
+}
+.hint.default{
+    left: 270px;
+    top: 92px;
+}
+.answer-row{
+    margin: 0 0 10px 20px;
+    line-height: 27px;
+    height: 27px;
+}
 .button{
-    float: left;
+    display: inline-block;
     width: 27px;
     height: 27px;
     margin-right: 20px;
@@ -123,10 +145,16 @@ body {
     text-align: center;
     z-index: 2;
 }
+.multiselect-checkbox{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
 .answer_text{
+    display: inline-block;
     height: 27px;
     position: relative;
-    margin-left: 47px;
+    vertical-align: top;
 }
 .answer_text a{
     vertical-align: middle;
@@ -159,7 +187,18 @@ body {
     display: none;
     z-index: 3;
 }
+#ShortAnswerBox{
+    margin: 0 auto 10px auto;
+    display: table;
+}
+#SubmitAnswerBox{
+    margin-top: 30px;
+}
+#submit_answer{
+    height: 31px;
+}
 .short_answer_check{
+    vertical-align: bottom;
     width: 46px;
     height: 31px;
     background-image: url(../images/check.png);
@@ -168,6 +207,7 @@ body {
     z-index: 2;
 }
 .short_answer_x{
+    vertical-align: bottom;
     width: 33px;
     height: 31px;
     background-image: url(../images/x.png);
@@ -175,35 +215,3 @@ body {
     display: none;
     z-index: 2;
 }
-.hint{
-    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-    font-size: 14px;
-    color: blue;
-}
-.hint img{
-    max-width: 100%;
-}
-.hint.slide_left{
-    -o-transition: left 1s ease, top 0s ease;
-    -moz-transition: left 1s ease, top 0s ease;
-    -webkit-transition: left 1s ease, top 0s ease;
-    transition: left 1s ease, top 0s ease;
-    left: 270px;
-    top: 92px;
-}
-.hint.slide_up{
-    -o-transition: left 0s ease, top 1s ease;
-    -moz-transition: left 0s ease, top 1s ease;
-    -webkit-transition: left 0s ease, top 1s ease;
-    transition: left 0s ease, top 1s ease;
-    left: 270px;
-    top: 92px;
-}
-.hint.default{
-    left: 270px;
-    top: 92px;
-}
-.clear{
-    clear: both;
-}
-

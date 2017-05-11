@@ -21,16 +21,15 @@ import java.util.ArrayList;
 public class Problem implements Activity {
 
     public static QuestType parseType(String t) {
-        if (t.equals("shortanswer"))
-            return QuestType.shortAnswer;
-        else if (t.equals("longAnswer"))
-            return QuestType.longAnswer;
-        else
-            return QuestType.multiChoice;
+        for(QuestType q : QuestType.values()) {
+            if(q.name().equalsIgnoreCase(t)) return q;
+        }
+        return QuestType.multiChoice;
     }
 
     public enum QuestType {
-        multiChoice ,
+        multiChoice,
+        multiSelect,
         shortAnswer,
         longAnswer
     }
@@ -251,7 +250,7 @@ public class Problem implements Activity {
             for (Hint hint : allHints) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
-            if (isMultiChoice()) {
+            if (isMultiChoice() || isMultiSelect()) {
                 JSONObject answers = new JSONObject();
                 for (ProblemAnswer ans : getAnswers()) {
                     ans.getJSON(answers);
@@ -641,6 +640,8 @@ public class Problem implements Activity {
     public boolean isMultiChoice () {
         return this.questType == QuestType.multiChoice;
     }
+
+    public boolean isMultiSelect () { return this.questType == QuestType.multiSelect; }
 
 
 }

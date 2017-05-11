@@ -61,12 +61,9 @@
             <div id="ShortAnswerBox" style="display: none">
                 <!-- if you're getting weird bugs later, remember that you removed a div here, and there may be references to it that you missed-->
                 <input id="answer_field" type="text"/>
-                <span id="Units"></span><br/>
-                <br/><button id="submit_answer" type="button">Submit Answer!</button>
-                <div id="Grade_Check" class="short_answer_check"></div>
-                <div id="Grade_X" class="short_answer_x"></div>
+                <span id="Units"></span>
             </div>
-            <div id="MultipleChoiceAnswers" style = "display: none">
+            <div id="MultipleChoiceAnswers" style="display: none">
                 <c:forTokens items="A,B,C,D,E" delims="," var="letter">
                     <c:out escapeXml = "false" value="
                 <div class=\"answer-row\" style=\"display:none;\">
@@ -76,9 +73,15 @@
                         <div id=\"${letter}Text\" class=\"button_text\">${letter}</div>
                         <div id=\"${letter}Ellipse\" class=\"ellipse\"></div>
                     </div>
+                    <input id=\"${letter}Checkbox\" class=\"multiselect-checkbox\" type=\"checkbox\" style=\"display:none\">
                     <div id=\"Answer${letter}\" class=\"answer_text\"></div>
                 </div>"/>
                 </c:forTokens>
+            </div>
+            <div id="SubmitAnswerBox" style="display:none">
+                <button id="submit_answer" type="button">Submit Answer!</button>
+                <div id="Grade_Check" class="short_answer_check"></div>
+                <div id="Grade_X" class="short_answer_x"></div>
             </div>
         </div>
     </div>

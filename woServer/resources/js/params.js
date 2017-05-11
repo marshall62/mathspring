@@ -74,7 +74,9 @@ function plug(components) {
 
     //For demo and example modes all answers should stay hidden
     if (components.mode !== "demo" && components.mode !== "example") {
-        if (components.questType === "multiChoice") {
+        var questType = components.questType;
+        if (questType.match(/^multi(Choice|Select)$/)) {
+            var multiSelect = questType === "multiSelect";
             document.getElementById("MultipleChoiceAnswers").style.display = "block";
             var answers = components.answers;
             if(isNotEmpty(answers)) {
@@ -83,19 +85,32 @@ function plug(components) {
                     var answerElt = document.getElementById("Answer" + letter.toUpperCase());
                     answerElt.parentNode.style.display = "block";
                     answerElt.innerHTML = parameterizeText(formatText(answers[letter], components), problemParams);
-                    document.getElementById(letter.toUpperCase() + "Button").addEventListener("click",
-                        function(answer) {
-                            return function(){answerClicked(document, answer);};
-                        }(letter)
-                    );
+                    var button = document.getElementById(letter.toUpperCase() + "Button");
+                    if(multiSelect) {
+                        button.style.display = "none";
+                        // resets it to what the CSS says, which is inline-block
+                        document.getElementById(letter.toUpperCase() + "Checkbox").style.display = "";
+                    } else {
+                        button.addEventListener("click",
+                            function(answer) {
+                                return function(){answerClicked(document, answer);};
+                            }(letter)
+                        );
+                    }
                 }
+            }
+            if(multiSelect) {
+                document.getElementById("submit_answer").addEventListener("click", submitMultiSelectAnswer);
             }
             shuffleAnswers();
         } else {
-            document.getElementById("ShortAnswerBox").style.display = "block";
-            document.getElementById("submit_answer").addEventListener("click",
-                function(){processShortAnswer(document, document.getElementById("answer_field").value);}
-            );
+            if(questType === "shortAnswer") {
+                document.getElementById("ShortAnswerBox").style.display = "block";
+                document.getElementById("submit_answer").addEventListener("click", submitShortAnswer);
+            }
+        }
+        if(questType.match(/^(multiSelect|shortAnswer)$/)) {
+            document.getElementById("SubmitAnswerBox").style.display = "block";
         }
     }
 
@@ -114,6 +129,14 @@ function plug(components) {
     }
     // Detects LaTeX code and turns it into nice HTML
     MathJax.Hub.Typeset();
+}
+
+function submitShortAnswer() {
+    processShortAnswer(document, document.getElementById("answer_field").value);
+}
+
+function submitMultiSelectAnswer() {
+    //TODO(rezecib)
 }
 
 function shuffleAnswers() {
