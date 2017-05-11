@@ -160,23 +160,17 @@ body {
     z-index: 3;
 }
 .short_answer_check{
-    position: absolute;
-    left: 187px;
-    top: 32px;
-    width: 33px;
+    width: 46px;
     height: 31px;
-    background-image: url(../images/check2.png);
+    background-image: url(../images/check.png);
     background-size: 100% 100%;
     display: none;
     z-index: 2;
 }
 .short_answer_x{
-    position: absolute;
-    left: 187px;
-    top: 32px;
     width: 33px;
     height: 31px;
-    background-image: url(../images/x2.png);
+    background-image: url(../images/x.png);
     background-size: 100% 100%;
     display: none;
     z-index: 2;

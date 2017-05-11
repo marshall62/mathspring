@@ -47,7 +47,6 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var fig = problem.questionImage;
     var hints = problem.hints;
     var answers = problem.answers;
-    var newAnswer = problem.newAnswer;
     var answer = problem.answer;
     var units = problem.units;
     var mode = problem.mode;
@@ -55,12 +54,11 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var resource = problem.resource;
     var problemFormat = problem.format;
 
-    var g = {stmt: stmt, fig: fig, audio: audio, hints: hints, answers: answers, newAnswer: newAnswer,
+    var g = {stmt: stmt, fig: fig, audio: audio, hints: hints, answers: answers,
         answer: answer, units: units, mode: mode, questType: questType, resource: resource,
         probContentPath: probContentPath, problemParams: problemParams, problemFormat: problemFormat,
         addHintButton: addHintButton};
-    prepareForData(document, g);
-    plug(document, g);
+    plug(g);
     probUtilsInit(document, g);
 
 }

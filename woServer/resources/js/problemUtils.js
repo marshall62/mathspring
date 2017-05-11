@@ -22,59 +22,7 @@ function probUtilsInit(doc, components) {
         shuffleAnswers(doc,components);
 }
 
-function shuffleAnswers(doc, components) {
-    //TODO(rezecib): rewrite this because it actually doesn't do anything...... and then verify that it scores correctly
-    answer = components.answer;
-    newAnswer = components.newAnswer;
-
-    var oldAnsText = getElementCorrespondingToAns(answer);
-    var newAnsText = getElementCorrespondingToAns(newAnswer);
-    if (oldAnsText === "" || newAnsText === "" ) {
-        couldNotShuffle = true;
-        return;
-    }
-
-
-    var ansSel = doc.getElementById(oldAnsText);
-    var newAnsSel = doc.getElementById(newAnsText);
-
-    if(ansSel == null || newAnsSel == null){
-        couldNotShuffle = true;
-        return;
-    }
-
-    var ansContent = ansSel.innerHTML;
-    var otherContent = newAnsSel.innerHTML;
-    var temp = ansContent;
-
-    ansSel.innerHTML = otherContent;
-    newAnsSel.innerHTML = temp;
-}
-
-function getElementCorrespondingToAns(ans) {
-        switch (ans) {
-            case "a":
-                return "AnswerA";
-            case "b":
-                return "AnswerB";
-            case "c":
-                return "AnswerC";
-            case "d":
-                return "AnswerD";
-            case "e":
-                return "AnswerE";
-            default:
-                return "";
-        }
-
-}
-
 function answerClicked (doc, buttonName) {
-    if (couldNotShuffle) {
-        if (answer && newAnswer && buttonName.toUpperCase() === answer.toUpperCase()) {
-            buttonName = newAnswer.toUpperCase();
-        }
-    }
     debugAlert(buttonName + " was clicked. Calling parent.answerChosen.");
     window.parent.tutorhut_answerChosen(doc, buttonName);
 }
@@ -82,11 +30,6 @@ function answerClicked (doc, buttonName) {
 function prob_gradeAnswer (doc, answerChosen, isCorrect, showHint) {
     debugAlert("gradeAnswer got " + isCorrect);
     if (!isShortAnswer) {
-        if (couldNotShuffle) {
-            if (answer && newAnswer && answerChosen.toUpperCase() === answer.toUpperCase()) {
-               answerChosen = newAnswer.toUpperCase();
-            }
-        }
         answerChosen = answerChosen.toUpperCase();
         if (isCorrect)
         {
@@ -105,11 +48,11 @@ function prob_gradeAnswer (doc, answerChosen, isCorrect, showHint) {
     else {
         if (isCorrect) {
             doc.getElementById("Grade_X").style.display="none"; // hide it
-            doc.getElementById("Grade_Check").style.display="initial";
+            doc.getElementById("Grade_Check").style.display="inline-block";
         }
         else {
             doc.getElementById("Grade_Check").style.display="none"; // hide it
-            doc.getElementById("Grade_X").style.display="initial";
+            doc.getElementById("Grade_X").style.display="inline-block";
         }
     }
 
@@ -222,55 +165,19 @@ function stopAudio(){
 }
 
 function getIdCorrespondingToHint(hintLabel){
-        switch (hintLabel) {
-            case "Hint 1":
-                return "Hint1";
-            case "Hint 2":
-                return "Hint2";
-            case "Hint 3":
-                return "Hint3";
-            case "Hint 4":
-                return "Hint4";
-            case "Hint 5":
-                return "Hint5";
-            case "Hint 6":
-                return "Hint6";
-            case "Hint 7":
-                return "Hint7";
-            case "Hint 8":
-                return "Hint8";
-            case "Hint 9":
-                return "Hint9";
-            case "Show Answer":
-                return "Hint10";
-            default:
-                return "";
-        }
-
+    if(hintLabel === "Show Answer") hintLabel = "Hint 10";
+    if(hintLabel.match(/Hint \d+/)) {
+        //If it's "Hint ##", remove the whitespace
+        return hintLabel.replace(/\s/g, "");
+    }
+    return ""; //it was something unrecognized
 }
 
 function getNextHint(hintLabel){
-        switch (hintLabel) {
-            case "Hint 1":
-                return "Hint2";
-            case "Hint 2":
-                return "Hint3";
-            case "Hint 3":
-                return "Hint4";
-            case "Hint 4":
-                return "Hint5";
-            case "Hint 5":
-                return "Hint6";
-            case "Hint 6":
-                return "Hint7";
-            case "Hint 7":
-                return "Hint8";
-            case "Hint 8":
-                return "Hint9";
-            case "Hint 9":
-                return "Hint10";
-            default:
-                return "";
-        }
-
+    var hintId = getIdCorrespondingToHint(hintLabel);
+    if(hintId.match(/Hint\d+/)) {
+        var num = parseInt(hintId.substring(4));
+        if(num < 10) return "hint" + (num + 1);
+    }
+    return "";
 }

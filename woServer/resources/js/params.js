@@ -1,55 +1,9 @@
-var maxHints = 10;
-var currentHint = "Question";
-var shown = {};
-
-
-function prepareForData(doc, components) {
-    for (i = 1; i <= maxHints; ++i) {
-        addHintHandler(doc, i.toString());
-    }
-    // DM 1/10/16 added in check for example mode
-    if (components.mode === 'demo' || components.mode === 'example') {
-        hideAnswers(doc, 0)
-    }
-    if (!isMultiChoice(components.questType)) {
-        doc.getElementById("ShortAnswerBox").style.display = "block";
-        addShortAnswerHandler(doc);
-    }
-    else {
-        doc.getElementById("MultipleChoiceAnswers").style.display = "block";
-        //individual answer event listeners and display will get set later in plug()
-    }
-}
-
-function isMultiChoice(questType) {
-    return (questType === 'multiChoice');
-
-
-}
-
-function isArray(parsedItem) {
-    return Object.prototype.toString.call(parsedItem) === '[object Array]';
-}
-
-function addShortAnswerHandler(doc){
-    doc.getElementById("submit_answer").addEventListener("click", function(){processShortAnswer(doc, doc.getElementById("answer_field").value);});
-}
-
-function addHintHandler(doc, hintLabel){
-    if(hintLabel == 10){
-        doc.getElementById("Hint"+hintLabel+"Thumb").addEventListener("click", function(){prob_playHint("Show Answer");});
-    }
-    else{
-       doc.getElementById("Hint"+hintLabel+"Thumb").addEventListener("click", function(){prob_playHint("Hint "+hintLabel);});
-    }
-}
-
 function isNotEmpty(value) {
     //note that simple equality considers null == undefined, so this will catch both
     return value != null && value != "";
 }
 
-function plug(doc, components) {
+function plug(components) {
     var probStatement = components.stmt;
     var probFigure = components.fig;
     var probSound = components.audio;
@@ -61,66 +15,87 @@ function plug(doc, components) {
 
     buildProblem(document.getElementById("ProblemContainer"), problemFormat, true, false, false);
     if(isNotEmpty(probStatement)){
-        doc.getElementById("ProblemStatement").innerHTML = parameterizeText(formatText(probStatement, components), problemParams);
+        document.getElementById("ProblemStatement").innerHTML = parameterizeText(formatText(probStatement, components), problemParams);
     }
     if(isNotEmpty(probFigure)){
-        doc.getElementById("ProblemFigure").innerHTML = parameterizeText(formatText(probFigure, components), problemParams);
+        document.getElementById("ProblemFigure").innerHTML = parameterizeText(formatText(probFigure, components), problemParams);
     }
     if(isNotEmpty(probSound)) {
         //I don't think the below lines do what I want them to.
-        //#rafael: not sure what they meant above, sound seems to be working fine
-        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".ogg", components.resource, components.probContentPath));
-        doc.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".mp3", components.resource, components.probContentPath));
+        //#rezecib: not sure what they meant above, sound seems to be working fine
+        document.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".ogg", components.resource, components.probContentPath));
+        document.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".mp3", components.resource, components.probContentPath));
     }
     if(isNotEmpty(probUnits)) {
-        doc.getElementById("Units").innerHTML = parameterizeText(formatText(getUnits(), components), problemParams);
+        document.getElementById("Units").innerHTML = parameterizeText(formatText(getUnits(), components), problemParams);
     }
 
     var hint_labels = [];
     if(isNotEmpty(hints)) {
-        for (i=0; i<hints.length;++i)  {
-            hint_labels.push(hints[i].label);
-            var hintId = getIdCorrespondingToHint(hints[i].label);
-            hint_thumb = doc.getElementById(hintId+"Thumb");
+        for (i = 0; i < hints.length; ++i) {
+            var hintLabel = hints[i].label;
+            hint_labels.push(hintLabel);
+            var hintId = getIdCorrespondingToHint(hintLabel);
+            document.getElementById(hintId+"Thumb").addEventListener("click",
+                //This looks weird but is necessary to save the hintLabel value properly
+                function(hint) {
+                    return function(){prob_playHint(hint);};
+                }(hintLabel)
+            );
+            hint_thumb = document.getElementById(hintId+"Thumb");
             hint_thumb.style.display = "block";
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 var image_parameters = {};
                 var formatted_text = formatTextWithImageParameters(hints[i].statementHTML, components, image_parameters, hintId);
                 hint_thumb.dataset.parameters = JSON.stringify(image_parameters);
-                doc.getElementById(hintId).innerHTML = parameterizeText(formatted_text, problemParams);
+                document.getElementById(hintId).innerHTML = parameterizeText(formatted_text, problemParams);
             }
             else{
                 alert("text missing for hint: "+i);
             }
             if(isNotEmpty(hints[i].hoverText)){
-                doc.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, components), problemParams));
+                document.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, components), problemParams));
             }
             //I don't think this does what I want
-            //#rafael: not sure what they meant above, sound seems to be working fine
+            //#rezecib: not sure what they meant above, sound seems to be working fine
             if (isNotEmpty(hints[i].audioResource)) {
-                doc.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));
-                doc.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".mp3", components.resource, components.probContentPath));
+                document.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));
+                document.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".mp3", components.resource, components.probContentPath));
             }
         }
 
         if(hints[0] == undefined && isNotEmpty(hints.label)){
-            doc.getElementById(getIdCorrespondingToHint(hints.label)+"Sound").load();
+            document.getElementById(getIdCorrespondingToHint(hints.label)+"Sound").load();
         }
         else if(isNotEmpty(hints[0].audioResource)){
-            doc.getElementById(getIdCorrespondingToHint(hints[0].label)+"Sound").load();
+            document.getElementById(getIdCorrespondingToHint(hints[0].label)+"Sound").load();
         }
     }
 
-    if(isMultiChoice(components.questType)) {
-        var answers = components.answers;
-        if(isNotEmpty(answers)) {
-            for(var letter in answers) {
-                if(!answers.hasOwnProperty(letter)) continue;
-                var answerElt = doc.getElementById("Answer" + letter.toUpperCase());
-                answerElt.parentNode.style.display = "block";
-                answerElt.innerHTML = parameterizeText(formatText(answers[letter], components), problemParams);
-                doc.getElementById(letter.toUpperCase() + "Button").addEventListener("click", function(){answerClicked(doc, letter);});
+    //For demo and example modes all answers should stay hidden
+    if (components.mode !== "demo" && components.mode !== "example") {
+        if (components.questType === "multiChoice") {
+            document.getElementById("MultipleChoiceAnswers").style.display = "block";
+            var answers = components.answers;
+            if(isNotEmpty(answers)) {
+                for(var letter in answers) {
+                    if(!answers.hasOwnProperty(letter)) continue;
+                    var answerElt = document.getElementById("Answer" + letter.toUpperCase());
+                    answerElt.parentNode.style.display = "block";
+                    answerElt.innerHTML = parameterizeText(formatText(answers[letter], components), problemParams);
+                    document.getElementById(letter.toUpperCase() + "Button").addEventListener("click",
+                        function(answer) {
+                            return function(){answerClicked(document, answer);};
+                        }(letter)
+                    );
+                }
             }
+            shuffleAnswers();
+        } else {
+            document.getElementById("ShortAnswerBox").style.display = "block";
+            document.getElementById("submit_answer").addEventListener("click",
+                function(){processShortAnswer(document, document.getElementById("answer_field").value);}
+            );
         }
     }
 
@@ -139,6 +114,30 @@ function plug(doc, components) {
     }
     // Detects LaTeX code and turns it into nice HTML
     MathJax.Hub.Typeset();
+}
+
+function shuffleAnswers() {
+    var container = document.getElementById("MultipleChoiceAnswers")
+    var answers = container.children;
+    //Store the original letter ordering
+    var letters = [];
+    for(var i = 0; i < answers.length; ++i) {
+        if(answers[i].style.display == "block") {
+            letters.push(answers[i].children[0].children[2].innerHTML);
+        }
+    }
+    //Do the shuffle
+    for(var i = answers.length; i >= 0; --i) {
+        container.appendChild(answers[Math.random()*i | 0]);
+    }
+    //Fix the letters
+    var l = 0;
+    for(var i = 0; i < answers.length; ++i) {
+        if(answers[i].style.display == "block") {
+            answers[i].children[0].children[2].innerHTML = letters[l];
+            ++l;
+        }
+    }
 }
 
 function getURL(filename, resource, probContentPath) {
@@ -519,7 +518,7 @@ function pickParams(problemParams) {
     if(problemParams == null) return;
     var rand = -1;
     for(var key in problemParams){
-        if (isArray(problemParams[key])) {
+        if (problemParams[key].constructor === Array) {
             if (rand == -1) {
                 rand = randomIntFromInterval(0, problemParams[key].length-1);
             }

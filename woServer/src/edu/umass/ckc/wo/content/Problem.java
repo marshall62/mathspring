@@ -255,7 +255,6 @@ public class Problem implements Activity {
                 JSONObject answers = new JSONObject();
                 for (ProblemAnswer ans : getAnswers()) {
                     ans.getJSON(answers);
-//                    jo.accumulate("answers", ans.getJSON(new JSONObject()));
                 }
                 jo.element("answers", answers);
             }
