@@ -114,8 +114,10 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
             c = probsSinceLast >= numProblemsBetweenOffers;
         }
         else if (numMinutesBetweenOffers > 0) {
-            long timeSinceLast = state.getTimeOfLastIntervention();
-            c = timeSinceLast >= this.numMinutesBetweenOffers * 60 * 1000;
+            long timeOfLast = state.getTimeOfLastIntervention();
+            long mstimeSinceLast = System.currentTimeMillis() - timeOfLast;
+
+            c = mstimeSinceLast >= (this.numMinutesBetweenOffers * 60 * 1000);
         }
         else if (percentTimeToSelectXact > 0) {
             double r = new Random(System.currentTimeMillis()).nextDouble();
@@ -127,15 +129,14 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
     // When an external activity is given,  update the internal state so that its counters
     // and timers are reset.
     private void updateState (ExternalActivity ea) throws SQLException {
+        state.setExternalActivityId(ea.getId());
         if (numProblemsBetweenOffers > 0) {
             state.setNumProblemsSinceLastIntervention(0);
         }
         else if (numMinutesBetweenOffers > 0) {
             state.setTimeOfLastIntervention(System.currentTimeMillis());
         }
-        else if (percentTimeToSelectXact > 0) {
-            state.setExternalActivityId(ea.getId());
-        }
+
 
     }
 

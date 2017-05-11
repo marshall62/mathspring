@@ -9,6 +9,7 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/resources" relative="/" />
+          <root url="file://$MODULE_DIR$/webResources" relative="/" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src" />
@@ -23,6 +24,7 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/resources" relative="/" />
+          <root url="file://$MODULE_DIR$/webResources" relative="/mathspring" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src" />
@@ -37,6 +39,7 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/resources" relative="/" />
+          <root url="file://$MODULE_DIR$/webResources" relative="/" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src" />
@@ -50,8 +53,9 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/webResources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
-      <excludeFolder url="file://$MODULE_DIR$/webResources/mscontent" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

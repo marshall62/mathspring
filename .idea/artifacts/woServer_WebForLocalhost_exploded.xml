@@ -57,7 +57,7 @@
       </element>
       <element id="javaee-facet-resources" facet="woServer/web/WebForLocalhost" />
       <element id="javaee-facet-resources" facet="woServer/web/WebForLocalhost" />
-      <element id="dir-copy" path="$PROJECT_DIR$/woServer/webResources" />
+      <element id="directory" name="mathspring" />
     </root>
   </artifact>
 </component>
