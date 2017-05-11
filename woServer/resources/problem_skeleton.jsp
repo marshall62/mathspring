@@ -23,6 +23,7 @@
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
                 showMathMenu: false,
+                messageStyle: "none",
                 tex2jax: {inlineMath: [['$$', '$$']], displayMath: [['\\[', '\\]']]},
                 TeX: {extensions: ["color.js"]}
             });
