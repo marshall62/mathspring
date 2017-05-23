@@ -7,3 +7,5 @@
 *.swd
 .DS_Store
 /target
+/woServer/resources/mathspring
+/woServer/resources/mscontent/
