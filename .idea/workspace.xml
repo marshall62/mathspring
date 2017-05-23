@@ -7,19 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/img/mstile-150x150.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/woServer/resources/img/cloud1.svg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" afterPath="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" afterPath="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/jchart_new.js" afterPath="$PROJECT_DIR$/woServer/resources/js/jchart_new.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/login/css/loginExistingSessionK12_new.css" afterPath="$PROJECT_DIR$/woServer/resources/login/css/loginExistingSessionK12_new.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/web/META-INF/context.xml" afterPath="$PROJECT_DIR$/woServer/web/META-INF/context.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/common_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/common_new.css" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -255,14 +247,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Dashboard_new.jsp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Dashboard_new.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+            <state relative-caret-position="-1082">
+              <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
               <folding>
-                <marker date="1495575864000" expanded="false" signature="13947:13960" ph="..." />
-                <marker date="1495575864000" expanded="false" signature="14004:14017" ph="..." />
+                <marker date="1495576517000" expanded="false" signature="13914:13927" ph="..." />
+                <marker date="1495576517000" expanded="false" signature="13971:13984" ph="..." />
               </folding>
             </state>
           </provider>
@@ -271,8 +263,8 @@
       <file leaf-file-name="MyProgress_new.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="439" column="33" lean-forward="true" selection-start-line="439" selection-start-column="33" selection-end-line="439" selection-end-column="33" />
+            <state relative-caret-position="270">
+              <caret line="529" column="63" lean-forward="false" selection-start-line="529" selection-start-column="63" selection-end-line="529" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -281,8 +273,28 @@
       <file leaf-file-name="MyProgress_new.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="8" column="28" lean-forward="false" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
+            <state relative-caret-position="-570">
+              <caret line="131" column="26" lean-forward="false" selection-start-line="131" selection-start-column="26" selection-end-line="131" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Dashboard_new.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="341">
+              <caret line="520" column="30" lean-forward="false" selection-start-line="520" selection-start-column="30" selection-end-line="520" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common_new.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/css/common_new.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="251">
+              <caret line="159" column="11" lean-forward="false" selection-start-line="159" selection-start-column="11" selection-end-line="159" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -293,16 +305,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="212">
               <caret line="854" column="0" lean-forward="false" selection-start-line="854" selection-start-column="0" selection-end-line="854" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dashboard_new.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7905">
-              <caret line="527" column="0" lean-forward="false" selection-start-line="527" selection-start-column="0" selection-end-line="527" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -332,9 +334,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>s</find>
-      <find>s.</find>
-      <find>s.mas</find>
       <find>s.mastery&quot;</find>
       <find>&quot;s.mastery&quot;</find>
       <find>&quot;s.mastery</find>
@@ -362,7 +361,13 @@
       <find>PROBLEM_TYPE</find>
       <find>logout</find>
       <find>studentF</find>
+      <find>container</find>
+      <find>nav</find>
+      <find>color</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/woServer</dir>
       <dir>$PROJECT_DIR$/woServer/resources</dir>
@@ -403,7 +408,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/woServer/resources/post.html" />
         <option value="$PROJECT_DIR$/woServer/resources/js/testaffectiva.js" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/AffectivaService.java" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/rest/JerseyServletInitializer.java" />
@@ -450,10 +454,11 @@
         <option value="$PROJECT_DIR$/woServer/resources/login/css/loginExistingSessionK12_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/login/loginExistingSessionK12_new.jsp" />
         <option value="$PROJECT_DIR$/woServer/resources/js/jchart_new.js" />
-        <option value="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
-        <option value="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" />
-        <option value="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
         <option value="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" />
+        <option value="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
+        <option value="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
+        <option value="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" />
+        <option value="$PROJECT_DIR$/woServer/resources/css/common_new.css" />
       </list>
     </option>
   </component>
@@ -1753,7 +1758,7 @@
       <workItem from="1495224949145" duration="312000" />
       <workItem from="1495225692033" duration="6952000" />
       <workItem from="1495482705727" duration="2515000" />
-      <workItem from="1495563062851" duration="8108000" />
+      <workItem from="1495563062851" duration="13172000" />
     </task>
     <task id="LOCAL-00182" summary="Converted Attempt intervention seleecrs to return Response objects">
       <created>1436983369292</created>
@@ -2102,7 +2107,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="320147000" />
+    <option name="totallyTimeSpent" value="325211000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2141,6 +2146,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2078125" sideWeight="0.5324074" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
@@ -2161,7 +2167,6 @@
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22451317" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962963" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2452,13 +2457,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/login/PasswordAuthentication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1904">
-          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbTeacher.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -2755,14 +2753,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7905">
-          <caret line="527" column="0" lean-forward="false" selection-start-line="527" selection-start-column="0" selection-end-line="527" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/js/jchart_new.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
@@ -2771,30 +2761,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css">
+    <entry file="file://$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="8" column="28" lean-forward="false" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
-          <folding />
+        <state relative-caret-position="-1082">
+          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+          <folding>
+            <marker date="1495576517000" expanded="false" signature="13914:13927" ph="..." />
+            <marker date="1495576517000" expanded="false" signature="13971:13984" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="439" column="33" lean-forward="true" selection-start-line="439" selection-start-column="33" selection-end-line="439" selection-end-column="33" />
+        <state relative-caret-position="270">
+          <caret line="529" column="63" lean-forward="false" selection-start-line="529" selection-start-column="63" selection-end-line="529" selection-end-column="63" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp">
+    <entry file="file://$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding>
-            <marker date="1495575864000" expanded="false" signature="13947:13960" ph="..." />
-            <marker date="1495575864000" expanded="false" signature="14004:14017" ph="..." />
-          </folding>
+        <state relative-caret-position="-570">
+          <caret line="131" column="26" lean-forward="false" selection-start-line="131" selection-start-column="26" selection-end-line="131" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="520" column="30" lean-forward="false" selection-start-line="520" selection-start-column="30" selection-end-line="520" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/css/common_new.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="159" column="11" lean-forward="false" selection-start-line="159" selection-start-column="11" selection-end-line="159" selection-end-column="11" />
+          <folding />
         </state>
       </provider>
     </entry>

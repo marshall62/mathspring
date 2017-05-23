@@ -427,6 +427,9 @@
         </div><!-- navbar-header -->
 
         <nav id="main_nav" class="nav navbar-nav navbar-right">
+            <li class="nav-item"><a href="">My Garden</a></li>
+            <li class="nav-item"><a href="">My Progress</a></li>
+            <li class="nav-item"><a href="">Practice Area</a></li>
             <li class="dropdown dropdown-position custom-dropdown">
                 <a href="#"
                    class="dropdown-toggle custom-dropdown-toggle"
@@ -452,16 +455,6 @@
     </div><!-- wrapper -->
 </header>
 
-<%--<section id="toggle-nav">--%>
-    <%--<ul class="nav nav-tabs">--%>
-        <%--<li class="navigation-tab">--%>
-            <%--<a class="js-go-to-my-garden" data-toggle="tab">My Garden</a>--%>
-        <%--</li>--%>
-        <%--<li class="navigation-tab active autofocus">--%>
-            <%--<a data-toggle="tab" href="#">My Progress</a>--%>
-        <%--</li>--%>
-    <%--</ul>--%>
-<%--</section>--%>
 
 <div class="main-content">
     <div class="row progress-data-wrapper">
@@ -513,29 +506,29 @@
 
                 <c:choose>
                     <c:when test="${ts.problemsDone>0 && ts.hasAvailableContent}">
-                        <li class="btn mathspring-btn" id="continue_${topicId}">
+                        <li class="huy-button huy-button--green" id="continue_${topicId}">
                             <a href="#">Continue</a>
                         </li>
-                        <li class="btn mathspring-warning-btn" id="review_${topicId}">
+                        <li class="huy-button huy-button--yellow" id="review_${topicId}">
                             <a href="#">Review</a>
                         </li>
-                        <li class="btn mathspring-important-btn" id="challenge_${topicId}">
+                        <li class="huy-button huy-button--brown" id="challenge_${topicId}">
                             <a href="#"><span class="colorPink">Challenge</span></a>
                         </li>
                         </ul></td></tr>
                     </c:when>
                     <c:when test="${ts.problemsDone==0}">
-                        <li class="btn mathspring-btn" id="tryThis_${topicId}">
+                        <li class="huy-button huy-button--green" id="tryThis_${topicId}">
                             <a href="#">Try this</a>
                         </li>
                     </c:when>
                     <%--The tutor sometimes can't continue a topic if some criteria are satisfied, so we only offer review and challenge--%>
                     <c:otherwise>
-                        <li class="btn mathspring-warning-btn" id="review_${topicId}">
+                        <li class="huy-button huy-button--yellow" id="review_${topicId}">
                             <a href="#">Review</a>
                         </li>
-                        <li class="btn mathspring-important-btn" id="challenge_${topicId}">
-                            <a href="#"><span class="colorPink">Challenge</span></a>
+                        <li class="huy-button huy-button--brown" id="challenge_${topicId}">
+                            <a href="#">Challenge</a>
                         </li>
                         </ul></td></tr>
                     </c:otherwise>
