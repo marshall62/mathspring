@@ -852,12 +852,6 @@ giveFeedback    : function(remarksDiv, topic_state,topicState_pepperPlant,topicM
                 console.log(plant_div);
             } else {
                 document.getElementById(plant_div).prepend(plantImage);
-                $('#' + plant_div).click(function () {
-                    var title = $(this).attr('topicTitle');
-                    var totalProblems = $(this).attr('totalProblem');
-                    var completeProblems = $(this).attr('completeProblem');
-                    showOverlay(title, completeProblems, totalProblems);
-                });
             }
         }
     },

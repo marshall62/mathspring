@@ -452,16 +452,16 @@
     </div><!-- wrapper -->
 </header>
 
-<section id="toggle-nav">
-    <ul class="nav nav-tabs">
-        <li class="navigation-tab">
-            <a class="js-go-to-my-garden" data-toggle="tab">My Garden</a>
-        </li>
-        <li class="navigation-tab active autofocus">
-            <a data-toggle="tab" href="#">My Progress</a>
-        </li>
-    </ul>
-</section>
+<%--<section id="toggle-nav">--%>
+    <%--<ul class="nav nav-tabs">--%>
+        <%--<li class="navigation-tab">--%>
+            <%--<a class="js-go-to-my-garden" data-toggle="tab">My Garden</a>--%>
+        <%--</li>--%>
+        <%--<li class="navigation-tab active autofocus">--%>
+            <%--<a data-toggle="tab" href="#">My Progress</a>--%>
+        <%--</li>--%>
+    <%--</ul>--%>
+<%--</section>--%>
 
 <div class="main-content">
     <div class="row progress-data-wrapper">
