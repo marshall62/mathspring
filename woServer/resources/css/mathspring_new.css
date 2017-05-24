@@ -1,171 +1,324 @@
-#navigation-back {
-    display: inline-block;
-    color: white;
-    margin-top: -10px;
-    font-weight: bold;
-    font-size: 1.3em;
-    width: 100%;
+@import "font-awesome/css/font-awesome.min.css";
+
+body {
+    margin: 0;
+    font-family: Raleway;
+    font-size: 0.9em;
+    position: relative;
 }
-#navigation-back div {
+
+.huytran-tutor {
+    /*background: #F8F8F8;*/
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: start;
+}
+
+.huytran-sitenav {
+    z-index: 2;
+    position: fixed;
+}
+
+.huytran-sitenav__menu {
+    width: 200px;
+    height: 50px;
+    background: white;
+    border-bottom: 1px solid lightgrey;
+}
+
+.huytran-sitenav__burger {
+    position: absolute;
+    top: 15px;
+    left: 25px;
+    width: 30px;
+    height: 30px;
     text-align: center;
-    padding: 10px 0;
-    transition: all .4s ease;
 }
-#navigation-back div:hover {
+
+.huytran-sitenav__burger i {
+    font-size: 1.5em;
+    color: lightgrey;
+}
+
+.huytran-sitenav__burger i:hover {
+    color: black;
     cursor: pointer;
 }
-#navigation-back div:nth-child(1) {
+
+.huytran-sitenav__main {
+    position: fixed;
+    min-height: calc(100vh - 50px);
+    width: 200px;
+    left: 0;
+    background: white;
+    transition: left 0.5s ease;
+    border-right: 1px solid lightgrey;
+    border-right-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.huytran-sitenav__button {
+    margin: 0 25px 0 25px;
+}
+
+.huytran-sitenav__button--first {
+    margin-top: 10px;
+}
+
+.huytran-practice {
+    z-index: 1;
+    left: 250px;
+    position: relative;
+    width: calc(100% - 250px);
+}
+
+.huytran-practice__menu {
+    position: fixed;
+    top: 0;
+    left: 200px;
+    background: white;
+    height: 50px;
+    min-width: calc(100vw - 200px);
+    border-bottom: 1px solid lightgrey;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.huytran-practice__menu .huytran-sitenav__button {
+    display: inline-block;
+}
+
+.huytran-practice__nav {
+    margin-top: 16px;
+}
+
+.huytran-practice__navitem {
+    text-decoration: none;
+    padding: 10px 15px;
+    color: #003364;
+}
+
+.huytran-practice__navitem:hover {
+    background: #92DDA3;
+    cursor: pointer;
+}
+
+.huytran-practice__navitem:active {
+    background: #2ECC71;
+    cursor: pointer;
+}
+
+.huytran-practice__navitem--last {
+    margin-right: 30px;
+}
+
+.huytran-practice__container {
+    position: relative;
+    top: 50px;
+    transition: left 0.5s ease;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.huytran-practice__main {
+    /*margin: 30px auto 0 auto;*/
+    padding: 15px;
+    width: 600px;
+    height: auto;
+}
+
+.huytran-practice__character {
+    position: absolute;
+    right: 0;
+    margin: 30px 30px 0 30px;
+}
+
+.huytran-practice__character.show {
+    display: block;
+}
+
+.huytran-practice__character.hide {
+    display: none;
+}
+
+.huytran-practice__character-collapse {
+    width: 200px;
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    right: 30px;
+    border: 1px solid #003364;
+    border-bottom: none;
+}
+
+.huytran-practice__show-button {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    border: 1px solid #003364;
+    color: #003364;
+    top: 10px;
+    left: 5px;
+    margin-right: 20px;
+    color: #003364;
+}
+
+.huytran-practice__show-button:hover {
+    background: #92DDA3;
+    cursor: pointer;
+}
+
+.huytran-practice__show-button:active,
+.huytran-practice__show-button:focus {
     background: #2ECC71;
 }
-#navigation-back div:nth-child(1):hover {
-    background: #1ab85d;
-}
-#navigation-back div:nth-child(2) {
-    background: #FFE234;
-}
-#navigation-back div:nth-child(2):hover {
-    background: #ebce20;
+
+.huytran-practice__show-button span {
+    position: relative;
+    top: 1px;
+    left: 2px;
 }
 
-.important-btn-label {
-    color: #FFE234;
-    font-weight: bold;
-}
-
-.problem-control-button {
-    outline: none;
+.huytran-practice__show-button + span {
+    color: #003364;
     font-size: 1.1em;
-}
-
-#main-tutoring {
-    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), rgba(0, 0, 0, 0.4) url("../img/background-tree.jpg") no-repeat center;
-    background-size: cover;
-    color: #fff;
-    text-rendering: optimizeLegibility;
-    margin-top: -5px;
-    padding-top: 60px;
-    min-height: 750px;
-    max-height: 100%;
-}
-#main-tutoring .vertical-button {
-    list-style: none;
-    display: inline-block;
-    margin-top: 75px;
-}
-#main-tutoring .vertical-button div {
-    border-radius: 5px;
-    background: white;
-    margin-bottom: 20px;
-    width: 50px;
-    height: 50px;
-}
-#main-tutoring .vertical-button div img {
-    display: block;
-    margin: 0 auto;
-}
-#main-tutoring .vertical-button div:nth-child(1) > a > img {
-    padding-top: 13px;
-}
-#main-tutoring .vertical-button div:nth-child(2) > a > img {
-    padding-top: 10px;
-}
-#main-tutoring .vertical-button div .custom-dropdown-toggle img {
-    padding-top: 15px;
-    width: 35px;
-    height: 35px;
-}
-#main-tutoring .vertical-button div:hover {
-  cursor: pointer;
-  background: whitesmoke;
-}
-#main-tutoring .main-tutoring-frame {
-    min-height: 500px;
-    margin-right: 75px;
-}
-#main-tutoring .main-tutoring-frame .main-tutoring-panel {
-    min-height: 500px;
-}
-#main-tutoring .virtual-character {
-    height: 500px;
-}
-#main-tutoring .buttons-below {
-    margin-left: 30px;
-    margin-bottom: 25px;
-    color: black;
-}
-.problem-control-button:focus,
-.problem-control-button:hover {
-    text-decoration: none;
-}
-#main-tutoring .buttons-below .main-tutoring-button {
-    height: 50px;
-    background: #fff;
-    text-align: center;
-    padding-top: 14px;
-    border-radius: 5px;
-}
-#main-tutoring .buttons-below .main-tutoring-button:hover {
-    background: whitesmoke;
-    cursor: pointer;
-}
-#main-tutoring .buttons-below .col-sm-3 img {
-    transform: scale(0.8);
-    position: absolute;
-    left: 10px;
-}
-#main-tutoring .buttons-below .col-sm-3:nth-child(1) a > img {
-    top: 5px;
-}
-#main-tutoring .buttons-below .col-sm-3:nth-child(2) a > img {
+    position: relative;
     top: 9px;
 }
-#main-tutoring .buttons-below .col-sm-3:nth-child(3) a > img {
-    top: 8px;
+
+.huytran-practice__show-button .hide {
+    display: none;
 }
 
-.problemDiv,
-#flashContainer1 {
-    background: #fff;
-    border-radius: 4px;
+.huytran-practice__hide-button-wrapper {
+    height: 30px;
+    width: 100%;
 }
 
-#flashContainer1 {
+.huytran-practice__hide-button {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
     position: relative;
-    width: 650px;
-    height: 500px;
+    border: 1px solid #003364;
+    color: #003364;
+    top: 40px;
+    left: 18px;
 }
 
-#flashprobplayer {
-    position: absolute;
-    top: 0px;
-    left: 25px;
+.huytran-practice__hide-button:hover {
+    background: #92DDA3;
+    cursor: pointer;
 }
 
-/* Override CSS rules of jQuery Widget UI */
-.ui-widget-content {
-    border: 1px solid #2ECC71;
-}
-.ui-widget {
-    font-family: inherit;
-}
-.ui-widget-header {
-    border: none;
+.huytran-practice__hide-button:active,
+.huytran-practice__hide-button:focus {
     background: #2ECC71;
 }
 
-.dev-view {
-    display: none; /* Always hidden initially */
-    padding: 0 10px;
-    line-height: 50px;
-    vertical-align: middle;
-    background: #000;
-    position: fixed;
-    height: 50px;
-    width: 100%;
-    bottom: 0;
-    color: #fff;
+.huytran-practice__hide-button span {
+    position: relative;
+    top: 2px;
+    left: 4px;
 }
 
-.dev-view-label {
-    font-weight: bold;
+.huytran-practice__hide-button .hide {
+    display: none;
+}
+
+.hide {
+    left: -200px;
+}
+
+.huytran-sitenav__button {
+    padding: 15px 5px;
+    background: white;
+    display: block;
+    text-decoration: none;
+    color: #003364;
+}
+
+.huytran-sitenav__button:hover {
+    background: #92DDA3;
+    cursor: pointer;
+}
+
+.huytran-sitenav__button:active,
+.huytran-sitenav__button:target {
+    background: #2ECC71;
+}
+
+span.huytran-sitenav__icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+span.huytran-sitenav__buttontitle {
+    margin-left: 5px;
+    padding-right: 5px;
+}
+
+.huytran-sitenav__showmore {
+    display: block;
+    margin-left: 30px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #003364;
+}
+
+.huytran-sitenav__showmore-target {
+    display: block;
+    transition: all 0.25s ease;
+}
+
+.huytran-sitenav__showmore-state {
+    display: none;
+}
+
+.huytran-sitenav__showmore-state:checked ~ .huytran-sitenav__showmore-target {
+    display: none;
+}
+
+.huytran-sitenav__showmore-state ~ .huytran-sitenav__showmore-trigger:before {
+    content: 'show less...';
+}
+
+.huytran-sitenav__showmore-state:checked ~ .huytran-sitenav__showmore-trigger:before {
+    content: 'show more...';
+}
+
+.huytran-sitenav__showmore-trigger {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 30px;
+    text-decoration: none;
+    color: #003364;
+    cursor: pointer;
 }

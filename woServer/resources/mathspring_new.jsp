@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <title>MathSpring | Tutoring</title>
     <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/balloon.min.css" rel="stylesheet">
-    <link href="css/common_new.css" rel="stylesheet">
+    <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
+    <%--<link href="css/animate.css" rel="stylesheet">--%>
+    <%--<link href="css/balloon.min.css" rel="stylesheet">--%>
+    <%--<link href="css/common_new.css" rel="stylesheet">--%>
     <link href="css/mathspring_new.css" rel="stylesheet">
     
     <script src="js/jquery-1.10.2.js"></script>
@@ -130,42 +130,44 @@
 </head>
 <body>
 
+
+
 <!-- NAVIGATION BAR -->
-<header class="site-header" role="banner">
-    <div id="wrapper">
-        <div class="navbar-header">
-            <img class="logo goto-dashboard-js" src="img/ms_mini_logo_new.png" alt="MathSpring Logo">
-        </div><!-- navbar-header -->
+<%--<header class="site-header" role="banner">--%>
+    <%--<div id="wrapper">--%>
+        <%--<div class="navbar-header">--%>
+            <%--<img class="logo goto-dashboard-js" src="img/ms_mini_logo_new.png" alt="MathSpring Logo">--%>
+        <%--</div><!-- navbar-header -->--%>
 
-        <nav id="main_nav" class="nav navbar-nav navbar-right">
-            <li class="dropdown dropdown-position custom-dropdown">
-                <a  href="#"
-                    class="dropdown-toggle custom-dropdown-toggle"
-                    data-toggle="dropdown" 
-                    role=button
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                >
-                    <i><img src="img/avatar.svg" alt="Avatar"></i>
-                    &nbsp;
-                    ${studentFirstName} ${studentLastName}
-                    <span class="caret"></span>
-                </a><!-- dropdown-toggle -->
+        <%--<nav id="main_nav" class="nav navbar-nav navbar-right">--%>
+            <%--<li class="dropdown dropdown-position custom-dropdown">--%>
+                <%--<a  href="#"--%>
+                    <%--class="dropdown-toggle custom-dropdown-toggle"--%>
+                    <%--data-toggle="dropdown"--%>
+                    <%--role=button--%>
+                    <%--aria-haspopup="true"--%>
+                    <%--aria-expanded="false"--%>
+                <%-->--%>
+                    <%--<i><img src="img/avatar.svg" alt="Avatar"></i>--%>
+                    <%--&nbsp;--%>
+                    <%--${studentFirstName} ${studentLastName}--%>
+                    <%--<span class="caret"></span>--%>
+                <%--</a><!-- dropdown-toggle -->--%>
 
-                <ul class="dropdown-menu">
-                    <li><a href="">HELP</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">LOGOUT</a></li>
-                </ul><!-- dropdown-menu -->
-            </li><!-- dropdown -->
-        </nav>
-    </div><!-- wrapper -->
-</header>
+                <%--<ul class="dropdown-menu">--%>
+                    <%--<li><a href="">HELP</a></li>--%>
+                    <%--<li role="separator" class="divider"></li>--%>
+                    <%--<li><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">LOGOUT</a></li>--%>
+                <%--</ul><!-- dropdown-menu -->--%>
+            <%--</li><!-- dropdown -->--%>
+        <%--</nav>--%>
+    <%--</div><!-- wrapper -->--%>
+<%--</header>--%>
 
-<section id="navigation-back">
-    <div id="home" class="col-md-6">My Garden</div>
-    <div id="myProg" class="col-md-6">My Progress</div>
-</section>
+<%--<section id="navigation-back">--%>
+    <%--<div id="home" class="col-md-6">My Garden</div>--%>
+    <%--<div id="myProg" class="col-md-6">My Progress</div>--%>
+<%--</section>--%>
 
 <audio id='questionaudio' name='questionaudio'>
     <source id='questionogg' src='' type='audio/ogg'>
@@ -199,104 +201,234 @@
     <iframe id="selectProblemDialogIframe" width="500" height="500"></iframe>
 </div>
 
-<section id="main-tutoring">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-1 vertical-button">
-                <div data-balloon="Read Problem" data-balloon-pos="right">
-                    <a id="read">
-                        <img src="img/speaker.svg" alt="Read Problem">
-                    </a>
-                </div>
-                <div data-balloon="Show Instruction" data-balloon-pos="right">
-                    <a id="instructions">
-                        <img src="img/info.svg" alt="Show Instruction">
-                    </a>
-                </div>
-                <div class="dropdown custom-dropdown"
-                     data-balloon="More Resources"
-                     data-balloon-pos="right">
-                    <a  href="#"
-                        class="dropdown-toggle custom-dropdown-toggle"
-                        data-toggle="dropdown" 
-                        role=button
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <img src="img/menu.svg" alt="">
-                    </a><!-- dropdown-toggle -->
+<%--<section id="main-tutoring">--%>
+    <%--<div class="container">--%>
+        <%--<div class="row">--%>
+            <%--<div class="col-md-1 vertical-button">--%>
+                <%--<div data-balloon="Read Problem" data-balloon-pos="right">--%>
+                    <%--<a id="read">--%>
+                        <%--<img src="img/speaker.svg" alt="Read Problem">--%>
+                    <%--</a>--%>
+                <%--</div>--%>
+                <%--<div data-balloon="Show Instruction" data-balloon-pos="right">--%>
+                    <%--<a id="instructions">--%>
+                        <%--<img src="img/info.svg" alt="Show Instruction">--%>
+                    <%--</a>--%>
+                <%--</div>--%>
+                <%--<div class="dropdown custom-dropdown"--%>
+                     <%--data-balloon="More Resources"--%>
+                     <%--data-balloon-pos="right">--%>
+                    <%--<a  href="#"--%>
+                        <%--class="dropdown-toggle custom-dropdown-toggle"--%>
+                        <%--data-toggle="dropdown"--%>
+                        <%--role=button--%>
+                        <%--aria-haspopup="true"--%>
+                        <%--aria-expanded="false"--%>
+                    <%-->--%>
+                        <%--<img src="img/menu.svg" alt="">--%>
+                    <%--</a><!-- dropdown-toggle -->--%>
 
-                    <ul class="dropdown-menu">
-                        
-                        <li><a id="example" href="#">Show Example</a></li>
-                        <li role="separator" class="divider"></li>
+                    <%--<ul class="dropdown-menu">--%>
 
-                        <li><a id="video" href="#">Show Video</a></li>
-                        <li role="separator" class="divider"></li>
+                        <%--<li><a id="example" href="#">Show Example</a></li>--%>
+                        <%--<li role="separator" class="divider"></li>--%>
 
-                        <li><a id="formulas" href="#">Fomular</a></li>
-                        <li role="separator" class="divider"></li>
+                        <%--<li><a id="video" href="#">Show Video</a></li>--%>
+                        <%--<li role="separator" class="divider"></li>--%>
 
-                        <li><a id="glossary" href="#">Glossary</a></li>
-                    </ul><!-- dropdown-menu -->
-                </div>
+                        <%--<li><a id="formulas" href="#">Fomular</a></li>--%>
+                        <%--<li role="separator" class="divider"></li>--%>
+
+                        <%--<li><a id="glossary" href="#">Glossary</a></li>--%>
+                    <%--</ul><!-- dropdown-menu -->--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="col-md-7 main-tutoring-frame">--%>
+                <%--<div class="row buttons-below">--%>
+                    <%--<div class="col-sm-3 main-tutoring-button">--%>
+                        <%--<a id="hint" class="problem-control-button">--%>
+                            <%--<img id="hint-lightbulb" src="img/lightbulb.svg" alt=""><span id="hint_label">Hint</span>--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-sm-3 col-md-offset-1 main-tutoring-button">--%>
+                        <%--<a id="replay" class="problem-control-button">--%>
+                            <%--<img src="img/reload.svg" alt="">Replay Hint--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-sm-3 col-md-offset-1 main-tutoring-button">--%>
+                        <%--<a id="nextProb" class="problem-control-button">--%>
+                            <%--<img src="img/right-arrow.svg" alt="">New Problem--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<div id="frameContainer" class="problemDiv">--%>
+                    <%--<iframe id="problemWindow" class="probWindow"--%>
+                            <%--name="iframe1"--%>
+                            <%--width="600"--%>
+                            <%--height="600"--%>
+                            <%--src="${activityURL}"--%>
+                            <%--frameborder="no"--%>
+                            <%--scrolling="no">--%>
+                    <%--</iframe>--%>
+                <%--</div>--%>
+                <%--<div id="flashContainer1">--%>
+                    <%--<div id="flashContainer2"></div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="col-md-3 virtual-character">--%>
+                <%--<iframe id="learningCompanionWindow"--%>
+                        <%--name="lciframe"--%>
+                        <%--width="280"--%>
+                        <%--height="600"--%>
+                        <%--src="${learningCompanionMovie}"--%>
+                        <%--scrolling="no">--%>
+                <%--</iframe>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</section>--%>
+
+<%--<div class="dev-view">--%>
+    <%--<p>--%>
+        <%--Developer Info >>--%>
+        <%--<span class="dev-view-label">Problem ID: </span>--%>
+        <%--<span id="pid">${probId}</span> ||--%>
+        <%--<span class="dev-view-label">Effort: </span>--%>
+        <%--<span id="effort">${effort}</span> ||--%>
+        <%--<span class="dev-view-label">Answer: </span>--%>
+        <%--<span id="answer">${globals.answer}</span>--%>
+    <%--</p>--%>
+<%--</div>--%>
+
+<div class="huytran-tutor">
+    <div class="huytran-sitenav" style=>
+        <div class="huytran-sitenav__menu">
+            <div class="huytran-sitenav__burger" onclick="toggleNav()">
+                <i class="fa fa-bars" aria-hidden="true" scale="1.5"></i>
             </div>
-            <div class="col-md-7 main-tutoring-frame">
-                <div class="row buttons-below">
-                    <div class="col-sm-3 main-tutoring-button">
-                        <a id="hint" class="problem-control-button">
-                            <img id="hint-lightbulb" src="img/lightbulb.svg" alt=""><span id="hint_label">Hint</span>
-                        </a>
-                    </div>
-                    <div class="col-sm-3 col-md-offset-1 main-tutoring-button">
-                        <a id="replay" class="problem-control-button">
-                            <img src="img/reload.svg" alt="">Replay Hint
-                        </a>
-                    </div>
-                    <div class="col-sm-3 col-md-offset-1 main-tutoring-button">
-                        <a id="nextProb" class="problem-control-button">
-                            <img src="img/right-arrow.svg" alt="">New Problem
-                        </a>
-                    </div>
-                </div>
-                <div id="frameContainer" class="problemDiv">
-                    <iframe id="problemWindow" class="probWindow"
-                            name="iframe1"
-                            width="600"
-                            height="600"
-                            src="${activityURL}"
-                            frameborder="no"
-                            scrolling="no">
-                    </iframe>
-                </div>
+        </div>
+
+        <div class="huytran-sitenav__main">
+            <input type="checkbox" class="huytran-sitenav__showmore-state" id="post" />
+
+            <a href="#" class="huytran-sitenav__button huytran-sitenav__button--first" id="hint">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">Hints</span>
+            </a>
+
+            <a href="#" class="huytran-sitenav__button" id="replay">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-repeat" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">Replay Hints</span>
+            </a>
+
+            <a href="#" class="huytran-sitenav__button" id="read">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-bullhorn" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">Read Question</span>
+            </a>
+
+            <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="example">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-question" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">Show Example</span>
+            </a>
+            <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="video">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-video-camera" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">Show Video</span>
+            </a>
+            <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="formulas">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-magic" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">Formula</span>
+            </a>
+            <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="glossary">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">Glossary</span>
+            </a>
+            <label class="huytran-sitenav__showmore-trigger" for="post">
+            </label>
+        </div>
+    </div>
+
+    <div class="huytran-practice">
+        <div class="huytran-practice__menu">
+            <a href="#" class="huytran-sitenav__button" id="nextProb">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-plus" aria-hidden="true"></i>
+					</span>
+                <span class="huytran-sitenav__buttontitle">New Problem</span>
+            </a>
+            <div class="huytran-practice__nav">
+                <a class="huytran-practice__navitem" id="home">My Garden</a>
+                <a class="huytran-practice__navitem" id="myProg">My Progress</a>
+                <a class="huytran-practice__navitem" href="#">Practice Area</a>
+                <a class="huytran-practice__navitem huytran-practice__navitem--last" href="#">${studentFirstName} ${studentLastName}</a>
+            </div>
+        </div>
+        <div class="huytran-practice__container">
+            <div class="huytran-practice__main" id="frameContainer">
+                <iframe id="problemWindow" class="probWindow"
+                    name="iframe1"
+                    width="600"
+                    height="600"
+                    src="${activityURL}"
+                    frameborder="no"
+                    scrolling="no">
+                </iframe>
                 <div id="flashContainer1">
                     <div id="flashContainer2"></div>
                 </div>
             </div>
-            <div class="col-md-3 virtual-character">
-                <iframe id="learningCompanionWindow"
+            <div class="huytran-practice__character">
+                <div class="huytran-practice__hide-button"
+                     onclick="toggleCharacter()"
+                >
+                    <span class="fa fa-minus"></span>
+                </div>
+                <div class="huytran-practice__character-window">
+                    <iframe id="learningCompanionWindow"
                         name="lciframe"
                         width="280"
                         height="600"
                         src="${learningCompanionMovie}"
                         scrolling="no">
-                </iframe>
+                    </iframe>
+                </div>
+            </div>
+            <div class="huytran-practice__character-collapse hide">
+					<span class="huytran-practice__show-button"
+                          onclick="toggleCharacter()"
+                    >
+						<span class="fa fa-plus"></span>
+					</span>
+                <span>Character</span>
             </div>
         </div>
     </div>
-</section>
-
-<div class="dev-view">
-    <p>
-        Developer Info >>
-        <span class="dev-view-label">Problem ID: </span>
-        <span id="pid">${probId}</span> ||
-        <span class="dev-view-label">Effort: </span>
-        <span id="effort">${effort}</span> ||
-        <span class="dev-view-label">Answer: </span>
-        <span id="answer">${globals.answer}</span>
-    </p>
 </div>
+
+<script>
+    function toggleNav() {
+        $('.huytran-sitenav__main').toggleClass('hide');
+    }
+
+    function toggleCharacter() {
+        $('.huytran-practice__character').toggleClass('hide');
+        $('.huytran-practice__character-collapse').toggleClass('hide');
+    }
+</script>
+
 
 <div style="z-index:100;" id="instructionsDialog" title="Instructions">
     <p id="instructionsP">${instructions}</p>
