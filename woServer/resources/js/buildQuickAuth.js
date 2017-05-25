@@ -485,7 +485,7 @@ function rebuildStyleEditor() {
         var column_width = _styleEditorFormatColumns.width;
         if(_styleEditorFormatColumn == "right") column_width = 100 - column_width;
         editor.appendChild(buildLabel("Column width (%):"));
-        editor.appendChild(buildSliderField(0, 100, 1, current_width,
+        editor.appendChild(buildSliderField(0, 100, 1, column_width,
             function(value) { onBlockStyleChanged("column_width", value + "%"); }));
     }
     if(_styleEditorBlock.dataset.blockname.match(/figure/i)) {
