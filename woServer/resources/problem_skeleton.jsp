@@ -66,7 +66,7 @@
             <div id="MultipleChoiceAnswers" style="display: none">
                 <c:forTokens items="A,B,C,D,E" delims="," var="letter">
                     <c:out escapeXml = "false" value="
-                <div class=\"answer-row\" style=\"display:none;\">
+                <div class=\"answer-row\" data-letter=\"${letter}\" style=\"display:none;\">
                     <div id=\"${letter}Button\" class=\"button\">
                         <div id=\"${letter}Check\" class=\"check\"></div>
                         <div id=\"${letter}X\" class=\"x\"></div>

@@ -136,7 +136,18 @@ function submitShortAnswer() {
 }
 
 function submitMultiSelectAnswer() {
-    //TODO(rezecib)
+    var selections = "";
+    var answerRows = document.getElementById("MultipleChoiceAnswers").children;
+    for(var i = 0; i < answerRows.length; ++i) {
+        if(answerRows[i].style.display != "none") { //ignore rows for nonexistent answers
+            var letter = answerRows[i].dataset.letter;
+            //if the answer is selected, append it to the string
+            if(document.getElementById(letter + "Checkbox").checked) {
+                selections += letter;
+            }
+        }
+    }
+    processShortAnswer(document, selections);
 }
 
 function shuffleAnswers() {

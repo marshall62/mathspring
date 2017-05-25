@@ -9,17 +9,13 @@
  * To change this template use File | Settings | File Templates.     s
  */
 
-var debug=false;
-var isShortAnswer=false;
+var debug = false;
+var isMultiChoice = false;
 var couldNotShuffle = false;
 var maxHints = 10;
-var answer;
-var newAnswer;
 
 function probUtilsInit(doc, components) {
-    isShortAnswer = components && components.questType === 'shortAnswer'
-    if (!isShortAnswer)
-        shuffleAnswers(doc,components);
+    isMultiChoice = components && components.questType.match(/multiChoice/i)
 }
 
 function answerClicked (doc, buttonName) {
@@ -29,7 +25,7 @@ function answerClicked (doc, buttonName) {
 
 function prob_gradeAnswer (doc, answerChosen, isCorrect, showHint) {
     debugAlert("gradeAnswer got " + isCorrect);
-    if (!isShortAnswer) {
+    if (isMultiChoice) {
         answerChosen = answerChosen.toUpperCase();
         if (isCorrect)
         {

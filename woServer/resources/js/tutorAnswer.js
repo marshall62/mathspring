@@ -37,7 +37,7 @@ function tutorhut_shortAnswerSubmitted (sym, answer) {
         servletGetWait("Attempt", {userInput: answer, probElapsedTime: globals.probElapsedTime}, processShortAnswerResult);
 
     }
-};
+}
 
 function processShortAnswerResult (responseText, textStatus, XMLHttpRequest) {
     debugAlert("processShortAnswerResult: Server returns " + responseText);
