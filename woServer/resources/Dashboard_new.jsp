@@ -14,10 +14,10 @@
     <script src="js/jchart_new.js"></script>
     <script>
         $(document).ready(function() {
-            var hasPots = false;
+            <c:set var="newUser" value="true"/>
             <c:forEach var="ts" items="${topicSummaries}">
             <c:if test="${ts.problemsDone != 0}">
-            hasPots = true;
+                <c:set var="newUser" value="false"/>
             </c:if>
             var topicState = "${ts.topicState}";
             var topicId = ${ts.topicId};
@@ -112,19 +112,31 @@
         </c:otherwise>
         </c:choose>
         </li>
-        <li class="nav__item nav__item--last nav__dropdown">
-            <a class="nav__dropdown-button">
-                ${studentFirstName}&nbsp;${studentLastName}
+        <li class="nav__item nav__item--last">
+            <a class="nav__dropdown-button" href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=">
+                Log Out &nbsp;
+                <span class="fa fa-sign-out"></span>
             </a>
-            <div class="nav__dropdown-content">
-                <a href="#">Help</a>
-                <a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=">Logout</a>
-            </div>
+            <%--<div class="nav__dropdown-content">--%>
+                <%--<a href="#">Help</a>--%>
+                <%--<a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=">Logout</a>--%>
+            <%--</div>--%>
         </li>
     </ul>
 </div>
 
 <div class="topic-list">
+    <c:if test="${newUser == true}">
+        <div class="welcome">
+            <h1>Welcome to MathSpring</h1>
+            <p>Go to
+                <a onclick="window.location='TutorBrain?action=navigation&from=sat_Hut&to=my_progress&elapsedTime=0&sessionId=${sessionId}'+ '&eventCounter=${eventCounter}' + '&topicId=-1&probId=${probId}&probElapsedTime=0&var=b'">My Progress</a>
+                to see all topics in your class or
+                <a onclick="window.location='TutorBrain?action=EnterTutor&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&eventCounter=0&var=b'">Practice Area</a> to get started!
+            </p>
+        </div>
+    </c:if>
+
     <div id="Clouds">
         <div class="Cloud Foreground"></div>
         <div class="Cloud Background"></div>
