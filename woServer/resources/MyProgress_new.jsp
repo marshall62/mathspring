@@ -441,7 +441,7 @@
                     </c:otherwise>
                 </c:choose>
             </li>
-            <li class="nav-item"><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">Log Out &nbsp; <span class="fa fa-sign-out"></span></a>
+            <li class="nav-item nav-item--last"><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">Log Out &nbsp; <span class="fa fa-sign-out"></span></a>
         </nav>
     </div><!-- wrapper -->
 </header>

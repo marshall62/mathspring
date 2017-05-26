@@ -156,13 +156,17 @@ footer {
 }
 
 .nav-item {
-    position: relative;
     top: -8px;
     font-size: 1.1em;
 }
 
+.nav-item--last {
+    margin-right: 20px;
+}
+
 .nav-item a {
     color: #003364;
+    padding: 15px 25px !important;
 }
 
 .nav-item a:hover {
