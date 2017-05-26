@@ -13,7 +13,8 @@ function plug(components) {
     var hints = components.hints;
     var problemFormat = components.problemFormat;
 
-    buildProblem(document.getElementById("ProblemContainer"), problemFormat, true, false, false);
+    var problemContainer = document.getElementById("ProblemContainer");
+    buildProblem(problemContainer, problemFormat, true, false, false);
     if(isNotEmpty(probStatement)){
         document.getElementById("ProblemStatement").innerHTML = parameterizeText(formatText(probStatement, components), problemParams);
     }
@@ -102,7 +103,7 @@ function plug(components) {
             if(multiSelect) {
                 document.getElementById("submit_answer").addEventListener("click", submitMultiSelectAnswer);
             }
-            shuffleAnswers();
+            if(!components.previewMode) shuffleAnswers();
         } else {
             if(questType === "shortAnswer") {
                 document.getElementById("ShortAnswerBox").style.display = "block";
@@ -114,8 +115,8 @@ function plug(components) {
         }
     }
 
-    if(components.addHintButton) {
-        document.getElementById("ProblemContainer").style.float = "left";
+    if(components.previewMode) {
+        problemContainer.style.float = "left";
         var play_hint_button = document.createElement("div");
         play_hint_button.className = "play-hint-button";
         play_hint_button.innerHTML = "Play Hint";
@@ -124,7 +125,13 @@ function plug(components) {
             prob_playHint(hint_labels[hint_label_index]);
             if(hint_label_index < hint_labels.length - 1) ++hint_label_index;
         }
-        play_hint_button.style.zoom = document.getElementById("ProblemContainer").style.zoom;
+        play_hint_button.style.transform = document.getElementById("ProblemContainer").style.transform;
+        play_hint_button.style.transformOrigin = "top left";
+        var matches = play_hint_button.style.transform.match(/scale\(([^\)]+)\)/);
+        if(matches) {
+            play_hint_button.style.marginLeft =
+                (problemContainer.offsetWidth * parseFloat(matches[1])) + "px";
+        }
         document.body.appendChild(play_hint_button);
     }
     // Detects LaTeX code and turns it into nice HTML

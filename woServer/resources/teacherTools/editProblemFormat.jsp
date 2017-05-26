@@ -27,19 +27,19 @@
     </script>
 </head>
 <body onLoad="buildPage()" style="width:800px;height:600px;background-color:#444;">
-<div style="float:right;height:100%;display:flex;flex-direction:column;justify-content:space-around;">
-    <div>
+<div style="float:right;height:100%;width:200px;display:flex;flex-direction:column;justify-content:space-around;">
+    <div style="height:45%">
         <div class="header">Problem Layout<br/>Preview:</div>
         <div id="ProblemContainerLayout" class="problem-container"></div>
     </div>
-    <div>
+    <div style="height:45%">
         <div class="header">Problem Text<br/>Preview:</div>
         <div id="ProblemContainerText" class="problem-container"></div>
     </div>
 </div>
 <div id="ProblemEditor">
-    <div id="TemplateSelector" class="editor-panel">
-        <div style="line-height:75px;" class="header">Templates:</div>
+    <div id="TemplateSelector" class="editor-panel" style="height:75px;box-sizing:content-box;">
+        <div style="line-height:75px;margin-right:5px" class="header">Templates:</div>
     </div>
     <div class="clear"></div>
     <div style="width:100%;display:flex;flex-direction:row;flex:1;">

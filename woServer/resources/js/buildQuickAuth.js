@@ -748,16 +748,28 @@ function rebuildLayoutEditor() {
     buildLayoutBlocks(editor, _problemFormat.order);
 }
 
+function addTemplateButton(template_button, zoom) {
+    var button_container = document.createElement("div");
+    button_container.style.overflow = "visible";
+    button_container.style.position = "relative";
+    button_container.style.flexGrow = "1";
+    template_button.style.position = "absolute";
+    template_button.style.transform = "scale(" + zoom + ")";
+    template_button.style.transformOrigin = "top left";
+    template_button.style.marginTop = ((75 - zoom*600)/2) + "px";
+    template_button.style.borderWidth = (2/zoom) + "px";
+    button_container.appendChild(template_button);
+    document.getElementById("TemplateSelector").appendChild(button_container);
+}
+
 function buildTemplateEditor() {
     stringifyObjectArray(TEMPLATES);
-    var template_selector = document.getElementById("TemplateSelector");
     //Add a miniature button-version of each template to the template selector
     var zoom = 375/(600 * (TEMPLATES.length + 1)); //scales template buttons to fit in the space
     for(var i = 0; i < TEMPLATES.length; i++) {
-        var template_button = buildTemplateButton(TEMPLATES[i]);
-        template_button.style.zoom = zoom;
-        template_selector.appendChild(template_button);
+        addTemplateButton(buildTemplateButton(TEMPLATES[i]), zoom);
     }
+    addTemplateButton(buildEditedTemplateButton(), zoom);
     var block_selector = document.getElementById("BlockSelector");
     for(var block in LAYOUT_BLOCKS) {
         var selection_block = buildLayoutBlock(block);
@@ -765,21 +777,19 @@ function buildTemplateEditor() {
         selection_block.dataset.blockname = block;
         block_selector.appendChild(selection_block);
     }
-    template_selector.appendChild(buildEditedTemplateButton(zoom));
+    _editedTemplateButton.onclick(); //default it to a new empty format
     if(PROBLEM_FORMAT != null) setProblemFormatJson(JSON.stringify(PROBLEM_FORMAT));
 }
 
-function buildEditedTemplateButton(zoom) {
+function buildEditedTemplateButton() {
     _editedTemplateButton = buildTemplateButton('{"order":""}');
     _editedTemplateButton.style.backgroundColor = "#8ED8E0";
-    _editedTemplateButton.style.zoom = zoom;
     _editedTemplateButton.style.lineHeight = "600px";
     _editedTemplateButton.style.fontSize = "600px";
     _editedTemplateButton.style.fontWeight = "bolder";
     _editedTemplateButton.style.textAlign = "center"
     _editedTemplateButton.innerHTML = "+";
     setTemplateButtonOnClick(_editedTemplateButton, true);
-    _editedTemplateButton.onclick();
     return _editedTemplateButton;
 }
 

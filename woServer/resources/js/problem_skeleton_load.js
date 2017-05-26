@@ -1,7 +1,7 @@
 var pid, sessId, elapsedTime, eventCounter, servletContext, servletName, teacherId, addHintButton;
 
 //function plugin(stmt, fig, audio, hints, answers, newAnswer, answer, units, mode, questType, resource, probContentPath, problemParams) {
-function plugin(probId, sessid, elapsedtime, eventcounter, servcontext, servname, previewMode, teacherid, addhintbutton) {
+function plugin(probId, sessid, elapsedtime, eventcounter, servcontext, servname, previewmode, teacherid, addhintbutton) {
     pid = probId;
     sessId = sessid;
     elapsedTime = elapsedtime;
@@ -9,7 +9,7 @@ function plugin(probId, sessid, elapsedtime, eventcounter, servcontext, servname
     servletContext = servcontext;
     servletName = servname;
     teacherId = teacherid;
-    addHintButton = addhintbutton;
+    previewMode = previewmode;
 //    alert("In plugin: " + probId);
     if (!previewMode)
         servletGet(true, "GetQuickAuthProblem",{probId: pid},pluginProblem);
@@ -57,7 +57,7 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var g = {stmt: stmt, fig: fig, audio: audio, hints: hints, answers: answers,
         answer: answer, units: units, mode: mode, questType: questType, resource: resource,
         probContentPath: probContentPath, problemParams: problemParams, problemFormat: problemFormat,
-        addHintButton: addHintButton};
+        previewMode: previewMode};
     plug(g);
     probUtilsInit(document, g);
 

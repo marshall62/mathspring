@@ -33,7 +33,7 @@
 
     <%--<body onload="plugin(stmt,fig,audio,hints,answers,newAnswer,answer,units,mode,questType,resource,probContentPath,params)">--%>
     <body onload="plugin(${problem.id}, sessId, elapsedTime, eventCounter, servContext, servletName, ${previewMode}, ${teacherId}<c:if test="${not empty addHintButton}">, ${addHintButton}</c:if>)">
-    <div id="ProblemContainer" <c:if test="${not empty zoom}">style="zoom:${zoom}"</c:if>>
+    <div id="ProblemContainer" <c:if test="${not empty zoom}">style="transform:scale(${zoom})"</c:if>>
         <c:forTokens items="10,9,8,7,6,5,4,3,2,1" delims="," var="num">
             <c:out escapeXml = "false" value="<audio id = \"Hint${num}Sound\"></audio>"/>
         </c:forTokens>
