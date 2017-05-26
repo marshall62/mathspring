@@ -8,11 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" afterPath="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" afterPath="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/common_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/common_new.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" afterPath="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
@@ -249,15 +246,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Dashboard_new.jsp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mathspring_new.jsp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-679">
+              <caret line="387" column="13" lean-forward="false" selection-start-line="387" selection-start-column="13" selection-end-line="387" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Dashboard_new.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="42" lean-forward="false" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
-              <folding>
-                <marker date="1495774602000" expanded="true" signature="14746:14759" ph="..." />
-                <marker date="1495774602000" expanded="true" signature="14803:14816" ph="..." />
-              </folding>
+            <state relative-caret-position="2970">
+              <caret line="198" column="25" lean-forward="false" selection-start-line="198" selection-start-column="25" selection-end-line="198" selection-end-column="25" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -265,8 +269,58 @@
       <file leaf-file-name="Dashboard_new.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="508">
+            <state relative-caret-position="11280">
               <caret line="752" column="19" lean-forward="false" selection-start-line="752" selection-start-column="19" selection-end-line="752" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyProgress_new.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6645">
+              <caret line="443" column="46" lean-forward="false" selection-start-line="443" selection-start-column="46" selection-end-line="443" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyProgress_new.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2070">
+              <caret line="138" column="4" lean-forward="false" selection-start-line="138" selection-start-column="1" selection-end-line="138" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common_new.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/css/common_new.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2520">
+              <caret line="168" column="33" lean-forward="false" selection-start-line="168" selection-start-column="33" selection-end-line="168" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2610">
+              <caret line="174" column="57" lean-forward="false" selection-start-line="174" selection-start-column="53" selection-end-line="174" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="context.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="20" column="54" lean-forward="false" selection-start-line="20" selection-start-column="54" selection-end-line="20" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -286,12 +340,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>studentF</find>
       <find>container</find>
       <find>color</find>
       <find>new</find>
       <find>mathspring-btn</find>
-      <find>n</find>
       <find>na</find>
       <find>nav-i</find>
       <find>nav-ite</find>
@@ -306,7 +358,6 @@
       <find>for &lt;</find>
       <find>for &lt; -</find>
       <find>for &lt; 0</find>
-      <find>for &lt;</find>
       <find>animated</find>
       <find>animate</find>
       <find>a</find>
@@ -316,6 +367,9 @@
       <find>iframe</find>
       <find>nav</find>
       <find>overl</find>
+      <find>nav__item</find>
+      <find>n</find>
+      <find>mathsee</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -402,15 +456,15 @@
         <option value="$PROJECT_DIR$/woServer/resources/login/css/loginExistingSessionK12_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/login/loginExistingSessionK12_new.jsp" />
         <option value="$PROJECT_DIR$/woServer/resources/js/jchart_new.js" />
-        <option value="$PROJECT_DIR$/woServer/resources/css/common_new.css" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java" />
         <option value="$PROJECT_DIR$/woServer/resources/js/intervhandlers_new.js" />
         <option value="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" />
-        <option value="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" />
-        <option value="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
         <option value="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" />
+        <option value="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
+        <option value="$PROJECT_DIR$/woServer/resources/css/common_new.css" />
+        <option value="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" />
       </list>
     </option>
   </component>
@@ -466,8 +520,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
-    <option name="width" value="1920" />
-    <option name="height" value="999" />
+    <option name="width" value="1280" />
+    <option name="height" value="774" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
@@ -496,6 +550,31 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="woServer">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="woServer">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -523,29 +602,70 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope">
-        <subPane subId="All">
           <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="woServer">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="woServer">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="woServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="woServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mscontent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="woServer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mathspring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mscontent" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1647,6 +1767,8 @@
       <workItem from="1495563062851" duration="14542000" />
       <workItem from="1495648255827" duration="7849000" />
       <workItem from="1495757663970" duration="13160000" />
+      <workItem from="1495775029886" duration="2460000" />
+      <workItem from="1495820936871" duration="1610000" />
     </task>
     <task id="LOCAL-00182" summary="Converted Attempt intervention seleecrs to return Response objects">
       <created>1436983369292</created>
@@ -1995,7 +2117,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="347590000" />
+    <option name="totallyTimeSpent" value="351660000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2007,7 +2129,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1920" height="999" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="774" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2030,11 +2152,10 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.80924857" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30430108" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29787233" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2078125" sideWeight="0.5324074" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21484375" sideWeight="0.5324074" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
@@ -2055,6 +2176,7 @@
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22451317" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962963" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2345,13 +2467,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/agent/FullEmpathicLC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="50" column="48" lean-forward="false" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/problem_skeleton.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-989">
@@ -2494,14 +2609,14 @@
       </provider>
     </entry>
     <entry file="dbDummy://dbtable:/84598465/79cdb3b3-bfa7-45ee-aa68-4b246c1e7051/wayangoutpostdb.problem">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -2537,21 +2652,6 @@
     <entry file="file://$PROJECT_DIR$/woServer/resources/img/mathspring_logo.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="60" column="34" lean-forward="false" selection-start-line="60" selection-start-column="34" selection-end-line="60" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="33" column="22" lean-forward="false" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/img/logo.gif">
@@ -2608,26 +2708,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="31" column="31" lean-forward="false" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/css/common_new.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="143" column="34" lean-forward="false" selection-start-line="143" selection-start-column="34" selection-end-line="143" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="378" column="29" lean-forward="true" selection-start-line="378" selection-start-column="29" selection-end-line="378" selection-end-column="29" />
-          <folding>
-            <element signature="n#style#0;n#div#6;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#7;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2643,7 +2723,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="96">
           <caret line="15" column="22" lean-forward="true" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2651,7 +2730,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="470">
           <caret line="86" column="21" lean-forward="false" selection-start-line="86" selection-start-column="21" selection-end-line="86" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2659,7 +2737,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
           <caret line="802" column="24" lean-forward="false" selection-start-line="802" selection-start-column="24" selection-end-line="802" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2667,7 +2744,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-22">
           <caret line="352" column="39" lean-forward="false" selection-start-line="352" selection-start-column="39" selection-end-line="352" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2679,25 +2755,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="445" column="25" lean-forward="false" selection-start-line="445" selection-start-column="25" selection-end-line="445" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
+        <state relative-caret-position="11280">
           <caret line="752" column="19" lean-forward="false" selection-start-line="752" selection-start-column="19" selection-end-line="752" selection-end-column="19" />
           <folding />
         </state>
@@ -2705,12 +2765,65 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="42" lean-forward="false" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
-          <folding>
-            <marker date="1495774602000" expanded="true" signature="14746:14759" ph="..." />
-            <marker date="1495774602000" expanded="true" signature="14803:14816" ph="..." />
-          </folding>
+        <state relative-caret-position="2970">
+          <caret line="198" column="25" lean-forward="false" selection-start-line="198" selection-start-column="25" selection-end-line="198" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6645">
+          <caret line="443" column="46" lean-forward="false" selection-start-line="443" selection-start-column="46" selection-end-line="443" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2070">
+          <caret line="138" column="4" lean-forward="false" selection-start-line="138" selection-start-column="1" selection-end-line="138" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/css/common_new.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2520">
+          <caret line="168" column="33" lean-forward="false" selection-start-line="168" selection-start-column="33" selection-end-line="168" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/web/WEB-INF/localhost/web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2610">
+          <caret line="174" column="57" lean-forward="false" selection-start-line="174" selection-start-column="53" selection-end-line="174" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/web/META-INF/context.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="54" lean-forward="false" selection-start-line="20" selection-start-column="54" selection-end-line="20" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring/mscontent/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-679">
+          <caret line="387" column="13" lean-forward="false" selection-start-line="387" selection-start-column="13" selection-end-line="387" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
