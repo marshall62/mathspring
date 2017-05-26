@@ -167,4 +167,5 @@ footer {
 
 .nav-item a:hover {
     background: #92DDA3 !important;
+    cursor: pointer;
 }
