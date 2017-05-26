@@ -42,6 +42,7 @@ function pluginProblem (responseText, textStatus, XMLHttpRequest) {
     var problem = activity.problem;
     var problemParams = activity.binding;
     var probContentPath = activity.probContentPath || problem.probContentPath;
+    probContentPath = probContentPath.replace(/\/$/g, "");
     var stmt = problem.statementHTML;
     var audio = problem.questionAudio;
     var fig = problem.questionImage;

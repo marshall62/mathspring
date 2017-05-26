@@ -52,7 +52,15 @@ body {
     border-top-right-radius: 10px;
     cursor: pointer;
 }
-.hint-thumb:hover{
+.hint-content{
+    position: relative;
+    margin: 0 5px -5px -5px;
+    background-color: rgba(255,255,255,0.5);
+    border: 5px solid transparent;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+.hint-thumb:hover, .hint-thumb-selected:hover{
     background-color: rgba(255,255,255,0.9);
 }
 .hint-thumb-selected{
@@ -61,14 +69,6 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     cursor: pointer;
-}
-.hint-content{
-    position: relative;
-    margin: 0 5px -5px -5px;
-    background-color: rgba(255,255,255,0.5);
-    border: 5px solid transparent;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
 }
 .play-hint-button{
     position: absolute;

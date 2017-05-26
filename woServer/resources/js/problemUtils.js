@@ -69,10 +69,11 @@ function prob_readProblem() {
     document.getElementById("QuestionSound").play();
 }
 
-function getFirstFigureImage() {
-    var figure_block = document.getElementById("ProblemFigure");
-    for(var i = 0; i < figure_block.children.length; i++) {
-        if(figure_block.children[i].tagName.match(/img/i)) return figure_block.children[i];
+function findFigure(element) {
+    if(element.tagName.match(/img|video/i)) return element;
+    for(var i = 0; i < element.childNodes.length; ++i) {
+        var found = findFigure(element.childNodes[i]);
+        if(found) return found;
     }
     return null;
 }
@@ -85,36 +86,49 @@ function prob_playHint (hintLabel) {
     var hint_thumb = document.getElementById(hintId+"Thumb");
     hint_thumb.style.visibility = "visible";
     hint_thumb.className = "hint-thumb-selected";
-    var figure = getFirstFigureImage();
+    var figure = findFigure(document.getElementById("ProblemFigure"));
+    var figure_parent = figure != null ? figure.parentNode : null;
+    var figure_html = figure != null ? figure.outerHTML : "";
     //Clear any overlaid hint images
-    if(figure != null && figure.dataset.figureSrc != null) {
-        figure.setAttribute("src", figure.dataset.figureSrc);
-        delete figure.dataset.figureSrc;
+    if(figure != null && figure.parentNode.dataset.figureHtml != null) {
+        figure_html =  figure_parent.dataset.figureHtml
+        figure_parent.innerHTML = figure_html;
+        delete figure_parent.dataset.figureHtml;
     }
     //clear side images
     var hintFigure = document.getElementById("HintFigure");
     if(hintFigure != null) hintFigure.innerHTML = "";
     var image_parameters = JSON.parse(hint_thumb.dataset.parameters);
-    //add overlay and side images
+    //add overlay and queue up side images
+    var side_figures = [];
     for(var image_id in image_parameters) {
         var parameter = image_parameters[image_id];
         var image = document.getElementById(image_id);
-        if(parameter == "overlay" && figure != null) {
-            // don't overwrite figureSrc if it's already been set, because then it would store a hint image instead
-            figure.dataset.figureSrc = figure.dataset.figureSrc || figure.getAttribute("src");
-            figure.setAttribute("src", image.getAttribute("src"));
+        if(parameter == "overlay" && figure_parent != null) {
+            //don't overwrite it if it's already there (so multiple overlays don't screw everything up)
+            figure_parent.dataset.figureHtml = figure_parent.dataset.figureHtml || figure_html;
+            image.style.display = "block"; //set it to display before we grab the html
+            figure_parent.innerHTML = image.outerHTML;
             image.style.display = "none"; //don't display the original in the hint area
         } else if(parameter == "side" && hintFigure != null) {
-            var side_image = document.createElement("img");
-            side_image.style.width = "100%";
-            side_image.style.height = "100%";
-            side_image.setAttribute("src", image.getAttribute("src"));
-            hintFigure.appendChild(side_image);
+            image.style.display = "block"; //set it to display before we grab the html
+            side_figures.push(image.outerHTML);
             image.style.display = "none"; //don't display the original in the hint area
-        } else if(parameter == "play_video") {
-            image.currentTime = 0;
-            image.play();
         }
+    }
+    //add in the side images, scaled by how many there are
+    for(var i = 0; i < side_figures.length; ++i) {
+        var side_figure = document.createElement("div");
+        side_figure.style.lineHeight = "0";
+        side_figure.innerHTML = side_figures[i];
+        side_figure.style.width = (100/side_figures.length) + "%";
+        side_figure.style.display = "inline-block";
+        hintFigure.appendChild(side_figure);
+    }
+    var videos = document.getElementsByTagName("VIDEO");
+    for(var vi = 0; vi < videos.length; ++vi) {
+        videos[vi].currentTime = 0;
+        videos[vi].play();
     }
     var hint = document.getElementById(hintId);
     hint.style.display = "initial";

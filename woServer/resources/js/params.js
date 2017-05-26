@@ -194,10 +194,12 @@ function getImageHtml(file, ext, resource, probContentPath, id){
     //Replace and image file name inside {} with the appropriate html
     if(ext != null) {
         var size_style = ' style="max-height: 100%; max-width: 100%"';
+        var pre = '<div style="line-height:0;">';
+        var pst = '</div>';
         if(ext.match(/^(gif|png|jpe?g|svg)$/i)){
-            return '<img' + id + size_style + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '">';
+            return pre + '<img' + id + size_style + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '">' + pst;
         } else if(ext.match(/^(mp4|ogg|webm)$/i)) { //Do the same for a video
-            return '<video' + id + size_style + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" controls preload="auto"></video>';
+            return pre + '<video' + id + size_style + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '" preload="auto"></video>' + pst;
         }
     }
     console.log("invalid image or video", file + "." + ext, resource, probContentPath);
@@ -238,9 +240,6 @@ function formatTextWithImageParameters(text, components, parameters, base_id) {
                 parameters[image_id] = image_parameters[1].trim();
             }
             replacement = getImageHtml(image_parts[0], image_parts[1], components.resource, components.probContentPath, image_id);
-            if(replacement.match(/<video/)) {
-                parameters[image_id] = "play_video";
-            }
         }
         text = text.replace(matches[i], replacement);
         //Note that we don't need to worry about duplicates;
