@@ -485,6 +485,7 @@ textarea {
 .topic-list__title, .topic-list__info {
     color: #003364; }
 .topic-list__title {
+    padding: 0 5px 0 5px;
     text-align: center;
     height: 60px; }
 .topic-list__info {

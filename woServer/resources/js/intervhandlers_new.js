@@ -4,16 +4,10 @@ var timewaited = 0;
 // This is for an attempt event that asks to highlight the hint button
 // its a shame this function has to know the image files that are defined in the CSS rather than fetching them from it.
 function highlightHintButton() {
-    var $hintLabel = $('#hint');
-    var $hintBtn = $hintLabel.parent();
-    var $hintLightbulb = $('#hint-lightbulb');
+    var $hintBtn = $('#hint');
     $hintBtn.addClass('animated tada');
-    $hintLabel.addClass('important-btn-label');
-    $hintLightbulb.attr('src', 'img/lightbulb_on.svg');
     setTimeout(function() {
         $hintBtn.removeClass('animated tada');
-        $hintLabel.removeClass('important-btn-label');
-        $hintLightbulb.attr('src', 'img/lightbulb.svg');
     }, 2000);
 }
 

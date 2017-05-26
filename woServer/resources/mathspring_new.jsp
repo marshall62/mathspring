@@ -7,8 +7,7 @@
     <title>MathSpring | Tutoring</title>
     <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
-    <%--<link href="css/animate.css" rel="stylesheet">--%>
-    <%--<link href="css/balloon.min.css" rel="stylesheet">--%>
+    <link href="css/animate.css" rel="stylesheet">
     <%--<link href="css/common_new.css" rel="stylesheet">--%>
     <link href="css/mathspring_new.css" rel="stylesheet">
     
@@ -112,6 +111,15 @@
             } else {
                 $(".dev-view").show();
             }
+
+            // Adjust the width of the character window
+            var srcCompanion = $('#learningCompanionWindow').attr('src');
+            var isJake = /.*Jake/.test(srcCompanion);
+            if (isJake) {
+                $('.huytran-practice__character-window').width(269);
+            } else {
+                $('.huytran-practice__character-window').width(260);
+            }
         });
     </script>
 
@@ -194,7 +202,6 @@
 
 <div id="interventionDialog" title="">
     <div id="interventionDialogContent"></div>
-
 </div>
 
 <div id="selectProblemDialog" title="Select Problem">
@@ -301,7 +308,7 @@
 <%--</div>--%>
 
 <div class="huytran-tutor">
-    <div class="huytran-sitenav" style=>
+    <div class="huytran-sitenav">
         <div class="huytran-sitenav__menu">
             <div class="huytran-sitenav__burger" onclick="toggleNav()">
                 <i class="fa fa-bars" aria-hidden="true" scale="1.5"></i>
@@ -315,7 +322,7 @@
 					<span class="huytran-sitenav__icon">
 						<i class="fa fa-lightbulb-o" aria-hidden="true"></i>
 					</span>
-                <span class="huytran-sitenav__buttontitle">Hints</span>
+                <span class="huytran-sitenav__buttontitle"><span id="hint_label">Hints</span></span>
             </a>
 
             <a href="#" class="huytran-sitenav__button" id="replay">
@@ -397,13 +404,15 @@
                     <span class="fa fa-minus"></span>
                 </div>
                 <div class="huytran-practice__character-window">
-                    <iframe id="learningCompanionWindow"
-                        name="lciframe"
-                        width="280"
-                        height="600"
-                        src="${learningCompanionMovie}"
-                        scrolling="no">
-                    </iframe>
+                    <div class="learningCompanionContainer">
+                        <iframe id="learningCompanionWindow"
+                                name="lciframe"
+                                width="280"
+                                height="600"
+                                src="${learningCompanionMovie}"
+                                scrolling="no">
+                        </iframe>
+                    </div>
                 </div>
             </div>
             <div class="huytran-practice__character-collapse hide">
@@ -439,6 +448,5 @@
 <%-- Only shown to test users--%>
 <div id="varBindings" style="display: none;"></div>
 
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

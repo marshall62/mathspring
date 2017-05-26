@@ -16,6 +16,7 @@
     <link href="css/graph_new.css" rel="stylesheet" type="text/css"/>
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/jchart.js"></script>
+
     <script>
         $.extend({
             getUrlVars: function () {
@@ -414,6 +415,7 @@
                     $.get("${pageContext.request.contextPath}/TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId="+currentTopicId+"&studentAction=backToSatHut&var=b&comment=",returnToHutComplete);
                 }
             });
+
         });
     </script>
 </head>
@@ -427,9 +429,18 @@
         </div><!-- navbar-header -->
 
         <nav id="main_nav" class="nav navbar-nav navbar-right">
-            <li class="nav-item"><a href="">My Garden</a></li>
-            <li class="nav-item"><a href="">My Progress</a></li>
-            <li class="nav-item"><a href="">Practice Area</a></li>
+            <li class="nav-item"><a class="js-go-to-my-garden">My Garden</a></li>
+            <li class="nav-item"><a id="myProg">My Progress</a></li>
+            <li class="nav-item">
+                <c:choose>
+                    <c:when test="${newSession}">
+                        <a onclick="window.location='TutorBrain?action=EnterTutor&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&eventCounter=0&var=b'">Practice Area</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a onclick="window.location='TutorBrain?action=MPPReturnToHut&sessionId=${sessionId}'+'&elapsedTime=${elapsedTime}' + '&eventCounter=${eventCounter}' + '&probId=${probId}&topicId=-1' + '&learningCompanion=${learningCompanion}&var=b'">Practice Area</a>
+                    </c:otherwise>
+                </c:choose>
+            </li>
             <li class="dropdown dropdown-position custom-dropdown">
                 <a href="#"
                    class="dropdown-toggle custom-dropdown-toggle"

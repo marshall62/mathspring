@@ -1,8 +1,9 @@
 @import "font-awesome/css/font-awesome.min.css";
+@import url("https://fonts.googleapis.com/css?family=Raleway");
 
 body {
     margin: 0;
-    font-family: Raleway;
+    font-family: Raleway, Helvetica, san-serif;
     font-size: 0.9em;
     position: relative;
 }
@@ -154,7 +155,7 @@ body {
 .huytran-practice__character {
     position: absolute;
     right: 0;
-    margin: 30px 30px 0 30px;
+    margin: 0 30px 0 30px;
 }
 
 .huytran-practice__character.show {
@@ -200,7 +201,7 @@ body {
 
 .huytran-practice__show-button span {
     position: relative;
-    top: 1px;
+    top: 0px;
     left: 2px;
 }
 
@@ -229,6 +230,7 @@ body {
     color: #003364;
     top: 40px;
     left: 18px;
+    z-index: 2;
 }
 
 .huytran-practice__hide-button:hover {
@@ -322,3 +324,17 @@ span.huytran-sitenav__buttontitle {
     color: #003364;
     cursor: pointer;
 }
+
+.huytran-practice__character-window {
+    width: 280px;
+    height: 594px;
+    overflow: hidden;
+}
+
+.learningCompanionContainer {
+    position: relative;
+    top: -10px;
+    left: -11px;
+    overflow: hidden;
+}
+
