@@ -129,6 +129,10 @@ body {
     margin-right: 30px;
 }
 
+.huytran-practice__navitem span {
+    padding-right: 10px;
+}
+
 .huytran-practice__container {
     position: relative;
     top: 50px;

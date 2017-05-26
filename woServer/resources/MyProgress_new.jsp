@@ -441,27 +441,7 @@
                     </c:otherwise>
                 </c:choose>
             </li>
-            <li class="dropdown dropdown-position custom-dropdown">
-                <a href="#"
-                   class="dropdown-toggle custom-dropdown-toggle"
-                   data-toggle="dropdown"
-                   role=button
-                   aria-haspopup="true"
-                   aria-expanded="false"
-                >
-                    <i><img src="img/avatar.svg" alt=""></i>
-                    &nbsp;
-                    ${studentFirstName}&nbsp;${studentLastName}
-                    <span class="caret"></span>
-                </a><!-- dropdown-toggle -->
-
-                <ul class="dropdown-menu">
-                    <li><a href="">HELP</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">LOGOUT</a>
-                    </li>
-                </ul><!-- dropdown-menu -->
-            </li><!-- dropdown -->
+            <li class="nav-item"><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">Log Out &nbsp; <span class="fa fa-sign-out"></span></a>
         </nav>
     </div><!-- wrapper -->
 </header>
