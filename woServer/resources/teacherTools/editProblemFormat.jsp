@@ -8,25 +8,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Edit QuickAuth Problem Format</title>
+    <title>QuickAuth Problem Format Editor</title>
     <link rel="stylesheet" type="text/css" href="css/quickAuthProblem.css"/>
     <link rel="stylesheet" type="text/css" href="css/quickAuthFormatEditor.css"/>
-    <%--@elvariable id="templates" type="String[]"--%>
-    <%--@elvariable id="fonts" type="String[]"--%>
-    <%--@elvariable id="templates" type="String[]"--%>
-    <script type="text/javascript" src="js/buildQuickAuth.js"></script>
-    <script type="text/javascript">
-        function buildPage() {
-            <%-- Pass the settings from the database to our javascript --%>
-            TEMPLATES = ${templates};
-            FONTS = ${fonts};
-            COLORS = ${colors};
-            PROBLEM_FORMAT = ${problemFormat};
-            buildTemplateEditor();
-        }
-    </script>
+    <script src="js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/quickAuth/format2json.js"></script>
+    <script type="text/javascript" src="js/quickAuth/formatBuilder.js"></script>
+    <script type="text/javascript" src="js/quickAuth/formatEditor.js"></script>
 </head>
-<body onLoad="buildPage()" style="width:800px;height:600px;background-color:#444;">
+<%--@elvariable id="templates" type="String[]"--%>
+<%--@elvariable id="fonts" type="String[]"--%>
+<%--@elvariable id="templates" type="String[]"--%>
+<%--@elvariable id="problemFormat" type="String"--%>
+<body onLoad="quickAuthFormatEditor.buildFormatEditor(${templates}, ${fonts}, ${colors}, ${problemFormat})" style="width:800px;height:600px;background-color:#444;">
 <div style="float:right;height:100%;width:200px;display:flex;flex-direction:column;justify-content:space-around;">
     <div style="height:45%">
         <div class="header">Problem Layout<br/>Preview:</div>

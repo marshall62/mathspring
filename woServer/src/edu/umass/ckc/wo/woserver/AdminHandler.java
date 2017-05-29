@@ -96,7 +96,7 @@ public class AdminHandler {
                 ProblemMgr.reloadProblem(conn, ee.getProbId());
             }
             Problem p = ProblemMgr.getProblem(ee.getProbId());
-            String quickAuthJSP = "problem_skeleton.jsp";
+            String quickAuthJSP = "quickAuthProblem.jsp";
             disp = servletRequest.getRequestDispatcher(quickAuthJSP);
             servletRequest.setAttribute("problem",p);
             servletRequest.setAttribute("preview",true);
@@ -107,7 +107,6 @@ public class AdminHandler {
             servletRequest.setAttribute("teacherId",ee.getTeacherId());
             //Allows scaling the preview
             servletRequest.setAttribute("zoom", ee.getServletParams().getDouble("zoom", 1.0));
-            servletRequest.setAttribute("addHintButton", true);
             String servContext= servletRequest.getContextPath();
             if (servContext != null && servContext.length()>1)
                 servContext=servContext.substring(1);    // strip off the leading /

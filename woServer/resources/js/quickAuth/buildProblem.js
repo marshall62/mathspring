@@ -1,109 +1,137 @@
+//Module pattern for better scoping
+var quickAuthBuildProblem = (function() {
+
+    //The module we are exporting
+var m = {};
+
 function isNotEmpty(value) {
     //note that simple equality considers null == undefined, so this will catch both
     return value != null && value != "";
 }
 
-function plug(components) {
-    var probStatement = components.stmt;
-    var probFigure = components.fig;
-    var probSound = components.audio;
-    var probUnits = components.units;
-    var problemParams = components.problemParams;
+m.build = function(activity, previewMode) {
+    var problem = activity.problem;
+    var questType = problem.questType;
+    var mode = problem.mode;
+    var probContentPath = activity.probContentPath || problem.probContentPath;
+    probContentPath = probContentPath.replace(/\/$/g, "");
+    var resource = problem.resource;
+    var probSound = problem.questionAudio;
+    var probUnits = problem.units;
+    var problemParams = activity.binding;
     pickParams(problemParams); //chooses which set of parameters to use
-    var hints = components.hints;
-    var problemFormat = components.problemFormat;
 
     var problemContainer = document.getElementById("ProblemContainer");
-    buildProblem(problemContainer, problemFormat, true, false, false);
+    var probStatement = problem.statementHTML;
+    var probFigure = problem.questionImage;
+    var answers = problem.answers;
+    var hints = problem.hints;
+    var problemFormat = problem.format;
+
+    quickAuthFormatBuilder.buildProblem(problemContainer, problemFormat, true, false, false);
     if(isNotEmpty(probStatement)){
-        document.getElementById("ProblemStatement").innerHTML = parameterizeText(formatText(probStatement, components), problemParams);
+        document.getElementById("ProblemStatement").innerHTML = parameterizeText(formatText(probStatement, resource, probContentPath, problemParams, previewMode), problemParams);
     }
     if(isNotEmpty(probFigure)){
-        document.getElementById("ProblemFigure").innerHTML = parameterizeText(formatText(probFigure, components), problemParams);
+        document.getElementById("ProblemFigure").innerHTML = parameterizeText(formatText(probFigure, resource, probContentPath, problemParams, previewMode), problemParams);
     }
     if(isNotEmpty(probSound)) {
-        //I don't think the below lines do what I want them to.
-        //#rezecib: not sure what they meant above, sound seems to be working fine
-        document.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".ogg", components.resource, components.probContentPath));
-        document.getElementById("QuestionSound").setAttribute("src", getURL(probSound + ".mp3", components.resource, components.probContentPath));
+        sound_elt = document.createElement("audio");
+        sound_elt.id = "QuestionSound";
+        //I think this was intended to support ogg as well,
+        // but all hint audioResources have no extension
+        // and there's no way to magically figure out which one is right
+        // sound_elt.setAttribute("src", getURL(probSound + ".ogg", resource, probContentPath));
+        sound_elt.setAttribute("src", getURL(probSound + ".mp3", resource, probContentPath));
+        document.getElementById("ProblemStatement").appendChild(sound_elt);
     }
     if(isNotEmpty(probUnits)) {
-        document.getElementById("Units").innerHTML = parameterizeText(formatText(getUnits(), components), problemParams);
+        //Why can't we just use probUnits directly?
+        document.getElementById("Units").innerHTML = parameterizeText(formatText(window.parent.getUnits(), resource, probContentPath, problemParams, previewMode), problemParams);
     }
 
     var hint_labels = [];
+    var hint_thumbs = document.getElementById("HintThumbs");
     if(isNotEmpty(hints)) {
         for (i = 0; i < hints.length; ++i) {
             var hintLabel = hints[i].label;
             hint_labels.push(hintLabel);
-            var hintId = getIdCorrespondingToHint(hintLabel);
-            document.getElementById(hintId+"Thumb").addEventListener("click",
+            var hintId = problemUtils.getIdCorrespondingToHint(hintLabel);
+            var hint_thumb = document.createElement("div");
+            hint_thumb.className = "hint-thumb";
+            hint_thumb.id = hintId + "Thumb";
+            hint_thumb.style.visibility = "hidden";
+            hint_thumb.innerHTML = i+1;
+            hint_thumb.addEventListener("click",
                 //This looks weird but is necessary to save the hintLabel value properly
                 function(hint) {
                     return function(){prob_playHint(hint);};
                 }(hintLabel)
             );
-            hint_thumb = document.getElementById(hintId+"Thumb");
-            hint_thumb.style.display = "block";
+            hint_thumbs.appendChild(hint_thumb);
+            var hint_content = document.getElementById("HintContent");
+            var hint = document.createElement("div");
+            hint.id = hintId;
+            hint.className = "hint";
+            hint_content.appendChild(hint);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 var image_parameters = {};
-                var formatted_text = formatTextWithImageParameters(hints[i].statementHTML, components, image_parameters, hintId);
+                var formatted_text = formatTextWithImageParameters(hints[i].statementHTML, resource, probContentPath, problemParams, image_parameters, hintId, previewMode);
                 hint_thumb.dataset.parameters = JSON.stringify(image_parameters);
-                document.getElementById(hintId).innerHTML = parameterizeText(formatted_text, problemParams);
+                hint.innerHTML = parameterizeText(formatted_text, problemParams);
             }
             else{
                 alert("text missing for hint: "+i);
             }
             if(isNotEmpty(hints[i].hoverText)){
-                document.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, components), problemParams));
+                document.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, resource, probContentPath, problemParams, previewMode), problemParams));
             }
-            //I don't think this does what I want
-            //#rezecib: not sure what they meant above, sound seems to be working fine
             if (isNotEmpty(hints[i].audioResource)) {
-                document.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".ogg", components.resource, components.probContentPath));
-                document.getElementById(hintId+"Sound").setAttribute("src", getURL(hints[i].audioResource + ".mp3", components.resource, components.probContentPath));
+                //I think this was intended to support ogg as well,
+                // but all hint audioResources have no extension
+                // and there's no way to magically figure out which one is right
+                var sound_elt = document.createElement("audio");
+                sound_elt.id = hintId+"Sound";
+                // sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".ogg", resource, probContentPath));
+                sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".mp3", resource, probContentPath));
+                hint.appendChild(sound_elt);
             }
         }
 
         if(hints[0] == undefined && isNotEmpty(hints.label)){
-            document.getElementById(getIdCorrespondingToHint(hints.label)+"Sound").load();
+            document.getElementById(problemUtils.getIdCorrespondingToHint(hints.label)+"Sound").load();
         }
         else if(isNotEmpty(hints[0].audioResource)){
-            document.getElementById(getIdCorrespondingToHint(hints[0].label)+"Sound").load();
+            document.getElementById(problemUtils.getIdCorrespondingToHint(hints[0].label)+"Sound").load();
         }
     }
 
     //For demo and example modes all answers should stay hidden
-    if (components.mode !== "demo" && components.mode !== "example") {
-        var questType = components.questType;
+    if (mode !== "demo" && mode !== "example") {
         if (questType.match(/^multi(Choice|Select)$/)) {
+            var multi_answers = document.getElementById("MultipleChoiceAnswers");
             var multiSelect = questType === "multiSelect";
-            document.getElementById("MultipleChoiceAnswers").style.display = "block";
-            var answers = components.answers;
+            multi_answers.style.display = "block";
             if(isNotEmpty(answers)) {
                 for(var letter in answers) {
                     if(!answers.hasOwnProperty(letter)) continue;
-                    var answerElt = document.getElementById("Answer" + letter.toUpperCase());
-                    answerElt.parentNode.style.display = "block";
-                    answerElt.innerHTML = parameterizeText(formatText(answers[letter], components), problemParams);
+                    var answer_html = parameterizeText(formatText(answers[letter], resource, probContentPath, problemParams, previewMode), problemParams);
+                    var answerElt = buildAnswerRow(multiSelect, letter.toUpperCase(), answer_html);
+                    multi_answers.appendChild(answerElt);
                     var button = document.getElementById(letter.toUpperCase() + "Button");
                     if(multiSelect) {
-                        button.style.display = "none";
+                        // button.style.display = "none";
                         // resets it to what the CSS says, which is inline-block
-                        document.getElementById(letter.toUpperCase() + "Checkbox").style.display = "";
+                        // document.getElementById(letter.toUpperCase() + "Checkbox").style.display = "";
                     } else {
-                        button.addEventListener("click",
-                            function(answer) {
-                                return function(){answerClicked(document, answer);};
-                            }(letter)
-                        );
+                        problemUtils.addMultiChoiceClickListener(document, letter.toUpperCase());
                     }
                 }
             }
             if(multiSelect) {
                 document.getElementById("submit_answer").addEventListener("click", submitMultiSelectAnswer);
             }
-            if(!components.previewMode) shuffleAnswers();
+            if(!previewMode) problemUtils.shuffleAnswers(!multiSelect);
         } else {
             if(questType === "shortAnswer") {
                 document.getElementById("ShortAnswerBox").style.display = "block";
@@ -115,7 +143,7 @@ function plug(components) {
         }
     }
 
-    if(components.previewMode) {
+    if(previewMode) {
         problemContainer.style.float = "left";
         var play_hint_button = document.createElement("div");
         play_hint_button.className = "play-hint-button";
@@ -136,10 +164,30 @@ function plug(components) {
     }
     // Detects LaTeX code and turns it into nice HTML
     MathJax.Hub.Typeset();
+
+    problemUtils.initialize(questType && questType.match(/multichoice/i));
+}
+
+function buildAnswerRow(multiSelect, letter, answer_html) {
+    var answer_row = document.createElement("div");
+    answer_row.className = "answer-row";
+    answer_row.dataset.letter = letter;
+    var answer_button = multiSelect ?
+        `<input id="${letter}Checkbox" class="multiselect-checkbox" type="checkbox">`:
+        `
+        <div id="${letter}Button" class="button">
+            <div id="${letter}Check" class="check"></div>
+            <div id="${letter}X" class="x"></div>
+            <div id="${letter}Text" class="button_text">${letter}</div>
+            <div id="${letter}Ellipse" class="ellipse"></div>
+        </div>
+        `;
+    answer_row.innerHTML = answer_button + `<div id="Answer${letter}" class="answer_text">${answer_html}</div>`;
+    return answer_row;
 }
 
 function submitShortAnswer() {
-    processShortAnswer(document, document.getElementById("answer_field").value);
+    problemUtils.processShortAnswer(document, document.getElementById("answer_field").value);
 }
 
 function submitMultiSelectAnswer() {
@@ -154,31 +202,7 @@ function submitMultiSelectAnswer() {
             }
         }
     }
-    processShortAnswer(document, selections);
-}
-
-function shuffleAnswers() {
-    var container = document.getElementById("MultipleChoiceAnswers")
-    var answers = container.children;
-    //Store the original letter ordering
-    var letters = [];
-    for(var i = 0; i < answers.length; ++i) {
-        if(answers[i].style.display == "block") {
-            letters.push(answers[i].children[0].children[2].innerHTML);
-        }
-    }
-    //Do the shuffle
-    for(var i = answers.length; i >= 0; --i) {
-        container.appendChild(answers[Math.random()*i | 0]);
-    }
-    //Fix the letters
-    var l = 0;
-    for(var i = 0; i < answers.length; ++i) {
-        if(answers[i].style.display == "block") {
-            answers[i].children[0].children[2].innerHTML = letters[l];
-            ++l;
-        }
-    }
+    problemUtils.processShortAnswer(document, selections);
 }
 
 function getURL(filename, resource, probContentPath) {
@@ -187,15 +211,15 @@ function getURL(filename, resource, probContentPath) {
     return probContentPath + "/html5Probs/" + resource.split(".")[0] + "/" + filename;
 }
 
-function getImageHtml(file, ext, resource, probContentPath, id){
+function getImageHtml(file, ext, resource, probContentPath, id, previewMode){
     //if id is null, don't add an id to the image
     id = id == null ? "" : ' id="' + id + '"';
 
     //Replace and image file name inside {} with the appropriate html
+    var pre = '<div style="line-height:0;">';
+    var pst = '</div>';
     if(ext != null) {
         var size_style = ' style="max-height: 100%; max-width: 100%"';
-        var pre = '<div style="line-height:0;">';
-        var pst = '</div>';
         if(ext.match(/^(gif|png|jpe?g|svg)$/i)){
             return pre + '<img' + id + size_style + ' src="' + getURL(file + "." + ext, resource, probContentPath) + '">' + pst;
         } else if(ext.match(/^(mp4|ogg|webm)$/i)) { //Do the same for a video
@@ -203,13 +227,15 @@ function getImageHtml(file, ext, resource, probContentPath, id){
         }
     }
     console.log("invalid image or video", file + "." + ext, resource, probContentPath);
-    //TODO(rezecib): for test users (or admin preview?) display an "invalid image" directly
+    if(previewMode) {
+        return pre + "<div style=\"color:red;line-height:16px;\">INVALID IMAGE OR VIDEO: " + file + "." + ext + "</div>" + pst;
+    }
     return "";
 }
 
 //Just a wrapper for when you don't care about the parameters
-function formatText(text, components) {
-    return formatTextWithImageParameters(text, components, {}, "x");
+function formatText(text, resource, probContentPath, problemParams, previewMode) {
+    return formatTextWithImageParameters(text, resource, probContentPath, problemParams, {}, "unclassified", previewMode);
 }
 
 //Extracts images/video contained by {[]}
@@ -217,14 +243,14 @@ function formatText(text, components) {
 // e.g. whether to place it over the figure, side-by-side, or in the hint
 //text: string; the text to format
 //components: object; components of the problem
-//parameters: object; will be used to store parameters for each image, as a mapping of {image_id -> parameter}
-function formatTextWithImageParameters(text, components, parameters, base_id) {
+//parameters: object; will be used to store parameters for each image/video, as a mapping of {image_id -> parameter}
+function formatTextWithImageParameters(text, resource, probContentPath, problemParams, imageParams, base_id, previewMode) {
     // this is just a pattern to extract all occurrences of {[...]}
     var matches = text.match(/\{\[[^\{\}\[\]]*\]\}/igm);
     if(matches == null) matches = [];
     for(var i = 0; i < matches.length; i++) {
         var match = matches[i].slice(2, -2); //remove {[]}
-        var parameterized_match = parameterizeText(match, components.problemParams);
+        var parameterized_match = parameterizeText(match, problemParams);
         var replacement = matches[i];
         if(parameterized_match != match) { //then this is an expression
             replacement = parseSimpleExp(parameterized_match);
@@ -237,9 +263,9 @@ function formatTextWithImageParameters(text, components, parameters, base_id) {
             var image_id = base_id + "-" + i;
             // currently assuming only one parameter
             if (base_id != null && image_parameters.length > 1) {
-                parameters[image_id] = image_parameters[1].trim();
+                imageParams[image_id] = image_parameters[1].trim();
             }
-            replacement = getImageHtml(image_parts[0], image_parts[1], components.resource, components.probContentPath, image_id);
+            replacement = getImageHtml(image_parts[0], image_parts[1], resource, probContentPath, image_id, previewMode);
         }
         text = text.replace(matches[i], replacement);
         //Note that we don't need to worry about duplicates;
@@ -573,32 +599,6 @@ function pickParams(problemParams) {
     }
 }
 
-function getConstraintJSon() {
-    var bindings = window.parent.getProblemParams();
-    return bindings;
-}
+return m;
 
-function getProblemStatement() {
-    return window.parent.getProblemStatement();
-
-}
-
-function getProblemFigure() {
-    return window.parent.getProblemFigure();
-}
-
-function getProblemSound() {
-    return window.parent.getProblemSound();
-}
-
-function getAnswers () {
-    return window.parent.getAnswers();
-}
-
-function getHints() {
-    return window.parent.getHints();
-}
-
-function getUnits() {
-    return window.parent.getUnits();
-}
+})();

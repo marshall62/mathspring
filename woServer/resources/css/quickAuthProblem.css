@@ -37,7 +37,7 @@ body {
     width: 50%;
     overflow: hidden;
 }
-.hint-thumbs{
+#HintThumbs{
     display: flex;
     flex-direction: row;
     margin: -5px 5px 0 -5px;
@@ -52,7 +52,7 @@ body {
     border-top-right-radius: 10px;
     cursor: pointer;
 }
-.hint-content{
+#HintContent{
     position: relative;
     margin: 0 5px -5px -5px;
     background-color: rgba(255,255,255,0.5);
