@@ -425,7 +425,9 @@
 <header class="site-header" role="banner">
     <div id="wrapper">
         <div class="navbar-header">
-            <img class="logo" src="img/ms_mini_logo_new.png">
+            <img src="img/mstile-150x150.png" alt="" class="nav__logo-image">
+            <span class="nav__logo-text"><span class="nav__logo-text--green-letter">M</span>ATH<span class="nav__logo-text--green-letter">S</span>PRING
+        </span>
         </div><!-- navbar-header -->
 
         <nav id="main_nav" class="nav navbar-nav navbar-right">
