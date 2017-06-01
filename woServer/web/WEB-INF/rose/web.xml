@@ -24,7 +24,7 @@
     <context-param>
         <param-name>host</param-name>
         <!--<param-value>rose.cs.umass.edu</param-value>-->
-        <param-value>tutor.mathspring.org</param-value>
+        <param-value>mathseeds.wpi.edu:8080/woj</param-value>
         <!--<param-value>cadmium.cs.umass.edu</param-value>-->
     </context-param>
     <!--
@@ -54,7 +54,7 @@
 
     <context-param>
         <param-name>webContentPath</param-name>
-        <param-value>http://tutor.mathspring.org/mathspring/mscontent/</param-value>
+        <param-value>http://mathseeds.wpi.edu:8080/mathspring/mscontent/</param-value>
     </context-param>
 
     <!--YOU MUST SET THESE PARAMS TO BE APPROPRIATE FOR YOUR MACHINE.   You must reference the Flash

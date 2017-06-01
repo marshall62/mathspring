@@ -42,8 +42,14 @@ function servletFormPost (action, args, callbackFn) {
 
 // args is assumed to begin with an &  and is a string of parameters like &p1=44&p2=8484 ...
 function getTutorServletURL (action, args) {
-    return "/"+sysGlobals.wayangServletContext + "/" + sysGlobals.servletName+"?action=" +action+"&sessionId="+globals.sessionId+"&elapsedTime="
-        + globals.elapsedTime + "&clickTime="+ globals.clickTime + "&eventCounter="+ sysGlobals.eventCounter++ + args ;
+    return "/" + sysGlobals.wayangServletContext + "/" + sysGlobals.servletName
+        + "?action=" + action
+        + "&sessionId=" + globals.sessionId
+        + "&elapsedTime=" + globals.elapsedTime
+        + "&clickTime=" + globals.clickTime
+        + "&eventCounter="+ sysGlobals.eventCounter++
+        + "&var=b"
+        + args ;
 }
 
 // Makes a synchronous call to the server.

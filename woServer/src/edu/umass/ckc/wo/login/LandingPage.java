@@ -17,7 +17,8 @@ import edu.umass.ckc.wo.woserver.ServletInfo;
 public class LandingPage {
 
     // public static final String JSP = "tempSplash.jsp";
-   public static final String JSP = "Dashboard.jsp";
+    public static final String JSP = "Dashboard.jsp";
+    public static final String JSP_NEW = "Dashboard_new.jsp";
     private ServletInfo info;
     private SessionManager smgr;
 
@@ -34,7 +35,11 @@ public class LandingPage {
         m.loadProbs(smgr.getConnection());
 
         DashboardHandler h = new DashboardHandler(info.getServletContext(),smgr,smgr.getConnection(),info.getRequest(),info.getResponse());
-        h.showSplashPage(JSP, true);
+        if ("b".equals(info.getRequest().getParameter("var"))) {
+            h.showNewSplashPage(JSP_NEW, true);
+        } else {
+            h.showSplashPage(JSP, true);
+        }
         return false;
 
     }
