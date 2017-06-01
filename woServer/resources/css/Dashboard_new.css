@@ -4,7 +4,7 @@
  * 2. Correct the line height in all browsers.
  * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
-@import url("https://fonts.googleapis.com/css?family=Raleway");
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400");
 @import "font-awesome/css/font-awesome.min.css";
 html {
     font-family: sans-serif;
@@ -378,32 +378,53 @@ textarea {
     -ms-flex-pack: justify;
     justify-content: space-between;
     padding: 10px;
-    font-family: Raleway, Helvetica, Arial, "Lucida Grande", sans-serif; }
+    font-family: Raleway, Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
 .nav__logo-image {
     margin: 5px 10px 0 10px;
     border-radius: 5px;
     width: 40px;
-    height: 40px; }
+    height: 40px;
+}
+
 .nav__logo-text {
     font-size: 2em;
     position: relative;
-    top: -7px; }
+    top: -8px;
+    font-weight: 300;
+}
+
+.nav__logo-text--green-letter {
+    color: #2ECC71;
+}
+
 .nav__list {
     margin-top: 18px;
     list-style: none;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: row;
-    flex-direction: row; }
+    flex-direction: row;
+}
+
 .nav__dropdown:hover .nav__dropdown-content {
-    display: block; }
+    display: block;
+}
+
 .nav__dropdown-button {
     color: #003364;
-    cursor: pointer; }
+    cursor: pointer;
+}
+
 .nav__dropdown-button:hover {
-    background: #92DDA3; }
+    background: #92DDA3;
+}
+
 .nav__dropdown-button:focus {
-    background: #2ECC71; }
+    background: #2ECC71;
+}
+
 .nav__dropdown-content {
     display: none;
     position: absolute;
@@ -411,26 +432,37 @@ textarea {
     top: 60px;
     background: white;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1; }
+    z-index: 1;
+}
+
+
 .nav__dropdown-content a {
     float: none;
     text-align: center;
     color: #003364;
     text-decoration: none;
-    display: block; }
+    display: block;
+}
+
 .nav__item--last {
-    margin-right: 20px; }
+    margin-right: 20px;
+}
+
 .nav__item a {
     padding: 15px 25px;
     text-decoration: none;
-    color: #003364; }
+    color: #003364;
+}
+
 .nav__item span {
     padding-right: 15px;
 }
+
 .nav__item a:hover {
     cursor: pointer;
     background-color: #92DDA3;
-    box-shadow: inset 0 0 10px #7ec98f; }
+    box-shadow: inset 0 0 10px #7ec98f;
+}
 
 .topic-list {
     display: -ms-flexbox;
@@ -441,45 +473,68 @@ textarea {
     color: #FFF;
     background-color: #3dc3e2;
     background-image: radial-gradient(#3dc3e2, #3dc3e2 0%, #1887a1 70%, #116275 100%);
-    min-height: calc(100vh - 72px); }
+    min-height: calc(100vh - 72px);
+}
+
 .topic-list .container {
     margin-left: 50px;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-flow: row wrap;
-    flex-flow: row wrap; }
+    flex-flow: row wrap;
+}
+
 .topic-list__item {
     margin: 30px 20px 30px 20px;
     perspective: 1000px;
-    position: relative; }
+    position: relative;
+}
+
+
 .topic-list__item:hover .topic-list__flipper {
-    transform: rotateY(-180deg); }
+    transform: rotateY(-180deg);
+}
+
 .topic-list__item, .topic-list__front, .topic-list__back {
     width: 250px;
     height: 340px;
-    border-radius: 5px; }
+    border-radius: 5px;
+}
+
 .topic-list__flipper {
     transition: 0.6s;
     transform-style: preserve-3d;
-    position: relative; }
+    position: relative;
+}
+
 .topic-list__front, .topic-list__back {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     position: absolute;
     top: 0;
-    left: 0; }
+    left: 0;
+}
+
 .topic-list__front {
     z-index: 2;
-    transform: rotateX(0); }
+    transform: rotateX(0);
+}
+
 .topic-list__front--0 {
     background-color: rgba(255, 193, 108, 0.9);
-    border: 1px solid #d27900; }
+    border: 1px solid #d27900;
+}
+
 .topic-list__front--20 {
     background-color: rgba(252, 210, 153, 0.9);
-    border: 1px solid #f59007; }
+    border: 1px solid #f59007;
+}
+
 .topic-list__front--40 {
     background-color: rgba(253, 233, 104, 0.9);
-    border: 1px solid #c9af03; }
+    border: 1px solid #c9af03;
+}
+
 .topic-list__front--60 {
     background-color: rgba(146, 221, 163, 0.9);
     border: 1px solid #33a34c; }

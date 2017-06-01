@@ -1,8 +1,9 @@
 @import "font-awesome/css/font-awesome.min.css";
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400");
 
 .progress-data-wrapper {
     padding: 34px 34px;
-    background: #078A68;
+    background-image: radial-gradient(#3dc3e2, #3dc3e2 0%, #1887a1 70%, #116275 100%);
     position: relative;
 }
 
@@ -146,14 +147,19 @@ textarea:focus {
     padding: 10px;
     font-family: Raleway, Helvetica, Arial, "Lucida Grande", sans-serif; }
 .nav__logo-image {
-    margin: 5px 10px 0 10px;
+    margin: -8px 10px 0 5px;
     border-radius: 5px;
     width: 40px;
     height: 40px; }
 .nav__logo-text {
-    font-size: 2em;
+    font-size: 2.3em;
     position: relative;
-    top: -7px; }
+    top: 4px;
+    font-weight: 300;
+}
+.nav__logo-text--green-letter {
+    color: #2ECC71;
+}
 .nav__list {
     margin-top: 18px;
     list-style: none;
