@@ -231,7 +231,7 @@ public class TutorBrainHandler {
             else if (e instanceof GetQuickAuthProblemSkeletonEvent) {
                 RequestDispatcher disp=null;
                 Problem p = ProblemMgr.getProblem(((GetQuickAuthProblemSkeletonEvent) e).getProbId());
-                String quickAuthJSP = "problem_skeleton.jsp";
+                String quickAuthJSP = "quickAuthProblem.jsp";
                 disp = servletInfo.getRequest().getRequestDispatcher(quickAuthJSP);
                 servletInfo.getRequest().setAttribute("problem",p);
                 servletInfo.getRequest().setAttribute("sessionId",smgr.getSessionNum());

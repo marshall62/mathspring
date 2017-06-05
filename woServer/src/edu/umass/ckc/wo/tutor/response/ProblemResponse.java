@@ -108,52 +108,6 @@ public class ProblemResponse extends Response {
         return this.noMoreProblems;
     }
 
-    // In multiple choice problems, we would like the answer slot to be chosen randomly, so that the answer
-    // for a given problem is not always, for instance, c.
-    // Not all problems have an e answer, so e is not a candidate for switching.
-    // Note that we only have the capability to shuffle answers in HTML5 problems.
-    private String chooseAnswerPosition(Problem p, String oldAnswer) {
-        if (!(oldAnswer.equals("a") || oldAnswer.equals("b") || oldAnswer.equals("c") || oldAnswer.equals("d") || oldAnswer.equals("e"))) {
-            return "";
-        }
-        String newAns = "";
-        Random randomGenerator = new Random();
-        int randomIndex = -1;
-        if (p.getForm() != null && p.getForm().equals(Problem.QUICK_AUTH) && p.isMultiChoice()) {
-
-            randomIndex = randomGenerator.nextInt(p.getAnswers().size());
-        }
-        else {
-            randomIndex = randomGenerator.nextInt(4);
-        }
-        switch (randomIndex) {
-            case(0):
-                newAns = "a";
-                break;
-            case(1):
-                newAns = "b";
-                break;
-            case(2):
-                newAns = "c";
-                break;
-            case(3):
-                newAns = "d";
-                break;
-        }
-        return newAns;
-    }
-    
-    public void shuffleAnswers(StudentState state) throws SQLException {
-        Problem problem = getProblem();
-        String oldAnswer = problem.getAnswer();
-        String newAnswer = chooseAnswerPosition(problem, oldAnswer);
-        if (newAnswer != "") {
-            state.setProblemAnswer(newAnswer);
-            jsonObject.element("oldAnswer", oldAnswer);
-            jsonObject.element("newAnswer", newAnswer);
-        }
-    }
-
     public void setEndPage(String endPage) {
         this.endPage = endPage;
         jsonObject.element("endPage",endPage);
@@ -172,12 +126,11 @@ public class ProblemResponse extends Response {
         return params;
     }
 
+    //This isn't used anywhere?
     public void setProblemBindings(SessionManager smgr) throws SQLException {
         Problem problem = this.getProblem();
         if (problem != null && problem.isParametrized()) {
             problem.getParams().addBindings( this, smgr.getStudentId(), smgr.getConnection(), smgr.getStudentState());
-            if (problem.isMultiChoice())
-                this.shuffleAnswers(smgr.getStudentState());
             // parameterized short answer problems need to save the possible answers in the student state
 
         }

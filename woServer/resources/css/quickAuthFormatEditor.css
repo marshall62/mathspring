@@ -19,7 +19,8 @@
 .problem-container {
     width: 600px;
     height: 600px;
-    zoom: 0.333;
+    transform: scale(0.333);
+    transform-origin: top left;
     box-sizing: border-box;
     border-width: 2px;
     background-color: #8ED8E0;

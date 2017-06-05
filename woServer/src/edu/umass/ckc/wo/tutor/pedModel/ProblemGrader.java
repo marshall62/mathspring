@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -78,9 +79,11 @@ public class ProblemGrader {
         }
         else if (p != null) {
             if (p.isParametrized()) {
-                if (p.isMultiChoice())
+                if (p.isMultiChoice()) {
                     return smgr.getStudentState().getProblemAnswer().equalsIgnoreCase(userInput.trim());
-                else {
+                } else if(p.isMultiSelect()) {
+                    return isMultiSelectAnswerCorrect(smgr.getStudentState().getProblemAnswer(), userInput);
+                } else {
                     // Get the list and check if one element is equal to student input.  This list comes from the StudentState
                     // because it depends on the bindings selected for this problem and this student
                     List<String> possibleInputs = smgr.getStudentState().getPossibleShortAnswers();
@@ -92,9 +95,20 @@ public class ProblemGrader {
                     return findAnswerMatch(correctAnswers,userInput);
                 }
             }
+            if(p.isMultiSelect()) {
+                return isMultiSelectAnswerCorrect(p.getAnswer(), userInput);
+            }
             return p.getAnswer().equalsIgnoreCase(userInput.replaceAll("\\s+",""));
         }
         return false;
+    }
+
+    private boolean isMultiSelectAnswerCorrect(String answer, String select) {
+        char[] answerLetters = answer.toLowerCase().toCharArray();
+        char[] selectLetters = select.trim().toLowerCase().toCharArray();
+        Arrays.sort(answerLetters);
+        Arrays.sort(selectLetters);
+        return Arrays.equals(answerLetters, selectLetters);
     }
 
     private boolean findAnswerMatch (List<ProblemAnswer> possible, String studentInput) {

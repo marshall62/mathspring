@@ -2,6 +2,9 @@ body {
     background-color: #8ED8E0;
     margin: 0;
 }
+.clear{
+    clear: both;
+}
 .problem-block {
     width: 100%;
     font-family: Georgia, serif;
@@ -17,6 +20,7 @@ body {
     border: 8px solid transparent;
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.6);
+    transform-origin: top left;
 }
 #ProblemStatement{
 }
@@ -33,16 +37,7 @@ body {
     width: 50%;
     overflow: hidden;
 }
-.answer-row{
-    margin: 0 0 10px 20px;
-    line-height: 27px;
-    height: 27px;
-}
-#ShortAnswerBox{
-    margin: 0 auto 10px auto;
-    display: table;
-}
-.hint-thumbs{
+#HintThumbs{
     display: flex;
     flex-direction: row;
     margin: -5px 5px 0 -5px;
@@ -57,16 +52,7 @@ body {
     border-top-right-radius: 10px;
     cursor: pointer;
 }
-.hint-thumb:hover{
-    background-color: rgba(255,255,255,0.9);
-}
-.hint-thumb-selected{
-    flex: 1 0 auto;
-    background-color: rgba(255,255,255,0.5);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.hint-content{
+#HintContent{
     position: relative;
     margin: 0 5px -5px -5px;
     background-color: rgba(255,255,255,0.5);
@@ -74,13 +60,23 @@ body {
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
 }
+.hint-thumb:hover, .hint-thumb-selected:hover{
+    background-color: rgba(255,255,255,0.9);
+}
+.hint-thumb-selected{
+    flex: 1 0 auto;
+    background-color: rgba(255,255,255,0.5);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+}
 .play-hint-button{
+    position: absolute;
     width: 100px;
     height: 600px;
     box-sizing: border-box;
     line-height: 600px;
     font-size: 20px;
-    margin-left: 600px;
     background-color: #444;
     padding: 5px;
     color: white;
@@ -89,14 +85,41 @@ body {
     background-color: #666;
     transition: background-color 0.25s;
 }
-
-
-
-
-
-
+.hint{
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 14px;
+}
+.hint img{
+    max-width: 100%;
+}
+/* These .hint.blah are not used anymore, but just in case... */
+.hint.slide_left{
+    -o-transition: left 1s ease, top 0s ease;
+    -moz-transition: left 1s ease, top 0s ease;
+    -webkit-transition: left 1s ease, top 0s ease;
+    transition: left 1s ease, top 0s ease;
+    left: 270px;
+    top: 92px;
+}
+.hint.slide_up{
+    -o-transition: left 0s ease, top 1s ease;
+    -moz-transition: left 0s ease, top 1s ease;
+    -webkit-transition: left 0s ease, top 1s ease;
+    transition: left 0s ease, top 1s ease;
+    left: 270px;
+    top: 92px;
+}
+.hint.default{
+    left: 270px;
+    top: 92px;
+}
+.answer-row{
+    margin: 0 0 10px 20px;
+    line-height: 27px;
+    height: 27px;
+}
 .button{
-    float: left;
+    display: inline-block;
     width: 27px;
     height: 27px;
     margin-right: 20px;
@@ -123,10 +146,16 @@ body {
     text-align: center;
     z-index: 2;
 }
+.multiselect-checkbox{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
 .answer_text{
+    display: inline-block;
     height: 27px;
     position: relative;
-    margin-left: 47px;
+    vertical-align: top;
 }
 .answer_text a{
     vertical-align: middle;
@@ -159,57 +188,31 @@ body {
     display: none;
     z-index: 3;
 }
-.short_answer_check{
-    position: absolute;
-    left: 187px;
-    top: 32px;
-    width: 33px;
+#ShortAnswerBox{
+    margin: 0 auto 10px auto;
+    display: table;
+}
+#SubmitAnswerBox{
+    margin-top: 30px;
+}
+#submit_answer{
     height: 31px;
-    background-image: url(../images/check2.png);
+}
+.short_answer_check{
+    vertical-align: bottom;
+    width: 46px;
+    height: 31px;
+    background-image: url(../images/check.png);
     background-size: 100% 100%;
     display: none;
     z-index: 2;
 }
 .short_answer_x{
-    position: absolute;
-    left: 187px;
-    top: 32px;
+    vertical-align: bottom;
     width: 33px;
     height: 31px;
-    background-image: url(../images/x2.png);
+    background-image: url(../images/x.png);
     background-size: 100% 100%;
     display: none;
     z-index: 2;
 }
-.hint{
-    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-    font-size: 14px;
-    color: blue;
-}
-.hint img{
-    max-width: 100%;
-}
-.hint.slide_left{
-    -o-transition: left 1s ease, top 0s ease;
-    -moz-transition: left 1s ease, top 0s ease;
-    -webkit-transition: left 1s ease, top 0s ease;
-    transition: left 1s ease, top 0s ease;
-    left: 270px;
-    top: 92px;
-}
-.hint.slide_up{
-    -o-transition: left 0s ease, top 1s ease;
-    -moz-transition: left 0s ease, top 1s ease;
-    -webkit-transition: left 0s ease, top 1s ease;
-    transition: left 0s ease, top 1s ease;
-    left: 270px;
-    top: 92px;
-}
-.hint.default{
-    left: 270px;
-    top: 92px;
-}
-.clear{
-    clear: both;
-}
-

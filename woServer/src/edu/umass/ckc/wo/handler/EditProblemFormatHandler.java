@@ -34,7 +34,7 @@ public abstract class EditProblemFormatHandler {
 
     private static List<String> getSettingsFromDatabase(Connection conn, String table, String column, boolean addQuotes) throws SQLException {
         List<String> settings = new ArrayList<String>();
-        String query = "SELECT " + column + " FROM " + table + ";";
+        String query = "SELECT " + column + " FROM " + table + " WHERE enabled = TRUE;";
         PreparedStatement ps = conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         try {
