@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.smgr;
 
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
+import edu.umass.ckc.wo.beans.ClassConfig;
 import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.*;
@@ -853,6 +854,11 @@ public class SessionManager {
 
     public ExtendedStudentState getExtendedStudentState () {
         return this.extStudState;
+    }
+
+    public boolean isSoundSync () throws SQLException {
+        ClassConfig c= DbClass.getClassConfig(this.connection,this.classId) ;
+        return c.isSoundSync();
     }
 
 

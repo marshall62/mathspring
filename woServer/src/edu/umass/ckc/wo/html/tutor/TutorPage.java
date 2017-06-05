@@ -111,6 +111,8 @@ public class TutorPage {
         info.getRequest().setAttribute("showMPP", true);
         info.getRequest().setAttribute("resumeProblem",false);
         info.getRequest().setAttribute("eventCounter",smgr.getEventCounter());
+        info.getRequest().setAttribute("soundSync",smgr.isSoundSync());
+
         if (DbUser.isTestUser(smgr.getConnection(),smgr.getStudentId()))
             info.getRequest().setAttribute("showAnswer", true);
         else
