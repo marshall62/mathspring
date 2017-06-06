@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.cache;
 
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.*;
+import edu.umass.ckc.wo.db.DbVideo;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;
@@ -187,9 +188,9 @@ public class ProblemMgr {
         String type = rs.getString(Problem.TYPE) ;
         boolean isExternal = rs.getBoolean(Problem.IS_EXTERNAL_ACTIVITY);
         double diff = rs.getDouble("diff_level") ;
-        String video = rs.getString("video");
+        int video = rs.getInt("video");
         if (rs.wasNull())
-            video = null;
+            video = -1;
         int exampleId = rs.getInt("example");
         if (rs.wasNull())
             exampleId = -1;
@@ -235,9 +236,17 @@ public class ProblemMgr {
         if (exampleId == -1)
             exampleId = (exSel != null) ? exSel.selectProblem(conn,id) : -1;
         p.setExample(exampleId);
-        if (video == null)
-            video = (vidSel != null) ? vidSel.selectVideo(conn,id) : "";
-        p.setVideo(video);
+
+        String vidURL = null;
+        // if video is given, it is the id of a row in the video table.
+        if (video == -1)
+            vidURL = (vidSel != null) ? vidSel.selectVideo(conn,id) : "";
+        else {
+            //
+            Video v= DbVideo.getVideo(conn, video);
+            vidURL = v.getUrl();
+        }
+        p.setVideo(vidURL);
         logger.debug("Problem id="+p.getId() + " name=" + p.getName() + " video="+ p.getVideo() + " example=" + p.getExample());
         return p;
     }
