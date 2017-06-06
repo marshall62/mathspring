@@ -31,6 +31,7 @@ function setMPPVisibility (showMPP) {
 
 
 function processRequestSolutionResult (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     debugAlert("Server returns " + responseText);
     var activity = $.parseJSON(responseText);
     var soln = activity.solution;
@@ -44,6 +45,7 @@ function processRequestSolutionResult (responseText, textStatus, XMLHttpRequest)
 // No longer getting XML back from server.   This is here only so that we have some code that demonstrates
 // XML parsing in case we ever need it.
 function processRequestSolutionResult2(responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     debugAlert("Server returns " + responseText);
 //    var re = new RegExp("&hint=(\w*)&*");  // collect the label out of the param string
     var solutionXML = getXMLElement(responseText, "solution");
@@ -65,6 +67,7 @@ function processRequestSolutionResult2(responseText, textStatus, XMLHttpRequest)
 
 
 function processRequestHintResult(responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     debugAlert("Server returns " + responseText);
 //    var re = new RegExp("&hint=(\w*)&*");  // collect the label out of the param string
     var hint = JSON.parse(responseText);

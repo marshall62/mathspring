@@ -406,6 +406,7 @@ function showDashboard () {
 
 
 function processShowExample (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     if (activity.activityType === NO_MORE_PROBLEMS) {
         alert("There is not an example to show for this problem");
@@ -432,6 +433,7 @@ function processShowExample (responseText, textStatus, XMLHttpRequest) {
 
 
 function processShowVideo (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     var video = activity.video;
     // khanacademy won't play inside an iFrame because it sets X-Frame-Options to SAMEORIGIN.
@@ -608,6 +610,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
 
 // On EndProblem event we know the effort of the last problem so we get it and display it.
 function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     showEffortInfo(activity.effort);
 }
@@ -616,6 +619,7 @@ function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
 // It can either be an intervention, a problem, or an indication to keep running the current TimeoutIntervention
 //   6/15 DM - Not doing anything with this yet.  Melissa will need to complete this.
 function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     var activityType = activity.activityType;
 
@@ -634,12 +638,36 @@ function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequ
 
 // after a BeginProblem event is sent to server, we need to show any learning companion message it returns
 function processBeginProblemResult (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     showLearningCompanion(activity);
 }
 
+function checkError (responseText) {
+    var json = JSON.parse(responseText);
+    errType = json.error;
+    if (errType) {
+        if (json.fatal) {
+            console.log("Fatal Error reported by server " + json.message);
+            alert("Fatal Error reported by server.  Restart Mathspring in your browser. \n" + json.message);
+            // If its fatal we change the page to the login screen unless this is a dev env where we'd want to stay and debug it.
+            if (!sysGlobals.isDevEnv)
+                document.location.href = "/"+sysGlobals.wayangServletContext + "/WoLoginServlet?action=LoginK12_1";
+            return true;
+        }
+        else {
+            console.log("Error reported by server " + json.message);
+            alert("Error reported by server.  You may continue to use Mathspring. \n" + json.message);
+            return false;
+        }
+
+    }
+    return false;
+}
+
 function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     debugAlert("Server returns " + responseText);
+    checkError(responseText);
     // empty out the flashContainer div of any swfobjects and clear the iframe of any problems
     $(FLASH_CONTAINER_OUTERID).html('<div id="' +FLASH_CONTAINER_INNER+ '"></div>');
     $(PROBLEM_WINDOWID).attr("src","");

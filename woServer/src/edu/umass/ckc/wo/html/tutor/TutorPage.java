@@ -159,10 +159,11 @@ public class TutorPage {
         info.getRequest().setAttribute("answer", answer);
         appendLogMsg("answer",answer);
         if (smgr.getLearningCompanion() != null)
-            if (Settings.isDevelopmentEnv)
+            if (Settings.isDevelopmentEnv) {
+
 //                info.getRequest().setAttribute("learningCompanionMovie",  Settings.devWebContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
-                info.getRequest().setAttribute("learningCompanionMovie",  Settings.webContentPath + "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
-            else
+                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName() + "/idle.html");
+            } else
                 info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
 
         else  info.getRequest().setAttribute("learningCompanionMovie","");
@@ -245,11 +246,12 @@ public class TutorPage {
         info.getRequest().setAttribute("activityJSON", intervResponse.getJSON().toString());
         appendLogMsg("activity",intervResponse.getJSON().toString());
         if (smgr.getLearningCompanion() != null)
-            if (Settings.isDevelopmentEnv)
+            if (Settings.isDevelopmentEnv) {
                 info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath +  "LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
-            else
-                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName()+ "/idle.html");
-
+            }
+            else {
+                info.getRequest().setAttribute("learningCompanionMovie", Settings.webContentPath + "/LearningCompanion/" + smgr.getLearningCompanion().getCharactersName() + "/idle.html");
+            }
         else  info.getRequest().setAttribute("learningCompanionMovie","");
 
         info.getRequest().setAttribute("lastProbType", lastProbType==null ? "" : lastProbType);
