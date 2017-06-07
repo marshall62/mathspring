@@ -24,7 +24,7 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/resources" relative="/" />
-          <root url="file://$MODULE_DIR$/webResources" relative="/mathspring" />
+          <root url="file://$MODULE_DIR$/webResources" relative="/" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src" />

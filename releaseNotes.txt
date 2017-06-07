@@ -1,15 +1,18 @@
+
+
 10/27/16
 To Build releases:
    - Use Ant Build:  Sugaree Master Ant Builder
        Run DeployRose_WOJ_WarWithoutContent
-       This will build and put a woj.war in <projdir>/out/artifacts/rose/woj/woj.war
-       Copy this to rose::/mnt/net
+       This will build and put a woj.war in <projdir>/out/artifacts/war-rose-beta/woj.war
+       Copy this to rose: /mnt/net
        On rose cd to /mnt/net and run ./deploywar to move the woj.war into place for Tomcat
        Use the Tomcat admin manager to undeploy woj
        Select the new woj.war and deploy it.
 
    Production wars should be built from the production branch (see below for how to check out).
-   Should build and push production and then use ant script
+   Should build and push production and then use ant script  DeployRose_PRODUCTION_WarWithoutContent
+
 Notes:
 To make sure production is updated with master branch
 1.  commit and push master

@@ -244,7 +244,11 @@ public class ProblemMgr {
         else {
             //
             Video v= DbVideo.getVideo(conn, video);
-            vidURL = v.getUrl();
+            if (v == null) {
+                System.out.println("Error: Problem " + id + " refers to video " + video + ".  Video not found");
+                vidURL=null;
+            }
+            else vidURL = v.getUrl();
         }
         p.setVideo(vidURL);
         logger.debug("Problem id="+p.getId() + " name=" + p.getName() + " video="+ p.getVideo() + " example=" + p.getExample());
