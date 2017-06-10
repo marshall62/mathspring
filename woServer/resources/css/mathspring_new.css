@@ -75,9 +75,9 @@ body {
 
 .huytran-practice {
     z-index: 1;
-    left: 250px;
+    left: 200px;
     position: relative;
-    width: calc(100% - 250px);
+    width: calc(100% - 200px);
 }
 
 .huytran-practice__menu {
@@ -149,9 +149,16 @@ body {
     justify-content: space-between;
 }
 
+@media (min-width: 1440px) {
+    .huytran-practice__main {
+        margin: 30px auto 0 auto;
+        position: relative;
+        left: -150px;
+    }
+}
 .huytran-practice__main {
     /*margin: 30px auto 0 auto;*/
-    padding: 15px;
+    padding: 15px 0 0 65px;
     width: 600px;
     height: auto;
 }
@@ -337,8 +344,8 @@ span.huytran-sitenav__buttontitle {
 
 .learningCompanionContainer {
     position: relative;
-    top: -10px;
-    left: -11px;
+    top: -2px;
+    left: -2px;
     overflow: hidden;
 }
 
