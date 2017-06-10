@@ -10,9 +10,33 @@
     <link href="css/animate.css" rel="stylesheet">
     <%--<link href="css/common_new.css" rel="stylesheet">--%>
     <link href="css/mathspring_new.css" rel="stylesheet">
-    
-    <script src="js/jquery-1.10.2.js"></script>
+    <!-- css for data table -->
+    <link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/colreorder/1.3.2/css/colReorder.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+    <!-- css for bootstrap / Font Awesome -->
+    <link rel="stylesheet" href="<c:url value="/js/bootstrap/css/bootstrap-prefix.css" />" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+    <!-- updated Jquery to 2.2.2 to make use of bootstrap js-->
+    <script type="text/javascript" src="<c:url value="/js/bootstrap/js/jquery-2.2.2.min.js" />"></script>
+    <!-- js for bootstrap-->
+    <script type="text/javascript" src="<c:url value="/js/bootstrap/js/bootstrap.min.js" />"></script>
+
+    <%--<script src="js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>--%>
     <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="js/jquery.dialogextend.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+
+    <!-- js for data table -->
+    <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" />"></script>
+    <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap4.min.js" />"></script>
+    <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/colreorder/1.3.2/js/dataTables.colReorder.min.js" />"></script>
+    <!-- js for bootstrap-->
     <script type="text/javascript" src="js/simple-slider.js"></script>
     <script type="text/javascript" src="js/tutorutils.js"></script>
     <script type="text/javascript" src="js/tutorAnswer.js"></script>
@@ -363,6 +387,21 @@
 					</span>
                 <span class="huytran-sitenav__buttontitle">Glossary</span>
             </a>
+            <c:if test="${showProblemSelector}">
+                <a id="selectProb" href="#" class="huytran-sitenav__button">
+                    <span class="huytran-sitenav__icon">
+						<i class="fa fa-check" aria-hidden="true"></i>
+                    </span>
+                    <span class="huytran-sitenav__buttontitle">Select Prob</span>
+                </a>
+
+                <a id="getEventLogs" href="#" class="huytran-sitenav__button">
+                    <span class="huytran-sitenav__icon">
+						<i class="fa fa-eye" aria-hidden="true"></i>
+                    </span>
+                    <span class="huytran-sitenav__buttontitle">View Log</span>
+                </a>
+            </c:if>
             <label class="huytran-sitenav__showmore-trigger" for="post">
             </label>
         </div>
@@ -414,6 +453,7 @@
                                 width="280"
                                 height="600"
                                 src="${learningCompanionMovie}"
+                                onload="lcLoaded(this)"
                                 scrolling="no">
                         </iframe>
                     </div>
@@ -430,6 +470,320 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div id="eventLogWindow" title="Event Logs" style="display:none;">
+    <div class="bootstrap">
+    <div class = "containers">
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Event Log
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class='scrolledTable'>
+
+                            <fieldset class="scheduler-border">
+                                <legend>Add/Remove Columns</legend>
+
+                                <a type="button" class="btn btn-default toggle-vis" data-column="0">
+                                    <span class="glyphicon glyphicon-remove"></span> id
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="1">
+                                    <span class="glyphicon glyphicon-remove"></span> studId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="2">
+                                    <span class="glyphicon glyphicon-remove"></span> sessNum
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="3">
+                                    <span class="glyphicon glyphicon-remove"></span> action
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="4">
+                                    <span class="glyphicon glyphicon-remove"></span> userInput
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="5">
+                                    <span class="glyphicon glyphicon-remove"></span> isCorrect
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="6">
+                                    <span class="glyphicon glyphicon-remove"></span> elapsedTime
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="7">
+                                    <span class="glyphicon glyphicon-remove"></span> probElapsed
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="8">
+                                    <span class="glyphicon glyphicon-remove"></span> problemId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="9">
+                                    <span class="glyphicon glyphicon-remove"></span> hintStep
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="10">
+                                    <span class="glyphicon glyphicon-remove"></span> hintId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="11">
+                                    <span class="glyphicon glyphicon-remove"></span> emotion
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="12">
+                                    <span class="glyphicon glyphicon-remove"></span> activityName
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis"data-column="13">
+                                    <span class="glyphicon glyphicon-remove"></span> auxId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="14">
+                                    <span class="glyphicon glyphicon-remove"></span> auxTable
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="15">
+                                    <span class="glyphicon glyphicon-remove"></span> time
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="16">
+                                    <span class="glyphicon glyphicon-remove"></span> curTopicId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="17">
+                                    <span class="glyphicon glyphicon-remove"></span> testerNote
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> clickTime
+                                </a>
+                            </fieldset>
+                            <fieldset class="scheduler-border">
+                                <legend>Hightlight Rule Editor</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <button class="btn btn-success" role="button" id="newHighlightRule_eventLog" aria-label="Add new hightlightRule">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add new Hightlight Rule
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="newHighlightRulecontainer_eventLog"></div>
+                            </fieldset>
+
+                            <table id="eventLogTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead><tr>
+                                    <th class="details-control">Make a Note</th>
+                                    <th>id</th>
+                                    <th>studId</th>
+                                    <th>sessNum</th>
+                                    <th>action</th>
+                                    <th>userInput</th>
+                                    <th>isCorrect</th>
+                                    <th>elapsedTime</th>
+                                    <th>probElapsed</th>
+                                    <th>problemId</th>
+                                    <th>hintStep</th>
+                                    <th>hintId</th>
+                                    <th>emotion</th>
+                                    <th>activityName</th>
+                                    <th>auxId</th>
+                                    <th>auxTable</th>
+                                    <th>time</th>
+                                    <th>curTopicId</th>
+                                    <th>testerNote</th>
+                                    <th>clickTime</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            Student Problem History Log
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse">
+                    <div class="panel-body">
+                        <div class='scrolledTable'>
+
+                            <fieldset class="scheduler-border">
+                                <legend>Add/Remove Columns</legend>
+
+                                <a type="button" class="btn btn-default toggle-vis" data-column="0">
+                                    <span class="glyphicon glyphicon-remove"></span> id
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="1">
+                                    <span class="glyphicon glyphicon-remove"></span> studId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="2">
+                                    <span class="glyphicon glyphicon-remove"></span> sessionId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="8">
+                                    <span class="glyphicon glyphicon-remove"></span> problemId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="3">
+                                    <span class="glyphicon glyphicon-remove"></span> topicId
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="4">
+                                    <span class="glyphicon glyphicon-remove"></span> problemBeginTime
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="5">
+                                    <span class="glyphicon glyphicon-remove"></span> problemEndTime
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="6">
+                                    <span class="glyphicon glyphicon-remove"></span> timeInSession
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="7">
+                                    <span class="glyphicon glyphicon-remove"></span> timeInTutor
+                                </a>
+
+                                <a type="button" class="btn btn-default toggle-vis" data-column="9">
+                                    <span class="glyphicon glyphicon-remove"></span> timeToFirstAttempt
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="10">
+                                    <span class="glyphicon glyphicon-remove"></span> timeToFirstHint
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="11">
+                                    <span class="glyphicon glyphicon-remove"></span> timeToSolve
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="12">
+                                    <span class="glyphicon glyphicon-remove"></span> numMistakes
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis"data-column="13">
+                                    <span class="glyphicon glyphicon-remove"></span> numHints
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="14">
+                                    <span class="glyphicon glyphicon-remove"></span> videoSeen
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="15">
+                                    <span class="glyphicon glyphicon-remove"></span> numAttemptsToSolve
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="16">
+                                    <span class="glyphicon glyphicon-remove"></span> solutionHintGiven
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="17">
+                                    <span class="glyphicon glyphicon-remove"></span> mode
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> mastery
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> emotionAfter
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> emotionLevel
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> effort
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> exampleSeen
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> textReaderUsed
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> numHintsBeforeSolve
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> isSolved
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> adminFlag
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> authorFlag
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> collaboratedWith
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> timeToSecondAttempt
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> timeToThirdAttempt
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> timeToSecondHint
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> timeToThirdHint
+                                </a>
+                                <a type="button" class="btn btn-default toggle-vis" data-column="18">
+                                    <span class="glyphicon glyphicon-remove"></span> probDiff
+                                </a>
+                            </fieldset>
+                            <fieldset class="scheduler-border">
+                                <legend>Hightlight Rule Editor</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <a class="btn btn-success" role="button" id="newHighlightRule_studentProblemHistoryLog" aria-label="Add new hightlightRule">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add new Hightlight Rule
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="newHighlightRulecontainer_studentProblemHistoryLog"></div>
+                            </fieldset>
+
+                            <table id="studentProblemHistoryTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead><tr>
+                                    <th class="details-control">Make a Note</th>
+                                    <th>id</th>
+                                    <th>studId</th>
+                                    <th>sessionId</th>
+                                    <th>problemId</th>
+                                    <th>topicId</th>
+                                    <th>problemBeginTime</th>
+                                    <th>problemEndTime</th>
+                                    <th>timeInSession</th>
+                                    <th>timeInTutor</th>
+                                    <th>timeToFirstAttempt</th>
+                                    <th>timeToFirstHint</th>
+                                    <th>timeToSolve</th>
+                                    <th>numMistakes</th>
+                                    <th>numHints</th>
+                                    <th>videoSeen</th>
+                                    <th>numAttemptsToSolve</th>
+                                    <th>solutionHintGiven</th>
+                                    <th>mode</th>
+                                    <th>mastery</th>
+                                    <th>emotionAfter</th>
+                                    <th>emotionLevel</th>
+                                    <th>effort</th>
+                                    <th>exampleSeen</th>
+                                    <th>textReaderUsed</th>
+                                    <th>numHintsBeforeSolve</th>
+                                    <th>isSolved</th>
+                                    <th>adminFlag</th>
+                                    <th>authorFlag</th>
+                                    <th>collaboratedWith</th>
+                                    <th>timeToSecondAttempt</th>
+                                    <th>timeToThirdAttempt</th>
+                                    <th>timeToSecondHint</th>
+                                    <th>timeToThirdHint</th>
+                                    <th>probDiff</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <script>
     function toggleNav() {
