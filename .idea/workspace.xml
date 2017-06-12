@@ -7,7 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js" afterPath="$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/servletFramework/servletFramework.iml" afterPath="$PROJECT_DIR$/servletFramework/servletFramework.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/woServer.iml" afterPath="$PROJECT_DIR$/woServer/woServer.iml" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -246,13 +248,9 @@
       <file leaf-file-name="mathspring_new.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
-              <caret line="416" column="15" lean-forward="false" selection-start-line="416" selection-start-column="15" selection-end-line="416" selection-end-column="15" />
-              <folding>
-                <marker date="1497057277000" expanded="false" signature="40955:40967" ph="..." />
-                <marker date="1497057277000" expanded="false" signature="41230:41244" ph="..." />
-                <marker date="1497057277000" expanded="false" signature="41337:41351" ph="..." />
-              </folding>
+            <state relative-caret-position="6840">
+              <caret line="456" column="15" lean-forward="false" selection-start-line="456" selection-start-column="15" selection-end-line="456" selection-end-column="15" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -260,45 +258,28 @@
       <file leaf-file-name="tutorhut_new.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="380" column="0" lean-forward="true" selection-start-line="380" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
-              <folding>
-                <marker date="1497057756000" expanded="true" signature="50283:50294" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="50427:50438" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="50568:50579" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="50712:50723" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="50855:50866" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="51597:51608" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="51772:51783" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="51944:51955" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="52119:52130" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="52293:52304" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="60478:60493" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="63916:63929" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="63971:63985" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="67585:67600" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="70121:70134" ph="..." />
-                <marker date="1497057756000" expanded="true" signature="70176:70190" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mathspring_new.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/woServer/resources/css/mathspring_new.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="902">
-              <caret line="347" column="12" lean-forward="false" selection-start-line="347" selection-start-column="12" selection-end-line="347" selection-end-column="12" />
+            <state relative-caret-position="5700">
+              <caret line="380" column="0" lean-forward="false" selection-start-line="380" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyProgress_new.jsp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mathspring_new.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/css/mathspring_new.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="241" column="12" lean-forward="false" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyProgress_new.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="404" column="18" lean-forward="false" selection-start-line="404" selection-start-column="16" selection-end-line="404" selection-end-column="18" />
+            <state relative-caret-position="420">
+              <caret line="485" column="0" lean-forward="false" selection-start-line="485" selection-start-column="0" selection-end-line="485" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -318,8 +299,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>topic</find>
-      <find>new Problem</find>
       <find>iframe</find>
       <find>overl</find>
       <find>nav__item</find>
@@ -348,6 +327,8 @@
       <find>window</find>
       <find>new pro</find>
       <find>TutorBrain</find>
+      <find>top</find>
+      <find>hide</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -435,14 +416,14 @@
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/tutor/studmod/StudentProblemHistory.java" />
         <option value="$PROJECT_DIR$/woServer/resources/js/intervhandlers_new.js" />
         <option value="$PROJECT_DIR$/woServer/resources/Dashboard_new.jsp" />
-        <option value="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
         <option value="$PROJECT_DIR$/woServer/resources/css/Dashboard_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/css/common_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/js/bootstrap/css/bootstrap-prefix.css" />
         <option value="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" />
-        <option value="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js" />
+        <option value="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
+        <option value="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" />
       </list>
     </option>
   </component>
@@ -497,8 +478,9 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1920" />
-    <option name="height" value="1076" />
+    <option name="y" value="22" />
+    <option name="width" value="1280" />
+    <option name="height" value="774" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
@@ -527,6 +509,32 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="woServer">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="woServer">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -681,32 +689,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope">
-        <subPane subId="All">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="woServer">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="woServer">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1301,9 +1283,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
-      <method />
-    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -1360,19 +1339,6 @@
       <scripts />
       <node-interpreter value="project" />
       <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <working-directory />
-      <pass-parent-env>true</pass-parent-env>
-      <envs />
-      <ui />
-      <extra-mocha-options />
-      <test-kind>DIRECTORY</test-kind>
-      <test-directory />
-      <recursive>false</recursive>
       <method />
     </configuration>
     <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
@@ -1821,6 +1787,7 @@
       <workItem from="1495757663970" duration="13160000" />
       <workItem from="1495775029886" duration="2460000" />
       <workItem from="1495820936871" duration="1610000" />
+      <workItem from="1497280274858" duration="1794000" />
     </task>
     <task id="LOCAL-00182" summary="Converted Attempt intervention seleecrs to return Response objects">
       <created>1436983369292</created>
@@ -2169,7 +2136,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="359800000" />
+    <option name="totallyTimeSpent" value="361594000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2181,7 +2148,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1076" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="774" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2198,23 +2165,21 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29305914" sideWeight="0.7848392" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32629108" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24329692" sideWeight="0.6967841" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24255319" sideWeight="0.6967841" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29692155" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293011" sideWeight="0.80924857" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2964539" sideWeight="0.7313617" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21458334" sideWeight="0.5324074" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2140625" sideWeight="0.5324074" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.49120122" order="17" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39973873" sideWeight="0.3344788" order="2" side_tool="false" content_ui="tabs" />
@@ -2230,6 +2195,7 @@
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22451317" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962963" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2732,7 +2698,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="668">
           <caret line="229" column="0" lean-forward="false" selection-start-line="229" selection-start-column="0" selection-end-line="229" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2747,86 +2712,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="668">
           <caret line="318" column="80" lean-forward="false" selection-start-line="318" selection-start-column="80" selection-end-line="318" selection-end-column="80" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1496337418000" expanded="true" signature="7522:7798" ph="/**...*/" />
-            <marker date="1496337418000" expanded="true" signature="7876:10283" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="9139:9506" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="10577:12333" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="11762:11894" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="12432:13194" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="12610:12810" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="13295:13559" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="13654:14586" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="13702:13883" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="14678:15055" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="15132:15555" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="15654:16805" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="16138:16319" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="16900:17422" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="17524:18404" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="17917:18276" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="19815:20181" ph="/**...*/" />
-            <marker date="1496337418000" expanded="true" signature="20276:23536" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="20976:21781" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="21882:22145" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="22605:22862" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="23333:23511" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="23542:23663" ph="/**...*/" />
-            <marker date="1496337418000" expanded="true" signature="23753:25545" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="24395:24882" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="25605:25878" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="25991:27681" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="27791:29460" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="29552:29899" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="29988:30329" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="30336:30508" ph="/**...*/" />
-            <marker date="1496337418000" expanded="true" signature="30589:31353" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="31362:31455" ph="/**...*/" />
-            <marker date="1496337418000" expanded="true" signature="31520:31917" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="31925:32081" ph="/**...*/" />
-            <marker date="1496337418000" expanded="true" signature="32165:35030" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="32176:32436" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="32756:33072" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="33415:33790" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="35034:36542" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="36654:37266" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="37371:37646" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="37745:38017" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="38112:38398" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="38515:38742" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="38855:39080" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="39183:39421" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="39522:39794" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="39899:40174" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="40285:40563" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="40664:40937" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="41034:41363" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="41556:41937" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="42067:43042" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="42392:42637" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="43145:43477" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="47297:48474" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="48129:48355" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="48621:51665" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="48783:49013" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="49803:50116" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="50702:50854" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="51671:51940" ph="/**...*/" />
-            <marker date="1496337418000" expanded="false" signature="51987:51998" ph=" { " />
-            <marker date="1496337418000" expanded="false" signature="52010:52016" ph=" }" />
-            <marker date="1496337418000" expanded="true" signature="52330:54055" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="53042:53274" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="54135:54834" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="54367:54521" ph="//..." />
-            <marker date="1496337418000" expanded="true" signature="54911:55154" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="55241:55451" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="55516:55635" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="55709:55819" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="55918:56044" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="56094:56200" ph="{...}" />
-            <marker date="1496337418000" expanded="true" signature="56275:56460" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2841,7 +2726,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="692">
           <caret line="72" column="8" lean-forward="false" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2871,7 +2755,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="474" column="76" lean-forward="false" selection-start-line="474" selection-start-column="76" selection-end-line="474" selection-end-column="76" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2886,7 +2769,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
           <caret line="6" column="4332" lean-forward="false" selection-start-line="6" selection-start-column="4332" selection-end-line="6" selection-end-column="4332" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2894,7 +2776,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="601">
           <caret line="545" column="58" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1831" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2902,59 +2783,37 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="359" column="32" lean-forward="false" selection-start-line="359" selection-start-column="32" selection-end-line="359" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6840">
+          <caret line="456" column="15" lean-forward="false" selection-start-line="456" selection-start-column="15" selection-end-line="456" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5700">
+          <caret line="380" column="0" lean-forward="false" selection-start-line="380" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="485" column="0" lean-forward="false" selection-start-line="485" selection-start-column="0" selection-end-line="485" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/woServer/resources/css/mathspring_new.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="902">
-          <caret line="347" column="12" lean-forward="false" selection-start-line="347" selection-start-column="12" selection-end-line="347" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="416" column="15" lean-forward="false" selection-start-line="416" selection-start-column="15" selection-end-line="416" selection-end-column="15" />
-          <folding>
-            <marker date="1497057277000" expanded="false" signature="40955:40967" ph="..." />
-            <marker date="1497057277000" expanded="false" signature="41230:41244" ph="..." />
-            <marker date="1497057277000" expanded="false" signature="41337:41351" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="380" column="0" lean-forward="true" selection-start-line="380" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
-          <folding>
-            <marker date="1497057756000" expanded="true" signature="50283:50294" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="50427:50438" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="50568:50579" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="50712:50723" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="50855:50866" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="51597:51608" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="51772:51783" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="51944:51955" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="52119:52130" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="52293:52304" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="60478:60493" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="63916:63929" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="63971:63985" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="67585:67600" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="70121:70134" ph="..." />
-            <marker date="1497057756000" expanded="true" signature="70176:70190" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="404" column="18" lean-forward="false" selection-start-line="404" selection-start-column="16" selection-end-line="404" selection-end-column="18" />
+        <state relative-caret-position="180">
+          <caret line="241" column="12" lean-forward="false" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="12" />
           <folding />
         </state>
       </provider>
