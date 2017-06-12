@@ -5,9 +5,9 @@ var timewaited = 0;
 // its a shame this function has to know the image files that are defined in the CSS rather than fetching them from it.
 function highlightHintButton() {
     var $hintBtn = $('#hint');
-    $hintBtn.addClass('animated tada');
+    $hintBtn.addClass('hint-green animated tada');
     setTimeout(function() {
-        $hintBtn.removeClass('animated tada');
+        $hintBtn.removeClass('hint-green animated tada');
     }, 2000);
 }
 

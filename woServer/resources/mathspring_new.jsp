@@ -153,15 +153,6 @@
 
 
     <style type="text/css">
-        .leftcol {
-            padding: 8px;
-            float: right;
-            width: 1000px;
-        }
-
-        .empty {
-        }
-
         /*Overwrite bootstrap rule for developer mode*/
         <c:if test="${showProblemSelector}">
         fieldset.scheduler-border {
@@ -190,50 +181,15 @@
         .huytran-practice__hide-button span {
             top: 0 !important;
         }
+        .glyphicon {
+            font-family: 'Glyphicons Halflings' !important;
+        }
         </c:if>
 
     </style>
 </head>
 <body>
 
-
-
-<!-- NAVIGATION BAR -->
-<%--<header class="site-header" role="banner">--%>
-    <%--<div id="wrapper">--%>
-        <%--<div class="navbar-header">--%>
-            <%--<img class="logo goto-dashboard-js" src="img/ms_mini_logo_new.png" alt="MathSpring Logo">--%>
-        <%--</div><!-- navbar-header -->--%>
-
-        <%--<nav id="main_nav" class="nav navbar-nav navbar-right">--%>
-            <%--<li class="dropdown dropdown-position custom-dropdown">--%>
-                <%--<a  href="#"--%>
-                    <%--class="dropdown-toggle custom-dropdown-toggle"--%>
-                    <%--data-toggle="dropdown"--%>
-                    <%--role=button--%>
-                    <%--aria-haspopup="true"--%>
-                    <%--aria-expanded="false"--%>
-                <%-->--%>
-                    <%--<i><img src="img/avatar.svg" alt="Avatar"></i>--%>
-                    <%--&nbsp;--%>
-                    <%--${studentFirstName} ${studentLastName}--%>
-                    <%--<span class="caret"></span>--%>
-                <%--</a><!-- dropdown-toggle -->--%>
-
-                <%--<ul class="dropdown-menu">--%>
-                    <%--<li><a href="">HELP</a></li>--%>
-                    <%--<li role="separator" class="divider"></li>--%>
-                    <%--<li><a href="TutorBrain?action=Logout&sessionId=${sessionId}&elapsedTime=${elapsedTime}&var=b">LOGOUT</a></li>--%>
-                <%--</ul><!-- dropdown-menu -->--%>
-            <%--</li><!-- dropdown -->--%>
-        <%--</nav>--%>
-    <%--</div><!-- wrapper -->--%>
-<%--</header>--%>
-
-<%--<section id="navigation-back">--%>
-    <%--<div id="home" class="col-md-6">My Garden</div>--%>
-    <%--<div id="myProg" class="col-md-6">My Progress</div>--%>
-<%--</section>--%>
 
 <audio id='questionaudio' name='questionaudio'>
     <source id='questionogg' src='' type='audio/ogg'>
@@ -265,105 +221,6 @@
 <div id="selectProblemDialog" title="Select Problem">
     <iframe id="selectProblemDialogIframe" width="500" height="500"></iframe>
 </div>
-
-<%--<section id="main-tutoring">--%>
-    <%--<div class="container">--%>
-        <%--<div class="row">--%>
-            <%--<div class="col-md-1 vertical-button">--%>
-                <%--<div data-balloon="Read Problem" data-balloon-pos="right">--%>
-                    <%--<a id="read">--%>
-                        <%--<img src="img/speaker.svg" alt="Read Problem">--%>
-                    <%--</a>--%>
-                <%--</div>--%>
-                <%--<div data-balloon="Show Instruction" data-balloon-pos="right">--%>
-                    <%--<a id="instructions">--%>
-                        <%--<img src="img/info.svg" alt="Show Instruction">--%>
-                    <%--</a>--%>
-                <%--</div>--%>
-                <%--<div class="dropdown custom-dropdown"--%>
-                     <%--data-balloon="More Resources"--%>
-                     <%--data-balloon-pos="right">--%>
-                    <%--<a  href="#"--%>
-                        <%--class="dropdown-toggle custom-dropdown-toggle"--%>
-                        <%--data-toggle="dropdown"--%>
-                        <%--role=button--%>
-                        <%--aria-haspopup="true"--%>
-                        <%--aria-expanded="false"--%>
-                    <%-->--%>
-                        <%--<img src="img/menu.svg" alt="">--%>
-                    <%--</a><!-- dropdown-toggle -->--%>
-
-                    <%--<ul class="dropdown-menu">--%>
-
-                        <%--<li><a id="example" href="#">Show Example</a></li>--%>
-                        <%--<li role="separator" class="divider"></li>--%>
-
-                        <%--<li><a id="video" href="#">Show Video</a></li>--%>
-                        <%--<li role="separator" class="divider"></li>--%>
-
-                        <%--<li><a id="formulas" href="#">Fomular</a></li>--%>
-                        <%--<li role="separator" class="divider"></li>--%>
-
-                        <%--<li><a id="glossary" href="#">Glossary</a></li>--%>
-                    <%--</ul><!-- dropdown-menu -->--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="col-md-7 main-tutoring-frame">--%>
-                <%--<div class="row buttons-below">--%>
-                    <%--<div class="col-sm-3 main-tutoring-button">--%>
-                        <%--<a id="hint" class="problem-control-button">--%>
-                            <%--<img id="hint-lightbulb" src="img/lightbulb.svg" alt=""><span id="hint_label">Hint</span>--%>
-                        <%--</a>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-sm-3 col-md-offset-1 main-tutoring-button">--%>
-                        <%--<a id="replay" class="problem-control-button">--%>
-                            <%--<img src="img/reload.svg" alt="">Replay Hint--%>
-                        <%--</a>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-sm-3 col-md-offset-1 main-tutoring-button">--%>
-                        <%--<a id="nextProb" class="problem-control-button">--%>
-                            <%--<img src="img/right-arrow.svg" alt="">New Problem--%>
-                        <%--</a>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-                <%--<div id="frameContainer" class="problemDiv">--%>
-                    <%--<iframe id="problemWindow" class="probWindow"--%>
-                            <%--name="iframe1"--%>
-                            <%--width="600"--%>
-                            <%--height="600"--%>
-                            <%--src="${activityURL}"--%>
-                            <%--frameborder="no"--%>
-                            <%--scrolling="no">--%>
-                    <%--</iframe>--%>
-                <%--</div>--%>
-                <%--<div id="flashContainer1">--%>
-                    <%--<div id="flashContainer2"></div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="col-md-3 virtual-character">--%>
-                <%--<iframe id="learningCompanionWindow"--%>
-                        <%--name="lciframe"--%>
-                        <%--width="280"--%>
-                        <%--height="600"--%>
-                        <%--src="${learningCompanionMovie}"--%>
-                        <%--scrolling="no">--%>
-                <%--</iframe>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</section>--%>
-
-<%--<div class="dev-view">--%>
-    <%--<p>--%>
-        <%--Developer Info >>--%>
-        <%--<span class="dev-view-label">Problem ID: </span>--%>
-        <%--<span id="pid">${probId}</span> ||--%>
-        <%--<span class="dev-view-label">Effort: </span>--%>
-        <%--<span id="effort">${effort}</span> ||--%>
-        <%--<span class="dev-view-label">Answer: </span>--%>
-        <%--<span id="answer">${globals.answer}</span>--%>
-    <%--</p>--%>
-<%--</div>--%>
 
 <div class="huytran-tutor">
     <div class="huytran-sitenav">
@@ -504,8 +361,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <div id="eventLogWindow" title="Event Logs" style="display:none;">
@@ -815,9 +670,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 <script>
