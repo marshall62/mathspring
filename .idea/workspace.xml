@@ -7,9 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9179ac1-2462-42bf-b909-02222a92cb15" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/servletFramework/servletFramework.iml" afterPath="$PROJECT_DIR$/servletFramework/servletFramework.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" afterPath="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/woServer.iml" afterPath="$PROJECT_DIR$/woServer/woServer.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" afterPath="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" />
     </list>
     <list id="91a23cea-bd20-4014-a4ab-ecf3b1986b4c" name="Failed commit: Default" comment="altered email sending" />
     <list id="6b5cc8b8-f685-4fc8-828e-37989d04b55d" name="Failed commit: Default (2)" comment="Changed the default value of istTest=true for the Assistments URL that is action=TeachTopic" />
@@ -245,11 +244,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="mathspring_new.jsp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="mathspring_new.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6840">
-              <caret line="456" column="15" lean-forward="false" selection-start-line="456" selection-start-column="15" selection-end-line="456" selection-end-column="15" />
+            <state relative-caret-position="374">
+              <caret line="192" column="14" lean-forward="false" selection-start-line="192" selection-start-column="14" selection-end-line="192" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mathspring.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="350">
+              <caret line="161" column="28" lean-forward="false" selection-start-line="161" selection-start-column="28" selection-end-line="161" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootstrap.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/bootstrap/js/bootstrap.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-551">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootstrap.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/bootstrap/css/bootstrap.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -258,18 +289,62 @@
       <file leaf-file-name="tutorhut_new.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5700">
-              <caret line="380" column="0" lean-forward="false" selection-start-line="380" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="191">
+              <caret line="1355" column="28" lean-forward="false" selection-start-line="1355" selection-start-column="28" selection-end-line="1355" selection-end-column="28" />
+              <folding>
+                <marker date="1497286965000" expanded="true" signature="50283:50294" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="50427:50438" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="50568:50579" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="50712:50723" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="50855:50866" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="51597:51608" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="51772:51783" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="51944:51955" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="52119:52130" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="52293:52304" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="60478:60493" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="63916:63929" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="63971:63985" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="67585:67600" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="70121:70134" ph="..." />
+                <marker date="1497286965000" expanded="true" signature="70176:70190" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mathspring_new.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tutorhut.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="148">
+              <caret line="1447" column="114" lean-forward="false" selection-start-line="1447" selection-start-column="107" selection-end-line="1447" selection-end-column="114" />
+              <folding>
+                <marker date="1497283175000" expanded="true" signature="50238:50249" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="50382:50393" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="50523:50534" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="50667:50678" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="50810:50821" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="51552:51563" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="51727:51738" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="51899:51910" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="52074:52085" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="52248:52259" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="60433:60448" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="63871:63884" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="63926:63940" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="67540:67555" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="70076:70089" ph="..." />
+                <marker date="1497283175000" expanded="true" signature="70131:70145" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mathspring_new.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/woServer/resources/css/mathspring_new.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="241" column="12" lean-forward="false" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="12" />
+            <state relative-caret-position="255">
+              <caret line="246" column="38" lean-forward="false" selection-start-line="246" selection-start-column="38" selection-end-line="246" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -299,36 +374,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>iframe</find>
-      <find>overl</find>
-      <find>nav__item</find>
+      <find>fieldset\.scheduler\-border \{\n            border\: 1px groove \#ddd \!important\;\n            padding\: 0 1\.4em 1\.4em 1\.4em \!important\;\n            margin\: 0 0 1\.5em 0 \!important\;\n            \-webkit\-box\-shadow\:  0px 0px 0px 0px \#000\;\n            box\-shadow\:  0px 0px 0px 0px \#000\;\n        \}</find>
       <find>n</find>
-      <find>mathsee</find>
-      <find>nav</find>
-      <find>nav-bar</find>
-      <find>progress</find>
-      <find>logo</find>
-      <find>backgroun</find>
-      <find>nav-item</find>
-      <find>hintcou</find>
-      <find>boot</find>
-      <find>sass</find>
-      <find>bootstrap-sass</find>
-      <find>eventlog</find>
-      <find>demo</find>
-      <find>margin</find>
-      <find>margin:</find>
-      <find>250</find>
-      <find>pad</find>
-      <find>main</find>
-      <find>lcloaded</find>
-      <find>lcload</find>
-      <find>lclo</find>
-      <find>window</find>
-      <find>new pro</find>
-      <find>TutorBrain</find>
-      <find>top</find>
-      <find>hide</find>
+      <find>ne</find>
+      <find>new</find>
+      <find>newHight</find>
+      <find>newHigh</find>
+      <find>newHighl</find>
+      <find>newHi</find>
+      <find>gener</find>
+      <find>newHighlightRule_eventLog</find>
+      <find>gene</find>
+      <find>newHighlig</find>
+      <find>pickco</find>
+      <find>pickc</find>
+      <find>pick</find>
+      <find>pic</find>
+      <find>Pick</find>
+      <find>Pick C</find>
+      <find>Pick Co</find>
+      <find>Pick Col</find>
+      <find>Pick Colo</find>
+      <find>intialializeAllHighLightFields</find>
+      <find>genera</find>
+      <find>colorSelec</find>
+      <find>Pick Color</find>
+      <find>1</find>
+      <find>1012.</find>
+      <find>1012.5</find>
+      <find>pop</find>
+      <find>colorSe</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -373,7 +448,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbUtil.java" />
         <option value="U:/temp/build.xml" />
         <option value="$PROJECT_DIR$/buildSugaree.xml" />
@@ -420,10 +494,11 @@
         <option value="$PROJECT_DIR$/woServer/resources/css/MyProgress_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/css/common_new.css" />
         <option value="$PROJECT_DIR$/woServer/resources/js/bootstrap/css/bootstrap-prefix.css" />
-        <option value="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" />
-        <option value="$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js" />
         <option value="$PROJECT_DIR$/woServer/resources/MyProgress_new.jsp" />
         <option value="$PROJECT_DIR$/woServer/resources/css/mathspring_new.css" />
+        <option value="$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js" />
+        <option value="$PROJECT_DIR$/woServer/resources/js/bootstrap/css/bootstrap.css" />
+        <option value="$PROJECT_DIR$/woServer/resources/mathspring_new.jsp" />
       </list>
     </option>
   </component>
@@ -624,6 +699,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="bootstrap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1787,7 +1866,7 @@
       <workItem from="1495757663970" duration="13160000" />
       <workItem from="1495775029886" duration="2460000" />
       <workItem from="1495820936871" duration="1610000" />
-      <workItem from="1497280274858" duration="1794000" />
+      <workItem from="1497280274858" duration="7699000" />
     </task>
     <task id="LOCAL-00182" summary="Converted Attempt intervention seleecrs to return Response objects">
       <created>1436983369292</created>
@@ -2136,7 +2215,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="361594000" />
+    <option name="totallyTimeSpent" value="367499000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2175,6 +2254,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2140625" sideWeight="0.5324074" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34019768" sideWeight="0.32349467" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20880681" sideWeight="0.4055944" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30062112" sideWeight="0.46977812" order="16" side_tool="false" content_ui="tabs" />
@@ -2195,7 +2275,6 @@
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22451317" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962963" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26606685" sideWeight="0.731535" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2486,27 +2565,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/db/DbStateTableMgr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="251" column="0" lean-forward="false" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/state/ProblemState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/state/StudentState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/woServer/src/edu/umass/ckc/wo/smgr/SessionManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1950">
@@ -2712,6 +2770,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="668">
           <caret line="318" column="80" lean-forward="false" selection-start-line="318" selection-start-column="80" selection-end-line="318" selection-end-column="80" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2726,6 +2787,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="692">
           <caret line="72" column="8" lean-forward="false" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2755,6 +2817,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="474" column="76" lean-forward="false" selection-start-line="474" selection-start-column="76" selection-end-line="474" selection-end-column="76" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2769,35 +2832,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
           <caret line="6" column="4332" lean-forward="false" selection-start-line="6" selection-start-column="4332" selection-end-line="6" selection-end-column="4332" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="601">
-          <caret line="545" column="58" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1831" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="359" column="32" lean-forward="false" selection-start-line="359" selection-start-column="32" selection-end-line="359" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6840">
-          <caret line="456" column="15" lean-forward="false" selection-start-line="456" selection-start-column="15" selection-end-line="456" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js">
+    <entry file="file://$PROJECT_DIR$/woServer/resources/css/mathspring_new.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5700">
-          <caret line="380" column="0" lean-forward="false" selection-start-line="380" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
+        <state relative-caret-position="255">
+          <caret line="246" column="38" lean-forward="false" selection-start-line="246" selection-start-column="38" selection-end-line="246" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -2810,10 +2852,96 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/woServer/resources/css/mathspring_new.css">
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="241" column="12" lean-forward="false" selection-start-line="241" selection-start-column="12" selection-end-line="241" selection-end-column="12" />
+        <state relative-caret-position="148">
+          <caret line="1447" column="114" lean-forward="false" selection-start-line="1447" selection-start-column="107" selection-end-line="1447" selection-end-column="114" />
+          <folding>
+            <marker date="1497283175000" expanded="true" signature="50238:50249" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="50382:50393" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="50523:50534" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="50667:50678" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="50810:50821" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="51552:51563" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="51727:51738" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="51899:51910" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="52074:52085" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="52248:52259" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="60433:60448" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="63871:63884" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="63926:63940" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="67540:67555" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="70076:70089" ph="..." />
+            <marker date="1497283175000" expanded="true" signature="70131:70145" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/bootstrap/js/jquery-2.2.2.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="1" column="15169" lean-forward="false" selection-start-line="1" selection-start-column="15166" selection-end-line="1" selection-end-column="15169" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/tutorhut_new.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="1355" column="28" lean-forward="false" selection-start-line="1355" selection-start-column="28" selection-end-line="1355" selection-end-column="28" />
+          <folding>
+            <marker date="1497286965000" expanded="true" signature="50283:50294" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="50427:50438" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="50568:50579" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="50712:50723" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="50855:50866" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="51597:51608" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="51772:51783" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="51944:51955" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="52119:52130" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="52293:52304" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="60478:60493" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="63916:63929" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="63971:63985" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="67585:67600" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="70121:70134" ph="..." />
+            <marker date="1497286965000" expanded="true" signature="70176:70190" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/bootstrap/css/bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/js/bootstrap/js/bootstrap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-551">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="161" column="28" lean-forward="false" selection-start-line="161" selection-start-column="28" selection-end-line="161" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/woServer/resources/mathspring_new.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="192" column="14" lean-forward="false" selection-start-line="192" selection-start-column="14" selection-end-line="192" selection-end-column="14" />
           <folding />
         </state>
       </provider>

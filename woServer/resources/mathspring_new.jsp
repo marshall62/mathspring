@@ -10,33 +10,36 @@
     <link href="css/animate.css" rel="stylesheet">
     <%--<link href="css/common_new.css" rel="stylesheet">--%>
     <link href="css/mathspring_new.css" rel="stylesheet">
-    <!-- css for data table -->
-    <link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.datatables.net/colreorder/1.3.2/css/colReorder.bootstrap4.min.css" rel="stylesheet" type="text/css">
-
-    <!-- css for bootstrap / Font Awesome -->
-    <link rel="stylesheet" href="<c:url value="/js/bootstrap/css/bootstrap-prefix.css" />" />
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-
-    <!-- updated Jquery to 2.2.2 to make use of bootstrap js-->
     <script type="text/javascript" src="<c:url value="/js/bootstrap/js/jquery-2.2.2.min.js" />"></script>
-    <!-- js for bootstrap-->
-    <script type="text/javascript" src="<c:url value="/js/bootstrap/js/bootstrap.min.js" />"></script>
-
-    <%--<script src="js/jquery-ui-1.10.3/ui/jquery-ui.js"></script>--%>
     <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="js/jquery.dialogextend.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <%--Developer Mode--%>
+    <c:if test="${showProblemSelector}">
+        <!-- css for data table -->
+        <link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+        <link href="https://cdn.datatables.net/colreorder/1.3.2/css/colReorder.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+        <!-- css for bootstrap / Font Awesome -->
+        <link rel="stylesheet" href="<c:url value="/js/bootstrap/css/bootstrap.css" />" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+        <!-- js for bootstrap-->
+        <script type="text/javascript" src="<c:url value="/js/bootstrap/js/bootstrap.min.js" />"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+        <!-- js for data table -->
+        <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap4.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/colreorder/1.3.2/js/dataTables.colReorder.min.js" />"></script>
+
+        <!-- js for bootstrap-->
+    </c:if>
 
 
-    <!-- js for data table -->
-    <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" />"></script>
-    <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap4.min.js" />"></script>
-    <script type="text/javascript" src="<c:url value="https://cdn.datatables.net/colreorder/1.3.2/js/dataTables.colReorder.min.js" />"></script>
-    <!-- js for bootstrap-->
     <script type="text/javascript" src="js/simple-slider.js"></script>
     <script type="text/javascript" src="js/tutorutils.js"></script>
     <script type="text/javascript" src="js/tutorAnswer.js"></script>
@@ -127,6 +130,7 @@
         // Unfortunately the back button will run this function too which means that it can generate a BeginExternalActivity
         $(document).ready(function () {
             tutorhut_main(globals,sysGlobals,transients, "${learningCompanionMovie}");
+            generateHighlightRuleDialog();
             $('.ui-dialog-buttonset > button').each(function() {
                 $(this).addClass('btn btn-lg mathspring-btn');
             });
@@ -142,7 +146,7 @@
             if (isJake) {
                 $('.huytran-practice__character-window').width(269);
             } else {
-                $('.huytran-practice__character-window').width(260);
+                $('.huytran-practice__character-window').width(250);
             }
         });
     </script>
@@ -157,6 +161,36 @@
 
         .empty {
         }
+
+        /*Overwrite bootstrap rule for developer mode*/
+        <c:if test="${showProblemSelector}">
+        fieldset.scheduler-border {
+            border: 1px groove #ddd !important;
+            padding: 0 1.4em 1.4em 1.4em !important;
+            margin: 0 0 1.5em 0 !important;
+            -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+        }
+        a {
+            text-decoration: none !important;
+        }
+        a span {
+            font-family: Raleway !important;
+        }
+        .huytran-practice__navitem {
+            font-family: Raleway !important;
+        }
+        .huytran-practice__navitem span {
+            font-family: FontAwesome !important;
+        }
+        label {
+            font-family: Raleway !important;
+            font-weight: normal;
+        }
+        .huytran-practice__hide-button span {
+            top: 0 !important;
+        }
+        </c:if>
 
     </style>
 </head>
@@ -551,6 +585,7 @@
                                     <span class="glyphicon glyphicon-remove"></span> clickTime
                                 </a>
                             </fieldset>
+
                             <fieldset class="scheduler-border">
                                 <legend>Hightlight Rule Editor</legend>
                                 <div class="form-group">
