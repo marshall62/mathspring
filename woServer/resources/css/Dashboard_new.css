@@ -807,3 +807,29 @@ textarea {
     color: #F1F1F1;
     cursor: pointer;
 }
+
+.slider-wrapper {
+    display: none;
+    position: absolute;
+    height: 110px;
+    width: 21px;
+    right: 30px;
+    top: 60px;
+    background: white;
+}
+
+#slider-s {
+    position: relative;
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    height: 90px;
+    width: 0;
+    padding: 0 10px;
+    top: 10px;
+    z-index: 100;
+}
+
+.hide {
+    display: none;
+}
+
