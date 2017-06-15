@@ -96,6 +96,37 @@ public class DbUser {
         }
     }
 
+    /**
+     * returns a strategyId.  -1 will be put in place if null is there.
+     * @param conn
+     * @param studId
+     * @return
+     * @throws SQLException
+     */
+    public static int getStudentStrategy(Connection conn, int studId) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q = "select strategyId from student where id=?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1, studId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                int stratId = rs.getInt(1);
+                if (rs.wasNull())
+                    return -1;
+                else return stratId;
+            }
+            return -1;
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+                ps.close();
+
+        }
+    }
+
     public static int getStudentPedagogy(Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;

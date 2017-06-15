@@ -16,6 +16,8 @@ import edu.umass.ckc.wo.login.LoginResult;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.state.ExtendedStudentState;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.StrategyMgr;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -60,6 +62,9 @@ public class SessionManager {
     private int classId = -1;
     private int sessionId = -1;
     private int pedagogyId = -1;
+    private int strategyId = -1;
+    private boolean usesStrategy = false;
+    private boolean usesPedagogy= false;
     private String client = null; // the name of the Flash client that the user should use
     private WoProps woProps;
     private StudentState studState; // state variables about student stored in db
@@ -232,6 +237,25 @@ public class SessionManager {
         return loginResult;
     }
 
+    private Pedagogy getPedagogyOrStrategyForStudent (Connection conn, int studId) throws SQLException, AdminException {
+        TutorStrategy strat = StrategyMgr.getStrategy(connection,studId); // will return null if student doesn't have a strategyId
+        if (strat != null) {
+            this.usesStrategy=true;
+            this.usesPedagogy=false;
+            this.strategyId=strat.getStratId();
+            return strat;
+
+        }
+        else {
+            this.usesPedagogy = true;
+            this.usesStrategy=false;
+            Pedagogy ped = PedagogyRetriever.getPedagogy(conn, studId);
+            this.pedagogyId = Integer.parseInt(ped.getId());
+            return ped;
+
+        }
+    }
+
 
     private void buildSession(Connection connection, int sessionId) throws Exception {
         DbSession.updateSessionLastAccessTime(connection, sessionId);
@@ -247,18 +271,20 @@ public class SessionManager {
             this.timeInSession = System.currentTimeMillis() - lastLoginTime.getTime();
 
         setStudentState(woProps);   // pull out student state props from all properties
+        // Will either return a TutorStrategy or a Pedagogy depending on what the student is using.
+        Pedagogy ped = getPedagogyOrStrategyForStudent(connection, studId);
+        instantiatePedagogicalModel(ped);
 
-        Pedagogy ped = PedagogyRetriever.getPedagogy(connection, studId);
         // these are the parameters as dfined in the XML file pedagogies.xml
 
-        this.pedagogyId = Integer.parseInt(ped.getId());
+
         // pedagogical model needs to be instantiated as last thing because its constructor takes the smgr instance (this)
         // and makes calls to get stuff so we want this as fully constructed as possible before the call to instantiate
         // so that the smgr is fully functional except for its ped model.
 //        PedagogicalModelParameters pedModelParams = getPedagogicalModelParametersForUser(connection, ped);
         // build the Pedagogical model for the student.  The PedagogicalModel constructor is responsible for
         // creating the StudentModel which also gets set in the below method
-        instantiatePedagogicalModel(ped);
+
 
 
         // set theparams on the ped model
@@ -403,17 +429,7 @@ public class SessionManager {
         else return "";
     }
 
-    private Pedagogy getPedagogy(int studentId) throws SQLException, AdminException {
 
-        Pedagogy ped = null;
-
-        if (studentId > -1) {
-            ped = PedagogyRetriever.getPedagogy(connection, studentId);
-            this.pedagogyId = Integer.parseInt(ped.getId());
-        }
-
-        return ped;
-    }
 
     /**
      * If the user/pw is valid combo,  this looks for an active session for this user.   If it finds one, it deactivates it (we don't
@@ -455,7 +471,7 @@ public class SessionManager {
                     else {
                         inactivateAllUserSessions();
                         this.sessionId = DbSession.newSession(getConnection(), studId, sessBeginTime, false);
-                        ped = getPedagogy(studId);
+                        ped = getPedagogyOrStrategyForStudent(getConnection(),studId);
                         woProps = new WoProps(connection);
                         woProps.load(studId);   // get all properties for studId
                         Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
@@ -469,7 +485,7 @@ public class SessionManager {
                         return new LoginResult(sessionId, null, LoginResult.NEW_SESSION);
                     }
                 } else {
-                    ped = getPedagogy(studId);
+                    ped = getPedagogyOrStrategyForStudent(getConnection(),studId);
                     woProps = new WoProps(connection);
                     woProps.load(studId);   // get all properties for studId
                     Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
