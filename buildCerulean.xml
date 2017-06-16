@@ -82,7 +82,7 @@
 
     <target name="GetMsContentLearningCompanions" description="Gets Learning companions from mscontent">
         <!--Assumes that mscontent is on the same directory level as mathspring-->
-        <property name="mscontent.dir" value="../mscontent"/>
+        <property name="mathspring.mscontent.dir" value="../mscontent"/>
         <property name="content.dir" value="${module.woserver.basedir}/woServer/resources/mathspring/"/>
         <mkdir dir="${content.dir}/LearningCompanion/"/>
 
@@ -95,7 +95,7 @@
 
     <target name="GetMsContentFlash" description="Gets the Flash mscontent and removes FLA files">
         <!--Assumes that mscontent is on the same directory level as mathspring-->
-        <property name="mscontent.dir" value="../mscontent"/>
+        <property name="mathspring.mscontent.dir" value="../mscontent"/>
         <property name="content.dir" value="${module.woserver.basedir}/woServer/resources/mathspring/"/>
         <mkdir dir="${content.dir}/Problems/"/>
         <!--<copy todir="${module.woserver.basedir}/woServer/resources/mathspring/Problems">-->
@@ -106,7 +106,7 @@
 
     <target name="GetMsContentHTML" description="Gets the HTML mscontent and removes FLA files">
         <!--Assumes that mscontent is on the same directory level as mathspring-->
-        <property name="mscontent.dir" value="../mscontent"/>
+        <property name="mathspring.mscontent.dir" value="../mscontent"/>
         <property name="content.dir" value="${module.woserver.basedir}/woServer/resources/mathspring/"/>
         <mkdir dir="${content.dir}/html5Probs/"/>
         <!--<copy todir="${module.woserver.basedir}/woServer/resources/mathspring/Problems">-->

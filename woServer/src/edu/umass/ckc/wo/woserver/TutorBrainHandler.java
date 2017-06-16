@@ -13,6 +13,7 @@ import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.db.DbSession;
 import edu.umass.ckc.wo.event.*;
 import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.exc.NoSessionException;
 import edu.umass.ckc.wo.handler.*;
 import edu.umass.ckc.wo.html.tutor.TutorPage;
 import edu.umass.ckc.wo.log.CompleteEventDataLogger;
@@ -24,6 +25,7 @@ import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.response.ErrorResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 import edu.umass.ckc.wo.woreports.util.EventLogEntryObjects;
@@ -160,7 +162,17 @@ public class TutorBrainHandler {
             servletInfo.getOutput().append(new GetClassHandler().handleRequest(servletInfo.getConn()));
         }
         else {
-            SessionManager smgr = new SessionManager(servletInfo.getConn(),((SessionEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession(servletInfo.getParams());
+            SessionManager smgr = null;
+            try {
+                smgr = new SessionManager(servletInfo.getConn(), ((SessionEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession(servletInfo.getParams());
+            } catch (NoSessionException nse) {
+                nse.printStackTrace();
+                // This is a common exception and we want to pass back a fatal error to the client so it can let the user know their session is dead.
+                View er = new ErrorResponse(nse, true);
+                servletInfo.getOutput().append(er.getView());
+                return true;
+
+            }
 
             if (e instanceof TutorHomeEvent) {
                 TutorPage tutorPage = new TutorPage(this.servletInfo,smgr);

@@ -175,8 +175,9 @@ public class TopicModel extends LessonModel {
         else {
             // Prevent starting a topic that has no problems.  This can happen if a student logs out after solving all problems in a topic because
             // we attempt to resume the last topic a student was in.
+            // We won't go into a topic that has 1 or less problems available because 1 problem would probably get used for a demo and then there would be none.
             List<Integer> probs = getUnsolvedProblems();
-            if (probs == null || probs.size() < 1)  {
+            if (probs == null || probs.size() <= 1)  {
                 curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState(), smgr.getStudentModel());
                 curTopic = switchTopics(curTopic);
             }

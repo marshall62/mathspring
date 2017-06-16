@@ -56,6 +56,7 @@
     <script type="text/javascript" src="js/tutorAnswer.js"></script>
     <script type="text/javascript" src="js/tutorhint.js"></script>
     <script type="text/javascript" src="js/tutorhut.js"></script>
+    <script type="text/javascript" src="js/devdialog.js"></script>
     <script type="text/javascript" src="js/tutorintervention.js"></script>
     <script type="text/javascript" src="js/intervhandlers.js"></script>
     <script type="text/javascript" src="js/swfobject.js"></script>
@@ -123,7 +124,8 @@
             servletName : '${servletName}',
             probplayerPath : '${probplayerPath}',
             wait: false,
-            eventCounter: ${eventCounter}
+            eventCounter: ${eventCounter},
+            soundSync: ${soundSync}
 
         }
 
@@ -149,6 +151,23 @@
 
 
     <style type="text/css">
+
+
+        .detailInfo a {
+            display: block;
+            height: 20px;
+            color: black;
+            background-repeat: no-repeat;
+            background-position: left top;
+            padding-left: 0px;
+        }
+        .detailInfo a:hover {
+            background-repeat: no-repeat;
+            background-position: left top;
+
+            text-decoration: none;  !important;
+        }
+
         .leftcol {
             padding: 8px;
             float: right;
@@ -201,6 +220,9 @@
 </head>
 
 <body>
+<audio id="beeper" src="http://www.soundjay.com/button/beep-07.wav" autostart="false" ></audio>
+
+
 <audio id='questionaudio' name='questionaudio'><source id='questionogg' src='' type='audio/ogg'><source id='questionmp3' src='' type='audio/mpeg'>Your browser does not support the audio element.</audio>
 <%-- This div is a dialog that is shown when the user clicks on Show Example.  It plays an example problem in the dialog--%>
 <div id="exampleContainer" width="600" height="600" title="Watch/listen to this example. Use 'Play Next Step' to move along" >
@@ -312,9 +334,13 @@
                     <li class="elb_home">
                         <a id="home" href="#">Home</a>
                     </li>
-                    <li class="elb_pid">
-                        <div id="pid">${probId}</div>
+                    <li class="detailInfo">
+                        <a id="pid">${probId}</a>
                     </li>
+                    <li class="detailInfo">
+                        <a id="clock"></a>
+                    </li>
+
                     <li class="elb_pid">
                         <div id="effort">${effort}</div>
                     </li>
