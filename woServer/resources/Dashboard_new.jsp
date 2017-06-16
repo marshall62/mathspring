@@ -57,22 +57,20 @@
 
             window.volumeControlOpen = false;
             $('#volume_control').on('click', toggleVolumeControl);
-//            document.body.addEventListener('click', closeVolumeControl, true);
-            // TODO: click outside of the volume button should hide the volume control
-//            $(document).mouseup(closeVolumeControl);
+            $(document).mouseup(closeVolumeControl);
+            $('.play-button span').on('click', playBackground);
         });
 
     </script>
 </head>
 <body>
 
-<audio src="css/bird.mp3" id="backgroundmusic" onload="adjustVolume()" autoplay loop></audio>
+<audio src="css/dashboard-music.mp3" id="backgroundmusic" onload="adjustVolume()" autoplay loop></audio>
 <div class="nav">
     <div class="nav__logo">
         <img src="img/mstile-150x150.png" alt="" class="nav__logo-image">
         <span class="nav__logo-text">
             <span class="nav__logo-text--green-letter">M</span>ATH<span class="nav__logo-text--green-letter">S</span>PRING
-
         </span>
     </div>
 
@@ -109,7 +107,14 @@
             </a>
         </li>
         <div class="slider-wrapper">
-            <input type="range" name="slider-s" id="slider-s" value="50" min="0" max="100" data-highlight="true"/>
+            <div class="play-button">
+                <span class="fa fa-pause"></span>
+            </div>
+            <div class="volumn-adjust-wrapper">
+                <span class="fa fa-volume-down"></span>&nbsp;
+                <input type="range" name="slider-s" id="slider-s" value="50" min="0" max="100" data-highlight="true"/>&nbsp;
+                <span class="fa fa-volume-up"></span>
+            </div>
         </div>
     </ul>
 </div>

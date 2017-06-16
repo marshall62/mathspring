@@ -809,27 +809,44 @@ textarea {
 }
 
 .slider-wrapper {
+    z-index: 3;
+    color: #003364;
     display: none;
     position: absolute;
-    height: 110px;
-    width: 21px;
-    right: 30px;
+    width: 200px;
+    height: 80px;
+    right: 10px;
     top: 60px;
     background: white;
+    border: 1px solid #003364;
+    border-radius: 0 0 5px 5px;
+}
+
+.volumn-adjust-wrapper {
+    display: inline-block;
+    margin: 5px auto 0 15px;
+    z-index: 3;
+}
+
+.volumn-adjust-wrapper input {
+    top: 2px;
 }
 
 #slider-s {
     position: relative;
-    writing-mode: bt-lr; /* IE */
-    -webkit-appearance: slider-vertical; /* WebKit */
-    height: 90px;
-    width: 0;
-    padding: 0 10px;
-    top: 10px;
-    z-index: 100;
 }
 
 .hide {
     display: none;
+}
+
+.play-button {
+    font-size: 1.2em;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.play-button span {
+    cursor: pointer;
 }
 

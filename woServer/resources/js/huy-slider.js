@@ -1,5 +1,4 @@
 function toggleVolumeControl() {
-    console.log('toggle');
     if (! window.volumeControlOpen) {
         $('.slider-wrapper').css('display', 'block');
         window.volumeControlOpen = true;
@@ -10,15 +9,26 @@ function toggleVolumeControl() {
 }
 
 function closeVolumeControl(e) {
-    console.log('close');
+    var speakerEl = $('#volume_control');
     var volumeEl = $('.slider-wrapper');
-    if (!volumeEl.is(e.target) && volumeEl.has(e.target).length === 0) {
+    if ((!speakerEl.is(e.target) && speakerEl.has(e.target).length === 0) &&
+        (!volumeEl.is(e.target) && volumeEl.has(e.target).length === 0)
+    ) {
         volumeEl.hide();
         window.volumeControlOpen = false;
-        console.log('inside');
     }
 }
 
 function adjustVolume() {
-    $('#backgroundmusic').volume = 0.5;
+    $('#backgroundmusic').get(0).volume = 0.5;
+}
+
+function playBackground() {
+    var playButtonEl = $('.play-button span');
+    playButtonEl.toggleClass('fa-pause fa-play');
+    if (playButtonEl.hasClass('fa-pause')) {
+        $('#backgroundmusic').get(0).play();
+    } else {
+        $('#backgroundmusic').get(0).pause();
+    }
 }
