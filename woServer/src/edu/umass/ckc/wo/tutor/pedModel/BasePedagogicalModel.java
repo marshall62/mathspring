@@ -17,6 +17,7 @@ import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.agent.RuleDrivenLearningCompanion;
@@ -54,6 +55,18 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
 
     public BasePedagogicalModel() {
+    }
+
+    public BasePedagogicalModel (SessionManager smgr, TutorStrategy strategy) throws SQLException {
+        this.pedagogy = strategy;
+        setSmgr(smgr);
+        smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
+        setTutorModel(new TutorModel(smgr));
+        pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
+        params = getPedagogicalModelParametersFromStrategy(smgr.getConnection(),strategy,smgr.getClassID(),smgr.getStudentId());
+//        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
+        setParams(params);
+        buildComponents(smgr,strategy);
     }
 
 

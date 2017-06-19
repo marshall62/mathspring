@@ -1,7 +1,10 @@
 package edu.umass.ckc.wo.tutor.probSel;
 
+import edu.umass.ckc.wo.strat.SCParam;
 import edu.umass.ckc.wo.tutormeta.PedagogyParams;
 import org.jdom.Element;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,6 +54,10 @@ public class PedagogicalModelParameters {
     private int problemReuseIntervalDays;
     private boolean showMPP=true;
     private String lessonStyle;
+
+    public PedagogicalModelParameters (List<SCParam> params) {
+
+    }
 
     // overload the params of this with those given for class.
     public PedagogicalModelParameters overload(PedagogicalModelParameters classParams) {

@@ -237,8 +237,8 @@ public class SessionManager {
         return loginResult;
     }
 
-    private Pedagogy getPedagogyOrStrategyForStudent (Connection conn, int studId) throws SQLException, AdminException {
-        TutorStrategy strat = StrategyMgr.getStrategy(connection,studId); // will return null if student doesn't have a strategyId
+    private Pedagogy getPedagogyOrStrategyForStudent (Connection conn, int studId, int classId) throws SQLException, AdminException {
+        TutorStrategy strat = StrategyMgr.getStrategy(connection,studId, classId); // will return null if student doesn't have a strategyId
         if (strat != null) {
             this.usesStrategy=true;
             this.usesPedagogy=false;
@@ -272,7 +272,7 @@ public class SessionManager {
 
         setStudentState(woProps);   // pull out student state props from all properties
         // Will either return a TutorStrategy or a Pedagogy depending on what the student is using.
-        Pedagogy ped = getPedagogyOrStrategyForStudent(connection, studId);
+        Pedagogy ped = getPedagogyOrStrategyForStudent(connection, studId, this.classId);
         instantiatePedagogicalModel(ped);
 
         // these are the parameters as dfined in the XML file pedagogies.xml
@@ -471,7 +471,7 @@ public class SessionManager {
                     else {
                         inactivateAllUserSessions();
                         this.sessionId = DbSession.newSession(getConnection(), studId, sessBeginTime, false);
-                        ped = getPedagogyOrStrategyForStudent(getConnection(),studId);
+                        ped = getPedagogyOrStrategyForStudent(getConnection(),studId, classId);
                         woProps = new WoProps(connection);
                         woProps.load(studId);   // get all properties for studId
                         Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
@@ -485,7 +485,7 @@ public class SessionManager {
                         return new LoginResult(sessionId, null, LoginResult.NEW_SESSION);
                     }
                 } else {
-                    ped = getPedagogyOrStrategyForStudent(getConnection(),studId);
+                    ped = getPedagogyOrStrategyForStudent(getConnection(),studId, classId);
                     woProps = new WoProps(connection);
                     woProps.load(studId);   // get all properties for studId
                     Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
@@ -591,6 +591,21 @@ public class SessionManager {
         return elapsedTime;
     }
 
+    private void instantiateStrategy (TutorStrategy strategy) {
+        try {
+            Class c = Class.forName(strategy.getClassName()); // the pedaogical model
+            Constructor constr = c.getConstructor(SessionManager.class, TutorStrategy.class);
+            logger.debug("Instantiating a pedagogical model of type: " + c.getName());
+            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, strategy);
+            studentModel = this.pedagogicalModel.getStudentModel();
+            if (studentModel == null) {
+                throw new DeveloperException("A StudentModel object was not created by the constructor of " + strategy.getPedagogicalModelClass());
+            }
+            studentModel.init(woProps, studId, classId);
+        } catch (Exception e) {
+            logger.fatal(this.pedagogicalModel, e);
+        }
+    }
 
     /**
      * Extract the PedagogicalModel class name from the Pedagogy object and
@@ -599,15 +614,20 @@ public class SessionManager {
      */
     public void instantiatePedagogicalModel(Pedagogy p) {
         try {
-            Class c = Class.forName(p.getPedagogicalModelClass());
-            Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
-            logger.debug("Instantiating a pedagogical model of type: " + c.getName());
-            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, p);
-            studentModel = this.pedagogicalModel.getStudentModel();
-            if (studentModel == null) {
-                throw new DeveloperException("A StudentModel object was not created by the constructor of " + p.getPedagogicalModelClass());
+            if (p instanceof TutorStrategy) {
+                instantiateStrategy((TutorStrategy) p);
             }
-            studentModel.init(woProps, studId, classId);
+            else {
+                Class c = Class.forName(p.getPedagogicalModelClass());
+                Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
+                logger.debug("Instantiating a pedagogical model of type: " + c.getName());
+                this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, p);
+                studentModel = this.pedagogicalModel.getStudentModel();
+                if (studentModel == null) {
+                    throw new DeveloperException("A StudentModel object was not created by the constructor of " + p.getPedagogicalModelClass());
+                }
+                studentModel.init(woProps, studId, classId);
+            }
         } catch (Exception e) {
             logger.fatal(this.pedagogicalModel, e);
         }

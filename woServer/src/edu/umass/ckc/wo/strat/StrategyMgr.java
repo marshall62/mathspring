@@ -19,14 +19,14 @@ public class StrategyMgr {
      * @return
      * @throws SQLException
      */
-    public static TutorStrategy getStrategy (Connection conn, int studId) throws SQLException {
+    public static TutorStrategy getStrategy (Connection conn, int studId, int classId) throws SQLException {
 
         int stratId = DbUser.getStudentStrategy(conn,studId);
         if (stratId == -1)
             return null;
         TutorStrategy strategy = StrategyCache.getInstance().getStrategy(stratId);
         if (strategy == null) {
-            strategy = DbStrategy.getStrategy(conn, stratId);
+            strategy = DbStrategy.getStrategy(conn, stratId, classId);
             StrategyCache.getInstance().putStrategy(stratId, strategy);
         }
         return strategy;
