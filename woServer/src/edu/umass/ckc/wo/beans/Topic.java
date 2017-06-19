@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.beans;
 import edu.umass.ckc.wo.content.CCStandard;
 
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -20,6 +21,7 @@ public class Topic implements Comparable<Topic> {
     private Set<CCStandard> ccStandards;
     private int numProbs;
     private int[] problemsByGrade;
+    private Map<String,Integer> gradewiseProblemDistribution;
 
     public static final String ID = "id";
     public static final String INTRO = "intro";
@@ -88,6 +90,14 @@ public class Topic implements Comparable<Topic> {
 
     public void setCcStandards(Set<CCStandard> ccStandards) {
         this.ccStandards = ccStandards;
+    }
+
+    public Map<String, Integer> getGradewiseProblemDistribution() {
+        return gradewiseProblemDistribution;
+    }
+
+    public void setGradewiseProblemDistribution(Map<String, Integer> gradewiseProblemDistribution) {
+        this.gradewiseProblemDistribution = gradewiseProblemDistribution;
     }
 
     /**

@@ -180,6 +180,20 @@ The results of this go into out/artifacts/MathSpring_exploded
         </init-param>
     </servlet>
 
+    <servlet>
+        <servlet-name>mathSpring</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/mathSpring-servlet.xml</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>mathSpring</servlet-name>
+        <url-pattern>/tt/*</url-pattern>
+    </servlet-mapping>
+
 
     <servlet>
         <servlet-name>WoLoginServlet</servlet-name>
