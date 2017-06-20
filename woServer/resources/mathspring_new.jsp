@@ -45,6 +45,7 @@
     <script type="text/javascript" src="js/tutorAnswer.js"></script>
     <script type="text/javascript" src="js/tutorhint.js"></script>
     <script type="text/javascript" src="js/tutorhut_new.js"></script>
+    <script type="text/javascript" src="js/devdialog.js"></script>
     <script type="text/javascript" src="js/tutorintervention.js"></script>
     <script type="text/javascript" src="js/intervhandlers_new.js"></script>
     <script type="text/javascript" src="js/swfobject.js"></script>
@@ -144,6 +145,7 @@
             var srcCompanion = $('#learningCompanionWindow').attr('src');
             var isJake = /.*Jake/.test(srcCompanion);
             if (isJake) {
+                console.log('Hello world');
                 $('.huytran-practice__character-window').width(269);
             } else {
                 $('.huytran-practice__character-window').width(250);
@@ -260,6 +262,10 @@
 					</span>
                 <span class="huytran-sitenav__buttontitle">Show Example</span>
             </a>
+
+            <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="clock" style="display: none">
+            </a>
+
             <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="video">
 					<span class="huytran-sitenav__icon">
 						<i class="fa fa-video-camera" aria-hidden="true"></i>
