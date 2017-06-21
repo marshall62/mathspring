@@ -12,6 +12,7 @@
 /.idea/inspectionProfiles/
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/codeStyleSettings.xml
 /out/
 /woServer/web/META-INF/
 /woServer/resources/mathspring/mscontent/
