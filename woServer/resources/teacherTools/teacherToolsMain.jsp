@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="<c:url value="/js/bootstrap/css/bootstrap.min.css" />"/>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/ttStyleMain.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css"
+          rel="stylesheet"/>
     <!-- Datatables Css Files -->
     <link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.datatables.net/colreorder/1.3.2/css/colReorder.bootstrap4.min.css" rel="stylesheet"
@@ -51,27 +52,114 @@
         var servletContextPath = "${pageContext.request.contextPath}";
         $(document).ready(function () {
             $('#wrapper').toggleClass('toggled');
+            $("#report-wrapper").show();
+            $("#form-wrapper").hide();
             handleclickHandlers();
         });
 
         function handleclickHandlers() {
+
+            $("#create_class_form").bootstrapValidator({
+                // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    className: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Class name is mandatory field'
+                            }
+                        }
+                    },
+                    classGrade: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Class grade is mandatory field'
+                            }
+                        }
+                    },
+                    lowEndDiff: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Grade level of problems - Lower is mandatory field'
+                            }
+                        }
+                    }, highEndDiff: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Grade level of problems - Higher is mandatory field'
+                            }
+                        }
+                    }, town: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Town name is a mandatory field'
+                            }
+                        }
+                    }, schoolName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'School name is a mandatory field'
+                            }
+                        }
+                    }, schoolYear: {
+                        validators: {
+                            notEmpty: {
+                                message: 'School year is a mandatory field'
+                            }
+                        }
+                    }, gradeSection: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Section name is a mandatory field'
+                            }
+                        }
+                    }, userPrefix: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Username prefix is a mandatory field'
+                            }
+                        }
+                    }, passwordToken: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Password is a mandatory field'
+                            }
+                        }
+                    }, noOfStudentAccountsForClass: {
+                        validators: {
+                            greaterThan: {
+                                value: 1,
+                                message: 'The value must be greater than or equal to 1'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function (e) {
+                $("#centerSpinner").show();
+                $("#loader").show();
+                $("#create_class_form").data('bootstrapValidator').resetForm();
+                // Prevent form submission
+                e.preventDefault();
+                // Get the form instance
+                var $form = $(e.target);
+                // Get the BootstrapValidator instance
+                var bv = $form.data('bootstrapValidator');
+                // Use Ajax to submit form data
+                $.post($form.attr('action'), $form.serialize(), function (result) {
+
+                })
+            });
+
             $("#createClass_handler").click(function () {
                 $("#report-wrapper").hide();
-                $("#create_class_out").show();
+                $("#form-wrapper").show();
             });
 
-            $("#createClassSubmit").click(function () {
-                $("#create_class_out").hide();
-                $("#report-wrapper").hide();
-                $("#add_students_out").show();
-            });
-
-            $( "#create_class_form" ).submit(function( event ) {
-                $( "#centerSpinner" ).show();
-                $( "#loader").show();
-            });
-
-            $('#PageRefresh').click(function() {
+            $('#PageRefresh').click(function () {
                 location.reload();
             });
         }
@@ -185,139 +273,169 @@
             </c:forEach>
             </c:if>
         </div>
-        <div id="form-wrapper">
+        <div id="form-wrapper" style="display: none;">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <small>Class Setup</small>
+                </h1>
+            </div>
             <springForm:form id="create_class_form" method="post"
                              action="${pageContext.request.contextPath}/tt/tt/ttCreateClass"
                              modelAttribute="createClassForm">
+                <div class="row">
+                    <div id="create_class_out" class="col-md-6 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Part one : Class Configuration
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="className">Class Name</label>
+                                    <div class="input-group">
+                                    <span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-blackboard"></i></span>
+                                        <springForm:input path="className" id="className" name="className"
+                                                          class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="town">Town</label>
+                                    <div class="input-group">
+                                    <span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-tree-deciduous"></i></span>
+                                        <springForm:input path="town" id="town" name="town"
+                                                          class="form-control"
+                                                          type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="schoolName">School</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-university"></i></span>
+                                        <springForm:input path="schoolName" id="schoolName" name="schoolName"
+                                                          class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="schoolYear">Year</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-hourglass"></i></span>
+                                        <springForm:input path="schoolYear" id="schoolYear" name="schoolYear"
+                                                          class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gradeSection">Section</label>
+                                    <div class="input-group">
+                                    <span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-menu-hamburger"></i></span>
+                                        <springForm:input path="gradeSection" id="gradeSection" name="gradeSection"
+                                                          class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="classGrade">Class Grade</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-education"></i></span>
+                                        <springForm:select path="classGrade" class="form-control" id="classGrade"
+                                                           name="classGrade">
+                                            <springForm:option value="">Select Grade</springForm:option>
+                                            <springForm:option value="5">Grade 5</springForm:option>
+                                            <springForm:option value="6">Grade 6</springForm:option>
+                                            <springForm:option value="7">Grade 7</springForm:option>
+                                            <springForm:option value="8">Grade 8</springForm:option>
+                                            <springForm:option value="9">Grade 9</springForm:option>
+                                            <springForm:option value="10">Grade 10</springForm:option>
+                                            <springForm:option value="adult">Adult</springForm:option>
+                                        </springForm:select>
+                                    </div>
+                                </div>
 
-                <div id="create_class_out" style="display: none;">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            <small>Create Class</small>
-                        </h1>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-blackboard"></i></span>
-                            <springForm:input path="className" id="className" name="className" placeholder="Class Name"
-                                              class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
-                            <springForm:select path="classGrade" class="form-control" id="classGrade" name="classGrade">
-                                <springForm:option value="0">Select Grade</springForm:option>
-                                <springForm:option value="5">Grade 5</springForm:option>
-                                <springForm:option value="6">Grade 6</springForm:option>
-                                <springForm:option value="7">Grade 7</springForm:option>
-                                <springForm:option value="8">Grade 8</springForm:option>
-                                <springForm:option value="9">Grade 9</springForm:option>
-                                <springForm:option value="10">Grade 10</springForm:option>
-                                <springForm:option value="adult">Adult</springForm:option>
-                            </springForm:select>
-                        </div>
-                    </div>
+                                <div class="form-group">
+                                    <label for="lowEndDiff">Problem Complexity : Lower</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-education"></i></span>
+                                        <springForm:select path="lowEndDiff" class="form-control" id="lowEndDiff"
+                                                           name="lowEndDiff">
+                                            <springForm:option value="">Select Complexity</springForm:option>
+                                            <springForm:option value="below3">Three Grades Below</springForm:option>
+                                            <springForm:option value="below2">Two Grades Below</springForm:option>
+                                            <springForm:option value="below1">One Grade Below</springForm:option>
+                                            <springForm:option value="below0">No Grade Below</springForm:option>
+                                        </springForm:select>
+                                    </div>
+                                </div>
 
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
-                            <springForm:select path="lowEndDiff" class="form-control" id="lowEndDiff" name="lowEndDiff">
-                                <springForm:option value="below3">Three Grades Below</springForm:option>
-                                <springForm:option value="below2">Two Grades Below</springForm:option>
-                                <springForm:option value="below1">One Grade Below</springForm:option>
-                                <springForm:option value="below0">No Grade Below</springForm:option>
-                            </springForm:select>
+                                <div class="form-group">
+                                    <label for="highEndDiff">Problem Complexity : Higher</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-education"></i></span>
+                                        <springForm:select path="highEndDiff" class="form-control" id="highEndDiff"
+                                                           name="highEndDiff">
+                                            <springForm:option value="">Select Complexity</springForm:option>
+                                            <springForm:option value="above3">Three Grades Above</springForm:option>
+                                            <springForm:option value="above2">Two Grades Above</springForm:option>
+                                            <springForm:option value="above1">One Grade Above</springForm:option>
+                                            <springForm:option value="above0">No Grade Below</springForm:option>
+                                        </springForm:select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-education"></i></span>
-                            <springForm:select path="highEndDiff" class="form-control" id="highEndDiff" name="highEndDiff">
-                                <springForm:option value="above3">Three Grades Above</springForm:option>
-                                <springForm:option value="above2">Two Grades Above</springForm:option>
-                                <springForm:option value="above1">One Grade Above</springForm:option>
-                                <springForm:option value="above0">No Grade Below</springForm:option>
-                            </springForm:select>
+                    <div id="add_students_out" class="col-md-6 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Part two : Student Roster
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="userPrefix">Username Prefix</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user-o"></i></span>
+                                        <springForm:input path="userPrefix" id="userPrefix" name="userPrefix"
+                                                          class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="passwordToken">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-eye"></i></span>
+                                        <springForm:input path="passwordToken" id="passwordToken" name="passwordToken"
+                                                          class="form-control" type="password"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="noOfStudentAccountsForClass"># of ID's to be created</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                                        <springForm:input path="noOfStudentAccountsForClass"
+                                                          id="noOfStudentAccountsForClass"
+                                                          name="noOfStudentAccountsForClass" class="form-control"
+                                                          type="text"/>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="teacherId" id="teacherId" value="${teacherId}">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-tree-deciduous"></i></span>
-                            <springForm:input path="town" id="town" name="town" placeholder="Town" class="form-control"
-                                              type="text"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-university"></i></span>
-                            <springForm:input path="schoolName" id="schoolName" name="schoolName" placeholder="School"
-                                              class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-hourglass"></i></span>
-                            <springForm:input path="schoolYear" id="schoolYear" name="schoolYear" placeholder="Year"
-                                              class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-menu-hamburger"></i></span>
-                            <springForm:input path="gradeSection" id="gradeSection" name="gradeSection"
-                                              placeholder="Section" class="form-control" type="text"/>
-                        </div>
-                    </div>
-
-                    <a role="button" id="createClassSubmit" class="btn btn-primary">Proceed to Next Step</a>
-
                 </div>
-
-                <div id="add_students_out" style="display:none;">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            <small>Create Student Roster for class</small>
-                        </h1>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user-o"></i></span>
-                            <springForm:input path="userPrefix" id="userPrefix" name="userPrefix"
-                                              placeholder="Username Prefix" class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-eye"></i></span>
-                            <springForm:input path="passwordToken" id="passwordToken" name="passwordToken"
-                                              placeholder="Password" class="form-control" type="password"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-                            <springForm:input path="noOfStudentAccountsForClass" id="noOfStudentAccountsForClass" name="noOfStudentAccountsForClass"
-                                              placeholder="Number of Student Id's to be create for this class" class="form-control" type="text"/>
-                        </div>
-                    </div>
-                    <input type="hidden" name="teacherId" id="teacherId" value="${teacherId}">
+                <div style="text-align:center;">
                     <button role="button" type="submit" class="btn btn-primary">Create Class</button>
-
                 </div>
             </springForm:form>
-
         </div>
-
-
     </div>
     <!--#page-container ends-->
 </div>
 <!--#page-content-wrapper ends-->
 </div>
 <!--Wrapper!-->
-<div id ='centerSpinner' style="display: none;"></div>
+<div id='centerSpinner' style="display: none;"></div>
 <div id="loader" style="display: none;">Setting up class. Please wait...</div>
 </div>
 

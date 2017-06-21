@@ -237,6 +237,9 @@ function problemDetails(data, response) {
                 if (response.includes("***")) {
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
+                }else{
+                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "Content changes saved successfully." );
+                    $('#successMsgModelPopup').modal('show');
                 }
             }
         });
@@ -534,7 +537,7 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "The Selected problemsets are deactivated. Please refresh you page o view your changes" );
+                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "The selected problemsets are deactivated." );
                     $('#successMsgModelPopup').modal('show');
                 }
             }
@@ -597,7 +600,7 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "The Selected problemsets are activated. Please refresh you page to view your changes" );
+                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "The Selected problemsets are activated." );
                     $('#successMsgModelPopup').modal('show');
                 }
             }
@@ -735,8 +738,6 @@ function registerAllEvents(){
             var rowData = activetable.row( diff[i].node ).data();
             result[i] = rowData[3]+'~~'+ diff[i].newData+'~~'+diff[i].oldData;
         }
-        $('#centerSpinner').show();
-        $('#reOrderMsg').show();
         $.ajax({
             type : "POST",
             url :pgContext+"/tt/tt/reOrderProblemSets",
