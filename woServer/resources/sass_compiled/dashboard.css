@@ -3521,9 +3521,7 @@ template {
 .nav__list {
   margin-top: 18px;
   list-style: none;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: row;
   flex-direction: row;
 }
 .nav__dropdown:hover .nav__dropdown-content {
@@ -3545,7 +3543,7 @@ template {
   min-width: 120px;
   top: 60px;
   background: white;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 .nav__dropdown-content a {
@@ -3570,6 +3568,42 @@ template {
   cursor: pointer;
   background-color: #92DDA3;
   box-shadow: inset 0 0 10px #7ec98f;
+}
+
+.topic-list__buttons {
+  text-align: center;
+  width: 50%;
+  margin: auto;
+}
+
+.topic-list__button {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  color: #003364;
+}
+.topic-list__button:hover {
+  cursor: pointer;
+}
+.topic-list__button--green {
+  margin-top: 50px;
+  background-color: #54CA6F;
+}
+.topic-list__button--green:hover {
+  background-color: #68de83;
+}
+.topic-list__button--yellow {
+  background-color: #FCDF28;
+}
+.topic-list__button--yellow:hover {
+  background-color: #fff33c;
+}
+.topic-list__button--brown {
+  background-color: #F6A623;
+}
+.topic-list__button--brown:hover {
+  background-color: #ffba37;
 }
 
 .welcome {
@@ -3655,40 +3689,6 @@ template {
   background: white;
   border: 1px solid #003364;
 }
-.topic-list__buttons {
-  text-align: center;
-  width: 50%;
-  margin: auto;
-}
-.topic-list__button {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  font-size: 0.9em;
-  color: #003364;
-}
-.topic-list__button:hover {
-  cursor: pointer;
-}
-.topic-list__button--green {
-  margin-top: 50px;
-  background-color: #54CA6F;
-}
-.topic-list__button--green:hover {
-  background-color: #68de83;
-}
-.topic-list__button--yellow {
-  background-color: #FCDF28;
-}
-.topic-list__button--yellow:hover {
-  background-color: #fff33c;
-}
-.topic-list__button--brown {
-  background-color: #F6A623;
-}
-.topic-list__button--brown:hover {
-  background-color: #ffba37;
-}
 
 .pot {
   width: 128px;
@@ -3720,7 +3720,6 @@ template {
   top: 60px;
   background: white;
   border: 1px solid #003364;
-  border-radius: 0 0 5px 5px;
 }
 
 .volume-adjust-wrapper {
@@ -3728,7 +3727,6 @@ template {
   margin: 5px auto 0 15px;
   z-index: 3;
 }
-
 .volume-adjust-wrapper input {
   top: 2px;
 }
@@ -3746,7 +3744,6 @@ template {
   text-align: center;
   margin-top: 15px;
 }
-
 .play-button span {
   cursor: pointer;
 }

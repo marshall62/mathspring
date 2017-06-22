@@ -3158,69 +3158,6 @@ body {
   height: 594px;
   overflow: hidden;
 }
-.huytran-practice__show-button {
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  position: relative;
-  border: 1px solid #003364;
-  color: #003364;
-  top: 10px;
-  left: 5px;
-  margin-right: 20px;
-  color: #003364;
-}
-.huytran-practice__show-button:hover {
-  background: #92DDA3;
-  cursor: pointer;
-}
-.huytran-practice__show-button:active, .huytran-practice__show-button:focus {
-  background: #2ECC71;
-}
-.huytran-practice__show-button span {
-  position: relative;
-  top: 0px;
-  left: 2px;
-}
-.huytran-practice__show-button + span {
-  color: #003364;
-  font-size: 1.1em;
-  position: relative;
-  top: 9px;
-}
-.huytran-practice__show-button .hide {
-  display: none;
-}
-.huytran-practice__hide-button-wrapper {
-  height: 30px;
-  width: 100%;
-}
-.huytran-practice__hide-button {
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  position: relative;
-  border: 1px solid #003364;
-  color: #003364;
-  top: 300px;
-  left: 18px;
-  z-index: 2;
-}
-.huytran-practice__hide-button:hover {
-  background: #92DDA3;
-  cursor: pointer;
-}
-.huytran-practice__hide-button:active, .huytran-practice__hide-buttonfocus {
-  background: #2ECC71;
-}
-.huytran-practice__hide-button span {
-  position: relative;
-  top: 2px;
-  left: 4px;
-}
-.huytran-practice__hide-button .hide {
-  display: none;
-}
 
 @media (min-width: 1440px) {
   .huytran-practice__main {
@@ -3295,6 +3232,70 @@ body {
   cursor: pointer;
 }
 
+.huytran-practice__show-button {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  border: 1px solid #003364;
+  color: #003364;
+  top: 10px;
+  left: 5px;
+  margin-right: 20px;
+}
+.huytran-practice__show-button:hover {
+  background: #92DDA3;
+  cursor: pointer;
+}
+.huytran-practice__show-button:active, .huytran-practice__show-button:focus {
+  background: #2ECC71;
+}
+.huytran-practice__show-button span {
+  position: relative;
+  top: 0;
+  left: 2px;
+}
+.huytran-practice__show-button + span {
+  color: #003364;
+  font-size: 1.1em;
+  position: relative;
+  top: 9px;
+}
+.huytran-practice__show-button .hide {
+  display: none;
+}
+
+.huytran-practice__hide-button {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  border: 1px solid #003364;
+  color: #003364;
+  top: 300px;
+  left: 18px;
+  z-index: 2;
+}
+.huytran-practice__hide-button-wrapper {
+  height: 30px;
+  width: 100%;
+}
+.huytran-practice__hide-button:hover {
+  background: #92DDA3;
+  cursor: pointer;
+}
+.huytran-practice__hide-button:active, .huytran-practice__hide-buttonfocus {
+  background: #2ECC71;
+}
+.huytran-practice__hide-button span {
+  position: relative;
+  top: 2px;
+  left: 4px;
+}
+.huytran-practice__hide-button .hide {
+  display: none;
+}
+
 .huytran-sitenav__button {
   padding: 15px 5px;
   background: white;
@@ -3322,6 +3323,23 @@ body {
 
 .hint-green {
   background: #92DDA3;
+}
+
+.ui-dialog {
+  font-family: Raleway, Helvetica, Arial, "Lucida Grande", sans-serif !important;
+}
+
+.ui-button {
+  background: white !important;
+  border: 1px solid #003364 !important;
+  border-radius: 0 !important;
+  outline: none !important;
+}
+.ui-button:hover {
+  background: #92DDA3 !important;
+}
+.ui-button-text {
+  color: #003364 !important;
 }
 
 /*# sourceMappingURL=tutor.css.map */
