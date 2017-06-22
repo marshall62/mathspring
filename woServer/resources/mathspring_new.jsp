@@ -132,9 +132,7 @@
         $(document).ready(function () {
             tutorhut_main(globals,sysGlobals,transients, "${learningCompanionMovie}");
             generateHighlightRuleDialog();
-            $('.ui-dialog-buttonset > button').each(function() {
-                $(this).addClass('btn btn-lg mathspring-btn');
-            });
+
             if (!globals.showAnswer) {
                 $(".dev-view").remove();
             } else {
