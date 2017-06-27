@@ -2,22 +2,10 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="Data Source" uuid="10765447-be55-49aa-960c-8d195063fbaf">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
       <user-name>WayangServer</user-name>
+      <user-password>dfc0dfdfdfdadfc3dfdedfcfdfd8</user-password>
     </data-source>
-    <data-source name="MySQL - wayangoutpostdb@rose.cs.umass.edu" uuid="0204f55f-89e2-4dde-860f-b10697b768e2">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
-      <introspection-schemas>*:wayangoutpostdb</introspection-schemas>
-    </data-source>
-    <data-source name="wayangoutpostdb@localhost" uuid="79cdb3b3-bfa7-45ee-aa68-4b246c1e7051">
-      <database-info product="MySQL" version="5.7.18" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.30 ( Revision: alexander.soklakov@oracle.com-20140310090514-8xt1yoht5ksg2e7c )">
-        <extra-name-characters>#@</extra-name-characters>
-        <identifier-quote-string>`</identifier-quote-string>
-      </database-info>
-      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper" />
-      <secret-storage>master_key</secret-storage>
-      <user-name>root</user-name>
-      <introspection-schemas>*:wayangoutpostdb</introspection-schemas>
-    </data-source>
+    <data-source name="MySQL - wayangoutpostdb@rose.cs.umass.edu" uuid="0204f55f-89e2-4dde-860f-b10697b768e2" />
+    <data-source name="wayangoutpostdb@localhost" uuid="79cdb3b3-bfa7-45ee-aa68-4b246c1e7051" />
   </component>
 </project>
