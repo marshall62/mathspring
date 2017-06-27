@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="woServer:Web-RoseProduction exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/woServer_Web_RoseProduction_exploded</output-path>
+  <artifact type="exploded-war" name="woServer:Web-Production exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/woServer_Web_Production_exploded</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="woServer/web/Web-RoseProduction" />
       <element id="directory" name="WEB-INF">

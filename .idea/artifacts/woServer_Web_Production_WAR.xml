@@ -2,7 +2,7 @@
   <artifact type="war" name="woServer:Web-Production WAR">
     <output-path>$PROJECT_DIR$/out/artifacts/woServer_Web_Production_WAR</output-path>
     <root id="archive" name="ms.war">
-      <element id="artifact" artifact-name="woServer:Web-RoseProduction exploded" />
+      <element id="artifact" artifact-name="woServer:Web-Production exploded" />
     </root>
   </artifact>
 </component>
