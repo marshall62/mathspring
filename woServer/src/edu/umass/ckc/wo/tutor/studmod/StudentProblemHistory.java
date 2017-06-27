@@ -350,7 +350,7 @@ public class StudentProblemHistory {
 
     // Find the last time the problem was given as practice and return it or null.
     public StudentProblemData getMostRecentPracticeProblemEncounter (int probId) {
-        for (int i=history.size()-1; i!=0; i--) {
+        for (int i=history.size()-1; i>=0; i--) {
             StudentProblemData d = history.get(i);
             if (d.getProbId() == probId && d.isPracticeProblem())
                 return d;

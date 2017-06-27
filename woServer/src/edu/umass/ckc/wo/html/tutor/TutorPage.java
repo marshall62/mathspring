@@ -30,6 +30,7 @@ public class TutorPage {
     private StringBuilder logMsg;
 
     public static final String TUTOR_MAIN_JSP = "mathspring.jsp"; // this is the HTML page that is the tutor hut (plugged with global variables below)
+    public static final String TUTOR_MAIN_JSP_NEW = "mathspring_new.jsp";
 //    public static final String INITIAL_TUTOR_FRAME_CONTENT = "welcome.html"; // when it first comes up it has this welcome HTML content
     public static final String INITIAL_TUTOR_FRAME_CONTENT = "TutorBrain?action=SplashPage"; // show the MPP as the first iframe contents
     public static final String END_TUTOR_FRAME_CONTENT = "farewell.html"; // when it first comes up it has this welcome HTML content
@@ -50,7 +51,7 @@ public class TutorPage {
         info.getRequest().setAttribute("isBeginningOfSession",true);
 
         RequestDispatcher disp=null;
-        disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
+        disp = info.getRequest().getRequestDispatcher(isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
         return false;
 
@@ -71,6 +72,8 @@ public class TutorPage {
         info.getRequest().setAttribute("studId",smgr.getStudentId());
         appendLogMsg("studId",Integer.toString(smgr.getStudentId()));
         info.getRequest().setAttribute("userName", smgr.getUserName());
+        info.getRequest().setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
+        info.getRequest().setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
         info.getRequest().setAttribute("flashClientPath",flashClientPath);
         info.getRequest().setAttribute("formalityServlet",Settings.formalityServletURI);
         LearningCompanion lc = smgr.getLearningCompanion();
@@ -176,9 +179,9 @@ public class TutorPage {
         // this is gonna have to do a lot more or the JSP will need to change because the JSON for the problem is what needs
         // to be sent back so the page can have all that it needs about the problem
         RequestDispatcher disp=null;
-        disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
+        disp = info.getRequest().getRequestDispatcher(isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
+        logger.info("<< JSP: " + (isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP) + " " + logMsg.toString());
     }
 
     //    This is called when Assistments or MARi makes a call to our system.    It loads a page with a problem.
@@ -192,9 +195,9 @@ public class TutorPage {
         // this is gonna have to do a lot more or the JSP will need to change because the JSON for the problem is what needs
         // to be sent back so the page can have all that it needs about the problem
         RequestDispatcher disp=null;
-        disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
+        disp = info.getRequest().getRequestDispatcher(isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
+        logger.info("<< JSP: " + (isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP) + " " + logMsg.toString());
     }
 
 
@@ -208,9 +211,9 @@ public class TutorPage {
         setJavascriptVars(elapsedTime,probElapsedTime,topicId,problemResponse,chalRevOrPracticeMode,lastProbType,solved,resource,answer,isBeginningOfSession,lastProbId,showMPP);
         info.getRequest().setAttribute("resumeProblem",true);  // tells tutorhut to not send EndProblem followed by BeginProblem events.  Instead will send ResumeProblem
         RequestDispatcher disp=null;
-        disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
+        disp = info.getRequest().getRequestDispatcher(isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
+        logger.info("<< JSP: " + (isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP) + " " + logMsg.toString());
     }
 
 
@@ -258,9 +261,9 @@ public class TutorPage {
         // this is gonna have to do a lot more or the JSP will need to change because the JSON for the problem is what needs
         // to be sent back so the page can have all that it needs about the problem
         RequestDispatcher disp=null;
-        disp = info.getRequest().getRequestDispatcher(TUTOR_MAIN_JSP);
+        disp = info.getRequest().getRequestDispatcher(isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP);
         disp.forward(info.getRequest(),info.getResponse());
-        logger.info("<< JSP: " + TUTOR_MAIN_JSP + " " + logMsg.toString());
+        logger.info("<< JSP: " + (isUsingNewUI() ? TUTOR_MAIN_JSP_NEW : TUTOR_MAIN_JSP) + " " + logMsg.toString());
     }
 
     // This builds a tutor page for a Response by dispatching to the correct helper.
@@ -321,5 +324,9 @@ public class TutorPage {
         info.getRequest().setAttribute("lastProbType", lastProbType==null ? "" : lastProbType);
 
 
+    }
+
+    private boolean isUsingNewUI() {
+        return "b".equals(this.info.getRequest().getParameter("var"));
     }
 }

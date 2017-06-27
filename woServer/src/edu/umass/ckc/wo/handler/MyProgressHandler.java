@@ -107,9 +107,12 @@ public class MyProgressHandler {
             request.setAttribute("problemDetailsList", problemDetailsList);
 
             request.setAttribute("useHybridTutor", Settings.useHybridTutor);
+            request.setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
+            request.setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
 
-
-            request.getRequestDispatcher("TopicDetails.jsp").forward(request,response);
+            request.getRequestDispatcher("b".equals(request.getParameter("var"))
+                    ? "TopicDetails_new.jsp"
+                    : "TopicDetails.jsp").forward(request,response);
             logger.info("<< JSP: TopicDetails.jsp");
             return null;
         }
@@ -171,8 +174,8 @@ public class MyProgressHandler {
         }
         // We want to get the probId that should be passed on the Navigation event (to MPP) when launched from hybrid tutor
         // Similarly for the topicId.   If they aren't passed in, then its the old system and we get them from the student state.
-        int probId = (pid != null) ? Integer.parseInt(pid) : smgr.getStudentState().getCurProblem();
-        int topicId = (topid != null) ? Integer.parseInt(topid) : smgr.getStudentState().getCurTopic();
+        int probId = (pid != null && pid.length() != 0) ? Integer.parseInt(pid) : smgr.getStudentState().getCurProblem();
+        int topicId = (topid != null && topid.length() != 0) ? Integer.parseInt(topid) : smgr.getStudentState().getCurTopic();
         request.setAttribute("probId",probId);
         request.setAttribute("topicId",topicId);
         request.setAttribute("sessionId",smgr.getSessionNum());
@@ -181,7 +184,11 @@ public class MyProgressHandler {
         request.setAttribute("learningCompanion", learningCompanion);
         request.setAttribute("useHybridTutor", Settings.useHybridTutor);
         request.setAttribute("eventCounter", smgr.getEventCounter());
+        request.setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
+        request.setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
         logger.info("<< JSP: MyProgress.jsp");
-        request.getRequestDispatcher("MyProgress.jsp").forward(request, response);
+        request.getRequestDispatcher("b".equals(request.getParameter("var"))
+                ? "MyProgress_new.jsp"
+                : "MyProgress.jsp").forward(request, response);
     }
 }

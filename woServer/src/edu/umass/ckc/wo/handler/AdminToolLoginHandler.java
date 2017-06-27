@@ -32,7 +32,11 @@ public class AdminToolLoginHandler {
         // no user action has taken place. Just show the login screen
         if (!event.isLogin() && !event.isReg()) {
             servletRequest.setAttribute("message","");
-            servletRequest.getRequestDispatcher("/teacherTools/teacherLogin.jsp").forward(servletRequest,servletResponse);
+            servletRequest
+                    .getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                            ? "/login/loginK12_new.jsp"
+                            : "/teacherTools/teacherLogin.jsp")
+                    .forward(servletRequest,servletResponse);
         }
         // admin logins
         else if (event.isLogin() && (user = DbAdmin.getAdminSession(conn, event.getUname(), event.getPw())) != null) {
@@ -44,7 +48,11 @@ public class AdminToolLoginHandler {
             id = DbTeacher.getTeacherId(conn, event.getUname(), event.getPw());
             if (id == -1) {
                 servletRequest.setAttribute("message","Incorrect user/password");
-                servletRequest.getRequestDispatcher("/teacherTools/teacherLogin.jsp").forward(servletRequest,servletResponse);
+                servletRequest
+                        .getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                            ? "/login/loginK12_new.jsp"
+                            : "/teacherTools/teacherLogin.jsp")
+                        .forward(servletRequest,servletResponse);
             }
             else {
                 // If its a teacher, invalidate the session associated with the browser so that all pages that the
@@ -86,7 +94,9 @@ public class AdminToolLoginHandler {
         }
         else if (event.isReg()) {
             servletRequest.setAttribute("message","");
-            servletRequest.getRequestDispatcher("/teacherTools/teacherRegister.jsp").forward(servletRequest,servletResponse);
+            servletRequest.getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                    ? "/teacherTools/teacherRegister_new.jsp"
+                    : "/teacherTools/teacherRegister.jsp").forward(servletRequest,servletResponse);
 
         }
     }

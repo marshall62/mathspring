@@ -42,7 +42,9 @@ public class LoginK12_1 implements LoginServletAction {
             name = name.substring(name.lastIndexOf('.')+1);
         req.setAttribute(LoginParams.START_PAGE,name);  // must be name of this class
         req.setAttribute(LoginParams.MESSAGE,null);
-        String jsp= "login/loginK12.jsp";
+        String jsp = "b".equals(req.getParameter("var"))
+            ? "login/loginK12_new.jsp"
+            : "login/loginK12.jsp";
         req.getRequestDispatcher(jsp).forward(req, servletInfo.getResponse());
         LoginResult lr = new LoginResult(-1,null,LoginResult.PRE_LOGIN,LoginResult.FORWARDED_TO_JSP);
         return lr;
