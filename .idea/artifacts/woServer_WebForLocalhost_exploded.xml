@@ -77,6 +77,8 @@
           <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
           <element id="library" level="project" name="Maven: xerces:xercesImpl:2.4.0" />
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
+          <element id="artifact" artifact-name="emailer:jar" />
+          <element id="artifact" artifact-name="servletFramework:jar" />
         </element>
       </element>
     </root>
