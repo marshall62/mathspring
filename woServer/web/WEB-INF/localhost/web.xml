@@ -54,12 +54,12 @@ The results of this go into out/artifacts/MathSpring_exploded
         <param-name>pedagogiesFile</param-name>
         <param-value>/pedagogies.xml</param-value>
     </context-param>
-    <!-- this selects which of the databases (defined as datasources in context.xml) we use
+    <!-- rose is too slow to use over VPN.  this selects which of the databases (defined as datasources in context.xml) we use
     options are wodbcadmium for cadmium db or wodblocal for db on localhost -->
     <context-param>
         <param-name>wodb.datasource</param-name>
-        <param-value>jdbc/wodbrose</param-value>
-        <!--<param-value>jdbc/wodblocal</param-value>-->
+        <!--<param-value>jdbc/wodbrose</param-value>-->
+        <param-value>jdbc/wodblocal</param-value>
     </context-param>
 
     <context-param>
