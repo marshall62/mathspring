@@ -1188,7 +1188,6 @@ Woolf<o:p></o:p></span></p>
 <p class=MsoNormal><span style='font-size:10.0pt'><o:p>&nbsp;</o:p></span></p>
 
     <p class=MsoNormal>
-
     <form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet"><span style='font-size:11.0pt'>
         <input type="hidden" name="action" value="LoginInterventionInput"/>
         <input type="hidden" name="sessionId" value="${sessionId}"/>
@@ -1202,9 +1201,7 @@ Woolf<o:p></o:p></span></p>
             style='mso-spacerun:yes'>     </span><span style='mso-spacerun:yes'>  </span><a name="_GoBack"></a><span
             style='mso-tab-count:1'>   </span><o:p></o:p></span>
         <br><br><input type="submit"/>
-    </form>   
-    </p>                                                                                                              </span>Date<o:p></o:p></span></p>
-
+    </form></p>
 </div>
 
 </body>
