@@ -1054,6 +1054,21 @@ public class DbClass {
         return true;
     }
 
+
+
+    public static void createStudentRoster(Connection conn, ClassInfo classInfo, String prefix, String password, int noOfStudentAccount) throws Exception {
+        List<String> pedIds = DbClassPedagogies.getClassPedagogyIds(conn, classInfo.getClassid());
+        for (int studIndex=1;studIndex <= noOfStudentAccount; studIndex++ ) {
+            StringBuffer username = new StringBuffer(prefix);
+            username.append(studIndex);
+               if (DbUser.getStudent(conn, username.toString(), password) != -1)
+                    throw new UserException("Cannot create users.  User: " + username.toString() + " already exists.");
+            UserRegistrationHandler.registerStudentUser(conn,username.toString(),password,classInfo);
+        }
+    }
+
+
+
     private static boolean buildTestUsers(Connection conn, ClassInfo classInfo, String testUserPrefix, String testUserPassword, List<String> pedIds) throws SQLException {
         // Get the test user with the same prefix and max ID.  Then we'll get the number off the end of this username
         // so that the new test users we build will be incremented from that starting point.

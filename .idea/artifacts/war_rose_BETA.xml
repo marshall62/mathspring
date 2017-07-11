@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="war rose BETA">
-    <output-path>$PROJECT_DIR$/out/artifacts/war_rose_BETA</output-path>
-    <root id="archive" name="woj.war">
-      <element id="artifact" artifact-name="woServer:WebForRose BETA exploded" />
-    </root>
-  </artifact>
-</component>

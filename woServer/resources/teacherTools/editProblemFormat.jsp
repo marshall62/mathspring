@@ -15,12 +15,18 @@
     <script type="text/javascript" src="js/quickAuth/format2json.js"></script>
     <script type="text/javascript" src="js/quickAuth/formatBuilder.js"></script>
     <script type="text/javascript" src="js/quickAuth/formatEditor.js"></script>
+    <%--@elvariable id="templates" type="String[]"--%>
+    <%--@elvariable id="fonts" type="String[]"--%>
+    <%--@elvariable id="templates" type="String[]"--%>
+    <%--@elvariable id="problemFormat" type="String"--%>
+    <script type="text/javascript">
+        function buildPage() {
+            <%-- Pass the settings from the database to our javascript --%>
+            quickAuthFormatEditor.buildFormatEditor(${templates}, ${fonts}, ${colors}, ${problemFormat});
+        }
+    </script>
 </head>
-<%--@elvariable id="templates" type="String[]"--%>
-<%--@elvariable id="fonts" type="String[]"--%>
-<%--@elvariable id="templates" type="String[]"--%>
-<%--@elvariable id="problemFormat" type="String"--%>
-<body onLoad="quickAuthFormatEditor.buildFormatEditor(${templates}, ${fonts}, ${colors}, ${problemFormat})" style="width:800px;height:600px;background-color:#444;">
+<body onLoad="buildPage()" style="width:800px;height:600px;background-color:#444;">
 <div style="float:right;height:100%;width:200px;display:flex;flex-direction:column;justify-content:space-around;">
     <div style="height:45%">
         <div class="header">Problem Layout<br/>Preview:</div>

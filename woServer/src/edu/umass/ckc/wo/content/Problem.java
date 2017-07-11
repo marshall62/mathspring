@@ -424,7 +424,21 @@ public class Problem implements Activity {
         return video;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public static String getTYPE() {
+        return TYPE;
+    }
 
     public void setExternalActivity (boolean b) {
         this.isExternalActivity=b;

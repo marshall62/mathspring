@@ -58,6 +58,16 @@ public class CCStandard implements Comparable<CCStandard> {
         this.cluster=cluster;
     }
 
+
+    public String getIdABC() {
+        return idABC;
+    }
+
+    public void setIdABC(String idABC) {
+        this.idABC = idABC;
+    }
+
+
     public String getId() {
         return id;
     }

@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="woServer:Web-Beta WAR">
+    <output-path>$PROJECT_DIR$/out/artifacts/woServer_Web_Beta_WAR</output-path>
+    <root id="archive" name="woj.war">
+      <element id="artifact" artifact-name="woServer:Web-Beta exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="file-copy" path="$PROJECT_DIR$/woServer/webBeta/WEB-INF/classes/log4j.properties" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
