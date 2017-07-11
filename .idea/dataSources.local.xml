@@ -13,8 +13,5 @@
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
     </data-source>
-    <data-source name="wayangoutpostdb@localhost" uuid="79cdb3b3-bfa7-45ee-aa68-4b246c1e7051">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
-    </data-source>
   </component>
 </project>
