@@ -57,17 +57,17 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public BasePedagogicalModel() {
     }
 
-    public BasePedagogicalModel (SessionManager smgr, TutorStrategy strategy) throws SQLException {
-        this.pedagogy = strategy;
-        setSmgr(smgr);
-        smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
-        setTutorModel(new TutorModel(smgr));
-        pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
-        params = getPedagogicalModelParametersFromStrategy(smgr.getConnection(),strategy,smgr.getClassID(),smgr.getStudentId());
-//        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
-        setParams(params);
-        buildComponents(smgr,strategy);
-    }
+//    public BasePedagogicalModel (SessionManager smgr, TutorStrategy strategy) throws SQLException {
+//        this.pedagogy = strategy;
+//        setSmgr(smgr);
+//        smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
+//        setTutorModel(new TutorModel(smgr));
+//        pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
+//        params = getPedagogicalModelParametersFromStrategy(smgr.getConnection(),strategy,smgr.getClassID(),smgr.getStudentId());
+////        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
+//        setParams(params);
+//        buildComponents(smgr,strategy);
+//    }
 
 
     public BasePedagogicalModel (SessionManager smgr, Pedagogy pedagogy) throws SQLException {
