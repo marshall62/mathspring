@@ -1,7 +1,11 @@
 package edu.umass.ckc.wo.db;
 
+import edu.umass.ckc.wo.lc.DbLCRule;
+import edu.umass.ckc.wo.lc.LCRuleset;
 import edu.umass.ckc.wo.strat.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorParam;
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
+import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,12 +20,20 @@ import java.util.List;
 public class DbStrategy {
 
 
-
-    public static TutorStrategy getStrategy (Connection conn, int stratId, int classId) throws SQLException {
+    /**
+     * Load the TutorStrategy and its learning companion stuff.
+     * @param conn
+     * @param stratId
+     * @param classId
+     * @return
+     * @throws Exception
+     */
+    public static TutorStrategy getStrategy (Connection conn, int stratId, int classId) throws Exception {
          ResultSet rs = null;
           PreparedStatement ps = null;
           try {
-              String q = "select login_sc_id, lesson_sc_id, tutor_sc_id, name, className from strategy s where s.id = ?";
+              String q = "select login_sc_id, lesson_sc_id, tutor_sc_id, name, " +
+                      "lcid from strategy s where s.id = ?";
               ps = conn.prepareStatement(q);
               ps.setInt(1, stratId);
               rs = ps.executeQuery();
@@ -31,17 +43,89 @@ public class DbStrategy {
                   int lesson_SCId = rs.getInt(2);
                   int tutor_SCId = rs.getInt(3);
                   String name = rs.getString(4);
-                  String className = rs.getString(5);
+                  int lcid = rs.getInt(5);
                   TutorStrategy ts = new TutorStrategy();
                   ts.setStratId(stratId);
                   ts.setName(name);
-                  ts.setClassName(className);
                   ts.setLogin_sc(getClassStrategyComponent(conn,login_SCId,classId));
                   ts.setLesson_sc(getClassStrategyComponent(conn,lesson_SCId,classId));
                   ts.setTutor_sc(getClassStrategyComponent(conn,tutor_SCId,classId));
+                  ts.setLcid(lcid);
+                  loadLC(conn, ts);
                   return ts;
               }
               else return null;
+          } finally {
+                if (ps != null)
+                     ps.close();
+                if (rs != null)
+                     rs.close();
+          }
+    }
+
+    /**
+     * If its a simple LC (non rule-based), we'll just wind up with a classname, o/w we will be loading up all the rulesets
+     * and the other junk that is part of a learning companion.
+     * @param conn
+     * @param ts
+     * @throws Exception
+     */
+    public static void loadLC (Connection conn, TutorStrategy ts) throws Exception {
+         ResultSet rs = null;
+          PreparedStatement ps = null;
+          try {
+              String q = "select name,charName,classname from lc where id=?";
+              ps = conn.prepareStatement(q);
+              ps.setInt(1, ts.getLcid());
+              rs = ps.executeQuery();
+              if (rs.next()) {
+                  LC lc = new LC();
+                  ts.setLc(lc);
+                  lc.setId(ts.getLcid());
+                  lc.setName(rs.getString(1));
+                  lc.setCharacter(rs.getString(2));
+                  lc.setClassName(rs.getString(3));
+                  loadRuleSets(conn,lc);
+              }
+          }  finally {
+                if (ps != null)
+                     ps.close();
+                if (rs != null)
+                     rs.close();
+          }
+
+    }
+
+    /**
+     * If the lc has rule sets mapped to it, load them up.
+     * @param conn
+     * @param lc
+     * @throws Exception
+     */
+    private static void loadRuleSets(Connection conn, LC lc) throws Exception {
+         ResultSet rs = null;
+          PreparedStatement ps = null;
+          try {
+              String q = "select s.id, s.name, s.description, s.notes from lc_ruleset_map m, ruleset s where lcid=?";
+              ps = conn.prepareStatement(q);
+
+              ps.setInt(1, lc.getId());
+              rs = ps.executeQuery();
+              while (rs.next()) {
+                  LCRuleset lcrs = new LCRuleset();
+                  int id = rs.getInt(1);
+                  String name = rs.getString(2);
+                  String descr = rs.getString(3);
+                  String notes = rs.getString(4);
+                  lcrs.setId(id);
+                  lcrs.setName(name);
+                  lcrs.setSource("db");
+                  lcrs.setDescription(descr);
+                  lcrs.setNotes(notes);
+                  DbLCRule.readRuleSet(conn,id,lcrs);
+                  lc.addRuleset(lcrs);
+
+              }
           } finally {
                 if (ps != null)
                      ps.close();
@@ -60,7 +144,7 @@ public class DbStrategy {
      * @return
      * @throws SQLException
      */
-    private static ClassStrategyComponent getClassStrategyComponent(Connection conn, int scId, int classId) throws SQLException {
+    private static ClassStrategyComponent getClassStrategyComponent(Connection conn, int scId, int classId) throws Exception {
          ResultSet rs = null;
           PreparedStatement ps = null;
           try {
@@ -86,7 +170,7 @@ public class DbStrategy {
                       List<SCParam> params = getSCParams(conn,scId,classId);
                       sc.setParams(params);
                   }
-                  ClassSCInterventionSelector interventionSelector = getClassSCInterventionSelector(conn,iselId,scId,classId);
+                  InterventionSelectorSpec interventionSelector = getClassSCInterventionSelector(conn,iselId,scId,classId);
                   interventionSelector.setConfig(config);
                   sc.addInterventionSelector(interventionSelector);
 
@@ -143,7 +227,7 @@ public class DbStrategy {
      * @param classId
      * @return
      */
-    private static ClassSCInterventionSelector getClassSCInterventionSelector(Connection conn, int iselId, int scId, int classId) throws SQLException {
+    private static InterventionSelectorSpec getClassSCInterventionSelector(Connection conn, int iselId, int scId, int classId) throws SQLException {
          ResultSet rs = null;
           PreparedStatement ps = null;
           try {
@@ -155,12 +239,12 @@ public class DbStrategy {
                   String name=rs.getString(1);
                   String className=rs.getString(2);
                   String onEvent=rs.getString(3);
-                  ClassSCInterventionSelector isel = new ClassSCInterventionSelector();
+                  InterventionSelectorSpec isel = new InterventionSelectorSpec(true);
                   isel.setId(iselId);
                   isel.setName(name);
                   isel.setClassName(className);
                   isel.setOnEvent(onEvent);
-                  List<ISParam> params = getISParams(conn,iselId,classId);
+                  List<InterventionSelectorParam> params = getISParams(conn,iselId,classId);
                   isel.setParams(params);
                   return isel;
               }
@@ -181,7 +265,7 @@ public class DbStrategy {
      * @param classId
      * @return
      */
-    private static List<ISParam> getISParams(Connection conn, int iselId, int classId) throws SQLException {
+    private static List<InterventionSelectorParam> getISParams(Connection conn, int iselId, int classId) throws SQLException {
          ResultSet rs = null;
           PreparedStatement ps = null;
           try {
@@ -190,12 +274,12 @@ public class DbStrategy {
               ps.setInt(1, iselId);
               ps.setInt(2, classId);
               rs = ps.executeQuery();
-              List<ISParam> params = new ArrayList<ISParam>();
+              List<InterventionSelectorParam> params = new ArrayList<InterventionSelectorParam>();
               while (rs.next()) {
                   int paramId = rs.getInt(1);
                   String n = rs.getString(2);
                   String v = rs.getString(3);
-                  ISParam p = new ISParam(paramId,n,v);
+                  InterventionSelectorParam p = new InterventionSelectorParam(paramId,n,v);
                   params.add(p);
               }
               return params;
@@ -212,7 +296,7 @@ public class DbStrategy {
             Connection conn = DbUtil.getAConnection("localhost");
             TutorStrategy ts = DbStrategy.getStrategy(conn,5,1022);
             System.out.println(ts.toString());
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

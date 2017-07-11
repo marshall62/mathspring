@@ -16,6 +16,7 @@ import edu.umass.ckc.wo.login.LoginResult;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.state.ExtendedStudentState;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.ClassStrategyComponent;
 import edu.umass.ckc.wo.strat.StrategyMgr;
 import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
@@ -30,6 +31,7 @@ import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -237,7 +239,7 @@ public class SessionManager {
         return loginResult;
     }
 
-    private Pedagogy getPedagogyOrStrategyForStudent (Connection conn, int studId, int classId) throws SQLException, AdminException {
+    private Pedagogy getPedagogyOrStrategyForStudent (Connection conn, int studId, int classId) throws Exception {
         TutorStrategy strat = StrategyMgr.getStrategy(connection,studId, classId); // will return null if student doesn't have a strategyId
         if (strat != null) {
             this.usesStrategy=true;
@@ -591,19 +593,46 @@ public class SessionManager {
         return elapsedTime;
     }
 
-    private void instantiateStrategy (TutorStrategy strategy) {
+    private void instantiatePedagogy (Pedagogy p) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, DeveloperException, InstantiationException, SQLException, IllegalAccessException {
         try {
-            Class c = Class.forName(strategy.getClassName()); // the pedaogical model
-            Constructor constr = c.getConstructor(SessionManager.class, TutorStrategy.class);
+            Class c = Class.forName(p.getPedagogicalModelClass());
+            Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
             logger.debug("Instantiating a pedagogical model of type: " + c.getName());
-            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, strategy);
+            String smClassName = p.getStudentModelClass();
+            this.studentModel = (StudentModel) Class.forName(smClassName).getConstructor(SessionManager.class).newInstance(this);
+
             studentModel = this.pedagogicalModel.getStudentModel();
+            if (studentModel == null) {
+                throw new DeveloperException("A StudentModel object was not created by the constructor of " + p.getPedagogicalModelClass());
+            }
+            studentModel.init(woProps, studId, classId);
+            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, p);
+        } catch (Exception e) {
+            logger.fatal(this.pedagogicalModel, e);
+            throw (e);
+        }
+    }
+
+    private void instantiateStrategy (TutorStrategy strategy) throws NoSuchMethodException, DeveloperException, InstantiationException, SQLException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        try {
+
+            // The strategy holds the information about the pedagogical model in the tutor strategy component.
+            // Begin by getting the className of the pedagogical model.
+            ClassStrategyComponent tutor_sc = strategy.getTutor_sc();
+            Class c = Class.forName(tutor_sc.getClassName()); // the pedagogical model class name
+            Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
+            logger.debug("Instantiating a pedagogical model of type: " + c.getName());
+
+            String smClassName = strategy.getStudentModelClass();
+            this.studentModel = (StudentModel) Class.forName(smClassName).getConstructor(SessionManager.class).newInstance(this);
             if (studentModel == null) {
                 throw new DeveloperException("A StudentModel object was not created by the constructor of " + strategy.getPedagogicalModelClass());
             }
             studentModel.init(woProps, studId, classId);
+            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, strategy);
         } catch (Exception e) {
             logger.fatal(this.pedagogicalModel, e);
+            throw (e);
         }
     }
 
@@ -618,15 +647,8 @@ public class SessionManager {
                 instantiateStrategy((TutorStrategy) p);
             }
             else {
-                Class c = Class.forName(p.getPedagogicalModelClass());
-                Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
-                logger.debug("Instantiating a pedagogical model of type: " + c.getName());
-                this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, p);
-                studentModel = this.pedagogicalModel.getStudentModel();
-                if (studentModel == null) {
-                    throw new DeveloperException("A StudentModel object was not created by the constructor of " + p.getPedagogicalModelClass());
-                }
-                studentModel.init(woProps, studId, classId);
+                instantiatePedagogy(p);
+
             }
         } catch (Exception e) {
             logger.fatal(this.pedagogicalModel, e);

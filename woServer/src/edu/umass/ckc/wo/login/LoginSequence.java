@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.interv.LoginIntervention;
 import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
@@ -60,8 +61,15 @@ public class LoginSequence {
     }
 
     private void buildInterventions (Pedagogy ped) throws Exception {
-        LoginXML loginXML = ped.getLoginXML();
-        interventionGroup = new InterventionGroup(loginXML.getInterventions());
+        if (ped instanceof TutorStrategy) {
+            List<InterventionSelectorSpec> isels = ((TutorStrategy) ped).getLogin_sc().getInterventionSelectors();
+            interventionGroup = new InterventionGroup(isels);
+        }
+        else {
+            LoginXML loginXML = ped.getLoginXML();
+            interventionGroup = new InterventionGroup(loginXML.getInterventions());
+        }
+
         interventionGroup.buildInterventions(smgr,pedagogicalModel);
         for (InterventionSelector s : interventionGroup.getAllInterventions()) {
             LoginInterventionSelector ls = (LoginInterventionSelector) s;

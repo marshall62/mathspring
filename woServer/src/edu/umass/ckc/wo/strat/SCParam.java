@@ -14,6 +14,18 @@ public class SCParam {
         this.value=value;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
     public String toString () {
         return "SCParam: " + id + " " + name + "=" + value;
     }

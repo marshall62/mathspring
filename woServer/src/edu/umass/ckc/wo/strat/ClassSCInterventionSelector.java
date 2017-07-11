@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.strat;
 
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorParam;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ public class ClassSCInterventionSelector {
     private String className;
     private String onEvent;
 
-    private List<ISParam> params;
+    private List<InterventionSelectorParam> params;
 
     public void setConfig(String config) {
         this.config = config;
@@ -30,15 +32,19 @@ public class ClassSCInterventionSelector {
         this.className = className;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
     public void setOnEvent(String onEvent) {
         this.onEvent = onEvent;
     }
 
-    public List<ISParam> getParams() {
+    public List<InterventionSelectorParam> getParams() {
         return params;
     }
 
-    public void setParams(List<ISParam> params) {
+    public void setParams(List<InterventionSelectorParam> params) {
         this.params = params;
     }
 
@@ -48,7 +54,7 @@ public class ClassSCInterventionSelector {
 
     public String toString () {
         StringBuilder sb = new StringBuilder("InterventionSelector " + id + " " + name + "\n");
-        for (ISParam p : this.params) {
+        for (InterventionSelectorParam p : this.params) {
             sb.append("\t\t\t" + p.toString() + "\n");
         }
         return sb.toString();

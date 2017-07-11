@@ -55,6 +55,18 @@ public class MyProgressNavigationForceIS extends NextProblemInterventionSelector
 
     }
 
+    /**
+     * Will not rework to take IS Params.  Just give it a config XML element.
+     * Requires a config element to define the conditions that trigger this intervention.   Format is:
+     * <config>
+     *     <intervalCriteria type="t" val="v" emotion="e" lowerBound="lb" upperBound="ub"/>
+     *
+     *     <notifyDialog when="notify-before/after">Dialog text</notifyDialog>
+     *     <component action="Show | Hide | Highlight">GUI Component</component>
+     * </config>
+     *
+     *
+     */
     private void configure() {
         Element config = this.getConfigXML();
         if (config != null) {

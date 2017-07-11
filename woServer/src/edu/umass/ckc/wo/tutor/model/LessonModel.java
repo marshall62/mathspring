@@ -9,10 +9,14 @@ import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.ClassStrategyComponent;
+import edu.umass.ckc.wo.strat.SCParam;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
+import edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 import edu.umass.ckc.wo.event.internal.InternalEvent;
@@ -29,6 +33,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -42,6 +47,7 @@ public class LessonModel implements TutorEventProcessor {
     private static Logger logger = Logger.getLogger(LessonModel.class);
 
     protected SessionManager smgr;
+    protected List<SCParam> scParams;
     protected LessonModelParameters  lmParams;
     protected Element lessonControlXML;
     protected Pedagogy pedagogy;
@@ -76,9 +82,26 @@ public class LessonModel implements TutorEventProcessor {
         this.pedagogicalMoveListener = pedagogicalMoveListener;
         this.studentState = smgr.getStudentState();
         this.studentModel= smgr.getStudentModel();
-        LessonXML x = Settings.lessonMap.get(this.pedagogy.getLessonName());
-        interventionGroup = new InterventionGroup(x.getInterventions());
+
+        if (pedagogy instanceof TutorStrategy) {
+            interventionGroup = new InterventionGroup(((TutorStrategy) pedagogy).getLesson_sc().getInterventionSelectors());
+        }
+        else {
+            LessonXML x = Settings.lessonMap.get(this.pedagogy.getLessonName());
+            interventionGroup = new InterventionGroup(x.getInterventions());
+        }
         interventionGroup.buildInterventions(smgr,pedagogicalModel);
+    }
+
+
+    public static LessonModel buildModel(SessionManager smgr, TutorStrategy strategy ) throws SQLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        ClassStrategyComponent lessonSC = strategy.getLesson_sc();
+        String lessonModelClassname = lessonSC.getClassName();
+        Class cl = Class.forName(lessonModelClassname);
+        Constructor constr = cl.getConstructor(new Class[] {SessionManager.class}) ;
+        LessonModel lm= (LessonModel) constr.newInstance(smgr);
+        lm.setLessonModelParameters(lessonSC);
+        return lm;
     }
 
 
@@ -193,6 +216,16 @@ public class LessonModel implements TutorEventProcessor {
 
     }
 
+    public void setLessonModelParameters (ClassStrategyComponent lessonSC) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        this.scParams = lessonSC.getParams();
+        Class cl = getLessonModelParametersClass();
+        Constructor constr = cl.getConstructor(new Class[] {List.class});
+        // build the parameters object from the control element in the lesson XML
+        lmParams = (LessonModelParameters) constr.newInstance(lessonSC.getParams());
+    }
+
+
+
 
     // The lesson parameters define how the lesson operates and are stored in a special object which only the lesson model knows about.
     public void setLessonModelParametersForUser(Connection connection, Pedagogy ped,
@@ -211,7 +244,8 @@ public class LessonModel implements TutorEventProcessor {
         // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
         // see if this user has a set of parameters and if so use them to configure the pedagogy.
         // these params come from settings in the WoAdmin tool for the class.
-        LessonModelParameters classParams = DbClass.getClassConfigLessonModelParameters(connection, classId);
+//        LessonModelParameters classParams = DbClass.getClassConfigLessonModelParameters(connection, classId);
+        ClassTutorConfigParams classParams = DbClass.getClassConfigTutorParameters(connection, classId);
         // overload the defaults with stuff defined for the class.  Note this will not overload values where
         // the classconfig specified -1 or null values in a parameter
         lmParams.overload(classParams);

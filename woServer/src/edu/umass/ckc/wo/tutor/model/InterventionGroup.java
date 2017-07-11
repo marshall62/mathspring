@@ -2,12 +2,14 @@ package edu.umass.ckc.wo.tutor.model;
 
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.strat.ClassSCInterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionState;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
+import edu.umass.ckc.wo.xml.JDOMUtils;
 import org.jdom.Element;
 
 import java.util.ArrayList;
@@ -37,6 +39,13 @@ public class InterventionGroup {
 
     }
 
+    // This is how to construct an InterventionGroup from a list of interv selectors that are part of a class strategy.
+    public InterventionGroup (List<InterventionSelectorSpec> intervSels) {
+        interventionsElt =  null;
+        this.interventionsSpecs = intervSels;
+
+    }
+
     /**
      * Parses the XML of an interventions Element
      *  <interventions>
@@ -53,22 +62,53 @@ public class InterventionGroup {
      * @throws Exception
      */
     public void buildInterventions (SessionManager smgr, PedagogicalModel pedMod) throws Exception {
+        // if there are interventions and they are of the XML variety, build them from the XML specs.
+        // Note:  The first test is true if we are dealing with a Pedagogy.  The else is true if
+        // we are dealing with a TutorStrategy
         if (interventionsElt != null) {
             List<Element> intervSels = interventionsElt.getChildren("interventionSelector");
             if (intervSels != null) {
                 for (Element intervSel : intervSels) {
-                    InterventionSelectorSpec spec = new InterventionSelectorSpec(intervSel);
+                    InterventionSelectorSpec spec = new InterventionSelectorSpec(intervSel, false);
 
                     this.add(spec);
                     // we build the selector and stick it inside the spec.   These need to be built so that they can listen to pedaogogical moves sent to them
                     // through the ped model.
                     InterventionSelector sel = spec.buildIS(smgr);
-                    spec.setSelector(sel);
+
                     pedMod.addPedagogicalMoveListener( (PedagogicalMoveListener) sel);
                 }
             }
         }
+        // if we have intervention selectors coming from a strategy component, build them
+        else {
+            for (InterventionSelectorSpec spec : this.interventionsSpecs) {
+                InterventionSelector sel = spec.buildIS(smgr);
+                pedMod.addPedagogicalMoveListener( (PedagogicalMoveListener) sel);
+            }
+        }
     }
+
+//    // Build the InterventionSelector from the strategyComponentIS
+//    private InterventionSelector buildIS(SessionManager smgr, ClassSCInterventionSelector scIS) throws Exception {
+//
+//            InterventionSelector sel=null;
+//            try {
+//                Class c = Class.forName(scIS.getClassName());
+//                sel = (InterventionSelector) c.getConstructor(SessionManager.class).newInstance(smgr);
+//            } catch (Exception e) {
+//                System.out.println("Failed to construct intervention selector: " + scIS.getClassName());
+//            }
+//
+//            sel.setParams(scIS.getParams());
+//
+//            Element config=null;
+//            if (scIS.getConfig() != null)
+//                config = JDOMUtils.getRoot(scIS.getConfig());
+//            sel.setConfigXML(config);
+//            //sel.setServletInfo(smgr,smgr.getPedagogicalModel());  // Want to put off the call to setServletInfo til just before we call .selectIntervention()
+//            return sel;
+//    }
 
     public void add (InterventionSelectorSpec s) {
         this.interventionsSpecs.add(s);
@@ -112,9 +152,15 @@ public class InterventionGroup {
             // skip it if its a run-once intervention that has already been run
             if (!(spec.isRunOnce() && InterventionState.hasRun(smgr.getConnection(), smgr.getStudentId(), spec.getClassName()))) {
                 InterventionSelector isel = spec.getSelector();
-                isel.init(smgr,smgr.getPedagogicalModel());
-                // will check to see if the selector wants to run an intervention
-                Intervention interv= isel.selectIntervention(e);
+                Intervention interv=null;
+                try {
+                    isel.init(smgr, smgr.getPedagogicalModel());
+                    // will check to see if the selector wants to run an intervention
+                    interv = isel.selectIntervention(e);
+                } catch (Exception exc) {
+                    System.out.println("Failed init or selectIntervention on " + interv.getName());
+                    throw exc;
+                }
                 if (interv != null) {
                     if (spec.isRunOnce()) {
                         boolean success = InterventionState.setRun(smgr.getConnection(),smgr.getStudentId(),spec.getClassName());

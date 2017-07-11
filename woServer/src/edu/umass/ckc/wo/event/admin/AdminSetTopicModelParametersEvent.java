@@ -13,7 +13,6 @@ public class AdminSetTopicModelParametersEvent extends AdminEditTopicsEvent {
     private int maxNumProbsPerTopic;
     private int maxTimeInTopic;
     private int contentFailureThreshold;
-    private int externalActivityTimeThreshold;
     private double topicMastery;
     private int minNumProbsPerTopic;
     private int minTimeInTopic;
@@ -28,7 +27,6 @@ public class AdminSetTopicModelParametersEvent extends AdminEditTopicsEvent {
         maxTimeInTopic = p.getInt("maxTimeInTopic");
         minTimeInTopic = p.getInt("minTimeInTopic");
         contentFailureThreshold = p.getInt("contentFailureThreshold");
-        externalActivityTimeThreshold = p.getInt("externalActivityTimeThreshold");
         topicMastery = p.getDouble("mastery");
         difficultyRate =p.getInt("difficultyRate");
     }
@@ -63,7 +61,4 @@ public class AdminSetTopicModelParametersEvent extends AdminEditTopicsEvent {
         return difficultyRate;
     }
 
-    public int getExternalActivityTimeThreshold() {
-        return externalActivityTimeThreshold;
-    }
 }

@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.strat;
 
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,16 +13,16 @@ public class ClassStrategyComponent {
     private String name;
     private String className;
     private List<SCParam> params;
-    private List<ClassSCInterventionSelector> interventionSelectors;
+    private List<InterventionSelectorSpec> interventionSelectors;
 
     public ClassStrategyComponent(int scId, String name, String className) {
         this.id=scId;
         this.name=name;
         this.className=className;
-        this.interventionSelectors = new ArrayList<ClassSCInterventionSelector>();
+        this.interventionSelectors = new ArrayList<InterventionSelectorSpec>();
     }
 
-    public void addInterventionSelector(ClassSCInterventionSelector isel) {
+    public void addInterventionSelector(InterventionSelectorSpec isel) {
         this.interventionSelectors.add(isel);
     }
 
@@ -32,7 +34,11 @@ public class ClassStrategyComponent {
         return params;
     }
 
-    public List<ClassSCInterventionSelector> getInterventionSelectors() {
+    public String getClassName() {
+        return className;
+    }
+
+    public List<InterventionSelectorSpec> getInterventionSelectors() {
         return interventionSelectors;
     }
 
@@ -41,9 +47,17 @@ public class ClassStrategyComponent {
         for (SCParam p: params) {
             sb.append("\t\t" + p.toString() + "\n");
         }
-        for (ClassSCInterventionSelector sel: this.interventionSelectors)
+        for (InterventionSelectorSpec sel: this.interventionSelectors)
             sb.append("\t\t" + sel.toString() + "\n");
         return sb.toString();
 
+    }
+
+    public String getParameterValue(String name) {
+        for (SCParam p: this.params) {
+            if (p.getName().equals(name))
+                return p.getValue();
+        }
+        return null;
     }
 }

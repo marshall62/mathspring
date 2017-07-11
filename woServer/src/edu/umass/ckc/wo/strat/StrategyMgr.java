@@ -19,7 +19,7 @@ public class StrategyMgr {
      * @return
      * @throws SQLException
      */
-    public static TutorStrategy getStrategy (Connection conn, int studId, int classId) throws SQLException {
+    public static TutorStrategy getStrategy (Connection conn, int studId, int classId) throws Exception {
 
         int stratId = DbUser.getStudentStrategy(conn,studId);
         if (stratId == -1)
