@@ -11,9 +11,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="sass_compiled/details.css">
-    <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
-    <%--<link href="css/common_new.css" rel="stylesheet" type="text/css"/>--%>
-    <%--<link href="css/TopicDetails_new.css" rel="stylesheet" type="text/css"/>--%>
     <link href="css/graph_new.css" rel="stylesheet" type="text/css"/>
 
     <script src="js/jquery-1.10.2.js"></script>
