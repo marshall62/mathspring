@@ -95,14 +95,10 @@ m.build = function(activity, previewMode) {
                 // sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".ogg", resource, probContentPath));
                 sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".mp3", resource, probContentPath));
                 hint.appendChild(sound_elt);
+                if(i == 0) {
+                    sound_elt.load()
+                }
             }
-        }
-
-        if(hints[0] == undefined && isNotEmpty(hints.label)){
-            document.getElementById(problemUtils.getIdCorrespondingToHint(hints.label)+"Sound").load();
-        }
-        else if(isNotEmpty(hints[0].audioResource)){
-            document.getElementById(problemUtils.getIdCorrespondingToHint(hints[0].label)+"Sound").load();
         }
     }
 
