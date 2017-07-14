@@ -11,6 +11,10 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
 
     <mvc:annotation-driven/>
     <context:component-scan base-package="edu.umass.ckc.wo.ttmain"/>
+    <!--<context:component-scan base-package="edu.umass.ckc.wo.svc"/>-->
+
+
+
 
     <bean id="viewResolver1" class="org.springframework.web.servlet.view.XmlViewResolver">
         <property name="order" value="1"/>
@@ -24,3 +28,6 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
         <property name="suffix" value=".jsp"/>
     </bean>
 </beans>
+
+
+
