@@ -113,7 +113,8 @@
             servletName : '${servletName}',
             probplayerPath : '${probplayerPath}',
             wait: false,
-            eventCounter: ${eventCounter}
+            eventCounter: ${eventCounter} ,
+            huygui: true
 
         }
 
