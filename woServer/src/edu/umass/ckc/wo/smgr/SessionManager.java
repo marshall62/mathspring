@@ -600,8 +600,6 @@ public class SessionManager {
             logger.debug("Instantiating a pedagogical model of type: " + c.getName());
             String smClassName = p.getStudentModelClass();
             this.studentModel = (StudentModel) Class.forName(smClassName).getConstructor(SessionManager.class).newInstance(this);
-
-            studentModel = this.pedagogicalModel.getStudentModel();
             if (studentModel == null) {
                 throw new DeveloperException("A StudentModel object was not created by the constructor of " + p.getPedagogicalModelClass());
             }

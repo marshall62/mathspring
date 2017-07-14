@@ -89,7 +89,7 @@ public class LessonModelParameters {
     }
 
     // overload the params of this with those given for class.
-    public LessonModelParameters overload(LessonModelParameters classParams) {
+    public LessonModelParameters overload(ClassTutorConfigParams classParams) {
         if (classParams.getMaxProbs() > 0)
             this.maxProbs =  classParams.getMaxProbs();
         if (classParams.getMinProbs() > 0)

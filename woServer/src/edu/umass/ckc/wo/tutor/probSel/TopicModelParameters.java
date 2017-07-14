@@ -70,8 +70,8 @@ public class TopicModelParameters extends LessonModelParameters {
 
 
     // overload the params of this with those given for class.
-    public LessonModelParameters overload(LessonModelParameters theClassParams) {
-        TopicModelParameters classParams = (TopicModelParameters) theClassParams;
+    public LessonModelParameters overload(ClassTutorConfigParams classParams) {
+//        TopicModelParameters classParams = (TopicModelParameters) theClassParams;
         if (classParams == null) return this;
 
         if (classParams.getMaxProbs() > 0)
@@ -92,12 +92,11 @@ public class TopicModelParameters extends LessonModelParameters {
         this.singleTopicMode = classParams.isSingleTopicMode();
         
         // frequency is no longer relevant since they are set in the lessons interventions rather than lesson config
-        if (classParams.getTopicIntroFrequency() != null)
-            this.topicIntroFrequency =classParams.getTopicIntroFrequency();
-        if (classParams.getTopicExampleFrequency() != null)
-            this.topicExampleFrequency =classParams.getTopicExampleFrequency();
-        if (classParams.getDesiredMastery() > 0)
-            this.setDesiredMastery(classParams.getDesiredMastery());
+//        if (classParams.getTopicIntroFrequency() != null)
+//            this.topicIntroFrequency =classParams.getTopicIntroFrequency();
+//        if (classParams.getTopicExampleFrequency() != null)
+//            this.topicExampleFrequency =classParams.getTopicExampleFrequency();
+
         if (classParams.contentFailureThreshold > 0)
             this.contentFailureThreshold = classParams.contentFailureThreshold;
         return this;
