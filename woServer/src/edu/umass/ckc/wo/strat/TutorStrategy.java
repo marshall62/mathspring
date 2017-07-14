@@ -1,6 +1,10 @@
 package edu.umass.ckc.wo.strat;
 
+import edu.umass.ckc.wo.lc.LCRuleset;
 import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutormeta.LearningCompanion;
+
+import java.util.List;
 
 /**
  * Created by marshall on 6/14/17.
@@ -10,10 +14,12 @@ public class TutorStrategy extends Pedagogy {
 
     private int id;
     private String name;
-    private String className;
     private ClassStrategyComponent login_sc;
     private ClassStrategyComponent lesson_sc;
     private ClassStrategyComponent tutor_sc;
+    private int lcid;
+    private LC lc;
+
 
     public int getStratId () {
         return this.id;
@@ -47,12 +53,56 @@ public class TutorStrategy extends Pedagogy {
         this.tutor_sc = tutor_sc;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public String getStudentModelClass () {
+        return tutor_sc.getParameterValue("studentModelClass");
     }
 
-    public String getClassName() {
-        return className;
+    public String getLearningCompanionCharacter () {
+        return lc.getCharacter();
+    }
+
+    public int getLcid() {
+        return lcid;
+    }
+
+    public void setLcid(int lcid) {
+        this.lcid = lcid;
+    }
+
+    public LC getLC () {
+        return this.lc;
+    }
+
+    public void setLc(LC lc) {
+        this.lc = lc;
+    }
+
+    public String getLearningCompanionClass () {
+        return this.lc.getClassName();
+    }
+
+    public String getProblemSelectorClass () {
+        return this.tutor_sc.getParameterValue("problemSelectorClass");
+    }
+
+    public String getReviewModeProblemSelectorClass() {
+        return this.tutor_sc.getParameterValue("reviewModeProblemSelectorClass");
+    }
+
+    public String getChallengeModeProblemSelectorClass() {
+        return this.tutor_sc.getParameterValue("challengeModeProblemSelectorClass");
+    }
+
+    public String getHintSelectorClass() {
+        return this.tutor_sc.getParameterValue("hintSelectorClass");
+    }
+
+    public boolean hasRuleset () {
+        return this.lc.getRulesets() != null;
+    }
+
+    public List<LCRuleset> getLearningCompanionRuleSets () {
+        return lc.getRulesets();
     }
 
     public String toString(){

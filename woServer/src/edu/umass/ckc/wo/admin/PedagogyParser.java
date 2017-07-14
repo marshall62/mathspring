@@ -3,7 +3,6 @@ package edu.umass.ckc.wo.admin;
 import edu.umass.ckc.wo.lc.LCRuleset;
 import edu.umass.ckc.wo.tutor.DynamicPedagogy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
-import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorParam;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
@@ -357,7 +356,7 @@ public class PedagogyParser {
         InterventionSelectorParam selectParam = new InterventionSelectorParam("selectProblem", selectProblem);
         paramSpecs.add(selectParam);
         Element config = elt.getChild("config");
-        InterventionSelectorSpec spec  = new  InterventionSelectorSpec(className,paramSpecs, config);
+        InterventionSelectorSpec spec  = new  InterventionSelectorSpec(className,paramSpecs, config, false);
         return spec;
     }
 

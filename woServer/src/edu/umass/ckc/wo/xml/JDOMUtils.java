@@ -63,6 +63,8 @@ public class JDOMUtils {
     }
 
     public static Element getRoot (String xml) throws Exception {
+        if (xml == null || xml.trim().equals(""))
+            return null;
         SAXBuilder builder = new SAXBuilder(false);
         Document doc = null;
         doc = builder.build(new StringReader(xml));

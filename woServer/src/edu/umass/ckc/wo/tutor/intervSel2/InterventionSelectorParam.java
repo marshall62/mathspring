@@ -8,15 +8,23 @@ package edu.umass.ckc.wo.tutor.intervSel2;
  * To change this template use File | Settings | File Templates.
  */
 public class InterventionSelectorParam {
-    private String name;
-    private String value;
+    protected int id;
+    protected String name;
+    protected String value;
 
     public InterventionSelectorParam() {
     }
 
+
     public InterventionSelectorParam(String name, String value) {
         this.name = name;
         this.value = value;
+    }
+
+
+    public InterventionSelectorParam(int paramId, String n, String v) {
+        this(n,v);
+        this.id=paramId;
     }
 
     public String getName() {
@@ -33,5 +41,18 @@ public class InterventionSelectorParam {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public String toString () {
+        return "\t\t\tParam: " + id + " " + name + "=" + value;
     }
 }

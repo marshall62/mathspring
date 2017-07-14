@@ -19,10 +19,10 @@ import java.util.List;
 public class Pedagogy implements Comparable {
 
     public static final String defaultClasspath = "edu.umass.ckc.wo.tutor";
-    private String problemSelectorClass;
-    private String hintSelectorClass;
+    protected String problemSelectorClass;
+    protected String hintSelectorClass;
     private String studentModelClass;
-    private String learningCompanionClass ;
+    protected String learningCompanionClass ;
     private String pedagogicalModelClass ;
     private String id;    // id of the pedagogy in the db (this is one that matters)
     private String name;

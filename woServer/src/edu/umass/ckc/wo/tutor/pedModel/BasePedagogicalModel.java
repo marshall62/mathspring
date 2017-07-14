@@ -57,17 +57,6 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
     public BasePedagogicalModel() {
     }
 
-//    public BasePedagogicalModel (SessionManager smgr, TutorStrategy strategy) throws SQLException {
-//        this.pedagogy = strategy;
-//        setSmgr(smgr);
-//        smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
-//        setTutorModel(new TutorModel(smgr));
-//        pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
-//        params = getPedagogicalModelParametersFromStrategy(smgr.getConnection(),strategy,smgr.getClassID(),smgr.getStudentId());
-////        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
-//        setParams(params);
-//        buildComponents(smgr,strategy);
-//    }
 
 
     public BasePedagogicalModel (SessionManager smgr, Pedagogy pedagogy) throws SQLException {
@@ -76,30 +65,39 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         smgr.setPedagogicalModel(this); // do this so that sub-components can get the pedagogical model thru smgr rather than passing this
         setTutorModel(new TutorModel(smgr));
         pedagogicalMoveListeners = new ArrayList<PedagogicalMoveListener>();
-        params = getPedagogicalModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
+        if (pedagogy instanceof TutorStrategy)
+            params = getPedagogicalModelParametersFromStrategy((TutorStrategy) pedagogy);
+        else
+            params = getPedagogicalModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
 //        lessonModelParameters = getLessonModelParametersForUser(smgr.getConnection(),pedagogy,smgr.getClassID(),smgr.getStudentId());
-        setParams(params);
         buildComponents(smgr,pedagogy);
     }
 
     protected void buildComponents (SessionManager smgr, Pedagogy pedagogy) {
         try {
+
             problemGrader = new ProblemGrader(smgr);
             setExampleSelector(new BaseExampleSelector());
             setVideoSelector(new BaseVideoSelector());
-            // Use the params from the pedagogy and then overwrite any values with things that are set up for the class
-            // need a pointer to the lessonModel object to pass into the various components.
-            lessonModel =  LessonModel.buildModel(smgr, pedagogy,smgr.getClassID(),smgr.getStudentId());
+            // its simpler to build the lesson model if we are using a TutorStrategy
+            if (pedagogy instanceof TutorStrategy)
+                lessonModel =  LessonModel.buildModel(smgr, (TutorStrategy) pedagogy);
+            else
+                // Use the params from the pedagogy and then overwrite any values with things that are set up for the class
+                // need a pointer to the lessonModel object to pass into the various components.
+                lessonModel =  LessonModel.buildModel(smgr, pedagogy,smgr.getClassID(),smgr.getStudentId());
             this.getTutorModel().setLessonModel(lessonModel);
-            setStudentModel((StudentModel) Class.forName(pedagogy.getStudentModelClass()).getConstructor(SessionManager.class).newInstance(smgr));
-            smgr.setStudentModel(getStudentModel());
+            // no longer build the student model here.   Its constructed in the Smgr prior to calling the PedModel constructor
+//            setStudentModel((StudentModel) Class.forName(pedagogy.getStudentModelClass()).getConstructor(SessionManager.class).newInstance(smgr));
+            setStudentModel(smgr.getStudentModel());
             setProblemSelector((ProblemSelector) Class.forName(pedagogy.getProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
             if (pedagogy.getReviewModeProblemSelectorClass() != null)
                 setReviewModeProblemSelector((ReviewModeProblemSelector) Class.forName(pedagogy.getReviewModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
             if (pedagogy.getChallengeModeProblemSelectorClass() != null)
                 setChallengeModeProblemSelector((ChallengeModeProblemSelector) Class.forName(pedagogy.getChallengeModeProblemSelectorClass()).getConstructor(SessionManager.class, LessonModel.class, PedagogicalModelParameters.class).newInstance(smgr, lessonModel, params));
             setHintSelector((HintSelector) Class.forName( pedagogy.getHintSelectorClass()).getConstructor().newInstance());
-            if (pedagogy.getLearningCompanionClass() != null)   {
+
+            if (pedagogy.hasRuleset())   {
                 setLearningCompanion((LearningCompanion) Class.forName( pedagogy.getLearningCompanionClass()).getConstructor(SessionManager.class).newInstance(smgr));
                 if (pedagogy.hasRuleset()) {
                     String characterName = pedagogy.getLearningCompanionCharacter();
@@ -107,15 +105,28 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
                     ((RuleDrivenLearningCompanion) learningCompanion).setRuleSets(pedagogy.getLearningCompanionRuleSets());
                 }
             }
+            else if (pedagogy.getLearningCompanionClass() != null){
+                setLearningCompanion((LearningCompanion) Class.forName( pedagogy.getLearningCompanionClass()).getConstructor(SessionManager.class).newInstance(smgr));
+
+            }
+
+
 //            if (pedagogy.getNextProblemInterventionSelector() != null)
 //                setNextProblemInterventionSelector(buildNextProblemIS(smgr, pedagogy));
 //            if (pedagogy.getAttemptInterventionSelector() != null)
 //                setAttemptInterventionSelector(buildAttemptIS(smgr, pedagogy));
-            // this needs to come last because it uses things created above
-            if (pedagogy.getInterventionsElement() != null)
-                buildInterventions(pedagogy.getInterventionsElement());
-            else interventionGroup = new InterventionGroup();
+            if (pedagogy instanceof TutorStrategy) {
+                // build the interventions for the tutor-strategyComponent
+                interventionGroup = new InterventionGroup(((TutorStrategy) pedagogy).getTutor_sc().getInterventionSelectors());
+                this.interventionGroup.buildInterventions(smgr,this);
+            }
+            else {
+                this.interventionGroup = new InterventionGroup(pedagogy.getInterventionsElement());
+                this.interventionGroup.buildInterventions(smgr,this);
+
+            }
             lessonModel.init(smgr,pedagogy,this,this);
+
         } catch (InstantiationException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {
@@ -134,11 +145,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
 
     }
 
-    protected void buildInterventions (Element interventionsElt) throws Exception {
-        this.interventionGroup = new InterventionGroup(interventionsElt);
-        this.interventionGroup.buildInterventions(smgr,this);
 
-    }
 
 
     public void addPedagogicalMoveListener (PedagogicalMoveListener listener) {

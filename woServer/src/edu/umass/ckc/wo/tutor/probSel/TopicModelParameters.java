@@ -1,8 +1,11 @@
 package edu.umass.ckc.wo.tutor.probSel;
 
 
+import edu.umass.ckc.wo.strat.SCParam;
 import edu.umass.ckc.wo.tutormeta.PedagogyParams;
 import org.jdom.Element;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,9 +19,11 @@ public class TopicModelParameters extends LessonModelParameters {
     public static final int MIN_NUM_PROBS_PER_TOPIC = 3;
     public static final int MAX_TIME_IN_TOPIC = 10 * 60 * 1000;
     public static final int MIN_TIME_IN_TOPIC = 30 * 1000;
-    public static final int CONTENT_FAILURE_THRESHOLD = 1;
     public static final double TOPIC_MASTERY = 0.85;
-    public static final int DIFFICULTY_RATE = 2;
+    public static final int DEFAULT_CONTENT_FAILURE_THRESHOLD = 2;
+    public static final String TOPIC_MASTERY_PARAM = "topicMastery";
+    public static final String MAX_TIME_IN_TOPIC_SECS = "maxTimeInTopicSecs";
+    public static final String MIN_TIME_IN_TOPIC_SECS = "minTimeInTopicSecs";
     public static final frequency DEFAULT_TOPIC_INTRO_FREQ = frequency.always;
     public static final frequency DEFAULT_EXAMPLE_FREQ = frequency.always;
 
@@ -37,14 +42,38 @@ public class TopicModelParameters extends LessonModelParameters {
     private String ccss;
     private String lessonStyle;
     private boolean singleTopicMode;
+    private int contentFailureThreshold;
     private InterleavedProblemSetParams interleaveParams=null;  // If interleaved problem sets are part of the lesson, this will be non-null
+
+    /** WHen using TUtorStrategy to build the TopicModel, the params are given in a list of
+     * SCParam objects and it is simpler to build this TopicModelParameters from it
+     * @param scParams
+     */
+    public TopicModelParameters (List<SCParam> scParams) {
+        for (SCParam p: scParams) {
+            setParam(p);
+        }
+    }
+
+    protected void setParam(SCParam p) {
+        super.setParam(p);  // THe LessonModelParameters may know how to deal with it.
+        if (p.getName().equalsIgnoreCase(MAX_TIME_IN_TOPIC_SECS))
+            this.setMaxTimeInTopicSecs(Integer.parseInt(p.getValue()));
+        else if (p.getName().equalsIgnoreCase(MIN_TIME_IN_TOPIC_SECS))
+            this.setMinTimeInTopicSecs(Integer.parseInt(p.getValue()));
+        else if (p.getName().equalsIgnoreCase(TOPIC_MASTERY_PARAM))
+            this.setDesiredMastery(Double.parseDouble(p.getValue()));
+        else if (p.getName().equalsIgnoreCase(CONTENT_FAILURE_THRESHOLD))
+            this.contentFailureThreshold = Integer.parseInt(p.getValue());
+
+    }
+
 
     // overload the params of this with those given for class.
     public LessonModelParameters overload(LessonModelParameters theClassParams) {
         TopicModelParameters classParams = (TopicModelParameters) theClassParams;
         if (classParams == null) return this;
-        if (classParams.getDifficultyRate() > 0)
-            this.difficultyRate =classParams.getDifficultyRate();
+
         if (classParams.getMaxProbs() > 0)
             this.maxProbs =classParams.getMaxProbs();
         if (classParams.getMinProbs() > 0)
@@ -55,8 +84,7 @@ public class TopicModelParameters extends LessonModelParameters {
         // class params has minTime in MS
         if (classParams.getMinTimeMs() > 0)
             this.minTimeMs = classParams.getMinTimeMs();
-        if (classParams.getContentFailureThreshold() > 0)
-            this.contentFailureThreshold =classParams.getContentFailureThreshold();
+
         if (classParams.getDesiredMastery() > 0)
             this.desiredMastery =classParams.getDesiredMastery();
         if (classParams.getLessonStyle() != null )
@@ -68,7 +96,10 @@ public class TopicModelParameters extends LessonModelParameters {
             this.topicIntroFrequency =classParams.getTopicIntroFrequency();
         if (classParams.getTopicExampleFrequency() != null)
             this.topicExampleFrequency =classParams.getTopicExampleFrequency();
-
+        if (classParams.getDesiredMastery() > 0)
+            this.setDesiredMastery(classParams.getDesiredMastery());
+        if (classParams.contentFailureThreshold > 0)
+            this.contentFailureThreshold = classParams.contentFailureThreshold;
         return this;
 
     }
@@ -104,19 +135,17 @@ public class TopicModelParameters extends LessonModelParameters {
     // USed to take in inputs from the teacher tools where we set the class config topic (lesson) parameters that get
     // inserted into the classconfig table.
     public TopicModelParameters(long maxTimeInTopic, int contentFailureThreshold, double topicMastery, int minNumberProbs,
-                                long minTimeInTopic, double difficultyRate,  int maxNumberProbs, long externalActivityWaitTime
-                                ) {
+                                long minTimeInTopic, double difficultyRate, int maxNumberProbs
+    ) {
         this.maxProbs = maxNumberProbs;
         this.maxTimeMs = maxTimeInTopic;
-        this.contentFailureThreshold = contentFailureThreshold;
         this.desiredMastery = topicMastery;
         this.minProbs= minNumberProbs;
         this.minTimeMs= minTimeInTopic;
-        this.difficultyRate= difficultyRate;
         this.topicIntroFrequency = null;
         this.topicExampleFrequency = null;
         this.lessonStyle = "topics";
-        this.externalActivityWaitTimeMs = externalActivityWaitTime;
+        this.contentFailureThreshold = contentFailureThreshold;
     }
 
 
@@ -128,38 +157,35 @@ public class TopicModelParameters extends LessonModelParameters {
                                 String lessonStyle) {
         this.maxProbs = maxNumberProbs;
         this.maxTimeMs = maxTimeInTopic;
-        this.contentFailureThreshold = contentFailureThreshold;
         this.desiredMastery = topicMastery;
         this.minProbs= minNumberProbs;
         this.minTimeMs= minTimeInTopic;
-        this.difficultyRate= difficultyRate;
         this.topicIntroFrequency = topicIntroFreq;
         this.topicExampleFrequency = exampleFreq;
         this.lessonStyle = lessonStyle;
+        this.contentFailureThreshold=contentFailureThreshold;
     }
 
     public TopicModelParameters(boolean setDefaultValues) {
         if (setDefaultValues) {
             this.maxProbs = MAX_NUM_PROBS_PER_TOPIC;
             this.maxTimeMs = MAX_TIME_IN_TOPIC;
-            this.contentFailureThreshold = CONTENT_FAILURE_THRESHOLD;
             this.desiredMastery = TOPIC_MASTERY;
             this.minProbs = MIN_NUM_PROBS_PER_TOPIC;
             this.minTimeMs = MIN_TIME_IN_TOPIC;
-            this.difficultyRate = DIFFICULTY_RATE;
             this.topicIntroFrequency = DEFAULT_TOPIC_INTRO_FREQ;
             this.topicExampleFrequency = DEFAULT_EXAMPLE_FREQ;
+            this.contentFailureThreshold= DEFAULT_CONTENT_FAILURE_THRESHOLD;
         }
         else {
             this.maxProbs = -1;
             this.maxTimeMs = -1;
-            this.contentFailureThreshold = -1;
             this.desiredMastery = -1;
             this.minProbs = -1;
             this.minTimeMs = -1;
-            this.difficultyRate = -1;
             this.topicIntroFrequency = null;
             this.topicExampleFrequency = null;
+            this.contentFailureThreshold=-1;
         }
     }
 
@@ -187,12 +213,7 @@ public class TopicModelParameters extends LessonModelParameters {
             int maxTimeSecs = Integer.parseInt(s);
             this.setMaxTimeInTopicSecs(maxTimeSecs);
         }
-        c = p.getChild("contentFailureThreshold");
-        if (c != null) {
-            s = c.getValue();
-            int contentFailureThreshold = Integer.parseInt(s);
-            this.setContentFailureThreshold(contentFailureThreshold);
-        }
+
 
         c = p.getChild("topicMastery");
         if (c != null) {
@@ -222,12 +243,7 @@ public class TopicModelParameters extends LessonModelParameters {
             this.setMinTimeInTopicSecs(minTimeInTopicSecs);
         }
 
-        c = p.getChild("difficultyRate");
-        if (c != null) {
-            s = c.getValue();
-            double difficultyRate = Double.parseDouble(s);
-            this.setDifficultyRate(difficultyRate);
-        }
+
 
 
         // Setting frequency here no longer has an effect since frequency is set in the TopicIntroIS rather than lesson config
@@ -250,6 +266,16 @@ public class TopicModelParameters extends LessonModelParameters {
             readInterleavedProblemSetConfig(c);
         }
 
+        c = p.getChild(CONTENT_FAILURE_THRESHOLD);
+        if (c != null) {
+            s = c.getValue();
+            this.contentFailureThreshold = Integer.parseInt(s);
+        }
+        c = p.getChild(TOPIC_MASTERY_PARAM);
+        if (c != null) {
+            s = c.getValue();
+            this.desiredMastery = Double.parseDouble(s);
+        }
 
     }
 

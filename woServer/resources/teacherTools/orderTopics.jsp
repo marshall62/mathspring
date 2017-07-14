@@ -3,7 +3,7 @@
 <jsp:include page="${sideMenu}" />
 
 
-<jsp:useBean id="topicModelParams" scope="request" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"/>
+<jsp:useBean id="topicConfigParams" scope="request" type="edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="mainPageMargin">
@@ -115,7 +115,7 @@
      <form method="post" action="${pageContext.request.contextPath}/WoAdmin?action=AdminSetTopicModelParameters">
          <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
          <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
-        <%--@elvariable id="topicModelParams" type="edu.umass.ckc.wo.tutor.probSel.TopicModelParameters"--%>
+        <%--@elvariable id="tutorConfigParams" type="edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams"--%>
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -137,7 +137,7 @@
                  $( "#maxNumProbsSlider" ).slider({
                      min: -1,
                      max: 100,
-                     value: ${topicModelParams.maxProbs},
+                     value: ${tutorConfigParams.maxProbs},
                      slide: function( event, ui ) {
                          $( "#maxNumberProbsPerTopic" ).val( ui.value );
                      }
@@ -146,7 +146,7 @@
                      min: -1,
                      max: 100,
                      step: 1,
-                     value: ${topicModelParams.minProbs},
+                     value: ${tutorConfigParams.minProbs},
                      slide: function( event, ui ) {
                          $( "#minNumberProbsPerTopic" ).val( ui.value );
                      }
@@ -155,7 +155,7 @@
                      min: -1,
                      max: 60,
                      step: 1,
-                     value: ${topicModelParams.maxTimeMinutes},
+                     value: ${tutorConfigParams.maxTimeMinutes},
                      slide: function( event, ui ) {
                          $( "#maxTimeInTopic" ).val( ui.value );
                      }
@@ -164,7 +164,7 @@
                      min: -1,
                      max: 60,
                      step: 1,
-                     value: ${topicModelParams.minTimeMinutes},
+                     value: ${tutorConfigParams.minTimeMinutes},
                      slide: function( event, ui ) {
                          $( "#minTimeInTopic" ).val( ui.value );
                      }
@@ -173,7 +173,7 @@
                      min: -1,
                      max: 5,
                      step: 1,
-                     value: ${topicModelParams.contentFailureThreshold},
+                     value: ${tutorConfigParams.contentFailureThreshold},
                      slide: function( event, ui ) {
                          $( "#contentFailureThreshold" ).val( ui.value );
                      }
@@ -182,7 +182,7 @@
                      min: -1,
                      max: 1.2,
                      step: 0.05,
-                     value: ${topicModelParams.desiredMastery},
+                     value: ${tutorConfigParams.desiredMastery},
                      slide: function( event, ui ) {
                          $( "#mastery" ).val( ui.value );
                      }
@@ -191,20 +191,12 @@
                      min: -1,
                      max: 5.0,
                      step: 0.1,
-                     value: ${topicModelParams.difficultyRate},
+                     value: ${tutorConfigParams.difficultyRate},
                      slide: function( event, ui ) {
                          $( "#difficultyRate" ).val( ui.value );
                      }
                  });
-                 $( "#extActSlider" ).slider({
-                     min: -1,
-                     max: 30,
-                     step: 1,
-                     value: ${topicModelParams.externalActivityWaitTimeMin},
-                     slide: function( event, ui ) {
-                         $( "#externalActivityTimeThreshold" ).val( ui.value );
-                     }
-                 });
+
                  $( "#maxNumberProbsPerTopic" ).val( $( "#maxNumProbsSlider" ).slider( "value" ) );
                  $( "#minNumberProbsPerTopic" ).val( $( "#minNumProbsSlider" ).slider( "value" ) );
                  $( "#maxTimeInTopic" ).val( $( "#maxTimeSlider" ).slider( "value" ) );
@@ -212,7 +204,6 @@
                  $( "#contentFailureThreshold" ).val( $( "#contentFailureSlider" ).slider( "value" ) );
                  $( "#mastery" ).val( $( "#masterySlider" ).slider( "value" ) );
                  $( "#difficultyRate" ).val( $( "#diffRateSlider" ).slider( "value" ) );
-                 $( "#externalActivityTimeThreshold" ).val( $( "#extActSlider" ).slider( "value" ) );
              } );
          </script>
 
