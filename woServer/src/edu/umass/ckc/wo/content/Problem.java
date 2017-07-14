@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutormeta.Activity;
 import edu.umass.ckc.wo.util.JSONUtil;
 import edu.umass.ckc.wo.util.ProbPlayer;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import java.util.HashMap;
@@ -247,6 +248,7 @@ public class Problem implements Activity {
             jo.element("questionImage", imageURL);
             jo.element("units", units);
             jo.element("questType",this.questType.name());
+            jo.element("hints", new JSONArray());
             for (Hint hint : allHints) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
