@@ -10,6 +10,9 @@ import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.ClassStrategyComponent;
+import edu.umass.ckc.wo.strat.SCParam;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.*;
@@ -27,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -436,6 +440,13 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
     public void setLearningCompanion(LearningCompanion learningCompanion) {
         this.learningCompanion = learningCompanion;
+    }
+
+    protected PedagogicalModelParameters getPedagogicalModelParametersFromStrategy (TutorStrategy strategy) {
+        ClassStrategyComponent sc = strategy.getLesson_sc();
+        List<SCParam> params = sc.getParams();
+        PedagogicalModelParameters theParams = new PedagogicalModelParameters(params);
+        return theParams;
     }
 
     protected PedagogicalModelParameters getPedagogicalModelParametersForUser(Connection connection, Pedagogy ped, int classId, int studId) throws SQLException {

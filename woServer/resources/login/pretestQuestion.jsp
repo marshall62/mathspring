@@ -122,6 +122,15 @@
         return v;
     }
 
+    function setVar () {
+        if (huygui) {
+            document.getElementById("varparam").value = "b";
+        }
+        else {
+            document.getElementById("varparam").value = "a";
+        }
+    }
+
 
     $( function() {
 
@@ -145,10 +154,11 @@
 
 
 
-<form id="pretestQuestion" method="post" name="login" onsubmit="updateElapsedTime(); return validateForm(${question.isMultiChoice()})" action="${pageContext.request.contextPath}/WoLoginServlet">
+<form id="pretestQuestion" method="post" name="login" onsubmit="updateElapsedTime(); setVar(); return validateForm(${question.isMultiChoice()})" action="${pageContext.request.contextPath}/WoLoginServlet">
     <input type="hidden" name="action" value="LoginInterventionInput"/>
     <input type="hidden" name="sessionId" value="${sessionId}">
     <input type="hidden" name="skin" value="${skin}"/>
+    <input id="varparam" type="hidden" name="var" value="a"/>
     <input type="hidden" name="interventionClass" value="${interventionClass}"/>
     <input type="hidden" name="probId" value="${question.id}"/>
     <input id="elapsedTimeInput" type="hidden" name="elapsedTime" value="0"/>

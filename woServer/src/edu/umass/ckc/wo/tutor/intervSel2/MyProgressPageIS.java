@@ -49,6 +49,13 @@ public class MyProgressPageIS extends NextProblemInterventionSelector {
 
     }
 
+    /**
+     * Only configured using a config XML element like:
+     * <config>
+     *     <intervalCriteria type="numProblems | time | affect" val=v emotion=e lowerBound=l upperBound=u></intervalCriteria>
+     * </config>
+
+     */
     private void configure() {
         Element config = this.getConfigXML();
         if (config != null) {

@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.event.tutorhut.InputResponseEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.ClassSCInterventionSelector;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.tutormeta.PedagogicalMoveListener;
@@ -51,6 +52,11 @@ public abstract class InterventionSelector implements PedagogicalMoveListener {
         this.studentModel = smgr.getStudentModel();
     }
 
+    public InterventionSelector (SessionManager smgr, ClassSCInterventionSelector isel) {
+        this(smgr);
+        this.params = (List<InterventionSelectorParam>) isel.getParams();
+    }
+
     public Intervention selectIntervention(SessionEvent e) throws Exception {
         if (this instanceof NextProblemInterventionSelector)          {
             //  e could be a continueNextProblemInterventionEvent or InputResponseNextProb...
@@ -86,6 +92,7 @@ public abstract class InterventionSelector implements PedagogicalMoveListener {
     public void setConfigXML(Element configXML) {
         this.configXML = configXML;
     }
+
 
     public void setParams(List<InterventionSelectorParam> params) {
         this.params = params;
@@ -137,6 +144,33 @@ public abstract class InterventionSelector implements PedagogicalMoveListener {
         Element x = configXML.getChild(name);
         if (x != null)
             return x.getTextTrim();
+        else return null;
+    }
+
+    /**
+     * Either get the param from within the config XML (if this intervention is being created from the XML living in
+     * the database for defining Pedagogy, Lesson, or Login) or get it from the interventionSelectorParams that
+     * get built by reading in the TUtorStrategy (or if the XML in the db uses <param name="x" value="y"> instead of the config XML)
+     *
+     * Because config still exists even in the TutorStrategy (because some things cannot be defined with simple key/value pairs) we
+     * check it first.
+     * @param name
+     * @return
+     */
+    protected String getConfigParameter2 (String name) {
+        if (configXML != null) {
+            Element x = configXML.getChild(name);
+            if (x != null)
+                return x.getTextTrim();
+            return null;
+        }
+
+        else if (this.params != null) {
+            for (InterventionSelectorParam p : this.params)
+                if (p.getName().equalsIgnoreCase(name))
+                    return p.getValue();
+            return null;
+        }
         else return null;
     }
 

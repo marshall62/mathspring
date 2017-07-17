@@ -47,8 +47,9 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
 
     private void configure (Element configElt) throws Exception {
         if (configElt != null) {
-            Element ask = configElt.getChild("ask");
-            this.ask = Boolean.parseBoolean(ask.getTextTrim());
+            String b = getConfigParameter2("ask");
+            if (b != null)
+                this.ask = Boolean.parseBoolean(b);
             if (this.ask)
                 throw new UserException("TopicSwitchAsk cannot function with ask=true because we can't stay in an exhausted topic if student does want to switch");
         }

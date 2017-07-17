@@ -68,10 +68,10 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private void configure() {
         emotions = new ArrayList<Emotion>();
         Element config = this.getConfigXML();
-        timeInterval = getConfigParameter("interruptIntervalMin");
-        probInterval = getConfigParameter("interruptIntervalProblems");
-        numVals = getConfigParameter("numVals");
-        inputType = getConfigParameter("inputType");
+        timeInterval = getConfigParameter2("interruptIntervalMin");
+        probInterval = getConfigParameter2("interruptIntervalProblems");
+        numVals = getConfigParameter2("numVals");
+        inputType = getConfigParameter2("inputType");
         if (config != null) {
             List<Element> emotElts = config.getChildren("emotion");
             if (emotElts != null) {
@@ -85,15 +85,14 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
                     emotions.add(e);
                 }
             }
-            Element askWhyElt = config.getChild("askWhy");
-            if (askWhyElt != null) {
-                String txt = askWhyElt.getText() ;
-                boolean b = Boolean.parseBoolean(txt);
+            String askWhyTxt = getConfigParameter2("askWhy");
+            if (askWhyTxt != null) {
+                boolean b = Boolean.parseBoolean(askWhyTxt);
                 this.askWhy= b;
             }
         }
-        question = getConfigParameter("question");
-        questionHeader = getConfigParameter("questionHeader");
+        question = getConfigParameter2("question");
+        questionHeader = getConfigParameter2("questionHeader");
 
     }
 
