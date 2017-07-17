@@ -125,7 +125,8 @@
             probplayerPath : '${probplayerPath}',
             wait: false,
             eventCounter: ${eventCounter},
-            soundSync: ${soundSync}
+            soundSync: ${soundSync} ,
+            huygui: false
 
         }
 
