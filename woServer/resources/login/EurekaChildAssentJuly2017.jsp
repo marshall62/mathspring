@@ -1116,7 +1116,7 @@ classroom and write down some things about you. <span style='letter-spacing:
 -.15pt'>We will record audio and video digital files of you working with the
 software. The researchers will keep all study records in a locked file cabinet
 maintained in a separate and secure location.</span><span
-style='mso-spacerun:yes'>  </span>We are sending a note to your
+style='mso-spacerun:yes'>ï¿½ </span>We are sending a note to your
 parents/caretakers asking them to OK your participation, so they know that we
 ask you to<b style='mso-bidi-font-weight:normal'> </b>use this software. The
 results of data and video may be distributed at research meetings, however your
@@ -1127,10 +1127,10 @@ answers you provide here cannot be linked to you personally. <o:p></o:p></span><
 
 <p class=MsoNormal><span style='font-size:10.0pt'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='font-size:10.0pt'>If you don’t want to
-participate, you don’t have to and you can stop at any time. You will do alternative
+<p class=MsoNormal><span style='font-size:10.0pt'>If you donï¿½t want to
+participate, you donï¿½t have to and you can stop at any time. You will do alternative
 camp activities if you do not participate. There will be no bad feelings if you
-don’t want to do this.<span style='mso-spacerun:yes'>  </span>You can ask
+donï¿½t want to do this.<span style='mso-spacerun:yes'>ï¿½ </span>You can ask
 questions if you do not understand any part of the activity. If you agree to
 participate, we ask you to work with us during the workshop. There are no risks
 to you or to your privacy if you decide to join. To get a copy of these results
@@ -1146,13 +1146,13 @@ style='font-size:10.0pt'>.</span></span><span style='font-size:10.0pt'><o:p></o:
 we welcome you. If you decide not to participate that is fine. If you have any
 questions about the web site, or about being in this workshop, please contact
 me at </span><a href="mailto:ckchelp@cs.umass.edu"><span style='font-size:10.0pt'>ckchelp@cs.umass.edu</span></a><span
-style='font-size:10.0pt'>.<span style='mso-spacerun:yes'>  </span>Researchers
+style='font-size:10.0pt'>.<span style='mso-spacerun:yes'>ï¿½ </span>Researchers
 at UMass would like to use the data from this software as part of their
 research studies to see which techniques work best to support math learning.
 The Human Subjects Review Board at the University of Massachusetts Amherst has
 approved this project and can also answer any questions about privacy you might
-have.<span style='mso-spacerun:yes'>  </span>You can reach them at (413) 545-3428.<span
-style='mso-spacerun:yes'>  </span><o:p></o:p></span></p>
+have.<span style='mso-spacerun:yes'>ï¿½ </span>You can reach them at (413) 545-3428.<span
+style='mso-spacerun:yes'>ï¿½ </span><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-size:10.0pt'><o:p>&nbsp;</o:p></span></p>
 
@@ -1169,7 +1169,7 @@ style='font-size:10.0pt'><o:p>&nbsp;</o:p></span></p>
 <p class=MsoNormal><span style='font-size:10.0pt'>Sincerely,<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-size:10.0pt'><span
-style='mso-spacerun:yes'> </span></span><span style='font-size:10.0pt;
+style='mso-spacerun:yes'>ï¿½</span></span><span style='font-size:10.0pt;
 mso-fareast-language:EN-US;mso-no-proof:yes'><!--[if gte vml 1]><v:shape id="Picture_x0020_2"
  o:spid="_x0000_i1025" type="#_x0000_t75" alt="BWoolf" style='width:158.25pt;
  height:45pt;visibility:visible;mso-wrap-style:square'>
@@ -1192,14 +1192,15 @@ Woolf<o:p></o:p></span></p>
         <input type="hidden" name="action" value="LoginInterventionInput"/>
         <input type="hidden" name="sessionId" value="${sessionId}"/>
         <input type="hidden" name="skin" value="${skin}"/>
+        <input type="hidden" name="var" value="b"/>
         <input type="hidden" name="interventionClass" value="${interventionClass}"/>
 
 
     <input name="assent" value="yes" checked="true" type="radio">Yes I agree to participate in this study</input><span style='mso-tab-count:1'>
-                   </span>
+    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ </span>
     <input name="assent" value="no" type="radio">No I do not agree to participate in this study</input><span
-            style='mso-spacerun:yes'>     </span><span style='mso-spacerun:yes'>  </span><a name="_GoBack"></a><span
-            style='mso-tab-count:1'>   </span><o:p></o:p></span>
+            style='mso-spacerun:yes'>ï¿½ï¿½ï¿½ï¿½ </span><span style='mso-spacerun:yes'>ï¿½ </span><a name="_GoBack"></a><span
+            style='mso-tab-count:1'>ï¿½ï¿½ </span><o:p></o:p></span>
         <br><br><input type="submit"/>
     </form></p>
 </div>
