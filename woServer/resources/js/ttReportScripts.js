@@ -24,13 +24,13 @@ var activetable;
 var inactivetable;
 var studentRosterTable;
 
-var effortLabelMap = {"SKIP" : "The student did nothing and skipped the problem.",
-                       "NOTR" : "The student made a first attempt to solve a problem in a time under 4 seconds –not enough time to even read the problem.",
-                        "GIVEUP" : "The student took some action, but then skipped the problem without solving it.",
-                        "SOF" :  "The student solved the problem on their first attempt, without seeing any help.",
-                        "ATT" : "The student didn’t see any hints and solved it correctly after 1 wrong attempt.",
+var effortLabelMap = {"SKIP" : "The student SKIPPED the problem (didn't do anything on the problem)",
+                       "NOTR" : "NOT even READING the problem --The student answered too fast, in less than 4 seconds",
+                        "GIVEUP" : "The student started working on the problem, but then GAVE UP and moved on without solving it correctly.",
+                        "SOF" :  "The student SOLVED the problem correctly on the FIRST attempt, without any help.",
+                        "ATT" : "The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.",
                         "GUESS" : "The student solved it correctly with no hints and more than 1 incorrect attempt.",
-                        "SHINT" : "Student got the problem eventually right, with at least 1 hint.",
+                        "SHINT" : "The student apparently GUESSED, clicked through 3-5 answers until getting the right one.",
                         "SHELP" : "Got the problem correct but saw atleast one video.",
                         "NO DATA" : "No data could be gathered."
                         }
@@ -1233,7 +1233,6 @@ var completeDataChart;
                             html: true,
                             trigger: 'focus',
                             placement: 'right',
-                            container: 'body',
                             content: function () {
                                 return '<ul><li><a style="cursor: pointer;" class="getCompleteMasteryByAverage"> Get Complete "Mastery" by average </a></li>' +
                                     '<li><a style="cursor: pointer;" class="getCompleteMasteryByMax"> Get "Mastery" reported by highest recorded value for problemset</a></li>' +
