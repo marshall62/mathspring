@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 
 
-
 @Controller
 public class TeacherToolsCreateClassController {
 
@@ -33,14 +32,19 @@ public class TeacherToolsCreateClassController {
     public String createNewClass(@RequestParam("teacherId") String teacherId, @ModelAttribute("createClassForm") CreateClassForm classForm, ModelMap model) throws TTCustomException {
 
         //Basic Class Setup
-        int newClassId = createClassAssistService.createNewClass(classForm,teacherId);
+        int newClassId = createClassAssistService.createNewClass(classForm, teacherId);
         //Set Default Pedagogy
-        ClassInfo newClassInfo  = createClassAssistService.addDefaultPedagogy(newClassId,classForm);
+        ClassInfo newClassInfo = createClassAssistService.addDefaultPedagogy(newClassId, classForm);
         //Add Student Roster and Finish setup
-        createClassAssistService.createStudentRoster(newClassId,newClassInfo,classForm);
-        createClassAssistService.changeDefaultProblemSets(model,newClassId);
+
+        if (!("".equals(classForm.getUserPrefix())) && classForm.getUserPrefix() != null
+                && !("".equals(classForm.getPasswordToken())) && classForm.getPasswordToken() != null
+                && classForm.getNoOfStudentAccountsForClass() > 0)
+            createClassAssistService.createStudentRoster(newClassId, newClassInfo, classForm);
+
+        createClassAssistService.changeDefaultProblemSets(model, newClassId);
         //Control Back to DashBoard with new Class visible
-        loginService.populateClassInfoForTeacher(model,Integer.valueOf(teacherId));
+        loginService.populateClassInfoForTeacher(model, Integer.valueOf(teacherId));
         model.addAttribute("createClassForm", new CreateClassForm());
         return "teacherTools/classDetails";
 
@@ -63,9 +67,6 @@ public class TeacherToolsCreateClassController {
         return loginService.populateClassInfoForTeacher(model, Integer.valueOf(teacherId));
 
     }
-
-
-
 
 
 }

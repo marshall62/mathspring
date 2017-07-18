@@ -1,6 +1,22 @@
 /**
  * Created by nsmenon on 6/1/2017.
  */
+//Report1 Varriables
+var perProblemSetReport;
+var perProblemSetLevelOne;
+var perProblemSetLevelTwo;
+var perProblemSetColumnNamesMap;
+var perProblemSetLevelOneAvg;
+var perProblemSetLevelOneMax;
+var perProblemSetLevelOneLatest;
+
+//Report2 Varriables
+var perProblemReportTable
+
+//Report3 Varriables
+var perClusterReportTable
+
+//Report5 Varribales
 var perStudentReport;
 var effortMap;
 var eachStudentData = [];
@@ -248,9 +264,9 @@ function problemDetails(data, response) {
 
     var higherlevelDetail = "<div id=" + data[0] + " class='panel-body animated zoomOut'> " +
         " <div class='panel panel-default'> <div class='panel-body'><strong>Problem Set: " + JSONData["topicName"] + "</strong></div> " +
-        " <div class='panel-body'><strong>Standards: " + html + "</strong></div>" +
+        " <div class='panel-body'><strong>Standards Covered in this Problem Set: " + html + "</strong></div>" +
         " <div class='panel-body'><strong>Summary : " + JSONData["topicSummary"] + "</strong></div>"+
-        "<div class='panel-body'>Students will see the following selected problems for this problem set. Check/Uncheck  problems you wish to add/remove and click button below</div>"+
+        "<div class='panel-body'>Students will see the following selected problems for this problem set,within the grade range that you selected. Feel free to Check/Uncheck  problems you wish to add/remove and remember to Click on the 'SAVE' button below </div>"+
         "<div class='panel-body'> <button id="+JSONData["problemLevelId"]+'_handler'+" class='btn btn-primary btn-lg' aria-disabled='true'>Save Changes</button></div></div>";
 
 
@@ -358,12 +374,131 @@ function handleclickHandlers() {
         }
     });
 
+    $('a[rel=initialPopover]').popover({
+        html: false,
+        trigger: 'hover',
+        container: 'body',
+        title: 'What is Mastery ?',
+        placement: 'right',
+        content: function () {
+            return 'Mastery is BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH!!!!!';
+        }
+    });
+
+    $('a[rel="popoverOrder"]').popover({
+        html: false,
+        trigger: 'hover',
+        container: 'body',
+        placement: 'top',
+        content: function () {
+            return 'Order in which the ProblemSet will be shown to the student.';
+        }
+    });
+    $('a[rel="popoveractivatedProblems"]').popover({
+        html: false,
+        trigger: 'hover',
+        container: 'body',
+        placement: 'top',
+        content: function () {
+            return 'Number of Activated Problems. Click on the "V" arrow to see all problems and activate more.';
+        }
+    });
+
+
 }
 
 function registerAllEvents(){
     $('#wrapper').toggleClass('toggled');
     $('#reorg_prob_sets_handler').css('background-color','#e6296f');
     $('#reorg_prob_sets_handler').css('color', '#ffffff');
+
+
+   $('#perTopicReportLegendTable').DataTable({
+       "bPaginate": false,
+       "bFilter": false,
+       "bLengthChange": false,
+       "ordering": false
+   });
+
+    $('#perProblemReportLegendTable').DataTable({
+        "bPaginate": false,
+        "bFilter": false,
+        "bLengthChange": false,
+        "ordering": false
+    });
+
+    $('#perClusterLegendTable').DataTable({
+        "bPaginate": false,
+        "bFilter": false,
+        "bLengthChange": false,
+        "ordering": false
+    });
+
+
+    $('#masteryTrajecotoryLegend').DataTable({
+        "columnDefs" : [{"title" : "Problem ID", "targets": [0]},{"title" : "Problem Name", "targets": [1]},{"title" : "Student Effort", "targets": [2]}],
+        destroy: true,
+        "bFilter": false,
+        "bLengthChange": false,
+        "ordering": false
+    });
+
+
+    perProblemSetReport = $('#perTopicStudentReport').DataTable({
+        data: [],
+        destroy: true,
+        columns: [
+            { title: "Student ID" },
+            { title: "Student Name" },
+            { title: "Username" },
+            { title: "No of problems attempted" },
+            { title: "Effort Chart" },
+        ],
+        "bPaginate": false,
+        "bFilter": false,
+        "bLengthChange": false,
+        rowReorder: false,
+        "bSort" : false,
+
+    } );
+
+    perProblemReportTable = $('#perProblemReport').DataTable({
+        data: [],
+        destroy: true,
+        columns: [
+            { title: "Problem ID", data : "problemId" },
+            { title: "Problem Name", data : "problemName" },
+            { title: "# of Students seen the problem", data : "noStudentsSeenProblem" },
+            { title: "# of Students solved the problem", data : "getPercStudentsSolvedEventually" },
+            { title: "# of Students solved the problem on the first attempt", data : "getGetPercStudentsSolvedFirstTry" },
+            { title: "# of Students solved the problem on the second attempt", data : "getGetPercStudentsSolvedSecondTry" },
+            { title: "# of Students repeated the problem", data : "percStudentsRepeated" },
+            { title: "# of Students skipped the problem", data : "percStudentsSkipped" },
+            { title: "# of Students gave up", data : "percStudentsGaveUp" },
+            { title: "Most Frequent Incorrect Response", data : "mostIncorrectResponse" }
+        ],
+        "bPaginate": false,
+        "bFilter": false,
+        "bLengthChange": false,
+        rowReorder: false
+
+    } );
+
+    perClusterReportTable = $('#perClusterReport').DataTable({
+        data: [],
+        destroy: true,
+        columns: [
+            { title: "Cluster Name", data : "clusterName" },
+            { title: "# of problems in cluster", data : "noOfProblemsInCluster" },
+            { title: "% solved in the first attempt", data : "noOfProblemsonFirstAttempt" },
+            { title: "Avg ratio of hint requested", data : "totalHintsViewedPerCluster" }
+        ],
+        "bPaginate": false,
+        "bFilter": false,
+        "bLengthChange": false,
+        rowReorder: false
+
+    } );
 
     perStudentReport =  $('#perStudentReport').DataTable({
         data: [],
@@ -537,8 +672,7 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "The selected problemsets are deactivated." );
-                    $('#successMsgModelPopup').modal('show');
+
                 }
             }
         });
@@ -600,8 +734,7 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "The Selected problemsets are activated." );
-                    $('#successMsgModelPopup').modal('show');
+                    location.reload();
                 }
             }
         });
@@ -669,6 +802,114 @@ function registerAllEvents(){
 
         }
     });
+    var myLineChart;
+    $('body').on('click', 'div.getMastery-trajectory-for-problemset', function () {
+
+        var topicId = $(this).find("span").text();
+        var td = $(this).closest('td');
+        var bgcolor = "#BDB7B5"
+
+        if(td.attr('class')){
+            if(td.attr('class') == 'span-danger-layer-one')
+                bgcolor = '#FF4766'
+            else if(td.attr('class') == 'span-warning-layer-one')
+                bgcolor = '#FFB647'
+            else if(td.attr('class') == 'span-info-layer-one')
+                bgcolor = '#33b5e5'
+            else
+                bgcolor = '#00C851'
+
+        }
+        var tr = $(this).closest('tr');
+        var row = perProblemSetReport.row(tr);
+        var studentId = row.data()['studentId'];
+        var dataValuesForStudent = perProblemSetLevelTwo[studentId];
+        var dataValuesForChart = dataValuesForStudent[topicId];
+        if(myLineChart) {
+            myLineChart.destroy();
+        }
+
+        var problemsMap = {};
+        var chartLabel = [];
+        var chartData = [];
+        var perProblemSetLevelOneFullTemp = [];
+        dataValuesForChart.forEach(function (e) {
+            var perProblemSetLevelOneTemp = {};
+            perProblemSetLevelOneTemp['problemId'] = e[0];
+            perProblemSetLevelOneTemp['problemName'] = e[1];
+            perProblemSetLevelOneTemp['studentEffort'] =e[7];
+
+            problemsMap[e[1]] =  e[4];
+            chartLabel.push(e[0]);
+            chartData.push(e[5]);
+
+            perProblemSetLevelOneFullTemp.push(perProblemSetLevelOneTemp);
+        });
+
+
+        var columDvalues = [{data : "problemId"},{data : "problemName"},{data : "studentEffort"}]
+        var columNvalues = [{"title" : "Problem Name", "targets": [0]},{"title" : "Problem Name", "targets": [1], "render": function ( data, type, row ) {
+            return  "<a style='cursor:pointer' rel='popover' data-img='" + problemsMap[data] + "'>" + data + "</a>";
+        }
+        },{"title" : "Student Effort", "targets": [2], "render": function ( data, type, row ) {
+                 return  "<a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[data]+"'>" + data + "</a>";
+        }
+        }];
+
+       var  masteryTrajecotoryLegend = $('#masteryTrajecotoryLegend').DataTable({
+            data: perProblemSetLevelOneFullTemp,
+            destroy: true,
+           "scrollCollapse": true,
+           "bInfo": false,
+            "columns" : columDvalues,
+           "columnDefs" : columNvalues,
+            "bFilter": false,
+            "bLengthChange": false,
+             rowReorder: false,
+            "bSort" : false ,
+           "drawCallback": function() {
+               $('a[rel=popover]').popover({
+                         html: true,
+                         trigger: 'hover',
+                         placement: 'right',
+                         content: function () {
+                               return '<img src="' + $(this).data('img') + '" />';    
+                   }
+               });
+               $('a[rel=popoverLabel]').popover({
+                   html: false,
+                   trigger: 'hover',
+                   placement: 'right',
+               });
+            }
+       });
+
+         myLineChart = new Chart($("#masteryTrajectoryReportCanvas"), {
+            type: 'line',
+            data: {
+                labels: chartLabel,
+                datasets: [{
+                    label: 'Mastery Recorded',
+                    data: chartData,
+                    backgroundColor: bgcolor
+                }]
+            }, options: {
+                 scales: {
+                     xAxes: [{
+                         scaleLabel: {
+                             display: true,
+                             labelString: 'Problems Seen in Order'
+                         }
+                     }]
+                 } ,
+                 legend: {
+                     display: false,
+                     position: 'bottom',
+                 }
+             }
+        });
+        $('#masteryTrajectoryReport').modal('show');
+    })
 
 
     $('body').on('click', 'a.viewEachStudentDetail', function () {
@@ -729,6 +970,140 @@ function registerAllEvents(){
         }
 
     });
+    function testMethod() {
+        console.log("a");
+    }
+var completeDataChart;
+    $(document).on('click', 'a.getCompleteMasteryByAverage', function () {
+        var tr = $(this).closest('tr');
+        var row = perProblemSetReport.row(tr);
+        var studentID = row.data()['studentId'];
+        var problemsetName = [];
+        var masteryData = [];
+
+        if(completeDataChart) {
+            completeDataChart.destroy();
+        }
+
+        $.each( perProblemSetLevelOneAvg[studentID], function (i, obj) {
+             var tmp = obj.split("~~~");
+            problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
+            masteryData.push(tmp[1]);
+        });
+
+       completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
+            type: 'bar',
+            data: {
+                labels: problemsetName,
+                datasets: [{
+                    label: 'Average Mastery Recorded',
+                    data: masteryData,
+                    backgroundColor: '#33b5e5'
+                }]
+            }, options: {
+                legend: {
+                    display: false,
+                    position: 'bottom'
+                },scales: {
+                   yAxes: [{
+                       display: true,
+                       ticks: {
+                           suggestedMin: 0.00
+                       }
+                   }]
+               }
+            }
+        });
+        $('#completeMasteryForStudent').modal('show');
+
+    });
+
+    $(document).on('click', 'a.getCompleteMasteryByMax', function () {
+        var tr = $(this).closest('tr');
+        var row = perProblemSetReport.row(tr);
+        var studentID = row.data()['studentId'];
+        var problemsetName = [];
+        var masteryData = [];
+
+        if(completeDataChart) {
+            completeDataChart.destroy();
+        }
+
+        $.each( perProblemSetLevelOneMax[studentID], function (i, obj) {
+            var tmp = obj.split("~~~");
+            problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
+            masteryData.push(tmp[1]);
+        });
+
+        completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
+            type: 'bar',
+            data: {
+                labels: problemsetName,
+                datasets: [{
+                    label: 'Max Mastery Recorded',
+                    data: masteryData,
+                    backgroundColor: '#33b5e5'
+                }]
+            }, options: {
+                legend: {
+                    display: false,
+                    position: 'bottom'
+                },scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            suggestedMin: 0.00
+                        }
+                    }]
+                }
+            }
+        });
+        $('#completeMasteryForStudent').modal('show');
+
+    });
+
+    $(document).on('click', 'a.getCompleteMasteryByLatest', function () {
+        var tr = $(this).closest('tr');
+        var row = perProblemSetReport.row(tr);
+        var studentID = row.data()['studentId'];
+        var problemsetName = [];
+        var masteryData = [];
+
+        if(completeDataChart) {
+            completeDataChart.destroy();
+        }
+
+        $.each( perProblemSetLevelOneLatest[studentID], function (i, obj) {
+            var tmp = obj.split("~~~");
+            problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
+            masteryData.push(tmp[1]);
+        });
+
+        completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
+            type: 'bar',
+            data: {
+                labels: problemsetName,
+                datasets: [{
+                    label: 'Max Mastery Recorded',
+                    data: masteryData,
+                    backgroundColor: '#33b5e5'
+                }]
+            }, options: {
+                legend: {
+                    display: false,
+                    position: 'bottom'
+                },scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            suggestedMin: 0.00
+                        }
+                    }]
+                }
+            }
+        });
+        $('#completeMasteryForStudent').modal('show');
+    });
 
     activetable.on( 'row-reorder', function ( e, diff, edit ) {
         activetable.$('input').removeAttr( 'checked' );
@@ -754,19 +1129,279 @@ function registerAllEvents(){
         });
     } );
 
-
     /** Report Handler Starts **/
 
-    $('#report_one').click(function() {
+    $('#collapseOne').on('show.bs.collapse', function ()  {
+        $('#collapseOne').find('.loader').show();
+        $.ajax({
+            type : "POST",
+            url : pgContext+"/tt/tt/getTeacherReports",
+            data : {
+                classId: classID,
+                teacherId: teacherID,
+                reportType: 'perStudentPerProblemSetReport'
+            },
+            success : function(data) {
+                $('#collapseOne').find('.loader').hide();
+                var jsonData = $.parseJSON(data);
+                perProblemSetLevelOne = jsonData.levelOneData;
+                perProblemSetLevelTwo = jsonData.levelTwoData;
+                perProblemSetColumnNamesMap = jsonData.columns;
+
+                perProblemSetLevelOneAvg = jsonData.levelOneDataAvg;
+                perProblemSetLevelOneMax = jsonData.levelOneDataMax;
+                perProblemSetLevelOneLatest = jsonData.levelOneDataLatest;
+
+                var indexcolumn = 3;
+                var columNvalues = $.map(perProblemSetColumnNamesMap, function (v) {
+                        var temp = {
+                            "title": v, "name": v.replace(/\s/g, ''), "targets": indexcolumn,
+                            "createdCell": function (td, cellData, rowData, row, col) {
+                                if (cellData == '') {
+                                    $(td).text();
+                                    return;
+                                }
+                                var dataArray = cellData.split("---");
+                                $(td).html(""+dataArray[0] + dataArray[1]+"&nbsp;&nbsp;<div class='fa fa-line-chart getMastery-trajectory-for-problemset' title='Get Mastery Trajectory' style='cursor: pointer;' aria-hidden='true'><span style='display: none'>"+dataArray[3]+"</span></div>");
+                                if (dataArray[1] <= 0.25) {
+                                    if (dataArray[2] >= 10) {
+                                        $(td).addClass('span-danger-layer-one');
+                                    }
+
+                                } else if (dataArray[1] > 0.25 && dataArray[1] < 0.5) {
+                                    if (dataArray[2] >= 10) {
+                                        $(td).addClass('span-warning-layer-one');
+                                    }
+                                } else if (dataArray[1] > 0.5 && dataArray[1] < 0.75) {
+                                    if (dataArray[2] >= 10) {
+                                        $(td).addClass('span-info-layer-one');
+                                    }
+                                } else if (dataArray[1] > 0.75) {
+                                    if (dataArray[2] >= 10) {
+                                        $(td).addClass('span-sucess-layer-one');
+                                    }
+                                }
+                            }
+                        };
+                        indexcolumn++;
+                        return temp;
+                    }
+                );
+                columNvalues.unshift({"title" : "Student Name","name":"studentName" , "targets": [0]},
+                    {"title" : "Username","name":"userName", "targets": [1],   "createdCell": function (td, cellData, rowData, row, col) {
+                        $(td).html(cellData+"&nbsp;&nbsp;" +
+                            "<a tabindex='0' rel='completeMasteryChartPopover' data-toggle='popover' data-trigger='focus' title='Get Complete Mastery Chart' style='cursor: pointer;' aria-hidden='true'><i class='fa fa-bar-chart' aria-hidden='true'/></a>");
+                        }
+                    },
+                    {"title" : "StudentID","name":"studentId", "targets": [2], visible : false});
+                var columDvalues = $.map(perProblemSetColumnNamesMap, function(v) {
+                        v = v.replace(/\s/g, '');
+                        return  { width: "20%", data : v };
+                    }
+                );
+                columDvalues.unshift({data: "studentName"},{data: "userName"},{data: "studentId"});
+                var perProblemSetLevelOneFullTemp = [];
+                $.map(perProblemSetLevelOne, function (item,k) {
+                        var perProblemSetLevelOneTemp = {};
+                                    item.forEach(function(e){
+                                        var itemArrays = e.split("~~~");
+                                        perProblemSetLevelOneTemp[itemArrays[0]] = itemArrays[1]
+                                        perProblemSetLevelOneTemp['studentId'] = k;
+                                })
+                        perProblemSetLevelOneFullTemp.push(perProblemSetLevelOneTemp);
+                    }
+                );
+
+                if (perProblemSetReport) {
+                    perProblemSetReport.destroy();
+                    $('#perTopicStudentReport').empty();
+                }
+
+                perProblemSetReport = $('#perTopicStudentReport').DataTable({
+                    data: perProblemSetLevelOneFullTemp,
+                    destroy: true,
+                    "columns": columDvalues,
+                    "columnDefs": columNvalues,
+                    "bPaginate": true,
+                    "scrollX": true,
+                    "bFilter": false,
+                    "bLengthChange": false,
+                    rowReorder: false,
+                    "bSort": false,
+                    "drawCallback": function () {
+                        $('a[rel=completeMasteryChartPopover]').popover({
+                            html: true,
+                            trigger: 'focus',
+                            placement: 'right',
+                            container: 'body',
+                            content: function () {
+                                return '<ul><li><a style="cursor: pointer;" class="getCompleteMasteryByAverage"> Get Complete "Mastery" by average </a></li>' +
+                                    '<li><a style="cursor: pointer;" class="getCompleteMasteryByMax"> Get "Mastery" reported by highest recorded value for problemset</a></li>' +
+                                    '<li><a style="cursor: pointer;" class="getCompleteMasteryByLatest"> Get Complete "Mastery" by latest recorded value for each problemset</a></li></ul>';
+                            }
+                        })
+                    }
+                });
+
+            }
+        });
+
 
     });
 
-    $('#report_two').click(function() {
+    $('#collapseTwo').on('show.bs.collapse', function ()  {
+        $('#collapseTwo').find('.loader').show();
+        $.ajax({
+            type : "POST",
+            url : pgContext+"/tt/tt/getTeacherReports",
+            data : {
+                classId: classID,
+                teacherId: teacherID,
+                reportType: 'perProblemReport'
+            },
+            success : function(data) {
+                $('#collapseTwo').find('.loader').hide();
+                var jsonData = $.parseJSON(data);
+                var eachProblemData = jsonData.levelOneDataPerProblem;
+                var perProblemSetLevelOneFullTemp = [];
+                var problemImageMap = [];
+                $.map(eachProblemData, function (item, key) {
+                    var perProblemSetLevelOneTemp = {};
+                    perProblemSetLevelOneTemp['problemId'] = key;
+                    $.map(item, function (itemValues, k) {
+                        if (k == 'problemName' || k == 'noStudentsSeenProblem' || k == 'getPercStudentsSolvedEventually' ||
+                            k == 'getGetPercStudentsSolvedFirstTry' || k == 'getGetPercStudentsSolvedSecondTry' || k == 'percStudentsRepeated' ||
+                            k == 'percStudentsSkipped' || k == 'percStudentsGaveUp' || k == 'mostIncorrectResponse' || k=='problemStandardAndDescription') {
+                            perProblemSetLevelOneTemp[k] = itemValues;
+                            }else if(k=='imageURL'){
+                            problemImageMap[key] = itemValues;
+                            }
 
+                            });
+                        perProblemSetLevelOneFullTemp.push(perProblemSetLevelOneTemp);
+                        });
+                var columNvalues = [
+                    { "title": "Problem ID", "name" : "problemId" , "targets" : [0]},
+                    { "title": "Problem Name", "name" : "problemName" , "targets" : [1],"render": function ( data, type, full, meta ) {
+                            var problemId = full['problemId'];
+                            return "<a style='cursor:pointer' rel='popoverPerProblem' data-img='" + problemImageMap[problemId] + "'>" + data + "</a>";
+                    }},
+                    { "title": "CC Standard", "name" : "problemStandardAndDescription" , "targets" : [2],"render": function ( data, type, full, meta ) {
+                        var standardSplitter = data.split(":");
+                        return "<a style='cursor:pointer' rel='popoverstandard' data-content='" + standardSplitter[1]+ "'>" + standardSplitter[0] + "</a>";
+                    }},
+                    { "title": "# of Students seen the problem", "name" : "noStudentsSeenProblem","targets" : [3] },
+                    { "title": "% of Students solved the problem", "name" : "getPercStudentsSolvedEventually","targets" : [4] ,"createdCell": function (td, cellData, rowData, row, col) {
+                            if(cellData >= 80){
+                                $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
+                            }else if(cellData < 20){
+                                $(td).addClass('span-danger-layer-one');
+                            }else if(cellData > 20 && cellData <=40){
+                                $(td).addClass('span-danger-layer-one');
+                            }
+                    }},
+                    { "title": "% of Students solved the problem on the first attempt", "name" : "getGetPercStudentsSolvedFirstTry","targets" : [5] ,"createdCell": function (td, cellData, rowData, row, col) {
+                            if(cellData >= 80){
+                                $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
+                            }else if(cellData < 20){
+                                $(td).addClass('span-danger-layer-one');
+                            }
+                    } },
+                    { "title": "# of Students solved the problem on the second attempt", "name" : "getGetPercStudentsSolvedSecondTry","targets" : [6], visible : false },
+                    { "title": "% of Students repeated the problem", "name" : "percStudentsRepeated","targets" : [7] ,"createdCell": function (td, cellData, rowData, row, col) {
+                        if(cellData >= 80){
+                            $(td).addClass('span-danger-layer-one');
+                        }else if(cellData >= 60){
+                            $(td).addClass('span-danger-warning-one');
+                        }
+                    }},
+                    { "title": "% of Students skipped the problem", "name" : "percStudentsSkipped","targets" : [8] ,"createdCell": function (td, cellData, rowData, row, col) {
+                        if(cellData >= 80){
+                            $(td).addClass('span-danger-layer-one');
+                        }else if(cellData >= 60){
+                            $(td).addClass('span-danger-warning-one');
+                        }
+                    }},
+                    { "title": "% of Students gave up", "name" : "percStudentsGaveUp","targets" : [9] ,"createdCell": function (td, cellData, rowData, row, col) {
+                        if(cellData >= 80){
+                            $(td).addClass('span-danger-layer-one');
+                        }else if(cellData >= 60){
+                            $(td).addClass('span-danger-warning-one');
+                        }
+                    }},
+                    { "title": "Most Frequent Incorrect Response", "name" : "mostIncorrectResponse","targets" : [10] }
+                ];
+                var columDvalues = [
+                    { width: "10%", data : "problemId"},
+                    { width: "10%", data : "problemName" },
+                    { width: "10%", data : "problemStandardAndDescription" },
+                    { width: "10%", data : "noStudentsSeenProblem" },
+                    { width: "10%", data : "getPercStudentsSolvedEventually"},
+                    { width: "10%", data : "getGetPercStudentsSolvedFirstTry" },
+                    { width: "5%", data : "getGetPercStudentsSolvedSecondTry"},
+                    { width: "10%", data : "percStudentsRepeated"},
+                    {width: "10%", data : "percStudentsSkipped"},
+                    { width: "10%", data : "percStudentsGaveUp"},
+                    { width: "10%", data : "mostIncorrectResponse"}
+                ];
+
+                if (perProblemReportTable) {
+                    perProblemReportTable.destroy();
+                    $('#perProblemReport').empty();
+                }
+
+                perProblemReportTable = $('#perProblemReport').DataTable({
+                    data: perProblemSetLevelOneFullTemp,
+                    destroy: true,
+                    "columns": columDvalues,
+                    "columnDefs": columNvalues,
+                    "bPaginate": true,
+                    "scrollX": true,
+                    "bFilter": false,
+                    "bLengthChange": false,
+                    rowReorder: false,
+                    "bSort": true,
+                    "drawCallback": function () {
+                        $('a[rel=popoverPerProblem]').popover({
+                            html: true,
+                            trigger: 'hover',
+                            placement: 'right',
+                            container: 'body',
+                            content: function () {
+                                return '<img src="' + $(this).data('img') + '" />';
+                            }
+                        });
+
+                        $('a[rel=popoverstandard]').popover({
+                            html: false,
+                            trigger: 'hover',
+                            placement: 'right',
+                            container: 'body',
+                        });
+                        $('a[rel=popoverHeader]').popover({
+                            container : 'body',
+                            trigger : 'hover',
+                            placement: 'top',
+                        });
+
+                    },
+                    headerCallback: function headerCallback(thead, data, start, end, display) {
+                       $(thead).find('th').eq(4).html('% of Students solved the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who solved the problem, with or without help or mistakes made."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                       $(thead).find('th').eq(6).html('% of Students repeated the problem &nbsp;&nbsp;<a rel="popoverHeader"  data-content="Students who received the problem again, because the last time they did NOT solve it."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                       $(thead).find('th').eq(7).html('% of Students skipped the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who received the problem and immediately clicked the '+"New Problem"+' button"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                       $(thead).find('th').eq(8).html('% of Students gave up &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who started working on the problem, but decided to move on to another one (quit)."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+
+                    }
+                });
+
+
+            }
+
+        });
 
     });
 
-    $('#report_three').click(function() {
+    $('#collapseThree').on('show.bs.collapse', function ()  {
         $.ajax({
             type : "POST",
             url : pgContext+"/tt/tt/getTeacherReports",
@@ -776,7 +1411,7 @@ function registerAllEvents(){
                 reportType: 'perStudentReport'
             },
             success : function(data) {
-                var jsonData = jsonData = $.parseJSON(data);
+                var jsonData = $.parseJSON(data);
                 effortMap = jsonData.effortChartValues;
                 eachStudentData = jsonData.eachStudentDataValues;
                 perStudentReport.clear().draw();
@@ -790,15 +1425,311 @@ function registerAllEvents(){
 
     });
 
-    $('#report_four').click(function() {
+    $('#collapseFour').on('show.bs.collapse', function ()  {
+        $('#collapseFourLoader').show();
+        $.ajax({
+            type : "POST",
+            url : pgContext+"/tt/tt/getTeacherReports",
+            data : {
+                classId: classID,
+                teacherId: teacherID,
+                reportType: 'commonCoreClusterReport'
+            },
+            success : function(data) {
+                $('#collapseFourLoader').hide();
+                var jsonData = $.parseJSON(data);
+                var columNvalues = [
+                    { "title": "Cluster's in Class", "name" : "clusterNames" , "targets" : [0],"render": function ( data, type, full, meta ) {
+                        var clusterCCName = full['clusterCCName'];
+                        return "<a style='cursor:pointer' rel='popoverCluster' data-content='"+clusterCCName+"'>" + data + "</a>";;
+                    },"createdCell": function (td, cellData, rowData, row, col) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                            $(td).addClass('span-danger-layer-one');
+                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                            $(td).addClass('span-warning-layer-one');
+                        }
+                    }},
+                    { "title": "# of problems in cluster", "name" : "noOfProblemsInCluster" , "targets" : [1],"render": function ( data, type, full, meta ) {
+                        return '<label style="width: 50%;">'+data+'</label><a  class="getProblemDetailsPerCluster" aria-expanded="true" aria-controls="collapseOne"><i class="glyphicon glyphicon-menu-down"></i></a>';
+                    },"createdCell": function (td, cellData, rowData, row, col) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                            $(td).addClass('span-danger-layer-one');
+                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                            $(td).addClass('span-warning-layer-one');
+                        }
+                    }},
+                    { "title": "% solved in the first attempt", "name" : "noOfProblemsonFirstAttempt","targets" : [2],"createdCell": function (td, cellData, rowData, row, col) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                            $(td).addClass('span-danger-layer-one');
+                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                            $(td).addClass('span-warning-layer-one');
+                        }
+                    } },
+                    { "title": "Avg ratio of hint requested", "name" : "totalHintsViewedPerCluster","targets" : [3],"createdCell": function (td, cellData, rowData, row, col) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                            $(td).addClass('span-danger-layer-one');
+                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                            $(td).addClass('span-warning-layer-one');
+                        }
+                    }},
+                    { "title": "ClusterID", "name" : "clusterId","targets" : [4], visible : false},
+                    { "title": "Cluster Description", "name" : "clusterCCName","targets" : [5], visible : false}
+                ];
+                var columDvalues = [
+                    { width: "30%", data : "categoryCodeAndDisplayCode"},
+                    { width: "20%", data : "noOfProblemsInCluster" },
+                    { width: "20%", data : "noOfProblemsonFirstAttempt" },
+                    { width: "20%", data : "totalHintsViewedPerCluster" },
+                    { width: "5%", data : "clusterId"},
+                    { width: "5%", data : "clusterCCName"}
+
+                ];
+                var dataPerCluster = [];
+                $.map(jsonData, function (item, key) {
+                    var perProblemSetLevelOneTemp = {};
+                    $.map(item, function (itemValues, k)
+                    {
+                        perProblemSetLevelOneTemp[k] = itemValues;
+                    });
+                    dataPerCluster.push(perProblemSetLevelOneTemp);
+                });
+
+                if (perClusterReportTable) {
+                    perClusterReportTable.destroy();
+                    $('#perClusterReport').empty();
+                }
+
+                perClusterReportTable = $('#perClusterReport').DataTable({
+                    data: dataPerCluster,
+                    destroy: true,
+                    "columns": columDvalues,
+                    "columnDefs": columNvalues,
+                    "bFilter": false,
+                    "bLengthChange": false,
+                    rowReorder: false,
+                    "bSort": true,
+                    "drawCallback": function () {
+                        $('a[rel=popoverCluster]').popover({
+                            html: false,
+                            trigger: 'hover',
+                            placement: 'right',
+                            container: 'body',
+                        });
+                    }
+                });
+            }
+        });
 
     });
 
-    $('#report_five').click(function() {
-
-    });
 
     /** Report Handler Ends **/
 
+    $('body').on('click', 'a.getProblemDetailsPerCluster', function () {
+        $(this).children(':first').toggleClass('rotate-icon');
+        var tr = $(this).closest('tr');
+        var row = perClusterReportTable.row(tr);
+        if ( row.child.isShown() ) {
+            row.child.hide();
+        }else {
+            var clusterId = row.data()['clusterId'];
+
+            $.ajax({
+                type: "POST",
+                url: pgContext + "/tt/tt/getProblemDetailsPerCluster",
+                data: {
+                    classId: classID,
+                    teacherId: teacherID,
+                    clusterId: clusterId
+                },
+                success: function (data) {
+                    var jsonData = $.parseJSON(data);
+                    var eachProblemData = jsonData;
+                    var perProblemSetLevelOneFullTemp = [];
+                    var problemImageMap = [];
+                    $.map(eachProblemData, function (item, key) {
+                        var perProblemSetLevelOneTemp = {};
+                        perProblemSetLevelOneTemp['problemId'] = key;
+                        $.map(item, function (itemValues, k) {
+                            if (k == 'problemName' || k == 'noStudentsSeenProblem' || k == 'getPercStudentsSolvedEventually' ||
+                                k == 'getGetPercStudentsSolvedFirstTry' || k == 'getGetPercStudentsSolvedSecondTry' || k == 'percStudentsRepeated' ||
+                                k == 'percStudentsSkipped' || k == 'percStudentsGaveUp' || k == 'mostIncorrectResponse' || k == 'problemStandardAndDescription') {
+                                perProblemSetLevelOneTemp[k] = itemValues;
+                            } else if (k == 'imageURL') {
+                                problemImageMap[key] = itemValues;
+                            }
+
+                        });
+                        perProblemSetLevelOneFullTemp.push(perProblemSetLevelOneTemp);
+                    });
+                    var columNvalues = [
+                        {"title": "Problem ID", "name": "problemId", "targets": [0]},
+                        {
+                            "title": "Problem Name",
+                            "name": "problemName",
+                            "targets": [1],
+                            "render": function (data, type, full, meta) {
+                                var problemId = full['problemId'];
+                                return "<a style='cursor:pointer' rel='popoverPerProblem' data-img='" + problemImageMap[problemId] + "'>" + data + "</a>";
+                            }
+                        },
+                        {
+                            "title": "CC Standard",
+                            "name": "problemStandardAndDescription",
+                            "targets": [2],
+                            "render": function (data, type, full, meta) {
+                                var standardSplitter = data.split(":");
+                                return "<a style='cursor:pointer' rel='popoverstandard' data-content='" + standardSplitter[1] + "'>" + standardSplitter[0] + "</a>";
+                            }
+                        },
+                        {"title": "# of Students seen the problem", "name": "noStudentsSeenProblem", "targets": [3]},
+                        {
+                            "title": "% of Students solved the problem",
+                            "name": "getPercStudentsSolvedEventually",
+                            "targets": [4],
+                            "createdCell": function (td, cellData, rowData, row, col) {
+                                if (cellData >= 80) {
+                                    $(td).html(cellData + "&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
+                                } else if (cellData < 20) {
+                                    $(td).addClass('span-danger-layer-one');
+                                } else if (cellData > 20 && cellData <= 40) {
+                                    $(td).addClass('span-danger-layer-one');
+                                }
+                            }
+                        },
+                        {
+                            "title": "% of Students solved the problem on the first attempt",
+                            "name": "getGetPercStudentsSolvedFirstTry",
+                            "targets": [5],
+                            "createdCell": function (td, cellData, rowData, row, col) {
+                                if(cellData >= 80){
+                                    $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
+                                }else if(cellData < 20){
+                                    $(td).addClass('span-danger-layer-one');
+                                }
+                            }
+                        },
+                        {
+                            "title": "# of Students solved the problem on the second attempt",
+                            "name": "getGetPercStudentsSolvedSecondTry",
+                            "targets": [6],
+                            visible: false
+                        },
+                        {
+                            "title": "% of Students repeated the problem",
+                            "name": "percStudentsRepeated",
+                            "targets": [7],
+                            "createdCell": function (td, cellData, rowData, row, col) {
+                                if (cellData >= 80) {
+                                    $(td).addClass('span-danger-layer-one');
+                                } else if (cellData >= 60) {
+                                    $(td).addClass('span-danger-warning-one');
+                                }
+                            }
+                        },
+                        {
+                            "title": "% of Students skipped the problem",
+                            "name": "percStudentsSkipped",
+                            "targets": [8],
+                            "createdCell": function (td, cellData, rowData, row, col) {
+                                if (cellData >= 80) {
+                                    $(td).addClass('span-danger-layer-one');
+                                } else if (cellData >= 60) {
+                                    $(td).addClass('span-danger-warning-one');
+                                }
+                            }
+                        },
+                        {
+                            "title": "% of Students gave up",
+                            "name": "percStudentsGaveUp",
+                            "targets": [9],
+                            "createdCell": function (td, cellData, rowData, row, col) {
+                                if (cellData >= 80) {
+                                    $(td).addClass('span-danger-layer-one');
+                                } else if (cellData >= 60) {
+                                    $(td).addClass('span-danger-warning-one');
+                                }
+                            }
+                        },
+                        {"title": "Most Frequent Incorrect Response", "name": "mostIncorrectResponse", "targets": [10]}
+                    ];
+
+                    var columDvalues = [
+                        {width: "10%", data: "problemId"},
+                        {width: "10%", data: "problemName"},
+                        {width: "10%", data: "problemStandardAndDescription"},
+                        {width: "10%", data: "noStudentsSeenProblem"},
+                        {width: "10%", data: "getPercStudentsSolvedEventually"},
+                        {width: "10%", data: "getGetPercStudentsSolvedFirstTry"},
+                        {width: "5%", data: "getGetPercStudentsSolvedSecondTry"},
+                        {width: "10%", data: "percStudentsRepeated"},
+                        {width: "10%", data: "percStudentsSkipped"},
+                        {width: "10%", data: "percStudentsGaveUp"},
+                        {width: "10%", data: "mostIncorrectResponse"}
+                    ];
+
+
+                    var $perClusterChildtable = $($('#child_table_perCluster').html());
+                    $perClusterChildtable.css('width', '100%');
+
+                    var $perClusterChildtableLegend = $($('#child_table_legendCluster').html());
+                    $perClusterChildtableLegend.css('width', '40%');
+
+                    var perClusterChildtableLegend = $perClusterChildtableLegend.DataTable({
+                        "bPaginate": false,
+                        "bFilter": false,
+                        "bLengthChange": false,
+                        rowReorder: false,
+                        "bSort": false});
+
+                    var perClusterChildtable = $perClusterChildtable.DataTable({
+                        data: perProblemSetLevelOneFullTemp,
+                        destroy: true,
+                        "columns": columDvalues,
+                        "columnDefs": columNvalues,
+                        "bPaginate": true,
+                        "bFilter": false,
+                        "bLengthChange": false,
+                        rowReorder: false,
+                        "bSort": true,
+                        "drawCallback": function () {
+                            $('a[rel=popoverPerProblem]').popover({
+                                html: true,
+                                trigger: 'hover',
+                                placement: 'right',
+                                container: 'body',
+                                content: function () {
+                                    return '<img src="' + $(this).data('img') + '" />';
+                                }
+                            });
+
+                            $('a[rel=popoverstandard]').popover({
+                                html: false,
+                                trigger: 'hover',
+                                placement: 'right',
+                                container: 'body',
+                            });
+
+                            $('a[rel=popoverHeader]').popover({
+                                container: 'body',
+                                trigger: 'hover',
+                                placement: 'top',
+                            });
+
+                        },
+                        headerCallback: function headerCallback(thead, data, start, end, display) {
+                            $(thead).find('th').eq(4).html('% of Students solved the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who solved the problem, with or without help or mistakes made."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                            $(thead).find('th').eq(6).html('% of Students repeated the problem &nbsp;&nbsp;<a rel="popoverHeader"  data-content="Students who received the problem again, because the last time they did NOT solve it."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                            $(thead).find('th').eq(7).html('% of Students skipped the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who received the problem and immediately clicked the '+"New Problem"+' button"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                            $(thead).find('th').eq(8).html('% of Students gave up &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who started working on the problem, but decided to move on to another one (quit)."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+
+                        }
+                    });
+                    perClusterReportTable.row(tr).child(perClusterChildtable.table().container()).show();
+                }
+            });
+        }
+
+    });
 
 }
