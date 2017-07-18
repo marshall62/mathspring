@@ -81,22 +81,22 @@ public class ExternalActivityIS extends NextProblemInterventionSelector {
         // the percentage of times that it should choose an external act.
 
 
-        String freqpct = getConfigParameter("frequencyPct");
+        String freqpct = getConfigParameter2("frequencyPct");
         if (freqpct != null)
             percentTimeToSelectXact = Double.parseDouble(freqpct);
-        String x = getConfigParameter("numProblemsBetweenOffers");
+        String x = getConfigParameter2("numProblemsBetweenOffers");
         if (x != null)
             numProblemsBetweenOffers = Integer.parseInt(x);
-        x = getConfigParameter("numMinutesBetweenOffers");
+        x = getConfigParameter2("numMinutesBetweenOffers");
         //Note: This can lead to some undesirable behavior if there is only one xact in the topic and they
         // are allowed to repeat often.   If that can happen make sure that this ASKs about the activity rather
         // than FORCEs it.
         if (x != null)
             numMinutesBetweenOffers = Integer.parseInt(x);
-        x = getConfigParameter("allowRepeat");
+        x = getConfigParameter2("allowRepeat");
         if (x != null)
             allowRepeat = Boolean.parseBoolean(x);
-        String m = getConfigParameter("mode");
+        String m = getConfigParameter2("mode");
         // will be force or ask
         if (m != null)
             mode = m;

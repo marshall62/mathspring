@@ -9,7 +9,8 @@
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="manifest" href="/manifest.json">
-    <link href="css/Dashboard_new.css" rel="stylesheet" type="text/css" />
+
+    <link href="sass_compiled/dashboard.css" rel="stylesheet" type="text/css" />
 
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/jchart_new.js"></script>
@@ -110,7 +111,7 @@
             <div class="play-button">
                 <span class="fa fa-pause"></span>
             </div>
-            <div class="volumn-adjust-wrapper">
+            <div class="volume-adjust-wrapper">
                 <span class="fa fa-volume-down"></span>&nbsp;
                 <input type="range" name="slider-s" id="slider-s" value="50" min="0" max="100" data-highlight="true"/>&nbsp;
                 <span class="fa fa-volume-up"></span>

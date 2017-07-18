@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.handler.UserRegistrationHandler;
 import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
@@ -680,24 +681,26 @@ public class DbClass {
     }
 
 
+    // Reworked again on 6/17.  The ClassTutorConfigParams is now used to put the classConfig fields.   This object is only
+    // used to send to the orderTopics JSP and to get new values from that page and then update them in the db.
 
     // DM reworked on 3/1/17.   This now returns an object with -1 or null values in areas that the classConfig table doesn't
     // provide override values.   This means that people have to correctly set up the class config table to have NULL values
     // in the fields where they do not want to override values in the lessondefinition that is part of the pedagogy.
     // In places where they do want a different value, this will get that value and use it to override what came from the
     // lesson definition.
-    public static LessonModelParameters getClassConfigLessonModelParameters(Connection conn, int classId) throws SQLException {
+    public static ClassTutorConfigParams getClassConfigTutorParameters(Connection conn, int classId) throws SQLException {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
             String q = "select maxNumberProbsToShowPerTopic,maxTimeInTopic,contentFailureThreshold,topicMastery," +
                     "minNumberProbsToShowPerTopic," +
                     "minTimeInTopic,difficultyRate,topicIntroFrequency," +
-                    "exampleFrequency, externalActivityTimeThreshold" +
+                    "exampleFrequency" +
                     " from classconfig where classId=?";
             stmt = conn.prepareStatement(q);
             // create a parameters object will all -1 or null values in its slots
-            TopicModelParameters classConfigParams = new TopicModelParameters(false);
+            ClassTutorConfigParams classConfigParams = new ClassTutorConfigParams(false);
             stmt.setInt(1, classId);
             rs = stmt.executeQuery();
             PedagogicalModelParameters params;
@@ -739,9 +742,7 @@ public class DbClass {
                 else {
                     exampleFreq = null;
                 }
-                int extActThresh = rs.getInt("externalActivityTimeThreshold");
-                if (!rs.wasNull())
-                    classConfigParams.setExternalActivityWaitTimeMs(extActThresh*1000*60);
+
                 return classConfigParams;
             }
             return null;
@@ -752,6 +753,7 @@ public class DbClass {
                 rs.close();
         }
     }
+
 
 
     public static PedagogicalModelParameters getPedagogicalModelParameters(Connection conn, int classId) throws SQLException {
@@ -840,11 +842,11 @@ public class DbClass {
         return params;
     }
 
-    public static void setClassConfigTopicParameters(Connection conn, int classId, TopicModelParameters params) throws SQLException {
+    public static void setClassTutorConfigParameters(Connection conn, int classId, ClassTutorConfigParams params) throws SQLException {
         PreparedStatement stmt = null;
         try {
             String q = "update classconfig set maxNumberProbsToShowPerTopic=?, maxTimeInTopic=?, contentFailureThreshold=?, topicMastery=?," +
-                    "minNumberProbsToShowPerTopic=?, minTimeInTopic=?, difficultyRate=?, externalActivityTimeThreshold=? where classid=?";
+                    "minNumberProbsToShowPerTopic=?, minTimeInTopic=?, difficultyRate=? where classid=?";
             stmt = conn.prepareStatement(q);
             if ( params.getMaxProbs() != -1)
                 stmt.setInt(1, params.getMaxProbs());
@@ -867,10 +869,8 @@ public class DbClass {
             if ( params.getDifficultyRate() != -1)
                 stmt.setDouble(7, params.getDifficultyRate());
             else stmt.setNull(7,Types.DOUBLE);
-            if ( params.getExternalActivityWaitTimeMin() != -1)
-                stmt.setInt(8, params.getExternalActivityWaitTimeMin());
-            else stmt.setNull(8,Types.INTEGER);
-            stmt.setInt(9, classId);
+
+            stmt.setInt(8, classId);
             stmt.executeUpdate();
         } finally {
             if (stmt != null)

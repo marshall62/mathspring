@@ -47,10 +47,60 @@ public class MyProgressNavigationAskIS extends NextProblemInterventionSelector {
 
     public void init(SessionManager smgr, PedagogicalModel pedagogicalModel)  {
         this.pedagogicalModel=pedagogicalModel;
-        configure();
+        configure2();
 
     }
 
+    /**
+     * Reworked to handle config coming from XML or from IS params:
+     * If XML,  it will look like:
+     * <config>
+     *     <intervalCriteria type="t" val="v" emotion="e" lowerBound="l" upperBound="u"></intervalCriteria>
+     *     <dialogType ask="t/f"></dialogType>
+     *     <minIntervalBetweenMPPQueriesBasedOnAffect>X</minIntervalBetweenMPPQueriesBasedOnAffect>
+     * </config>
+     *
+     * If doing it with IS params:
+     * dialogType=true/false
+     * minIntervalBetweenMPPQueriesBasedOnAffect=X
+     * <config>
+     *     <intervalCriteria type="t" val="v" emotion="e" lowerBound="l" upperBound="u"></intervalCriteria>
+     * </config>
+     */
+    private void configure2() {
+        Element config = this.getConfigXML();
+        if (config != null) {
+            List<Element> intervalCritiaElts = config.getChildren("intervalCriteria");
+            for (Element elt: intervalCritiaElts) {
+                String t = elt.getAttributeValue("type");
+                String v = elt.getAttributeValue("val");
+
+                if (t.equals("affect")) {
+                    checkEmotions=true;
+                    String em = elt.getAttributeValue("emotion");
+                    String lb = elt.getAttributeValue("lowerBound");
+                    String ub = elt.getAttributeValue("upperBound");
+                    Bounds b = new Bounds(lb,ub);
+                    emotionSettings.put(em,b);
+                }
+
+            }
+            Element elt = config.getChild("dialogType");
+            String dType = "true";
+            if (elt != null)
+                dType = elt.getAttributeValue("ask");
+            else dType = getConfigParameter2("ask");
+
+            this.isAskDialog = Boolean.parseBoolean(dType);
+            String minutes = getConfigParameter2("minIntervalBetweenMPPQueriesBasedOnAffect");
+            if (minutes != null) {
+                this.minIntervalBetweenMPPQueriesBasedOnAffect = Integer.parseInt(minutes) * 60 * 1000;
+            }
+
+        }
+    }
+
+    // The old way to configure with just XML config element.
     private void configure() {
         Element config = this.getConfigXML();
         if (config != null) {
