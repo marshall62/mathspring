@@ -610,13 +610,13 @@
                         </tr>
 
                         <tr>
-                            <th>Clear All</th>
-                            <th>Clear Practice Hut</th>
-                            <th>Reset Practice Hut</th>
+                          <%--  <th>Clear All</th>--%>
+                            <th>Delete ALL math problem data from this student</th>
+                           <%-- <th>Reset Practice Hut</th>
                             <th>Clear Pretest</th>
-                            <th>Clear Posttest</th>
-                            <th>Delete Student Info</th>
-                            <th>Edit Student Info</th>
+                            <th>Clear Posttest</th>--%>
+                            <th>Delete username, and all its data</th>
+                            <th>Change Password or Username</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -626,17 +626,17 @@
                                 <td>${studentInfo.fname}</td>
                                 <td>${studentInfo.lname}</td>
                                 <td>${studentInfo.uname}</td>
-                                <td>
+                               <%-- <td>
                                     <a  onclick="resetStudentData(4,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
-                                </td>
+                                </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(5,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
                                 </td>
-                                <td>
+                               <%-- <td>
                                     <a  onclick="resetStudentData(6,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
@@ -650,7 +650,7 @@
                                     <a  onclick="resetStudentData(8,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
-                                </td>
+                                </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(9,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>

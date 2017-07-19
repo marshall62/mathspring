@@ -106,6 +106,13 @@
                         }
                     }, schoolYear: {
                         validators: {
+
+                            between: {
+                                min: new Date().getFullYear(),
+                                max: 2050,
+                                message: 'The academic year should not be greater than 2050 and less than current year'
+                            },
+
                             notEmpty: {
                                 message: 'School year is a mandatory field'
                             }

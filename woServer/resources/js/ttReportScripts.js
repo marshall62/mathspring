@@ -570,10 +570,9 @@ function registerAllEvents(){
                 orderable: false
             },
             {
-
-
                 "targets": [ 1 ],
-                "width": "30%"
+                "width": "30%",
+                "orderable": false,
             },
             {
                 "targets": [ 2 ],
@@ -583,11 +582,13 @@ function registerAllEvents(){
             {
                 "width": "30%",
                 "targets": [ 3 ],
-                "visible": false
+                "visible": false,
+                "orderable": false,
 
             },
             {
                 "targets": [ -1 ],
+                "orderable": false,
                 "width": "20%",
                 'className': 'dt-body-center',
                 'render': function (data, type, full, meta){
@@ -598,9 +599,11 @@ function registerAllEvents(){
 
     });
 
+
     inactivetable = $('#inActiveProbSetTable').DataTable({
         "bPaginate": false,
         "bFilter": false,
+        "bSort" : false,
         "bLengthChange": false,
         rowReorder: false,
         "bSort" : false,
@@ -672,7 +675,8 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-
+                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "Selected problemsets are deactivated" );
+                    $('#successMsgModelPopup').modal('show');
                 }
             }
         });
@@ -734,12 +738,21 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    location.reload();
+                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "Selected problemsets are deactivated" );
+                    $('#successMsgModelPopup').modal('show');
                 }
             }
         });
 
     });
+
+    $("#successMsgModelPopup").find("[class*='btn btn-default']").click(function () {
+            location.reload();
+    });
+    $("#successMsgModelPopup").find("[class*='close']").click(function () {
+        location.reload();
+    });
+
 
     $(".active").click(function () {
         $(this).children(':first').toggleClass('rotate-icon');
