@@ -32,9 +32,22 @@ public class TeacherToolsReportController {
 
     @RequestMapping(value = "/tt/getTeacherReports", method = RequestMethod.POST)
     public @ResponseBody
-    String getTeacherReport(ModelMap map, @RequestParam("teacherId") String teacherId, @RequestParam("classId") String classId, @RequestParam("reportType") String reportType) {
+    String getTeacherReport(ModelMap map, @RequestParam("teacherId") String teacherId, @RequestParam("classId") String classId, @RequestParam("reportType") String reportType) throws TTCustomException {
         return reportService.generateTeacherReport(teacherId, classId, reportType);
     }
+
+    @RequestMapping(value = "/tt/getCompleteMasteryProjectionForStudent", method = RequestMethod.POST)
+    public @ResponseBody
+    String getCompleteMasteryProjectionForStudent(ModelMap map,@RequestParam("classId") String classId, @RequestParam("chartType") String chartType, @RequestParam("studentId") String studentId) throws TTCustomException {
+        return reportService.getCompleteMasteryProjectionForStudent(classId,studentId,chartType);
+    }
+
+    @RequestMapping(value = "/tt/getMasterProjectionsForCurrentTopic", method = RequestMethod.POST)
+    public @ResponseBody
+    String getMasterProjectionsForCurrentTopic(ModelMap map,@RequestParam("classId") String classId, @RequestParam("topicID") String topicID, @RequestParam("studentId") String studentId) throws TTCustomException {
+        return reportService.getMasterProjectionsForCurrentTopic(classId,studentId,topicID);
+    }
+
 
     @RequestMapping(value = "/tt/getProblemDetailsPerCluster", method = RequestMethod.POST)
     public @ResponseBody
@@ -55,7 +68,7 @@ public class TeacherToolsReportController {
     }
 
     @RequestMapping(value = "/tt/downLoadPerProblemSetReport", method = RequestMethod.GET)
-    public ModelAndView downLoadPerProblemSetReport(ModelMap map, @RequestParam("teacherId") String teacherId, @RequestParam("classId") String classId) throws TTCustomException, SQLException {
+    public ModelAndView downLoadPerProblemSetReport(ModelMap map, @RequestParam("teacherId") String teacherId, @RequestParam("classId") String classId) throws TTCustomException {
         Map<String, Object> dataPerProblemSet =  reportService.generateClassReportPerStudentPerProblemSet(teacherId,classId);
         map.addAttribute("classId", classId);
         map.addAttribute("teacherId", teacherId);

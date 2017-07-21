@@ -17,7 +17,7 @@ public interface TTProblemsViewService {
 
     public String resetStudentData(String studentId, String action) throws TTCustomException;
 
-    public String resetPassWordForStudent(String studentId, String userName) throws TTCustomException;
+    public String resetPassWordForStudent(String studentId, String userName, String newPassWord) throws TTCustomException;
 
     public String editStudentInfo(EditStudentInfoForm editStudentInfoForm) throws TTCustomException;
 

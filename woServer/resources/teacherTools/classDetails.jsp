@@ -85,29 +85,30 @@
             </thead>
         </table>
     </script>
-    <script type="text/template" id="child_table_legendCluster">
-        <table class="table table-striped table-bordered hover">
-            <thead>
-            <tr>
-                <th>% Range</th>
-                <th>Symbol</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>% greater than or equal to 80</td>
-                <td><i class='fa fa-thumbs-up' aria-hidden='true'></i></td>
-            </tr>
-            <tr>
-                <td>% between 20 and 60</td>
-                <td class="span-warning-layer-one">Average</td>
-            </tr>
-            <tr>
-                <td>% less than 20</td>
-                <td class="span-danger-layer-one">Unsatisfactory</td>
-            </tr>
-            </tbody>
-    </table>
+    <script type="text/template" id="editStudentInfoDiv">
+        <div style="width: 50%">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active">
+                    <a href="#home" role="tab" data-toggle="tab">
+                        <i class="fa fa-address-card-o" aria-hidden="true"></i> Update Student Information
+                    </a>
+                </li>
+                <li><a href="#profile" role="tab" data-toggle="tab">
+                    <i class="fa fa-key" aria-hidden="true"></i> Reset Password for Student
+                </a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="home">
+
+                </div>
+                <div class="tab-pane fade" id="profile">
+
+                </div>
+            </div>
+        </div>
     </script>
 </head>
 
@@ -340,17 +341,11 @@
                         </div>
 
                         <div id="collapseOne" class="panel-collapse collapse">
-
                             <div class="panel-body">
                                 <label>This table shows problem set-wise performance of students of this class.</label>
                                 <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerProblemSetReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
                                     <i class="fa fa-download fa-2x" aria-hidden="true"></i>
                                 </a>
-                                <ul>
-                                    <li>Each cell shows [number solved on first attempt / number problems solved] along with highest recorded "Mastery" <a title="What is Mastery?" style="cursor:pointer" rel="initialPopover"> <i class="fa fa-question-circle-o" aria-hidden="true"></i></a> value for that problem set.</li>
-                                    <li>Cell wherein students have attempted 10 or more problems are color coded.</li>
-                                    <li>Click on the cell to get the complete "Mastery Trajectory" for given student and problemset</li>
-                                </ul>
                             </div>
                             <div class="panel-body">
                                 <table id="perTopicReportLegendTable" class="table table-striped table-bordered hover" width="40%">
@@ -380,6 +375,14 @@
                                     </tbody>
                                 </table>
                                 <div class="loader" style="display: none"></div>
+                            </div>
+
+                            <div class="panel-body">
+                                <ul>
+                                    <li>Each cell shows [number solved on first attempt / number problems solved] along with highest recorded "Mastery" <a title="What is Mastery?" style="cursor:pointer" rel="initialPopover"> <i class="fa fa-question-circle-o" aria-hidden="true"></i></a> value for that problem set.</li>
+                                    <li>Cell wherein students have attempted 10 or more problems are color coded.</li>
+                                    <li>Click on the cell to get the complete "Mastery Trajectory" for given student and problemset</li>
+                                </ul>
                             </div>
 
                             <div class="panel-body">
@@ -701,6 +704,27 @@
 
 <!-- Modal Success-->
 <div id="successMsgModelPopup" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Success</h4>
+            </div>
+            <div class="modal-body alert alert-success" role="alert">
+                Some text in the modal
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal -->
+
+<!-- Modal Success-->
+<div id="successMsgModelPopupForProblemSets" class="modal fade" role="dialog" style="display: none;">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

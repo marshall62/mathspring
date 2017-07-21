@@ -41,7 +41,7 @@ public class TTReportServiceImpl implements TTReportService {
     private static Logger logger = Logger.getLogger(TTReportServiceImpl.class);
 
     @Override
-    public String generateTeacherReport(String teacherId, String classId, String reportType) {
+    public String generateTeacherReport(String teacherId, String classId, String reportType) throws TTCustomException {
         try {
             switch (reportType) {
                 case "perStudentReport":
@@ -73,8 +73,9 @@ public class TTReportServiceImpl implements TTReportService {
                     ObjectMapper perClusterReportMapper = new ObjectMapper();
                     return perClusterReportMapper.writeValueAsString(result);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+           logger.error(e.getMessage());
+           throw new TTCustomException(ErrorCodeMessageConstants.DATABASE_CONNECTION_FAILED);
         }
         return null;
     }
@@ -237,11 +238,7 @@ public class TTReportServiceImpl implements TTReportService {
     public Map<String, Object> generateClassReportPerStudentPerProblemSet(String teacherId, String classId) throws TTCustomException {
         SqlParameterSource namedParameters = new MapSqlParameterSource("classId", classId);
         Map<String, List<String>> finalMapLevelOne = new LinkedHashMap<>();
-        Map<String, List<String>> finalMapLevelAvg = new LinkedHashMap<>();
-        Map<String, List<String>> finalMapLevelMax = new LinkedHashMap<>();
-        Map<String, List<String>> finalMapLevelLatest = new LinkedHashMap<>();
         Map<String, List<String>> finalMapLevelOneTemp = new LinkedHashMap<>();
-        Map<String, Map<String, List<String[]>>> finalMapLevelTwo = new LinkedHashMap<>();
         Map<String, String> columnNamesMap = new LinkedHashMap<>();
         Map<String, Object> allResult = new HashMap<>();
         Map<String, List<String>> resultantValues = namedParameterJdbcTemplate.query(TTUtil.PER_TOPIC_QUERY_FIRST, namedParameters, (ResultSet mappedrow) -> {
@@ -280,42 +277,10 @@ public class TTReportServiceImpl implements TTReportService {
             }
             return finalMapLevelOne;
         });
-
-
         finalMapLevelOne.forEach((studentId, studentDetails) -> {
-
             Map<String, String> selectParams = new LinkedHashMap<String, String>();
             selectParams.put("classId", classId);
             selectParams.put("studId", studentId);
-
-            Map<String, List<String>> resultantValuesAvg = namedParameterJdbcTemplate.query(TTUtil.PER_TOPIC_QUERY_COMPLETE_AVG, selectParams, (ResultSet mappedrowAvg) -> {
-                List<String> fieldValuesList = new ArrayList<>();
-                while (mappedrowAvg.next()) {
-                    String fieldValue = mappedrowAvg.getString("topicId") + "~~~" + mappedrowAvg.getString("mastery");
-                    fieldValuesList.add(fieldValue);
-                }
-                finalMapLevelAvg.put(studentId, fieldValuesList);
-                return finalMapLevelAvg;
-            });
-            Map<String, List<String>> resultantValuesMax = namedParameterJdbcTemplate.query(TTUtil.PER_TOPIC_QUERY_COMPLETE_MAX, selectParams, (ResultSet mappedrowMax) -> {
-                List<String> fieldValuesList = new ArrayList<>();
-                while (mappedrowMax.next()) {
-                    String fieldValue = mappedrowMax.getString("topicId") + "~~~" + mappedrowMax.getString("mastery");
-                    fieldValuesList.add(fieldValue);
-                }
-                finalMapLevelMax.put(studentId, fieldValuesList);
-                return finalMapLevelMax;
-            });
-
-            Map<String, List<String>> resultantValuesLatest = namedParameterJdbcTemplate.query(TTUtil.PER_TOPIC_QUERY_COMPLETE_LATEST, selectParams, (ResultSet mappedrowLatest) -> {
-                List<String> fieldValuesList = new ArrayList<>();
-                while (mappedrowLatest.next()) {
-                    String fieldValue = mappedrowLatest.getString("topicId") + "~~~" + mappedrowLatest.getString("mastery");
-                    fieldValuesList.add(fieldValue);
-                }
-                finalMapLevelLatest.put(studentId, fieldValuesList);
-                return finalMapLevelLatest;
-            });
 
             List<String> tempTopicDescriptionList = finalMapLevelOneTemp.get(studentId);
             List<String> columnList = new ArrayList<String>(columnNamesMap.values());
@@ -331,22 +296,25 @@ public class TTReportServiceImpl implements TTReportService {
 
                 }
             }
+        });
+        allResult.put("levelOneData", finalMapLevelOne);
+        allResult.put("columns", columnNamesMap);
+        return allResult;
+    }
 
-            Map<String, Map<String, List<String[]>>> eachMasteryStudentResults = namedParameterJdbcTemplate.query(TTUtil.PER_TOPIC_QUERY_SECOND, selectParams, (ResultSet mappedrow) -> {
+
+    @Override
+    public String getMasterProjectionsForCurrentTopic(String classId, String studentId, String topicID) throws TTCustomException {
+        try {
+            Map<String, String> selectParams = new LinkedHashMap<String, String>();
+            ObjectMapper objMapper = new ObjectMapper();
+            selectParams.put("classId", classId);
+            selectParams.put("studId", studentId);
+            selectParams.put("topicId", topicID);
+            List<String[]> eachMasteryStudentPerTopicResults = namedParameterJdbcTemplate.query(TTUtil.PER_TOPIC_QUERY_SECOND, selectParams, (ResultSet mappedrow) -> {
+                List<String[]> arrayRecords = new ArrayList<>();
                 while (mappedrow.next()) {
                     Map<String, List<String[]>> studentValuesList = null;
-                    Map<String, List<String>> topicValues = null;
-                    List<String[]> arrayRecords = null;
-                    if (finalMapLevelTwo.containsKey(studentId)) {
-                        studentValuesList = finalMapLevelTwo.get(studentId);
-                    } else {
-                        studentValuesList = new HashMap<>();
-                    }
-                    if (studentValuesList.containsKey(mappedrow.getString("topicId"))) {
-                        arrayRecords = studentValuesList.get(mappedrow.getString("topicId"));
-                    } else {
-                        arrayRecords = new ArrayList<>();
-                    }
                     String[] problemDetails = new String[10];
                     problemDetails[0] = mappedrow.getString("problemId");
                     problemDetails[1] = mappedrow.getString("name");
@@ -360,22 +328,47 @@ public class TTReportServiceImpl implements TTReportService {
                     else
                         problemDetails[7] = mappedrow.getString("effort");
                     arrayRecords.add(problemDetails);
-                    studentValuesList.put(mappedrow.getString("topicId"), arrayRecords);
-                    finalMapLevelTwo.put(studentId, studentValuesList);
+
                 }
-                return finalMapLevelTwo;
+                return arrayRecords;
             });
-        });
+            return objMapper.writeValueAsString(eachMasteryStudentPerTopicResults);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            throw new TTCustomException(ErrorCodeMessageConstants.DATABASE_CONNECTION_FAILED);
+        }
+    }
 
-        allResult.put("levelOneData", finalMapLevelOne);
-        allResult.put("levelOneDataAvg", finalMapLevelAvg);
-        allResult.put("levelOneDataMax", finalMapLevelMax);
-        allResult.put("levelOneDataLatest", finalMapLevelLatest);
-        allResult.put("levelTwoData", finalMapLevelTwo);
-        allResult.put("columns", columnNamesMap);
+    @Override
+    public String getCompleteMasteryProjectionForStudent(String classId, String studentId, String chartType) throws TTCustomException{
+        try {
+            Map<String, String> selectParams = new LinkedHashMap<String, String>();
+            ObjectMapper objMapper = new ObjectMapper();
 
-        return allResult;
+            selectParams.put("classId", classId);
+            selectParams.put("studId", studentId);
 
+            String queryType = "";
+            if (chartType.equals("avg"))
+                queryType = TTUtil.PER_TOPIC_QUERY_COMPLETE_AVG;
+            else if (chartType.equals("max"))
+                queryType = TTUtil.PER_TOPIC_QUERY_COMPLETE_MAX;
+            else
+                queryType = TTUtil.PER_TOPIC_QUERY_COMPLETE_LATEST;
+
+            List<String> resultantValues = namedParameterJdbcTemplate.query(queryType, selectParams, (ResultSet mappedrowAvg) -> {
+                List<String> fieldValuesList = new ArrayList<>();
+                while (mappedrowAvg.next()) {
+                    String fieldValue = mappedrowAvg.getString("topicId") + "~~~" + mappedrowAvg.getString("mastery");
+                    fieldValuesList.add(fieldValue);
+                }
+                return fieldValuesList;
+            });
+            return objMapper.writeValueAsString(resultantValues);
+        }catch (Exception ex){
+            logger.error(ex.getMessage());
+            throw new TTCustomException(ErrorCodeMessageConstants.DATABASE_CONNECTION_FAILED);
+        }
     }
 
     @Override

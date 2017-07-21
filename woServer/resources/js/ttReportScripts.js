@@ -29,8 +29,8 @@ var effortLabelMap = {"SKIP" : "The student SKIPPED the problem (didn't do anyth
                         "GIVEUP" : "The student started working on the problem, but then GAVE UP and moved on without solving it correctly.",
                         "SOF" :  "The student SOLVED the problem correctly on the FIRST attempt, without any help.",
                         "ATT" : "The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.",
-                        "GUESS" : "The student solved it correctly with no hints and more than 1 incorrect attempt.",
-                        "SHINT" : "The student apparently GUESSED, clicked through 3-5 answers until getting the right one.",
+                        "GUESS" : "The student apparently GUESSED, clicked through 3-5 answers until getting the right one.",
+                        "SHINT" : "Student SOLVED problem correctly after seeing HINTS.",
                         "SHELP" : "Got the problem correct but saw atleast one video.",
                         "NO DATA" : "No data could be gathered."
                         }
@@ -44,37 +44,37 @@ function loadEffortMap (rows) {
     var data = {
         labels: ["Student Efforts in the Class in %"],
         datasets: [{
-            label: 'SKIP: The student did nothing and skipped the problem.',
+            label: 'SKIP: The student SKIPPED the problem (did not do anything on the problem)',
             backgroundColor: "#8dd3c7",
             data: [effortValues[0]],
         },
             {
-                label: 'NOTR: The student made a first attempt to solve a problem in a time under 4 seconds –not enough time to even read the problem.',
+                label: 'NOTR: NOT even READING the problem --The student answered too fast, in less than 4 seconds',
                 backgroundColor: "#ffffb3",
                 data: [effortValues[1]],
             },
             {
-                label: 'GIVEUP: The student took some action, but then skipped the problem without solving it.',
+                label: 'GIVEUP: The student started working on the problem, but then GAVE UP and moved on without solving it correctly.',
                 backgroundColor: "#bebada",
                 data: [effortValues[2]],
             },
             {
-                label: 'SOF: The student solved the problem on their first attempt, without seeing any help.',
+                label: 'SOF: The student SOLVED the problem correctly on the FIRST attempt, without any help.',
                 backgroundColor: "#fb8072",
                 data: [effortValues[3]],
             },
             {
-                label: 'ATT: The student didn’t see any hints and solved it correctly after 1 wrong attempt.',
+                label: 'ATT: The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.',
                 backgroundColor: "#b3de69",
                 data: [effortValues[4]],
             },
             {
-                label: 'GUESS: The student solved it correctly with no hints and more than 1 incorrect attempt.',
+                label: 'GUESS: The student apparently GUESSED, clicked through 3-5 answers until getting the right one',
                 backgroundColor: "#fccde5",
                 data: [effortValues[5]],
             },
             {
-                label: 'SHINT: Student got the problem eventually right, with at least 1 hint.',
+                label: 'SHINT: Student SOLVED problem correctly after seeing HINTS.',
                 backgroundColor: "#80b1d3",
                 data: [effortValues[6]],
             },
@@ -109,7 +109,15 @@ function loadEffortMap (rows) {
                 }
                 text.push('</table>');
                 return text.join('');
-            }
+            },scales: {
+            yAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,
+                    max: 100
+                }
+            }]
+        }
         }
     });
     $(legendChart).prepend(myBarChart.generateLegend());
@@ -139,23 +147,26 @@ function resetStudentData( title,studentId) {
 }
 
 function resetPassWordForThisStudent(id,uname){
-    $.ajax({
-        type : "POST",
-        url :pgContext+"/tt/tt/resetStudentPassword",
-        data : {
-            studentId: id,
-            userName: uname
-        },
-        success : function(response) {
-            if (response.includes("***")) {
-                $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
-                $('#errorMsgModelPopup').modal('show');
-            }else{
-                $("#successMsgModelPopup").find("[class*='modal-body']").html( "The Password for the student is reset. The new password is"+response+"");
-                $('#successMsgModelPopup').modal('show');
-            }
-        }
-    });
+    var newPassWordToSet = $("#resetPasswordfor"+id).serializeArray()[0].value;
+    console.log(newPassWordToSet);
+     $.ajax({
+         type : "POST",
+         url :pgContext+"/tt/tt/resetStudentPassword",
+         data : {
+             studentId: id,
+             userName: uname,
+             newPassWord : newPassWordToSet
+         },
+         success : function(response) {
+             if (response.includes("***")) {
+                 $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
+                 $('#errorMsgModelPopup').modal('show');
+             }else{
+                 $("#successMsgModelPopup").find("[class*='modal-body']").html( "The Password for the student is reset. The new password is"+response+"");
+                 $('#successMsgModelPopup').modal('show');
+             }
+         }
+     });
     return false;
 
 }
@@ -167,7 +178,6 @@ function updateStudentInfo(formName){
     $.each(dataForm, function(i, field){
         values[i] = field.value;
     });
-
     $.ajax({
         type : "POST",
         url :pgContext+"/tt/tt/editStudentInfo",
@@ -195,26 +205,44 @@ function editStudentInformation(id,fname,lname,uname,context){
     if ( row.child.isShown() ) {
         row.child( false ).remove();
     }else{
-
-        var tempStudentId = "<tr><td><label for='studentId'>UserId</label></td><td><input type='text' value="+id+" id='studentId' class='form-control' name='studentId' disabled='disabled' /></td></tr>";
-        var tempStudentUserName = "<tr><td><label for='studentUsername'>Username</label></td><td><input type='text' value="+uname+" id='studentUsername' class='form-control' name='studentUsername'/></td></tr>";
+       // var editStudentInfoDiv = $($('#editStudentInfoDiv').html());
         if(fname == ''){
-            var tempStudentName = "<tr><td><label for='studentFname'>First Name</label></td><td><input  type='text' id='studentFname' placeholder='First Name' class='form-control' name='studentFname'/></td></tr>";
+            var tempStudentName =  '<div class="form-group"><div class="input-group"><label for="studentFname">First Name</label></div><div class="input-group">'+
+                '<input type="text" id="studentFname" class="form-control" name="studentFname" /></div></div>';
         }else{
-            var tempStudentName = "<tr><td><label for='studentFname'>First Name</label></td><td><input  type='text' value="+fname+"  id='studentFname' class='form-control' name='studentFname'/></td></tr>";
+            var tempStudentName =  '<div class="form-group"><div class="input-group"><label for="studentFname">First Name</label></div><div class="input-group">'+
+                '<input type="text" value='+fname+' id="studentFname" class="form-control" name="studentFname" /></div></div>';
         }
 
         if(lname == ''){
-            var tempStudentLastName = "<tr><td><label for='studentLname'>Last Name</label></td><td><input type='text'  id='studentLname' placeholder='Last Name' class='form-control' name='studentLname'/></td></tr>";
+            var tempStudentLastName =  '<div class="form-group"><div class="input-group"><label for="studentLname">Last Name</label></div><div class="input-group">'+
+                '<input type="text" id="studentLname" class="form-control" name="studentLname" /></div></div>';
+
         }   else{
-            var tempStudentLastName = "<tr><td><label for='studentLname'>Last Name</label></td><td><input type='text' value="+lname+"  id='studentLname' class='form-control' name='studentLname'/></td></tr>";
+            var tempStudentLastName =  '<div class="form-group"><div class="input-group"><label for="studentLname">Last Name</label></div><div class="input-group">'+
+                '<input type="text" value='+lname+' id="studentLname" class="form-control" name="studentLname" /></div></div>';
         }
 
+        var tempStudentUserName =  '<div class="form-group"><div class="input-group"><label for="studentUsername">Username</label></div><div class="input-group">'+
+            '<input type="text" value='+uname+' id="studentUsername" class="form-control" name="studentUsername"/></div></div>';
 
-        var formStudentHTML ='<div class="col-md-offset-4 col-md-8"><div style="width: 40%;" class="panel panel-default"><form id="edit_Student_Form'+id+'" name="edit_Student_Form'+id+'" onsubmit="event.preventDefault();">'+'<div class="panel-body"><table cellpadding="0" width="60%;" cellspacing="0" border="0">'+
-            tempStudentId +tempStudentName+ tempStudentLastName+tempStudentUserName+
-            '</table></div><div class="panel-body"><div class="btn-toolbar"><button role="button" onclick="updateStudentInfo('+id+')" class="btn btn-primary">Save Changes</button><button role="button" onclick="resetPassWordForThisStudent('+id+',\'' + uname + '\')" type="button" class="btn btn-primary">Reset Password</button></div></div></form></div></div>';
-        row.child(formStudentHTML).show();
+        var formHtml = '<div class="panel-body"><form id="edit_Student_Form'+id+'" onsubmit="event.preventDefault();"><div class="form-group"><div class="input-group"><label for="studentId">UserId</label></div><div class="input-group">'+
+            '<input type="text" value='+id+' id="studentId" class="form-control" name="studentId" disabled="disabled" /></div></div>'+tempStudentUserName
+            + tempStudentName + tempStudentLastName +
+            '<div class="input-group"><button role="button" onclick="updateStudentInfo('+id+')" class="btn btn-primary">Update Information</button></div></form></div>';
+
+        var formHtmlPassWord = '<div class="panel-body"><form id="resetPasswordfor'+id+'" onsubmit="event.preventDefault();"><div class="form-group"><div class="input-group"><label for="newPassword">New Password</label></div><div class="input-group">'+
+            '<input type="password"  placeholder="New password to be set" id="newPassword" class="form-control" name="newPassword"/></div></div>' +
+            '<div class="input-group"><button role="button" onclick="resetPassWordForThisStudent('+id+',\'' + uname + '\')" type="button" class="btn btn-primary">Reset Password</button></div></form></div>';
+
+
+        console.log(formHtml);
+        var tabPanel = '<div style="width: 40%"> <ul class="nav nav-tabs" role="tablist"> <li class="active"> ' +
+            '<a href="#home'+id+'" role="tab" data-toggle="tab"> <i class="fa fa-address-card-o" aria-hidden="true"></i> Update Student Information </a> </li> ' +
+            '<li><a href="#profile'+id+'" role="tab" data-toggle="tab"> <i class="fa fa-key" aria-hidden="true"></i> Reset Password for Student </a> </li> </ul>'+
+            '<div class="tab-content"> <div class="tab-pane fade active in" id="home'+id+'">'+formHtml+'</div><div class="tab-pane fade" id="profile'+id+'">'+formHtmlPassWord+'</div> </div> </div>';
+
+        row.child(tabPanel).show();
 
     }
 
@@ -254,8 +282,8 @@ function problemDetails(data, response) {
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "Content changes saved successfully." );
-                    $('#successMsgModelPopup').modal('show');
+                    $("#successMsgModelPopupForProblemSets").find("[class*='modal-body']").html( "Content changes saved successfully." );
+                    $('#successMsgModelPopupForProblemSets').modal('show');
                 }
             }
         });
@@ -375,13 +403,16 @@ function handleclickHandlers() {
     });
 
     $('a[rel=initialPopover]').popover({
-        html: false,
+        html: true,
         trigger: 'hover',
         container: 'body',
         title: 'What is Mastery ?',
         placement: 'right',
         content: function () {
-            return 'Mastery is BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH!!!!!';
+            return "<ul><li>Student 'Mastery' is MathSpring's estimation of how much the student has demonstrated to know the topic, ranging from zero (0) to one (1)</li>" +
+                "<li>Example: IF a student solves 4 problems correctly in a row without mistakes and no help requests, they get a mastery of 0.85 and mastered the topic.</li>" +
+                "(Note: also, these 4 problems would be increasingly harder, because as students continue to solve these problems correctly, problems get harder).  " +
+                "Mastery would increase slower if the student asks for hints. Mastery would decrease if students make mistakes";
         }
     });
 
@@ -675,8 +706,8 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "Selected problemsets are deactivated" );
-                    $('#successMsgModelPopup').modal('show');
+                    $("#successMsgModelPopupForProblemSets").find("[class*='modal-body']").html( "Selected problemsets are deactivated" );
+                    $('#successMsgModelPopupForProblemSets').modal('show');
                 }
             }
         });
@@ -738,18 +769,18 @@ function registerAllEvents(){
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
                     $('#errorMsgModelPopup').modal('show');
                 }else{
-                    $("#successMsgModelPopup").find("[class*='modal-body']").html( "Selected problemsets are deactivated" );
-                    $('#successMsgModelPopup').modal('show');
+                    $("#successMsgModelPopupForProblemSets").find("[class*='modal-body']").html( "Selected problemsets are activated" );
+                    $('#successMsgModelPopupForProblemSets').modal('show');
                 }
             }
         });
 
     });
 
-    $("#successMsgModelPopup").find("[class*='btn btn-default']").click(function () {
+    $("#successMsgModelPopupForProblemSets").find("[class*='btn btn-default']").click(function () {
             location.reload();
     });
-    $("#successMsgModelPopup").find("[class*='close']").click(function () {
+    $("#successMsgModelPopupForProblemSets").find("[class*='close']").click(function () {
         location.reload();
     });
 
@@ -835,94 +866,113 @@ function registerAllEvents(){
         }
         var tr = $(this).closest('tr');
         var row = perProblemSetReport.row(tr);
+        var topicId = $(this).find("span").text();
         var studentId = row.data()['studentId'];
-        var dataValuesForStudent = perProblemSetLevelTwo[studentId];
-        var dataValuesForChart = dataValuesForStudent[topicId];
-        if(myLineChart) {
-            myLineChart.destroy();
-        }
 
-        var problemsMap = {};
-        var chartLabel = [];
-        var chartData = [];
-        var perProblemSetLevelOneFullTemp = [];
-        dataValuesForChart.forEach(function (e) {
-            var perProblemSetLevelOneTemp = {};
-            perProblemSetLevelOneTemp['problemId'] = e[0];
-            perProblemSetLevelOneTemp['problemName'] = e[1];
-            perProblemSetLevelOneTemp['studentEffort'] =e[7];
-
-            problemsMap[e[1]] =  e[4];
-            chartLabel.push(e[0]);
-            chartData.push(e[5]);
-
-            perProblemSetLevelOneFullTemp.push(perProblemSetLevelOneTemp);
-        });
-
-
-        var columDvalues = [{data : "problemId"},{data : "problemName"},{data : "studentEffort"}]
-        var columNvalues = [{"title" : "Problem Name", "targets": [0]},{"title" : "Problem Name", "targets": [1], "render": function ( data, type, row ) {
-            return  "<a style='cursor:pointer' rel='popover' data-img='" + problemsMap[data] + "'>" + data + "</a>";
-        }
-        },{"title" : "Student Effort", "targets": [2], "render": function ( data, type, row ) {
-                 return  "<a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[data]+"'>" + data + "</a>";
-        }
-        }];
-
-       var  masteryTrajecotoryLegend = $('#masteryTrajecotoryLegend').DataTable({
-            data: perProblemSetLevelOneFullTemp,
-            destroy: true,
-           "scrollCollapse": true,
-           "bInfo": false,
-            "columns" : columDvalues,
-           "columnDefs" : columNvalues,
-            "bFilter": false,
-            "bLengthChange": false,
-             rowReorder: false,
-            "bSort" : false ,
-           "drawCallback": function() {
-               $('a[rel=popover]').popover({
-                         html: true,
-                         trigger: 'hover',
-                         placement: 'right',
-                         content: function () {
-                               return '<img src="' + $(this).data('img') + '" />';    
-                   }
-               });
-               $('a[rel=popoverLabel]').popover({
-                   html: false,
-                   trigger: 'hover',
-                   placement: 'right',
-               });
-            }
-       });
-
-         myLineChart = new Chart($("#masteryTrajectoryReportCanvas"), {
-            type: 'line',
+        $.ajax({
+            type: "POST",
+            url: pgContext + "/tt/tt/getMasterProjectionsForCurrentTopic",
             data: {
-                labels: chartLabel,
-                datasets: [{
-                    label: 'Mastery Recorded',
-                    data: chartData,
-                    backgroundColor: bgcolor
-                }]
-            }, options: {
-                 scales: {
-                     xAxes: [{
-                         scaleLabel: {
-                             display: true,
-                             labelString: 'Problems Seen in Order'
-                         }
-                     }]
-                 } ,
-                 legend: {
-                     display: false,
-                     position: 'bottom',
-                 }
-             }
+                classId: classID,
+                topicID: topicId,
+                studentId: studentId
+            },
+            success: function (response) {
+                var masteryProjectionsForThisTopic = $.parseJSON(response);
+                var problemsMap = {};
+                var chartLabel = [];
+                var chartData = [];
+                var perProblemSetLevelOneFullTemp = [];
+                if(myLineChart) {
+                    myLineChart.destroy();
+                }
+                masteryProjectionsForThisTopic.forEach(function (e) {
+                    var perProblemSetLevelOneTemp = {};
+                    perProblemSetLevelOneTemp['problemId'] = e[0];
+                    perProblemSetLevelOneTemp['problemName'] = e[1];
+                    perProblemSetLevelOneTemp['studentEffort'] =e[7];
+
+                    problemsMap[e[1]] =  e[4];
+                    chartLabel.push(e[0]);
+                    chartData.push(e[5]);
+
+                    perProblemSetLevelOneFullTemp.push(perProblemSetLevelOneTemp);
+                });
+
+
+                var columDvalues = [{data : "problemId"},{data : "problemName"},{data : "studentEffort"}]
+                var columNvalues = [{"title" : "Problem Name", "targets": [0]},{"title" : "Problem Name", "targets": [1], "render": function ( data, type, row ) {
+                    return  "<a style='cursor:pointer' rel='popover' data-img='" + problemsMap[data] + "'>" + data + "</a>";
+                }
+                },{"title" : "Student Effort", "targets": [2], "render": function ( data, type, row ) {
+                    return  "<a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[data]+"'>" + data + "</a>";
+                }
+                }];
+
+                var  masteryTrajecotoryLegend = $('#masteryTrajecotoryLegend').DataTable({
+                    data: perProblemSetLevelOneFullTemp,
+                    destroy: true,
+                    "scrollCollapse": true,
+                    "bInfo": false,
+                    "columns" : columDvalues,
+                    "columnDefs" : columNvalues,
+                    "bFilter": false,
+                    "bLengthChange": false,
+                    rowReorder: false,
+                    "bSort" : false ,
+                    "drawCallback": function() {
+                        $('a[rel=popover]').popover({
+                            html: true,
+                            trigger: 'hover',
+                            placement: 'right',
+                            content: function () {
+                                return '<img src="' + $(this).data('img') + '" />';
+                            }
+                        });
+                        $('a[rel=popoverLabel]').popover({
+                            html: false,
+                            trigger: 'hover',
+                            placement: 'right',
+                        });
+                    }
+                });
+
+                myLineChart = new Chart($("#masteryTrajectoryReportCanvas"), {
+                    type: 'line',
+                    data: {
+                        labels: chartLabel,
+                        datasets: [{
+                            label: 'Mastery Recorded',
+                            data: chartData,
+                            backgroundColor: bgcolor
+                        }]
+                    }, options: {
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Problems Seen in Order'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                ticks: {
+                                    suggestedMin: 0.00,
+                                    max: 1.00
+                                }
+                            }]
+                        } ,
+                        legend: {
+                            display: false,
+                            position: 'bottom',
+                        }
+                    }
+                });
+                $('#masteryTrajectoryReport').modal('show');
+
+            }
         });
-        $('#masteryTrajectoryReport').modal('show');
-    })
+    });
 
 
     $('body').on('click', 'a.viewEachStudentDetail', function () {
@@ -991,87 +1041,108 @@ var completeDataChart;
         var tr = $(this).closest('tr');
         var row = perProblemSetReport.row(tr);
         var studentID = row.data()['studentId'];
-        var problemsetName = [];
-        var masteryData = [];
-
-        if(completeDataChart) {
-            completeDataChart.destroy();
-        }
-
-        $.each( perProblemSetLevelOneAvg[studentID], function (i, obj) {
-             var tmp = obj.split("~~~");
-            problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
-            masteryData.push(tmp[1]);
-        });
-
-       completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
-            type: 'bar',
+        $.ajax({
+            type: "POST",
+            url: pgContext + "/tt/tt/getCompleteMasteryProjectionForStudent",
             data: {
-                labels: problemsetName,
-                datasets: [{
-                    label: 'Average Mastery Recorded',
-                    data: masteryData,
-                    backgroundColor: '#33b5e5'
-                }]
-            }, options: {
-                legend: {
-                    display: false,
-                    position: 'bottom'
-                },scales: {
-                   yAxes: [{
-                       display: true,
-                       ticks: {
-                           suggestedMin: 0.00
-                       }
-                   }]
-               }
+                classId: classID,
+                chartType: 'avg',
+                studentId: studentID
+            },
+            success: function (response) {
+                var completeProjectionByAVG = $.parseJSON(response);
+                var problemsetName = [];
+                var masteryData = [];
+                if(completeDataChart) {
+                    completeDataChart.destroy();
+                }
+                $.each( completeProjectionByAVG, function (i, obj) {
+                    var tmp = obj.split("~~~");
+                    problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
+                    masteryData.push(tmp[1]);
+                });
+
+                completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
+                    type: 'bar',
+                    data: {
+                        labels: problemsetName,
+                        datasets: [{
+                            label: 'Average Mastery Recorded',
+                            data: masteryData,
+                            backgroundColor: '#33b5e5'
+                        }]
+                    }, options: {
+                        legend: {
+                            display: false,
+                            position: 'bottom'
+                        },scales: {
+                            yAxes: [{
+                                display: true,
+                                ticks: {
+                                    suggestedMin: 0.00,
+                                    max: 1.00
+                                }
+                            }]
+                        }
+                    }
+                });
+                $('#completeMasteryForStudent').modal('show');
             }
         });
-        $('#completeMasteryForStudent').modal('show');
-
     });
 
     $(document).on('click', 'a.getCompleteMasteryByMax', function () {
         var tr = $(this).closest('tr');
         var row = perProblemSetReport.row(tr);
         var studentID = row.data()['studentId'];
-        var problemsetName = [];
-        var masteryData = [];
-
-        if(completeDataChart) {
-            completeDataChart.destroy();
-        }
-
-        $.each( perProblemSetLevelOneMax[studentID], function (i, obj) {
-            var tmp = obj.split("~~~");
-            problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
-            masteryData.push(tmp[1]);
-        });
-
-        completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
-            type: 'bar',
+        $.ajax({
+            type: "POST",
+            url: pgContext + "/tt/tt/getCompleteMasteryProjectionForStudent",
             data: {
-                labels: problemsetName,
-                datasets: [{
-                    label: 'Max Mastery Recorded',
-                    data: masteryData,
-                    backgroundColor: '#33b5e5'
-                }]
-            }, options: {
-                legend: {
-                    display: false,
-                    position: 'bottom'
-                },scales: {
-                    yAxes: [{
-                        display: true,
-                        ticks: {
-                            suggestedMin: 0.00
-                        }
-                    }]
+                classId: classID,
+                chartType: 'max',
+                studentId: studentID
+            },
+            success: function (response) {
+                var completeProjectionByMax = $.parseJSON(response);
+                var problemsetName = [];
+                var masteryData = [];
+                if(completeDataChart) {
+                    completeDataChart.destroy();
                 }
+                $.each( completeProjectionByMax, function (i, obj) {
+                    var tmp = obj.split("~~~");
+                    problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
+                    masteryData.push(tmp[1]);
+                });
+
+                completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
+                    type: 'bar',
+                    data: {
+                        labels: problemsetName,
+                        datasets: [{
+                            label: 'Max Mastery Recorded',
+                            data: masteryData,
+                            backgroundColor: '#33b5e5'
+                        }]
+                    }, options: {
+                        legend: {
+                            display: false,
+                            position: 'bottom'
+                        },scales: {
+                            yAxes: [{
+                                display: true,
+                                ticks: {
+                                    suggestedMin: 0.00,
+                                    max: 1.00
+                                }
+                            }]
+                        }
+                    }
+                });
+                $('#completeMasteryForStudent').modal('show');
             }
         });
-        $('#completeMasteryForStudent').modal('show');
 
     });
 
@@ -1079,43 +1150,55 @@ var completeDataChart;
         var tr = $(this).closest('tr');
         var row = perProblemSetReport.row(tr);
         var studentID = row.data()['studentId'];
-        var problemsetName = [];
-        var masteryData = [];
-
-        if(completeDataChart) {
-            completeDataChart.destroy();
-        }
-
-        $.each( perProblemSetLevelOneLatest[studentID], function (i, obj) {
-            var tmp = obj.split("~~~");
-            problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
-            masteryData.push(tmp[1]);
-        });
-
-        completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
-            type: 'bar',
+        $.ajax({
+            type: "POST",
+            url: pgContext + "/tt/tt/getCompleteMasteryProjectionForStudent",
             data: {
-                labels: problemsetName,
-                datasets: [{
-                    label: 'Max Mastery Recorded',
-                    data: masteryData,
-                    backgroundColor: '#33b5e5'
-                }]
-            }, options: {
-                legend: {
-                    display: false,
-                    position: 'bottom'
-                },scales: {
-                    yAxes: [{
-                        display: true,
-                        ticks: {
-                            suggestedMin: 0.00
-                        }
-                    }]
+                classId: classID,
+                chartType: 'latest',
+                studentId: studentID
+            },
+            success: function (response) {
+                var completeProjectionByLatest = $.parseJSON(response);
+                var problemsetName = [];
+                var masteryData = [];
+                if(completeDataChart) {
+                    completeDataChart.destroy();
                 }
+                $.each( completeProjectionByLatest, function (i, obj) {
+                    var tmp = obj.split("~~~");
+                    problemsetName.push(perProblemSetColumnNamesMap[tmp[0]]);
+                    masteryData.push(tmp[1]);
+                });
+
+                completeDataChart = new Chart($("#completeMasteryForStudentCanvas"), {
+                    type: 'bar',
+                    data: {
+                        labels: problemsetName,
+                        datasets: [{
+                            label: 'Last Recorded Mastery',
+                            data: masteryData,
+                            backgroundColor: '#33b5e5'
+                        }]
+                    }, options: {
+                        legend: {
+                            display: false,
+                            position: 'bottom'
+                        },scales: {
+                            yAxes: [{
+                                display: true,
+                                ticks: {
+                                    suggestedMin: 0.00,
+                                    max: 1.00
+                                }
+                            }]
+                        }
+                    }
+                });
+                $('#completeMasteryForStudent').modal('show');
             }
         });
-        $('#completeMasteryForStudent').modal('show');
+
     });
 
     activetable.on( 'row-reorder', function ( e, diff, edit ) {
@@ -1158,12 +1241,7 @@ var completeDataChart;
                 $('#collapseOne').find('.loader').hide();
                 var jsonData = $.parseJSON(data);
                 perProblemSetLevelOne = jsonData.levelOneData;
-                perProblemSetLevelTwo = jsonData.levelTwoData;
                 perProblemSetColumnNamesMap = jsonData.columns;
-
-                perProblemSetLevelOneAvg = jsonData.levelOneDataAvg;
-                perProblemSetLevelOneMax = jsonData.levelOneDataMax;
-                perProblemSetLevelOneLatest = jsonData.levelOneDataLatest;
 
                 var indexcolumn = 3;
                 var columNvalues = $.map(perProblemSetColumnNamesMap, function (v) {

@@ -14,17 +14,21 @@ import java.util.Map;
  */
 
 public interface TTReportService {
-    public String generateTeacherReport(String teacherId, String classId, String reportType);
+    public String generateTeacherReport(String teacherId, String classId, String reportType) throws TTCustomException;
 
-    Map<String,PerClusterObjectBean> generatePerCommonCoreClusterReport(String classId);
+    public Map<String,PerClusterObjectBean> generatePerCommonCoreClusterReport(String classId);
 
-    Map<String,Map<String, List<String>>> generateEfortMapValues(Map<String, String> studentIds, String classId);
+    public Map<String,Map<String, List<String>>> generateEfortMapValues(Map<String, String> studentIds, String classId);
 
-    List<ClassStudents> generateClassReportPerStudent(String teacherId, String classId);
+    public List<ClassStudents> generateClassReportPerStudent(String teacherId, String classId);
 
-    Map<String,Object> generateClassReportPerStudentPerProblemSet(String teacherId, String classId) throws TTCustomException, SQLException;
+    public Map<String,Object> generateClassReportPerStudentPerProblemSet(String teacherId, String classId) throws TTCustomException;
+
+    public String getMasterProjectionsForCurrentTopic(String classId, String studentId, String topicID) throws TTCustomException;
+
+    public String getCompleteMasteryProjectionForStudent(String classId, String studentId, String chartType) throws TTCustomException;
 
     public String generateReportForProblemsInCluster(String teacherId, String classId, String clusterId) throws TTCustomException;
 
-    Map<String, PerProblemReportBean> generatePerProblemReportForClass(String classId);
+    public Map<String, PerProblemReportBean> generatePerProblemReportForClass(String classId);
 }
