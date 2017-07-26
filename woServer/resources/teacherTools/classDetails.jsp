@@ -74,7 +74,6 @@
                 <th>Problem Name</th>
                 <th>CC Standard</th>
                 <th># of Students seen the problem</th>
-                <th>% of Students solved the problem</th>
                 <th>% of Students solved the problem on the first attempt</th>
                 <th># of Students solved the problem on the second attempt</th>
                 <th>% of Students repeated the problem</th>
@@ -147,20 +146,18 @@
                         class="fa fa-fw fa-home"></i> Home</a>
             </li>
 
-
-            <li><a id="reconfigure_student_handler"><i class="fa fa-fw fa-id-badge"></i> Manage Students</a></li>
+            <li>
+                <a href="#" id="reports_handler"><i class="fa fa-bar-chart"></i> Class Report Card</a>
+            </li>
 
             <li><a id="reorg_prob_sets_handler"><i class="fa fa-book"></i> Manage Problem Sets</a></li>
 
-            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i> Reset Survey Settings</a></li>
-
+            <li><a id="reconfigure_student_handler"><i class="fa fa-fw fa-id-badge"></i> Manage Students</a></li>
             <li>
                 <a href="#" id="copyClass_handler"><i class="fa fa-files-o"></i> Replicate Class</a>
             </li>
 
-            <li>
-                <a href="#" id="reports_handler"><i class="fa fa-bar-chart"></i> Class Reports</a>
-            </li>
+            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i> Reset Survey Settings</a></li>
 
         </ul>
         <!-- /#sidebar-end -->
@@ -334,6 +331,28 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
+                                <a id="report_three" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                    Class Summary Per Student
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <label style="padding-right: 10px;">Download student data, many rows per student</label>
+                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerStudentReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseThree">
+                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+
+                            <div class="panel-body">
+                                <table id="perStudentReport" class="table table-striped table-bordered hover" width="100%"></table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
                                 <a id="report_one" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                                     Class Summary Per Student Per Topic
                                 </a>
@@ -408,20 +427,16 @@
                             </div>
                             <div class="panel-body">
                                 <table id="perProblemReportLegendTable" class="table table-striped table-bordered hover" width="40%">
-                                   <thead>
-                                   <tr>
-                                       <th>% Range</th>
-                                       <th>Symbol</th>
-                                   </tr>
-                                   </thead>
+                                    <thead>
+                                    <tr>
+                                        <th>% Range</th>
+                                        <th>Symbol</th>
+                                    </tr>
+                                    </thead>
                                     <tbody>
                                     <tr>
                                         <td>% greater than or equal to 80</td>
                                         <td><i class='fa fa-thumbs-up' aria-hidden='true'></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>% between 20 and 60</td>
-                                        <td class="span-warning-layer-one">Average</td>
                                     </tr>
                                     <tr>
                                         <td>% less than 20</td>
@@ -434,28 +449,6 @@
                             <div class="panel-body">
                                 <table id="perProblemReport" class="table table-striped table-bordered hover" width="100%"></table>
                             </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a id="report_three" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                                    Class Summary Per Student
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <label style="padding-right: 10px;">Download student data, many rows per student</label>
-                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerStudentReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseThree">
-                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
-                                </a>
-                            </div>
-
-                            <div class="panel-body">
-                                <table id="perStudentReport" class="table table-striped table-bordered hover" width="100%"></table>
-                            </div>
-
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -474,7 +467,7 @@
                                 </a>
                             </div>
                             <div class="panel-body">
-                                <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="20%">
+                                <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="40%">
                                     <thead>
                                     <tr>
                                         <th>Color Code</th>
@@ -499,7 +492,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
             </div>
@@ -614,7 +606,7 @@
 
                         <tr>
                           <%--  <th>Clear All</th>--%>
-                            <th>Delete ALL math problem data from this student</th>
+                            <th>Delete math problem data from this student</th>
                            <%-- <th>Reset Practice Hut</th>
                             <th>Clear Pretest</th>
                             <th>Clear Posttest</th>--%>

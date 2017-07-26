@@ -42,7 +42,7 @@ function loadEffortMap (rows) {
     var effortValues = effortMap[rows];
     $("#iconID"+rows).hide();
     var data = {
-        labels: ["Student Efforts in the Class in %"],
+        labels: ["Type of behaviour in problem"],
         datasets: [{
             label: 'SKIP: The student SKIPPED the problem (did not do anything on the problem)',
             backgroundColor: "#8dd3c7",
@@ -114,7 +114,14 @@ function loadEffortMap (rows) {
                 display: true,
                 ticks: {
                     suggestedMin: 0,
-                    max: 100
+                    max: 100,
+                    callback: function(value, index, values) {
+                        return value + '%';
+                    }
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: '% times behavior occurred'
                 }
             }]
         }
@@ -901,7 +908,7 @@ function registerAllEvents(){
 
 
                 var columDvalues = [{data : "problemId"},{data : "problemName"},{data : "studentEffort"}]
-                var columNvalues = [{"title" : "Problem Name", "targets": [0]},{"title" : "Problem Name", "targets": [1], "render": function ( data, type, row ) {
+                var columNvalues = [{"title" : "Problem ID", "targets": [0]},{"title" : "Problem Name", "targets": [1], "render": function ( data, type, row ) {
                     return  "<a style='cursor:pointer' rel='popover' data-img='" + problemsMap[data] + "'>" + data + "</a>";
                 }
                 },{"title" : "Student Effort", "targets": [2], "render": function ( data, type, row ) {
@@ -1359,7 +1366,7 @@ var completeDataChart;
                     var perProblemSetLevelOneTemp = {};
                     perProblemSetLevelOneTemp['problemId'] = key;
                     $.map(item, function (itemValues, k) {
-                        if (k == 'problemName' || k == 'noStudentsSeenProblem' || k == 'getPercStudentsSolvedEventually' ||
+                        if (k == 'problemName' || k == 'noStudentsSeenProblem' ||
                             k == 'getGetPercStudentsSolvedFirstTry' || k == 'getGetPercStudentsSolvedSecondTry' || k == 'percStudentsRepeated' ||
                             k == 'percStudentsSkipped' || k == 'percStudentsGaveUp' || k == 'mostIncorrectResponse' || k=='problemStandardAndDescription') {
                             perProblemSetLevelOneTemp[k] = itemValues;
@@ -1381,52 +1388,32 @@ var completeDataChart;
                         return "<a style='cursor:pointer' rel='popoverstandard' data-content='" + standardSplitter[1]+ "'>" + standardSplitter[0] + "</a>";
                     }},
                     { "title": "# of Students seen the problem", "name" : "noStudentsSeenProblem","targets" : [3] },
-                    { "title": "% of Students solved the problem", "name" : "getPercStudentsSolvedEventually","targets" : [4] ,"createdCell": function (td, cellData, rowData, row, col) {
+                    { "title": "% of Students solved the problem on the first attempt", "name" : "getGetPercStudentsSolvedFirstTry","targets" : [4] ,"render": function ( data, type, full, meta ) {
+                        return data+" %";
+                    },"createdCell": function (td, cellData, rowData, row, col) {
                             if(cellData >= 80){
                                 $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
-                            }else if(cellData < 20){
-                                $(td).addClass('span-danger-layer-one');
-                            }else if(cellData > 20 && cellData <=40){
-                                $(td).addClass('span-danger-layer-one');
-                            }
-                    }},
-                    { "title": "% of Students solved the problem on the first attempt", "name" : "getGetPercStudentsSolvedFirstTry","targets" : [5] ,"createdCell": function (td, cellData, rowData, row, col) {
-                            if(cellData >= 80){
-                                $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
-                            }else if(cellData < 20){
+                            }else if(cellData <= 20){
                                 $(td).addClass('span-danger-layer-one');
                             }
                     } },
-                    { "title": "# of Students solved the problem on the second attempt", "name" : "getGetPercStudentsSolvedSecondTry","targets" : [6], visible : false },
-                    { "title": "% of Students repeated the problem", "name" : "percStudentsRepeated","targets" : [7] ,"createdCell": function (td, cellData, rowData, row, col) {
-                        if(cellData >= 80){
-                            $(td).addClass('span-danger-layer-one');
-                        }else if(cellData >= 60){
-                            $(td).addClass('span-danger-warning-one');
-                        }
+                    { "title": "# of Students solved the problem on the second attempt", "name" : "getGetPercStudentsSolvedSecondTry","targets" : [5], visible : false },
+                    { "title": "% of Students repeated the problem", "name" : "percStudentsRepeated","targets" : [6],"render": function ( data, type, full, meta ) {
+                        return data+" %";
                     }},
-                    { "title": "% of Students skipped the problem", "name" : "percStudentsSkipped","targets" : [8] ,"createdCell": function (td, cellData, rowData, row, col) {
-                        if(cellData >= 80){
-                            $(td).addClass('span-danger-layer-one');
-                        }else if(cellData >= 60){
-                            $(td).addClass('span-danger-warning-one');
-                        }
+                    { "title": "% of Students skipped the problem", "name" : "percStudentsSkipped","targets" : [7] ,"render": function ( data, type, full, meta ) {
+                        return data+" %";
                     }},
-                    { "title": "% of Students gave up", "name" : "percStudentsGaveUp","targets" : [9] ,"createdCell": function (td, cellData, rowData, row, col) {
-                        if(cellData >= 80){
-                            $(td).addClass('span-danger-layer-one');
-                        }else if(cellData >= 60){
-                            $(td).addClass('span-danger-warning-one');
-                        }
+                    { "title": "% of Students gave up", "name" : "percStudentsGaveUp","targets" : [8],"render": function ( data, type, full, meta ) {
+                        return data+" %";
                     }},
-                    { "title": "Most Frequent Incorrect Response", "name" : "mostIncorrectResponse","targets" : [10] }
+                    { "title": "Most Frequent Incorrect Response", "name" : "mostIncorrectResponse","targets" : [9] }
                 ];
                 var columDvalues = [
                     { width: "10%", data : "problemId"},
                     { width: "10%", data : "problemName" },
                     { width: "10%", data : "problemStandardAndDescription" },
                     { width: "10%", data : "noStudentsSeenProblem" },
-                    { width: "10%", data : "getPercStudentsSolvedEventually"},
                     { width: "10%", data : "getGetPercStudentsSolvedFirstTry" },
                     { width: "5%", data : "getGetPercStudentsSolvedSecondTry"},
                     { width: "10%", data : "percStudentsRepeated"},
@@ -1451,6 +1438,7 @@ var completeDataChart;
                     "bLengthChange": false,
                     rowReorder: false,
                     "bSort": true,
+                    "order": [[ 3, "desc" ]],
                     "drawCallback": function () {
                         $('a[rel=popoverPerProblem]').popover({
                             html: true,
@@ -1476,10 +1464,9 @@ var completeDataChart;
 
                     },
                     headerCallback: function headerCallback(thead, data, start, end, display) {
-                       $(thead).find('th').eq(4).html('% of Students solved the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who solved the problem, with or without help or mistakes made."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
-                       $(thead).find('th').eq(6).html('% of Students repeated the problem &nbsp;&nbsp;<a rel="popoverHeader"  data-content="Students who received the problem again, because the last time they did NOT solve it."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
-                       $(thead).find('th').eq(7).html('% of Students skipped the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who received the problem and immediately clicked the '+"New Problem"+' button"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
-                       $(thead).find('th').eq(8).html('% of Students gave up &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who started working on the problem, but decided to move on to another one (quit)."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                       $(thead).find('th').eq(5).html('% of Students repeated the problem &nbsp;&nbsp;<a rel="popoverHeader"  data-content="Students who received the problem again, because the last time they did NOT solve it."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                       $(thead).find('th').eq(6).html('% of Students skipped the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who received the problem and immediately clicked the '+"New Problem"+' button"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                       $(thead).find('th').eq(7).html('% of Students gave up &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who started working on the problem, but decided to move on to another one (quit)."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
 
                     }
                 });
@@ -1641,7 +1628,7 @@ var completeDataChart;
                         var perProblemSetLevelOneTemp = {};
                         perProblemSetLevelOneTemp['problemId'] = key;
                         $.map(item, function (itemValues, k) {
-                            if (k == 'problemName' || k == 'noStudentsSeenProblem' || k == 'getPercStudentsSolvedEventually' ||
+                            if (k == 'problemName' || k == 'noStudentsSeenProblem' ||
                                 k == 'getGetPercStudentsSolvedFirstTry' || k == 'getGetPercStudentsSolvedSecondTry' || k == 'percStudentsRepeated' ||
                                 k == 'percStudentsSkipped' || k == 'percStudentsGaveUp' || k == 'mostIncorrectResponse' || k == 'problemStandardAndDescription') {
                                 perProblemSetLevelOneTemp[k] = itemValues;
@@ -1674,74 +1661,50 @@ var completeDataChart;
                         },
                         {"title": "# of Students seen the problem", "name": "noStudentsSeenProblem", "targets": [3]},
                         {
-                            "title": "% of Students solved the problem",
-                            "name": "getPercStudentsSolvedEventually",
-                            "targets": [4],
-                            "createdCell": function (td, cellData, rowData, row, col) {
-                                if (cellData >= 80) {
-                                    $(td).html(cellData + "&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
-                                } else if (cellData < 20) {
-                                    $(td).addClass('span-danger-layer-one');
-                                } else if (cellData > 20 && cellData <= 40) {
-                                    $(td).addClass('span-danger-layer-one');
-                                }
-                            }
-                        },
-                        {
                             "title": "% of Students solved the problem on the first attempt",
                             "name": "getGetPercStudentsSolvedFirstTry",
-                            "targets": [5],
+                            "targets": [4],
                             "createdCell": function (td, cellData, rowData, row, col) {
                                 if(cellData >= 80){
                                     $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
-                                }else if(cellData < 20){
+                                }else if(cellData <= 20){
                                     $(td).addClass('span-danger-layer-one');
                                 }
-                            }
+                            },"render": function ( data, type, full, meta ) {
+                            return data+" %";
+                        }
                         },
                         {
                             "title": "# of Students solved the problem on the second attempt",
                             "name": "getGetPercStudentsSolvedSecondTry",
-                            "targets": [6],
+                            "targets": [5],
                             visible: false
                         },
                         {
                             "title": "% of Students repeated the problem",
                             "name": "percStudentsRepeated",
-                            "targets": [7],
-                            "createdCell": function (td, cellData, rowData, row, col) {
-                                if (cellData >= 80) {
-                                    $(td).addClass('span-danger-layer-one');
-                                } else if (cellData >= 60) {
-                                    $(td).addClass('span-danger-warning-one');
-                                }
-                            }
+                            "targets": [6],
+                            "render": function ( data, type, full, meta ) {
+                            return data+" %";
+                        }
                         },
                         {
                             "title": "% of Students skipped the problem",
                             "name": "percStudentsSkipped",
-                            "targets": [8],
-                            "createdCell": function (td, cellData, rowData, row, col) {
-                                if (cellData >= 80) {
-                                    $(td).addClass('span-danger-layer-one');
-                                } else if (cellData >= 60) {
-                                    $(td).addClass('span-danger-warning-one');
-                                }
-                            }
+                            "targets": [7],
+                            "render": function ( data, type, full, meta ) {
+                            return data+" %";
+                        }
                         },
                         {
                             "title": "% of Students gave up",
                             "name": "percStudentsGaveUp",
-                            "targets": [9],
-                            "createdCell": function (td, cellData, rowData, row, col) {
-                                if (cellData >= 80) {
-                                    $(td).addClass('span-danger-layer-one');
-                                } else if (cellData >= 60) {
-                                    $(td).addClass('span-danger-warning-one');
-                                }
-                            }
+                            "targets": [8],
+                            "render": function ( data, type, full, meta ) {
+                            return data+" %";
+                        }
                         },
-                        {"title": "Most Frequent Incorrect Response", "name": "mostIncorrectResponse", "targets": [10]}
+                        {"title": "Most Frequent Incorrect Response", "name": "mostIncorrectResponse", "targets": [9]}
                     ];
 
                     var columDvalues = [
@@ -1749,7 +1712,6 @@ var completeDataChart;
                         {width: "10%", data: "problemName"},
                         {width: "10%", data: "problemStandardAndDescription"},
                         {width: "10%", data: "noStudentsSeenProblem"},
-                        {width: "10%", data: "getPercStudentsSolvedEventually"},
                         {width: "10%", data: "getGetPercStudentsSolvedFirstTry"},
                         {width: "5%", data: "getGetPercStudentsSolvedSecondTry"},
                         {width: "10%", data: "percStudentsRepeated"},
@@ -1808,10 +1770,9 @@ var completeDataChart;
 
                         },
                         headerCallback: function headerCallback(thead, data, start, end, display) {
-                            $(thead).find('th').eq(4).html('% of Students solved the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who solved the problem, with or without help or mistakes made."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
-                            $(thead).find('th').eq(6).html('% of Students repeated the problem &nbsp;&nbsp;<a rel="popoverHeader"  data-content="Students who received the problem again, because the last time they did NOT solve it."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
-                            $(thead).find('th').eq(7).html('% of Students skipped the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who received the problem and immediately clicked the '+"New Problem"+' button"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
-                            $(thead).find('th').eq(8).html('% of Students gave up &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who started working on the problem, but decided to move on to another one (quit)."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                            $(thead).find('th').eq(5).html('% of Students repeated the problem &nbsp;&nbsp;<a rel="popoverHeader"  data-content="Students who received the problem again, because the last time they did NOT solve it."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                            $(thead).find('th').eq(6).html('% of Students skipped the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who received the problem and immediately clicked the '+"New Problem"+' button"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                            $(thead).find('th').eq(7).html('% of Students gave up &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who started working on the problem, but decided to move on to another one (quit)."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
 
                         }
                     });
