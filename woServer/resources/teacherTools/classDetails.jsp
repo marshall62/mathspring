@@ -354,7 +354,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a id="report_one" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                    Class Summary Per Student Per Topic
+                                    Class Summary Per Student Per problemset
                                 </a>
                             </h4>
                         </div>
@@ -470,18 +470,18 @@
                                 <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="40%">
                                     <thead>
                                     <tr>
-                                        <th>Color Code</th>
+                                        <th>% Range</th>
                                         <th>Meaning</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td class="span-warning-layer-one">	</td>
-                                        <td>Clusters that students found challenging</td>
+                                        <td># problems attempted greater than 20 but less than 30/Avg Hints viewed greater than 1.00</td>
+                                        <td class="span-warning-layer-one">Clusters that students found challenging</td>
                                     </tr>
                                     <tr>
-                                        <td class="span-danger-layer-one"></td>
-                                        <td>Clusters that students found really hard</td>
+                                        <td># problems attempted less than 20/Avg Hints viewed greater than 1.50</td>
+                                        <td class="span-danger-layer-one">Clusters that students found really hard</td>
                                     </tr>
                                     </tbody>
                                 </table>
