@@ -36,7 +36,7 @@ public class ScreenshotInserter {
         String dbHost = host;
         String dbSource = "wayangoutpostdb";
         String dbUser = "WayangServer";
-        String dbPassword = "jupiter";
+        String dbPassword = "m4thspr1ng!";
 
         String url;
         if (dbPrefix.equals("jdbc:mysql"))
