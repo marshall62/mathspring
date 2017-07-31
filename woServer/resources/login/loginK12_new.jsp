@@ -26,8 +26,7 @@
                     $userLoginForm.attr('action', '${pageContext.request.contextPath}/WoLoginServlet');
                     $userLoginFormUsername.attr('name', 'uname');
                 } else {
-                    $userLoginForm.attr('action', '${pageContext.request.contextPath}/WoAdmin?action=AdminTeacherLogin');
-                    <%--$userLoginForm.attr('action', '${pageContext.request.contextPath}/tempTeacherToolsLogin.jsp');--%>
+                    $userLoginForm.attr('action', '${pageContext.request.contextPath}/tt/tt/ttMain');
                     $userLoginFormUsername.attr('name', 'userName');
                     $loginSubmitBtn.attr('name', 'login');
                     $loginSubmitBtn.attr('value', 'Login');
