@@ -476,11 +476,11 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td># problems attempted greater than 20 but less than 30/Avg Hints viewed greater than 1.00</td>
+                                        <td>Only 20%-40% problems for this standard have been solved correctly on first attempt, and more than 1 hint has been seen for these problems on average</td>
                                         <td class="span-warning-layer-one">Clusters that students found challenging</td>
                                     </tr>
                                     <tr>
-                                        <td># problems attempted less than 20/Avg Hints viewed greater than 1.50</td>
+                                        <td>Less than 20% problems for this standard have been solved correctly on first attempt, and more than 1.5 hints have been seen for these problems, on average</td>
                                         <td class="span-danger-layer-one">Clusters that students found really hard</td>
                                     </tr>
                                     </tbody>

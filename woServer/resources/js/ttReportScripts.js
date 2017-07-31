@@ -1362,6 +1362,7 @@ var completeDataChart;
                 var eachProblemData = jsonData.levelOneDataPerProblem;
                 var perProblemSetLevelOneFullTemp = [];
                 var problemImageMap = [];
+                var problemImageWindow = [];
                 $.map(eachProblemData, function (item, key) {
                     var perProblemSetLevelOneTemp = {};
                     perProblemSetLevelOneTemp['problemId'] = key;
@@ -1372,16 +1373,19 @@ var completeDataChart;
                             perProblemSetLevelOneTemp[k] = itemValues;
                             }else if(k=='imageURL'){
                             problemImageMap[key] = itemValues;
+                            }else if(k == 'problemURLWindow'){
+                            problemImageWindow[key]  = itemValues;
                             }
-
-                            });
+                        });
                         perProblemSetLevelOneFullTemp.push(perProblemSetLevelOneTemp);
                         });
                 var columNvalues = [
                     { "title": "Problem ID", "name" : "problemId" , "targets" : [0]},
                     { "title": "Problem Name", "name" : "problemName" , "targets" : [1],"render": function ( data, type, full, meta ) {
                             var problemId = full['problemId'];
-                            return "<a style='cursor:pointer' rel='popoverPerProblem' data-img='" + problemImageMap[problemId] + "'>" + data + "</a>";
+                            var attri = ", 'ProblemPreview'"+","+"'width=750,height=550,status=yes,resizable=yes'";
+                             var window = "'" + problemImageWindow[problemId] + "'" + attri ;
+                            return '<a  onclick="window.open('+window+');" style="cursor:pointer" rel="popoverPerProblem" data-img="' + problemImageMap[problemId] + '">' + data + '</a>';
                     }},
                     { "title": "CC Standard", "name" : "problemStandardAndDescription" , "targets" : [2],"render": function ( data, type, full, meta ) {
                         var standardSplitter = data.split(":");
@@ -1522,7 +1526,7 @@ var completeDataChart;
                     },"createdCell": function (td, cellData, rowData, row, col) {
                         if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
@@ -1531,21 +1535,21 @@ var completeDataChart;
                     },"createdCell": function (td, cellData, rowData, row, col) {
                         if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
                     { "title": "% solved in the first attempt", "name" : "noOfProblemsonFirstAttempt","targets" : [2],"createdCell": function (td, cellData, rowData, row, col) {
                         if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     } },
                     { "title": "Avg ratio of hint requested", "name" : "totalHintsViewedPerCluster","targets" : [3],"createdCell": function (td, cellData, rowData, row, col) {
                         if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] < 30 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},

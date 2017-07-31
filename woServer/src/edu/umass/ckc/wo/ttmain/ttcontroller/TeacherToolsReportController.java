@@ -78,7 +78,7 @@ public class TeacherToolsReportController {
     }
 
     @RequestMapping(value = "/tt/downLoadPerProblemReport", method = RequestMethod.GET)
-    public ModelAndView downLoadPerProblemReport(ModelMap map, @RequestParam("teacherId") String teacherId, @RequestParam("classId") String classId) {
+    public ModelAndView downLoadPerProblemReport(ModelMap map, @RequestParam("teacherId") String teacherId, @RequestParam("classId") String classId) throws TTCustomException {
         Map<String, PerProblemReportBean> perProblemReport =  reportService.generatePerProblemReportForClass(classId);
         map.addAttribute("classId", classId);
         map.addAttribute("teacherId", teacherId);

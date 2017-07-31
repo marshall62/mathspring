@@ -76,7 +76,7 @@ public class TeacherToolsViewClassDetailsController {
     @RequestMapping(value = "/tt/getProblemForProblemSets", method = RequestMethod.POST)
     public @ResponseBody  String viewProblemsForProblemSet(ModelMap map, @RequestParam(value = "problemID") String problemId, @RequestParam(value = "classid") String classid) throws TTCustomException {
         try {
-            ProblemsView pView = pvService.viewProblemSetsInGivenProblem(map, Integer.valueOf(problemId), Integer.valueOf(classid));
+            ProblemsView pView = pvService.viewProblemSetsInGivenProblem(Integer.valueOf(problemId), Integer.valueOf(classid));
             ObjectMapper objectMapp = new ObjectMapper();
             objectMapp.setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY);
             return objectMapp.writeValueAsString(pView);

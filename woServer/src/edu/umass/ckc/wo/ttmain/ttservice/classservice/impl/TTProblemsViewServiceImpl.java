@@ -42,7 +42,7 @@ public class TTProblemsViewServiceImpl implements TTProblemsViewService {
     private static Logger logger =   Logger.getLogger(TTProblemsViewServiceImpl.class);
 
     @Override
-    public ProblemsView viewProblemSetsInGivenProblem(ModelMap map, Integer problemId, Integer classId) throws TTCustomException {
+    public ProblemsView viewProblemSetsInGivenProblem(Integer problemId, Integer classId) throws TTCustomException {
         ProblemsView view= new ProblemsView();
         try {
             Topic problemSet = ProblemMgr.getTopic(problemId);
