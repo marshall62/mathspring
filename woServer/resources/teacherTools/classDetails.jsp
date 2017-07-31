@@ -354,7 +354,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a id="report_one" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                    Class Summary Per Student Per problemset
+                                    Class Summary Per Student Per Problemset
                                 </a>
                             </h4>
                         </div>
