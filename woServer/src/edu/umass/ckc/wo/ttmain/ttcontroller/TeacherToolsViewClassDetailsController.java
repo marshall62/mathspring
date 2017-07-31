@@ -105,8 +105,8 @@ public class TeacherToolsViewClassDetailsController {
 
     @RequestMapping(value = "/tt/resetStudentPassword", method = RequestMethod.POST)
     public @ResponseBody
-    String resetStudentPassword(@RequestParam(value = "studentId") String studentId,@RequestParam(value = "userName") String userName) throws TTCustomException {
-        return pvService.resetPassWordForStudent(studentId,userName);
+    String resetStudentPassword(@RequestParam(value = "studentId") String studentId,@RequestParam(value = "userName") String userName, @RequestParam(value = "newPassWord") String newPassWord ) throws TTCustomException {
+        return pvService.resetPassWordForStudent(studentId,userName,newPassWord);
     }
 
 

@@ -58,7 +58,6 @@
         });
 
         function handleclickHandlers() {
-
             $("#create_class_form").bootstrapValidator({
                 // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
                 feedbackIcons: {
@@ -107,6 +106,13 @@
                         }
                     }, schoolYear: {
                         validators: {
+
+                            between: {
+                                min: new Date().getFullYear(),
+                                max: 2050,
+                                message: 'The academic year should not be greater than 2050 and less than current year'
+                            },
+
                             notEmpty: {
                                 message: 'School year is a mandatory field'
                             }
@@ -117,40 +123,14 @@
                                 message: 'Section name is a mandatory field'
                             }
                         }
-                    }, userPrefix: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Username prefix is a mandatory field'
-                            }
-                        }
-                    }, passwordToken: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Password is a mandatory field'
-                            }
-                        }
-                    }, noOfStudentAccountsForClass: {
-                        validators: {
-                            greaterThan: {
-                                value: 1,
-                                message: 'The value must be greater than or equal to 1'
-                            }
-                        }
                     }
                 }
             }).on('success.form.bv', function (e) {
-                $("#centerSpinner").show();
-                $("#loader").show();
                 $("#create_class_form").data('bootstrapValidator').resetForm();
-                // Prevent form submission
                 e.preventDefault();
-                // Get the form instance
                 var $form = $(e.target);
-                // Get the BootstrapValidator instance
                 var bv = $form.data('bootstrapValidator');
-                // Use Ajax to submit form data
                 $.post($form.attr('action'), $form.serialize(), function (result) {
-
                 })
             });
 
@@ -388,10 +368,17 @@
                         </div>
                     </div>
                     <div id="add_students_out" class="col-md-6 col-sm-6">
-                        <div class="panel panel-default">
+                        <div id="add_students_out_panel_default" class="panel panel-default">
                             <div class="panel-heading">
-                                Part two : Student Roster
+                                Part two : Student Roster (Optional)
                             </div>
+
+                            <div class="panel-body">
+                                <span class="input-group label label-warning">P.S</span>
+                                <label>The following fields are optional. However if you do wish to create students, make sure to give a unique prefix,
+                                    password and number of Id's you wish to create for this class</label>
+                            </div>
+
                             <div class="panel-body">
                                 <div class="form-group">
                                     <label for="userPrefix">Username Prefix</label>
@@ -433,11 +420,9 @@
     <!--#page-container ends-->
 </div>
 <!--#page-content-wrapper ends-->
-</div>
+
 <!--Wrapper!-->
-<div id='centerSpinner' style="display: none;"></div>
-<div id="loader" style="display: none;">Setting up class. Please wait...</div>
-</div>
+
 
 </body>
 </html>

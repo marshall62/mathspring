@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap Example</title>
+    <title>Bootstrap Examples</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>MathSpring Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -13,7 +13,7 @@
 <div class="container panel panel-default" style="width:50%;">
     <div class="panel-body">
         <h2>Teacher Tools Temporary Login</h2>
-        <form action="${pageContext.request.contextPath}/tt/tt/ttMain" method="post">
+        <form action="${pageContext.request.contextPath}/WoAdmin?action=AdminTeacherLogin" method="post">
             <div class="form-group">
                 <label for="userName">Email:</label>
                 <input type="text" id="userName" class="form-control"  placeholder="Username" name="userName">

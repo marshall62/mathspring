@@ -132,8 +132,8 @@ public class TTProblemsViewServiceImpl implements TTProblemsViewService {
     }
 
     @Override
-    public String resetPassWordForStudent(String studentId, String userName) throws TTCustomException {
-        String token = userName.trim() + TTUtil.PASSWORD_TOKEN;
+    public String resetPassWordForStudent(String studentId, String userName, String newPassWordTobeSet) throws TTCustomException {
+        String token = newPassWordTobeSet;
         String newPassWord = PasswordAuthentication.getInstance().hash(token.toCharArray());
         Map<String, Object> updateParams = new HashMap<String, Object>();
         updateParams.put("resetPassword", newPassWord);
