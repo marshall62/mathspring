@@ -1628,6 +1628,7 @@ var completeDataChart;
                     var eachProblemData = jsonData;
                     var perProblemSetLevelOneFullTemp = [];
                     var problemImageMap = [];
+                    var problemImageWindow = [];
                     $.map(eachProblemData, function (item, key) {
                         var perProblemSetLevelOneTemp = {};
                         perProblemSetLevelOneTemp['problemId'] = key;
@@ -1638,6 +1639,8 @@ var completeDataChart;
                                 perProblemSetLevelOneTemp[k] = itemValues;
                             } else if (k == 'imageURL') {
                                 problemImageMap[key] = itemValues;
+                            }else if(k == 'problemURLWindow'){
+                                problemImageWindow[key]  = itemValues;
                             }
 
                         });
@@ -1651,7 +1654,9 @@ var completeDataChart;
                             "targets": [1],
                             "render": function (data, type, full, meta) {
                                 var problemId = full['problemId'];
-                                return "<a style='cursor:pointer' rel='popoverPerProblem' data-img='" + problemImageMap[problemId] + "'>" + data + "</a>";
+                                var attri = ", 'ProblemPreview'"+","+"'width=750,height=550,status=yes,resizable=yes'";
+                                var window = "'" + problemImageWindow[problemId] + "'" + attri ;
+                                return '<a  onclick="window.open('+window+');" style="cursor:pointer" rel="popoverPerProblem" data-img="' + problemImageMap[problemId] + '">' + data + '</a>';
                             }
                         },
                         {

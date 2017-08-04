@@ -467,7 +467,7 @@
                                 </a>
                             </div>
                             <div class="panel-body">
-                                <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="40%">
+                                <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="60%">
                                     <thead>
                                     <tr>
                                         <th>% Range</th>
