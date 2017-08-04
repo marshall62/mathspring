@@ -113,7 +113,7 @@ public class TeacherToolsViewClassDetailsController {
     @RequestMapping(value = "/tt/editStudentInfo", method = RequestMethod.POST)
     public @ResponseBody
     String editStudentInfo(@RequestParam(value = "studentId") String studentId,@RequestParam(value = "formData[]") String[] formData) throws TTCustomException {
-        return pvService.editStudentInfo(new EditStudentInfoForm(Integer.valueOf(studentId.trim()),formData[0].trim(),formData[1].trim(),formData[2].trim()));
+        return pvService.editStudentInfo(new EditStudentInfoForm(Integer.valueOf(studentId.trim()),formData[1].trim(),formData[2].trim(),formData[0].trim()));
     }
 
 
