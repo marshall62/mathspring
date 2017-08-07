@@ -527,7 +527,7 @@ function registerAllEvents(){
         destroy: true,
         columns: [
             { title: "Cluster Name", data : "clusterName" },
-            { title: "# of problems in cluster", data : "noOfProblemsInCluster" },
+            { title: "# of problems of this kind encountered", data : "noOfProblemsInCluster" },
             { title: "% solved in the first attempt", data : "noOfProblemsonFirstAttempt" },
             { title: "Avg ratio of hint requested", data : "totalHintsViewedPerCluster" }
         ],
@@ -1522,34 +1522,34 @@ var completeDataChart;
                 var columNvalues = [
                     { "title": "Cluster's in Class", "name" : "clusterNames" , "targets" : [0],"render": function ( data, type, full, meta ) {
                         var clusterCCName = full['clusterCCName'];
-                        return "<a style='cursor:pointer' rel='popoverCluster' data-content='"+clusterCCName+"'>" + data + "</a>";;
+                        return "<a style='cursor:pointer' rel='popoverCluster' data-content='"+clusterCCName+"'>" + data + "</a>";
                     },"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 ) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 ) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
-                    { "title": "# of problems in cluster", "name" : "noOfProblemsInCluster" , "targets" : [1],"render": function ( data, type, full, meta ) {
+                    { "title": "# of problems of this kind encountered", "name" : "noOfProblemsInCluster" , "targets" : [1],"render": function ( data, type, full, meta ) {
                         return '<label style="width: 50%;">'+data+'</label><a  class="getProblemDetailsPerCluster" aria-expanded="true" aria-controls="collapseOne"><i class="glyphicon glyphicon-menu-down"></i></a>';
                     },"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 ) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
                     { "title": "% solved in the first attempt", "name" : "noOfProblemsonFirstAttempt","targets" : [2],"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     } },
                     { "title": "Avg ratio of hint requested", "name" : "totalHintsViewedPerCluster","targets" : [3],"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['totalHintsViewedPerCluster'] > 1.50) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['totalHintsViewedPerCluster'] > 1.00) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 ) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
