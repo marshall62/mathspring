@@ -1389,7 +1389,7 @@ var completeDataChart;
                     }},
                     { "title": "CC Standard", "name" : "problemStandardAndDescription" , "targets" : [2],"render": function ( data, type, full, meta ) {
                         var standardSplitter = data.split(":");
-                        return "<a style='cursor:pointer' rel='popoverstandard' data-content='" + standardSplitter[1]+ "'>" + standardSplitter[0] + "</a>";
+                        return "<a style='cursor:pointer' rel='popoverstandard' title='"+standardSplitter[1]+"'  data-content='" + standardSplitter[2]+ "'>" + standardSplitter[0] + "</a>";
                     }},
                     { "title": "# of Students seen the problem", "name" : "noStudentsSeenProblem","targets" : [3] },
                     { "title": "% of Students solved the problem on the first attempt", "name" : "getGetPercStudentsSolvedFirstTry","targets" : [4] ,"render": function ( data, type, full, meta ) {
@@ -1458,7 +1458,7 @@ var completeDataChart;
                             html: false,
                             trigger: 'hover',
                             placement: 'right',
-                            container: 'body',
+                            container: 'body'
                         });
                         $('a[rel=popoverHeader]').popover({
                             container : 'body',
@@ -1665,7 +1665,7 @@ var completeDataChart;
                             "targets": [2],
                             "render": function (data, type, full, meta) {
                                 var standardSplitter = data.split(":");
-                                return "<a style='cursor:pointer' rel='popoverstandard' data-content='" + standardSplitter[1] + "'>" + standardSplitter[0] + "</a>";
+                                return "<a style='cursor:pointer' rel='popoverstandard' title='"+standardSplitter[1]+"'  data-content='" + standardSplitter[2]+ "'>" + standardSplitter[0] + "</a>";
                             }
                         },
                         {"title": "# of Students seen the problem", "name": "noStudentsSeenProblem", "targets": [3]},
@@ -1768,7 +1768,7 @@ var completeDataChart;
                                 html: false,
                                 trigger: 'hover',
                                 placement: 'right',
-                                container: 'body',
+                                container: 'body'
                             });
 
                             $('a[rel=popoverHeader]').popover({

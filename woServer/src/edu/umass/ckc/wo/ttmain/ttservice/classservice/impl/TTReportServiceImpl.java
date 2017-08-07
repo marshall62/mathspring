@@ -386,7 +386,7 @@ public class TTReportServiceImpl implements TTReportService {
                 @Override
                 public String mapRow(ResultSet resultSet, int i) throws SQLException {
                     problemDescriptionMap.put(resultSet.getString("problemID"), resultSet.getString("name")
-                            + "~~" + resultSet.getString("screenShotURL") + "~~" + resultSet.getString("standardID") + ":" + resultSet.getString("standardCategoryName"));
+                            + "~~" + resultSet.getString("screenShotURL") + "~~" + resultSet.getString("standardID") + ":" + resultSet.getString("standardCategoryName")+ ":" + resultSet.getString("description"));
                     return resultSet.getString("problemID");
                 }
             });
@@ -586,7 +586,7 @@ public class TTReportServiceImpl implements TTReportService {
             @Override
             public String mapRow(ResultSet resultSet, int i) throws SQLException {
                 problemDescriptionMap.put(resultSet.getString("problemID"),resultSet.getString("name")
-                        +"~~"+resultSet.getString("screenShotURL")+"~~"+resultSet.getString("standardID")+":"+resultSet.getString("standardCategoryName"));
+                        +"~~"+resultSet.getString("screenShotURL")+"~~"+resultSet.getString("standardID")+":"+resultSet.getString("standardCategoryName")+":"+resultSet.getString("description"));
                 return resultSet.getString("problemID");
             }
         });
