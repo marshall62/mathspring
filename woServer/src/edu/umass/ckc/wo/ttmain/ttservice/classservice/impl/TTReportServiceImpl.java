@@ -513,11 +513,11 @@ public class TTReportServiceImpl implements TTReportService {
                                 perProblemReportBeanObj.nD++;
                         }
                     }
-                    if (action.equals("EndProblem") && perProblemReportBeanObj.isExample) {
+                   /* if (action.equals("EndProblem") && perProblemReportBeanObj.isExample) {
                         perProblemReportBeanMap.remove(problemId);
-                    } else{
-                        perProblemReportBeanMap.put(problemID, perProblemReportBeanObj);
-                    }
+                    } else{*/
+
+                   // }
                     Problem probDetails = ProblemMgr.getProblem(Integer.valueOf(problemID));
                     if(probDetails != null) {
                         if ("flash".equals(probDetails.getType())) {
@@ -528,6 +528,7 @@ public class TTReportServiceImpl implements TTReportService {
                     }else{
                         perProblemReportBeanObj.setProblemURLWindow( html5ProblemURI );
                     }
+                    perProblemReportBeanMap.put(problemID, perProblemReportBeanObj);
                     return perProblemReportBeanObj;
                 }
             });
