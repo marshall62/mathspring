@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="woServer:localhost exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/woServer_localhost_exploded</output-path>
+  <artifact type="exploded-war" name="woServer:Web-Localhost exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/woServer_Web_Localhost_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
