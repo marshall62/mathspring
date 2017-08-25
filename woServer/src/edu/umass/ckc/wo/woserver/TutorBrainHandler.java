@@ -1,18 +1,22 @@
 package edu.umass.ckc.wo.woserver;
 
 
+import ckc.servlet.servbase.ServletEvent;
+import ckc.servlet.servbase.UserException;
+import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.assistments.AssistmentsHandler;
 import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.content.ProblemBinding;
 import edu.umass.ckc.wo.content.QuickAuthProb;
-import edu.umass.ckc.wo.db.*;
-import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.db.DbProblem;
+import edu.umass.ckc.wo.db.DbSession;
 import edu.umass.ckc.wo.event.*;
-import ckc.servlet.servbase.UserException;
+import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.exc.NoSessionException;
 import edu.umass.ckc.wo.handler.*;
-import ckc.servlet.servbase.ServletEvent;
-import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.html.tutor.TutorPage;
+import edu.umass.ckc.wo.log.CompleteEventDataLogger;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.login.LandingPage;
 import edu.umass.ckc.wo.login.LoginAdult_2;
@@ -21,18 +25,25 @@ import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.response.ErrorResponse;
 import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
-import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.woreports.util.EventLogEntryObjects;
+import edu.umass.ckc.wo.woreports.util.StudentProblemHistoryObjects;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonMethod;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.RequestDispatcher;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TutorBrainHandler {
     private TutorBrainEventFactory eventFactory;
@@ -105,6 +116,37 @@ public class TutorBrainHandler {
             return new AssistmentsHandler(servletInfo).teachTopic((TeachTopicEvent) e);
         else if (e instanceof GetProblemDataEvent)
             return new AssistmentsHandler(servletInfo).getProblemData((GetProblemDataEvent) e);
+        else if (e instanceof GetEventLogDataEvent){
+
+            SessionManager sessionManager = new SessionManager(servletInfo.getConn(),((SessionEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession(servletInfo.getParams());
+            if(!servletInfo.getParams().getString("type").equals("publishNote")) {
+                Map<String, Object> completeEventDataMap = new HashMap<String, Object>();
+
+                List<EventLogEntryObjects> fullEventeventLog = new CompleteEventDataLogger(
+                        servletInfo.getConn()).getLatestSnapShotsForEventLog(
+                        sessionManager.getStudentId(), sessionManager.getSessionNum());
+
+                List<StudentProblemHistoryObjects> fullstudentProblemHistryLog = new CompleteEventDataLogger(
+                        servletInfo.getConn()).loadStudentProblemHistoryforCurrentSession(
+                        sessionManager.getStudentId(), sessionManager.getSessionNum());
+                completeEventDataMap.put("eventLog", fullEventeventLog);
+                completeEventDataMap.put("studentProblemHistory", fullstudentProblemHistryLog);
+
+                ObjectMapper objectMapp = new ObjectMapper();
+                objectMapp.setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY);
+                String mapperValues = objectMapp.writeValueAsString(completeEventDataMap);
+
+                servletInfo.getResponse().setContentType("application/json");
+                servletInfo.getResponse().getOutputStream().print(mapperValues);
+            }else{
+                String[] formValuesToBePublished = servletInfo.getParams().getString("formData").split("~~");
+                boolean publishNote  = new CompleteEventDataLogger(servletInfo.getConn()).publishDeveloperNotes(formValuesToBePublished,sessionManager.getStudentId(), sessionManager.getSessionNum());
+                servletInfo.getResponse().setContentType("text/plain");
+                servletInfo.getResponse().getOutputStream().print("contentSaved");
+            }
+            return false;
+
+        }
         else if (e instanceof GetProblemListForTesterEvent) {
             List<Problem> probs = ProblemMgr.getAllProblems();
             RequestDispatcher disp=null;
@@ -120,7 +162,17 @@ public class TutorBrainHandler {
             servletInfo.getOutput().append(new GetClassHandler().handleRequest(servletInfo.getConn()));
         }
         else {
-            SessionManager smgr = new SessionManager(servletInfo.getConn(),((SessionEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession(servletInfo.getParams());
+            SessionManager smgr = null;
+            try {
+                smgr = new SessionManager(servletInfo.getConn(), ((SessionEvent) e).getSessionId(), servletInfo.getHostPath(), servletInfo.getContextPath()).buildExistingSession(servletInfo.getParams());
+            } catch (NoSessionException nse) {
+                nse.printStackTrace();
+                // This is a common exception and we want to pass back a fatal error to the client so it can let the user know their session is dead.
+                View er = new ErrorResponse(nse, true);
+                servletInfo.getOutput().append(er.getView());
+                return true;
+
+            }
 
             if (e instanceof TutorHomeEvent) {
                 TutorPage tutorPage = new TutorPage(this.servletInfo,smgr);
@@ -150,7 +202,23 @@ public class TutorBrainHandler {
                 return false;
             }
             else if (e instanceof HomeEvent) {
-                new DashboardHandler(this.servletInfo.getServletContext(),smgr,smgr.getConnection(),servletInfo.getRequest(),servletInfo.getResponse()).showSplashPage(LandingPage.JSP,false);
+                if ("b".equals(servletInfo.getRequest().getParameter("var"))) {
+                    new DashboardHandler(
+                            this.servletInfo.getServletContext(),
+                            smgr,
+                            smgr.getConnection(),
+                            servletInfo.getRequest(),
+                            servletInfo.getResponse()
+                    ).showNewSplashPage(LandingPage.JSP_NEW,false);
+                } else {
+                    new DashboardHandler(
+                            this.servletInfo.getServletContext(),
+                            smgr,
+                            smgr.getConnection(),
+                            servletInfo.getRequest(),
+                            servletInfo.getResponse()
+                    ).showSplashPage(LandingPage.JSP, false);
+                }
                 new TutorLogger(smgr).logHomeEvent((HomeEvent) e);
                 return false;
             }
@@ -191,7 +259,7 @@ public class TutorBrainHandler {
             else if (e instanceof GetQuickAuthProblemSkeletonEvent) {
                 RequestDispatcher disp=null;
                 Problem p = ProblemMgr.getProblem(((GetQuickAuthProblemSkeletonEvent) e).getProbId());
-                String quickAuthJSP = "problem_skeleton.jsp";
+                String quickAuthJSP = "quickAuthProblem.jsp";
                 disp = servletInfo.getRequest().getRequestDispatcher(quickAuthJSP);
                 servletInfo.getRequest().setAttribute("problem",p);
                 servletInfo.getRequest().setAttribute("sessionId",smgr.getSessionNum());
@@ -279,7 +347,12 @@ public class TutorBrainHandler {
                 RequestDispatcher disp=null;
                 if (clientType == null)
                     clientType = LoginParams.K12;
-                String loginJSP = clientType.equals(LoginParams.ADULT) ? LoginAdult_2.LOGIN_JSP : LoginK12_2.LOGIN_JSP;
+                String loginJSP = clientType.equals(LoginParams.ADULT)
+                        ? LoginAdult_2.LOGIN_JSP
+                        : "b".equals(servletInfo.getRequest().getParameter("var"))
+                            ? LoginK12_2.LOGIN_JSP_NEW
+                            : LoginK12_2.LOGIN_JSP;
+                servletInfo.request.setAttribute("var", e.getServletParams().getString("var"));
                 if (clientType.equals(LoginParams.ADULT) )
                     servletInfo.request.setAttribute("startPage","LoginAdult_1");
                 else

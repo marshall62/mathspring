@@ -220,6 +220,11 @@ var Chart = {
                     effortFeedback="You gave up this problem.";
                     cell.innerHTML="_";
                     break;
+                case "SKIP":
+                    table.className ="giveupCard";
+                    effortFeedback="You gave up this problem.";
+                    cell.i;
+                    break;
 
                 case "SHINT":
                     table.className ="correctWithHintsCard";
@@ -628,7 +633,9 @@ var Chart = {
         }
         }
 
-        this.giveFeedback(remarksDiv, topicState, topicState_pepperPlant, topicMastery, studentState_disengaged);
+        if (remarksDiv != null) {
+            this.giveFeedback(remarksDiv, topicState, topicState_pepperPlant, topicMastery, studentState_disengaged);
+        }
         this.givePlants(plantDiv, pepperPlant);
     },
 
@@ -769,7 +776,10 @@ giveFeedback	: function(remarksDiv, topic_state,topicState_pepperPlant,topicMast
 
         var plantImage = document.createElement("IMG");
         if (pepperPlant.length!=0){plantImage.src="img/pp/"+pepperPlant+".png" ;
-        document.getElementById(plant_div).appendChild(plantImage);
+        if (document.getElementById(plant_div) == null)
+            console.log(plant_div);
+        else
+            document.getElementById(plant_div).prepend(plantImage);
 
 
         }
@@ -779,7 +789,7 @@ giveFeedback	: function(remarksDiv, topic_state,topicState_pepperPlant,topicMast
 
 
 
-    problemsDone: function(problemsDone_div,problemsDone,totalProblems,problemsSolved) {
+    problemsDone: function(problemsDone_div,problemsDone,totalProblems) {
 
         document.getElementById(problemsDone_div).innerHTML="Problems Done : " + problemsDone + "/"+totalProblems ;
     }

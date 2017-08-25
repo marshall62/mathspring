@@ -43,9 +43,9 @@ public class CollaborationIS extends NextProblemInterventionSelector {
     }
 
     private void configure() {
-        state.setMaxPartnerWaitPeriod((long)stringToInt(getConfigParameter("partnerWaitSeconds"), 15)*1000);
-        state.setTimeInterval((long)stringToInt(getConfigParameter("collaborationIntervalMinutes"), 5)*1000*60);
-        state.setProbInterval(stringToInt(getConfigParameter("collaborationIntervalProblems"), Integer.MAX_VALUE));
+        state.setMaxPartnerWaitPeriod((long)stringToInt(getConfigParameter2("partnerWaitSeconds"), 15)*1000);
+        state.setTimeInterval((long)stringToInt(getConfigParameter2("collaborationIntervalMinutes"), 5)*1000*60);
+        state.setProbInterval(stringToInt(getConfigParameter2("collaborationIntervalProblems"), Integer.MAX_VALUE));
 
         /* //These config options were experimental. If they do get used, here's how to read them.
         Element config = getConfigXML();

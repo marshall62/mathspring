@@ -29,8 +29,8 @@ public class AdminTopicControlEvent extends AdminEditTopicsEvent {
         minTimeInTopic = p.getInt("minTimeInTopic");
         contentFailureThreshold = p.getInt("contentFailureThreshold");
         externalActivityTimeThreshold = p.getInt("externalActivityTimeThreshold");
-        topicMastery = Double.parseDouble(p.getString("topicMastery"));
-        difficultyRate = Integer.parseInt(p.getString("difficultyRate"));
+        topicMastery = p.getDouble("mastery");
+        difficultyRate =p.getInt("difficultyRate");
     }
 
    

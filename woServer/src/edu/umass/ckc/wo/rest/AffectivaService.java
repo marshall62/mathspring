@@ -1,9 +1,9 @@
 package edu.umass.ckc.wo.rest;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
@@ -40,16 +40,16 @@ public class AffectivaService {
     @Consumes(MediaType.TEXT_PLAIN)
     @Path("/{sessionId}")
     public Response postFacialData (String postdata, @PathParam("sessionId") String sessId) throws Exception {
-        JSONTokener tokener = new JSONTokener(postdata); //uri.toURL().openStream());
-        JSONObject root = new JSONObject(tokener);
+//        JSONTokener tokener = new JSONTokener(postdata); //uri.toURL().openStream());
+        JSONObject root = JSONObject.fromObject(postdata);
         final JSONArray emotions = root.getJSONArray("emotions");
         final JSONArray facepoints = root.getJSONArray(("facepoints"));
-        for (int i = 0; i < emotions.length(); i++) {
+        for (int i = 0; i < emotions.size(); i++) {
             JSONObject em = emotions.getJSONObject(i);
             AffectivaEmotion ae = AffectivaEmotion.createFromJSON(em);
             System.out.println(ae.toString());
         }
-        for (int i = 0; i < facepoints.length(); i++) {
+        for (int i = 0; i < facepoints.size(); i++) {
             JSONObject fp = facepoints.getJSONObject(i);
             AffectivaFacePoint afp = AffectivaFacePoint.createFromJSON(fp);
             System.out.println(afp.toString());
@@ -116,6 +116,14 @@ public class AffectivaService {
         o.put("hi","there");
         return Response.status(200).entity(o.toString()).build();
 //        return em;
+    }
+
+
+    public static void main (String[] args) {
+        String json = "{emotions: [{name: \"sad\", value: 0.43}, {name: \"joy\", value: 9.3}], " +
+                "facepoints: [{locationId: \"lnostril\", x:34, y:10}, {locationId: \"leye\", x:45, y:959}]}";
+        JSONObject o = JSONObject.fromObject(json);
+        System.out.println(o.toString());
     }
 
 

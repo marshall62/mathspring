@@ -109,6 +109,7 @@ public class BaseServlet extends HttpServlet {
         }
     }
 
+    //
 
     /**
      * New-style connection creation based on Tomcat data source that is defined in the META-INF/context.xml file.   The advantage
@@ -258,10 +259,12 @@ public class BaseServlet extends HttpServlet {
             logger.info("Database is " + datasource);
             if (datasource != null)
                 tomcatDataSourceURL  = datasource;
-
+            Connection conn = getConnection();
+            if (conn == null)
+                throw new Exception("Failed to connect to database.");
             //setDbParams();
             //loadDbDriver();
-            initialize(servletConfig,this.getServletContext(),getConnection());
+            initialize(servletConfig,this.getServletContext(),conn);
             logger.debug("completed initializing servlet");
         }  catch (Exception e) {
             logger.error("initializing servlet failed");

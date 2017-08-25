@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.tutor.studmod;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.db.DbSession;
 import edu.umass.ckc.wo.db.DbStudentProblemHistory;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.tutorhut.BeginProblemEvent;
@@ -20,7 +21,7 @@ import java.util.*;
  * Date: 6/13/12
  * Time: 11:36 AM
  * This is an in-memory representation of a students problem history.   It works with the DbStudentProblemHistory class
- * Note: A problem shown to the student more than once has multiple entries
+ * Note: A problem shown to the student more than once has multiple entries.   It is stored with the most recent entry on the end of the list.
  */
 public class StudentProblemHistory {
 
@@ -62,12 +63,19 @@ public class StudentProblemHistory {
         if (p != null && p.isParametrized()) {
             params = state.getProblemBinding();
         }
+        // The time since this session began
+        long timeInSessionMS = now - DbSession.getSessionBeginTime(smgr.getConnection(),smgr.getSessionId());
+        // The time since the first time this student ever logged into mathspring
+        long timeInTutorMS = timeInSessionMS + DbSession.getTimeInAllSessions(smgr.getConnection(),smgr.getStudentId());
+        long timeInSessionSec = timeInSessionMS / 1000;
+        long timeInTutorMin = timeInTutorMS / 60000;
+
         DbStudentProblemHistory.beginProblem(smgr.getConnection(), e.getSessionId(), smgr.getStudentId(), state.getCurProblem(), topicId,
-            now, smgr.getTimeInSession(), now - state.getTutorEntryTime(), state.getCurProblemMode(), params, smgr.getCollaboratingWith(),
+            now, timeInSessionSec, timeInTutorMin, state.getCurProblemMode(), params, smgr.getCollaboratingWith(),
                 p.getDifficulty());
 
         curProb = new StudentProblemData(state.getCurProblem(),state.getCurTopic(),e.getSessionId(),
-                now,smgr.getTimeInSession(), now-state.getTutorEntryTime(),state.getCurProblemMode());
+                now,timeInSessionSec, timeInTutorMin,state.getCurProblemMode());
         addProblem(curProb);
         return curProb;
 
@@ -340,4 +348,44 @@ public class StudentProblemHistory {
         else return 0;
     }
 
+    // Find the last time the problem was given as practice and return it or null.
+    public StudentProblemData getMostRecentPracticeProblemEncounter (int probId) {
+        for (int i=history.size()-1; i>=0; i--) {
+            StudentProblemData d = history.get(i);
+            if (d.getProbId() == probId && d.isPracticeProblem())
+                return d;
+        }
+        return null;
+
+    }
+
+    // if the problem has been given as practice and answered then it had an effect on mastery.  This function is used to determine
+    // if an answer to a problem should update mastery, so return true if the problem was answered within the reuse-interval.
+    public boolean answeredRecently(int probId, int sessId, int problemReuseIntervalDays, int problemReuseIntervalSessions) {
+        long now = System.currentTimeMillis();
+        int lastSess=sessId;
+        int sessCount=0;
+        int n = history.size()-2; // don't want to start with the last record because that is the current problem (== probId)
+        if (n >= 0) {
+            for (int i = n; i != 0; i--) {
+                StudentProblemData d = history.get(i);
+                if (d.getSessId() != lastSess) {
+                    lastSess = d.getSessId();
+                    sessCount++;
+                }
+                long probEndTime = d.getProblemEndTime();
+                int daysDiff = (int) (now - probEndTime) / (1000 * 60 * 60 * 24);
+                // if the problem has been seen within the number of days in the reuse interval OR
+                // seen in a session within the # of sessions in the reuse interval return true.
+                if (d.getProbId() == probId && d.isPracticeProblem() && (d.getTimeToFirstAttempt() > 0) &&
+                        (daysDiff <= problemReuseIntervalDays || sessCount <= problemReuseIntervalSessions))
+                    return true;
+                // if we've gone back far enough to be outside the interval of days and sessions, return false
+                if (daysDiff > problemReuseIntervalDays && sessCount > problemReuseIntervalSessions)
+                    return false;
+            }
+        }
+        return false;
+
+    }
 }

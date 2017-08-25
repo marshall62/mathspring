@@ -85,11 +85,45 @@ public class AdminHandler {
             AdminToolLoginHandler.showAdminMain(conn,servletRequest,servletResponse,a,t, -1);
             return false;
         }
+        else if(e instanceof AdminEditProblemFormatEvent) {
+            EditProblemFormatHandler.handleEvent(e, sc, conn, servletRequest, servletResponse);
+            return false;
+        }
+        else if (e instanceof AdminGetQuickAuthSkeletonEvent) {
+            AdminGetQuickAuthSkeletonEvent ee = (AdminGetQuickAuthSkeletonEvent) e;
+            RequestDispatcher disp=null;
+            if(ee.getServletParams().getBoolean("reload", false)) {
+                ProblemMgr.reloadProblem(conn, ee.getProbId());
+            }
+            Problem p = ProblemMgr.getProblem(ee.getProbId());
+            String quickAuthJSP = "quickAuthProblem.jsp";
+            disp = servletRequest.getRequestDispatcher(quickAuthJSP);
+            servletRequest.setAttribute("problem",p);
+            servletRequest.setAttribute("preview",true);
+            servletRequest.setAttribute("sessionId",-1);
+            servletRequest.setAttribute("eventCounter", -1);
+            servletRequest.setAttribute("elapsedTime",-1);
+            servletRequest.setAttribute("previewMode",true);
+            servletRequest.setAttribute("teacherId",ee.getTeacherId());
+            //Allows scaling the preview
+            servletRequest.setAttribute("zoom", ee.getServletParams().getDouble("zoom", 1.0));
+            String servContext= servletRequest.getContextPath();
+            if (servContext != null && servContext.length()>1)
+                servContext=servContext.substring(1);    // strip off the leading /
+
+            servletRequest.setAttribute("servletContext", servContext);
+//            servletRequest.setAttribute("servletName",servletInfo.getServletName());
+            disp.forward(servletRequest,servletResponse);
+            logger.info("<< JSP: " + quickAuthJSP);
+            return false;
+        }
         if (Settings.useAdminServletSession && !(e instanceof UserRegistrationEvent)) {
             HttpSession sess = servletRequest.getSession(false);
             if (sess == null) {
                 servletRequest.setAttribute("message","Your session has expired.   You must relogin");
-                servletRequest.getRequestDispatcher("/teacherTools/teacherLogin.jsp").forward(servletRequest,servletResponse);
+                servletRequest.getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                            ? "/login/loginK12_new.jsp"
+                            : "/teacherTools/teacherLogin.jsp").forward(servletRequest,servletResponse);
                 return false;
             }
         }
@@ -123,29 +157,6 @@ public class AdminHandler {
             v = new ProblemSelectionHandler().handleEvent(sc,conn,(AdminProblemSelectionEvent) e,servletRequest,servletResponse);
             if (v == null)
                 return false;
-        }
-        else if (e instanceof AdminGetQuickAuthSkeletonEvent) {
-            AdminGetQuickAuthSkeletonEvent ee = (AdminGetQuickAuthSkeletonEvent) e;
-            RequestDispatcher disp=null;
-            Problem p = ProblemMgr.getProblem(ee.getProbId());
-            String quickAuthJSP = "problem_skeleton.jsp";
-            disp = servletRequest.getRequestDispatcher(quickAuthJSP);
-            servletRequest.setAttribute("problem",p);
-            servletRequest.setAttribute("preview",true);
-            servletRequest.setAttribute("sessionId",-1);
-            servletRequest.setAttribute("eventCounter", -1);
-            servletRequest.setAttribute("elapsedTime",-1);
-            servletRequest.setAttribute("previewMode",true);
-            servletRequest.setAttribute("teacherId",ee.getTeacherId());
-            String servContext= servletRequest.getContextPath();
-            if (servContext != null && servContext.length()>1)
-                servContext=servContext.substring(1);    // strip off the leading /
-
-            servletRequest.setAttribute("servletContext", servContext);
-//            servletRequest.setAttribute("servletName",servletInfo.getServletName());
-            disp.forward(servletRequest,servletResponse);
-            logger.info("<< JSP: " + quickAuthJSP);
-            return false;
         }
         else if (e instanceof AdminGetQuickAuthProblemEvent) {
             Problem p = ProblemMgr.getProblem(((AdminGetQuickAuthProblemEvent) e).getProbId());

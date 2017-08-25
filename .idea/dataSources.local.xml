@@ -6,5 +6,6 @@
       <user-password>dfc0dfdfdfdadfc3dfdedfcfdfd8</user-password>
     </data-source>
     <data-source name="MySQL - wayangoutpostdb@rose.cs.umass.edu" uuid="0204f55f-89e2-4dde-860f-b10697b768e2" />
+    <data-source name="wayangoutpostdb@localhost" uuid="79cdb3b3-bfa7-45ee-aa68-4b246c1e7051" />
   </component>
 </project>

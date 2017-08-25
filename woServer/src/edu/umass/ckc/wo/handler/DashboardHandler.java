@@ -114,5 +114,9 @@ public class DashboardHandler {
 
     }
 
+    public void showNewSplashPage(String jsp, boolean newSession) throws Exception {
+        request.setAttribute("topicSummaries", TopicSummary.getTopicSummaries(smgr));
+        showSplashPage(jsp, newSession);
+    }
 
 }

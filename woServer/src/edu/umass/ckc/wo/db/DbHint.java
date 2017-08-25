@@ -26,12 +26,12 @@ public class DbHint extends BaseMgr {
 
     // rewrote the above method to determine isRoot status of a hint based on solutionpath rather than the isRoot column in
     // the hint table which is error prone.
-    public static List<Hint> getHintsForProblem(Connection conn, int probId) throws Exception {
+    public static List<Hint> getHintsForProblem(Connection conn, int probId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             String q = "select h.id, h.name, h.givesAnswer, h.statementHTML, h.audioResource, h.hoverText, h.order, h.is_root from Hint h " +
-                    "where h.problemid= ? and h.order is not null order by h.order";
+                    "where givesAnswer = 0 and h.problemid= ? and h.order is not null order by h.order";
             ps = conn.prepareStatement(q);
             ps.setInt(1, probId);
             rs = ps.executeQuery();

@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.cache;
 
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.*;
+import edu.umass.ckc.wo.db.DbVideo;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;
@@ -30,38 +31,43 @@ import org.apache.log4j.Logger;
  */
 public class ProblemMgr {
 
-     private static final Logger logger = Logger.getLogger(ProblemMgr.class);
+    private static final Logger logger = Logger.getLogger(ProblemMgr.class);
 
-    private static List<Problem> allProblems;
-    private static Map<Integer,ArrayList<Problem>> probsByTopic;
-    private static Map<Integer,Set<CCStandard>> stdsByTopic;
+    private static ArrayList<Integer> problemIds;
+    private static Map<Integer, Problem> allProblems;
+    private static Map<Integer, ArrayList<Integer>> probIdsByTopic;
+    private static Map<Integer, Set<CCStandard>> stdsByTopic;
     private static List<Topic> allTopics;
     private static ExampleSelector exSel;
     private static VideoSelector vidSel;
     private static int[] topicIds;
     private static boolean loaded=false;
 
+    //This is very bad; this class is written like an abstract static container,
+    // but this is treating it like a normal instanced class... which is using
+    // the static members as instance variables???
+    //But I am afraid to touch it because it's used in 10 other places...
     public ProblemMgr(ExampleSelector exampleSelector, VideoSelector videoSelector) {
         if (!loaded) {
-            this.exSel = exampleSelector;
-            this.vidSel = videoSelector;
-            this.allProblems = new ArrayList<Problem>();
-            this.allTopics = new ArrayList<Topic>();
+            exSel = exampleSelector;
+            vidSel = videoSelector;
+            problemIds = new ArrayList<Integer>();
+            allProblems = new HashMap<Integer, Problem>();
+            allTopics = new ArrayList<Topic>();
         }
-
     }
 
     public static boolean isLoaded () {
         return loaded;
     }
 
-
-    public static synchronized void loadProbs (Connection conn) throws Exception {
+    public static synchronized void loadProbs(Connection conn) throws Exception {
         if (!loaded) {
             loaded = true;
-            allProblems = new ArrayList<Problem>();
+            problemIds = new ArrayList<Integer>();
+            allProblems = new HashMap<Integer, Problem>();
             allTopics = new ArrayList<Topic>();
-            probsByTopic = new HashMap<Integer,ArrayList<Problem>>();
+            probIdsByTopic = new HashMap<Integer,ArrayList<Integer>>();
             stdsByTopic = new HashMap<Integer,Set<CCStandard>>();
             loadTopics(conn);
             loadAllProblems(conn);
@@ -71,19 +77,16 @@ public class ProblemMgr {
     }
 
     public static int getTopicProblemCount (int topicId) {
-        ArrayList<Problem> probs = probsByTopic.get(topicId);
+        ArrayList<Integer> probs = probIdsByTopic.get(topicId);
         if (probs != null)
             return probs.size();
         else return -1;
     }
 
-
-
     public static void dumpCache () {
         loaded = false;
     }
 
-//
 //    private List<TopicEntity> loadTopics2 () {
 //        Session sess = HibernateUtil.getSessionFactory().openSession();
 //        Transaction tx;
@@ -157,80 +160,113 @@ public class ProblemMgr {
         return vars;
     }
 
-    private static void loadAllProblems (Connection conn) throws Exception {
-        String s = "select p.id, answer, animationResource,p.name,nickname,strategicHintExists,hasVars,screenShotURL"+
-                ", diff_level, form, isExternalActivity, type, video, example, p.status, p.questType, statementHTML, imageURL, audioResource, units"  +
+    private static PreparedStatement buildProblemQuery(Connection conn, Integer problemId) throws SQLException {
+        String problemFilter = problemId != null ? " and p.id = " + problemId : "";
+        String s = "select p.id, answer, animationResource, p.name, nickname," +
+                " strategicHintExists, hasVars, screenShotURL, diff_level, form," +
+                " isExternalActivity, type, video, example, p.status, p.questType," +
+                " statementHTML, imageURL, audioResource, units, problemFormat" +
                 " from Problem p, OverallProbDifficulty o" +
-                " where p.id=o.problemid and (status='Ready' or status='ready' or status='testable') order by p.id";    // and p.id=v.problemid
+                " where p.id=o.problemid" + problemFilter +
+                " and (status='Ready' or status='ready' or status='testable')" +
+                " order by p.id;";
         PreparedStatement ps = conn.prepareStatement(s);
+        return ps;
+    }
+
+    private static Problem buildProblem(Connection conn, ResultSet rs) throws Exception {
+        int id = rs.getInt(Problem.ID);
+        String answer = rs.getString(Problem.ANSWER);
+        String resource = rs.getString(Problem.ANIMATION_RESOURCE);
+        String name = rs.getString(Problem.NAME);
+        boolean stratHint = rs.getBoolean(Problem.HAS_STRATEGIC_HINT);
+        boolean hasVars = rs.getBoolean(Problem.HAS_VARS);
+        String pname = name;
+        String nname = rs.getString(Problem.NICKNAME);
+        String form = rs.getString(Problem.FORM);
+        String instructions = null ;
+        String type = rs.getString(Problem.TYPE) ;
+        boolean isExternal = rs.getBoolean(Problem.IS_EXTERNAL_ACTIVITY);
+        double diff = rs.getDouble("diff_level") ;
+        int video;
+        try {
+            video = rs.getInt("video");
+        } catch (Exception e) {
+            video = -1;
+        }
+
+        int exampleId = rs.getInt("example");
+        if (rs.wasNull())
+            exampleId = -1;
+        String status = rs.getString("status");
+        String t = rs.getString("questType");
+        String statementHTML = rs.getString("statementHTML");
+        String imgURL = rs.getString("imageURL");
+        String audioRsc = rs.getString("audioResource");
+        String units = rs.getString("units");
+        String problemFormat = rs.getString("problemFormat");
+        Problem.QuestType questType = Problem.parseType(t);
+        HashMap<String, ArrayList<String>> vars = null;
+        if (hasVars) {
+            vars = getVarDomain(id, conn);
+        }
+        List<ProblemAnswer> answers =null;
+        if (form != null && (questType == Problem.QuestType.shortAnswer || form.equals(Problem.QUICK_AUTH))) {
+            answers = getAnswerValues(conn,id);
+        }
+        // perhaps its a short answer problem but not built with quickAuth
+        else if (form == null && questType == Problem.QuestType.shortAnswer)
+            answers = getAnswerValues(conn,id);
+
+        String ssURL = rs.getString("screenShotURL");
+        if (rs.wasNull())
+            ssURL = null;
+        Problem p = new Problem(id, resource, answer, name, nname, stratHint,
+                diff, null, form, instructions, type, status, vars, ssURL,
+                questType, statementHTML, imgURL, audioRsc, units, problemFormat);
+
+        p.setExternalActivity(isExternal);
+        List<Hint> hints = DbHint.getHintsForProblem(conn,id);
+        p.setHasStrategicHint(stratHint);
+        p.setHints(hints);
+        List<CCStandard> standards = DbProblem.getProblemStandards(conn,id);
+        p.setStandards(standards);
+        List<Topic> topics = DbProblem.getProblemTopics(conn,id);
+        p.setTopics(topics);
+        // short answer problems have a list of possible answers.
+        if (answers != null)
+            p.setAnswers(answers);
+        allProblems.put(p.getId(), p);
+        if (exampleId == -1)
+            exampleId = (exSel != null) ? exSel.selectProblem(conn,id) : -1;
+        p.setExample(exampleId);
+
+        String vidURL = null;
+        // if video is given, it is the id of a row in the video table.
+        if (video == -1)
+            vidURL = (vidSel != null) ? vidSel.selectVideo(conn,id) : "";
+        else {
+            //
+            Video v= DbVideo.getVideo(conn, video);
+            if (v == null) {
+                System.out.println("Error: Problem " + id + " refers to video " + video + ".  Video not found");
+                vidURL=null;
+            }
+            else vidURL = v.getUrl();
+        }
+        p.setVideo(vidURL);
+        logger.debug("Problem id="+p.getId() + " name=" + p.getName() + " video="+ p.getVideo() + " example=" + p.getExample());
+        return p;
+    }
+
+    private static void loadAllProblems(Connection conn) throws Exception {
+        loadDefaultProblemFormat(conn);
+        PreparedStatement ps = buildProblemQuery(conn, null); //query all problems
         ResultSet rs = ps.executeQuery();
         try {
             while (rs.next()) {
-                int id = rs.getInt(1);
-                String answer = rs.getString(2);
-                String resource = rs.getString(3);
-
-                String name = rs.getString(Problem.NAME);
-                boolean stratHint = rs.getBoolean(Problem.HAS_STRATEGIC_HINT);
-                boolean hasVars = rs.getBoolean(Problem.HAS_VARS);
-                String pname = name;
-                String nname = rs.getString(Problem.NICKNAME);
-                String form = rs.getString(Problem.FORM);
-                String instructions = null ;
-                String type = rs.getString(Problem.TYPE) ;
-                boolean isExternal = rs.getBoolean(Problem.IS_EXTERNAL_ACTIVITY);
-                double diff = rs.getDouble("diff_level") ;
-                String video = rs.getString("video");
-                if (rs.wasNull())
-                    video = null;
-                int exampleId = rs.getInt("example");
-                if (rs.wasNull())
-                    exampleId = -1;
-                String status = rs.getString("status");
-                String t = rs.getString("questType");
-                String statementHTML = rs.getString("statementHTML");
-                String imgURL = rs.getString("imageURL");
-                String audioRsc = rs.getString("audioResource");
-                String units = rs.getString("units");
-                Problem.QuestType questType = Problem.parseType(t);
-                HashMap<String, ArrayList<String>> vars = null;
-                if (hasVars) {
-                    vars = getVarDomain(id, conn);
-                }
-                List<ProblemAnswer> answers =null;
-                if (form != null && (questType == Problem.QuestType.shortAnswer || form.equals(Problem.QUICK_AUTH))) {
-                    answers = getAnswerValues(conn,id);
-                }
-                // perhaps its a short answer problem but not built with quickAuth
-                else if (form == null && questType == Problem.QuestType.shortAnswer)
-                    answers= getAnswerValues(conn,id);
-
-                String ssURL = rs.getString("screenShotURL");
-                if (rs.wasNull())
-                    ssURL = null;
-                //                Problem p = new Problem(id, resource, answer, diff, name, nname,form,instructions,type);
-                Problem p = new Problem(id, resource,answer,name,nname,stratHint,
-                        diff,null,form,instructions,type, status, vars, ssURL, questType, statementHTML, imgURL, audioRsc, units);
-
-                p.setExternalActivity(isExternal);
-                List<Hint> hints = DbHint.getHintsForProblem(conn,id);
-                p.setHasStrategicHint(stratHint);
-                p.setHints(hints);
-                List<CCStandard> standards = DbProblem.getProblemStandards(conn,id);
-                p.setStandards(standards);
-                List<Topic> topics = DbProblem.getProblemTopics(conn,id);
-                p.setTopics(topics);
-                // short answer problems have a list of possible answers.
-                if (answers != null)
-                    p.setAnswers(answers);
-                allProblems.add(p );
-                if (exampleId == -1)
-                    exampleId = (exSel != null) ? exSel.selectProblem(conn,id) : -1;
-                p.setExample(exampleId);
-                if (video == null)
-                    video = (vidSel != null) ? vidSel.selectVideo(conn,id) : "";
-                p.setVideo(video);
-                logger.debug("Problem id="+p.getId() + " name=" + p.getName() + " video="+ p.getVideo() + " example=" + p.getExample());
+                Problem p = buildProblem(conn, rs);
+                problemIds.add(p.getId());
             }
         } finally {
             if (rs != null)
@@ -240,8 +276,42 @@ public class ProblemMgr {
         }
     }
 
+    public static void reloadProblem(Connection conn, int problemId) throws Exception {
+        if(!allProblems.containsKey(problemId)) {
+            //Allowing for "re"loading an unloaded problem would require special handling
+            //For now, just fail in this case rather than introduce subtle bugs
+            throw new Exception("Problem " + problemId + " was not loaded in the first place.");
+        }
+        loadDefaultProblemFormat(conn);
+        PreparedStatement ps = buildProblemQuery(conn, problemId);
+        ResultSet rs = ps.executeQuery();
+        try {
+            while(rs.next()) {
+                Problem p = buildProblem(conn, rs);
+//                allProblems.put(problemId, p);
+            }
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+                ps.close();
+        }
+    }
 
-
+    private static void loadDefaultProblemFormat(Connection conn) throws SQLException {
+        String query = "SELECT problemFormat FROM quickauthformattemplates WHERE id=1;";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        try {
+            while(rs.next()) {
+                String template = rs.getString("problemFormat");
+                Problem.defaultFormat = template;
+            }
+        } finally {
+            if(ps != null) ps.close();
+            if(rs != null) rs.close();
+        }
+    }
 
     private static List<ProblemAnswer> getAnswerValues(Connection conn, int id) throws SQLException {
         ResultSet rs=null;
@@ -279,7 +349,7 @@ public class ProblemMgr {
      * @throws SQLException
      */
     public static void fillTopicStandardMap(Connection conn) throws SQLException {
-        Set<Integer> topicIDs = probsByTopic.keySet();
+        Set<Integer> topicIDs = probIdsByTopic.keySet();
         for (int topicID: topicIDs) {
             Set<CCStandard> topicStandards = new TreeSet<CCStandard>();
             List<Problem> probs = getTopicProblems(topicID);
@@ -315,7 +385,7 @@ public class ProblemMgr {
         return stdsByTopic.get(topicId);
     }
 
-    // For each topic get all its problems in order of difficulty and insert them into the probsByTopic
+    // For each topic get all its problems in order of difficulty and insert them into the probIdsByTopic
     // Note this correctly takes care of problems that live in more than one topic.
     public static void fillTopicProblemMap(Connection conn) throws Exception {
         String q = "select p.id,t.id from problem p, OverallProbDifficulty d, " +
@@ -327,13 +397,10 @@ public class ProblemMgr {
         while (rs.next()) {
             int probId = rs.getInt(1);
             int topicId = rs.getInt(2);
-            ArrayList l = probsByTopic.get(topicId);
-            if (probsByTopic.get(topicId) == null) {
-                l = new ArrayList<Problem>();
-                l.add(getProblem(probId));
-                probsByTopic.put(topicId,l);
+            if (probIdsByTopic.get(topicId) == null) {
+                probIdsByTopic.put(topicId,new ArrayList<Integer>());
             }
-            else l.add(getProblem(probId));
+            probIdsByTopic.get(topicId).add(probId);
         }
         saveTopics();
     }
@@ -343,7 +410,7 @@ public class ProblemMgr {
      * array sorted by id.
      */
     public static void saveTopics () {
-        Set<Integer> topics = probsByTopic.keySet(); // no order guaranteed
+        Set<Integer> topics = probIdsByTopic.keySet(); // no order guaranteed
         // need to guarantee an order, so we sort it
         topicIds = new int[topics.size()];
         int i=0;
@@ -359,20 +426,18 @@ public class ProblemMgr {
 
     // returns a clone of the List because the caller may destroy the
     // contents of the list.
-    public static List<Problem> getTopicProblems (int topicId) {
-        List<Problem> l = probsByTopic.get(topicId);
+    public static List<Integer> getTopicProblemIds (int topicId) {
+        List<Integer> l = probIdsByTopic.get(topicId);
         if (l == null)
             return null;
         else
-            return (List<Problem>) probsByTopic.get(topicId).clone();
+            return (List<Integer>) probIdsByTopic.get(topicId).clone();
     }
 
-    public static List<Integer> getTopicProblemIds (int topicId) {
-        if (probsByTopic.get(topicId) == null)
-            return new ArrayList<Integer>();
-        List<Integer> l = new ArrayList<Integer>(probsByTopic.get(topicId).size());
-        for (Problem p : probsByTopic.get(topicId))
-            l.add(p.getId());
+    public static List<Problem> getTopicProblems (int topicId) {
+        if (probIdsByTopic.get(topicId) == null) return new ArrayList<Problem>();
+        List<Problem> l = new ArrayList<Problem>(probIdsByTopic.get(topicId).size());
+        for(int i : probIdsByTopic.get(topicId)) l.add(allProblems.get(i));
         return l;
     }
 
@@ -450,49 +515,32 @@ public class ProblemMgr {
         } 
     }
 
-
-    // Problems were stored in the allProblems arrayList in order of ID (ascending) so that
-    // we can do a lookup in log time with this.
-    public static Problem getProblem (int id) throws SQLException {
+    public static Problem getProblem(int id) throws SQLException {
         if (allProblems.size() == 0)
             throw new SQLException("The ProblemMgr has no loaded problems.  Make sure the correct servlet is being run so that it gets loaded");
-        Problem temp = new Problem(id);
-        int ix = Collections.binarySearch(allProblems,temp,
-                new Comparator<Problem>() {
-                    public final int compare( Problem p1, Problem p2 )
-                    {
-                        if (p1.getId() == p2.getId())
-                            return 0;
-                        else if (p1.getId() < p2.getId())
-                            return -1;
-                        else return 1;
-                    }
-                }
-        );
-        if (ix >= 0)
-            return allProblems.get(ix);  // this better not be linear time...  since its ArrayList I assume not
-       else return null;
+        return allProblems.get(id);
     }
 
     public static List<Problem> getAllProblems() {
-        List<Problem> temp = new ArrayList<Problem>(allProblems.size());
-        for (Problem p: allProblems)
-            temp.add(p);
-        return temp;
+        List<Problem> copy = new ArrayList<Problem>();
+        for(int id : problemIds) {
+            copy.add(allProblems.get(id));
+        }
+        return copy;
     }
 
     public static Problem getProblemByName(String pname) {
-        for (Problem p: allProblems) {
+        for (Problem p : allProblems.values()) {
             if (p.getName().equals(pname))
                 return p;
         }
         return null;
     }
 
-    private static boolean removeProblemFromList (List<Problem> l, int probId, String probName) {
+    private static boolean removeProblemFromList(List<Integer> l, int probId, String probName) {
         Iterator itr = l.iterator();
         while (itr.hasNext()) {
-            Problem problem = (Problem) itr.next();
+            Problem problem = allProblems.get((Integer) itr.next());
             if (probId == problem.getId() || (probName != null && probName.equals(problem.getName()))) {
                 itr.remove();
                 return true;
@@ -501,18 +549,25 @@ public class ProblemMgr {
         return false;
     }
 
+    //#rezecib: supporting the dual id/name indexing is really an antipattern
+    // that leads to all sorts of weird scenarios. I believe we should remove that.
     /** A request to deactivate a problem has come from an administrator.   Remove the problem from
      * the allProblems cache and from the topic map.   Also set the problem to status=deactivated in the db. */
     public static void deactivateProblem(int probId, String probName, Connection conn) throws SQLException {
-        removeProblemFromList(allProblems,probId,probName);
-        Collection<ArrayList<Problem>> vals= probsByTopic.values();
+        if(probName != null) {
+            Problem p = getProblemByName(probName);
+            //previously it iterated through problems in order and removed the first one
+            //that had a matching name OR id. So if both are defined we need the min id
+            //otherwise, we can just take the defined one
+            if(p != null) probId = probId > -1 ? Math.min(probId, p.getId()) : p.getId();
+        }
+        allProblems.remove(probId);
+        Collection<ArrayList<Integer>> vals= probIdsByTopic.values();
         // search all topics (a problem can be in more than one) and remove it.
-        for (List<Problem> l: vals) {
+        for (List<Integer> l : vals) {
             removeProblemFromList(l,probId,probName); // get it out of the topic's bucket.
         }
-        new DbProblem().deactivateProblem(conn,probId,probName);     
-
-
+        DbProblem.deactivateProblem(conn,probId,probName);
     }
 
     /**

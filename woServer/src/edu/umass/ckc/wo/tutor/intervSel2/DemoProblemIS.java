@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.NextProblemEvent;
+import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.interventions.DemoProblemIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.event.tutorhut.InterventionTimeoutEvent;
@@ -46,19 +47,16 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
         configure();
     }
 
-    // The intervention must be defined with <topicIntroFrequecy> in the config.
-    // Valid values for this are: never, oncePerSession, always.  If not provided a default is used
-    // as defined in the  TopicModelParameters via PedagogicalModelParameters .
-
-    // TODO need to honor frequency values set in parameters set for the class.
-    // These need to override those that are set in the XML config.  Similarly for topic intro IS.
+    // The intervention must be defined with <demoFrequency> in the config, or a <param name="demoFrequency" value="always">
+    // OR in the intervention param object if using tutor strategies.
+    // Valid values for this are: never, oncePerSession, always.  If not provided, always will be used.
     private void configure () {
-        Element config = this.getConfigXML();
-        Element freqElt = config.getChild("demoFrequency");
-        String freqstr = null;
-        if (freqElt != null)
-            freqstr = freqElt.getTextTrim();
-        this.freq = PedagogicalModelParameters.convertExampleFrequency(freqstr);
+
+        String freqstr = getConfigParameter2("demoFrequency");
+        if (freqstr == null)
+            this.freq = TopicModelParameters.frequency.always;
+        else
+            this.freq = PedagogicalModelParameters.convertExampleFrequency(freqstr);
 
     }
 

@@ -19,6 +19,7 @@ import java.sql.SQLException;
 public class StudentName extends LoginInterventionSelector {
 
     private static final String JSP = "studentName.jsp";
+    private static final String JSP_NEW = "studentName_new.jsp";
 
     public StudentName(SessionManager smgr) throws SQLException {
         super(smgr);
@@ -34,7 +35,8 @@ public class StudentName extends LoginInterventionSelector {
             return null;
         else {
             super.selectIntervention(e);
-            return new LoginIntervention(JSP);
+            return new LoginIntervention(
+                "b".equals(this.servletInfo.getRequest().getParameter("var")) ? JSP_NEW : JSP);
         }
     }
 
@@ -50,7 +52,7 @@ public class StudentName extends LoginInterventionSelector {
     public String f (SessionManager smgr) {
 //        if (isFirstLogin) {
         if (true ) {
-            return JSP;
+            return "b".equals(this.servletInfo.getRequest() .getParameter("var")) ? JSP_NEW : JSP;
         }
         return null;
     }

@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.rest;
 
-import org.json.JSONObject;
+
+import net.sf.json.JSONObject;
 
 /**
  * Created by david on 10/5/2016.

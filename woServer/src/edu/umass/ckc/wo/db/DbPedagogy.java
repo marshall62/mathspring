@@ -378,8 +378,8 @@ public class DbPedagogy {
                 // from the LessonXML object.  Will have to get the params some other way (thru the LessonModel) in order to overload them.
                 // LessonModelParameters lessonModelParameters = lx.getLessonModelParams();
                 LessonModelParameters lessonModelParameters=null; // set to null so it will cause an exception until the issue above is dealt with
-                // prefer class params to ones defined in lesson
-                lessonModelParameters.overload(classParams);
+                // we prefer class params to ones defined in lesson
+                lessonModelParameters = classParams;
                 // Now set the users lesson settings.
                 DbUser.insertStudentOverridePedagogy(conn, studId, pedId, lessonModelParameters);
             }

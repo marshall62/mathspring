@@ -173,14 +173,14 @@ function unlockGui() {
 }
 
 function showHourglassCursor(b) {
-     if (b) {
-         lockGui();
-         $("body").css("cursor", "wait");
-     }
+    if (b) {
+        lockGui();
+        $("body").css("cursor", "wait");
+    }
     else {
-         unlockGui();
-         $("body").css("cursor", "default");
-     }
+        unlockGui();
+        $("body").css("cursor", "default");
+    }
 }
 
 function displayHintCount () {
@@ -202,6 +202,22 @@ function showUserInfo (userName) {
 
 function showEffortInfo (effort) {
     $("#effort").text(effort);  // shows the effort of the last three problems (given as a string)
+}
+
+function startClock() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('clock').innerHTML =
+        h + ":" + m + ":" + s;
+    var t = setTimeout(startClock, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
 }
 
 function showAnswer (ans) {
@@ -261,7 +277,7 @@ function selectProblemDialog () {
 // only used by test-users from a special dialog that allows selecting problems.
 function forceNextProblem (id) {
     $("#"+SELECT_PROBLEM_DIALOG).dialog('close');
-     // send a NextProblemEvent that forces a particular problem
+    // send a NextProblemEvent that forces a particular problem
     incrementTimers(globals);
     // call the server with a nextProblem event and the callback fn processNextProblemResult will deal with result
     showHourglassCursor(true);
@@ -390,6 +406,7 @@ function showDashboard () {
 
 
 function processShowExample (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     if (activity.activityType === NO_MORE_PROBLEMS) {
         alert("There is not an example to show for this problem");
@@ -408,7 +425,7 @@ function processShowExample (responseText, textStatus, XMLHttpRequest) {
     if (isFlashExample())
         showFlashProblem(resource,ans,solution,EXAMPLE_FRAME, MODE_EXAMPLE) ;
     else if (form === 'quickAuth')
-        showQuickAuthProblem(pid,solution,resource,mode,activity.questType);    
+        showQuickAuthProblem(pid,solution,resource,mode,activity.questType);
     else showHTMLProblem(pid,solution,resource,MODE_EXAMPLE);
 
 }
@@ -416,6 +433,7 @@ function processShowExample (responseText, textStatus, XMLHttpRequest) {
 
 
 function processShowVideo (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     var video = activity.video;
     // khanacademy won't play inside an iFrame because it sets X-Frame-Options to SAMEORIGIN.
@@ -436,6 +454,15 @@ function openExampleDialog(solution){
     // show a div that contains the example.
 //    $("#frameContainer").hide();              // hide the current problem
     $(EXAMPLE_CONTAINER_DIV_ID).dialog("open");        // TODO need to shrink height
+}
+
+// makes a beeping sound which is used at the beginning of each problem when the classconfig.soundSync is true.
+// used in experiments where video capture needs to sync to a beeping sound.
+function playBeep() {
+    if (sysGlobals.soundSync) {
+        var sound = document.getElementById("beeper");
+        sound.play();
+    }
 }
 
 
@@ -511,7 +538,7 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
 
     if (!isDemo)  {
         loadIframe(PROBLEM_WINDOWID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
-//        loadIframe(PROBLEM_WINDOWID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
+//        loadIframe(PROBLEM_WINDOWID, "quickAuthProblem.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
 //            "&figure=" +  encodeURIComponent(globals.questionImage) +
 //            "&audio="+ encodeURIComponent(globals.questionAudio) +
 //            "&hints=" + hints +
@@ -528,7 +555,7 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
     }
     else
         loadIframe(EXAMPLE_FRAMEID, getTutorServletURL("GetQuickAuthProblemSkeleton","&probId="+pid));
-//        loadIframe(EXAMPLE_FRAMEID, "problem_skeleton.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
+//        loadIframe(EXAMPLE_FRAMEID, "quickAuthProblem.jsp?stmt="+ encodeURIComponent(globals.statementHTML) +
 //            "&figure=" +  encodeURIComponent(globals.questionImage) +
 //            "&audio="+ encodeURIComponent(globals.questionAudio) +
 //            "&hints=" + encodeURIComponent(hints) +
@@ -561,7 +588,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
         var dir = resource.split(".")[0];
         loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/html5Probs/" + dir + "/" + resource);
 
-    
+
 //        The commented out lines below make the HTML problem have a white background,  but we cannot figure out how
         // to make FLash problems have a white background so we have abandoned this
 //        $(PROBLEM_WINDOWID).load(function () {
@@ -583,6 +610,7 @@ function showHTMLProblem (pid, solution, resource, mode) {
 
 // On EndProblem event we know the effort of the last problem so we get it and display it.
 function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     showEffortInfo(activity.effort);
 }
@@ -591,6 +619,7 @@ function processEndProblem  (responseText, textStatus, XMLHttpRequest) {
 // It can either be an intervention, a problem, or an indication to keep running the current TimeoutIntervention
 //   6/15 DM - Not doing anything with this yet.  Melissa will need to complete this.
 function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     var activityType = activity.activityType;
 
@@ -609,12 +638,36 @@ function processInterventionTimeoutResult (responseText, textStatus, XMLHttpRequ
 
 // after a BeginProblem event is sent to server, we need to show any learning companion message it returns
 function processBeginProblemResult (responseText, textStatus, XMLHttpRequest) {
+    checkError(responseText);
     var activity = JSON.parse(responseText);
     showLearningCompanion(activity);
 }
 
+function checkError (responseText) {
+    var json = JSON.parse(responseText);
+    errType = json.error;
+    if (errType) {
+        if (json.fatal) {
+            console.log("Fatal Error reported by server " + json.message);
+            alert("Fatal Error reported by server.  Restart Mathspring in your browser. \n" + json.message);
+            // If its fatal we change the page to the login screen unless this is a dev env where we'd want to stay and debug it.
+            if (!sysGlobals.isDevEnv)
+                document.location.href = "/"+sysGlobals.wayangServletContext + "/WoLoginServlet?action=LoginK12_1";
+            return true;
+        }
+        else {
+            console.log("Error reported by server " + json.message);
+            alert("Error reported by server.  You may continue to use Mathspring. \n" + json.message);
+            return false;
+        }
+
+    }
+    return false;
+}
+
 function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     debugAlert("Server returns " + responseText);
+    checkError(responseText);
     // empty out the flashContainer div of any swfobjects and clear the iframe of any problems
     $(FLASH_CONTAINER_OUTERID).html('<div id="' +FLASH_CONTAINER_INNER+ '"></div>');
     $(PROBLEM_WINDOWID).attr("src","");
@@ -710,6 +763,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
                 globals.hints = null;
                 globals.answers = null;
             }
+            playBeep();
             sendBeginEvent(globals,pid,mode, processBeginProblemResult);
             if (activity.form==='quickAuth')
                 showQuickAuthProblem(pid,solution,resource,mode,activity.questType);
@@ -734,6 +788,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
             else {
                 container =FLASH_CONTAINER_INNER;
             }
+            playBeep();
             sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
             showFlashProblem(resource,ans,solution,container,mode);
             if (activity.intervention != null) {
@@ -948,51 +1003,49 @@ function clickHandling () {
             }
 
         }
-    )
-        // based on https://github.com/ROMB/jquery-dialogextend
-        .dialogExtend({
-            "closable": true,
-            "maximizable": false,
-            "minimizable": true,
-            "collapsable": false,
-            "dblclick": "collapse",
-            "titlebar": "transparent",
-            "minimizeLocation": "right",
-            "icons": {
-                "close": "ui-icon-circle-close",
-                "maximize": "ui-icon-circle-plus",
-                "minimize": "ui-icon-circle-minus",
-                "collapse": "ui-icon-triangle-1-s",
-                "restore": "ui-icon-bullet"
-            },
-            "load": function (evt, dlg) {
-                return;
-            },
-            "beforeCollapse": function (evt, dlg) {
-                return;
-            },
-            "beforeMaximize": function (evt, dlg) {
-                return;
-            },
-            "beforeMinimize": function (evt, dlg) {
-                return;
-            },
-            "beforeRestore": function (evt, dlg) {
-                return;
-            },
-            "collapse": function (evt, dlg) {
-                return;
-            },
-            "maximize": function (evt, dlg) {
-                return;
-            },
-            "minimize": function (evt, dlg) {
-                return;
-            },
-            "restore": function (evt, dlg) {
-                return;
-            }
-        });
+    ).dialogExtend({
+        "closable": true,
+        "maximizable": false,
+        "minimizable": true,
+        "collapsable": false,
+        "dblclick": "collapse",
+        "titlebar": "transparent",
+        "minimizeLocation": "right",
+        "icons": {
+            "close": "ui-icon-circle-close",
+            "maximize": "ui-icon-circle-plus",
+            "minimize": "ui-icon-circle-minus",
+            "collapse": "ui-icon-triangle-1-s",
+            "restore": "ui-icon-bullet"
+        },
+        "load": function (evt, dlg) {
+            return;
+        },
+        "beforeCollapse": function (evt, dlg) {
+            return;
+        },
+        "beforeMaximize": function (evt, dlg) {
+            return;
+        },
+        "beforeMinimize": function (evt, dlg) {
+            return;
+        },
+        "beforeRestore": function (evt, dlg) {
+            return;
+        },
+        "collapse": function (evt, dlg) {
+            return;
+        },
+        "maximize": function (evt, dlg) {
+            return;
+        },
+        "minimize": function (evt, dlg) {
+            return;
+        },
+        "restore": function (evt, dlg) {
+            return;
+        }
+    });
 
     // $("#"+LEARNING_COMPANION_CONTAINER + " .ui-dialog-titlebar").css({
     //     "background-color" : "transparent",
@@ -1000,7 +1053,7 @@ function clickHandling () {
     // });
 
     // $( "#"+LEARNING_COMPANION_CONTAINER ).on( "dialogopen", function( event, ui ) {} );
-           //   This will hide the title bar on just the lc dialog but we want the close button too so can't
+    //   This will hide the title bar on just the lc dialog but we want the close button too so can't
     // $(".ui-dialog-titlebar").hide();
 
 //    $("#"+LEARNING_COMPANION_CONTAINER).draggable(
@@ -1157,8 +1210,8 @@ function clickHandling () {
                         clearTimeout(timer);    //prevent single-click action
                         example_solveNextHint();  //perform double-click action
                         clicks = 0;             //after action performed, reset counter
-                        }
-                    },
+                    }
+                },
                 dblclick: (function (e) {
                     e.preventDefault();
                 })
@@ -1229,6 +1282,7 @@ function showFlashProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
+        playBeep();
         sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
@@ -1272,6 +1326,7 @@ function showHTMLProblemAtStart () {
     else {
         if (globals.lastProbId != -1)
             sendEndEvent(globals);
+        playBeep();
         sendBeginEvent(globals,pid,mode,processBeginProblemResult) ;
     }
     showProblemInfo(pid,resource,topicName,standards);
@@ -1294,16 +1349,16 @@ function showInterventionAtStart () {
 //        var qt = '\\"';
 //        var re = new RegExp(qt,'g');
 //        var cleanJSON = ajson.replace(re,'\\\"');
-        var activity = globals.activityJSON;
-        if (sysGlobals.isDevEnv)
-            ;
+    var activity = globals.activityJSON;
+    if (sysGlobals.isDevEnv)
+        ;
 //            alert("Activity is " + activity);
-        if (globals.lastProbId != -1)
-            sendEndEvent(globals);
-        processNextProblemIntervention(activity);
-
+    if (globals.lastProbId != -1)
+        sendEndEvent(globals);
+    processNextProblemIntervention(activity);
 
 }
+
 
 function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
     globals = g;
@@ -1311,6 +1366,7 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
     transients = trans;
     var d = new Date();
     var startTime = d.getTime();
+    startClock();
     toggleSolveDialogue(false);
     setMPPVisibility(globals.showMPP);
     showUserInfo(globals.userName);
@@ -1323,7 +1379,6 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
     // If not the first time, then we are re-entering the tutor page and we want to show a particular problem or intervention
     if (globals.isBeginningOfSession)
         nextProb(globals);
-
     else if (globals.activityJSON != null && (globals.probType === FLASH_PROB_TYPE || globals.probType === SWF_TYPE)) {
         showFlashProblemAtStart();
     }
@@ -1342,5 +1397,7 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
         $("#"+LEARNING_COMPANION_CONTAINER).dialog("open");
     }
     globals.isBeginningOfSession=false;
+
+    configureModalWindowForPopup();
 
 }

@@ -1,15 +1,18 @@
+
+
 10/27/16
 To Build releases:
    - Use Ant Build:  Sugaree Master Ant Builder
        Run DeployRose_WOJ_WarWithoutContent
-       This will build and put a woj.war in <projdir>/out/artifacts/rose/woj/woj.war
-       Copy this to rose::/mnt/net
+       This will build and put a woj.war in <projdir>/out/artifacts/war-rose-beta/woj.war
+       Copy this to rose: /mnt/net
        On rose cd to /mnt/net and run ./deploywar to move the woj.war into place for Tomcat
        Use the Tomcat admin manager to undeploy woj
        Select the new woj.war and deploy it.
 
    Production wars should be built from the production branch (see below for how to check out).
-   Should build and push production and then use ant script
+   Should build and push production and then use ant script  DeployRose_PRODUCTION_WarWithoutContent
+
 Notes:
 To make sure production is updated with master branch
 1.  commit and push master
@@ -21,7 +24,8 @@ To make sure production is updated with master branch
 See https://git-scm.com/book/en/v2/Git-Basics-Tagging about tagging commits in Git.  Good
 for release numbers.
 
-
+Git command to ignore files that constantly change locally (e.g. workspace.xml)
+git update-index --assume-unchanged .idea\workspace.xml
 
 Goal:  Make sure that production branch represents the code in the ms release and that master branch
 represents the woj release.   I think I can then fix bugs in each and merge one branch into the other.
@@ -62,9 +66,34 @@ Release Management (begun 11/28/16 - better late than never)
    To show all commits with tags since a given tag and put in file:
      git log v2.1.5..HEAD --oneline --decorate > u:/mathspring/fixes.txt
 
+git log v2.1.13..HEAD --oneline
+git tag -a v2.1.14 -m "comment here"
 
 
 Releases (test again)
+3/12/17 v2.1.14
+   8ee9952 Fixed typo in DbClass where it put difficultyRate in column 6 .
+   150ca02 UI Changes for new .ogin screen
+   5fbc995 Css files for new login
+3/7/17 v2.1.13
+     WPI login stuff
+     16e4595 Changes to icorporate welcome and login pages from mathseeds.wpi.edu
+     db3ca9a fixed the layout of the buttons across the top
+3/3/17 v2.1.12
+    bc6c6e4 FIxed bug 333
+3/3/17: v2.1.11
+    374d5a2 Fixed bugs 334,335,336
+    a7619d5 Merge remote-tracking branch 'origin/master'
+    4d0699e Corrected the overloading of lessondefinition parameters with classconfig parameters
+    e8e8538 Moved CSS for drag and drop tables from wottMan.css to dragrdroptable.css, and included it on pages that use similar tables
+    d64887c Bug 337: Fixed error when removing a topic from a class
+    629806e Merge remote-tracking branch 'origin/master'
+    dc866d8 Merge remote-tracking branch 'origin/master'
+    aa76ae3 fixed cerulean ant properties.
+2/28/17: v2.1.10
+     Added libraries to artifacts so that ant builds have the full set of dependencies.
+2/20/17: v2/1/9
+    Added neeraj's code to system and released.
  2/17/17: tag v2.1.8
     I changed the database password on rose and am putting in a new context.xml that has this password in the release and have
     removed context.xml from github and only keep local copies.

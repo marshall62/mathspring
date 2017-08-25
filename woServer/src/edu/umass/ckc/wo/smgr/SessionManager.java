@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.smgr;
 
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
+import edu.umass.ckc.wo.beans.ClassConfig;
 import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.*;
@@ -15,6 +16,9 @@ import edu.umass.ckc.wo.login.LoginResult;
 import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.state.ExtendedStudentState;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.ClassStrategyComponent;
+import edu.umass.ckc.wo.strat.StrategyMgr;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
@@ -27,6 +31,7 @@ import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -59,6 +64,9 @@ public class SessionManager {
     private int classId = -1;
     private int sessionId = -1;
     private int pedagogyId = -1;
+    private int strategyId = -1;
+    private boolean usesStrategy = false;
+    private boolean usesPedagogy= false;
     private String client = null; // the name of the Flash client that the user should use
     private WoProps woProps;
     private StudentState studState; // state variables about student stored in db
@@ -231,6 +239,25 @@ public class SessionManager {
         return loginResult;
     }
 
+    private Pedagogy getPedagogyOrStrategyForStudent (Connection conn, int studId, int classId) throws Exception {
+        TutorStrategy strat = StrategyMgr.getStrategy(connection,studId, classId); // will return null if student doesn't have a strategyId
+        if (strat != null) {
+            this.usesStrategy=true;
+            this.usesPedagogy=false;
+            this.strategyId=strat.getStratId();
+            return strat;
+
+        }
+        else {
+            this.usesPedagogy = true;
+            this.usesStrategy=false;
+            Pedagogy ped = PedagogyRetriever.getPedagogy(conn, studId);
+            this.pedagogyId = Integer.parseInt(ped.getId());
+            return ped;
+
+        }
+    }
+
 
     private void buildSession(Connection connection, int sessionId) throws Exception {
         DbSession.updateSessionLastAccessTime(connection, sessionId);
@@ -246,18 +273,20 @@ public class SessionManager {
             this.timeInSession = System.currentTimeMillis() - lastLoginTime.getTime();
 
         setStudentState(woProps);   // pull out student state props from all properties
+        // Will either return a TutorStrategy or a Pedagogy depending on what the student is using.
+        Pedagogy ped = getPedagogyOrStrategyForStudent(connection, studId, this.classId);
+        instantiatePedagogicalModel(ped);
 
-        Pedagogy ped = PedagogyRetriever.getPedagogy(connection, studId);
         // these are the parameters as dfined in the XML file pedagogies.xml
 
-        this.pedagogyId = Integer.parseInt(ped.getId());
+
         // pedagogical model needs to be instantiated as last thing because its constructor takes the smgr instance (this)
         // and makes calls to get stuff so we want this as fully constructed as possible before the call to instantiate
         // so that the smgr is fully functional except for its ped model.
 //        PedagogicalModelParameters pedModelParams = getPedagogicalModelParametersForUser(connection, ped);
         // build the Pedagogical model for the student.  The PedagogicalModel constructor is responsible for
         // creating the StudentModel which also gets set in the below method
-        instantiatePedagogicalModel(ped);
+
 
 
         // set theparams on the ped model
@@ -402,17 +431,7 @@ public class SessionManager {
         else return "";
     }
 
-    private Pedagogy getPedagogy(int studentId) throws SQLException, AdminException {
 
-        Pedagogy ped = null;
-
-        if (studentId > -1) {
-            ped = PedagogyRetriever.getPedagogy(connection, studentId);
-            this.pedagogyId = Integer.parseInt(ped.getId());
-        }
-
-        return ped;
-    }
 
     /**
      * If the user/pw is valid combo,  this looks for an active session for this user.   If it finds one, it deactivates it (we don't
@@ -454,7 +473,7 @@ public class SessionManager {
                     else {
                         inactivateAllUserSessions();
                         this.sessionId = DbSession.newSession(getConnection(), studId, sessBeginTime, false);
-                        ped = getPedagogy(studId);
+                        ped = getPedagogyOrStrategyForStudent(getConnection(),studId, classId);
                         woProps = new WoProps(connection);
                         woProps.load(studId);   // get all properties for studId
                         Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
@@ -468,7 +487,7 @@ public class SessionManager {
                         return new LoginResult(sessionId, null, LoginResult.NEW_SESSION);
                     }
                 } else {
-                    ped = getPedagogy(studId);
+                    ped = getPedagogyOrStrategyForStudent(getConnection(),studId, classId);
                     woProps = new WoProps(connection);
                     woProps.load(studId);   // get all properties for studId
                     Timestamp lastLoginTime = DbSession.getLastLogin(connection, studId);
@@ -565,10 +584,55 @@ public class SessionManager {
             throw new UserException("Attempt to get a session failed.  Make sure you are logged in");
     }
 
+    // call this to get around the exception throw when you know there is a session.
+    public int getSessionId () {
+        return sessionId;
+    }
+
     public long getElapsedTime() {
         return elapsedTime;
     }
 
+    private void instantiatePedagogy (Pedagogy p) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, DeveloperException, InstantiationException, SQLException, IllegalAccessException {
+        try {
+            Class c = Class.forName(p.getPedagogicalModelClass());
+            Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
+            logger.debug("Instantiating a pedagogical model of type: " + c.getName());
+            String smClassName = p.getStudentModelClass();
+            this.studentModel = (StudentModel) Class.forName(smClassName).getConstructor(SessionManager.class).newInstance(this);
+            if (studentModel == null) {
+                throw new DeveloperException("A StudentModel object was not created by the constructor of " + p.getPedagogicalModelClass());
+            }
+            studentModel.init(woProps, studId, classId);
+            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, p);
+        } catch (Exception e) {
+            logger.fatal(this.pedagogicalModel, e);
+            throw (e);
+        }
+    }
+
+    private void instantiateStrategy (TutorStrategy strategy) throws NoSuchMethodException, DeveloperException, InstantiationException, SQLException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        try {
+
+            // The strategy holds the information about the pedagogical model in the tutor strategy component.
+            // Begin by getting the className of the pedagogical model.
+            ClassStrategyComponent tutor_sc = strategy.getTutor_sc();
+            Class c = Class.forName(tutor_sc.getClassName()); // the pedagogical model class name
+            Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
+            logger.debug("Instantiating a pedagogical model of type: " + c.getName());
+
+            String smClassName = strategy.getStudentModelClass();
+            this.studentModel = (StudentModel) Class.forName(smClassName).getConstructor(SessionManager.class).newInstance(this);
+            if (studentModel == null) {
+                throw new DeveloperException("A StudentModel object was not created by the constructor of " + strategy.getPedagogicalModelClass());
+            }
+            studentModel.init(woProps, studId, classId);
+            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, strategy);
+        } catch (Exception e) {
+            logger.fatal(this.pedagogicalModel, e);
+            throw (e);
+        }
+    }
 
     /**
      * Extract the PedagogicalModel class name from the Pedagogy object and
@@ -577,15 +641,13 @@ public class SessionManager {
      */
     public void instantiatePedagogicalModel(Pedagogy p) {
         try {
-            Class c = Class.forName(p.getPedagogicalModelClass());
-            Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
-            logger.debug("Instantiating a pedagogical model of type: " + c.getName());
-            this.pedagogicalModel = (PedagogicalModel) constr.newInstance(this, p);
-            studentModel = this.pedagogicalModel.getStudentModel();
-            if (studentModel == null) {
-                throw new DeveloperException("A StudentModel object was not created by the constructor of " + p.getPedagogicalModelClass());
+            if (p instanceof TutorStrategy) {
+                instantiateStrategy((TutorStrategy) p);
             }
-            studentModel.init(woProps, studId, classId);
+            else {
+                instantiatePedagogy(p);
+
+            }
         } catch (Exception e) {
             logger.fatal(this.pedagogicalModel, e);
         }
@@ -848,6 +910,11 @@ public class SessionManager {
 
     public ExtendedStudentState getExtendedStudentState () {
         return this.extStudState;
+    }
+
+    public boolean isSoundSync () throws SQLException {
+        ClassConfig c= DbClass.getClassConfig(this.connection,this.classId) ;
+        return c.isSoundSync();
     }
 
 

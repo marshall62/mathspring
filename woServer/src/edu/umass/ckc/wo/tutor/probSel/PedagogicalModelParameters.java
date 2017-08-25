@@ -1,7 +1,10 @@
 package edu.umass.ckc.wo.tutor.probSel;
 
+import edu.umass.ckc.wo.strat.SCParam;
 import edu.umass.ckc.wo.tutormeta.PedagogyParams;
 import org.jdom.Element;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,10 +27,13 @@ public class PedagogicalModelParameters {
     public static final int DEFAULT_PROBLEM_REUSE_INTERVAL_SESSIONS =3;
     public static final int DEFAULT_PROBLEM_REUSE_INTERVAL_DAYS =10;
     public static final boolean DEFAULT_SHOW_MPP =true;
-
-
-
-
+    public static final String PROBLEM_REUSE_INTERVAL_SESSIONS = "problemReuseIntervalSessions";
+    public static final String PROBLEM_REUSE_INTERVAL_DAYS = "problemReuseIntervalDays";
+    public static final String DIFFICULTY_RATE_PARAM = "difficultyRate";
+    public static final String DISPLAY_MY_PROGRESS_PAGE = "displayMyProgressPage";
+    public static final String EXTERNAL_ACTIVITY_TIME_THRESHOLD_MINS = "externalActivityTimeThresholdMins";
+    public static final String EXAMPLE = "Example";
+    public static final String PRACTICE = "Practice";
 
 
     private TopicModelParameters.frequency topicIntroFrequency;
@@ -51,6 +57,22 @@ public class PedagogicalModelParameters {
     private int problemReuseIntervalDays;
     private boolean showMPP=true;
     private String lessonStyle;
+
+    public PedagogicalModelParameters (List<SCParam> params) {
+        for (SCParam p : params)
+            setParam(p);
+    }
+
+    private void setParam(SCParam p) {
+        if (p.getName().equalsIgnoreCase(PROBLEM_REUSE_INTERVAL_SESSIONS))
+            problemReuseIntervalSessions = Integer.parseInt(p.getValue());
+        else if (p.getName().equalsIgnoreCase(PROBLEM_REUSE_INTERVAL_DAYS))
+            problemReuseIntervalDays = Integer.parseInt(p.getValue());
+        else if (p.getName().equalsIgnoreCase(DIFFICULTY_RATE_PARAM))
+            difficultyRate = Double.parseDouble(p.getValue());
+        else if (p.getName().equalsIgnoreCase(DISPLAY_MY_PROGRESS_PAGE))
+            showMPP = Boolean.parseBoolean(p.getValue());
+    }
 
     // overload the params of this with those given for class.
     public PedagogicalModelParameters overload(PedagogicalModelParameters classParams) {
@@ -77,6 +99,8 @@ public class PedagogicalModelParameters {
             this.topicExampleFrequency =classParams.getTopicExampleFrequency();
         if (classParams.getProblemReuseIntervalSessions() > 0)
             this.problemReuseIntervalSessions =classParams.getProblemReuseIntervalSessions();
+        if (classParams.getProblemReuseIntervalDays() > 0)
+            this.problemReuseIntervalDays =classParams.getProblemReuseIntervalDays();
         if (classParams.getLessonStyle() != null )
             this.lessonStyle = classParams.getLessonStyle();
         return this;
@@ -121,24 +145,24 @@ public class PedagogicalModelParameters {
         Element c;
         String s;
 
-        c = p.getChild("externalActivityTimeThresholdMins");
+        c = p.getChild(EXTERNAL_ACTIVITY_TIME_THRESHOLD_MINS);
         if (c != null) {
             s = c.getValue();
             int externalActivityTimeThresholdMins = Integer.parseInt(s);
             this.setExternalActivityTimeThreshold(externalActivityTimeThresholdMins);
         }
 
-        c = p.getChild("problemReuseIntervalSessions");
+        c = p.getChild(PROBLEM_REUSE_INTERVAL_SESSIONS);
         if (c != null) {
             s = c.getValue();
             this.setProblemReuseIntervalSessions(s);
         }
-        c = p.getChild("problemReuseIntervalDays");
+        c = p.getChild(PROBLEM_REUSE_INTERVAL_DAYS);
         if (c != null) {
             s = c.getValue();
             this.setProblemReuseIntervalDays(s);
         }
-        c = p.getChild("displayMyProgressPage");
+        c = p.getChild(DISPLAY_MY_PROGRESS_PAGE);
         if (c != null) {
             s = c.getValue();
             boolean showMpp = Boolean.parseBoolean(s);
@@ -227,11 +251,11 @@ public class PedagogicalModelParameters {
 
     public PedagogicalModelParameters(String mode, boolean showIntro, long maxtime, int maxprobs, boolean singleTopicMode) {
         this();
-        if (mode.equalsIgnoreCase("Example"))  {
+        if (mode.equalsIgnoreCase(EXAMPLE))  {
             showAllExample = true;
             showExampleFirst = true;
         }
-        else if (mode.equalsIgnoreCase("Practice")) {
+        else if (mode.equalsIgnoreCase(PRACTICE)) {
             showExampleFirst = false;
             showAllExample = false;
         }
@@ -252,11 +276,11 @@ public class PedagogicalModelParameters {
     // that are defined for the Assistments class that the user is in.
     public PedagogicalModelParameters(String mode, boolean showIntro, long maxtime, int maxprobs, boolean singleTopicMode, String ccss) {
         this();
-        if (mode.equalsIgnoreCase("Example"))  {
+        if (mode.equalsIgnoreCase(EXAMPLE))  {
             showAllExample = true;
             showExampleFirst = true;
         }
-        else if (mode.equalsIgnoreCase("Practice")) {
+        else if (mode.equalsIgnoreCase(PRACTICE)) {
             showExampleFirst = false;
             showAllExample = false;
         }

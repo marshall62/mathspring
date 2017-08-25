@@ -73,14 +73,14 @@ a img { /* this selector removes the default blue border displayed in some brows
 
 .prob1 {
 	float: left;
-	padding-right: 50px;
+	padding-right: 30px;
 	padding-left: 5px;
 }
 
 .inst2 {
 	float: left;
-	padding-right: 50px;
-	padding-left: 60px;
+	padding-right: 30px;
+	padding-left: 0px;
 }
 
 .prog3 {

@@ -2,6 +2,8 @@ package edu.umass.ckc.wo.tutor.studmod;
 
 import edu.umass.ckc.wo.content.Problem;
 
+import java.util.Date;
+
 /**
  * Created by IntelliJ IDEA.
  * User: marshall
@@ -41,6 +43,11 @@ public class StudentProblemData {
     private boolean seenExample=false;
     private boolean usedTextReader=false;
     private double probDifficulty=-1;
+
+    public String toString () {
+        return String.format("prob %d: sess: %d solved:%b mode:%s begin:%s end:%s",probId,sessId,isSolved,mode,new Date(problemBeginTime).toString(),
+                (problemEndTime > 0 ) ? new Date(problemEndTime).toString() : "");
+    }
 
     public StudentProblemData () {}
 

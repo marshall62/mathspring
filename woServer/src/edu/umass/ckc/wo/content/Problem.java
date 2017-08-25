@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutormeta.Activity;
 import edu.umass.ckc.wo.util.JSONUtil;
 import edu.umass.ckc.wo.util.ProbPlayer;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import java.util.HashMap;
@@ -21,20 +22,20 @@ import java.util.ArrayList;
 public class Problem implements Activity {
 
     public static QuestType parseType(String t) {
-        if (t.equals("shortanswer"))
-            return QuestType.shortAnswer;
-        else if (t.equals("longAnswer"))
-            return QuestType.longAnswer;
-        else
-            return QuestType.multiChoice;
+        for(QuestType q : QuestType.values()) {
+            if(q.name().equalsIgnoreCase(t)) return q;
+        }
+        return QuestType.multiChoice;
     }
 
     public enum QuestType {
-        multiChoice ,
+        multiChoice,
+        multiSelect,
         shortAnswer,
         longAnswer
     }
 
+    public static final String TOPIC_INTRO_ID = "999";
     public static final String DEMO = "demo";
     public static final String EXAMPLE = "example";
     public static final String PRACTICE = "practice";
@@ -62,6 +63,7 @@ public class Problem implements Activity {
     private int exampleID; // an example problem that is used to prepare for this one
     private int[] topicIds; // ids of the problem groups this problems is in
     private List<Topic> topics;
+    private String problemFormat; //for QuickAuth problems, contains a JSON string with layout/styling parameters
 
     public static final String SAT_PROBLEM="satProblem";
     public static final String ADV_PROBLEM="advProblem";
@@ -108,6 +110,7 @@ public class Problem implements Activity {
     public static final String IS_EXTERNAL_ACTIVITY = "isExternalActivity";
     public static final String HAS_VARS = "hasVars";
     public static final String SCREENSHOT_URL = "screenShotURL";
+    public static String defaultFormat;
     private String video=null;
     private boolean HTML5;
     private ProblemParameters params;
@@ -127,20 +130,20 @@ public class Problem implements Activity {
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
                    String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL,
-                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units)
+                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units, String problemFormat)
     {
         this.id = id;
         this.resource = resource;
         if (answer != null)
             this.answer = answer.trim();
         this.name = name;
-        this.nickname=nickname;
-        this.hasStrategicHint= hasStrategicHint;
-        this.diff_level=diff;
+        this.nickname = nickname;
+        this.hasStrategicHint = hasStrategicHint;
+        this.diff_level = diff;
         this.topicIds = topicIds;
         this.allHints = new ArrayList<Hint>();
-        this.form = form  ;
-        this.instructions = _instructions ;
+        this.form = form;
+        this.instructions = _instructions;
         if (type != null)
             this.type = type;
         this.status = status;
@@ -153,6 +156,8 @@ public class Problem implements Activity {
         this.imageURL = imageURL;
         this.questionAudio = audioResource;
         this.units = units;
+        this.problemFormat = problemFormat;
+        if(problemFormat == null) this.problemFormat = Problem.defaultFormat;
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
@@ -160,7 +165,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
     }
 
     public int getId () { return id; }
@@ -243,13 +248,19 @@ public class Problem implements Activity {
             jo.element("questionImage", imageURL);
             jo.element("units", units);
             jo.element("questType",this.questType.name());
-            for (Hint hint : getHints()) {
+            jo.element("hints", new JSONArray());
+            for (Hint hint : allHints) {
                 jo.accumulate("hints", hint.getJSON(new JSONObject()));
             }
-            if (isMultiChoice()) {
+            if (isMultiChoice() || isMultiSelect()) {
+                JSONObject answers = new JSONObject();
                 for (ProblemAnswer ans : getAnswers()) {
-                   jo.accumulate("answers", ans.getJSON(new JSONObject()));
+                    ans.getJSON(answers);
                 }
+                jo.element("answers", answers);
+            }
+            if(problemFormat != null) {
+                jo.accumulate("format", JSONObject.fromObject(problemFormat));
             }
         }
         if (solution != null) {
@@ -415,7 +426,21 @@ public class Problem implements Activity {
         return video;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public static String getTYPE() {
+        return TYPE;
+    }
 
     public void setExternalActivity (boolean b) {
         this.isExternalActivity=b;
@@ -517,7 +542,7 @@ public class Problem implements Activity {
     }
 
     public static boolean isExampleOrDemo (String mode) {
-        return mode.equalsIgnoreCase(EXAMPLE) || mode.equalsIgnoreCase(DEMO);
+        return mode != null && (mode.equalsIgnoreCase(EXAMPLE) || mode.equalsIgnoreCase(DEMO));
     }
 
     public String getStatus() {
@@ -602,7 +627,7 @@ public class Problem implements Activity {
     }
 
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();
@@ -631,6 +656,8 @@ public class Problem implements Activity {
     public boolean isMultiChoice () {
         return this.questType == QuestType.multiChoice;
     }
+
+    public boolean isMultiSelect () { return this.questType == QuestType.multiSelect; }
 
 
 }

@@ -18,7 +18,6 @@ import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 import edu.umass.ckc.wo.util.Pair;
 import edu.umass.ckc.wo.util.TwoTuple;
 import edu.umass.ckc.wo.woserver.ServletUtil;
-import org.json.JSONException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -27,6 +26,8 @@ import javax.sql.DataSource;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 

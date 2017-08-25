@@ -19,26 +19,29 @@ public class problemDetails {
     String problemName;
     String effort;
     int numAttemptsToSolve;
+    boolean solved;
     int numHints;
     String ccstds;
     String ssURL;
     byte[] snapshot;
 
-    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve,int num_Hints, byte[] snapshot){
+    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve, int num_Hints, byte[] snapshot, boolean isSolved){
 
         problemId=id;
         problemName=name;
         effort=effort_s;
         numAttemptsToSolve=num_AttemptsToSolve;
         numHints=num_Hints;
+        this.solved = isSolved;
         Problem p = ProblemMgr.getProblemByName(name);
         this.ssURL = p.getScreenshotUrl();
         this.snapshot = new org.apache.commons.codec.binary.Base64().encode(snapshot);
 
     }
 
-    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve,int num_Hints, byte[] snapshot, List<CCStandard> standards){
-        this(id,name,effort_s,num_AttemptsToSolve,num_Hints, snapshot);
+    public problemDetails(int id, String name, String effort_s, int num_AttemptsToSolve,int num_Hints, byte[] snapshot,
+                          List<CCStandard> standards, boolean isSolved){
+        this(id,name,effort_s,num_AttemptsToSolve,num_Hints, snapshot, isSolved);
         StringBuilder sb = new StringBuilder();
         setCCStds(standards, sb);
     }
@@ -57,6 +60,9 @@ public class problemDetails {
         }
     }
 
+    public boolean isSolved() {
+        return solved;
+    }
 
     public int getProblemId() {
         return problemId;

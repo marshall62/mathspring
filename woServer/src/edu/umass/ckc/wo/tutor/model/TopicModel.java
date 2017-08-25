@@ -175,8 +175,9 @@ public class TopicModel extends LessonModel {
         else {
             // Prevent starting a topic that has no problems.  This can happen if a student logs out after solving all problems in a topic because
             // we attempt to resume the last topic a student was in.
+            // We won't go into a topic that has 1 or less problems available because 1 problem would probably get used for a demo and then there would be none.
             List<Integer> probs = getUnsolvedProblems();
-            if (probs == null || probs.size() < 1)  {
+            if (probs == null || probs.size() <= 1)  {
                 curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState(), smgr.getStudentModel());
                 curTopic = switchTopics(curTopic);
             }
@@ -381,82 +382,7 @@ public class TopicModel extends LessonModel {
 
 
 
-    public Problem getTopicDemo(int curTopic) throws Exception {
-        Problem problem = null;
-        TopicModelParameters.frequency exampleFreq= this.tmParams.getTopicExampleFrequency();
-        if (!smgr.getStudentState().isExampleShown()) {
-            if (exampleFreq == TopicModelParameters.frequency.always) {
-                if (!smgr.getStudentState().isExampleSeen(curTopic))
-                    smgr.getStudentState().addExampleSeen(curTopic);
-                problem = topicSelector.getDemoProblem(curTopic);
-                if (problem == null)
-                    return null;
-                smgr.getStudentState().setIsExampleShown(true);
-                new TutorModelUtils().setupDemoProblem(problem,smgr,hintSelector);
-                return problem;
-            }
-            else if (exampleFreq == TopicModelParameters.frequency.oncePerSession &&
-                    !smgr.getStudentState().isExampleSeen(curTopic)) {
-                smgr.getStudentState().addExampleSeen(curTopic);
-                problem = topicSelector.getDemoProblem(curTopic);
-                if (problem == null) return null;
-                smgr.getStudentState().setIsExampleShown(true);
-                new TutorModelUtils().setupDemoProblem(problem,smgr,hintSelector);
-                return problem;
-            }
-        }
-        return null;
-    }
 
-
-    public TopicIntro getTopicIntro(int curTopic) throws Exception {
-        TopicModelParameters.frequency topicIntroFreq= this.tmParams.getTopicIntroFrequency();
-        // if it should always be shown,  show it.
-        if (topicIntroFreq == TopicModelParameters.frequency.always ) {
-            // if it hasn't been seen in this session, store that it has.
-            if (!smgr.getStudentState().isTopicIntroSeen(curTopic) )  {
-                smgr.getStudentState().addTopicIntrosSeen(curTopic);
-            }
-            studentState.setTopicIntroShown(true);  // sets the flag that its been seen during this lesson/topic
-            TopicIntro intro = DbTopics.getTopicIntro(smgr.getConnection(), curTopic);
-            this.pedagogicalMoveListener.lessonIntroGiven(intro); // inform pedagogical move listeners that an intervention is given
-            return intro;
-
-        }
-        else if (topicIntroFreq == TopicModelParameters.frequency.oncePerSession &&
-                !smgr.getStudentState().isTopicIntroSeen(curTopic)) {
-            smgr.getStudentState().addTopicIntrosSeen(curTopic);
-            studentState.setTopicIntroShown(true);
-            TopicIntro intro = DbTopics.getTopicIntro(smgr.getConnection(), curTopic);
-            this.pedagogicalMoveListener.lessonIntroGiven(intro); // inform pedagogical move listeners that an intervention is given
-            return intro;
-        }
-
-        return null;
-    }
-
-
-
-
-    public ProblemResponse getProblemInTopicSelectedByStudent (NextProblemEvent e) throws Exception {
-        int nextTopic = e.getTopicToForce();
-        smgr.getStudentState().newTopic();   // this completely resets the lesson state
-        pedagogicalMoveListener.newTopic(ProblemMgr.getTopic(nextTopic)); // inform pedagogical move listeners of topic switch
-        topicSelector.initializeTopic(nextTopic, smgr.getStudentState(), smgr.getStudentModel());
-        smgr.getStudentState().setCurTopic(nextTopic);
-        // TODO No need for returning TopicIntro or Demo.  That was handled by processInternalEvent.  This just needs to return a Problem
-        // Remember:  the student has only selected a topic and not  problem.  So we need to get a problem from the topic
-        ProblemResponse r = this.pedagogicalModel.getNextProblem(e);
-        Problem p = r.getProblem();
-        smgr.getStudentState().setCurProblem(p.getId());
-        // If current problem is parametrized, then choose a binding for it and stick it in the ProblemResponse and ProblemState.
-//        // This line of code needs to be duplicated because ONR calls this function directly instead of processNextProblemRequest.
-//        if (p != null && p.getType().equals(Problem.HTML_PROB_TYPE)) {
-//            r.shuffleAnswers(smgr.getStudentState());
-//        }
-
-        return r;
-    }
 
     public boolean isInInterleavedTopic () throws SQLException {
         return studentState.getCurTopic() == Settings.interleavedTopicID;

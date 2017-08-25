@@ -29,8 +29,7 @@ function processFlashProblemAnswerChosenResult(responseText, textStatus, XMLHttp
     processAttemptIntervention(interv);
 }
 
-
-tutorhut_shortAnswerSubmitted  = function (sym, answer) {
+function tutorhut_shortAnswerSubmitted (sym, answer) {
     debugAlert("answerChosen CALLED! with: " + answer);
     transients.sym = sym;
     if (!isWaiting() && globals.probMode != MODE_DEMO) {
@@ -38,7 +37,7 @@ tutorhut_shortAnswerSubmitted  = function (sym, answer) {
         servletGetWait("Attempt", {userInput: answer, probElapsedTime: globals.probElapsedTime}, processShortAnswerResult);
 
     }
-};
+}
 
 function processShortAnswerResult (responseText, textStatus, XMLHttpRequest) {
     debugAlert("processShortAnswerResult: Server returns " + responseText);

@@ -386,6 +386,54 @@ public class DbSession {
         }
     }
 
+    // Adds up the time spent in all sessions.
+    public static long getTimeInAllSessions(Connection conn, int studId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            String q = "select beginTime, endTime from session where studId=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, studId);
+            rs = stmt.executeQuery();
+            long totTime=0;
+            while (rs.next()) {
+                Timestamp beginTime = rs.getTimestamp(1);
+                Timestamp endTime = rs.getTimestamp(2);
+                if (!rs.wasNull())
+                    totTime += endTime.getTime() - beginTime.getTime();
+            }
+            return totTime;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+
+        }
+    }
+
+    public static long getSessionBeginTime (Connection conn, int sessId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            String q = "select beginTime from session where id=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1, sessId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                Timestamp beginTime = rs.getTimestamp(1);
+                return beginTime.getTime();
+            }
+            return 0;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+
+        }
+    }
+
     public static void main(String[] args) {
 //        String sessId = args[0];
 //        int id = Integer.parseInt(sessId);

@@ -52,11 +52,9 @@ public class TopicIntroIS extends NextProblemInterventionSelector {
     // Valid values for this are: never, oncePerSession, always.  If not provided a default is used
     // as defined in the  TopicModelParameters via PedagogicalModelParameters .
     private void configure () {
-        Element config = this.getConfigXML();
-        Element freqElt = config.getChild("topicIntroFrequency");
-        String freqstr = null;
-        if (freqElt != null)
-            freqstr = freqElt.getTextTrim();
+
+        String freqstr = getConfigParameter2("topicIntroFrequency");
+
         this.freq = PedagogicalModelParameters.convertTopicIntroFrequency(freqstr);
 
     }

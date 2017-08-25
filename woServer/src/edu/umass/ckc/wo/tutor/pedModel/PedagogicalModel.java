@@ -10,6 +10,9 @@ import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
+import edu.umass.ckc.wo.strat.ClassStrategyComponent;
+import edu.umass.ckc.wo.strat.SCParam;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.*;
@@ -27,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -438,6 +442,13 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         this.learningCompanion = learningCompanion;
     }
 
+    protected PedagogicalModelParameters getPedagogicalModelParametersFromStrategy (TutorStrategy strategy) {
+        ClassStrategyComponent sc = strategy.getLesson_sc();
+        List<SCParam> params = sc.getParams();
+        PedagogicalModelParameters theParams = new PedagogicalModelParameters(params);
+        return theParams;
+    }
+
     protected PedagogicalModelParameters getPedagogicalModelParametersForUser(Connection connection, Pedagogy ped, int classId, int studId) throws SQLException {
 
         // first we get the parameters out of the Pedagogy as defined in the XML pedagogies.xml
@@ -455,40 +466,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         defaultParams.overload(userParams);
         return defaultParams;
     }
-
-
-
-//    protected LessonModelParameters getLessonModelParametersForUser(Connection connection, Pedagogy ped, int classId, int studId) throws SQLException {
-//
-//        String lessonName = ped.getLessonName();
-//        LessonXML lx =  Settings.lessonMap.get(lessonName);
-//        // first we get the parameters out of the Pedagogy's lesson as defined in the XML lessons.xml
-//        lessonModelParameters = lx.getLessonModelParams();
-//
-//        // If this is a configurable pedagogy (meaning that it can be given some parameters to guide its behavior),  then
-//        // see if this user has a set of parameters and if so use them to configure the pedagogy.
-//        // these params come from settings in the WoAdmin tool for the class.
-//        LessonModelParameters classParams = DbClass.getLessonModelParameters(connection, classId);
-//        // overload the defaults with stuff defined for the class.
-//        lessonModelParameters.overload(classParams);
-////       if (this.pedagogicalModel instanceof ConfigurablePedagogy) {
-//        // these params are the ones that were passed in by Assistments and saved for the user
-//
-//        PedagogyParams userParams = DbUserPedagogyParams.getPedagogyParams(connection, studId);
-//        lessonModelParameters.overload(userParams);
-//        // overload the params with anything provided for the user.
-////        defaultParams.overload(userParams);
-//        return lessonModelParameters;
-//    }
-
-
-
-
-
-
-
-
-
 
 
 

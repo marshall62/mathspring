@@ -19,6 +19,7 @@
         <input type="hidden" name="action" value="LoginInterventionInput"/>
         <input type="hidden" name="sessionId" value="${sessionId}"/>
         <input type="hidden" name="skin" value="${skin}"/>
+        <input type="hidden" name="var" value="b"/>
         <input type="hidden" name="interventionClass" value="${interventionClass}"/>
 
         <c:out value="${message}"/>

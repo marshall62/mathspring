@@ -1,5 +1,23 @@
 Welcome to MathSpring.
 
+This repo can be cloned or forked but you will still need to do some setup.
+
+This repo contains the Java source files that make up the server side of mathspring and the Javascript/HTML/CSS
+that makes up the client side.
+
+The project is set up to work with Intellij IDEA 2016 Ultimate edition.
+
+The file woServer/META-INF/context.xml is included but contains incorrect user/password to our public database.
+If you are using your own database, this file should be modified to contain the correct info for the localhost version
+of mysql.
+
+There is a large amount of math content that is not part of this repo.  You can still develop and run the tutor
+without it but if you need to see math problems as part of your testing, then you may need this.
+It can be downloaded from a shared
+google drive and unzipped in your woServer/webResources folder so that you get a result like:
+ /woServer/webResources/mscontent/...
+ To get access to this content you need to email marshall@cs.umass.edu so that I can share the drive with you.
+
 Many IntelliJ files have been submitted, and this code is easiest to work with in IntelliJ.
 
 ---INSTALLATION INSTRUCTIONS---
@@ -10,12 +28,8 @@ Many IntelliJ files have been submitted, and this code is easiest to work with i
    - cd to dir where you want it
    - git clone git@github.com:marshall62/mathspring.git
 
-2. Send @marshall62 or @jwnewman your public key.
-   - create the public key using Git GUI from windows or ssh-keygen on Unix/Mac.  Email the id_rsa.pub file to the above.
 
-3. At the top level, run 'git submodule init' and 'git submodule update.' This will clone the content onto your machine.
-
-4. You will need to install Tomcat and configure IntelliJ to find its installation directory.
+4. You will need to install Tomcat 8 and configure IntelliJ to find its installation directory.
 
 Getting MathSpring to Local
 
@@ -24,8 +38,6 @@ Getting MathSpring to Local
 1. Open a GIT hub account at https://github.com
 
 2. Fork the repository on Github, and clone the forked repository under your user.
-
-3. Create the public key. Email the id_rsa.pub file to @Marshall62.
 
 4. Download and install IntelliJ IDEA. You can start with a 30 day free trial - https://
 

@@ -2,6 +2,8 @@ package edu.umass.ckc.wo.handler;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.content.TopicIntro;
+import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.internal.BeginningOfTopicEvent;
 import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
@@ -40,7 +42,9 @@ public class MPPTutorHandler {
         if (e instanceof MPPReturnToHutEvent) {
 //            Response r = new ProblemResponse(p,smgr.getStudentModel().getTopicMasteries(),smgr.getStudentState().getCurTopic(), e.getElapsedTime());
             String lastProbType = state.getCurProbType();
-            if (lastProbType != null) {
+            // If the last problem is resumable and not a topic intro
+            if (lastProbType != null && !((MPPReturnToHutEvent) e).getProbId().equals(Problem.TOPIC_INTRO_ID)) {
+
                 if (lastProbType.equalsIgnoreCase(Problem.FLASH_PROB_TYPE) || lastProbType.equalsIgnoreCase(Problem.HTML_PROB_TYPE) )  {
                     Problem p = ProblemMgr.getProblem(Integer.parseInt(((MPPReturnToHutEvent) e).getProbId()));
                     ProblemResponse r = new ProblemResponse(p);
@@ -59,13 +63,18 @@ public class MPPTutorHandler {
             // the necessary info so it can start its page correctly.
             PedagogicalModel pedMod = smgr.getPedagogicalModel();
             NextProblemEvent npe = new NextProblemEvent(e.getElapsedTime(),0);
-            Response r = pedMod.processNextProblemRequest(npe);
+            Response r;
+            if (state.isInChallengeMode())
+                r = pedMod.processChallengeModeNextProblemRequest(npe);
+            else if (state.isInReviewMode())
+                r = pedMod.processReviewModeNextProblemRequest(npe);
+            else
+                r= pedMod.processNextProblemRequest(npe);
             smgr.getStudentState().save();
             if (r instanceof ProblemResponse)
                 new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (ProblemResponse) r, "practice",
                         state.getCurProbType(), true, ((ProblemResponse) r).getProblem().getResource(), null, false, state.getCurProblem(), this.showMPP);
 
-            // TODO have not tested that this actually works
             else if (r instanceof InterventionResponse)
                 new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (InterventionResponse) r, "practice",
                         state.getCurProbType(), true, null, null, false, state.getCurProblem(), this.showMPP);
@@ -90,9 +99,6 @@ public class MPPTutorHandler {
             InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
             TutorModel tutMod = pedMod.getTutorModel();
             Response r =  tutMod.processInternalEvent(beginningOfTopicEvent);
-
-
-            int temp = smgr.getStudentState().getCurProblem();
             new TutorPage(info,smgr).createTutorPageForResponse(e.getElapsedTime(), 0, e.getTopicId(), r, "practice", typ, true, null, false, lastProbId, this.showMPP);
             new TutorLogger(smgr).logMPPEvent(e,lastProbId);
 //            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), -1, "practice", Problem.PRACTICE, state.getCurProbType(), true, null, null, false);
@@ -146,11 +152,17 @@ public class MPPTutorHandler {
             smgr.getStudentState().setInChallengeMode(false);
             NextProblemEvent npe = new NextProblemEvent(e.getElapsedTime(),0,Integer.toString(ee.getProbId()),Problem.PRACTICE);
             npe.setTopicToForce(e.getTopicId());  // N.B. Student is NOT FORCING THIS TOPIC.   It is passed for information only
+            e.setUserInput(Integer.toString(e.getTopicId())); // for logging
             PedagogicalModel pedMod = smgr.getPedagogicalModel();
             int lastProbId =  smgr.getStudentState().getCurProblem();
             // When user was in topicIntro prior to going to MPP this isn't correct.
             String typ = smgr.getStudentState().getCurProbType();
             //ProblemResponse r = pedMod.getProblemSelectedByStudent(npe);
+            
+            // They request that trying a problem have the effect of switching to that topic
+            InternalEvent beginningOfTopicEvent = new BeginningOfTopicEvent(npe,e.getTopicId());
+            TutorModel tutMod = pedMod.getTutorModel();
+            Response xx =  tutMod.processInternalEvent(beginningOfTopicEvent);
             ProblemResponse r = (ProblemResponse) pedMod.processMPPSelectProblemRequest(npe);
             Problem p = r.getProblem();
             smgr.getStudentModel().newProblem(state,r.getProblem());

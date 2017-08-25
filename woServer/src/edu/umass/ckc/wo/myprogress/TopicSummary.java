@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.myprogress;
 
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.beans.Topic;
+import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTopics;
@@ -19,10 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Copyright (c) University of Massachusetts
@@ -89,6 +87,7 @@ public class TopicSummary {
     public TopicSummary(Topic t) {
         topicId = t.getId();
         topicName = t.getName();
+
     }
 
     public void loadStudentData(SessionManager smgr) throws Exception {
@@ -99,7 +98,10 @@ public class TopicSummary {
         sessionId = smgr.getSessionNum();
         curTopicLoader = new TopicSelectorImpl(smgr, (TopicModelParameters) DbClass.getClassLessonModelParameters(conn, classId));
         ProblemSelector psel = smgr.getPedagogicalModel().getProblemSelector();
-
+        List<Integer> topicProbIds = curTopicLoader.getClassTopicProblems(topicId,classId,DbUser.isShowTestControls(conn, smgr.getStudentId()));
+        if (topicProbIds != null)
+            totalProblems = topicProbIds.size();
+        else totalProblems = 0;
 //        this.hasAvailableContent = psel.topicHasRemainingContent(smgr, topicId);
         LessonModel lm = smgr.getPedagogicalModel().getLessonModel();
         try {
@@ -107,19 +109,23 @@ public class TopicSummary {
         } catch (UserException ue) {
             this.hasAvailableContent = false;
         }
-        try {
-            List<Integer> l = curTopicLoader.getClassTopicProblems(topicId, classId, DbUser.isShowTestControls(conn, smgr.getStudentId()));
-            totalProblems = l.size();
-        } catch (UserException ue) {
-            totalProblems=0;
-        }
+
+
+
         StudentProblemHistory h = smgr.getStudentModel().getStudentProblemHistory();
+        // get the history of problems the student has worked on in this topic
         List<StudentProblemData> probHist = h.getTopicHistory(topicId);
 
         this.userName = getStudentName();
         this.problemsDone = getNumProbsSeen(probHist);
         this.problemsDoneWithEffort = getNumProbsWithEffort(probHist);
-        this.numProbsSolved = getNumProbsSolved(probHist);
+        // IF a problem in this topic was shown in another topic and solved, this will count it.
+        this.numProbsSolved = 0;
+        for (int pid : topicProbIds) {
+            StudentProblemData lastEncounter = h.getMostRecentPracticeProblemEncounter(pid);
+            if (lastEncounter != null && lastEncounter.isSolved())
+                this.numProbsSolved++;
+        }
 
         if (problemsDone == 0  && numProbsSolved == 0) {
             topicState = "topicEmpty";
@@ -131,13 +137,15 @@ public class TopicSummary {
         }
     }
 
-    private int getNumProbsSolved (List<StudentProblemData> hist) {
-        int count = 0;
+    // Count the number times unique problems have been solved throughout the problem history.
+    public static int getNumProbsSolved (List<StudentProblemData> hist) {
+        Set probsSolved = new HashSet<Integer>(); // eliminates dupes
         for (StudentProblemData d: hist) {
-            if (d.isSolved())
-                count++;
+            if (d.isSolved() && !probsSolved.contains(d.getProbId()))
+                probsSolved.add(d.getProbId());
+
         }
-        return count;
+        return probsSolved.size();
     }
 
     // counts the number of DISTINCT problems seen in this topic (i.e. a problem repeated several times because

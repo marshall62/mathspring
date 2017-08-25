@@ -40,26 +40,19 @@ public class TopicMgr {
     }
 
     public List<Topic> omitTopic (Connection conn,  int classId, int topicId) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-                    //Get the position of the topic to omit
-            String q = "SELECT @deletedSeqPos := seqPos FROM classlessonplan WHERE classId = ? AND probGroupId = ?;" +
-                    //Remove the topic from the class
-                    "DELETE FROM classlessonplan WHERE classId = ? AND probGroupId = ?;" +
-                    //Update the positions of the topics after it to fill in the gap
-                    "UPDATE classlessonplan SET seqpos = seqpos-1 WHERE classId = ? AND seqPos > @deletedSeqPos";
-            stmt = conn.prepareStatement(q);
-            stmt.setInt(1, classId);
-            stmt.setInt(2, topicId);
-            stmt.setInt(3, classId);
-            stmt.setInt(4, topicId);
-            stmt.setInt(5, classId);
-            stmt.executeUpdate();
-        } finally {
-            if (stmt != null)
-                stmt.close();
+        List<Topic> topics = DbTopics.getClassActiveTopics(conn, classId);
+        DbTopics.removeClassActiveTopics(conn, classId);
+
+        Iterator<Topic> itr = topics.iterator();
+        while(itr.hasNext()) {
+            Topic t = itr.next();
+            if(t.getId() == topicId) {
+                itr.remove();
+            }
         }
-        return DbTopics.getClassActiveTopics(conn,classId);
+
+        DbTopics.insertTopics(conn, classId, topics);
+        return topics;
     }
 
     public void reactivateTopic (Connection conn,  AdminReorderTopicsEvent e) throws SQLException {

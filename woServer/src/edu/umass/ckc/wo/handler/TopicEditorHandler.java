@@ -7,11 +7,13 @@ import edu.umass.ckc.wo.content.TopicMgr;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.event.admin.AdminEditTopicsEvent;
 import edu.umass.ckc.wo.event.admin.AdminReorderTopicsEvent;
+import edu.umass.ckc.wo.event.admin.AdminSetTopicModelParametersEvent;
 import edu.umass.ckc.wo.event.admin.AdminTopicControlEvent;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
+import edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams;
+import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -47,7 +49,7 @@ public class TopicEditorHandler {
 
     public View handleEvent(ServletContext sc, Connection conn, AdminEditTopicsEvent e, HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
         List<Topic> topics = null;
-        PedagogicalModelParameters params = null;
+        ClassTutorConfigParams classParams= (ClassTutorConfigParams) DbClass.getClassConfigTutorParameters(conn, e.getClassId());
         if (e instanceof AdminReorderTopicsEvent) {
             TopicMgr topicMgr = new TopicMgr();
             AdminReorderTopicsEvent ee = (AdminReorderTopicsEvent) e;
@@ -62,31 +64,31 @@ public class TopicEditorHandler {
                 topicMgr.reactivateTopic(conn, ee);
                 topics = DbTopics.getClassActiveTopics(conn,ee.getClassId());
             }
-            params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
-            DbClass.setProblemSelectorParameters(conn,e.getClassId(), params);
+            DbClass.setClassTutorConfigParameters(conn,e.getClassId(), classParams);
         }
         else if (e instanceof AdminTopicControlEvent) {
             AdminTopicControlEvent ee = (AdminTopicControlEvent) e;
             topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
             // send to constructor but time in topic is in incorrect units
-            params = new PedagogicalModelParameters(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(), ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(), ee.getExternalActivityTimeThreshold(), ee.getMaxNumProbsPerTopic(),
-                    true, true);
-            params.setMaxTimeInTopicMinutes(ee.getMaxTimeInTopic());  // now pass in as minutes
-            params.setMinTimeInTopicMinutes(ee.getMinTimeInTopic());  // now pass in as minutes
-            DbClass.setProblemSelectorParameters(conn,e.getClassId(), params);
+            classParams = new ClassTutorConfigParams(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(),
+                    ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(),
+                     ee.getMaxNumProbsPerTopic());
+        }
+        // 3/13/17 Added this event because reorder portion of the orderTopics page may be sending the AdminTopicControlEvent (above) and
+        // we only want to set the paramters if the submit button in that form is clicked.
+        else if (e instanceof AdminSetTopicModelParametersEvent) {
+            AdminSetTopicModelParametersEvent ee = (AdminSetTopicModelParametersEvent) e;
+            topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
+            // send to constructor but time in topic is in incorrect units
+            classParams = new ClassTutorConfigParams(ee.getMaxTimeInTopic(), ee.getContentFailureThreshold(),
+                    ee.getTopicMastery(), ee.getMinNumProbsPerTopic(), ee.getMinTimeInTopic(), ee.getDifficultyRate(),
+                    ee.getMaxNumProbsPerTopic());
+
+            DbClass.setClassTutorConfigParameters(conn,e.getClassId(), classParams);
         }
         else {
             // fetch a list of topics for the class sorted in the order they will be presented
             topics = DbTopics.getClassActiveTopics(conn,e.getClassId());
-            params = DbClass.getPedagogicalModelParameters(conn, e.getClassId());
-            // If parameters are not stored for this particular class, a default set should be stored
-            // in classconfig table for classId=1.   If nothing there, then use the defaults created
-            // in the default PedagogicalModelParameters constructor
-            if (params == null) {
-                params = DbClass.getPedagogicalModelParameters(conn, 1);
-                if (params == null)
-                    params = new PedagogicalModelParameters();
-            }
         }
         ClassInfo[] classes = DbClass.getClasses(conn,e.getTeacherId());
         Classes bean = new Classes(classes);
@@ -109,7 +111,7 @@ public class TopicEditorHandler {
         req.setAttribute("teacherId",e.getTeacherId());
         req.setAttribute("classId",e.getClassId());
         CreateClassHandler.setTeacherName(conn,req, e.getTeacherId());
-        req.setAttribute("params",params);
+        req.setAttribute("tutorConfigParams",classParams);
         req.getRequestDispatcher(JSP).forward(req,resp);
 
         return null;  //To change body of created methods use File | Settings | File Templates.

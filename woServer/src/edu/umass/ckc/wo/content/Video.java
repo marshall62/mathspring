@@ -1,6 +1,5 @@
 package edu.umass.ckc.wo.content;
 
-import edu.umass.ckc.wo.tutormeta.Activity;
 import edu.umass.ckc.wo.tutor.response.Response;
 import net.sf.json.JSONObject;
 
@@ -14,7 +13,7 @@ public class Video extends Response {
     private String url;
 
     public Video (String url) {
-        this.url = url;
+        this.setUrl(url);
         buildJSON();
     }
 
@@ -22,14 +21,24 @@ public class Video extends Response {
 
     public JSONObject buildJSON() {
         jsonObject = new JSONObject();
-        jsonObject.element("video", this.url);
+        jsonObject.element("video", this.getUrl());
         return jsonObject;
 
     }
 
 
 
+
+
     public String logEventName() {
-        return "video " + (this.url != null ? this.url : "NoVideoAvailable");
+        return "video " + (this.getUrl() != null ? this.getUrl() : "NoVideoAvailable");
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

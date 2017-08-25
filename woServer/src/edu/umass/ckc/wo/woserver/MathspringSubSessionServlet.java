@@ -74,7 +74,8 @@ public class MathspringSubSessionServlet extends BaseServlet {
             Settings.videoURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
                     servletContext.getContextPath(),Settings.webContentPath, videoURI);
 
-
+            // TODO:  queries the hostinfo table to see what host it says this is.  Not reliable!
+            //  SHould use the setting wodb.datasource coming from web.xml
             String host = DbUtil.getHost(connection);
             String emailLogFilename = servletConfig.getInitParameter(Names.EMAIL_LOG_FILENAME);
             if (emailLogFilename != null)

@@ -82,9 +82,9 @@ public class HintOrdering {
                     // Because the example system would like to show the full hint path (including which answer
                     // to select) this function is called with a flag (by default it will be true).
                     // we don't want hints that give the answer (unless they are root hints)
-                    if (!includeAnswerGivingHint && h.getGivesAnswer() && !h.isRoot())
-                        ;
-                    else possibleHints.add(h);
+                    if (includeAnswerGivingHint || !h.getGivesAnswer() || h.isRoot()) {
+                        possibleHints.add(h);
+                    }
                 }
                 return possibleHints;
             }
@@ -138,7 +138,7 @@ public class HintOrdering {
     private Hint doSelectHint (int lastHintId, int probId) throws Exception {
         List<Hint> hints = getHintsForProblem(probId) ;
         // 2/23/11 DM do not include hints that give the answer unless they are ROOT hints
-        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId,lastHintId,hints, true);
+        List<Hint> possibleSuccessorHints = getPossibleSuccessorHints(probId,lastHintId,hints, false);
 
         // select from among those hints identified as possible.
 
@@ -170,7 +170,7 @@ public class HintOrdering {
             int id = rs.getInt(Hint.ID);
             int problemId = rs.getInt(Hint.PROBLEM_ID);
             String label = rs.getString(Hint.NAME);
-            int givesAnswer = rs.getInt(Hint.GIVES_ANSWER);
+            boolean givesAnswer = rs.getBoolean(Hint.GIVES_ANSWER);
             boolean isroot = rs.getBoolean("is_root");
 
             String att_query = "select " + Hint.ATT_VALUE +
@@ -187,7 +187,7 @@ public class HintOrdering {
             Hint nh = new Hint(id,
                     label,
                     problemId,
-                    givesAnswer==1);
+                    givesAnswer);
             nh.setIs_root(isroot);
             result.add(nh);
         }

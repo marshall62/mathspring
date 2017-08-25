@@ -9,6 +9,8 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.pedModel.TopicSelectorImpl;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
+import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.TopicSelector;
 import edu.umass.ckc.wo.util.SqlQuery;
 
@@ -61,7 +63,7 @@ public class TopicDetails {
     int problemId;
     String problemName;
 
-    int problemsDone;
+    int problemsSolved=0;
     int totalProblems = 0;
     int masteredTimes;
 
@@ -73,7 +75,6 @@ public class TopicDetails {
     // output variables
     double mastery = 0;
 
-    // TODO: If StudentProblemHistory.java is updated dynamically, should probably use that instead of running own query
     public TopicDetails(SessionManager smgr, int topic_id) throws Exception {
 
 
@@ -85,54 +86,35 @@ public class TopicDetails {
 
         conn = smgr.getConnection();
 
-
         curTopicLoader = new TopicSelectorImpl(smgr, (TopicModelParameters) DbClass.getClassLessonModelParameters(conn,classId));
+        // gets the problems in this topic minus omitted ones.
         List<Integer> problemIdList = curTopicLoader.getClassTopicProblems(topicId, classId, DbUser.isShowTestControls(conn,smgr.getStudentId()));
+        StudentProblemHistory h = smgr.getStudentModel().getStudentProblemHistory();
+
         List<Problem> problemList = new ArrayList<Problem>();
         for (int id : problemIdList)
             problemList.add(ProblemMgr.getProblem(id));
         totalProblems = problemList.size();
+        // For each problem in the topic, get the students last encounter with it as a practice problem.
+        // NOTE WELL:  A problem can be in more than one topic, so we may find an encounter with it as part of another
+        // topic.   We want to create a problem-card in the topic-detail that reflects the interaction with the problem
+        // regardless of what topic it was seen in.
 
-
-        if (topicState == "topicEmpty") {
-        } else {
-
-            for (int i = 0; i < totalProblems; i++) {
-
-                problemId = problemList.get(i).getId();
-                problemName = problemList.get(i).getName();
-                List<CCStandard> stds = problemList.get(i).getStandards();
-
-
-                SqlQuery q = new SqlQuery();
-                ResultSet rs;
-
-
-                String s = "select effort, numAttemptsToSolve, numHints from studentProblemHistory where studId=" + studId + " and topicId=" + topicId + " and problemId=" + problemId + " and mode='practice' and problemEndTime>0 ORDER BY  problemBeginTime DESC";
-
-                rs = q.read(conn, s);
-
-
-                if (rs.next()) {
-
-                    String effort = rs.getString("effort");
-                    if (!rs.wasNull())
-                        effortBuffer = effort;
-                    else effortBuffer = "null";
-
-                    problemDetails newProblemDetails = new problemDetails(problemId, problemName, effortBuffer, rs.getInt("numAttemptsToSolve"), rs.getInt("numHints"), getSnapshot(problemId), stds);
-                    problemDetailsList.add(newProblemDetails);
-
-                } else {
-
-
-                    problemDetails newProblemDetails = new problemDetails(problemId, problemName, "empty", 0, 0, getSnapshot(problemId), stds);
-                    problemDetailsList.add(newProblemDetails);
-
-
-                }
-
+        // If found,  put a detail record in the result list, else add an empty record for the problem.
+        //  This will have the effect of not counting anything twice.
+        for (Problem p : problemList) {
+            List<CCStandard> stds = p.getStandards();
+            StudentProblemData lastEncounter = h.getMostRecentPracticeProblemEncounter(p.getId());
+            problemDetails pd;
+            if (lastEncounter != null) {
+                pd = new problemDetails(p.getId(), p.getName(), lastEncounter.getEffort(), lastEncounter.getNumAttemptsToSolve(),
+                        lastEncounter.getNumHints(), getSnapshot(p.getId()), lastEncounter.isSolved());
+                problemsSolved += lastEncounter.isSolved() ? 1 : 0;
             }
+            else
+                pd= new problemDetails(p.getId(),p.getName(),"empty",0,0,
+                        getSnapshot(p.getId()), stds, false);
+            problemDetailsList.add(pd);
 
         }
     }
@@ -185,5 +167,11 @@ public class TopicDetails {
         }
     }
 
+    public int getProblemsSolved() {
+        return problemsSolved;
+    }
 
+    public int getTotalProblems() {
+        return totalProblems;
+    }
 }

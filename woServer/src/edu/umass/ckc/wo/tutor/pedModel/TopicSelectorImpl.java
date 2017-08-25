@@ -151,14 +151,14 @@ public class TopicSelectorImpl implements TopicSelector {
 
         boolean maxProbsReached=false, maxTimeReached=false, topicMasteryReached=false, contentFailure=false;
         // if maxProbs then we're done
-        if (smgr.getStudentState().getTopicNumPracticeProbsSeen() >= tmParameters.getMaxNumberProbs())
+        if (smgr.getStudentState().getTopicNumPracticeProbsSeen() >= tmParameters.getMaxProbs())
             maxProbsReached=true;
 
         //if maxTime then we're done
-        else if (smgr.getStudentState().getTimeInTopic() + probElapsedTime >= tmParameters.getMaxTimeInTopic())
+        else if (smgr.getStudentState().getTimeInTopic() + probElapsedTime >= tmParameters.getMaxTimeMs())
             maxTimeReached=true;
 
-        else if (smgr.getStudentModel().getTopicMastery(smgr.getStudentState().getCurTopic()) >= tmParameters.getTopicMastery()) {
+        else if (smgr.getStudentModel().getTopicMastery(smgr.getStudentState().getCurTopic()) >= tmParameters.getDesiredMastery()) {
             topicMasteryReached=true;
         }
         EndOfTopicInfo info = isContentFailure(difficulty);
@@ -327,7 +327,7 @@ public class TopicSelectorImpl implements TopicSelector {
     }
 
     public boolean isMastered (int topicId) throws SQLException {
-        return smgr.getStudentModel().getTopicMastery(topicId) >= tmParameters.getTopicMastery() ;
+        return smgr.getStudentModel().getTopicMastery(topicId) >= tmParameters.getDesiredMastery() ;
     }
 
 

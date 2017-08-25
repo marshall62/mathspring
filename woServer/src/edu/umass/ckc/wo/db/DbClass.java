@@ -9,6 +9,7 @@ import edu.umass.ckc.wo.handler.UserRegistrationHandler;
 import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.tutor.Settings;
+import edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams;
 import edu.umass.ckc.wo.tutor.probSel.LessonModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters;
 import edu.umass.ckc.wo.tutor.probSel.TopicModelParameters;
@@ -650,7 +651,7 @@ public class DbClass {
                 // TODO this makes no sense.   These are values set in teacher tools.   If some aren't set, shouldn't
                 // we keep the defaults that were defined the control params of the Pedagogy defined the in the XML file?
                 if (rs.wasNull())
-                    return new TopicModelParameters();
+                    return new TopicModelParameters(true);
                 long maxTimeInTopic = rs.getLong("maxTimeInTopic");
                 int thresh = rs.getInt("contentFailureThreshold");
                 double mastery = rs.getDouble("topicMastery");
@@ -678,6 +679,82 @@ public class DbClass {
                 rs.close();
         }
     }
+
+
+    // Reworked again on 6/17.  The ClassTutorConfigParams is now used to put the classConfig fields.   This object is only
+    // used to send to the orderTopics JSP and to get new values from that page and then update them in the db.
+
+    // DM reworked on 3/1/17.   This now returns an object with -1 or null values in areas that the classConfig table doesn't
+    // provide override values.   This means that people have to correctly set up the class config table to have NULL values
+    // in the fields where they do not want to override values in the lessondefinition that is part of the pedagogy.
+    // In places where they do want a different value, this will get that value and use it to override what came from the
+    // lesson definition.
+    public static ClassTutorConfigParams getClassConfigTutorParameters(Connection conn, int classId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            String q = "select maxNumberProbsToShowPerTopic,maxTimeInTopic,contentFailureThreshold,topicMastery," +
+                    "minNumberProbsToShowPerTopic," +
+                    "minTimeInTopic,difficultyRate,topicIntroFrequency," +
+                    "exampleFrequency" +
+                    " from classconfig where classId=?";
+            stmt = conn.prepareStatement(q);
+            // create a parameters object will all -1 or null values in its slots
+            ClassTutorConfigParams classConfigParams = new ClassTutorConfigParams(false);
+            stmt.setInt(1, classId);
+            rs = stmt.executeQuery();
+            PedagogicalModelParameters params;
+            if (rs.next()) {
+                int maxProbsInTopic = rs.getInt(1);
+                // Pull values from classconfig.  If non-null, overwrite the -1 value in the classConfigParams
+                if (!rs.wasNull())
+                    classConfigParams.setMaxProbs(maxProbsInTopic);
+                long maxTimeInTopic = rs.getLong("maxTimeInTopic");
+                if (!rs.wasNull())
+                    classConfigParams.setMaxTimeMs(maxTimeInTopic);
+                int thresh = rs.getInt("contentFailureThreshold");
+                if (!rs.wasNull())
+                    classConfigParams.setContentFailureThreshold(thresh);
+                double mastery = rs.getDouble("topicMastery");
+                if (!rs.wasNull())
+                    classConfigParams.setDesiredMastery(mastery);
+                int minProbsInTopic = rs.getInt("minNumberProbsToShowPerTopic");
+                if (!rs.wasNull())
+                    classConfigParams.setMinProbs(minProbsInTopic);
+                long minTimeInTopic = rs.getLong("minTimeInTopic");
+                if (!rs.wasNull())
+                    classConfigParams.setMinTimeMs(minTimeInTopic);
+                double difficultyRate = rs.getDouble("difficultyRate");
+                if (!rs.wasNull())
+                    classConfigParams.setDifficultyRate(difficultyRate);
+                String topicIntroFreq= rs.getString("topicIntroFrequency");
+                if (!rs.wasNull()) {
+                    classConfigParams.setTopicIntroFrequency(topicIntroFreq);
+                }
+                else {
+                    topicIntroFreq = null;
+                }
+
+                String exampleFreq= rs.getString("exampleFrequency");
+                if (!rs.wasNull()) {
+                    classConfigParams.setTopicExampleFrequency(exampleFreq);
+                }
+                else {
+                    exampleFreq = null;
+                }
+
+                return classConfigParams;
+            }
+            return null;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+
 
     public static PedagogicalModelParameters getPedagogicalModelParameters(Connection conn, int classId) throws SQLException {
         ResultSet rs = null;
@@ -760,26 +837,40 @@ public class DbClass {
         if (params == null) {
             params = DbClass.getLessonModelParameters(conn, 1);
             if (params == null)
-                params = new TopicModelParameters();
+                params = new TopicModelParameters(true);
         }
         return params;
     }
 
-    public static void setProblemSelectorParameters(Connection conn, int classId, PedagogicalModelParameters params) throws SQLException {
+    public static void setClassTutorConfigParameters(Connection conn, int classId, ClassTutorConfigParams params) throws SQLException {
         PreparedStatement stmt = null;
         try {
             String q = "update classconfig set maxNumberProbsToShowPerTopic=?, maxTimeInTopic=?, contentFailureThreshold=?, topicMastery=?," +
-                    "minNumberProbsToShowPerTopic=?, minTimeInTopic=?, difficultyRate=?, externalActivityTimeThreshold=? where classid=?";
+                    "minNumberProbsToShowPerTopic=?, minTimeInTopic=?, difficultyRate=? where classid=?";
             stmt = conn.prepareStatement(q);
-            stmt.setInt(1, params.getMaxNumberProbs());
-            stmt.setLong(2, params.getMaxTimeInTopic());
-            stmt.setInt(3, params.getContentFailureThreshold());
-            stmt.setDouble(4, params.getTopicMastery());
-            stmt.setInt(5, params.getMinNumberProbs());
-            stmt.setLong(6, params.getMinTimeInTopic());
-            stmt.setDouble(7, params.getDifficultyRate());
-            stmt.setInt(8, params.getExternalActivityTimeThreshold());
-            stmt.setInt(9, classId);
+            if ( params.getMaxProbs() != -1)
+                stmt.setInt(1, params.getMaxProbs());
+            else stmt.setNull(1,Types.INTEGER);
+            if ( params.getMaxTimeMs() != -1)
+                stmt.setLong(2, params.getMaxTimeMs());
+            else stmt.setNull(2,Types.INTEGER);
+            if ( params.getContentFailureThreshold() != -1)
+                stmt.setInt(3, params.getContentFailureThreshold());
+            else stmt.setNull(3,Types.INTEGER);
+            if ( params.getDesiredMastery() != -1)
+                stmt.setDouble(4, params.getDesiredMastery());
+            else stmt.setNull(4,Types.DOUBLE);
+            if ( params.getMinProbs() != -1)
+                stmt.setInt(5, params.getMinProbs());
+            else stmt.setNull(5,Types.INTEGER);
+            if ( params.getMinTimeMs() != -1)
+                stmt.setLong(6, params.getMinTimeMs());
+            else stmt.setNull(6,Types.INTEGER);
+            if ( params.getDifficultyRate() != -1)
+                stmt.setDouble(7, params.getDifficultyRate());
+            else stmt.setNull(7,Types.DOUBLE);
+
+            stmt.setInt(8, classId);
             stmt.executeUpdate();
         } finally {
             if (stmt != null)
@@ -813,7 +904,7 @@ public class DbClass {
 
     public static ClassConfig getClassConfig(Connection conn, int classId) throws SQLException {
         String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey" +
-                ",presurveyurl,postsurveyurl,postsurveywaittime from classconfig where classId=?";
+                ",presurveyurl,postsurveyurl,postsurveywaittime, soundSync from classconfig where classId=?";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classId);
         ResultSet rs = ps.executeQuery();
@@ -829,7 +920,9 @@ public class DbClass {
             String presurveyurl = rs.getString("presurveyurl");
             String postsurveyurl = rs.getString("postsurveyurl");
             int postsurveyWaitTime = rs.getInt("postSurveyWaitTime");
-            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl, postsurveyurl, postsurveyWaitTime);
+            boolean soundSync = rs.getBoolean("soundSync");
+            return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl,
+                    postsurveyurl, postsurveyWaitTime, soundSync);
         } else return null;
     }
 
@@ -960,6 +1053,21 @@ public class DbClass {
         }
         return true;
     }
+
+
+
+    public static void createStudentRoster(Connection conn, ClassInfo classInfo, String prefix, String password, int noOfStudentAccount) throws Exception {
+        List<String> pedIds = DbClassPedagogies.getClassPedagogyIds(conn, classInfo.getClassid());
+        for (int studIndex=1;studIndex <= noOfStudentAccount; studIndex++ ) {
+            StringBuffer username = new StringBuffer(prefix);
+            username.append(studIndex);
+               if (DbUser.getStudent(conn, username.toString(), password) != -1)
+                    throw new UserException("Cannot create users.  User: " + username.toString() + " already exists.");
+            UserRegistrationHandler.registerStudentUser(conn,username.toString(),password,classInfo);
+        }
+    }
+
+
 
     private static boolean buildTestUsers(Connection conn, ClassInfo classInfo, String testUserPrefix, String testUserPassword, List<String> pedIds) throws SQLException {
         // Get the test user with the same prefix and max ID.  Then we'll get the number off the end of this username

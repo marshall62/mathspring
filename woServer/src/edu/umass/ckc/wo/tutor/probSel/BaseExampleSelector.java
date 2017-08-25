@@ -54,6 +54,10 @@ where p.id != curProbId and skillid in
           */
         // BUG FIX - Sometimes an example is returned that is the same problem as the curProbId.
         // Added test in query to prevent this.
+
+        // 3/9/17 Mysql 5.7 on Ubuntu doesn't like this query with error:
+        // jdbc4.MySQLSyntaxErrorException: Expression #5 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'wayangoutpostdb.diff.diff_level' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+        // so I added other columns to the group by until it stopped complaining
         //Give me a list of problems that are easier and cover those skills
         String OverlappingSkillProblems =
                 "select p.id, animationresource, answer, count(*) as numOverlap, diff_level, abs(diff_level - " + p.getDifficulty() + ") as difference " +
@@ -62,6 +66,7 @@ where p.id != curProbId and skillid in
                 " and p.id=h.problemid and p.status='ready' and p.form is null " +
                 " and diff.problemid = p.id " +
                 " group by p.id " +
+//                " group by p.id, animationresource, answer,diff_level,difference " +
 //                " having problemid in " +
 //                " (select problemid from overallprobdifficulty where diff_level< " +
 //                p.getDifficulty() +  ")" +

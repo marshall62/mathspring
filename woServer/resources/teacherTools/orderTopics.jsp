@@ -3,10 +3,11 @@
 <jsp:include page="${sideMenu}" />
 
 
-<jsp:useBean id="params" scope="request" type="edu.umass.ckc.wo.tutor.probSel.PedagogicalModelParameters"/>
+<jsp:useBean id="topicConfigParams" scope="request" type="edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="mainPageMargin">
+  <style type="text/css">@import url("css/dragdroptable.css");</style>
   <div id="Layer1" align="center" >
       <p class="a2"><b>Active Topic Order</b></p>
       <p>Topics will be presented in the order below.</p>
@@ -99,282 +100,8 @@
       </table>
      </c:if>
     <br>
-      <c:if test="${isAdmin}">
-    <%--@elvariable id="params" type="edu.umass.ckc.wo.tutor.probSel.ProblemSelectorParamters"--%>
-      <table>
-      <tr>
-          <td>Max Number of Problems Per Topic: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'maxNumberProbsPerTopic',
-                      'n_minValue' : 0,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.maxNumberProbs}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
 
 
-
-          </td>
-          <td><input type="text" size="3" name="maxNumberProbsPerTopic" value="<c:out value="${params.maxNumberProbs}"/>"/>
-          </td>
-      </tr>
-
-      <tr>
-          <td>Min Number of Problems Per Topic: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'minNumberProbsPerTopic',
-                      'n_minValue' : 0,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.minNumberProbs}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-
-
-
-          </td>
-          <td><input type="text" size="3" name="minNumberProbsPerTopic" value="<c:out value="${params.minNumberProbs}"/>"/>
-          </td>
-      </tr>
-
-      <tr>
-          <td>Max Time In a Topic (min): </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'maxTimeInTopic',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.maxTimeInTopicMinutes}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-
-          </td>
-          <td><input type="text" size="3" name="maxTimeInTopic"value="<c:out value="${params.maxTimeInTopicMinutes}"/>"/> </td>
-      </tr>
-
-      <tr>
-          <td>Min Time In a Topic (min): </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'minTimeInTopic',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 30,
-                      'n_value' : <c:out value="${params.minTimeInTopicMinutes}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-
-          </td>
-          <td><input type="text" size="3" name="minTimeInTopic"value="<c:out value="${params.minTimeInTopicMinutes}"/>"/> </td>
-      </tr>
-
-      <tr>
-          <td>Content Failure Threshold: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'contentFailureThreshold',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 5,
-                      'n_value' : <c:out value="${params.contentFailureThreshold}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-          </td>
-          <td><input type="text" size="3" name="contentFailureThreshold"value="<c:out value="${params.contentFailureThreshold}"/>"/> </td>
-      </tr>
-      <tr>
-          <td>Topic Mastery: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'topicMastery',
-                      'n_minValue' : 0.5,
-                      'n_maxValue' : 1.2,
-                      'n_value' : <c:out value="${params.topicMastery}"/>,
-                      'n_step' : 0.05
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-          </td>
-          <td><input type="text" size="3" name="mastery" value="<c:out value="${params.topicMastery}"/>"/> </td> </tr>
-
-
-      <tr>
-          <td>Difficulty Rate: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'difficultyRate',
-                      'n_minValue' : 1,
-                      'n_maxValue' : 10,
-                      'n_value' : <c:out value="${params.difficultyRate}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-          </td>
-          <td><input type="text" size="3" name="difficultyRate" value="<c:out value="${params.difficultyRate}"/>"/> </td> </tr>
-
-
-      <tr>
-          <td>Time Before External Activities Begin: </td>
-          <td>
-              <script language="JavaScript">
-                  var A_TPL1h = {
-                      'b_vertical' : false,
-                      'b_watch': true,
-                      'n_controlWidth': 120,
-                      'n_controlHeight': 16,
-                      'n_sliderWidth': 16,
-                      'n_sliderHeight': 15,
-                      'n_pathLeft' : 1,
-                      'n_pathTop' : 1,
-                      'n_pathLength' : 103,
-                      's_imgControl': 'img/redh_bg.gif',
-                      's_imgSlider': 'img/redh_sl.gif',
-                      'n_zIndex': 1
-                  }
-
-                  var A_INIT1h = {
-                      's_form' : 0,
-                      's_name': 'externalActivityTimeThreshold',
-                      'n_minValue' : -1,
-                      'n_maxValue' : 20,
-                      'n_value' : <c:out value="${params.externalActivityTimeThreshold}"/>,
-                      'n_step' : 1
-                  }
-                  new slider(A_INIT1h, A_TPL1h);
-              </script>
-          </td>
-          <td><input type="text" size="3" name="externalActivityTimeThreshold" value="<c:out value="${params.externalActivityTimeThreshold}"/>"/> </td> </tr>
-      </table>
-      </c:if>
     </form>
 
     <div style="height:54px"></div>
@@ -383,6 +110,208 @@
           <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
           <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
     </form>
+
+<c:if test="${isAdmin}">
+     <form method="post" action="${pageContext.request.contextPath}/WoAdmin?action=AdminSetTopicModelParameters">
+         <input type="hidden" name="classId" value="<c:out value="${classId}"/>">
+         <input type="hidden" name="teacherId" value="<c:out value="${teacherId}"/>">
+        <%--@elvariable id="tutorConfigParams" type="edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams"--%>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+         <script>
+
+             function checkClicked(t, amountText, slider) {
+                 if (t.is(':checked')) {
+                     $(amountText).val(-1);
+                     $(slider).slider('disable');
+                 } else {
+                     $(amountText).val($(slider).slider('option','value'));
+                     $(slider).slider('enable');
+                 }
+
+             }
+
+             $( function() {
+                 $( "#maxNumProbsSlider" ).slider({
+                     min: -1,
+                     max: 100,
+                     value: ${tutorConfigParams.maxProbs},
+                     slide: function( event, ui ) {
+                         $( "#maxNumberProbsPerTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#minNumProbsSlider" ).slider({
+                     min: -1,
+                     max: 100,
+                     step: 1,
+                     value: ${tutorConfigParams.minProbs},
+                     slide: function( event, ui ) {
+                         $( "#minNumberProbsPerTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#maxTimeSlider" ).slider({
+                     min: -1,
+                     max: 60,
+                     step: 1,
+                     value: ${tutorConfigParams.maxTimeMinutes},
+                     slide: function( event, ui ) {
+                         $( "#maxTimeInTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#minTimeSlider" ).slider({
+                     min: -1,
+                     max: 60,
+                     step: 1,
+                     value: ${tutorConfigParams.minTimeMinutes},
+                     slide: function( event, ui ) {
+                         $( "#minTimeInTopic" ).val( ui.value );
+                     }
+                 });
+                 $( "#contentFailureSlider" ).slider({
+                     min: -1,
+                     max: 5,
+                     step: 1,
+                     value: ${tutorConfigParams.contentFailureThreshold},
+                     slide: function( event, ui ) {
+                         $( "#contentFailureThreshold" ).val( ui.value );
+                     }
+                 });
+                 $( "#masterySlider" ).slider({
+                     min: -1,
+                     max: 1.2,
+                     step: 0.05,
+                     value: ${tutorConfigParams.desiredMastery},
+                     slide: function( event, ui ) {
+                         $( "#mastery" ).val( ui.value );
+                     }
+                 });
+                 $( "#diffRateSlider" ).slider({
+                     min: -1,
+                     max: 5.0,
+                     step: 0.1,
+                     value: ${tutorConfigParams.difficultyRate},
+                     slide: function( event, ui ) {
+                         $( "#difficultyRate" ).val( ui.value );
+                     }
+                 });
+
+                 $( "#maxNumberProbsPerTopic" ).val( $( "#maxNumProbsSlider" ).slider( "value" ) );
+                 $( "#minNumberProbsPerTopic" ).val( $( "#minNumProbsSlider" ).slider( "value" ) );
+                 $( "#maxTimeInTopic" ).val( $( "#maxTimeSlider" ).slider( "value" ) );
+                 $( "#minTimeInTopic" ).val( $( "#minTimeSlider" ).slider( "value" ) );
+                 $( "#contentFailureThreshold" ).val( $( "#contentFailureSlider" ).slider( "value" ) );
+                 $( "#mastery" ).val( $( "#masterySlider" ).slider( "value" ) );
+                 $( "#difficultyRate" ).val( $( "#diffRateSlider" ).slider( "value" ) );
+             } );
+         </script>
+
+         <table>
+             <tr><th></th><th>Omit</th><th/><th/></tr>
+             <tr>
+                 <td>Max Number of Problems Per Topic:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#maxNumberProbsPerTopic','#maxNumProbsSlider');"></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="maxNumProbsSlider" style="width:100px;"></div>
+
+                 </td>
+
+                 <td>
+                     <input type="text" id="maxNumberProbsPerTopic" name="maxNumberProbsPerTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+
+             </tr>
+
+             <tr>
+                 <td>Min Number of Problems Per Topic:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#minNumberProbsPerTopic','#minNumProbsSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="minNumProbsSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="minNumberProbsPerTopic" name="minNumberProbsPerTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Max Time in Topic (minutes):</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#maxTimeInTopic','#maxTimeSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="maxTimeSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="maxTimeInTopic" name="maxTimeInTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Min Time in Topic (minutes):</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#minTimeInTopic','#minTimeSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="minTimeSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="minTimeInTopic" name="minTimeInTopic" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Content Failure Threshold (#problems):</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#contentFailureThreshold','#contentFailureSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="contentFailureSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="contentFailureThreshold" name="contentFailureThreshold" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Desired Topic Mastery:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#mastery','#masterySlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="masterySlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="mastery" name="mastery" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>Difficulty Rate:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#difficultyRate','#diffRateSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="diffRateSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="difficultyRate" name="difficultyRate" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+             <tr>
+                 <td>Time Before External Activities begin:</td>
+                 <td style="width:12px"><input type="checkbox" onclick="checkClicked($(this), '#externalActivityTimeThreshold','#extActSlider');"/></td>
+                 <td style="padding:0 15px 0 15px;">
+                     <div id="extActSlider" style="width:100px;"></div>
+
+                 </td>
+                 <td>
+                     <input type="text" id="externalActivityTimeThreshold" name="externalActivityTimeThreshold" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                 </td>
+             </tr>
+         </table>
+
+
+        <input type="submit" name="submit" value="Save Topic Control Params"/>
+
+     </form>
+</c:if>
     <div style="height:54px"></div>
 </div>
 </div>

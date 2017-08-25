@@ -18,6 +18,7 @@ public class ClassConfig {
     private String preSurveyURL;
     private String postSurveyURL;
     private int postSurveyWaitTimeMin;
+    private boolean soundSync;
 
 
     public static final int OFF=0;
@@ -26,11 +27,11 @@ public class ClassConfig {
     public static final int ON_AFTER_POSTTEST=3;
 
     public static ClassConfig getDefaultConfig () {
-        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false, null, null, 0);
+        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false, null, null, 0, false);
     }
 
     public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults,
-                       boolean showPostSurvey, String presurveyurl, String postsurveyurl, int postSurveyWaitTime) {
+                       boolean showPostSurvey, String presurveyurl, String postsurveyurl, int postSurveyWaitTime, boolean soundSync) {
         this.pretest = pretest;
         this.posttest = posttest;
         this.fantasy = fantasy;
@@ -42,6 +43,7 @@ public class ClassConfig {
         this.preSurveyURL=presurveyurl;
         this.postSurveyURL=postsurveyurl;
         this.postSurveyWaitTimeMin = postSurveyWaitTime;
+        this.soundSync = soundSync;
     }
 
     public int getPretest() {
@@ -95,6 +97,11 @@ public class ClassConfig {
     public int getPostSurveyWaitTimeMin() {
         return postSurveyWaitTimeMin;
     }
+
+    public boolean isSoundSync() {
+        return soundSync;
+    }
+
 
     public String toString () {
         return String.format("&pretest=%d&posttest=%d&fantasy=%d&mfr=%d&spatial=%d&tutoring=%d",
