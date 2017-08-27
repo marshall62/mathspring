@@ -16,14 +16,14 @@
             <version>RELEASE</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>commons-beanutils</groupId>-->
-            <!--<artifactId>commons-beanutils</artifactId>-->
-            <!--<version>1.8.0</version>-->
+        <!--<groupId>commons-beanutils</groupId>-->
+        <!--<artifactId>commons-beanutils</artifactId>-->
+        <!--<version>1.8.0</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>commons-collections</groupId>-->
-            <!--<artifactId>commons-collections</artifactId>-->
-            <!--<version>3.2.1</version>-->
+        <!--<groupId>commons-collections</groupId>-->
+        <!--<artifactId>commons-collections</artifactId>-->
+        <!--<version>3.2.1</version>-->
         <!--</dependency>-->
         <!-- brings org.apache.commons.io in MariHandler-->
         <dependency>
@@ -32,30 +32,30 @@
             <version>2.4</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>commons-lang</groupId>-->
-            <!--<artifactId>commons-lang</artifactId>-->
-            <!--<version>2.5</version>-->
+        <!--<groupId>commons-lang</groupId>-->
+        <!--<artifactId>commons-lang</artifactId>-->
+        <!--<version>2.5</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>commons-logging</groupId>-->
-            <!--<artifactId>commons-logging</artifactId>-->
-            <!--<version>1.1.1</version>-->
+        <!--<groupId>commons-logging</groupId>-->
+        <!--<artifactId>commons-logging</artifactId>-->
+        <!--<version>1.1.1</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>net.sf.ezmorph</groupId>-->
-            <!--<artifactId>ezmorph</artifactId>-->
-            <!--<version>1.0.6</version>-->
+        <!--<groupId>net.sf.ezmorph</groupId>-->
+        <!--<artifactId>ezmorph</artifactId>-->
+        <!--<version>1.0.6</version>-->
         <!--</dependency>-->
 
         <!--<dependency>-->
-            <!--<groupId>org.apache.httpcomponents</groupId>-->
-            <!--<artifactId>httpclient</artifactId>-->
-            <!--<version>4.3.3</version>-->
+        <!--<groupId>org.apache.httpcomponents</groupId>-->
+        <!--<artifactId>httpclient</artifactId>-->
+        <!--<version>4.3.3</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.apache.httpcomponents</groupId>-->
-            <!--<artifactId>httpcore</artifactId>-->
-            <!--<version>4.3.2</version>-->
+        <!--<groupId>org.apache.httpcomponents</groupId>-->
+        <!--<artifactId>httpcore</artifactId>-->
+        <!--<version>4.3.2</version>-->
         <!--</dependency>-->
         <!-- brings in org.apache.http.* used in MariHandler and others-->
         <dependency>
@@ -63,47 +63,47 @@
             <artifactId>httpmime</artifactId>
             <version>4.3.3</version>
         </dependency>
-<!-- brings org.jCharts.chartData in PerStudPrePostReport and others-->
+        <!-- brings org.jCharts.chartData in PerStudPrePostReport and others-->
         <dependency>
             <groupId>jcharts</groupId>
             <artifactId>jcharts</artifactId>
             <version>0.7.5</version>
         </dependency>
-<!-- used everywhere org.jdom also gotten thru servlet-framework -->
+        <!-- used everywhere org.jdom also gotten thru servlet-framework -->
         <dependency>
             <groupId>jdom</groupId>
             <artifactId>jdom</artifactId>
             <version>1.1</version>
         </dependency>
-<!-- brings net.sf.json.JSONObject in ProblemResponse etc-->
+        <!-- brings net.sf.json.JSONObject in ProblemResponse etc-->
         <dependency>
             <groupId>org.apache.servicemix.bundles</groupId>
             <artifactId>org.apache.servicemix.bundles.json-lib</artifactId>
             <version>2.4_1</version>
         </dependency>
-<!-- needed by Jasper JSP compiler. -->
+        <!-- needed by Jasper JSP compiler. -->
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-<!-- brings log4j used everywhere also get thru servlet-framework-->
+        <!-- brings log4j used everywhere also get thru servlet-framework-->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>javax.mail</groupId>-->
-            <!--<artifactId>mail</artifactId>-->
-            <!--<version>1.5.0-b01</version>-->
+        <!--<groupId>javax.mail</groupId>-->
+        <!--<artifactId>mail</artifactId>-->
+        <!--<version>1.5.0-b01</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.30</version>
         </dependency>
-<!-- brings au.com.bytecode.opencsv.CSVReader in ProblemStatusMarker-->
+        <!-- brings au.com.bytecode.opencsv.CSVReader in ProblemStatusMarker-->
         <dependency>
             <groupId>net.sf.opencsv</groupId>
             <artifactId>opencsv</artifactId>
@@ -128,14 +128,14 @@
             <version>2.4.0</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>xpp3</groupId>-->
-            <!--<artifactId>xpp3_min</artifactId>-->
-            <!--<version>1.1.4c</version>-->
+        <!--<groupId>xpp3</groupId>-->
+        <!--<artifactId>xpp3_min</artifactId>-->
+        <!--<version>1.1.4c</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.thoughtworks.xstream</groupId>-->
-            <!--<artifactId>xstream</artifactId>-->
-            <!--<version>1.4.7</version>-->
+        <!--<groupId>com.thoughtworks.xstream</groupId>-->
+        <!--<artifactId>xstream</artifactId>-->
+        <!--<version>1.4.7</version>-->
         <!--</dependency>-->
         <!-- org.testng with TestLessonMgr and Problem-->
         <dependency>
@@ -150,9 +150,9 @@
             <version>1.6.1</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>cglib</groupId>-->
-            <!--<artifactId>cglib</artifactId>-->
-            <!--<version>2.2</version>-->
+        <!--<groupId>cglib</groupId>-->
+        <!--<artifactId>cglib</artifactId>-->
+        <!--<version>2.2</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>edu.umass.ckc</groupId>
@@ -166,11 +166,10 @@
         </dependency>
 
 
-
         <!--<dependency>-->
-            <!--<groupId>e</groupId>-->
-            <!--<artifactId>asm</artifactId>-->
-            <!--<version>3.3.1</version>-->
+        <!--<groupId>e</groupId>-->
+        <!--<artifactId>asm</artifactId>-->
+        <!--<version>3.3.1</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>com.sun.jersey</groupId>
@@ -179,9 +178,9 @@
         </dependency>
         <!-- org.json in AffectivaService-->
         <!--<dependency>-->
-            <!--<groupId>org.json</groupId>-->
-            <!--<artifactId>json</artifactId>-->
-            <!--<version>20140107</version>-->
+        <!--<groupId>org.json</groupId>-->
+        <!--<artifactId>json</artifactId>-->
+        <!--<version>20140107</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>com.sun.jersey</groupId>
@@ -193,7 +192,7 @@
             <artifactId>jersey-core</artifactId>
             <version>1.19</version>
         </dependency>
-<!-- javax.ws.rs in AffectivaService and others-->
+        <!-- javax.ws.rs in AffectivaService and others-->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
