@@ -6366,6 +6366,7 @@ template {
 }
 
 .bootstrap {
+  color: #003364;
   /*!
    * Bootstrap v3.3.7 (http://getbootstrap.com)
    * Copyright 2011-2016 Twitter, Inc.
@@ -12780,6 +12781,47 @@ template {
   }
 }
 
+body {
+  font-family: Raleway, Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.fullscreen {
+  background-color: #3dc3e2;
+  background-image: radial-gradient(#3dc3e2, #3dc3e2 0%, #1887a1 70%, #116275 100%);
+  min-height: calc(100vh - 72px);
+}
+
+.switch-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.switch-label {
+  margin: 9px 9px 0 0;
+}
+
+.switch-group-1 {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.vertical-center {
+  display: flex;
+  align-items: center;
+  min-height: 75vh;
+}
+
+.main-box {
+  border: 1px solid #003364;
+  padding-top: 30px;
+  padding-bottom: 7px;
+  background: white;
+}
+
+p {
+  text-align: center;
+}
+
 .nav {
   display: -ms-flexbox;
   display: flex;
@@ -12855,6 +12897,119 @@ template {
   cursor: pointer;
   background-color: #92DDA3;
   box-shadow: inset 0 0 10px #7ec98f;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background-color: #2ECC71;
+  padding: 10px 0 10px 0;
+  color: white;
+  font-size: 0.9em;
+}
+
+.onoffswitch {
+  margin-top: 2px;
+  position: relative;
+  width: 50px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+  display: none;
+}
+
+.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid lightgrey;
+  border-radius: 20px;
+}
+
+.onoffswitch-inner {
+  display: block;
+  width: 100px;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
+  line-height: 30px;
+  font-size: 14px;
+  color: white;
+  box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+  content: "";
+  padding-left: 10px;
+  color: #000;
+}
+
+.onoffswitch-inner:after {
+  content: "";
+  padding-right: 10px;
+  background-color: white;
+  color: #000;
+  text-align: right;
+}
+
+.onoffswitch-switch {
+  display: block;
+  width: 20px;
+  margin: 6px;
+  background: lightgrey;
+  position: absolute;
+  top: 0;
+  bottom: 9px;
+  right: 18px;
+  border-radius: 25px;
+  transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+  right: 0px;
+  background: #2ECC71;
+}
+
+.bootstrap .signup-btn, .bootstrap .signup-btn--teacher, .bootstrap .signup-btn--student, .bootstrap .signup-btn--guest {
+  margin-bottom: 5px;
+  color: white;
+  outline: none;
+  border-radius: 0;
+}
+.bootstrap .signup-btn--teacher {
+  background: #f6a623;
+}
+.bootstrap .signup-btn--teacher:hover {
+  background: #e2920f;
+}
+.bootstrap .signup-btn--student {
+  background: #38a186;
+}
+.bootstrap .signup-btn--student:hover {
+  background: #248d72;
+}
+.bootstrap .signup-btn--guest {
+  background: #ff6a79;
+}
+.bootstrap .signup-btn--guest:hover {
+  background: #eb5665;
 }
 
 /*# sourceMappingURL=logink12.css.map */

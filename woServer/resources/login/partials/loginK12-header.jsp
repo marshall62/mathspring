@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/img/favicon-16x16.png" sizes="16x16">
     <link rel="manifest" href="css/manifest.json">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="../sass_compiled/logink12.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/sass_compiled/logink12.css">
     <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">--%>
     <%--<link href="${pageContext.request.contextPath}/css/common_new.css" rel="stylesheet" type="text/css" />--%>
     <%--<link href="${pageContext.request.contextPath}/login/css/loginK12_new.css" rel="stylesheet" type="text/css" />--%>
@@ -23,7 +23,7 @@
             var $userLoginFormUsername = $('.user-login-form-username');
             var $loginSubmitBtn = $('.js-login-btn');
             $userSwitcher.change(function() {
-                if ($(this).is(':checked')) {
+                if (! $(this).is(':checked')) {
                     $userLoginForm.attr('action', '${pageContext.request.contextPath}/WoLoginServlet');
                     $userLoginFormUsername.attr('name', 'uname');
                 } else {

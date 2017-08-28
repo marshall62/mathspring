@@ -1,4 +1,4 @@
-<footer class="bottom-sticky-footer">
+<footer>
     &copy; 2017 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.
 </footer>
 
