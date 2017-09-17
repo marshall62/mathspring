@@ -5,11 +5,10 @@
 <div class="fullscreen">
 
     <div class="bootstrap vertical-center">
-        <c:if test="${message != null && not empty message}">
-            <div class="alert alert-danger msg-bar" role="alert">${message}</div>
-        </c:if>
-
         <div class="container">
+            <c:if test="${message != null && not empty message}">
+                <div class="row col-md-8 col-md-offset-2 alert alert-danger msg-bar" role="alert">${message}</div>
+            </c:if>
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 main-box">
                     <div class="row">
@@ -60,7 +59,7 @@
                                     </div>
                                     <button
                                             type="submit"
-                                            class="btn btn-default sign-in-btn js-login-btn">Login
+                                            class="btn btn-success sign-in-btn js-login-btn">Login
                                     </button>
                                 </div>
                             </form>

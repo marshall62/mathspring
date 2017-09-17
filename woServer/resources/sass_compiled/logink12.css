@@ -12914,16 +12914,14 @@ footer {
 .onoffswitch {
   margin-top: 2px;
   position: relative;
-  width: 50px;
+  width: 70px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
 }
-
 .onoffswitch-checkbox {
   display: none;
 }
-
 .onoffswitch-label {
   display: block;
   overflow: hidden;
@@ -12931,14 +12929,12 @@ footer {
   border: 1px solid lightgrey;
   border-radius: 20px;
 }
-
 .onoffswitch-inner {
   display: block;
   width: 100px;
   margin-left: -100%;
   transition: margin 0.3s ease-in 0s;
 }
-
 .onoffswitch-inner:before, .onoffswitch-inner:after {
   display: block;
   float: left;
@@ -12950,21 +12946,19 @@ footer {
   color: white;
   box-sizing: border-box;
 }
-
 .onoffswitch-inner:before {
-  content: "";
+  content: "Yes";
   padding-left: 10px;
   color: #000;
 }
-
 .onoffswitch-inner:after {
-  content: "";
-  padding-right: 10px;
+  content: "No";
   background-color: white;
   color: #000;
   text-align: right;
+  position: relative;
+  left: 22px;
 }
-
 .onoffswitch-switch {
   display: block;
   width: 20px;
@@ -12973,15 +12967,13 @@ footer {
   position: absolute;
   top: 0;
   bottom: 9px;
-  right: 18px;
+  right: 37px;
   border-radius: 25px;
   transition: all 0.3s ease-in 0s;
 }
-
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
   margin-left: 0;
 }
-
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
   right: 0px;
   background: #2ECC71;
