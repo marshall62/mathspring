@@ -2,7 +2,6 @@
   <artifact type="exploded-war" name="woServer:WebForLocalhost exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/woServer_WebForLocalhost_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="woServer/web/WebForLocalhost" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="woServer" />
@@ -81,6 +80,7 @@
           <element id="artifact" artifact-name="servletFramework:jar" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="woServer/web/WebForLocalhost" />
     </root>
   </artifact>
 </component>

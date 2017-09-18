@@ -104,7 +104,7 @@ public class CreateClassHandler  {
         else if (e instanceof AdminSubmitSelectedPedagogiesEvent) {
             AdminSubmitSelectedPedagogiesEvent e2 = (AdminSubmitSelectedPedagogiesEvent) e;
             if (!ClassAdminHelper.errorCheckSelectedPedagogySubmission(e2.getClassId(),e2.getPedagogyIds(),req,resp,
-                    "AdminSubmitSelectedPedagogies", e2.getTeacherId(), conn, true)) {
+                    "AdminSubmitSelectedPedagogies", e2.getTeacherId(), conn, true, false)) {
                 ClassAdminHelper.saveSelectedPedagogies(conn,e2.getClassId(),e2.getPedagogyIds());
 
                 ClassInfo info = DbClass.getClass(conn,((AdminSubmitSelectedPedagogiesEvent) e).getClassId());

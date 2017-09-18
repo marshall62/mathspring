@@ -199,10 +199,9 @@ public class TopicSelectorImpl implements TopicSelector {
      */
     public void initializeTopic(int curTopic, StudentState state, StudentModel studentModel) throws Exception {
         //  If the topic we are switching to is an interleaved problem set, we need to select the problems now
-        // For a student and a topic we store these in the db table interleavedProblems (studId, probId, position, shown)
+        // For a student and a topic we store these in the db table interleavedProblems (studId, probId, position, show
         if (curTopic == Settings.interleavedTopicID) {
             InterleavedProblemSetParams params = this.tmParameters.getInterleaveParams();
-//            List<String> topicsToReview = getReviewableTopics(conn, curTopic, studentModel, params);
             // get the topics to review from the student (topic) state.
             List<String> topicsToReview = smgr.getStudentState().getReviewTopics();
             new InterleavedTopic(smgr).buildInterleavedProblemSet(conn, topicsToReview, studentModel, params);

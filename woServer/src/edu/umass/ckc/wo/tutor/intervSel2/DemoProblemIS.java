@@ -56,7 +56,7 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
         if (freqstr == null)
             this.freq = TopicModelParameters.frequency.always;
         else
-            this.freq = PedagogicalModelParameters.convertExampleFrequency(freqstr);
+            this.freq = TopicModelParameters.convertExampleFrequency(freqstr);
 
     }
 

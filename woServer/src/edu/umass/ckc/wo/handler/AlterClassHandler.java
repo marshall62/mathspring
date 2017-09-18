@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.event.admin.*;
 import ckc.servlet.servbase.UserException;
 
 
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import edu.umass.ckc.wo.admin.ClassCloner;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 
@@ -208,23 +210,38 @@ public class AlterClassHandler {
             ClassInfo classInfo = DbClass.getClass(conn,classId);
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
-
-            req.setAttribute("pedagogies", DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn,classId));
+            // If the class is set up with tutoring strategies then we want to list no pedagogies as selected;
+            // if there are no tutoring strategies set up for the class, then this will see if there are some
+            // pedagogies selected for the class and will list them.  If no pedagogies and no tutoring strategies, this
+            // selects all the default pedagogies and sets them as on for the class.
+            List<TutorStrategy> strats = DbStrategy.getStrategies(conn,classId);
+            if (strats.size() == 0) {
+                List<PedagogyBean> peds = DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn,classId);
+                req.setAttribute("pedagogies", peds);
+            }
+            else
+                req.setAttribute("pedagogies", new ArrayList<PedagogyBean>());
             req.setAttribute("classId", classId);
             CreateClassHandler.setTeacherName(conn,req,teacherId);
             req.setAttribute("teacherId", teacherId);
             req.setAttribute("classInfo", classInfo);
             req.setAttribute("bean", bean1);
             req.setAttribute("action","AdminAlterClassPedagogies");
+            req.setAttribute("usingTutoringStrategies",strats.size() > 0);
             req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
         }
         else if (e instanceof AdminAlterClassAdvancedPedagogySelectionEvent )    {
             int classId = e.getClassId();
+            List<TutorStrategy> strats = DbStrategy.getStrategies(conn,classId);
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("sideMenu",adminId != null ? "adminSideMenu.jsp" : "teacherSideMenu.jsp"); // set side menu for admin or teacher
             req.setAttribute("action","AdminAlterClassAdvancedPedagogySelection");
             req.setAttribute("formSubmissionEvent","AdminAlterClassSubmitSelectedPedagogies");
-            req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,classId));
+            PedagogyBean[] peds= DbClassPedagogies.getClassPedagogyBeans(conn,classId);
+            // If the class is set up with strategies don't put pedagogies on the page to choose from.
+            if (strats.size() > 0)
+                peds = new PedagogyBean[0];
+            req.setAttribute("pedagogies", peds);
             req.setAttribute("classId",classId);
             CreateClassHandler.setTeacherName(conn,req,teacherId);
             req.setAttribute("teacherId", teacherId);
@@ -233,7 +250,7 @@ public class AlterClassHandler {
             Classes bean = new Classes(classes);
             req.setAttribute("bean", bean);
             req.setAttribute("classInfo", info);
-
+            req.setAttribute("useTutoringStrategies", (strats.size() > 0));
             req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
 
         }
@@ -242,13 +259,18 @@ public class AlterClassHandler {
         // overwrite the class's pedagogies with those submitted and then generate the page again to show the edits
         else if (e instanceof AdminAlterClassSubmitSelectedPedagogiesEvent) {
             AdminAlterClassSubmitSelectedPedagogiesEvent e2 = (AdminAlterClassSubmitSelectedPedagogiesEvent) e;
-            if (!ClassAdminHelper.errorCheckSelectedPedagogySubmission(e2.getClassId(),e2.getPedagogyIds(),req,resp,
-                    "AdminAlterClassSubmitSelectedPedagogies", e2.getTeacherId(), conn, e2.isSimplePage())) {
-                ClassAdminHelper.saveSelectedPedagogies(conn,e2.getClassId(),e2.getPedagogyIds());
-                generateValidPedagogySubmissionNextPage(conn,e2.getClassId(),req,resp, e2.isSimplePage());
+            if (!e2.isUseTutoringStrategies() && !ClassAdminHelper.errorCheckSelectedPedagogySubmission(e2.getClassId(), e2.getPedagogyIds(), req, resp,
+                    "AdminAlterClassSubmitSelectedPedagogies", e2.getTeacherId(), conn, e2.isSimplePage(), e2.isUseTutoringStrategies())) {
+                ClassAdminHelper.saveSelectedPedagogies(conn, e2.getClassId(), e2.getPedagogyIds());
+                generateValidPedagogySubmissionNextPage(conn, e2.getClassId(), req, resp, e2.isSimplePage(), e2.isUseTutoringStrategies());
+            } else if (e2.isUseTutoringStrategies()) {
+                // We pass an empty list to the method below so it will remove all the pedagogies that are set for this class
+                // which is how we indicate that tutoring strategies will be in use (and configured for the class using a separate tool)
+                ClassAdminHelper.saveSelectedPedagogies(conn, e2.getClassId(), new ArrayList<String>());
+                generateValidPedagogySubmissionNextPage(conn, e2.getClassId(), req, resp, e2.isSimplePage(), e2.isUseTutoringStrategies());
+
             }
         }
-
         else if (e instanceof AdminOtherClassConfigEvent) {
             AdminOtherClassConfigEvent e2 = (AdminOtherClassConfigEvent) e;
             ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
@@ -501,7 +523,7 @@ public class AlterClassHandler {
  public void generateValidPedagogySubmissionNextPage(Connection conn, int classId,
                                                      HttpServletRequest req,
                                                      HttpServletResponse resp,
-                                                     boolean isSimpleConfig) throws SQLException, IOException, ServletException, DeveloperException {
+                                                     boolean isSimpleConfig, boolean useTutoringStrategies) throws SQLException, IOException, ServletException, DeveloperException {
 
 
 
@@ -515,14 +537,20 @@ public class AlterClassHandler {
 
      if (isSimpleConfig)
         req.setAttribute("pedagogies", DbClassPedagogies.getClassSimpleConfigPedagogyBeans(conn,classId));
-     else
-         req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn,classId));
+     else {
+         List<TutorStrategy> strats = DbStrategy.getStrategies(conn,classId);
+         if (strats.size() == 0)
+            req.setAttribute("pedagogies", DbClassPedagogies.getClassPedagogyBeans(conn, classId));
+         else
+             req.setAttribute("pedagogies", new PedagogyBean[0]);
+     }
      req.setAttribute("action", "AdminAlterClassPedagogies");
      req.setAttribute("classId", classId);
      CreateClassHandler.setTeacherName(conn,req,teacherId);
      req.setAttribute("teacherId", teacherId);
      req.setAttribute("classInfo", classInfo);
      req.setAttribute("bean", bean1);
+     req.setAttribute("useTutoringStrategies", useTutoringStrategies);
      req.setAttribute("message", "Your changes have been accepted.");
      req.setAttribute("action","AdminAlterClassPedagogies");
      if (isSimpleConfig)
