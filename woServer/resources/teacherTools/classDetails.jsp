@@ -21,7 +21,7 @@
     <link href="${pageContext.request.contextPath}/css/ttStyleMain.css" rel="stylesheet">
 
     <!-- Datatables Css Files -->
-    <link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.datatables.net/rowreorder/1.2.0/css/rowReorder.dataTables.min.css" rel="stylesheet"
           type="text/css">
     <link href="https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css" rel="stylesheet"
@@ -39,15 +39,13 @@
     <script src="<c:url value="/js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"/>"></script>
 
     <script type="text/javascript"
-            src="<c:url value="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" />"></script>
+            src="<c:url value="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js" />"></script>
     <script type="text/javascript"
-            src="<c:url value="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap4.min.js" />"></script>
+            src="<c:url value="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js" />"></script>
     <script type="text/javascript"
             src="<c:url value="https://cdn.datatables.net/rowreorder/1.2.0/js/dataTables.rowReorder.min.js" />"></script>
     <script type="text/javascript"
             src="<c:url value="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js" />"></script>
-
-
 
     <script type="text/javascript"
             src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js" />"></script>
@@ -67,6 +65,49 @@
 
         });
 
+    </script>
+    <script type="text/template"  id="child_table_perCluster">
+        <table class="table table-striped table-bordered hover">
+            <thead>
+            <tr>
+                <th>Problem ID</th>
+                <th>Problem Name</th>
+                <th>CC Standard</th>
+                <th># of Students seen the problem</th>
+                <th>% of Students solved the problem on the first attempt</th>
+                <th># of Students solved the problem on the second attempt</th>
+                <th>% of Students repeated the problem</th>
+                <th>% of Students skipped the problem</th>
+                <th>% of Students gave up</th>
+                <th>Most Frequent Incorrect Response</th>
+            </tr>
+            </thead>
+        </table>
+    </script>
+    <script type="text/template" id="editStudentInfoDiv">
+        <div style="width: 50%">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active">
+                    <a href="#home" role="tab" data-toggle="tab">
+                        <i class="fa fa-address-card-o" aria-hidden="true"></i> Update Student Information
+                    </a>
+                </li>
+                <li><a href="#profile" role="tab" data-toggle="tab">
+                    <i class="fa fa-key" aria-hidden="true"></i> Reset Password for Student
+                </a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="home">
+
+                </div>
+                <div class="tab-pane fade" id="profile">
+
+                </div>
+            </div>
+        </div>
     </script>
 </head>
 
@@ -105,20 +146,18 @@
                         class="fa fa-fw fa-home"></i> Home</a>
             </li>
 
-
-            <li><a id="reconfigure_student_handler"><i class="fa fa-fw fa-id-badge"></i> Manage Students</a></li>
+            <li>
+                <a href="#" id="reports_handler"><i class="fa fa-bar-chart"></i> Class Report Card</a>
+            </li>
 
             <li><a id="reorg_prob_sets_handler"><i class="fa fa-book"></i> Manage Problem Sets</a></li>
 
-            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i> Reset Survey Settings</a></li>
-
+            <li><a id="reconfigure_student_handler"><i class="fa fa-fw fa-id-badge"></i> Manage Students</a></li>
             <li>
                 <a href="#" id="copyClass_handler"><i class="fa fa-files-o"></i> Replicate Class</a>
             </li>
 
-            <li>
-                <a href="#" id="reports_handler"><i class="fa fa-bar-chart"></i> Class Reports</a>
-            </li>
+            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i> Reset Survey Settings</a></li>
 
         </ul>
         <!-- /#sidebar-end -->
@@ -151,12 +190,12 @@
                     <table id="activateProbSetTable" class="table table-striped table-bordered hover" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th rowspan="2">Seq.</th>
+                            <th rowspan="2" align="center">Order&nbsp;&nbsp;<a rel="popoverOrder"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a></th>
                             <th rowspan="2">Problem Set</th>
-                            <th rowspan="2">Active Problems</th>
+                            <th rowspan="2"># of Activated Problems&nbsp;&nbsp;<a rel="popoveractivatedProblems"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a></th>
                             <th rowspan="2">Problem Id</th>
                             <th style="text-align: center;" colspan="<c:out value="${activeproblemSetHeaders.size()}"/>">Gradewise Distribution</th>
-                            <th rowspan="2">Activate Problem Sets</th>
+                            <th rowspan="2">Deactivate Problem set</th>
                         </tr>
 
                         <tr>
@@ -205,7 +244,7 @@
                     <table id="inActiveProbSetTable" class="table table-striped table-bordered hover" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th rowspan="2">Seq.</th>
+                            <th rowspan="2">Order</th>
                             <th rowspan="2">Problem Set</th>
                             <th rowspan="2">Available Problems</th>
                             <th rowspan="2">Problem Id</th>
@@ -278,7 +317,9 @@
                     </div>
 
                     <span class="input-group label label-warning">P.S</span>
-                    <label>You are about to clone class <c:out value="${classInfo.name}"/> and section <c:out value="${classInfo.section}"/>. You must give the new class a different name and section</label>
+                    <label>You are about to clone class <c:out value="${classInfo.name}"/> and section <c:out
+                            value="${classInfo.section}"/>. You must give the new class a different name and
+                        section</label>
 
 
                 </springForm:form>
@@ -290,34 +331,6 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a id="report_one" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                    Class Summary Per Student Per Topic
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                Topic wise performance of students in this class
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a id="report_two" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                    Class Summary Per Problem
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                Problem wise performance of students in this class
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
                                 <a id="report_three" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
                                     Class Summary Per Student
                                 </a>
@@ -325,8 +338,8 @@
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <label style="padding-right: 10px;">Total no of hints seen by a student in this class</label>
-                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerStudentReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
+                                <label style="padding-right: 10px;">Download student data, many rows per student</label>
+                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerStudentReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseThree">
                                     <i class="fa fa-download fa-2x" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -340,6 +353,107 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
+                                <a id="report_one" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Class Summary Per Student Per Problemset
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <label>This table shows problem set-wise performance of students of this class.</label>
+                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerProblemSetReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perTopicReportLegendTable" class="table table-striped table-bordered hover" width="40%">
+                                    <thead>
+                                    <tr>
+                                        <th>Mastery Range</th>
+                                        <th>Grade/Color Code</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>0.75 or Greater</td>
+                                        <td class="span-sucess-layer-one">Grade A (Excellent)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Between 0.5 and 0.75</td>
+                                        <td class="span-info-layer-one">Grade B (Good)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Between 0.25 and 0.5</td>
+                                        <td class="span-warning-layer-one">Grade C (Needs Improvement)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0.25 or Less</td>
+                                        <td class="span-danger-layer-one">Grade D (Unsatisfactory)</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="loader" style="display: none"></div>
+                            </div>
+
+                            <div class="panel-body">
+                                <ul>
+                                    <li>Each cell shows [number solved on first attempt / number problems solved] along with highest recorded "Mastery" <a title="What is Mastery?" style="cursor:pointer" rel="initialPopover"> <i class="fa fa-question-circle-o" aria-hidden="true"></i></a> value for that problem set.</li>
+                                    <li>Cell wherein students have attempted 10 or more problems are color coded.</li>
+                                    <li>Click on the cell to get the complete "Mastery Trajectory" for given student and problemset</li>
+                                </ul>
+                            </div>
+
+                            <div class="panel-body">
+                                <table id="perTopicStudentReport" class="table table-striped table-bordered hover display nowrap" width="100%"></table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a id="report_two" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    Class Summary Per Problem
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <label>Problem wise performance of students in this class</label>
+                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerProblemReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perProblemReportLegendTable" class="table table-striped table-bordered hover" width="40%">
+                                    <thead>
+                                    <tr>
+                                        <th>% Range</th>
+                                        <th>Symbol</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>% greater than or equal to 80</td>
+                                        <td><i class='fa fa-thumbs-up' aria-hidden='true'></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>% less than 20</td>
+                                        <td class="span-danger-layer-one">Unsatisfactory</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="loader" style="display: none"></div>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perProblemReport" class="table table-striped table-bordered hover" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
                                 <a id="report_four" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
                                     Class Summary Per Common Core Cluster
                                 </a>
@@ -347,21 +461,34 @@
                         </div>
                         <div id="collapseFour" class="panel-collapse collapse">
                             <div class="panel-body">
-                                Common core cluster evaluation of students in this class
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a id="report_five" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
-                                    Pre & Post Test Report
+                                <label>Common core cluster evaluation of students in this class</label>
+                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerClusterReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
                                 </a>
-                            </h4>
-                        </div>
-                        <div id="collapseFive" class="panel-collapse collapse">
+                            </div>
                             <div class="panel-body">
-                                Scores of students on a test before and after getting tutoring
+                                <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="60%">
+                                    <thead>
+                                    <tr>
+                                        <th>% Range</th>
+                                        <th>Meaning</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Only 20%-40% problems for this standard have been solved correctly on first attempt, and more than 1 hint has been seen for these problems on average</td>
+                                        <td class="span-warning-layer-one">Clusters that students found challenging</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Less than 20% problems for this standard have been solved correctly on first attempt, and more than 1.5 hints have been seen for these problems, on average</td>
+                                        <td class="span-danger-layer-one">Clusters that students found really hard</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div id="collapseFourLoader" class="loader" style="display: none" ></div>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perClusterReport" class="table table-striped table-bordered hover" width="100%"></table>
                             </div>
                         </div>
                     </div>
@@ -478,13 +605,13 @@
                         </tr>
 
                         <tr>
-                            <th>Clear All</th>
-                            <th>Clear Practice Hut</th>
-                            <th>Reset Practice Hut</th>
+                          <%--  <th>Clear All</th>--%>
+                            <th>Delete math problem data from this student</th>
+                           <%-- <th>Reset Practice Hut</th>
                             <th>Clear Pretest</th>
-                            <th>Clear Posttest</th>
-                            <th>Delete Student Info</th>
-                            <th>Edit Student Info</th>
+                            <th>Clear Posttest</th>--%>
+                            <th>Delete username, and all its data</th>
+                            <th>Change Password or Username</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -494,17 +621,17 @@
                                 <td>${studentInfo.fname}</td>
                                 <td>${studentInfo.lname}</td>
                                 <td>${studentInfo.uname}</td>
-                                <td>
+                               <%-- <td>
                                     <a  onclick="resetStudentData(4,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
-                                </td>
+                                </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(5,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
                                 </td>
-                                <td>
+                               <%-- <td>
                                     <a  onclick="resetStudentData(6,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
@@ -518,7 +645,7 @@
                                     <a  onclick="resetStudentData(8,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
-                                </td>
+                                </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(9,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
@@ -544,13 +671,8 @@
 
 </div>
 </div>
-<div id ='centerSpinner' style="display: none;"></div>
-<div id="reOrderMsg" class="spin-loader-message" style="display: none;">Reordering problem sets for the class. Please wait...</div>
-<div id="loader" class="spin-loader-message" style="display: none;">Setting up class. Please wait...</div>
+
 <div id = "statusMessage" class="spin-loader-message" align = "center" style="display: none;"></div>
-
-
-
 <!-- Modal Error-->
 <div id="errorMsgModelPopup" class="modal fade" role="dialog" style="display: none;">
     <div class="modal-dialog">
@@ -593,6 +715,66 @@
 </div>
 <!-- Modal -->
 
+<!-- Modal Success-->
+<div id="successMsgModelPopupForProblemSets" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Success</h4>
+            </div>
+            <div class="modal-body alert alert-success" role="alert">
+                Some text in the modal
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
+    </div>
+</div>
+<!-- Modal -->
+
+<div id="completeMasteryForStudent" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Complete Mastery Chart for Student</h4>
+            </div>
+            <div class="modal-body" role="alert">
+                <canvas id="completeMasteryForStudentCanvas"></canvas>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal For Mastery Trajecotory Report-->
+<div id="masteryTrajectoryReport" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Mastery Trajectory Report</h4>
+            </div>
+            <div class="modal-body" role="alert">
+                <canvas id="masteryTrajectoryReportCanvas"></canvas>
+                <div>
+                    <table id="masteryTrajecotoryLegend" class="table table-striped table-bordered" cellspacing="0"
+                           width="50%"/>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 </body>
 </html>

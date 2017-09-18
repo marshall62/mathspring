@@ -6,10 +6,9 @@
     <meta charset="utf-8">
     <title>MathSpring | Tutoring</title>
     <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
-    <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
-    <link href="css/animate.css" rel="stylesheet">
-    <%--<link href="css/common_new.css" rel="stylesheet">--%>
-    <link href="css/mathspring_new.css" rel="stylesheet">
+
+    <link href="sass_compiled/tutor.css" rel="stylesheet">
+
     <script type="text/javascript" src="<c:url value="/js/bootstrap/js/jquery-2.2.2.min.js" />"></script>
     <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="js/jquery.dialogextend.min.js"></script>
@@ -113,7 +112,9 @@
             servletName : '${servletName}',
             probplayerPath : '${probplayerPath}',
             wait: false,
-            eventCounter: ${eventCounter}
+            eventCounter: ${eventCounter},
+            huygui: true
+
 
         }
 
@@ -132,9 +133,7 @@
         $(document).ready(function () {
             tutorhut_main(globals,sysGlobals,transients, "${learningCompanionMovie}");
             generateHighlightRuleDialog();
-            $('.ui-dialog-buttonset > button').each(function() {
-                $(this).addClass('btn btn-lg mathspring-btn');
-            });
+
             if (!globals.showAnswer) {
                 $(".dev-view").remove();
             } else {

@@ -76,7 +76,7 @@ public class TeacherToolsViewClassDetailsController {
     @RequestMapping(value = "/tt/getProblemForProblemSets", method = RequestMethod.POST)
     public @ResponseBody  String viewProblemsForProblemSet(ModelMap map, @RequestParam(value = "problemID") String problemId, @RequestParam(value = "classid") String classid) throws TTCustomException {
         try {
-            ProblemsView pView = pvService.viewProblemSetsInGivenProblem(map, Integer.valueOf(problemId), Integer.valueOf(classid));
+            ProblemsView pView = pvService.viewProblemSetsInGivenProblem(Integer.valueOf(problemId), Integer.valueOf(classid));
             ObjectMapper objectMapp = new ObjectMapper();
             objectMapp.setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY);
             return objectMapp.writeValueAsString(pView);
@@ -105,15 +105,15 @@ public class TeacherToolsViewClassDetailsController {
 
     @RequestMapping(value = "/tt/resetStudentPassword", method = RequestMethod.POST)
     public @ResponseBody
-    String resetStudentPassword(@RequestParam(value = "studentId") String studentId,@RequestParam(value = "userName") String userName) throws TTCustomException {
-        return pvService.resetPassWordForStudent(studentId,userName);
+    String resetStudentPassword(@RequestParam(value = "studentId") String studentId,@RequestParam(value = "userName") String userName, @RequestParam(value = "newPassWord") String newPassWord ) throws TTCustomException {
+        return pvService.resetPassWordForStudent(studentId,userName,newPassWord);
     }
 
 
     @RequestMapping(value = "/tt/editStudentInfo", method = RequestMethod.POST)
     public @ResponseBody
     String editStudentInfo(@RequestParam(value = "studentId") String studentId,@RequestParam(value = "formData[]") String[] formData) throws TTCustomException {
-        return pvService.editStudentInfo(new EditStudentInfoForm(Integer.valueOf(studentId.trim()),formData[0].trim(),formData[1].trim(),formData[2].trim()));
+        return pvService.editStudentInfo(new EditStudentInfoForm(Integer.valueOf(studentId.trim()),formData[1].trim(),formData[2].trim(),formData[0].trim()));
     }
 
 

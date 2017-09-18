@@ -42,7 +42,7 @@ public class TTProblemsViewServiceImpl implements TTProblemsViewService {
     private static Logger logger =   Logger.getLogger(TTProblemsViewServiceImpl.class);
 
     @Override
-    public ProblemsView viewProblemSetsInGivenProblem(ModelMap map, Integer problemId, Integer classId) throws TTCustomException {
+    public ProblemsView viewProblemSetsInGivenProblem(Integer problemId, Integer classId) throws TTCustomException {
         ProblemsView view= new ProblemsView();
         try {
             Topic problemSet = ProblemMgr.getTopic(problemId);
@@ -132,8 +132,8 @@ public class TTProblemsViewServiceImpl implements TTProblemsViewService {
     }
 
     @Override
-    public String resetPassWordForStudent(String studentId, String userName) throws TTCustomException {
-        String token = userName.trim() + TTUtil.PASSWORD_TOKEN;
+    public String resetPassWordForStudent(String studentId, String userName, String newPassWordTobeSet) throws TTCustomException {
+        String token = newPassWordTobeSet;
         String newPassWord = PasswordAuthentication.getInstance().hash(token.toCharArray());
         Map<String, Object> updateParams = new HashMap<String, Object>();
         updateParams.put("resetPassword", newPassWord);

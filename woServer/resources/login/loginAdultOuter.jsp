@@ -17,6 +17,8 @@
     <script type="text/javascript" src="js/simple-slider.js"></script>
     <script type="text/javascript" src="js/login.js"></script>
     <script type="text/javascript">
+
+        var huygui=false;
     // Unfortunately the back button will run this function too which means that it can generate a BeginExternalActivity
     $(document).ready(
         function () {

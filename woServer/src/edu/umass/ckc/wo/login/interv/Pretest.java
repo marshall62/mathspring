@@ -265,7 +265,7 @@ public class Pretest extends LoginInterventionSelector {
             req.setAttribute(NUM_PROBS_IN_TEST, this.numProbsInTest);
             req.setAttribute(NUM_PROBS_COMPLETED, this.numTestProbsCompleted);
             req.setAttribute(LoginInterventionSelector.INTERVENTION_CLASS,getClass().getName());
-            //  The JSP will conditionally generate the write kind of HTML depending on whether its a multiple-choice or short-answer question.
+            //  The JSP will conditionally generate the right kind of HTML depending on whether its a multiple-choice or short-answer question.
             return new LoginIntervention(JSP);
         }
     }
