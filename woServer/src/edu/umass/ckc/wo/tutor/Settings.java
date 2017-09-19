@@ -67,6 +67,8 @@ public class Settings {
   public static  String host = "should be set to the name of the host (e.g. localhost or rose.cs.umass.edu)";
   public static  String port = "should be set to the name of the port only when its not 80";
 
+  public static String gui = "old"; // sets to either huy or old to control which GUI is displayed
+
   public static String tomcatDatasourceURL;
 
   public static final int duplicateRowError = 2627;
@@ -161,5 +163,7 @@ public class Settings {
         return probplayerPath.replace("probplayer","problem_checker");
     }
 
-
+    public static boolean useNewGUI () {
+        return Settings.gui.equals("huy");
+    }
 }

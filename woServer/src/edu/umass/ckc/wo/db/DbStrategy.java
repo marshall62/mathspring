@@ -32,12 +32,15 @@ public class DbStrategy {
             List<TutorStrategy> all = new ArrayList<TutorStrategy>();
             while (rs.next()) {
                 int id = rs.getInt("id");
-                int stratId = rs.getInt("strategyId");
+                int genericstratId = rs.getInt("strategyId"); // custom made strategies will not have an id of a generic strategy
+                if (rs.wasNull())
+                    genericstratId=-1;
                 String name = rs.getString("name");
                 int lcid = rs.getInt("lcid");
                 TutorStrategy ts = new TutorStrategy();
                 ts.setId(Integer.toString(id));
-                ts.setStratId(stratId);
+                ts.setGenericStrategyId(genericstratId);
+                ts.setId(Integer.toString(id));
                 ts.setName(name);
                 // Note we don't fully instantiate the TutorStrategy object with its components because the
                 // lookup context where this is called doesn't need anything but the strategy ids and names.
@@ -77,7 +80,7 @@ public class DbStrategy {
                   String name = rs.getString(1);
                   int lcid = rs.getInt(2);
                   TutorStrategy ts = new TutorStrategy();
-                  ts.setStratId(stratId);
+                  ts.setId(Integer.toString(stratId));
                   ts.setName(name);
                   int login_sc_id = getSC(conn,stratId,"login");
                   int lesson_sc_id = getSC(conn,stratId,"lesson");

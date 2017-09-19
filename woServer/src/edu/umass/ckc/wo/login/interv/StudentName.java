@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.LoginParams;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ public class StudentName extends LoginInterventionSelector {
         else {
             super.selectIntervention(e);
             return new LoginIntervention(
-                "b".equals(this.servletInfo.getRequest().getParameter("var")) ? JSP_NEW : JSP);
+                    Settings.useNewGUI() ? JSP_NEW : JSP);
         }
     }
 
@@ -52,7 +53,7 @@ public class StudentName extends LoginInterventionSelector {
     public String f (SessionManager smgr) {
 //        if (isFirstLogin) {
         if (true ) {
-            return "b".equals(this.servletInfo.getRequest() .getParameter("var")) ? JSP_NEW : JSP;
+            return Settings.useNewGUI() ? JSP_NEW : JSP;
         }
         return null;
     }

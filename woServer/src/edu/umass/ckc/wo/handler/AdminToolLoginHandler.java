@@ -8,6 +8,7 @@ import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTeacher;
 import edu.umass.ckc.wo.event.admin.AdminTeacherLoginEvent;
 import edu.umass.ckc.wo.html.admin.Variables;
+import edu.umass.ckc.wo.tutor.Settings;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class AdminToolLoginHandler {
         if (!event.isLogin() && !event.isReg()) {
             servletRequest.setAttribute("message","");
             servletRequest
-                    .getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                    .getRequestDispatcher(Settings.useNewGUI()
                             ? "/login/loginK12_new.jsp"
                             : "/teacherTools/teacherLogin.jsp")
                     .forward(servletRequest,servletResponse);
@@ -94,7 +95,7 @@ public class AdminToolLoginHandler {
         }
         else if (event.isReg()) {
             servletRequest.setAttribute("message","");
-            servletRequest.getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+            servletRequest.getRequestDispatcher(Settings.useNewGUI()
                     ? "/teacherTools/teacherRegister_new.jsp"
                     : "/teacherTools/teacherRegister.jsp").forward(servletRequest,servletResponse);
 

@@ -932,7 +932,7 @@ public class DbClass {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
-            String q = "select id,fname,lname,username,email,password from student where classid=?";
+            String q = "select id,fname,lname,username,email,password,strategyId from student where classid=?";
             stmt = conn.prepareStatement(q);
             stmt.setInt(1, classID);
             rs = stmt.executeQuery();
@@ -944,7 +944,13 @@ public class DbClass {
                 String uname = rs.getString(4);
                 String email = rs.getString(5);
                 String pw = rs.getString(6);
-                res.add(new User(fname, lname, uname, email, pw, id));
+                int strategyId = rs.getInt(7);  // can be NULL
+                if (rs.wasNull())
+                    strategyId = -1;
+                User u = new User(fname, lname, uname, email, pw, id);
+                if (strategyId != -1)
+                    u.setStrategyId(strategyId);
+                res.add(u);
             }
             return res;
         } finally {

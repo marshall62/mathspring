@@ -48,6 +48,7 @@ public class WoTutorServlet extends BaseServlet {
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         try {
 
+            Settings.gui = servletConfig.getInitParameter(Names.GUI);
             ServletUtil.initialize(servletContext,connection);
             logger.debug("Begin setServletInfo of WoTutorServlet");
             // machine learning problem selector needs to read a policy file

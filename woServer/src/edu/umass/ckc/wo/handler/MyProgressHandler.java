@@ -110,7 +110,7 @@ public class MyProgressHandler {
             request.setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
             request.setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
 
-            request.getRequestDispatcher("b".equals(request.getParameter("var"))
+            request.getRequestDispatcher(Settings.useNewGUI()
                     ? "TopicDetails_new.jsp"
                     : "TopicDetails.jsp").forward(request,response);
             logger.info("<< JSP: TopicDetails.jsp");
@@ -187,7 +187,7 @@ public class MyProgressHandler {
         request.setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
         request.setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
         logger.info("<< JSP: MyProgress.jsp");
-        request.getRequestDispatcher("b".equals(request.getParameter("var"))
+        request.getRequestDispatcher(Settings.useNewGUI()
                 ? "MyProgress_new.jsp"
                 : "MyProgress.jsp").forward(request, response);
     }

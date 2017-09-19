@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.smgr;
 
 import ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.wo.admin.PedagogyRetriever;
+import edu.umass.ckc.wo.admin.StrategyAssigner;
 import edu.umass.ckc.wo.beans.ClassConfig;
 import edu.umass.ckc.wo.collab.CollaborationManager;
 import edu.umass.ckc.wo.content.Problem;
@@ -244,17 +245,44 @@ public class SessionManager {
         if (strat != null) {
             this.usesStrategy=true;
             this.usesPedagogy=false;
-            this.strategyId=strat.getStratId();
+            this.strategyId= Integer.parseInt(strat.getId());
             return strat;
 
         }
-        else {
+        // It's possible that the class is using tutoring strategies instead of pedagogies.  The way to find out is to try to get
+        // the students pedagogy.  If it's there, we use pedagogies.  If nothing is there, we will then see if the class has some strategies assigned
+        // and will select a strategy and assign it to the student NOW.
+        Pedagogy ped = PedagogyRetriever.getPedagogy(conn, studId);
+        if (ped != null) {
             this.usesPedagogy = true;
             this.usesStrategy=false;
-            Pedagogy ped = PedagogyRetriever.getPedagogy(conn, studId);
             this.pedagogyId = Integer.parseInt(ped.getId());
             return ped;
 
+        }
+        // The student is not set up with either a pedagogy or a strategy.
+        else {
+            List<TutorStrategy> strats = DbStrategy.getStrategies(conn,classId);
+            // If the class is set up with strategies and this is the students first login we can randomly assign a strategy
+            // to the student at this time using a load balancing strategy.
+            if (strats.size() > 0) {
+                this.usesStrategy=true;
+                this.usesPedagogy=false;
+                // assign a strategy to the student
+                strat= StrategyAssigner.assignStrategy(conn,studId,classId);
+                this.strategyId = Integer.parseInt(strat.getId());
+                return StrategyMgr.getStrategyFromCache(conn,classId,this.strategyId);
+
+            }
+            // Class is not set to use strategies, so use a default pedagogy and this student might be able to get something done.
+            else {
+                this.usesPedagogy = true;
+                this.usesStrategy=false;
+                List<Pedagogy> peds = PedagogyRetriever.getDefaultPedagogies();
+                ped = peds.get(0);
+                this.pedagogyId = Integer.parseInt(ped.getId());
+                return ped;
+            }
         }
     }
 

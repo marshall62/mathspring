@@ -327,6 +327,6 @@ public class TutorPage {
     }
 
     private boolean isUsingNewUI() {
-        return "b".equals(this.info.getRequest().getParameter("var"));
+        return Settings.useNewGUI();
     }
 }

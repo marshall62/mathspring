@@ -121,7 +121,7 @@ public class AdminHandler {
             HttpSession sess = servletRequest.getSession(false);
             if (sess == null) {
                 servletRequest.setAttribute("message","Your session has expired.   You must relogin");
-                servletRequest.getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                servletRequest.getRequestDispatcher(Settings.useNewGUI()
                             ? "/login/loginK12_new.jsp"
                             : "/teacherTools/teacherLogin.jsp").forward(servletRequest,servletResponse);
                 return false;

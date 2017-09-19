@@ -30,7 +30,7 @@ public class TeacherRegistrationHandler {
             req.setAttribute("message","You must supply values for required fields");
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
             req.setAttribute("isAdmin",adminId != null ? true : false);
-            req.getRequestDispatcher("b".equals(req.getParameter("var"))
+            req.getRequestDispatcher(Settings.useNewGUI()
                     ? "/teacherTools/teacherRegister_new.jsp"
                     : "/teacherTools/teacherRegister.jsp").forward(req ,resp);
         }
@@ -52,7 +52,7 @@ public class TeacherRegistrationHandler {
                     " creating classes and getting reports about how your students are doing." ;
             req.setAttribute("isAdmin",adminId != null ? true : false);
             req.setAttribute("message",msg);
-            req.getRequestDispatcher("b".equals(req.getParameter("var"))
+            req.getRequestDispatcher(Settings.useNewGUI()
                             ? "/login/loginK12_new.jsp"
                             : "/teacherTools/teacherLogin.jsp").forward(req ,resp);
         }

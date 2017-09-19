@@ -77,6 +77,8 @@ public class ServletUtil {
     public static void initialize(ServletContext servletContext, Connection conn) throws Exception {
         if (initializerHasRun)
             return;
+
+
         Settings.host = servletContext.getInitParameter(Names.HOST);
         Settings.port = servletContext.getInitParameter(Names.SERVLET_PORT);
         Settings.isDevelopmentEnv = Boolean.parseBoolean(servletContext.getInitParameter(Names.IS_DEVELOPMENT_ENVIRONMENT)); // boolean saying if we are using Tomcat for HTML5

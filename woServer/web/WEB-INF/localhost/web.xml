@@ -126,7 +126,11 @@ The results of this go into out/artifacts/MathSpring_exploded
     <servlet-name>TutorBrain</servlet-name>
     <servlet-class>edu.umass.ckc.wo.woserver.WoTutorServlet</servlet-class>
 
-
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
 
     <!--THis controls how frequently the edu.umass.ckc.wo.tutor.intervSel.ExternalActivityInterventionSelector picks an -->
     <!--external activity.-->
@@ -198,7 +202,11 @@ The results of this go into out/artifacts/MathSpring_exploded
     <servlet>
         <servlet-name>WoLoginServlet</servlet-name>
         <servlet-class>edu.umass.ckc.wo.login.WoLoginServlet</servlet-class>
-
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
         <!--<load-on-startup>1</load-on-startup>-->
     </servlet>
 

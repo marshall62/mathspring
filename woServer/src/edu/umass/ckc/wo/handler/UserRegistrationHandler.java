@@ -104,7 +104,7 @@ public class UserRegistrationHandler {
                 req.getServerPort());
         String startPage = e.getStartPage();
         req.setAttribute("startPage",startPage);
-        RequestDispatcher disp = req.getRequestDispatcher("b".equals(req.getParameter("var"))
+        RequestDispatcher disp = req.getRequestDispatcher(Settings.useNewGUI()
                 ? "login/userregistration_new.jsp"
                 : UserRegistrationHandler.REGISTER1);
         disp.forward(req,resp);
@@ -143,7 +143,7 @@ public class UserRegistrationHandler {
         req.setAttribute("studId",studId);
         ClassInfo[] classes = DbClass.getRecentClasses(conn);
         req.setAttribute("classes",classes);
-        RequestDispatcher disp = req.getRequestDispatcher("b".equals(req.getParameter("var"))
+        RequestDispatcher disp = req.getRequestDispatcher(Settings.useNewGUI()
                 ? "login/userRegSelectClass_new.jsp"
                 : UserRegistrationHandler.REGISTER2);
         disp.forward(req,resp);
@@ -298,7 +298,7 @@ public class UserRegistrationHandler {
         req.setAttribute("teacher", classInfo.getTeacherName());
         req.setAttribute("className", classInfo.getName());
         req.setAttribute("startPage",e.getStartPage());
-        RequestDispatcher disp = req.getRequestDispatcher("b".equals(req.getParameter("var"))
+        RequestDispatcher disp = req.getRequestDispatcher(Settings.useNewGUI()
                 ? "login/userRegComplete_new.jsp"
                 : UserRegistrationHandler.REGISTER3);
         disp.forward(req,resp);

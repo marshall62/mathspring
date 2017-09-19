@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.login;
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.handler.DashboardHandler;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 import edu.umass.ckc.wo.woserver.ServletInfo;
@@ -35,7 +36,7 @@ public class LandingPage {
         m.loadProbs(smgr.getConnection());
 
         DashboardHandler h = new DashboardHandler(info.getServletContext(),smgr,smgr.getConnection(),info.getRequest(),info.getResponse());
-        if ("b".equals(info.getRequest().getParameter("var"))) {
+        if (Settings.useNewGUI()) {
             h.showNewSplashPage(JSP_NEW, true);
         } else {
             h.showSplashPage(JSP, true);

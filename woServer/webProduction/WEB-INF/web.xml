@@ -105,6 +105,11 @@
         effect logging and problem selection.   -->
 
 
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
 
         <!--Controls the frequency that edu.umass.ckc.wo.tutor.intervSel.ExternalActivityInterventionSelector will pick an external activity-->
         <init-param>
@@ -159,6 +164,11 @@
 
         <!--<load-on-startup>1</load-on-startup>-->
 
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
 
     </servlet>
 
