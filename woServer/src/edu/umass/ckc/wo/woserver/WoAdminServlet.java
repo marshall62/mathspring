@@ -6,6 +6,7 @@ import edu.umass.ckc.wo.event.WoAdminEventFactory;
 import ckc.servlet.servbase.BaseServlet;
 import ckc.servlet.servbase.ServletEvent;
 import ckc.servlet.servbase.ServletParams;
+import edu.umass.ckc.wo.mrcommon.Names;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
 import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
@@ -29,6 +30,7 @@ public class WoAdminServlet extends BaseServlet {
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         logger.debug("Beginning setServletInfo of WoAdminServlet");
         ServletUtil.initialize(servletContext, connection);
+        Settings.setGui(servletConfig.getInitParameter(Names.GUI));
         String prepostURI = servletConfig.getInitParameter("prepostProblemURI");
         String useServletSessions = servletConfig.getInitParameter("useServletSession");
         if (useServletSessions == null || useServletSessions.equals("true"))

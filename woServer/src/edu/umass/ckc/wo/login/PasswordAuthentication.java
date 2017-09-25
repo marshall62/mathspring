@@ -1,6 +1,8 @@
 package edu.umass.ckc.wo.login;
 
+import edu.umass.ckc.wo.db.DbAdmin;
 import edu.umass.ckc.wo.db.DbUser;
+import edu.umass.ckc.wo.db.DbUtil;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -150,5 +152,23 @@ public class PasswordAuthentication {
     public String hash(String password)
     {
         return hash(password.toCharArray());
+    }
+
+    public static void main(String[] args) {
+        try {
+            String u = args[0];
+            String pw = args[1];
+            String token = PasswordAuthentication.getInstance(0).hash(pw.toCharArray());
+            System.out.println("Token for password: " + token);
+            Connection conn = DbUtil.getAConnection("localhost");
+            DbAdmin.setPassword(conn,u,token);
+            token = DbAdmin.getPassword(conn,u);
+            boolean b = PasswordAuthentication.getInstance(0).authenticate(pw.toCharArray(),token);
+            System.out.println("Password for user " + u + " is " + pw);
+            System.out.println("Password authentication check is " + b);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

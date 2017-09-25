@@ -158,7 +158,7 @@ public class WoLoginServlet extends BaseServlet {
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         logger.debug("Begin setServletInfo of WOLoginServlet");
 
-        Settings.gui = servletConfig.getInitParameter(Names.GUI);
+        Settings.setGui(servletConfig.getInitParameter(Names.GUI));
         ServletUtil.initialize(servletContext, connection);
         Settings.formalityServletURI = servletConfig.getInitParameter(Names.FORMALITY_SERVLET_URI);
         servletContext.setAttribute("flashClientURI", Settings.flashClientPath);

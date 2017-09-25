@@ -138,7 +138,11 @@
     <servlet>
         <servlet-name>WoAdmin</servlet-name>
         <servlet-class>edu.umass.ckc.wo.woserver.WoAdminServlet</servlet-class>
-
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
         <init-param>
             <param-name>useServletSession</param-name>
             <param-value>true</param-value>

@@ -166,4 +166,10 @@ public class Settings {
     public static boolean useNewGUI () {
         return Settings.gui.equals("huy");
     }
+
+    public static void setGui (String s) {
+        if (s != null) {
+            Settings.gui = s;
+        }
+    }
 }
