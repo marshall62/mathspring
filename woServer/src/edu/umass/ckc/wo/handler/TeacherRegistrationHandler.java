@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.handler;
 
+import edu.umass.ckc.wo.db.DbTeacher;
 import edu.umass.ckc.wo.event.admin.AdminTeacherRegistrationEvent;
 import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.tutor.Settings;
@@ -47,7 +48,15 @@ public class TeacherRegistrationHandler {
         else {
             String userName = createUser(conn, event);
             Integer adminId = (Integer) req.getSession().getAttribute("adminId"); // determine if this is admin session
-            Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,event.getUn(),event.getPw1(),event.getEmail());
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Emailer.sendPassword("no-reply@wayangoutpost.net", Settings.mailServer,event.getUn(),event.getPw1(),event.getEmail());
+
+                    }
+                }).start();
+
             String msg =  "Created the user name: " + userName + ".  Please remember it (and your password). \n You will need it for" +
                     " creating classes and getting reports about how your students are doing." ;
             req.setAttribute("isAdmin",adminId != null ? true : false);
@@ -132,15 +141,8 @@ public class TeacherRegistrationHandler {
     }
 
 
-    private void addUser(Connection conn, AdminTeacherRegistrationEvent event, String userName) throws SQLException {
-        String s = "insert into Teacher (fname,lname,password,userName,email) values (?,?,?,?,?)";
-        PreparedStatement ps = conn.prepareStatement(s);
-        ps.setString(1, event.getFname());
-        ps.setString(2, event.getLname());
-        ps.setString(3, PasswordAuthentication.getInstance().hash(event.getPw1()));
-        ps.setString(4, userName);
-        ps.setString(5, event.getEmail());
-        int x = ps.executeUpdate();
+    private void addUser (Connection conn, AdminTeacherRegistrationEvent e, String username ) throws SQLException {
+        DbTeacher.insertTeacher(conn,username,e.getFname(),e.getLname(),e.getPw1(),e.getEmail());
     }
 
 
