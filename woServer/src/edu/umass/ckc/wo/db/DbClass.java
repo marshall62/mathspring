@@ -1134,7 +1134,7 @@ public class DbClass {
             try {
                 // There is no primary key containing username to make sure that these don't get duplicated.   Therefore,
                 // we need to manually check to see if that user exists first and throw an exception if it does.
-                if (DbUser.getStudent(conn, username.toString(), password) != -1)
+                if (DbUser.getStudent(conn, username.toString()) != -1)
                     throw new UserException("Cannot create users.  User: " + username.toString() + " already exists.");
                 UserRegistrationHandler.registerStudentUser(conn,username.toString(),password,classInfo);
 
