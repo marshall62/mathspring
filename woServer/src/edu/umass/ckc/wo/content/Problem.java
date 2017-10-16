@@ -9,9 +9,7 @@ import edu.umass.ckc.wo.util.ProbPlayer;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 
 /**
@@ -289,6 +287,14 @@ public class Problem implements Activity {
             if (!h.getGivesAnswer())
                 n++;
         return n;
+    }
+
+    public Set<String> getStandardsStringSet () {
+        Set<String> r = new TreeSet<String>();
+        for (CCStandard s : this.standards) {
+            r.add(s.getCode());
+        }
+        return r;
     }
 
     private String getStandardsString(List<CCStandard> standards) {

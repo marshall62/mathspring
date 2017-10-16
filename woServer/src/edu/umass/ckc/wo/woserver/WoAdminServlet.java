@@ -48,8 +48,7 @@ public class WoAdminServlet extends BaseServlet {
         // DM 8/23/11 Added this because of mysterious dependency on ProbMgr.allProblems by this admin tool when
         // adjusting the problems in a topic.
         if (!ProblemMgr.isLoaded()) {
-            ProblemMgr probMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-            probMgr.loadProbs(connection);
+            ProblemMgr.loadProbs(connection);
         }
         logger.debug("End setServletInfo of WoAdminServlet");
 

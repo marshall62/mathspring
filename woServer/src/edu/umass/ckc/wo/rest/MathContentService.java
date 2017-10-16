@@ -101,8 +101,7 @@ public class MathContentService {
         // If the service is called before any of the tutor servlets initialize the system, we do the servlet setServletInfo because we need static objects created for this
         ServletUtil.initialize(servletContext,conn);
         if (!ProblemMgr.isLoaded())  {
-            ProblemMgr problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-            problemMgr.loadProbs(conn);
+            ProblemMgr.loadProbs(conn);
             CCContentMgr.getInstance().loadContent(conn);
             LessonMgr.getAllLessons(conn);  // only to check integrity of content so we see errors early
 

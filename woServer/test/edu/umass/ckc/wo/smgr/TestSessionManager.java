@@ -45,8 +45,7 @@ public class TestSessionManager {
         Settings.lessonMap = new LessonMap(str2);
         Connection conn = DbUtil.getAConnection(UnitTestSettings.DBHOST);
         if (!ProblemMgr.isLoaded())  {
-            ProblemMgr pmgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-            pmgr.loadProbs(conn);
+            ProblemMgr.loadProbs(conn);
         }
         return buildTestSessionManager(null,conn);
     }

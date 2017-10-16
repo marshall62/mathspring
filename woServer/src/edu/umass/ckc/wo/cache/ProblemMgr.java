@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.cache;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.db.DbVideo;
+import edu.umass.ckc.wo.tutor.vid.StandardVideoSelector;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;
@@ -33,29 +34,16 @@ public class ProblemMgr {
 
     private static final Logger logger = Logger.getLogger(ProblemMgr.class);
 
-    private static ArrayList<Integer> problemIds;
-    private static Map<Integer, Problem> allProblems;
+    private static ArrayList<Integer> problemIds = new ArrayList<Integer>();
+    private static Map<Integer, Problem> allProblems = new HashMap<Integer, Problem>();
     private static Map<Integer, ArrayList<Integer>> probIdsByTopic;
     private static Map<Integer, Set<CCStandard>> stdsByTopic;
-    private static List<Topic> allTopics;
-    private static ExampleSelector exSel;
-    private static VideoSelector vidSel;
+    private static List<Topic> allTopics = new ArrayList<Topic>();;
+    private static ExampleSelector exSel = new BaseExampleSelector();
+    private static VideoSelector vidSel = new StandardVideoSelector();
     private static int[] topicIds;
     private static boolean loaded=false;
 
-    //This is very bad; this class is written like an abstract static container,
-    // but this is treating it like a normal instanced class... which is using
-    // the static members as instance variables???
-    //But I am afraid to touch it because it's used in 10 other places...
-    public ProblemMgr(ExampleSelector exampleSelector, VideoSelector videoSelector) {
-        if (!loaded) {
-            exSel = exampleSelector;
-            vidSel = videoSelector;
-            problemIds = new ArrayList<Integer>();
-            allProblems = new HashMap<Integer, Problem>();
-            allTopics = new ArrayList<Topic>();
-        }
-    }
 
     public static boolean isLoaded () {
         return loaded;
@@ -615,8 +603,7 @@ public class ProblemMgr {
         DbUtil.loadDbDriver();
         try {
             Connection c = DbUtil.getAConnection("localhost");
-            ProblemMgr m = new ProblemMgr(new BaseExampleSelector(),new BaseVideoSelector());
-            m.loadProbs(c);
+            ProblemMgr.loadProbs(c);
             ProblemMgr.getTopicProblemIds(38);
 //            System.out.println("Problem " + p);
         } catch (SQLException e) {

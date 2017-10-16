@@ -32,8 +32,7 @@ public class LandingPage {
     public boolean handleRequest() throws Exception {
 //        setAttributesForJSP(Settings.html5ProblemURI + INITIAL_TUTOR_FRAME_CONTENT);
 
-        ProblemMgr m = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-        m.loadProbs(smgr.getConnection());
+        ProblemMgr.loadProbs(smgr.getConnection());
 
         DashboardHandler h = new DashboardHandler(info.getServletContext(),smgr,smgr.getConnection(),info.getRequest(),info.getResponse());
         if (Settings.useNewGUI()) {

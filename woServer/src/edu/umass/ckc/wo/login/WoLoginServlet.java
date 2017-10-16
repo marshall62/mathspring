@@ -165,8 +165,7 @@ public class WoLoginServlet extends BaseServlet {
         Settings.getSurveys(connection); // loads the pre/post Survey URLS
         // Loads all content into a cache for faster access during runtime
         if (!ProblemMgr.isLoaded())  {
-            ProblemMgr problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-            problemMgr.loadProbs(connection);
+            ProblemMgr.loadProbs(connection);
             CCContentMgr.getInstance().loadContent(connection);
             LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
 

@@ -113,6 +113,11 @@ mysql> create database wayangoutpostdb;
 
 > ./mysql -u root -p wayangoutpostdb < "/Users/S****/Doc***/local.sql”
 
+
+Note: Some versions of MySQL are not happy with the import.  You may 
+have to search from strings like ROW_FORMAT=FIXED in the .sql file and replace
+with empty string if MySQL complains about these options not being available
+
 A. View > Tools Window > Databases > + > datasource > MySQL
 
 B. URL: jdbc:mysql://localhost:3306/wayangoutpostdb

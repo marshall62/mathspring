@@ -977,6 +977,11 @@ function clickHandling () {
     var agreed = false;
     globals.clickTime = new Date().getTime();
 
+
+    $("body").mousemove(function (e) {
+       console.log(e.pageX +  "," + e.pageY);
+    });
+
     $("#" + LEARNING_COMPANION_CONTAINER).dialog({
             classes: {
                 "ui-dialog-titlebar": "lcdialogTitleBar"
