@@ -42,84 +42,76 @@ public class StandardVideoSelector implements VideoSelector {
      * @throws SQLException
      */
     public String selectVideo(Connection conn, int targetProbId) throws SQLException {
-//        return "http://chinacat.cs.umass.edu/wayang/video/CorrespondingAnglesHard.flv";
-        DbProblem pmgr = new DbProblem();
-//        Problem p = pmgr.getProblemWithDifficulty(conn,curProbId) ;
+
+
         Problem p = ProblemMgr.getProblem(targetProbId);
         if (p.hasVideo())
             return p.getVideo();
         double targetDiff = p.getDiff_level();
         List<CCStandard> standards = p.getStandards();
-
-        HashMap<String, List<Problem>> m = new HashMap<>();
-        // map standards to lists of problems that have videos and that contain that standard
+        List<Problem> relatedProbs = new ArrayList<Problem> ();
+        // go through all the related problems, keeping only those that have videos
         for (CCStandard s : standards) {
             List<Problem> probs = ProblemMgr.getStandardProblems(conn, s.getCode());
-            // get rid of problems that don't have videos
-            Iterator itr = probs.iterator();
-            while (itr.hasNext()) {
-                Problem px = (Problem) itr.next();
-                if (!px.hasVideo())
-                    itr.remove();
+            for (Problem p2: probs) {
+                if (p2.hasVideo())
+                    relatedProbs.add(p2);
             }
-            // if there are problems in the standard with videos put them in the map
-            if (probs.size() > 0)
-                m.put(s.getCode(), probs);
-
         }
         // If no problems had videos or if there were none with matching standards, exit
-        if (m.values().size() == 0) return null;
+        if (relatedProbs.size() == 0) return null;
+        Set s1 = p.getStandardsStringSet();
 
-        Set s1 = m.keySet(); // s1 is the set of the standards in the given problem
         // Try to find a problem that shares the most standards with the current problem.
         // This will be the problem with the largest intersection.
-        Collection<List<Problem>> vals = m.values();
-        int max = 0;
-        Stack<Pair<Integer, Problem>> bestMatches = new Stack<Pair<Integer, Problem>>();
-        for (List<Problem> probsOfStd : vals) {
-            for (Problem p2 : probsOfStd) {
-                Set s2 = p2.getStandardsStringSet();
-                s2.retainAll(s1); // turns s2 into the intersection of s2 and
-                bestMatches.push(new Pair(s2.size(), p2));
-            }
-        }
-        // its possible that all the problems were removed because they had no videos, so the stack will be empty.
-        if (bestMatches.isEmpty())
-            return null;
-        // We now have a stack of pairs that tell us how many standards were in common for each problem.
-        // We want to find the one with the most number in common and the lowest difference in difficulties.
-        // So sort the pairs by number of standards.
-        bestMatches.sort(new Comparator<Pair<Integer, Problem>>() {
+        // Create pairs [numStandardsInCommon, Problem] and put in a queue that is descending by number of in-common standards
+        Comparator<Pair<Integer,Problem>> pairComparator = new Comparator<Pair<Integer, Problem>>() {
             @Override
             public int compare(Pair<Integer, Problem> o1, Pair<Integer, Problem> o2) {
                 if (o1.getP1() < o2.getP1())
-                    return -1;
-                else if (o1.getP1() > o2.getP1())
                     return 1;
+                else if (o1.getP1() > o2.getP1())
+                    return -1;
                 else return 0;
             }
-        });
-        int possible = bestMatches.size();
-        Pair<Integer, Problem> best = bestMatches.pop();
+        };
+        PriorityQueue<Pair<Integer,Problem>> q = new PriorityQueue<Pair<Integer,Problem>>(10,pairComparator);
+        for (Problem p2 : relatedProbs) {
+            Set s2 = p2.getStandardsStringSet();
+            s2.retainAll(s1); // turns s2 into the intersection of s2 and s1.  All we care about is cardinality of this set
+            q.add(new Pair(s2.size(), p2));
+        }
+
+        // The problems with the most number of in-common standards are at the front of the queue.
+
+        int possible = q.size();
+        Pair<Integer, Problem> best = q.peek();
         double bestdiff = Math.abs(targetDiff - best.getP2().getDiff_level());
-        while (!bestMatches.isEmpty()) {
-            Pair<Integer, Problem> n = bestMatches.pop();
-            // if there are less standards in common in this problem than the best problem, quit
-            if (best.getP1() > n.getP1())
+        for (Pair<Integer,Problem> item: q) {
+            if (best.getP1() > item.getP1())
                 break;
-                // the two problems have the same number of standards in common.  Check to see if this problem
-                // has a better match of difficulty with the target problem than our previous best problem.
             else {
-                double diff2 = Math.abs(targetDiff - n.getP2().getDiff_level());
+                double diff2 = Math.abs(targetDiff - item.getP2().getDiff_level());
                 if (diff2 < bestdiff) {
-                    best = n;
+                    best = item;
                     bestdiff = diff2;
                 }
             }
         }
+
         Problem winner = best.getP2();
-        System.out.println("Picked best from " + possible + " candidates");
+        // print the candidates for debugging
+//        System.out.print("Picked best for problem " + pm(p) + " from problem " + pm(winner) + " among " + possible + " candidates:");
+//        for (Pair<Integer,Problem> item: q) {
+//            System.out.print("problem-"+pm(item.getP2()) + " ");
+//        }
+//        System.out.println();
         return winner.getVideo();
+    }
+
+    // debugging util for above fn's commented out debug code
+    private String pm (Problem p) {
+        return p.getId() + "{" + p.getStandardsString() + "}";
     }
 
 
@@ -131,10 +123,21 @@ public class StandardVideoSelector implements VideoSelector {
             ProblemMgr.loadProbs(conn);
             List<Problem> probs= ProblemMgr.getAllProblems();
             StandardVideoSelector s = new StandardVideoSelector();
+            int noVid = 0;
+            int foundVid = 0;
+            int hasVid =0;
             for (Problem p: probs)  {
+                if (p.hasVideo())
+                    hasVid++;
                 String vid = s.selectVideo(conn,p.getId());
+                if (vid != null)
+                    foundVid++;
+                else noVid++;
                 System.out.println("Problem id " + p.getId() + " name: " + p.getName() + " video: " + vid);
             }
+            System.out.println("There are " + hasVid + " problems that have their own video");
+            System.out.println("There are " + foundVid + " problems that got video from another problem");
+            System.out.println("There are " + noVid + " problems that cannot find any video");
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (Exception e) {
