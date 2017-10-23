@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.woserver;
 import ckc.servlet.servbase.BaseServlet;
 import ckc.servlet.servbase.ServletParams;
 import com.fasterxml.jackson.databind.deser.Deserializers;
+import edu.umass.ckc.wo.db.DbSession;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -44,6 +45,12 @@ public class GritMouseServlet extends BaseServlet {
 
 //        String sessId = request.getParameter("sessionId");
         int sessId = params.getInt("sessionId");
+        // Dead sessions return an HTTP 400 to indicate an error.
+        if (!DbSession.isActive(conn,sessId)) {
+            response.setContentType("application/json");
+            response.setStatus(400, "The Session is no longer active");
+            return true;
+        }
         String mouseData = params.getString("mouseData");
         JSONObject allPoints =  JSONObject.fromObject(mouseData);
         JSONArray listOfPoints = allPoints.getJSONArray("points");
