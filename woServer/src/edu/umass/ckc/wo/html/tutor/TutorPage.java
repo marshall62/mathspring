@@ -23,17 +23,16 @@ import javax.servlet.RequestDispatcher;
  * To change this template use File | Settings | File Templates.
  */
 public class TutorPage {
-    private static Logger logger = Logger.getLogger(TutorPage.class);
-    private  ServletInfo info;
-    SessionManager smgr;
-    private String servContext;
-    private StringBuilder logMsg;
-
     public static final String TUTOR_MAIN_JSP = "mathspring.jsp"; // this is the HTML page that is the tutor hut (plugged with global variables below)
     public static final String TUTOR_MAIN_JSP_NEW = "mathspring_new.jsp";
 //    public static final String INITIAL_TUTOR_FRAME_CONTENT = "welcome.html"; // when it first comes up it has this welcome HTML content
     public static final String INITIAL_TUTOR_FRAME_CONTENT = "TutorBrain?action=SplashPage"; // show the MPP as the first iframe contents
     public static final String END_TUTOR_FRAME_CONTENT = "farewell.html"; // when it first comes up it has this welcome HTML content
+    private static Logger logger = Logger.getLogger(TutorPage.class);
+    SessionManager smgr;
+    private  ServletInfo info;
+    private String servContext;
+    private StringBuilder logMsg;
 
     public TutorPage (ServletInfo info,  SessionManager smgr)  {
         this.info = info;
@@ -87,8 +86,10 @@ public class TutorPage {
         appendLogMsg("learningCompanion",character);
         // We must pass the wayangServletContext of this servlet to 4m so that it can build a URL to call wayang back
         info.getRequest().setAttribute("wayangServletContext",servContext);
+        info.getRequest().setAttribute("gritServletContext","gritms");
 //        info.getRequest().setAttribute("servletName",info.getServletName());
         info.getRequest().setAttribute("servletName","TutorBrain");
+        info.getRequest().setAttribute("gritServletName","GritMouseServlet");
         Settings.problemContentPath = Settings.webContentPath.substring(0,Settings.webContentPath.length()-1);
         // if its a dev env, the html5Content & flash problem content must be under tomcat o/w security issues occur because of slightly diff URL hosts.   So we need to bind a var (problemContentPath) pointing to where this content is (either under tc or apache)
 //        info.getRequest().setAttribute("problemContentPath", Settings.isDevelopmentEnv ?  Settings.devWebContentPath : Settings.problemContentPath);
@@ -115,6 +116,7 @@ public class TutorPage {
         info.getRequest().setAttribute("resumeProblem",false);
         info.getRequest().setAttribute("eventCounter",smgr.getEventCounter());
         info.getRequest().setAttribute("soundSync",smgr.isSoundSync());
+        info.getRequest().setAttribute("mouseSaveInterval",smgr.getMouseSaveInterval());
 
         if (DbUser.isTestUser(smgr.getConnection(),smgr.getStudentId()))
             info.getRequest().setAttribute("showAnswer", true);

@@ -109,6 +109,13 @@ public class MyProgressHandler {
             request.setAttribute("useHybridTutor", Settings.useHybridTutor);
             request.setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
             request.setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
+            request.setAttribute("mouseSaveInterval", smgr.getMouseSaveInterval());
+            request.setAttribute("gritServletContext","gritms");
+            String servContext= request.getContextPath();
+            if (servContext != null && servContext.length()>1)
+                servContext=servContext.substring(1);    // strip off the leading /
+            request.setAttribute("wayangServletContext",servContext);
+            request.setAttribute("gritServletName","GritMouseServlet");
 
             request.getRequestDispatcher(Settings.useNewGUI()
                     ? "TopicDetails_new.jsp"
@@ -186,6 +193,13 @@ public class MyProgressHandler {
         request.setAttribute("eventCounter", smgr.getEventCounter());
         request.setAttribute("studentFirstName", smgr.getStudentModel().getStudentFirstName());
         request.setAttribute("studentLastName", smgr.getStudentModel().getStudentLastName());
+        request.setAttribute("mouseSaveInterval", smgr.getMouseSaveInterval());
+        request.setAttribute("gritServletContext","gritms");
+        String servContext= request.getContextPath();
+        if (servContext != null && servContext.length()>1)
+            servContext=servContext.substring(1);    // strip off the leading /
+        request.setAttribute("wayangServletContext",servContext);
+        request.setAttribute("gritServletName","GritMouseServlet");
         logger.info("<< JSP: MyProgress.jsp");
         request.getRequestDispatcher(Settings.useNewGUI()
                 ? "MyProgress_new.jsp"

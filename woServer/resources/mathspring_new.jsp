@@ -98,13 +98,17 @@
             numHintsSeen: 0,
             numHints: 0 ,
             destinationInterventionSelector: null ,
-            clickTime: 0
+            clickTime: 0,
+            mouseSaveInterval: ${mouseSaveInterval},
+            mouseHistory: []
 
         }
 
         var sysGlobals = {
             isDevEnv: ${isDevEnv},
             wayangServletContext: '${wayangServletContext}',
+            gritServletContext: '${gritServletContext}',
+            gritServletName: '${gritServletName}',
             problemContentDomain : '${problemContentDomain}',
             problemContentPath : '${problemContentPath}',
             webContentPath : '${webContentPath}',

@@ -3,8 +3,8 @@
 <!-- N.B.  This web-app element only works with Tomcat 6.0.  This is what runs on Cadmium - our production server.
   If you use an older version of Tomcat, you should alter the below version 2.4.  You will know if things are working
    by using the admin pages to set up classes.  JSP will not work if there is an incompatibility in config.  -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
@@ -134,6 +134,17 @@
         </init-param>
 
     </servlet>
+
+    <servlet>
+        <servlet-name>GritMouseServlet</servlet-name>
+        <servlet-class>edu.umass.ckc.wo.woserver.GritMouseServlet</servlet-class>
+
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GritMouseServlet</servlet-name>
+        <url-pattern>/gritms/*</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>WoAdmin</servlet-name>

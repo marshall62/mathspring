@@ -45,17 +45,14 @@ import java.util.*;
 
 public class SessionManager {
 
-    private static final Logger logger = Logger.getLogger(SessionManager.class);
-
-
     public static final String LOGIN_USER_PASS = "uname_password_login_check";
+    public static final int NUM_GROUPS = 20;
+    public static final int STUDENT_TYPED_GROUP = 5;
+    private static final Logger logger = Logger.getLogger(SessionManager.class);
     private static final String OTHER_ACTIVE_SESSIONS = "other_active_sessions";
     private static final String WRIST_BRACELET_ID_ = "wrist_bracelet_active_session";
     private static final String LOGIN_USER_MOM = "uname_momname_login_check";
     private static final String MESSAGE = "message";
-    public static final int NUM_GROUPS = 20;
-    public static final int STUDENT_TYPED_GROUP = 5;
-
     private static int guestIDCounter = 0; // used for generating guest user IDS
 
     private Connection connection;
@@ -88,6 +85,7 @@ public class SessionManager {
     private User user;
     private int collaboratingWith;
     private int eventCounter; // a counter that gets incremented on every tutor event (used to keep events ordered)
+    private int mouseSaveInterval=0; // tells the client how often to save mouse coords to the server; <= 0 indicates no mouse tracking
 
     public SessionManager(Connection connection) {
         this.connection = connection;
@@ -120,6 +118,37 @@ public class SessionManager {
         this(connection, sessionId);
         this.hostPath = hostPath;
         this.contextPath = contextPath;
+    }
+
+    public static void main(String[] args) {
+        try {
+            Connection conn = DbUtil.getAConnection();
+            SessionManager smgr = new SessionManager(conn);
+            smgr.checkSessionTimes(conn, 15574);
+//            DbSession.cleanupStaleSessions(conn);
+//            FileReader fis = new FileReader("u:\\wo\\100users\\sequenceGroupTest.csv");
+//            BufferedReader bis = new BufferedReader(fis);
+//            String line;
+//            line = bis.readLine(); // get rid of headers
+//            while ((line = bis.readLine()) != null) {
+//                String[] x = CSVParser.parse(line);
+//                String fname= x[2];
+//                String lname= x[3];
+//                String password= fname;
+//                String userName = fname+lname.substring(0,1);
+//                int group = Integer.parseInt(x[1]);
+//                int id = smgr.createUser(conn,fname,lname,userName,password,"");
+//                StudentProfile prof = new StudentProfile(0,0,id,"",group);
+//                smgr.insertStudentProfile(prof);
+//                smgr.updateProfileGroup(id,group);
+//                System.out.println(fname + " " + lname + ": id=" + id + " userName=" + userName + " password=" + password
+//                + " group=" + group);
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+
     }
 
     // Each event coming in from a session has an eventCounter param.  This counter is incremented each time the client sends
@@ -166,7 +195,6 @@ public class SessionManager {
         return -1;  // error cases return -1
     }
 
-
     public SessionManager buildExistingSession(ServletParams params) throws Exception {
         int lc = checkEventCounter(connection, params);
         if (lc != -1)
@@ -180,11 +208,9 @@ public class SessionManager {
         return this;
     }
 
-
     public LoginResult login(String uname, String password, long sessBeginTime, boolean logoutExistingSession) throws Exception {
         return attemptSessionCreation(uname, password, sessBeginTime, logoutExistingSession);
     }
-
 
     /**
      * Constructor only used when the user is logging in from Assistments
@@ -212,7 +238,6 @@ public class SessionManager {
         return this;
     }
 
-
     // will look something like http://cadmium.cs.umass.edu/  or http://localhost/  (port removed)
     public String getHostPath() {
         return this.hostPath;
@@ -222,7 +247,6 @@ public class SessionManager {
     public String getContextPath() {
         return this.contextPath;
     }
-
 
     public void createSessionForStudent(int studId) {
 
@@ -286,7 +310,6 @@ public class SessionManager {
         }
     }
 
-
     private void buildSession(Connection connection, int sessionId) throws Exception {
         DbSession.updateSessionLastAccessTime(connection, sessionId);
         int[] ids = DbSession.setSessionInfo(connection, sessionId);
@@ -326,7 +349,6 @@ public class SessionManager {
         this.learningCompanion = this.pedagogicalModel.getLearningCompanion();
     }
 
-
     // only used by test driver
     public void assignUserToGroup(String group_string) throws SQLException {
         int group = 0;
@@ -336,6 +358,9 @@ public class SessionManager {
 
     }
 
+    public StudentState getStudentState() {
+        return studState;
+    }
 
     private void setStudentState(WoProps props) throws SQLException {
         studState = new StudentState(this.getConnection(), this);
@@ -344,16 +369,10 @@ public class SessionManager {
         this.extStudState = new ExtendedStudentState(this);
     }
 
-    public StudentState getStudentState() {
-        return studState;
-    }
-
-
     private String getXML(boolean success) {
         return Names.XML_HEADER + (success ? Names.LOGIN_SUCCESS : Names.LOGIN_FAILURE);
 
     }
-
 
     public String adventureProblemSolved(AdventurePSolvedEvent e) throws Exception {
         long elapsedTime = e.getElapsedTime();
@@ -369,7 +388,6 @@ public class SessionManager {
         return Names.ADVENTURE_PROBLEM_STORED_SUCCESS;
     }
 
-
     public int getStudentClass(int studId) throws SQLException {
         return DbUser.getStudentClass(this.getConnection(), studId);
     }
@@ -378,11 +396,9 @@ public class SessionManager {
         return this.classId;
     }
 
-
     public int findMaxActiveSession(int studId) throws SQLException {
         return DbSession.findMaxActiveSession(getConnection(), studId);
     }
-
 
     private GregorianCalendar calcCurTime(String clientBeginTime) {
         int year = 0;
@@ -438,7 +454,6 @@ public class SessionManager {
         }
     }
 
-
     public String getLoginView(String check, String checkVal, String message, int sessionId, int studentId, LearningCompanion learningCompanion) {
         StringBuffer result = new StringBuffer();
         result.append(NavigationHandler.ACK + "=" + NavigationHandler.TRUE + "\n");
@@ -458,8 +473,6 @@ public class SessionManager {
             return ("&learningCompanion=" + lc.getCharactersName());
         else return "";
     }
-
-
 
     /**
      * If the user/pw is valid combo,  this looks for an active session for this user.   If it finds one, it deactivates it (we don't
@@ -533,7 +546,6 @@ public class SessionManager {
         }
     }
 
-
     /**
      * Only used by defunct server test code.
      *
@@ -587,14 +599,12 @@ public class SessionManager {
         return getLoginView(loginCheck, NavigationHandler.TRUE, null, this.getSessionNum(), studId, lc);
     }
 
-
     public String logoutStudent(LogoutEvent logoutEvent, String ipAddr) throws Exception {
 
         DbSession.inactivateSession(getConnection(), logoutEvent.getSessionId());
         // create an HttpSessionObject for this student id
         return "ack=true";
     }
-
 
     public int getStudentId() {
         return this.studId;
@@ -603,7 +613,6 @@ public class SessionManager {
     public String getUserName() {
         return this.user.getUname();
     }
-
 
     public int getSessionNum() throws Exception {
         if (sessionId != -1) {
@@ -710,19 +719,17 @@ public class SessionManager {
         return lc;
     }
 
-    public void setStudentModel(StudentModel studentModel) {
-        this.studentModel = studentModel;
-    }
-
     public StudentModel getStudentModel() {
         return this.studentModel;
     }
 
+    public void setStudentModel(StudentModel studentModel) {
+        this.studentModel = studentModel;
+    }
 
     public Connection getConnection() {
         return this.connection;
     }
-
 
     // To remove all evidence of a student in the system, delete the eventlog for his session, delete the studentproblemhistory for his session
     // delete the session
@@ -743,7 +750,6 @@ public class SessionManager {
             ps.close();
         }
     }
-
 
     public void inactivateTempUserSessions(int sessionId) throws SQLException {
         String q = "delete from session where id=?";
@@ -780,8 +786,6 @@ public class SessionManager {
         ps.executeUpdate();
     }
 
-
-
     private void checkSessionTimes(Connection conn, int id) throws SQLException {
         String s = "select beginTime, endTime, lastAccessTime from session where id=?";
         PreparedStatement ps = conn.prepareStatement(s);
@@ -794,40 +798,8 @@ public class SessionManager {
         }
     }
 
-
     public double getClassMasteryThreshold() throws SQLException {
         return DbClass.getClassMastery(connection, this.classId);
-    }
-
-    public static void main(String[] args) {
-        try {
-            Connection conn = DbUtil.getAConnection();
-            SessionManager smgr = new SessionManager(conn);
-            smgr.checkSessionTimes(conn, 15574);
-//            DbSession.cleanupStaleSessions(conn);
-//            FileReader fis = new FileReader("u:\\wo\\100users\\sequenceGroupTest.csv");
-//            BufferedReader bis = new BufferedReader(fis);
-//            String line;
-//            line = bis.readLine(); // get rid of headers
-//            while ((line = bis.readLine()) != null) {
-//                String[] x = CSVParser.parse(line);
-//                String fname= x[2];
-//                String lname= x[3];
-//                String password= fname;
-//                String userName = fname+lname.substring(0,1);
-//                int group = Integer.parseInt(x[1]);
-//                int id = smgr.createUser(conn,fname,lname,userName,password,"");
-//                StudentProfile prof = new StudentProfile(0,0,id,"",group);
-//                smgr.insertStudentProfile(prof);
-//                smgr.updateProfileGroup(id,group);
-//                System.out.println(fname + " " + lname + ": id=" + id + " userName=" + userName + " password=" + password
-//                + " group=" + group);
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-
     }
 
     // This is a stub that replaces StudentProfile.getStudentSequenceGroup.
@@ -863,12 +835,12 @@ public class SessionManager {
         return DbSession.getStudentSessions(connection, this.getStudentId()).size() == 1;
     }
 
-    public void setAssistmentsUser(boolean assistmentsUser) {
-        this.assistmentsUser = assistmentsUser;
-    }
-
     public boolean isAssistmentsUser() {
         return assistmentsUser;
+    }
+
+    public void setAssistmentsUser(boolean assistmentsUser) {
+        this.assistmentsUser = assistmentsUser;
     }
 //
 //    public void initializeTopicTeaching(int topicId) throws SQLException {
@@ -928,12 +900,12 @@ public class SessionManager {
         this.collaboratingWith = collaboratingWith;
     }
 
-    public void setEventCounter(int eventCounter) {
-        this.eventCounter = eventCounter;
-    }
-
     public int getEventCounter() {
         return this.eventCounter;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public void setEventCounter(int eventCounter) {
+        this.eventCounter = eventCounter;
     }
 
     public ExtendedStudentState getExtendedStudentState () {
@@ -945,5 +917,17 @@ public class SessionManager {
         return c.isSoundSync();
     }
 
+    // The mouseSaveInterval tells the client to wait a given number of seconds and then report mouse tracking data to the server.
+    // If this number is <= 0, this won't happen.  The number comes from the classConfig of the student's class.
+    public int getMouseSaveInterval() throws SQLException {
+        ClassConfig c= DbClass.getClassConfig(this.connection,this.classId) ;
+        return c.getMouseSaveInterval();
+    }
 
+    // Not used.
+    // would be better if the SessionManager took a ClassConfig object at the time the session is started and could save some aspects
+    // of the classConfig that affect the student in the sessionMgr. (e.g soundSync and mouseSaveInterval)
+    public void setMouseSaveInterval (int numSeconds) {
+        this.mouseSaveInterval = numSeconds;
+    }
 }

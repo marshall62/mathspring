@@ -904,7 +904,7 @@ public class DbClass {
 
     public static ClassConfig getClassConfig(Connection conn, int classId) throws SQLException {
         String q = "select pretest,posttest,fantasy,mfr,spatialR,tutoring,useDefaultHutActivationRules,showPostSurvey" +
-                ",presurveyurl,postsurveyurl,postsurveywaittime, soundSync from classconfig where classId=?";
+                ",presurveyurl,postsurveyurl,postsurveywaittime, soundSync, mouseSaveInterval from classconfig where classId=?";
         PreparedStatement ps = conn.prepareStatement(q);
         ps.setInt(1, classId);
         ResultSet rs = ps.executeQuery();
@@ -921,8 +921,9 @@ public class DbClass {
             String postsurveyurl = rs.getString("postsurveyurl");
             int postsurveyWaitTime = rs.getInt("postSurveyWaitTime");
             boolean soundSync = rs.getBoolean("soundSync");
+            int mouseSaveInterval = rs.getInt("mouseSaveInterval");
             return new ClassConfig(pre, post, fant, mfr, spat, tut, useDef, showPostSurvey, presurveyurl,
-                    postsurveyurl, postsurveyWaitTime, soundSync);
+                    postsurveyurl, postsurveyWaitTime, soundSync, mouseSaveInterval);
         } else return null;
     }
 

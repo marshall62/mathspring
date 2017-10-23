@@ -53,7 +53,6 @@ const LCDIALOG_WIDTH = 300;
 const LCDIALOG_HEIGHT = 700;
 var DELAY = 700, clicks = 0, timer = null; //Variables required for determining the difference between single and double clicks
 
-
 function isFlashProblem() {
     return globals.probType === FLASH_PROB_TYPE;
 }
@@ -969,6 +968,7 @@ function exampleDialogCloseHandler () {
 
 }
 
+
 var DELAY = 700, clicks = 0, timer = null;
 function clickHandling () {
     var width = Math.min(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -976,11 +976,32 @@ function clickHandling () {
     var lcx = width - 268 - 10;  // subtract off the width of the learning companion div + some extra for its close button
     var agreed = false;
     globals.clickTime = new Date().getTime();
+    // We turn on mouse tracking if the mouseSaveInterval is > 0.  mouseSaveInterval is given in # of seconds between
+    // saves to the server.
+    if (globals.mouseSaveInterval > 0)
+        setInterval(sendMouseData, 1000 * globals.mouseSaveInterval); // send mouse data to server every # of seconds
+    // Only set up event listeners on the body of the page if the mouseSaveInterval is positive (our indication that mouse tracking is desired)
+    if (globals.mouseSaveInterval > 0) {
+        $("body").mousemove(function (e) {
+            // var $body = $('body');
+            // var offset = $body.offset();
+            // var x = e.clientX - offset.left;
+            // var y = e.clientY - offset.top;
+            var x = e.pageX;
+            var y = e.pageY;
+            // console.log(e.pageX +  "," + e.pageY);
+            saveMouse(x, y);
 
+        });
 
-    $("body").mousemove(function (e) {
-       console.log(e.pageX +  "," + e.pageY);
-    });
+        $("body").bind('click', function (e) {
+            var x = e.pageX;
+            var y = e.pageY;
+            saveMouseClick(x, y);
+            // console.log(e.pageX +  "," + e.pageY);
+        });
+    }
+
 
     $("#" + LEARNING_COMPANION_CONTAINER).dialog({
             classes: {
