@@ -24,6 +24,8 @@ public class NextProblemEvent extends IntraProblemEvent {
     public static final String MODE = "mode";
     public static final String PROB_MODE = "probMode";
     public static final String EXTERNAL = "isExternal";
+    public static final String ENTER_PRACTICE_AREA = "isEnteringPracticeArea";
+    public static final String LAST_LOCATION = "lastLocation";
 
     private boolean intervene;
     private boolean forceIntro=false;
@@ -34,6 +36,8 @@ public class NextProblemEvent extends IntraProblemEvent {
     private String probMode=null;
     private boolean isExternal=true;
     private int topicToForce=-1 ;
+    private boolean isEnteringPracticeArea=false;  // true if this NPEvent is the first one on entering into the practice area from some other place.
+    private String lastLocation="";  // one of: Login, Dashboard-ReviewTopic, Dashboard-ChallengeTopic, Dashboard-ContinueTopic, MPP-ChallengeTopic, MPP-ReviewTopic, MPP-ContinueTopic, MPP-TryProblem
 
     private Lesson lesson; // a way to force a Lesson
 
@@ -53,6 +57,8 @@ public class NextProblemEvent extends IntraProblemEvent {
             probId = null;
         topicToForce = p.getInt(TOPIC,-1);
         isExternal=p.getBoolean(EXTERNAL,false);   // if external not passed, problem will not be external
+        isEnteringPracticeArea=p.getBoolean(ENTER_PRACTICE_AREA,false);   // if enterPracticeArea not passed, defaults to false
+        lastLocation=p.getString(LAST_LOCATION,"Login");   // if lastLocation not passed, assume coming from login area.
 
         setIntervene(Boolean.parseBoolean(interv));
         setForceIntro(Boolean.parseBoolean(intro));
@@ -177,5 +183,19 @@ public class NextProblemEvent extends IntraProblemEvent {
 
     public Lesson getLesson() {
         return lesson;
+    }
+
+    public boolean isEnteringPracticeArea() {
+        return isEnteringPracticeArea;
+    }
+    public void setIsEnteringPracticeArea (boolean b) {
+        this.isEnteringPracticeArea= b;
+    }
+
+    public String getLastLocation () {
+        return lastLocation;
+    }
+    public void setLastLocation (String loc) {
+        this.lastLocation = loc;
     }
 }
