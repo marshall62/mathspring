@@ -67,11 +67,15 @@ public class AdminHandler {
         Variables vv = new Variables(servletRequest.getServerName(),
                 servletRequest.getServletPath(),
                 servletRequest.getServerPort());
-        if (e instanceof AdminTeacherLoginEvent) {
+        if (e instanceof AdminLoginEvent) {
             if (Settings.useAdminServletSession) {
                 HttpSession sess = servletRequest.getSession();
                 sess.setMaxInactiveInterval(Settings.adminServletSessionTimeoutSeconds); // allow 60 minutes of inactive time before session expires
             }
+            new AdminToolLoginHandler().handleEvent(conn, vv, (AdminLoginEvent) e, servletRequest, servletResponse);
+            return false;  // request forwarded to JSP, so tell caller not to write servlet output
+        }
+        else if (e instanceof AdminTeacherLoginEvent) {
             new AdminToolLoginHandler().handleEvent(conn, vv, (AdminTeacherLoginEvent) e, servletRequest, servletResponse);
             return false;  // request forwarded to JSP, so tell caller not to write servlet output
         }
@@ -121,7 +125,7 @@ public class AdminHandler {
             HttpSession sess = servletRequest.getSession(false);
             if (sess == null) {
                 servletRequest.setAttribute("message","Your session has expired.   You must relogin");
-                servletRequest.getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                servletRequest.getRequestDispatcher(Settings.useNewGUI()
                             ? "/login/loginK12_new.jsp"
                             : "/teacherTools/teacherLogin.jsp").forward(servletRequest,servletResponse);
                 return false;
@@ -288,6 +292,9 @@ public class AdminHandler {
                 e instanceof AdminEditTeacherEvent || e instanceof AdminEditTeacherSubmitEvent || e instanceof AdminEditTeacherSetTeacherEvent) {
             new TutorAdminHandler().processEvent(servletRequest, servletResponse, e, conn);
             return false;
+        }
+        else if (e instanceof AdminFlushStrategyCacheEvent) {
+
         }
 
         else

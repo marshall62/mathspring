@@ -8,6 +8,7 @@ import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.model.InterventionGroup;
@@ -95,7 +96,7 @@ public class LoginSequence {
     public void processAction (ServletParams params, LoginIntervention li) throws Exception {
 
         if (li != null) {
-            final boolean isUsingNewUI = "b".equals(servletInfo.getRequest().getParameter("var"));
+            final boolean isUsingNewUI = Settings.useNewGUI();
             String innerJSP = li.getView();
             String skin = params.getString(SKIN);
             String loginJSP = isUsingNewUI

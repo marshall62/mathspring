@@ -1,5 +1,7 @@
 package edu.umass.ckc.wo.ttmain.ttmodel;
 
+import edu.umass.ckc.wo.content.Problem;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ public class PerProblemReportBean {
     private String problemName;
     private String imageURL;
     private String problemStandardAndDescription;
+    private String problemURLWindow;
 
     private int noStudentsSeenProblem;
     private int percStudentsRepeated;
@@ -21,6 +24,8 @@ public class PerProblemReportBean {
     public int getGetPercStudentsSolvedFirstTry;
     public int getGetPercStudentsSolvedSecondTry;
     private String mostIncorrectResponse;
+
+    private Problem problem;
 
     public int lastStud = -1, attemptIx = 0, correctAttemptIx = 0;
     public boolean solved = false;
@@ -124,5 +129,13 @@ public class PerProblemReportBean {
 
     public void setMostIncorrectResponse(String mostIncorrectResponse) {
         this.mostIncorrectResponse = mostIncorrectResponse;
+    }
+
+    public String getProblemURLWindow() {
+        return problemURLWindow;
+    }
+
+    public void setProblemURLWindow(String problemURLWindow) {
+        this.problemURLWindow = problemURLWindow;
     }
 }

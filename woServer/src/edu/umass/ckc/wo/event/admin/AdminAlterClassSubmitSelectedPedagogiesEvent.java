@@ -17,10 +17,12 @@ public class AdminAlterClassSubmitSelectedPedagogiesEvent extends AdminClassEven
 
     private List<String> pedagogyIds;
     private boolean isSimplePage=false;
+    private boolean useTutoringStrategies;
 
     public AdminAlterClassSubmitSelectedPedagogiesEvent(ServletParams p) throws Exception {
         super(p);
         Map m = p.getMap();
+        this.useTutoringStrategies = p.getString("useTutoringStrategies","off").equalsIgnoreCase("on");
         setSelectedPedagogies(m);
         setSimplePage(p.getBoolean("isSimpleConfig",false));
     }
@@ -50,5 +52,7 @@ public class AdminAlterClassSubmitSelectedPedagogiesEvent extends AdminClassEven
         return pedagogyIds;
     }
 
-
+    public boolean isUseTutoringStrategies() {
+        return useTutoringStrategies;
+    }
 }

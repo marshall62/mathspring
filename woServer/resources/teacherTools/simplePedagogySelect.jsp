@@ -29,6 +29,9 @@
 
                 </c:forEach>
             </table>
+            <c:if test="${usingTutoringStrategies}">
+                This class has been configured to use tutoring strategies rather than pedagogies.  Tutoring strategies must be removed with the msadmin tool or by manually changing the database.  When all strategies are removed from the class, you can then set pedagogies.
+            </c:if>
             <%-- only show the advanced pedagogy link to admins --%>
             <c:if test="${sideMenu == 'adminSideMenu.jsp'}">
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/WoAdmin?action=AdminAlterClassAdvancedPedagogySelection&classId=${classId}&teacherId=${teacherId}">Advanced Pedagogy Selection</a></p>

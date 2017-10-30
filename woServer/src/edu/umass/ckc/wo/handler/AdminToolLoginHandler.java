@@ -6,8 +6,10 @@ import edu.umass.ckc.wo.beans.Teacher;
 import edu.umass.ckc.wo.db.DbAdmin;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbTeacher;
+import edu.umass.ckc.wo.event.admin.AdminLoginEvent;
 import edu.umass.ckc.wo.event.admin.AdminTeacherLoginEvent;
 import edu.umass.ckc.wo.html.admin.Variables;
+import edu.umass.ckc.wo.tutor.Settings;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +31,19 @@ public class AdminToolLoginHandler {
         int id,sessId;
        Teacher user;
         String teacherName;
-        // no user action has taken place. Just show the login screen
-        if (!event.isLogin() && !event.isReg()) {
+        // Logging in as administrator because the URL was /WoAdmin?actionAdminLogin
+        if (event instanceof AdminLoginEvent) {
             servletRequest.setAttribute("message","");
             servletRequest
-                    .getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+                    .getRequestDispatcher("/teacherTools/teacherLogin.jsp")
+                    .forward(servletRequest,servletResponse);
+        }
+        // no user action has taken place so its a AdminTeacherLoginEvent.  Show the new login page which allows both
+        // students and teachers to login.  If this is the old GUI, show the old teacher tools login page.
+        else if (!event.isLogin() && !event.isReg()) {
+            servletRequest.setAttribute("message","");
+            servletRequest
+                    .getRequestDispatcher(Settings.useNewGUI()
                             ? "/login/loginK12_new.jsp"
                             : "/teacherTools/teacherLogin.jsp")
                     .forward(servletRequest,servletResponse);
@@ -94,7 +104,7 @@ public class AdminToolLoginHandler {
         }
         else if (event.isReg()) {
             servletRequest.setAttribute("message","");
-            servletRequest.getRequestDispatcher("b".equals(servletRequest.getParameter("var"))
+            servletRequest.getRequestDispatcher(Settings.useNewGUI()
                     ? "/teacherTools/teacherRegister_new.jsp"
                     : "/teacherTools/teacherRegister.jsp").forward(servletRequest,servletResponse);
 

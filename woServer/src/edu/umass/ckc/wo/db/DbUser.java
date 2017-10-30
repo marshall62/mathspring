@@ -1097,4 +1097,18 @@ public class DbUser {
     }
 
 
+    public static int setStrategy(Connection conn, int studId, int strategyId) throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            String q = "update student set strategyId=? where id=?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1, strategyId);
+            ps.setInt(2, studId);
+            return ps.executeUpdate();
+        } finally {
+            if (ps != null)
+                ps.close();
+        }
+
+    }
 }

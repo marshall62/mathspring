@@ -26,7 +26,8 @@ public class TopicModelParameters extends LessonModelParameters {
     public static final String MIN_TIME_IN_TOPIC_SECS = "minTimeInTopicSecs";
     public static final frequency DEFAULT_TOPIC_INTRO_FREQ = frequency.always;
     public static final frequency DEFAULT_EXAMPLE_FREQ = frequency.always;
-
+    public static final String DIFFICULTY_RATE = "difficultyRate";
+    public static final String CONTENT_FAILURE_THRESHOLD = "contentFailureThreshold";
 
 
 
@@ -65,6 +66,7 @@ public class TopicModelParameters extends LessonModelParameters {
             this.setDesiredMastery(Double.parseDouble(p.getValue()));
         else if (p.getName().equalsIgnoreCase(CONTENT_FAILURE_THRESHOLD))
             this.contentFailureThreshold = Integer.parseInt(p.getValue());
+
 
     }
 
@@ -405,4 +407,6 @@ public class TopicModelParameters extends LessonModelParameters {
     public InterleavedProblemSetParams getInterleaveParams() {
         return interleaveParams;
     }
+
+
 }

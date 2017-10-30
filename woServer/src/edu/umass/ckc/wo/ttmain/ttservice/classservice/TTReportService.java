@@ -30,5 +30,5 @@ public interface TTReportService {
 
     public String generateReportForProblemsInCluster(String teacherId, String classId, String clusterId) throws TTCustomException;
 
-    public Map<String, PerProblemReportBean> generatePerProblemReportForClass(String classId);
+    public Map<String, PerProblemReportBean> generatePerProblemReportForClass(String classId) throws TTCustomException;
 }

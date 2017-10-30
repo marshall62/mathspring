@@ -20,6 +20,46 @@ import java.util.List;
 public class DbStrategy {
 
 
+    public static List<TutorStrategy> getStrategies (Connection conn, int classId) throws SQLException {
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        try {
+            String q = "select s.id, s.strategyId, s.name, s.lcid " +
+                    "from strategy_class s where s.classid = ?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1, classId);
+            rs = ps.executeQuery();
+            List<TutorStrategy> all = new ArrayList<TutorStrategy>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int genericstratId = rs.getInt("strategyId"); // custom made strategies will not have an id of a generic strategy
+                if (rs.wasNull())
+                    genericstratId=-1;
+                String name = rs.getString("name");
+                int lcid = rs.getInt("lcid");
+                TutorStrategy ts = new TutorStrategy();
+                ts.setId(Integer.toString(id));
+                ts.setGenericStrategyId(genericstratId);
+                ts.setId(Integer.toString(id));
+                ts.setName(name);
+                // Note we don't fully instantiate the TutorStrategy object with its components because the
+                // lookup context where this is called doesn't need anything but the strategy ids and names.
+//                ts.setLogin_sc(getClassStrategyComponent(conn,login_SCId,classId));
+//                ts.setLesson_sc(getClassStrategyComponent(conn,lesson_SCId,classId));
+//                ts.setTutor_sc(getClassStrategyComponent(conn,tutor_SCId,classId));
+                ts.setLcid(lcid);
+//                loadLC(conn, ts);
+
+                all.add(ts);
+            }
+            return all;
+        } finally {
+            if (ps != null)
+                ps.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
     /**
      * Load the TutorStrategy and its learning companion stuff.
      * @param conn
@@ -32,29 +72,49 @@ public class DbStrategy {
          ResultSet rs = null;
           PreparedStatement ps = null;
           try {
-              String q = "select login_sc_id, lesson_sc_id, tutor_sc_id, name, " +
-                      "lcid from strategy s where s.id = ?";
+              String q = "select name, lcid from strategy_class s where s.id = ?";
               ps = conn.prepareStatement(q);
               ps.setInt(1, stratId);
               rs = ps.executeQuery();
               if (rs.next()) {
-
-                  int login_SCId = rs.getInt(1);
-                  int lesson_SCId = rs.getInt(2);
-                  int tutor_SCId = rs.getInt(3);
-                  String name = rs.getString(4);
-                  int lcid = rs.getInt(5);
+                  String name = rs.getString(1);
+                  int lcid = rs.getInt(2);
                   TutorStrategy ts = new TutorStrategy();
-                  ts.setStratId(stratId);
+                  ts.setId(Integer.toString(stratId));
                   ts.setName(name);
-                  ts.setLogin_sc(getClassStrategyComponent(conn,login_SCId,classId));
-                  ts.setLesson_sc(getClassStrategyComponent(conn,lesson_SCId,classId));
-                  ts.setTutor_sc(getClassStrategyComponent(conn,tutor_SCId,classId));
+                  int login_sc_id = getSC(conn,stratId,"login");
+                  int lesson_sc_id = getSC(conn,stratId,"lesson");
+                  int tutor_sc_id = getSC(conn,stratId,"tutor");
+                  ts.setLogin_sc(getClassStrategyComponent(conn,login_sc_id,classId));
+                  ts.setLesson_sc(getClassStrategyComponent(conn,lesson_sc_id,classId));
+                  ts.setTutor_sc(getClassStrategyComponent(conn,tutor_sc_id,classId));
                   ts.setLcid(lcid);
                   loadLC(conn, ts);
                   return ts;
               }
               else return null;
+          } finally {
+                if (ps != null)
+                     ps.close();
+                if (rs != null)
+                     rs.close();
+          }
+    }
+
+    public static int getSC (Connection conn, int stratId, String type) throws SQLException {
+         ResultSet rs = null;
+          PreparedStatement ps = null;
+          try {
+              String q = "select c.scid from sc_class c, strategy_component s where c.scId=s.id and c.strategy_class_id=? and s.type=?";
+              ps = conn.prepareStatement(q);
+              ps.setInt(1, stratId);
+              ps.setString(2, type);
+              rs = ps.executeQuery();
+              if (rs.next()) {
+                  int id = rs.getInt(1);
+                  return id;
+              }
+              return -1;
           } finally {
                 if (ps != null)
                      ps.close();

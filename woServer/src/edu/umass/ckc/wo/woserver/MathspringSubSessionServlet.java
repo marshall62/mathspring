@@ -30,7 +30,6 @@ import java.sql.Connection;
 public class MathspringSubSessionServlet extends BaseServlet {
     private static Logger logger = Logger.getLogger(MathspringSubSessionServlet.class);
     private String policyFile;
-    private ProblemMgr problemMgr; // ProblemMgr is held here explicitely (even though not by necessity).
     private String handlerClassName; // given as a servlet setServletInfo param in web.xml   A class that will handle the requests (e.g. MariHandler)
     // It maintains a
     // static cache of sat hut Problems, hints, etc that persist throughout
@@ -87,8 +86,7 @@ public class MathspringSubSessionServlet extends BaseServlet {
             // each Problem's example and video
             // Loads all content into a cache for faster access during runtime
             if (!ProblemMgr.isLoaded())  {
-                this.problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-                problemMgr.loadProbs(connection);
+                ProblemMgr.loadProbs(connection);
                 CCContentMgr.getInstance().loadContent(connection);
                 LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
 

@@ -16,8 +16,10 @@
     <form name="form1" method="post" action="<c:out value="${pageContext.request.contextPath}"/>/WoAdmin?action=<c:out value="${formSubmissionEvent}"/>">
 
       <table width="334" border="0" height="98">
-          <tr><td width="40"><input type="checkbox" name="0"/><td width="305"><font color="#000000" face="Arial, Helvetica, sans-serif">Default</font></td></tr>
 
+          <c:if test="${!useTutoringStrategies}">
+            <tr><td width="40"><input type="checkbox" name="0"/><td width="305"><font color="#000000" face="Arial, Helvetica, sans-serif">Default</font></td></tr>
+          </c:if>
           <%--@elvariable id="pedagogies" type="edu.umass.ckc.wo.beans.PedagogyBean[]"--%>
           <c:forEach var="pedagogy" items="${pedagogies}">
               <tr><td valign="top" width="40"><input type="checkbox" <c:if test="${pedagogy.selected}">checked="checked"</c:if> name="<c:out value="${pedagogy.id}"/>"/></td>
@@ -25,6 +27,8 @@
 
           </c:forEach>
       </table>
+        <p class="a2"><font color="#000000"><b><font face="Arial, Helvetica, sans-serif">Tutoring Strategies</font></b></font></p>
+        <input type="checkbox" <c:if test="${useTutoringStrategies}">checked="checked"</c:if> name="useTutoringStrategies"> Use Tutoring Strategies instead of the pedagogies above.
       <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="submit" name="Submit" value="Submit">
         <input type="hidden" name="classId" value="<c:out value="${classId}"/>">

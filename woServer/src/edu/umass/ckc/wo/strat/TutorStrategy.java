@@ -12,7 +12,8 @@ import java.util.List;
  */
 public class TutorStrategy extends Pedagogy {
 
-    private int id;
+
+    private int genericStrategyId;
     private String name;
     private ClassStrategyComponent login_sc;
     private ClassStrategyComponent lesson_sc;
@@ -21,12 +22,14 @@ public class TutorStrategy extends Pedagogy {
     private LC lc;
 
 
-    public int getStratId () {
-        return this.id;
+
+
+    public int getGenericStrategyId() {
+        return genericStrategyId;
     }
 
-    public void setStratId (int id) {
-        this.id = id;
+    public void setGenericStrategyId(int genericStrategyId) {
+        this.genericStrategyId = genericStrategyId;
     }
 
     public ClassStrategyComponent getLogin_sc() {
@@ -107,8 +110,8 @@ public class TutorStrategy extends Pedagogy {
 
     public String toString(){
         return "TutorStrategy:" + id + ": " + name + "\n" +
-                "\t" + login_sc.toString() + "\n" +
-                "\t" + lesson_sc.toString() + "\n" +
-                "\t" + tutor_sc.toString();
+                "\t" + (login_sc != null ? login_sc.toString() : "") + "\n" +
+                "\t" + (lesson_sc != null ? lesson_sc.toString() : "")+ "\n" +
+                "\t" + (tutor_sc != null ? tutor_sc.toString() : "");
     }
 }

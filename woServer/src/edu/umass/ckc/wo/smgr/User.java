@@ -15,6 +15,7 @@ public class User {
     private String password;
     private int id;
     private int pedagogyId;
+    private int strategyId;
 
 
 
@@ -128,5 +129,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getStrategyId() {
+        return strategyId;
+    }
+
+    public void setStrategyId(int strategyId) {
+        this.strategyId = strategyId;
     }
 }

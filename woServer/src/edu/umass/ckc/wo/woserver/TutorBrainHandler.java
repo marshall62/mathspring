@@ -202,7 +202,7 @@ public class TutorBrainHandler {
                 return false;
             }
             else if (e instanceof HomeEvent) {
-                if ("b".equals(servletInfo.getRequest().getParameter("var"))) {
+                if (Settings.useNewGUI()) {
                     new DashboardHandler(
                             this.servletInfo.getServletContext(),
                             smgr,
@@ -349,7 +349,7 @@ public class TutorBrainHandler {
                     clientType = LoginParams.K12;
                 String loginJSP = clientType.equals(LoginParams.ADULT)
                         ? LoginAdult_2.LOGIN_JSP
-                        : "b".equals(servletInfo.getRequest().getParameter("var"))
+                        : Settings.useNewGUI()
                             ? LoginK12_2.LOGIN_JSP_NEW
                             : LoginK12_2.LOGIN_JSP;
                 servletInfo.request.setAttribute("var", e.getServletParams().getString("var"));

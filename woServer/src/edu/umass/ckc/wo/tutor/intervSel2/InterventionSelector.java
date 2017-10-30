@@ -158,19 +158,23 @@ public abstract class InterventionSelector implements PedagogicalMoveListener {
      * @return
      */
     protected String getConfigParameter2 (String name) {
-        if (configXML != null) {
+        // First check to see if there are is params and get the value of the param from there
+        if (this.params != null) {
+            for (InterventionSelectorParam p : this.params)
+                if (p.getName().equalsIgnoreCase(name))
+                    return p.getValue();
+            return null;
+        }
+        // note an intervention selector operating under tutoring strategies may have config XML (e.g. AskEmotionIS) so
+        // we only go into the configXML looking for paramters if there aren't any is-params (which is used to indicate that
+        // we are using Pedagogy's rather than tutor strategies)
+        else if (configXML != null) {
             Element x = configXML.getChild(name);
             if (x != null)
                 return x.getTextTrim();
             return null;
         }
 
-        else if (this.params != null) {
-            for (InterventionSelectorParam p : this.params)
-                if (p.getName().equalsIgnoreCase(name))
-                    return p.getValue();
-            return null;
-        }
         else return null;
     }
 

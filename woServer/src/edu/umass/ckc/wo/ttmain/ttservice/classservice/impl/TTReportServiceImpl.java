@@ -1,14 +1,19 @@
 package edu.umass.ckc.wo.ttmain.ttservice.classservice.impl;
 
+import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.TTConfiguration;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.ErrorCodeMessageConstants;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.TTCustomException;
 import edu.umass.ckc.wo.ttmain.ttmodel.ClassStudents;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
+import edu.umass.ckc.wo.ttmain.ttmodel.ProblemsView;
 import edu.umass.ckc.wo.ttmain.ttmodel.datamapper.ClassStudentsMapper;
+import edu.umass.ckc.wo.ttmain.ttservice.classservice.TTProblemsViewService;
 import edu.umass.ckc.wo.ttmain.ttservice.classservice.TTReportService;
 import edu.umass.ckc.wo.ttmain.ttservice.util.TTUtil;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -36,9 +41,8 @@ public class TTReportServiceImpl implements TTReportService {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-
     private static Logger logger = Logger.getLogger(TTReportServiceImpl.class);
+
 
     @Override
     public String generateTeacherReport(String teacherId, String classId, String reportType) throws TTCustomException {
@@ -382,7 +386,7 @@ public class TTReportServiceImpl implements TTReportService {
                 @Override
                 public String mapRow(ResultSet resultSet, int i) throws SQLException {
                     problemDescriptionMap.put(resultSet.getString("problemID"), resultSet.getString("name")
-                            + "~~" + resultSet.getString("screenShotURL") + "~~" + resultSet.getString("standardID") + ":" + resultSet.getString("standardCategoryName"));
+                            + "~~" + resultSet.getString("screenShotURL") + "~~" + resultSet.getString("standardID") + ":" + resultSet.getString("standardCategoryName")+ ":" + resultSet.getString("description"));
                     return resultSet.getString("problemID");
                 }
             });
@@ -395,11 +399,14 @@ public class TTReportServiceImpl implements TTReportService {
         }
     }
 
-    private Map<String, PerProblemReportBean> generatePerProblemReportForGivenProblemIDs(String classId, List<String> problemIdsList, Map<String, String> problemDescriptionMap) {
+    private Map<String, PerProblemReportBean> generatePerProblemReportForGivenProblemIDs(String classId, List<String> problemIdsList, Map<String, String> problemDescriptionMap)  {
         Map<String, PerProblemReportBean> perProblemReportBeanMap = new LinkedHashMap<String, PerProblemReportBean>();
         Map<String, String> selectParams = new LinkedHashMap<String, String>();
+        String URI = Settings.probPreviewerPath;
+        String html5ProblemURI = Settings.html5ProblemURI;
         selectParams.put("classId", classId);
         for (String problemId : problemIdsList) {
+
             selectParams.put("problemId",problemId);
             List<PerProblemReportBean> perProblemReportBean = namedParameterJdbcTemplate.query(TTUtil.PER_PROBLEM_QUERY_SECOND, selectParams, new RowMapper<PerProblemReportBean>() {
                 @Override
@@ -506,12 +513,22 @@ public class TTReportServiceImpl implements TTReportService {
                                 perProblemReportBeanObj.nD++;
                         }
                     }
-                    if (action.equals("EndProblem") && perProblemReportBeanObj.isExample) {
+                   /* if (action.equals("EndProblem") && perProblemReportBeanObj.isExample) {
                         perProblemReportBeanMap.remove(problemId);
-                    } else{
-                        perProblemReportBeanMap.put(problemID, perProblemReportBeanObj);
-                    }
+                    } else{*/
 
+                   // }
+                    Problem probDetails = ProblemMgr.getProblem(Integer.valueOf(problemID));
+                    if(probDetails != null) {
+                        if ("flash".equals(probDetails.getType())) {
+                            perProblemReportBeanObj.setProblemURLWindow( URI + "?questionNum=" + probDetails.getProbNumber());
+                        } else {
+                            perProblemReportBeanObj.setProblemURLWindow(  html5ProblemURI + probDetails.getHTMLDir() + "/" + probDetails.getResource());
+                        }
+                    }else{
+                        perProblemReportBeanObj.setProblemURLWindow( html5ProblemURI );
+                    }
+                    perProblemReportBeanMap.put(problemID, perProblemReportBeanObj);
                     return perProblemReportBeanObj;
                 }
             });
@@ -569,7 +586,7 @@ public class TTReportServiceImpl implements TTReportService {
             @Override
             public String mapRow(ResultSet resultSet, int i) throws SQLException {
                 problemDescriptionMap.put(resultSet.getString("problemID"),resultSet.getString("name")
-                        +"~~"+resultSet.getString("screenShotURL")+"~~"+resultSet.getString("standardID")+":"+resultSet.getString("standardCategoryName"));
+                        +"~~"+resultSet.getString("screenShotURL")+"~~"+resultSet.getString("standardID")+":"+resultSet.getString("standardCategoryName")+":"+resultSet.getString("description"));
                 return resultSet.getString("problemID");
             }
         });

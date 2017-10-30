@@ -7,6 +7,10 @@ package edu.umass.ckc.wo.beans;
  * Time: 6:00:13 PM
  */
 public class ClassConfig {
+    public static final int OFF=0;
+    public static final int ON=1;
+    public static final int ON_AFTER_PRETEST=2;
+    public static final int ON_AFTER_POSTTEST=3;
     private int pretest;
     private int posttest;
     private int fantasy;
@@ -19,19 +23,10 @@ public class ClassConfig {
     private String postSurveyURL;
     private int postSurveyWaitTimeMin;
     private boolean soundSync;
-
-
-    public static final int OFF=0;
-    public static final int ON=1;
-    public static final int ON_AFTER_PRETEST=2;
-    public static final int ON_AFTER_POSTTEST=3;
-
-    public static ClassConfig getDefaultConfig () {
-        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,true, false, null, null, 0, false);
-    }
+    private int mouseSaveInterval=-1; // <= 0 indicates mouse-tracking off in client; >0 is number of seconds it waits before saving to server.
 
     public ClassConfig(int pretest, int posttest, int fantasy, int mfr, int spatial, int tutoring, boolean useDefaults,
-                       boolean showPostSurvey, String presurveyurl, String postsurveyurl, int postSurveyWaitTime, boolean soundSync) {
+                       boolean showPostSurvey, String presurveyurl, String postsurveyurl, int postSurveyWaitTime, boolean soundSync, int mouseSaveInterval) {
         this.pretest = pretest;
         this.posttest = posttest;
         this.fantasy = fantasy;
@@ -44,6 +39,12 @@ public class ClassConfig {
         this.postSurveyURL=postsurveyurl;
         this.postSurveyWaitTimeMin = postSurveyWaitTime;
         this.soundSync = soundSync;
+        this.mouseSaveInterval = mouseSaveInterval;
+    }
+
+    public static ClassConfig getDefaultConfig () {
+        return new ClassConfig(ON,ON_AFTER_PRETEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_POSTTEST,ON_AFTER_PRETEST,
+                true, false, null, null, 0, false, -1);
     }
 
     public int getPretest() {
@@ -101,6 +102,8 @@ public class ClassConfig {
     public boolean isSoundSync() {
         return soundSync;
     }
+
+    public int getMouseSaveInterval () { return this.mouseSaveInterval; }
 
 
     public String toString () {

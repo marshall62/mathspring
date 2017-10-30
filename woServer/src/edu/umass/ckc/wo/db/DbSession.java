@@ -221,6 +221,27 @@ public class DbSession {
         return now.getTime() - lastWrite.getTime() >= Settings.session4MonthsOldTimeout;
     }
 
+    public static boolean isActive(Connection conn, int sessId) throws SQLException {
+         ResultSet rs = null;
+          PreparedStatement ps = null;
+          try {
+              String q = "select isActive from session where id=?";
+              ps = conn.prepareStatement(q);
+              ps.setInt(1, sessId);
+              rs = ps.executeQuery();
+              if (rs.next()) {
+                  int stat = rs.getInt(1);
+                  return stat == 1;
+              }
+              return false;
+          } finally {
+                if (ps != null)
+                     ps.close();
+                if (rs != null)
+                     rs.close();
+          }
+    }
+
     public static boolean hasNoActiveSessions (Connection conn, int studId) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;

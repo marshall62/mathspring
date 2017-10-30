@@ -104,7 +104,11 @@
         local machine, then you can call it on cadmium, but it will not call back to your Wayang servlet which will
         effect logging and problem selection.   -->
 
-
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
 
         <!--Controls the frequency that edu.umass.ckc.wo.tutor.intervSel.ExternalActivityInterventionSelector will pick an external activity-->
         <init-param>
@@ -133,7 +137,11 @@
     <servlet>
         <servlet-name>WoAdmin</servlet-name>
         <servlet-class>edu.umass.ckc.wo.woserver.WoAdminServlet</servlet-class>
-
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
         <init-param>
             <param-name>useServletSession</param-name>
             <param-value>true</param-value>
@@ -156,7 +164,11 @@
     <servlet>
         <servlet-name>WoLoginServlet</servlet-name>
         <servlet-class>edu.umass.ckc.wo.login.WoLoginServlet</servlet-class>
-
+        <init-param>
+            <!-- Use the huy gui by default now.  Use value: old to get the old one. -->
+            <param-name>gui</param-name>
+            <param-value>huy</param-value>
+        </init-param>
         <!--<load-on-startup>1</load-on-startup>-->
 
 

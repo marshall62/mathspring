@@ -443,7 +443,7 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     }
 
     protected PedagogicalModelParameters getPedagogicalModelParametersFromStrategy (TutorStrategy strategy) {
-        ClassStrategyComponent sc = strategy.getLesson_sc();
+        ClassStrategyComponent sc = strategy.getTutor_sc();
         List<SCParam> params = sc.getParams();
         PedagogicalModelParameters theParams = new PedagogicalModelParameters(params);
         return theParams;

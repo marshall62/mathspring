@@ -24,7 +24,7 @@ public class Pedagogy implements Comparable {
     private String studentModelClass;
     protected String learningCompanionClass ;
     private String pedagogicalModelClass ;
-    private String id;    // id of the pedagogy in the db (this is one that matters)
+    protected String id;    // id of the pedagogy in the db (this is one that matters)
     private String name;
     private String comment;
     private String packg;

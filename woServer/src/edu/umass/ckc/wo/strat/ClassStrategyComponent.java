@@ -12,6 +12,7 @@ public class ClassStrategyComponent {
     private int id;
     private String name;
     private String className;
+    private String type;
     private List<SCParam> params;
     private List<InterventionSelectorSpec> interventionSelectors;
 

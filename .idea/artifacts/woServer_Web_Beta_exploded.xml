@@ -2,7 +2,6 @@
   <artifact type="exploded-war" name="woServer:Web-Beta exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/woServer_Web_Beta_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="woServer/web/Web-RoseBeta" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="file-copy" path="$PROJECT_DIR$/woServer/webBeta/WEB-INF/classes/log4j.properties" />

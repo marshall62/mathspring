@@ -13,6 +13,13 @@ To Build releases:
    Production wars should be built from the production branch (see below for how to check out).
    Should build and push production and then use ant script  DeployRose_PRODUCTION_WarWithoutContent
 
+Database compatibility:
+
+Note: Some versions of MySQL are not happy with importing files exported on rose.  You may
+have to search from strings like ROW_FORMAT=FIXED in the .sql file and replace
+with empty string if MySQL complains about these options not being available
+
+
 Notes:
 To make sure production is updated with master branch
 1.  commit and push master

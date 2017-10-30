@@ -35,6 +35,53 @@ function servletPost(action, args, callbackFn) {
         callbackFn)
 }
 
+function saveMouse (x, y) {
+    // console.log("x:"+x+"y:"+y);
+    globals.mouseHistory.push({x:x,y:y,t:Date.now()});
+}
+
+function saveMouseClick (x, y) {
+    // console.log("x:"+x+"y:"+y);
+    globals.mouseHistory.push({x:x,y:y,t:Date.now(),action:1});
+}
+
+// Called on a timer (every 5 min) to ship the mouse history to the server.
+function sendMouseData () {
+    var url = "saveMouseData";
+    var clone = globals.mouseHistory.slice(0);
+    // reset the mouseHistory array BEFORE server call so we can collect points in a new list.
+    globals.mouseHistory= [];
+    var pointLst = {points: clone};
+    console.log("Sending " + clone.length + " points");
+    // obj = {data: [{x: 10, y:34, t: Date.now()}, {x: 5, y:66, t: Date.now()}]};
+    var  obj= {mouseData: JSON.stringify(pointLst)};
+    // TODO make sure server returns code that indicates the mouse data was saved.
+    gritServletPost("saveMouseData",obj);
+}
+
+function gritServletPost(action, data) {
+    // var jsonStr = encodeURIComponent(JSON.stringify(data));
+    // add in the other common fields for post
+    data.action = action;
+    data.sessionId= globals.sessionId;
+    data.elapsedTime = globals.elapsedTime;
+    data.clickTime = globals.clickTime;
+    data.eventCounter=sysGlobals.eventCounter;
+    // data = JSON.stringify(data);
+    $.ajax({
+        type: "POST",
+        url: getGritServletURL(action),
+        dataType: 'json',
+        cache: false,
+        async: true,
+        crossDomain: false,
+        data: data ,
+        error: function (xhr, textStatus, errorThrown) {
+            alert("Failure to post mouse data " + textStatus + errorThrown);
+        }
+    });
+}
+
 function servletFormPost (action, args, callbackFn) {
     $.post(getTutorServletURL(action,args),
         callbackFn)
@@ -50,6 +97,11 @@ function getTutorServletURL (action, args) {
         + "&eventCounter="+ sysGlobals.eventCounter++
         + "&var=b"
         + args ;
+}
+
+// A POST URL should not have parameters
+function getGritServletURL (action) {
+    return "/" + sysGlobals.wayangServletContext + "/" + sysGlobals.gritServletContext + "/" + sysGlobals.gritServletName;
 }
 
 // Makes a synchronous call to the server.

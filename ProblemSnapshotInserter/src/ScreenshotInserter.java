@@ -3,6 +3,8 @@ import com.mysql.jdbc.MysqlDataTruncation;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,6 +58,7 @@ public class ScreenshotInserter {
 
     public static void main(String[] args) throws SQLException {
 
+        List<String> messages = new ArrayList<String>();
         Connection conn = getAConnection("rose.cs.umass.edu");
         System.out.println("Running snapshot inserter");
 
@@ -67,6 +70,7 @@ public class ScreenshotInserter {
             if (!dir.endsWith("/"))
                 dir += "/"; // needs to end with a slash
             System.out.println("Using directory " + dir + " for images");
+
         }
         else System.out.println("Using current directory for images");
 
@@ -75,35 +79,36 @@ public class ScreenshotInserter {
         ResultSet rs = null;
         String filename = null;
         try {
-            String q = "select name, screenShotURL from Problem ";
+            String q = "select id, name, screenShotURL from Problem ";
             ps = conn.prepareStatement(q);
             rs = ps.executeQuery();
             while (rs.next()) {
                 FileInputStream inputStream = null;
+                int id = rs.getInt("id");
                 String ssURL = null;
                 problem_name = rs.getString("name");
                 ssURL = rs.getString("screenShotURL");
                 filename = dir + problem_name + ".jpg";
-                if (ssURL != null) {
-                    int p = ssURL.lastIndexOf("/");
-                    String ssName = ssURL.substring(p + 1);
-                    String ssn = ssName.split("\\.")[0];
-                    if (!ssn.equals(problem_name)) {
-                        try {
-                            inputStream = new FileInputStream(dir + ssName);
-                        } catch (FileNotFoundException e) {
-                            System.out.println("Cant find file " + dir + ssName);
-                            continue;
-                        }
-                    }
-                }
-                if (inputStream == null) {
-                    try {
-                        inputStream = new FileInputStream(filename);
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Can't find file " + filename);
-                        continue;
-                    }
+
+//                if (ssURL != null) {
+//                    int p = ssURL.lastIndexOf("/");
+//                    String ssName = ssURL.substring(p + 1);
+//                    String ssn = ssName.split("\\.")[0];
+//                    if (!ssn.equals(problem_name)) {
+//                        try {
+//                            inputStream = new FileInputStream(dir + ssName);
+//                        } catch (FileNotFoundException e) {
+//                            System.out.println("Cant find file " + dir + ssName);
+//                            continue;
+//                        }
+//                    }
+//                }
+
+                try {
+                    inputStream = new FileInputStream(filename);
+                } catch (FileNotFoundException e) {
+                    messages.add("Problem id="+id+" name="+problem_name + " NO FILE PROVIDED: " + filename);
+                    continue;
                 }
 
                 PreparedStatement ps2 = null;
@@ -115,16 +120,21 @@ public class ScreenshotInserter {
                     ps2.setString(2, problem_name);
 
                     ps2.executeUpdate();
-                    System.out.println("Successfully wrote blob for " + problem_name);
+                    System.out.print("Problem id=" + id + " name=" + problem_name + "...");
+                    System.out.println("...WRITING BLOB: " + filename);
                 } catch (MysqlDataTruncation exc) {
-                    System.out.println("Snapshot too large for " + filename);
+                    messages.add("Problem id="+id+" name="+problem_name + "no file: " + filename);
                     continue;
                 } catch (Exception e) {
-                    System.out.println("Cannot process problem " + problem_name + " .. Omitting");
+                    messages.add("Problem id="+id+" name="+problem_name + "no file: " + filename);
                     continue;
                 } finally {
                     ps2.close();
                 }
+            }
+            System.out.println("\n\nFailures:");
+            for (String m : messages) {
+                System.out.println(m);
             }
 
 

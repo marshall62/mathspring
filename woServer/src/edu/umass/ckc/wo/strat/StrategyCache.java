@@ -36,4 +36,12 @@ public class StrategyCache {
     public void putStrategy (int stratId, TutorStrategy strat) {
         this.cache.put(stratId,strat);
     }
+
+    /**
+     * Flush the cache.   This is connected to the AdminFlushStrategyCacheEvent so that we can dump the cache.   Typically this might be done
+     * if someone were to change the definition of a strategy used by a class while that class is using the tutor.
+     */
+    public void flush () {
+        cache = new HashMap<Integer,TutorStrategy>();
+    }
 }

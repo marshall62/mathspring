@@ -20,7 +20,7 @@ public class LessonModelParameters {
     public static final String MIN_NUMBER_PROBS = "minNumberProbs";
     public static final String MAX_TIME_MINUTES = "maxTimeMinutes";
     public static final String MIN_TIME_MINUTES = "minTimeMinutes";
-    public static final String CONTENT_FAILURE_THRESHOLD = "contentFailureThreshold";
+
     private String ccss;
     protected long maxTimeMs = 15 * 60 * 1000;
     protected long minTimeMs = 3 * 60 * 1000;
@@ -29,6 +29,7 @@ public class LessonModelParameters {
     protected int maxProbs = 10;            // default to 10 problems
     protected int minProbs = 1;            // default to 1 problem
     protected double desiredMastery = 0.95;  // default to 95%
+
 
     // The below should not be here because they are not part of what goes on during the events related
     // to processing the TopicModel.  These are about selecting problems which is PedagogicalModel processing
@@ -85,6 +86,7 @@ public class LessonModelParameters {
             this.setMaxTimeMinutes(Integer.parseInt(p.getValue()));
         else if (p.getName().equalsIgnoreCase(MIN_TIME_MINUTES))
             this.setMinTimeMinutes(Integer.parseInt(p.getValue()));
+
 
     }
 

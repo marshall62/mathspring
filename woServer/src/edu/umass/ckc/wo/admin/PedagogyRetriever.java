@@ -51,11 +51,12 @@ public class PedagogyRetriever {
         int overridePedagogyId = DbUser.getStudentOverridePedagogy(conn,studId);
         if (overridePedagogyId != -1) pedagogyId = overridePedagogyId;
         // users who have been in the system prior to the institution of pedagogy ids will
-        // not have a pedagogy assigned.   We will automatically set their pedagogy id to be the
-        // first default.
+        // not have a pedagogy assigned.
+        // OR the more typical case is that the student is in a class using tutoring strategies and this is their first login so that
+        // no strategy id is yet set in the student table.  So return null now, and the caller will try to assign a strategy (or a default strategy if strategies
+        // are not set up for the class)
         if (pedagogyId == -1)  {
-            List<Pedagogy> peds = getDefaultPedagogies();
-            return peds.get(0);
+            return null;
         }
         else  {
             // We use the students group number to find the Pedagogy.  Then we can build a StudentModel object

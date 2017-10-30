@@ -11,7 +11,8 @@ import java.util.List;
  * Created by nsmenon on 4/14/2017.
  */
 public interface TTProblemsViewService {
-    public ProblemsView viewProblemSetsInGivenProblem(ModelMap map, Integer problemId, Integer classId) throws TTCustomException;
+
+    public ProblemsView viewProblemSetsInGivenProblem(Integer problemId, Integer classId) throws TTCustomException;
 
     public boolean saveChangsForproblemSets(List<String> problemIdIds, Integer classId, String problemSetId) throws TTCustomException;
 

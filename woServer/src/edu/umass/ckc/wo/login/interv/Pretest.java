@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.login.interv;
 
 import ckc.servlet.servbase.ServletParams;
+import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.content.PrePostProblemDefn;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.db.DbPrePost;
@@ -62,6 +63,63 @@ import java.sql.SQLException;
       7.  Make sure images are placed in resources/images/pretest/nameOftest/  dir and that these are correctly placed as the
           url of a problem with something like /images/pretest/nameOfTest/problem1.jpg
       8.   Make sure the pretest data has been cleared for students from the preposttestdata table.
+
+
+ Within the msadmin tool that allows us to configure intervention selectors within a tutoring strategy we want
+ the pretest and posttest interventions to allow us to set a parameter called preposttestName to be the name of the pre or post
+ test that they will be using (the name column in the preposttest table is what this refers to).   So this allows us
+ to select a particular pre or post test for a given class rather than have to get it from the classconfig table.
+
+ The difficulty here is that most parameters for a intervention selectors are a simple set of fixed values (e.g. true, false)
+ but these are a set of names that come from the preposttest table which is possibly changing (adds, deletes, updates).
+ This meant adding some triggers to the preposttest table so that when a new test is added, we add rows to the table
+ that stores legal values for intervention selector params (is_param_values).   So here are MySQL triggers in case I ever need
+ to mess with this again:
+
+ This one adds two rows to is_param_value when a new test is added to the preposttest table:
+ delimiter #
+ create trigger param_value_after_ins_trig after insert on preposttest
+ for each row
+ begin
+ if new.isActive = 1 then
+ insert into is_param_value (value, isparamId) values (new.name, (select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Pretest')) );
+ insert into is_param_value (value, isparamId) values (new.name, (select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Posttest')));
+ end if;
+ end
+
+ To get rid of this this trigger
+ drop trigger param_value_after_ins_trig
+
+
+ This trigger handles updates to the preposttest
+ delimiter #
+ create trigger param_value_after_upd_trig after update on preposttest
+ for each row
+ begin
+ if new.isActive = 1 and old.isActive = 0 then
+ insert into is_param_value (value, isparamId) values (new.name, (select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Pretest')) );
+ insert into is_param_value (value, isparamId) values (new.name, (select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Posttest')));
+ elseif new.isActive = 0 and old.isActive = 1 then
+ delete from is_param_value where value=old.name and isParamId=(select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Pretest')) ;
+ delete from is_param_value where value=old.name and isParamId=(select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Posttest')) ;
+ elseif new.isActive = 1 and new.name != old.name then
+ update is_param_value set value = new.name where isparamId=(select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Pretest')) ;
+ update is_param_value set value = new.name where isparamId=(select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Posttest'));
+ end if;
+
+ end
+
+This one handles deletes:
+ delimiter #
+ create trigger param_value_after_del_trig after delete on preposttest
+ for each row
+ begin
+ delete from is_param_value where value=old.name and isParamId=(select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Pretest')) ;
+ delete from is_param_value where value=old.name and isParamId=(select id from is_param_base where name='preposttestName' and intervention_selector_id=(select id from intervention_selector where name='Posttest')) ;
+
+ end
+
+
  */
 public class Pretest extends LoginInterventionSelector {
     private static final String ANSWER = "answer";
@@ -75,6 +133,7 @@ public class Pretest extends LoginInterventionSelector {
     public static final String ELAPSED_TIME = "elapsedTime";
     public static final String NUM_PROBS_IN_TEST = "numProbsInTest";
     public static final String NUM_PROBS_COMPLETED = "numProbsCompleted";
+    public static final String TEST_NAME = "preposttestName";
 
     protected int testId;
     protected int classId;
@@ -93,7 +152,14 @@ public class Pretest extends LoginInterventionSelector {
     }
 
     protected void setProperties (String testType) throws SQLException {
-        this.testId = DbClass.getClassPrePostTest(smgr.getConnection(),classId,testType);
+        // If using tutoring strategies, the testName can be retrieved from the IS parameters; o/w testId comes from classconfig
+        String testName = getConfigParameter2(TEST_NAME);
+        if (testName == null)
+            this.testId = DbClass.getClassPrePostTest(smgr.getConnection(),classId,testType);
+        else this.testId = DbPrePost.getTest(smgr.getConnection(),testName);
+        // It should not be possible to get a name of a test that isn't found in the preposttest table.
+        if (this.testId == -1)
+            System.out.println("Cannot run pretest.  The test cannot be found.  name: " + testName);
         this.numProbsInTest = DbPrePost.getPrePostTestNumProblems(smgr.getConnection(),this.testId);
         this.numTestProbsCompleted = DbPrePost.getStudentCompletedNumProblems(smgr.getConnection(),this.testId, smgr.getStudentId(),testType);
 
@@ -101,17 +167,21 @@ public class Pretest extends LoginInterventionSelector {
 
     public void init (SessionManager smgr, PedagogicalModel pm) throws Exception {
         setProperties(testType);
-        if (configXML != null) {
-            Element eotElt = configXML.getChild(TERMINATION_TEST);
-            if (eotElt != null)
-                terminationPredicate = eotElt.getTextTrim();
-            else
-                terminationPredicate = COMPLETE_ALL_PROBLEMS;
-            Element startMsgElt = configXML.getChild(START_MESSAGE);
-            if (startMsgElt != null)
-                startMessage = startMsgElt.getTextTrim();
-        }
-        else terminationPredicate = COMPLETE_ALL_PROBLEMS;
+        startMessage = getConfigParameter2(START_MESSAGE);
+        terminationPredicate = getConfigParameter2(TERMINATION_TEST);
+        if (terminationPredicate == null)
+            terminationPredicate = COMPLETE_ALL_PROBLEMS;
+//        if (configXML != null) {
+//            Element eotElt = configXML.getChild(TERMINATION_TEST);
+//            if (eotElt != null)
+//                terminationPredicate = eotElt.getTextTrim();
+//            else
+//                terminationPredicate = COMPLETE_ALL_PROBLEMS;
+//            Element startMsgElt = configXML.getChild(START_MESSAGE);
+//            if (startMsgElt != null)
+//                startMessage = startMsgElt.getTextTrim();
+//        }
+//        else terminationPredicate = COMPLETE_ALL_PROBLEMS;
     }
 
 
