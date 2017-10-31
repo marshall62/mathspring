@@ -56,7 +56,7 @@ public class AskGoalsIntervention extends InputResponseIntervention implements N
         String str = "<div>  " +
                 getFormOpen() + " <p>Some people set goals for themselves as they use MathSpring. We wonder... Do you have any goals, or intentions, for this new phase? What are you trying to accomplish?";
 
-        str += "<textarea name=\"" + GOALS + "\" rows=\"3\" cols=\"40\"/>" ;
+        str += "<br><br><textarea name=\"" + GOALS + "\" rows=\"6\" cols=\"45\"/>" ;
 //        str += "<br><br>3. What do you want to happen?";
 //        str += "<textarea name=\"" + RESULT + "\" rows=\"3\" cols=\"40\"/>" ;
         str+= "</p>";

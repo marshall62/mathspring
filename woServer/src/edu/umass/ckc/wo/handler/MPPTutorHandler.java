@@ -14,6 +14,7 @@ import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.model.TutorModel;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutor.response.*;
+import edu.umass.ckc.wo.tutormeta.Intervention;
 import edu.umass.ckc.wo.woserver.ServletInfo;
 
 import java.sql.SQLException;
@@ -75,9 +76,11 @@ public class MPPTutorHandler {
                 new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (ProblemResponse) r, "practice",
                         state.getCurProbType(), true, ((ProblemResponse) r).getProblem().getResource(), null, false, state.getCurProblem(), this.showMPP);
 
-            else if (r instanceof InterventionResponse)
-                new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (InterventionResponse) r, "practice",
+            else if (r instanceof InterventionResponse) {
+
+                new TutorPage(info, smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), (InterventionResponse) r, "practice",
                         state.getCurProbType(), true, null, null, false, state.getCurProblem(), this.showMPP);
+            }
             new TutorLogger(smgr).logMPPEvent(e,state.getCurProblem());
 
         }
@@ -115,7 +118,7 @@ public class MPPTutorHandler {
             PedagogicalModel pedMod = smgr.getPedagogicalModel();
             NextProblemEvent npe = new NextProblemEvent(e.getElapsedTime(),0,e.getTopicId());
             String lastLoc = "ReviewTopic";
-            lastLoc = ((MPPContinueTopicEvent) e).getLocation() + lastLoc;   // will be either MPP or Dashboard
+            lastLoc = ((MPPReviewTopicEvent) e).getLocation() + lastLoc;   // will be either MPP or Dashboard
             npe.setIsEnteringPracticeArea(true);
             npe.setLastLocation(lastLoc);
             npe.setMode(PedagogicalModel.REVIEW_MODE);
@@ -138,23 +141,25 @@ public class MPPTutorHandler {
             NextProblemEvent npe = new NextProblemEvent(e.getElapsedTime(),0,e.getTopicId());
             npe.setMode(PedagogicalModel.CHALLENGE_MODE);
             String lastLoc = "ChallengeTopic";
-            lastLoc = ((MPPContinueTopicEvent) e).getLocation() + lastLoc;   // will be either MPP or Dashboard
+            lastLoc = ((MPPChallengeTopicEvent) e).getLocation() + lastLoc;   // will be either MPP or Dashboard
             npe.setIsEnteringPracticeArea(true);
             npe.setLastLocation(lastLoc);
             int lastProbId =  smgr.getStudentState().getCurProblem();
             String typ = smgr.getStudentState().getCurProbType();
-            ProblemResponse r = (ProblemResponse) pedMod.processChallengeModeNextProblemRequest(npe);
+            Response r =  pedMod.processChallengeModeNextProblemRequest(npe);
+            if (r instanceof ProblemResponse) {
+                ProblemResponse rr = (ProblemResponse) r ;
+                Problem p = rr.getProblem();
+                if (e.getTopicId() != smgr.getStudentState().getCurTopic())
+                    smgr.getStudentState().newTopic();
+                e.setUserInput(Integer.toString(e.getTopicId()));
 
-            Problem p = r.getProblem();
-            if (e.getTopicId() != smgr.getStudentState().getCurTopic())
-                smgr.getStudentState().newTopic();
-            e.setUserInput(Integer.toString(e.getTopicId()));
+                smgr.getStudentModel().newProblem(state,p);
+                smgr.getStudentModel().save();
+                new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), rr, "practice",  typ, true, p.getResource(), null, false, lastProbId, this.showMPP);
+                new TutorLogger(smgr).logMPPEvent(e,lastProbId);
+            }
 
-            smgr.getStudentModel().newProblem(state,p);
-            smgr.getStudentModel().save();
-//            if (!(e.getTopicId() == state.getCurTopic() && state.isInChallengeMode()))
-            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), r, "practice",  typ, true, p.getResource(), null, false, lastProbId, this.showMPP);
-            new TutorLogger(smgr).logMPPEvent(e,lastProbId);
             //we need to pass solved=true so that it won't set continueUnsolvedProblem to true
 //            new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), -1, "challenge", Problem.PRACTICE, state.getCurProbType(), true, null, null, false);
         }

@@ -49,6 +49,7 @@ public class AskGoalsIS extends NextProblemInterventionSelector  {
 
     public AskGoalsIS(SessionManager smgr) throws SQLException {
         super(smgr);
+        this.inputType = "freeAnswer";
         state = new MyState(smgr);
     }
 
@@ -113,10 +114,7 @@ public class AskGoalsIS extends NextProblemInterventionSelector  {
         // the user sits in the intervention a LONG time and then submits it (which had the bug of generating the intervention again without
         // this fix)
         state.setTimeOfLastIntervention(now);
-        if (inputType.equals("freeAnswer")) {
-            processFreeAnswerInputs(e);
-            return null;
-        }
+        processFreeAnswerInputs(e);
         return null;
     }
 
