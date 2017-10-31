@@ -6,6 +6,8 @@ import edu.umass.ckc.wo.db.DbPrePost;
 import edu.umass.ckc.wo.db.DbClassPedagogies;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.PretestPool;
+import edu.umass.ckc.wo.db.DbStrategy;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.exc.DeveloperException;
@@ -73,6 +75,7 @@ public class ClassAdminHelper {
      * @param submissionEventName
      * @param teacherId
      * @param isSimpleConfig
+     * @param useTutoringStrategies
      * @return  true if there is an error, false otherwise
      * @throws IOException
      * @throws ServletException
@@ -82,10 +85,11 @@ public class ClassAdminHelper {
                                                                List<String> pedagogyIds,
                                                                HttpServletRequest req,
                                                                HttpServletResponse resp,
-                                                               String submissionEventName, int teacherId, Connection conn, boolean isSimpleConfig) throws IOException, ServletException, SQLException {
+                                                               String submissionEventName, int teacherId, Connection conn, boolean isSimpleConfig, boolean useTutoringStrategies) throws IOException, ServletException, SQLException {
         List<Pedagogy> selectedPedagogies = new ArrayList<Pedagogy>();
+        List<TutorStrategy> strats = DbStrategy.getStrategies(conn,classId);
         // check to see if user selected Default pedagogy + some others - an error
-        if (pedagogyIds.size() > 1 && defaultSelected(pedagogyIds)) {
+        if (!useTutoringStrategies && pedagogyIds.size() > 1 && defaultSelected(pedagogyIds)) {
             // the URL to which the form is submitted is a parameter since this JSP is used to alter and create
             req.setAttribute("formSubmissionEvent",submissionEventName);
             req.setAttribute("pedagogies", DbClassPedagogies.getAllPedagogies());
@@ -102,8 +106,25 @@ public class ClassAdminHelper {
             req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req, resp);
             return true;
         }
+        if (strats.size() > 0 && (!useTutoringStrategies || pedagogyIds.size() > 1)) {
+            req.setAttribute("formSubmissionEvent",submissionEventName);
+//            req.setAttribute("pedagogies", DbClassPedagogies.getAllPedagogies());
+            req.setAttribute("message","You can't turn off strategies or select pedagogies if the class has been configured with a tutoring strategy.");
+            req.setAttribute("action","AdminAlterClassPedagogies");
+            req.setAttribute("classId",classId);
+            req.setAttribute("teacherId",teacherId);
+            CreateClassHandler.setTeacherName(conn,req, teacherId);
+            ClassInfo info = DbClass.getClass(conn,classId);
+            ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
+            Classes bean1 = new Classes(classes1);
+            req.setAttribute("bean", bean1);
+            req.setAttribute("classInfo", info);
+            req.setAttribute("useTutoringStrategies", true);
+            req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req, resp);
+            return true;
+        }
         // Use the list of default pedagogies if user chose default
-        if (defaultSelected(pedagogyIds))  {
+        if (!useTutoringStrategies && defaultSelected(pedagogyIds))  {
             selectedPedagogies = getDefaultPedagogies();
             // special error check to make sure a default pedagogy really exists
             if (selectedPedagogies.size() < 1) {
@@ -125,7 +146,7 @@ public class ClassAdminHelper {
                 return true;
             }
         }
-        else if (pedagogyIds.size() == 0 && isSimpleConfig) {
+        else if (!useTutoringStrategies && pedagogyIds.size() == 0 && isSimpleConfig) {
             // the URL to which the form is submitted is a parameter since this JSP is used to alter and create
             ClassInfo info = DbClass.getClass(conn,classId);
             ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
@@ -143,7 +164,7 @@ public class ClassAdminHelper {
             req.getRequestDispatcher(CreateClassHandler.SIMPLE_SELECT_PEDAGOGIES_JSP).forward(req,resp);
             return true;
         }
-         else if (pedagogyIds.size() == 0) {
+         else if (!useTutoringStrategies && pedagogyIds.size() == 0) {
             // the URL to which the form is submitted is a parameter since this JSP is used to alter and create
             ClassInfo info = DbClass.getClass(conn,classId);
             ClassInfo[] classes1 = DbClass.getClasses(conn, teacherId);
@@ -159,11 +180,12 @@ public class ClassAdminHelper {
             req.getRequestDispatcher(CreateClassHandler.SELECT_PEDAGOGIES_JSP).forward(req,resp);
             return true;
         }
+        // if the useTUtoringStrategies checkbox is checked we don't error-check the form.
         return false; // no errors
     }
 
     public static void saveSelectedPedagogies (Connection conn, int classId, List<String> pedagogyIds) throws SQLException, DeveloperException {
-         List<Pedagogy> selectedPedagogies = DbClassPedagogies.getPedagogiesFromIds(pedagogyIds);
+        List<Pedagogy> selectedPedagogies = DbClassPedagogies.getPedagogiesFromIds(pedagogyIds);
         // eliminate any old pedagogy settings
         DbClassPedagogies.removeClassPedagogies(conn, classId);
         for (Pedagogy ped: selectedPedagogies)

@@ -114,8 +114,7 @@ public class BaseVideoSelector implements VideoSelector {
         DbUtil.loadDbDriver();
         try {
             Connection conn = DbUtil.getAConnection();
-            ProblemMgr mgr = new ProblemMgr(null,new BaseVideoSelector());
-            mgr.loadProbs(conn);
+            ProblemMgr.loadProbs(conn);
             List<Problem> probs= ProblemMgr.getAllProblems();
             BaseVideoSelector s = new BaseVideoSelector();
             for (Problem p: probs)  {

@@ -10,8 +10,15 @@ import ckc.servlet.servbase.ServletParams;
  * To change this template use File | Settings | File Templates.
  */
 public class MPPChallengeTopicEvent extends MPPTopicEvent {
+    private String location = ""; // will be either MPP or Dashboard (this is because Huy used MPP events in the dashboard...)
     public MPPChallengeTopicEvent(ServletParams p) throws Exception {
         super(p);
+        this.location = p.getString("location","MPP");
+
+    }
+
+    public String getLocation () {
+        return this.location;
     }
 
 

@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.login;
 
 
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.woserver.ServletInfo;
 
 import javax.servlet.ServletException;
@@ -30,7 +31,7 @@ public class LoginK12_2 extends Login2 {
 
     @Override
     public LoginResult process(ServletInfo servletInfo) throws Exception {
-        if ("b".equals(servletInfo.getRequest().getParameter("var"))) {
+        if (Settings.useNewGUI()) {
             this.login1_jsp = LOGIN_JSP_NEW;
             this.login_existingSess_jsp = "login/loginExistingSessionK12_new.jsp";
         }

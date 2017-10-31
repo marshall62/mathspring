@@ -82,6 +82,20 @@ public class DbAdmin {
         else return null;
     }
 
+    public static int setPassword (Connection conn, String username, String pwToken) throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            String q = "update administrator set password=? where username=?";
+            ps = conn.prepareStatement(q);
+            ps.setString(1, pwToken);
+            ps.setString(2, username);
+            return ps.executeUpdate();
+        } finally {
+            if (ps != null)
+                ps.close();
+        }
+    }
+
     public static String getPassword (Connection conn, String username) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;

@@ -320,4 +320,26 @@ public class DbPrePost {
                 rs.close();
         }
     }
+
+    public static int getTest (Connection conn, String testName) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select id from preposttest where name=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setString(1, testName);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                return id;
+            }
+            return -1;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
 }

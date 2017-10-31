@@ -57,8 +57,7 @@ public class TTLoginServiceImpl implements TTLoginService {
         try {
 
             if (!ProblemMgr.isLoaded()) {
-                ProblemMgr probMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-                probMgr.loadProbs(connection.getConnection());
+                ProblemMgr.loadProbs(connection.getConnection());
                 Settings.lessonMap = DbPedagogy.buildAllLessons(connection.getConnection());
                 Settings.loginMap = DbPedagogy.buildAllLoginSequences(connection.getConnection());
                 Settings.pedagogyGroups = DbPedagogy.buildAllPedagogies(connection.getConnection(), null);

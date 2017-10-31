@@ -12,6 +12,7 @@ import edu.umass.ckc.wo.content.Video;
 import edu.umass.ckc.wo.db.DbCoopUsers;
 import edu.umass.ckc.wo.event.internal.InternalEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.interventions.AskGoalsIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.SelectHintSpecs;
 import edu.umass.ckc.wo.log.TutorLogger;

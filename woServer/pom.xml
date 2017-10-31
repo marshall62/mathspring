@@ -260,6 +260,34 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!--Sass compiler
+            Normally, Intellij will automatically import the plugin. If not, go to View -> Tool Windows -> Maven Projects -> Right Click woServer -> Reimport
+
+To compile Sass stylesheets, on the Maven Projects window, go to Plugins -> sass -> sass:update-stylesheets
+            -->
+            <plugin>
+                <groupId>nl.geodienstencentrum.maven</groupId>
+                <artifactId>sass-maven-plugin</artifactId>
+                <version>2.24</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>update-stylesheets</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <source>
+                                <directory>${project.basedir}/resources/sass</directory>
+                            </source>
+                            <destination>${project.basedir}/resources/sass_compiled</destination>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

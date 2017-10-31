@@ -157,14 +157,15 @@ public class WoLoginServlet extends BaseServlet {
 
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         logger.debug("Begin setServletInfo of WOLoginServlet");
+
+        Settings.setGui(servletConfig.getInitParameter(Names.GUI));
         ServletUtil.initialize(servletContext, connection);
         Settings.formalityServletURI = servletConfig.getInitParameter(Names.FORMALITY_SERVLET_URI);
         servletContext.setAttribute("flashClientURI", Settings.flashClientPath);
         Settings.getSurveys(connection); // loads the pre/post Survey URLS
         // Loads all content into a cache for faster access during runtime
         if (!ProblemMgr.isLoaded())  {
-            ProblemMgr problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-            problemMgr.loadProbs(connection);
+            ProblemMgr.loadProbs(connection);
             CCContentMgr.getInstance().loadContent(connection);
             LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
 

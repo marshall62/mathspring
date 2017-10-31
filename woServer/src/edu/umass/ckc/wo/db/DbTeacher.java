@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.db;
 
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Teacher;
+import edu.umass.ckc.wo.event.admin.AdminTeacherRegistrationEvent;
 import edu.umass.ckc.wo.login.PasswordAuthentication;
 
 import java.sql.Connection;
@@ -35,6 +36,25 @@ public class DbTeacher {
             else return -1;
         }
         else return -1;
+    }
+
+    public static void insertTeacher (Connection conn, String userName, String fname, String lname, String pw, String email) throws SQLException {
+
+        PreparedStatement ps = null;
+        try {
+            String s = "insert into Teacher (fname,lname,password,userName,email) values (?,?,?,?,?)";
+            ps = conn.prepareStatement(s);
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            String token = PasswordAuthentication.getInstance(0).hash(pw.toCharArray());
+            ps.setString(3, token);
+            ps.setString(4, userName);
+            ps.setString(5, email);
+            ps.executeUpdate();
+        } finally {
+            if (ps != null)
+                ps.close();
+        }
     }
 
     public static String getTeacherName (Connection conn, int teacherid) throws SQLException {

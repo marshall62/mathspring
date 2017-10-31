@@ -35,7 +35,19 @@ public class BaseProblemSelector implements ProblemSelector {
         this.smgr = smgr;
         this.topicModel = (TopicModel) lessonModel;
         this.parameters=params;
-        this.lessonModelParameters = ((TopicModel) lessonModel).getTmParams(); // topics assumed when using this selector
+        // When using this problem selector, there is the assumption that topics are used.
+        // I don't think it's necessary to use TopicModelParameters though except that Pedagogies instantiate
+        // by setting the topicModel.tmParams and its not so easy to have them set the topicModel.lmParams instead
+        // (partially because of interleaved problem sets attributes in the topicModelParameters).
+        // Tutoring strategies instantiate with the topicModelParameters.lmParameters set (and the tmParameters null)
+
+        // Tutoring strategies have the lesson params on the lessonModel.lmParams.   Pedagogies have
+        // the lesson params on lessonModel.tmParams, so we get the right one.
+        LessonModelParameters lmParams = lessonModel.getLmParams();
+        TopicModelParameters tmParams = ((TopicModel) lessonModel).getTmParams();
+        if (lmParams != null)
+            this.lessonModelParameters = lmParams; // tutoring strategies will have them here.
+        else this.lessonModelParameters = tmParams; // pedagogies will have them here.
     }
 
 

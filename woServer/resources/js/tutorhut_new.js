@@ -53,7 +53,6 @@ const LCDIALOG_WIDTH = 300;
 const LCDIALOG_HEIGHT = 700;
 var DELAY = 700, clicks = 0, timer = null; //Variables required for determining the difference between single and double clicks
 
-
 function isFlashProblem() {
     return globals.probType === FLASH_PROB_TYPE;
 }
@@ -246,7 +245,7 @@ function loadIframe (iframeId, url) {
 ///////////////////////////////////////////////////////////////////////
 
 
-function nextProb(globals) {
+function nextProb(globals,isSessionBegin=false) {
     toggleSolveDialogue(false);
     if (!globals.showMPP)
         hideMPP()
@@ -260,11 +259,12 @@ function nextProb(globals) {
     // TODO:  Probably should replace NewProblem button when a topic intro shows.  It could have the correct handler on it.
     if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
         servletGet("InputResponseNextProblemIntervention",
-            {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode, destination:globals.destinationInterventionSelector},
+            {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode,
+                destination:globals.destinationInterventionSelector},
             processNextProblemResult) ;
     // Normal Processing
     else
-        servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode}, processNextProblemResult);
+        servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode,lastLocation: 'Login', isEnteringPracticeArea: isSessionBegin}, processNextProblemResult);
 }
 
 // This function can only be called if the button is showing
@@ -969,6 +969,7 @@ function exampleDialogCloseHandler () {
 
 }
 
+
 var DELAY = 700, clicks = 0, timer = null;
 function clickHandling () {
     var width = Math.min(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -976,6 +977,32 @@ function clickHandling () {
     var lcx = width - 268 - 10;  // subtract off the width of the learning companion div + some extra for its close button
     var agreed = false;
     globals.clickTime = new Date().getTime();
+    // We turn on mouse tracking if the mouseSaveInterval is > 0.  mouseSaveInterval is given in # of seconds between
+    // saves to the server.
+    if (globals.mouseSaveInterval > 0)
+        setInterval(sendMouseData, 1000 * globals.mouseSaveInterval); // send mouse data to server every # of seconds
+    // Only set up event listeners on the body of the page if the mouseSaveInterval is positive (our indication that mouse tracking is desired)
+    if (globals.mouseSaveInterval > 0) {
+        $("body").mousemove(function (e) {
+            // var $body = $('body');
+            // var offset = $body.offset();
+            // var x = e.clientX - offset.left;
+            // var y = e.clientY - offset.top;
+            var x = e.pageX;
+            var y = e.pageY;
+            // console.log(e.pageX +  "," + e.pageY);
+            saveMouse(x, y);
+
+        });
+
+        $("body").bind('click', function (e) {
+            var x = e.pageX;
+            var y = e.pageY;
+            saveMouseClick(x, y);
+            // console.log(e.pageX +  "," + e.pageY);
+        });
+    }
+
 
     $("#" + LEARNING_COMPANION_CONTAINER).dialog({
             classes: {
@@ -1373,12 +1400,14 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
     clickHandling();
     var d = new Date();
     globals.clock = d.getTime();
-
+    console.log("tutorHut main " + globals.isBeginningOfSession)
     // If this is the first time the tutor is loaded (i.e. from a login) then we send a navigation event so the server initializes
     // correctly based on the student now being in the tutor page.
     // If not the first time, then we are re-entering the tutor page and we want to show a particular problem or intervention
-    if (globals.isBeginningOfSession)
-        nextProb(globals);
+    if (globals.isBeginningOfSession) {
+        console.log("next problem " + globals.isBeginningOfSession)
+        nextProb(globals, globals.isBeginningOfSession);
+    }
     else if (globals.activityJSON != null && (globals.probType === FLASH_PROB_TYPE || globals.probType === SWF_TYPE)) {
         showFlashProblemAtStart();
     }

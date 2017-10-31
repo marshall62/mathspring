@@ -48,6 +48,7 @@ public class WoTutorServlet extends BaseServlet {
     protected void initialize(ServletConfig servletConfig, ServletContext servletContext, Connection connection) throws Exception {
         try {
 
+            Settings.setGui(servletConfig.getInitParameter(Names.GUI));
             ServletUtil.initialize(servletContext,connection);
             logger.debug("Begin setServletInfo of WoTutorServlet");
             // machine learning problem selector needs to read a policy file
@@ -80,8 +81,7 @@ public class WoTutorServlet extends BaseServlet {
             // each Problem's example and video
             // Loads all content into a cache for faster access during runtime
             if (!ProblemMgr.isLoaded())  {
-                this.problemMgr = new ProblemMgr(new BaseExampleSelector(), new BaseVideoSelector());
-                problemMgr.loadProbs(connection);
+                ProblemMgr.loadProbs(connection);
                 CCContentMgr.getInstance().loadContent(connection);
                 LessonMgr.getAllLessons(connection);  // only to check integrity of content so we see errors early
 

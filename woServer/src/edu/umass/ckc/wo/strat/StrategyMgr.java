@@ -22,6 +22,10 @@ public class StrategyMgr {
     public static TutorStrategy getStrategy (Connection conn, int studId, int classId) throws Exception {
 
         int stratId = DbUser.getStudentStrategy(conn,studId);
+        return getStrategyFromCache(conn, classId, stratId);
+    }
+
+    public static TutorStrategy getStrategyFromCache(Connection conn, int classId, int stratId) throws Exception {
         if (stratId == -1)
             return null;
         TutorStrategy strategy = StrategyCache.getInstance().getStrategy(stratId);

@@ -15,8 +15,48 @@
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/jchart_new.js"></script>
     <script src="js/huy-slider.js"></script>
+    <script type="text/javascript" src="js/tutorutils.js"></script>
     <script>
+
+        var globals = {
+            mouseSaveInterval: ${mouseSaveInterval},
+            mouseHistory: [],
+            sessionId: ${sessionId}
+        }
+
+        var sysGlobals = {
+            gritServletContext: '${gritServletContext}',
+            wayangServletContext: '${wayangServletContext}',
+            gritServletName: '${gritServletName}'
+        }
+
         $(document).ready(function() {
+
+            // Set up mouse tracking if the mouseSaveInterval is positive (our indicator that mouse tracking is desired)
+            if (globals.mouseSaveInterval > 0)
+                setInterval(sendMouseData, 1000 * globals.mouseSaveInterval); // send mouse data to server every # of seconds
+            // Only set up event listeners on the body of the page if the mouseSaveInterval is positive (our indication that mouse tracking is desired)
+            if (globals.mouseSaveInterval > 0) {
+                $("body").mousemove(function (e) {
+                    // var $body = $('body');
+                    // var offset = $body.offset();
+                    // var x = e.clientX - offset.left;
+                    // var y = e.clientY - offset.top;
+                    var x = e.pageX;
+                    var y = e.pageY;
+                    // console.log(e.pageX +  "," + e.pageY);
+                    saveMouse(x, y);
+
+                });
+
+                $("body").bind('click', function (e) {
+                    var x = e.pageX;
+                    var y = e.pageY;
+                    saveMouseClick(x, y);
+                    // console.log(e.pageX +  "," + e.pageY);
+                });
+            }
+
             <c:set var="newUser" value="true"/>
             <c:forEach var="ts" items="${topicSummaries}">
             <c:if test="${ts.problemsDone != 0}">
@@ -34,6 +74,7 @@
             var neglectful_count = ${ts.neglectful_count};
             var studentState_disengaged = false;
             var chart = Chart;
+
 
             chart.init();
             chart.giveFeedbackAndPlant(
@@ -178,16 +219,16 @@
             </c:choose>
             <c:choose>
                 <c:when test="${ts.problemsDone>0 && ts.hasAvailableContent}">
-                    <c:set var="challengeTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&var=b&comment=" />
-                    <c:set var="continueTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=continue&var=b&comment=" />
-                    <c:set var="reviewTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&var=b&comment=" />
+                    <c:set var="challengeTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&location=Dashboard&comment=" />
+                    <c:set var="continueTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPContinueTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=continue&location=Dashboard&comment=" />
+                    <c:set var="reviewTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&location=Dashboard&comment=" />
                 </c:when>
                 <c:when test="${ts.problemsDone==0}">
                 </c:when>
                 <%--The tutor sometimes can't continue a topic if some criteria are satisfied, so we only offer review and challenge--%>
                 <c:otherwise>
-                    <c:set var="challengeTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&var=b&comment=" />
-                    <c:set var="reviewTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&var=b&comment=" />
+                    <c:set var="challengeTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPChallengeTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=challenge&location=Dashboard&comment=" />
+                    <c:set var="reviewTopicLink" value="${pageContext.request.contextPath}/TutorBrain?action=MPPReviewTopic&sessionId=${sessionId}&eventCounter=${eventCounter + 1}&topicId=${ts.topicId}&studentAction=review&location=Dashboard&comment=" />
                 </c:otherwise>
             </c:choose>
             <c:if test="${ts.problemsDone != 0}">

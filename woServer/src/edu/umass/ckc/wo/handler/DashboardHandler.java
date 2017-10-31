@@ -109,6 +109,16 @@ public class DashboardHandler {
         request.setAttribute("masteryThreshold", masteryThreshold);
         request.setAttribute("newSession", newSession);
         request.setAttribute("eventCounter",smgr.getEventCounter());
+
+        request.setAttribute("mouseSaveInterval", smgr.getMouseSaveInterval());
+        request.setAttribute("gritServletContext","gritms");
+        String servContext= request.getContextPath();
+        if (servContext != null && servContext.length()>1)
+            servContext=servContext.substring(1);    // strip off the leading /
+        request.setAttribute("wayangServletContext",servContext);
+        request.setAttribute("gritServletName","GritMouseServlet");
+
+
         request.getRequestDispatcher(jsp).forward(request, response);
         smgr.getStudentState().setTutorEntryTime(System.currentTimeMillis());
 

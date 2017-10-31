@@ -15,6 +15,7 @@
 
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/jchart.js"></script>
+    <script type="text/javascript" src="js/tutorutils.js"></script>
 
     <script language="javascript" type="text/javascript">
         var problemList=new Array();
@@ -32,6 +33,19 @@
         var startElapsedTime=0;
         var useHybridTutor=${useHybridTutor};
         var selectedCard = null;
+
+        var globals = {
+            mouseSaveInterval: ${mouseSaveInterval},
+            mouseHistory: [],
+            sessionId: ${sessionId}
+        }
+
+        var sysGlobals = {
+            gritServletContext: '${gritServletContext}',
+            wayangServletContext: '${wayangServletContext}',
+            gritServletName: '${gritServletName}'
+        }
+
 
         function initiateElapsedTime() {
             startElapsedTime= ${elapsedTime} ;
@@ -69,6 +83,30 @@
         }
 
         $(document).ready(function(){
+            // Set up mouse tracking if the mouseSaveInterval is positive (our indicator that mouse tracking is desired)
+            if (globals.mouseSaveInterval > 0)
+                setInterval(sendMouseData, 1000 * globals.mouseSaveInterval); // send mouse data to server every # of seconds
+            // Only set up event listeners on the body of the page if the mouseSaveInterval is positive (our indication that mouse tracking is desired)
+            if (globals.mouseSaveInterval > 0) {
+                $("body").mousemove(function (e) {
+                    // var $body = $('body');
+                    // var offset = $body.offset();
+                    // var x = e.clientX - offset.left;
+                    // var y = e.clientY - offset.top;
+                    var x = e.pageX;
+                    var y = e.pageY;
+                    // console.log(e.pageX +  "," + e.pageY);
+                    saveMouse(x, y);
+
+                });
+
+                $("body").bind('click', function (e) {
+                    var x = e.pageX;
+                    var y = e.pageY;
+                    saveMouseClick(x, y);
+                    // console.log(e.pageX +  "," + e.pageY);
+                });
+            }
             initiateElapsedTime();
             initChart();
 
