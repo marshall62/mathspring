@@ -33,6 +33,14 @@ function processAskEmotionIntervention(html) {
 
 }
 
+
+function processAskGoalsIntervention(html) {
+    //alert("Switching topics because " + reason);
+//    interventionDialogOpen("How are you doing", html, NEXT_PROBLEM_INTERVENTION );
+    interventionDialogOpenAsConfirm("What are your goals", html, NEXT_PROBLEM_INTERVENTION,interventionDialogOKClick, 550 );
+
+}
+
 function processShowMPPIntervention () {
      showMPP();
 }

@@ -28,6 +28,8 @@ function processNextProblemIntervention(activityJSON) {
     }
     else if (interventionType === "AskEmotionIntervention")
         processAskEmotionIntervention(activityJSON.html);
+    else if (interventionType === "AskGoalsIntervention")
+        processAskGoalsIntervention(activityJSON.html);
     else if (interventionType === "ShowMPPButton")
         processShowMPPIntervention(activityJSON.html);
     else if (interventionType === "MyProgressNavigation")

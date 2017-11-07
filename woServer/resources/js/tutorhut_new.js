@@ -245,7 +245,7 @@ function loadIframe (iframeId, url) {
 ///////////////////////////////////////////////////////////////////////
 
 
-function nextProb(globals) {
+function nextProb(globals,isSessionBegin=false) {
     toggleSolveDialogue(false);
     if (!globals.showMPP)
         hideMPP()
@@ -259,11 +259,12 @@ function nextProb(globals) {
     // TODO:  Probably should replace NewProblem button when a topic intro shows.  It could have the correct handler on it.
     if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
         servletGet("InputResponseNextProblemIntervention",
-            {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode, destination:globals.destinationInterventionSelector},
+            {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode,
+                destination:globals.destinationInterventionSelector},
             processNextProblemResult) ;
     // Normal Processing
     else
-        servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode}, processNextProblemResult);
+        servletGet("NextProblem", {probElapsedTime: globals.probElapsedTime, mode: globals.tutoringMode,lastLocation: 'Login', isEnteringPracticeArea: isSessionBegin}, processNextProblemResult);
 }
 
 // This function can only be called if the button is showing
@@ -1399,12 +1400,14 @@ function tutorhut_main(g, sysG, trans, learningCompanionMovieClip) {
     clickHandling();
     var d = new Date();
     globals.clock = d.getTime();
-
+    console.log("tutorHut main " + globals.isBeginningOfSession)
     // If this is the first time the tutor is loaded (i.e. from a login) then we send a navigation event so the server initializes
     // correctly based on the student now being in the tutor page.
     // If not the first time, then we are re-entering the tutor page and we want to show a particular problem or intervention
-    if (globals.isBeginningOfSession)
-        nextProb(globals);
+    if (globals.isBeginningOfSession) {
+        console.log("next problem " + globals.isBeginningOfSession)
+        nextProb(globals, globals.isBeginningOfSession);
+    }
     else if (globals.activityJSON != null && (globals.probType === FLASH_PROB_TYPE || globals.probType === SWF_TYPE)) {
         showFlashProblemAtStart();
     }

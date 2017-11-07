@@ -12,10 +12,16 @@ import ckc.servlet.servbase.ServletParams;
 public class MPPPreviewProblemEvent extends MPPTopicEvent {
 
     int probId;
-
+    private String location = ""; // will be either MPP or Dashboard (this is because Huy used MPP events in the dashboard...)
     public MPPPreviewProblemEvent(ServletParams p) throws Exception {
         super(p);
         setProbId(p.getInt("problemId"));
+        this.location = p.getString("location","MPP");
+
+    }
+
+    public String getLocation () {
+        return this.location;
     }
 
     public int getProbId() {
