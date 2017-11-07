@@ -19,20 +19,6 @@ import java.util.*;
 
 public class Problem implements Activity {
 
-    public static QuestType parseType(String t) {
-        for(QuestType q : QuestType.values()) {
-            if(q.name().equalsIgnoreCase(t)) return q;
-        }
-        return QuestType.multiChoice;
-    }
-
-    public enum QuestType {
-        multiChoice,
-        multiSelect,
-        shortAnswer,
-        longAnswer
-    }
-
     public static final String TOPIC_INTRO_ID = "999";
     public static final String DEMO = "demo";
     public static final String EXAMPLE = "example";
@@ -40,9 +26,37 @@ public class Problem implements Activity {
     public static final String TOPIC_INTRO = "topicIntro";
     public static final String TESTABLE_STATUS = "testable";
     public static final String QUICK_AUTH="quickAuth";
+    public static final String SAT_PROBLEM="satProblem";
+    public static final String ADV_PROBLEM="advProblem";
+    // Column names in the Problem table
+    public static final String ID = "id";
+    public static final String ANSWER = "answer";
+    public static final String ANIMATION_RESOURCE = "animationResource";
+    public static final String INSTRUCTIONS = "instructions" ;
+    public static final String SOURCE = "form" ;
+    public static final String NAME = "name";
+    public static final String NICKNAME = "nickname";
+    public static final String HAS_STRATEGIC_HINT = "strategicHintExists";
+    public static final String FORM = "form";
+    public static final String TYPE = "type";
+    public static final String META_INFO = "metainfo";
+    public static final String IS_EXTERNAL_ACTIVITY = "isExternalActivity";
+    public static final String HAS_VARS = "hasVars";
+    public static final String SCREENSHOT_URL = "screenShotURL";
+    public static String FLASH_PROB_TYPE = "flash";
+    public static String HTML_PROB_TYPE = "html5";
+//    public static String FORMALITY_PROB_TYPE = "formality";
+    public static String TOPIC_INTRO_PROB_TYPE = "TopicIntro";
+    public static String EXTERNAL_MODE = "external";
+    public static String defaultFormat;
+    public List<Hint> solution;  // sometimes a problem must be given back to the server with a set of hints that represent the solution to the problem
     protected int id;
     protected String resource;
+    protected String type = FLASH_PROB_TYPE;
+    protected String topicName = "";
+    protected String activityType;
     private String answer;   // the letter of the multi-choice answer (a-e)
+                        // client forces a prob + topic.   This is then used to make sure logging shows the given topic
     private List<ProblemAnswer> answers;  // for short answer questions we have all possible answers  and multiple choice will be here too for quickAuth probs
     private QuestType questType; // multichoice or shortanswer
     private double diff_level ;
@@ -62,65 +76,15 @@ public class Problem implements Activity {
     private int[] topicIds; // ids of the problem groups this problems is in
     private List<Topic> topics;
     private String problemFormat; //for QuickAuth problems, contains a JSON string with layout/styling parameters
-
-    public static final String SAT_PROBLEM="satProblem";
-    public static final String ADV_PROBLEM="advProblem";
-
     private boolean isExternalActivity=false;
     private int inTopicId =-1; // a special variable that says what topic this problem is being played in.   Only used when
-                        // client forces a prob + topic.   This is then used to make sure logging shows the given topic
-
     private List<CCStandard> standards;
-    protected String type = FLASH_PROB_TYPE;
-    protected String topicName = "";
-    protected String activityType;
-
-    public static String FLASH_PROB_TYPE = "flash";
-    public static String HTML_PROB_TYPE = "html5";
-//    public static String FORMALITY_PROB_TYPE = "formality";
-    public static String TOPIC_INTRO_PROB_TYPE = "TopicIntro";
-
-
-
-
-    public static String EXTERNAL_MODE = "external";
-
-
-
-
-
-
-    public List<Hint> solution;  // sometimes a problem must be given back to the server with a set of hints that represent the solution to the problem
-
-
-    // Column names in the Problem table
-    public static final String ID = "id";
-    public static final String ANSWER = "answer";
-    public static final String ANIMATION_RESOURCE = "animationResource";
-    public static final String INSTRUCTIONS = "instructions" ;
-    public static final String SOURCE = "form" ;
-    public static final String NAME = "name";
-    public static final String NICKNAME = "nickname";
-    public static final String HAS_STRATEGIC_HINT = "strategicHintExists";
-    public static final String FORM = "form";
-    public static final String TYPE = "type";
-    public static final String META_INFO = "metainfo";
-    public static final String IS_EXTERNAL_ACTIVITY = "isExternalActivity";
-    public static final String HAS_VARS = "hasVars";
-    public static final String SCREENSHOT_URL = "screenShotURL";
-    public static String defaultFormat;
     private String video=null;
     private boolean HTML5;
     private ProblemParameters params;
     private String ssURL;
     private String units = null;
-
-    public String toString() {
-        return "Prob id="+Integer.toString(id) + " rsc="+getResource();
-    }
-
     public Problem () {}
-
     public Problem (int id) {
         this.id =id;
     }
@@ -159,18 +123,63 @@ public class Problem implements Activity {
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
-     * hints a problem has when it makes a selection. 
+     * hints a problem has when it makes a selection.
     */
 
     public Problem(int id, String resource, String answer) {
         this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
     }
 
+    public static QuestType parseType(String t) {
+        for(QuestType q : QuestType.values()) {
+            if(q.name().equalsIgnoreCase(t)) return q;
+        }
+        return QuestType.multiChoice;
+    }
+
+    public static String getTYPE() {
+        return TYPE;
+    }
+
+    public static boolean isPracticeProblem (String mode) {
+        return mode != null && mode.equals(PRACTICE) ;
+    }
+
+    public static boolean isExampleOrDemo (String mode) {
+        return mode != null && (mode.equalsIgnoreCase(EXAMPLE) || mode.equalsIgnoreCase(DEMO));
+    }
+
+    public static void main(String[] args) {
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
+        Hint h1 = new Hint(3,"hi");
+        Hint h2 = new Hint(4,"there");
+        List<Hint> hints = new ArrayList<Hint>();
+        hints.add(h1);
+        hints.add(h2);
+        p.setSolution(hints);
+        String vars ="{\"$a\": [\"40\", \"40\"],\"$\b\": [\"30\", \"30\"],\"$c\": [\"x\", \"45\"],\"$d\": [\"25\", \"x\"],\"$ans_A\": [\"65\", \"65\"],\"$ans_B\": [\"45\", \"45\"],\"$ans_C\": [\"50\", \"50\"],\"$ans_D\": [\"35\", \"35\"],\"$ans_E\": [\"45\", \"25\"]}";
+//        p.setParams(vars);
+        System.out.println("JSON for problem is " + p.buildJSON(new JSONObject()));
+    }
+
+    public String toString() {
+        return "Prob id="+Integer.toString(id) + " rsc="+getResource();
+    }
+
     public int getId () { return id; }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getForm() { return form; }
 
+    public void setForm(String form) {
+        this.form = form;
+    }
+
     public String getInstructions () { return instructions ; }
+
     public void setInstructions (String instr) {
         this.instructions = instr;
     }
@@ -189,9 +198,6 @@ public class Problem implements Activity {
     public void setResource (String r) {
         this.resource = r;
     }
-
-
-
 
     public String logEventName() {
         return "satProblem";
@@ -214,8 +220,6 @@ public class Problem implements Activity {
 
         return jo.toString();
     }
-
-
 
     public JSONObject buildJSON(JSONObject jo) {
         if (isExternalActivity())
@@ -310,7 +314,6 @@ public class Problem implements Activity {
         else return "";
     }
 
-
     /**
    * getDifficulty
    *
@@ -324,8 +327,16 @@ public class Problem implements Activity {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getNickname() {
         return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public int getNumHints() {
@@ -344,12 +355,12 @@ public class Problem implements Activity {
         return answer;
     }
 
-    public void setMode (String mode) {
-        this.mode = mode;
-    }
-
     public String getMode () {
         return mode;
+    }
+
+    public void setMode (String mode) {
+        this.mode = mode;
     }
 
     public boolean isProblemToSolve() {
@@ -396,7 +407,7 @@ public class Problem implements Activity {
     }
 
     public boolean hasExample() {
-        return this.exampleID != -1;
+        return this.exampleID > 0;
     }
 
     public void setHasStrategicHint (boolean b) {
@@ -411,11 +422,6 @@ public class Problem implements Activity {
         this.exampleID = exampleID;
     }
 
-    public void setHints(List<Hint> hints) {
-        this.allHints = hints;
-        this.numHints = hints.size();
-    }
-
     public List<Hint> getHints() {
         // return a clone to make sure that if the user of the returned list mutates it,
         // then this won't be harmed.
@@ -424,45 +430,30 @@ public class Problem implements Activity {
         else return null;
     }
 
-    public void setVideo(String url) {
-        this.video=url;
+    public void setHints(List<Hint> hints) {
+        this.allHints = hints;
+        this.numHints = hints.size();
     }
 
     public String  getVideo () {
         return video;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public static String getTYPE() {
-        return TYPE;
-    }
-
-    public void setExternalActivity (boolean b) {
-        this.isExternalActivity=b;
+    public void setVideo(String url) {
+        this.video=url;
     }
 
     public boolean isExternalActivity () {
         return this.isExternalActivity;
     }
 
-
+    public void setExternalActivity (boolean b) {
+        this.isExternalActivity=b;
+    }
 
     public String getProbNumber () {
         return this.name.substring(this.name.indexOf("_")+1);
     }
-
-
 
     public double getDiff_level() {
         return diff_level;
@@ -488,12 +479,12 @@ public class Problem implements Activity {
         return standards;
     }
 
-    public String getStandardsString () {
-        return getStandardsString(getStandards());
-    }
-
     public void setStandards(List<CCStandard> standards) {
         this.standards = standards;
+    }
+
+    public String getStandardsString () {
+        return getStandardsString(getStandards());
     }
 
     public boolean isHTML() {
@@ -504,12 +495,12 @@ public class Problem implements Activity {
         return type.equalsIgnoreCase(FLASH_PROB_TYPE);
     }
 
-    public void setType (String type) {
-        this.type = type;
-    }
-
     public String getType () {
         return this.type;
+    }
+
+    public void setType (String type) {
+        this.type = type;
     }
 
     public String getHTMLDir () {
@@ -543,14 +534,6 @@ public class Problem implements Activity {
         this.answers = answers;
     }
 
-    public static boolean isPracticeProblem (String mode) {
-        return mode != null && mode.equals(PRACTICE) ;
-    }
-
-    public static boolean isExampleOrDemo (String mode) {
-        return mode != null && (mode.equalsIgnoreCase(EXAMPLE) || mode.equalsIgnoreCase(DEMO));
-    }
-
     public String getStatus() {
         return status;
     }
@@ -558,7 +541,6 @@ public class Problem implements Activity {
     public void setStatus(String status) {
         this.status = status;
     }
-
 
     public ProblemParameters getParams() {
         return params;
@@ -583,10 +565,6 @@ public class Problem implements Activity {
         return form != null && form.equals(QUICK_AUTH);
     }
 
-    public void setForm(String form) {
-        this.form = form;
-    }
-
     public String getStatementHTML() {
         return statementHTML;
     }
@@ -599,12 +577,12 @@ public class Problem implements Activity {
         return questionAudio;
     }
 
-    public String getQuestType () {
-        return questType.name();
-    }
-
     public void setQuestionAudio(String questionAudio) {
         this.questionAudio = questionAudio;
+    }
+
+    public String getQuestType () {
+        return questType.name();
     }
 
     public String getImageURL() {
@@ -632,24 +610,9 @@ public class Problem implements Activity {
         return false;
     }
 
-    public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
-        Hint h1 = new Hint(3,"hi");
-        Hint h2 = new Hint(4,"there");
-        List<Hint> hints = new ArrayList<Hint>();
-        hints.add(h1);
-        hints.add(h2);
-        p.setSolution(hints);
-        String vars ="{\"$a\": [\"40\", \"40\"],\"$\b\": [\"30\", \"30\"],\"$c\": [\"x\", \"45\"],\"$d\": [\"25\", \"x\"],\"$ans_A\": [\"65\", \"65\"],\"$ans_B\": [\"45\", \"45\"],\"$ans_C\": [\"50\", \"50\"],\"$ans_D\": [\"35\", \"35\"],\"$ans_E\": [\"45\", \"25\"]}";
-//        p.setParams(vars);
-        System.out.println("JSON for problem is " + p.buildJSON(new JSONObject()));
-    }
-
     public boolean isTestProblem() {
         return status.equals(TESTABLE_STATUS);
     }
-
-
 
     public boolean isShortAnswer () {
         return this.questType == QuestType.shortAnswer;
@@ -664,6 +627,13 @@ public class Problem implements Activity {
     }
 
     public boolean isMultiSelect () { return this.questType == QuestType.multiSelect; }
+
+    public enum QuestType {
+        multiChoice,
+        multiSelect,
+        shortAnswer,
+        longAnswer
+    }
 
 
 }

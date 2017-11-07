@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.cache;
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.content.*;
 import edu.umass.ckc.wo.db.DbVideo;
+import edu.umass.ckc.wo.tutor.probSel.StandardExampleSelector;
 import edu.umass.ckc.wo.tutor.vid.StandardVideoSelector;
 import edu.umass.ckc.wo.tutormeta.ExampleSelector;
 import edu.umass.ckc.wo.tutormeta.VideoSelector;
@@ -39,7 +40,7 @@ public class ProblemMgr {
     private static Map<Integer, ArrayList<Integer>> probIdsByTopic;
     private static Map<Integer, Set<CCStandard>> stdsByTopic;
     private static List<Topic> allTopics = new ArrayList<Topic>();;
-    private static ExampleSelector exSel = new BaseExampleSelector();
+    private static ExampleSelector exSel = new StandardExampleSelector();
     private static VideoSelector vidSel = new StandardVideoSelector();
     private static int[] topicIds;
     private static boolean loaded=false;
@@ -61,6 +62,8 @@ public class ProblemMgr {
             loadAllProblems(conn);
             fillTopicProblemMap(conn);
             fillTopicStandardMap(conn);
+            // once problems are built, we pass over them and set their examples using the StandardExampleSelector
+            setProblemExamples(conn);
         }
     }
 
@@ -108,6 +111,17 @@ public class ProblemMgr {
                 rs.close();
             if (ps != null)
                 ps.close();
+
+        }
+    }
+
+    private static void setProblemExamples (Connection conn) throws Exception {
+
+        for (int pid: problemIds) {
+            int xid = exSel.selectProblem(conn,pid);
+            Problem p = allProblems.get(pid);
+            if (p != null && xid > 0)
+                p.setExample(xid);
 
         }
     }
@@ -225,8 +239,8 @@ public class ProblemMgr {
         if (answers != null)
             p.setAnswers(answers);
         allProblems.put(p.getId(), p);
-        if (exampleId == -1)
-            exampleId = (exSel != null) ? exSel.selectProblem(conn,id) : -1;
+//        if (exampleId == -1)
+//            exampleId = (exSel != null) ? exSel.selectProblem(conn,id) : -1;
         p.setExample(exampleId);
 
         String vidURL = null;
