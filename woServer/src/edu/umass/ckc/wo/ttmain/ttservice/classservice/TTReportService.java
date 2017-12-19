@@ -4,8 +4,8 @@ import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.TTCustomException;
 import edu.umass.ckc.wo.ttmain.ttmodel.ClassStudents;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
+import org.w3c.dom.Document;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +17,8 @@ public interface TTReportService {
     public String generateTeacherReport(String teacherId, String classId, String reportType) throws TTCustomException;
 
     public Map<String,PerClusterObjectBean> generatePerCommonCoreClusterReport(String classId);
+
+    Map<String, List<Document>> generateEmotionMapValues(Map<String, String> studentIds) throws TTCustomException;
 
     public Map<String,Map<String, List<String>>> generateEfortMapValues(Map<String, String> studentIds, String classId);
 

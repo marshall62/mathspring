@@ -19,6 +19,8 @@ var perClusterReportTable
 //Report5 Varribales
 var perStudentReport;
 var effortMap;
+var emotionMap;
+var commentsMap;
 var eachStudentData = [];
 var activetable;
 var inactivetable;
@@ -41,6 +43,7 @@ function loadEffortMap (rows) {
     var legendChart = "#legendChart"+rows;
     var effortValues = effortMap[rows];
     $("#iconID"+rows).hide();
+
     var data = {
         labels: ["Type of behaviour in problem"],
         datasets: [{
@@ -130,6 +133,90 @@ function loadEffortMap (rows) {
     $(legendChart).prepend(myBarChart.generateLegend());
     $(containerChartSelector).show();
 }
+
+
+function loadEmotionMap (rows) {
+    $("#emotioniconID"+rows).hide();
+    var studentEmotions = emotionMap[rows];
+    var containerChartSelector = "#emotionContainerChart" + rows;
+    if(!jQuery.isEmptyObject(studentEmotions)) {
+        Object.keys(studentEmotions).forEach(function (key) {
+            var emotionChartCanvas = "#" + rows + key;
+
+            var percentValues = studentEmotions[key];
+            var keyValue = key;
+            percentValues[0] = Math.round(percentValues[0] / percentValues[5] * 100);
+            percentValues[1] = Math.round(percentValues[1] / percentValues[5] * 100);
+            percentValues[2] = Math.round(percentValues[2] / percentValues[5] * 100);
+            percentValues[3] = Math.round(percentValues[3] / percentValues[5] * 100);
+            percentValues[4] = Math.round(percentValues[4] / percentValues[5] * 100);
+            var barLabels = ['Not at All', 'A Little', 'Somewhat', 'Quite a Bit', 'Extremely']
+            var colorCodes;
+            if (keyValue == 'Frustration') {
+                colorCodes = ['#FFB2B2', '#FF7F7F', '#FF4C4C', '#FF1919', '#CC0000'];
+            } else if (keyValue == 'Confidence') {
+                colorCodes = ['#CCD8F1', '#99B1E3', '#668BD5', '#3364C7', '#003EBA'];
+            } else if (keyValue == 'Excitement') {
+                colorCodes = ['#FFEAD2', '#FFD6A5', '#FFC278', '#FFAE4B', '#FF9A1F'];
+            } else if (keyValue == 'Interest') {
+                colorCodes = ['#D4FBD1', '#AAF7A3', '#7FF375', '#55EF47', '#2BEB1A'];
+            }
+
+            var emotionChart = new Chart($(emotionChartCanvas), {
+                type: 'horizontalBar',
+                data: {
+                    labels: [keyValue],
+                    datasets: [{
+                        backgroundColor: colorCodes[0],
+                        label: barLabels[0],
+                        data: [percentValues[0]]
+                    }, {
+                        backgroundColor: colorCodes[1],
+                        label: barLabels[1],
+                        data: [percentValues[1]]
+                    }, {
+                        backgroundColor: colorCodes[2],
+                        label: barLabels[2],
+                        data: [percentValues[2]]
+                    }, {
+                        backgroundColor: colorCodes[3],
+                        label: barLabels[3],
+                        data: [percentValues[3]]
+                    }, {
+                        backgroundColor: colorCodes[4],
+                        label: barLabels[4],
+                        data: [percentValues[4]]
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            stacked: true,
+                            ticks: {
+                                beginAtZero: false
+                            },
+                            display: false
+                        }],
+                        xAxes: [{
+                            stacked: true,
+                            ticks: {
+                                beginAtZero: false
+                            },
+                            display: false
+                        }]
+                    }
+                }
+            });
+
+        });
+    }
+    $(containerChartSelector).show();
+}
+
 
 function resetStudentData( title,studentId) {
     $.ajax({
@@ -547,6 +634,7 @@ function registerAllEvents(){
             { title: "Username" },
             { title: "No of problems attempted" },
             { title: "Effort Chart" },
+            { title: "Emotion Chart" },
         ],
         "bPaginate": false,
         "bFilter": false,
@@ -582,7 +670,7 @@ function registerAllEvents(){
             },
             {
                 "targets": [ 4 ],
-                "width": "60%",
+                "width": "30%",
                 'className': 'dt-body-center',
                 'render': function ( data, type, row ) {
                     var effortChartId = "effortChart"+row[0];
@@ -590,6 +678,52 @@ function registerAllEvents(){
                     var legendChart = "legendChart"+row[0];
                     var dataContent = "<div id="+containerChart+" style='width:900px;height:680px;display:none'><canvas id="+effortChartId+"></canvas> <div id='"+legendChart+"'></div></div>";
                     return "<i id='iconID"+row[0]+"' style='cursor:pointer;' class='fa fa-th' aria-hidden='true' onclick='loadEffortMap("+row[0]+");'></i>"+dataContent;
+                }
+            }, {
+                "targets": [ 5 ],
+                "width": "30%",
+                'className': 'dt-body-center',
+                'render': function ( data, type, row ) {
+                    var studentEmotions = emotionMap[row[0]];
+                    var studentComments = commentsMap[row[0]];
+                    var emotionContainerChart = "emotionContainerChart"+row[0];
+                    var containerConvas = "<div id="+emotionContainerChart+" style='width:100%;display:none'>";
+                    if(jQuery.isEmptyObject(studentEmotions)) {
+                        var noEmotionReported = "<span><label>The Student does not have any emotions Reported </label></span>";
+                        var containerChartSelector = "#emotionContainerChart" +row[0];
+                         containerConvas += noEmotionReported;
+                    }else {
+                        var i = 0;
+                        var divBlockOne = "<div id='bloc1' style='width:50%'>";
+                        var divBlockTwo = "<div id='bloc2' style='width:50%'>";
+                        Object.keys(studentEmotions).forEach(function (key) {
+                            var eachEmotionComment = studentComments[key];
+                            var commentsTable = "";
+                            if (!jQuery.isEmptyObject(eachEmotionComment)) {
+                                commentsTable = "<table class='table table-striped table-bordered hover'><thead><tr>" + key + " Comments" + "</tr></thead><tbody>"
+                                var emotionComments = "";
+                                eachEmotionComment.forEach(function (comments) {
+                                    if (comments != "")
+                                        emotionComments += "<tr><td>" + comments + "</td></tr>";
+                                });
+                                emotionComments += "</tbody></table>"
+                                commentsTable += emotionComments;
+                            }
+                            var canvasTags = "<fieldset><legend>" + key + "</legend><canvas width='400' height='100' id='" + row[0] + key + "'></canvas>" + commentsTable + "</fieldset>";
+
+                            if (i == 0 || i == 1)
+                                divBlockOne += canvasTags;
+                            if (i == 2 || i == 3)
+                                divBlockTwo += canvasTags;
+                            if (i == 3) {
+                                divBlockOne += "</div>"
+                                divBlockTwo += "</div>"
+                            }
+                            i++;
+                        });
+                        containerConvas = containerConvas + divBlockOne + divBlockTwo + "</div>"
+                    }
+                    return "<i id='emotioniconID"+row[0]+"' style='cursor:pointer;' class='fa fa-heart' aria-hidden='true' onclick='loadEmotionMap("+row[0]+");'></i>"+containerConvas;
                 }
             },
         ]
@@ -996,33 +1130,106 @@ function registerAllEvents(){
         if (row.child.isShown()) {
             row.child.hide();
         } else {
-            var tableHeader = '<div id='+"panel"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
+          var tabPanel =  '<ul class="nav nav-tabs"> <li class="active"> <a  href="#1" data-toggle="tab">Problems solved today</a></li> <li><a href="#2" data-toggle="tab">Problems solved yesterday</a> </li> <li><a href="#3" data-toggle="tab">Previously solved problems</a> </li> </ul>';
             var studentDataList = eachStudentData[rowID];
             var outputStudentDataList = Object.keys(studentDataList).map(function(key) {return studentDataList[key];});
+            var outputStudentDataTodayList =[];
+            var outputStudentDataYesterdayList =[];
+            var firstHeader;
+            var secondHeader;
+            var thirdHeader;
+
+            var currentDate = new Date();
             outputStudentDataList.sort(function(a,b) {
                 if(a[10] == 'Problem was not completed')
                     return new Date('1900-01-01 00:00:01.0').getTime() - new Date('1900-01-01 00:00:00.0').getTime();
                 if( b[10] == 'Problem was not completed' )
                     return new Date('1900-01-01 00:00:00.0').getTime() - new Date('1900-01-01 00:00:01.0').getTime();
                 else
-                return new Date(b[10]).getTime() - new Date(a[10]).getTime();
+                    return new Date(b[10]).getTime() - new Date(a[10]).getTime();
             });
 
-            $.each(outputStudentDataList, function (i, obj) {
-                var correctHtml = "";
-                var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
-                var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
-                if ("1" == obj[4])
-                    correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/check.png'/></td>";
-                else
-                    correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/x.png'/></td>";
+            for ( var i=0; i< 3 ; i++ ) {
+                if(i == 0){
+                    outputStudentDataList.forEach(function(e){
+                        var tempDateHolder  = new Date(e[10]).getTime();
+                        if(currentDate === tempDateHolder){
+                            outputStudentDataTodayList.push(e);
+                        }
+                    });
+                  if(jQuery.isEmptyObject(outputStudentDataTodayList)) {
+                      secondHeader = '<div id=' + "panel1" + rowID + ' class="panel-body animated zoomOut">No Problems Done Today</div>'
+                  } else {
+                      secondHeader = '<div id='+"panel1"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
+                    $.each(outputStudentDataList, function (i, obj) {
+                        var correctHtml = "";
+                        var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
+                        var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
+                        if ("1" == obj[4])
+                            correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/check.png'/></td>";
+                        else
+                            correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/x.png'/></td>";
 
-                tableHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td>"+effortLabelHTML+"</tr>";
+                        secondHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td>"+effortLabelHTML+"</tr>";
 
-            });
-            tableHeader += "</tbody></table></div>"
-            row.child(tableHeader).show();
+                    });
+                      secondHeader += "</tbody></table></div>"
+                }
+
+                }else if(i == 1){
+                    //Show only problems done yesterday
+                    var yesterday = new Date();
+                    yesterday.setDate(currentDate.getDate() - 1);
+                    outputStudentDataList.forEach(function(e){
+                        var tempDateHolder  = new Date(e[10]).getTime();
+                        if(yesterday === tempDateHolder){
+                            outputStudentDataYesterdayList.push(e);
+                        }
+                    });
+                    if(jQuery.isEmptyObject(outputStudentDataYesterdayList)) {
+                        thirdHeader = '<div id=' + "panel2" + rowID + ' class="panel-body animated zoomOut">No Problems Done Yesterday</div>'
+                    } else {
+                        thirdHeader = '<div id='+"panel2"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
+                        $.each(outputStudentDataList, function (i, obj) {
+                            var correctHtml = "";
+                            var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
+                            var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
+                            if ("1" == obj[4])
+                                correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/check.png'/></td>";
+                            else
+                                correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/x.png'/></td>";
+
+                            thirdHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td>"+effortLabelHTML+"</tr>";
+
+                        });
+                        thirdHeader += "</tbody></table></div>"
+                    }
+                }else{
+                    //show all other problems
+                    firstHeader = '<div id='+"panel"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
+                    $.each(outputStudentDataList, function (i, obj) {
+                        var correctHtml = "";
+                        var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
+                        var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
+                        if ("1" == obj[4])
+                            correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/check.png'/></td>";
+                        else
+                            correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/x.png'/></td>";
+
+                        firstHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td>"+effortLabelHTML+"</tr>";
+
+                    });
+                    firstHeader += "</tbody></table></div>"
+                }
+            }
+
+            var tabDetails = '<div class="tab-content "><div class="tab-pane active" id="1">'+secondHeader+'</div><div class="tab-pane" id="2">'+thirdHeader+'</div><div class="tab-pane" id="3">'+firstHeader+'</div></div>'
+            row.child(tabPanel+tabDetails).show();
+
             $("#panel"+rowID).toggleClass('zoomIn zoomOut');
+            $("#panel1"+rowID).toggleClass('zoomIn zoomOut');
+            $("#panel2"+rowID).toggleClass('zoomIn zoomOut');
+
             $('a[rel=popover]').popover({
                 html: true,
                 trigger: 'hover',
@@ -1494,6 +1701,8 @@ var completeDataChart;
             success : function(data) {
                 var jsonData = $.parseJSON(data);
                 effortMap = jsonData.effortChartValues;
+                emotionMap = jsonData.fullstudentEmotionsMap;
+                commentsMap = jsonData.fullstudentEmotionsComments;
                 eachStudentData = jsonData.eachStudentDataValues;
                 perStudentReport.clear().draw();
                 perStudentReport.rows.add(jsonData.levelOneData).draw();
