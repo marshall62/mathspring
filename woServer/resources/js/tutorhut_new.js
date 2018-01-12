@@ -378,7 +378,8 @@ function showGlossary (globals) {
 
 // TODO this should be changed to use a non-modal dialog
 function showFormulas (globals) {
-    var formURL = "http://math2.org/math/geometry/areasvols.htm";
+    //var formURL = "http://math2.org/math/geometry/areasvols.htm";
+    var formURL = "img/formulaMathSpring.pdf"
     utilDialogOpen(formURL, "Formulas");
     sendSimpleNotificationEvent(globals,"ShowFormulas");
 //    window.open(formURL, "width=500, height=500");
