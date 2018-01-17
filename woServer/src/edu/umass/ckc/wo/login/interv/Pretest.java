@@ -8,6 +8,7 @@ import edu.umass.ckc.wo.db.DbPrePost;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.LoginSequence;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
 import org.jdom.Element;
@@ -122,10 +123,6 @@ This one handles deletes:
 
  */
 public class Pretest extends LoginInterventionSelector {
-    private static final String ANSWER = "answer";
-    private static final String PROBID = "probId";
-    private static final String QUESTION = "question";
-    private static final String JSP = "pretestQuestion.jsp";
     public static final String TERMINATION_TEST = "terminationTest";
     public static final String COMPLETE_ALL_PROBLEMS = "completeAllProblems";
     public static final String MESSAGE = "message";
@@ -134,13 +131,17 @@ public class Pretest extends LoginInterventionSelector {
     public static final String NUM_PROBS_IN_TEST = "numProbsInTest";
     public static final String NUM_PROBS_COMPLETED = "numProbsCompleted";
     public static final String TEST_NAME = "preposttestName";
-
+    private static final String ANSWER = "answer";
+    private static final String PROBID = "probId";
+    private static final String QUESTION = "question";
+    private static final String SURVEY_URI = "surveyURI";
+    private static final String JSP = "pretestQuestion.jsp";
     protected int testId;
     protected int classId;
     protected int numProbsInTest;
     protected int numTestProbsCompleted;
-    private String startMessage;
     protected String testType;
+    private String startMessage;
     private String terminationPredicate;
     private Object answerString;
 
@@ -229,6 +230,13 @@ public class Pretest extends LoginInterventionSelector {
             PrePostProblemDefn p = getPrePostProblemN(smgr.getConnection(),this.testId,this.numTestProbsCompleted +1);
             req.setAttribute(MESSAGE,this.startMessage);
             req.setAttribute(QUESTION,p);
+            // URI to get to dir where resources are for this survey question is something like:
+            // mscontent/surveys/surveyq_XXX/   where XXX is the ID of the question
+            // on dev machine the survey resources are absent because they live under the msadmin tool's files.
+            // To get them working on a dev machine, find the /fileUploads/surveys/ folder and copy it under
+            // this projects webResources (if they are not there)
+            String surveyURI = Settings.surveyURI + "surveyq_" + p.getId() + "/";
+            req.setAttribute(SURVEY_URI, surveyURI);
             req.setAttribute(NUM_PROBS_IN_TEST, this.numProbsInTest);
             req.setAttribute(NUM_PROBS_COMPLETED, this.numTestProbsCompleted);
             req.setAttribute(LoginSequence.SESSION_ID,smgr.getSessionNum());

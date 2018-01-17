@@ -33,7 +33,7 @@ public class DbPrePost {
           try {
 //              String q = "select problemSet,name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
               String q = "select id, name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
-                      "aURL,bURL,cURL,dURL,eURL,waitTimeSecs,image from PrePostProblem where id=?";
+                      "aURL,bURL,cURL,dURL,eURL,waitTimeSecs,imageFilename from PrePostProblem where id=?";
               ps = conn.prepareStatement(q);
               ps.setInt(1, probId);
               rs = ps.executeQuery();
@@ -55,11 +55,12 @@ public class DbPrePost {
                   String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
                   String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
                   int waitTimeSecs=0;
-                  Blob img=null;
+//                  Blob img=null; // DM 1/18 images now stored as files
                   waitTimeSecs= rs.getInt(17) ;
                   if (rs.wasNull())
                       waitTimeSecs=-1;
-                  img = rs.getBlob(18);
+//                  img = rs.getBlob(18);
+                  String imgFilename = rs.getString(18);
                   PrePostProblemDefn p;
                   if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
                       waitTimeSecs= rs.getInt(17) ;
@@ -102,7 +103,7 @@ public class DbPrePost {
 
                   }
               return new PrePostProblemDefn(probId, name, description, url, ansType, answer, problemSet, aChoice, bChoice, cChoice,
-                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs, img);
+                          dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs, imgFilename);
               }
           } catch (SQLException e) {
               e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

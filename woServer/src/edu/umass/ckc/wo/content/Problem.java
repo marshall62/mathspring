@@ -55,6 +55,7 @@ public class Problem implements Activity {
     protected String type = FLASH_PROB_TYPE;
     protected String topicName = "";
     protected String activityType;
+    protected String imageURL;
     private String answer;   // the letter of the multi-choice answer (a-e)
                         // client forces a prob + topic.   This is then used to make sure logging shows the given topic
     private List<ProblemAnswer> answers;  // for short answer questions we have all possible answers  and multiple choice will be here too for quickAuth probs
@@ -66,7 +67,6 @@ public class Problem implements Activity {
     private String instructions ;   //Instructions to the problem that go only with External URL Problems
     private String statementHTML;
     private String questionAudio;
-    private String imageURL;
     private List<Hint> allHints;
     private int numHints=0;   // only one client of this class uses this field - AdaptiveProblemGroupProblemSelector
     private boolean hasStrategicHint=false;

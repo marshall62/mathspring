@@ -166,9 +166,12 @@
 
     <p>&nbsp;</p>
     <c:if test="${question.hasImage}">
-        <%-- If we have the image as a file in the folder we'd do this--%>
-        <%--<img src="${pageContext.request.contextPath}${question.url}"/>--%>
-        <img src="${pageContext.request.contextPath}/getImage?table=prePostProblem&column=image&id=${question.id}"/>
+        <%-- DM 1/17/18 image (BLOB) field found to be corrupt.  Use of new MSAdmin tool for authoring pretest questions
+        is now storing images in the apache doc root rather than db.   The path to the resource is (e.g.)
+        http://rose.cs.umass.edu/mathspring/mscontent/surveys/surveyq_234/filename.jpg  where 234 is the ID of the prepostproblem --%>
+        <%-- Never used: <img src="${pageContext.request.contextPath}${question.url}"/>--%>
+        <%--<img src="${pageContext.request.contextPath}/getImage?table=prePostProblem&column=image&id=${question.id}"/>--%>
+        <img src="${surveyURI}${question.imageFilename}"/>
         <br/>
     </c:if>
     <p><b>${question.descr}</b></p>
