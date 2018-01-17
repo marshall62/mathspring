@@ -49,6 +49,8 @@ public class TTUtil {
     public static final String PER_STANDARD_QUERY_SECOND = "select std.clusterId,count(distinct(h.problemId)) as noOfProblems from studentproblemhistory h, standard std, probstdmap map where studid in (select id from student where classId =(:classId)) and mode='practice' and std.id=map.stdId and map.probId=h.problemId and h.numAttemptsToSolve = 1 group by std.clusterID";
     public static final String PER_STANDARD_QUERY_THIRD = "select distinct(h.problemId),pr.name,pr.standardID, pr.standardCategoryName,pr.screenShotURL,std.description  from studentproblemhistory h, standard std, probstdmap map,problem pr where studid in (select id from student where classId=(:classId)) and std.clusterID=(:clusterID) and mode='practice' and std.id=map.stdId and map.probId=h.problemId and h.problemId = pr.id";
 
+    public static final String EMOTION_REPORT = "select e.userInput from eventlog e where studId =(:studId) and action='InputResponse' and userInput != 'null' and userInput not like '%howDoYouFeel%' and userInput not like '%-1%'";
+
     /* A private Constructor prevents any other
     * class from instantiating.
     */

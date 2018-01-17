@@ -8,9 +8,7 @@ import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.TTCustomException;
 import edu.umass.ckc.wo.ttmain.ttmodel.ClassStudents;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
-import edu.umass.ckc.wo.ttmain.ttmodel.ProblemsView;
 import edu.umass.ckc.wo.ttmain.ttmodel.datamapper.ClassStudentsMapper;
-import edu.umass.ckc.wo.ttmain.ttservice.classservice.TTProblemsViewService;
 import edu.umass.ckc.wo.ttmain.ttservice.classservice.TTReportService;
 import edu.umass.ckc.wo.ttmain.ttservice.util.TTUtil;
 import edu.umass.ckc.wo.tutor.Settings;
@@ -23,8 +21,15 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -50,14 +55,102 @@ public class TTReportServiceImpl implements TTReportService {
             switch (reportType) {
                 case "perStudentReport":
                     List<ClassStudents> classStudents = generateClassReportPerStudent(teacherId, classId);
+
                     String[][] levelOneData = classStudents.stream().map(classStudents1 -> new String[]{classStudents1.getStudentId(), classStudents1.getStudentName(), classStudents1.getUserName(), classStudents1.getNoOfProblems()}).toArray(String[][]::new);
                     Map<String, String> studentIdMap = classStudents.stream().collect(Collectors.toMap(studMap -> studMap.getStudentId(), studMap -> studMap.getNoOfProblems()));
                     Map<String, Map<String, List<String>>> effortValues = generateEfortMapValues(studentIdMap, classId);
+                    Map<String, List<Document>> genemotioMap   = generateEmotionMapValues(studentIdMap);
+                    Map<String,Map<String,int[]>> fullstudentEmotionsMap = new HashMap<>();
+                    Map<String,Map<String,List<String>>> fullstudentEmotionsComments = new HashMap<>();
+                    genemotioMap.forEach((studentId, xmlDocumentList) -> {
+                        Map<String,List<String>> eachEmotionMap = new HashMap<>();
+                        int[] frustrationValues = new int[6];
+                        List<String> frustrationComments = null;
+                        int[] confidenceValues = new int[6];
+                        List<String> confidenceComments = null;
+                        int[] excitementValues = new int[6];
+                        List<String> excitementComments = null;
+                        int[] interestValues = new int[6];
+                        List<String> interestComments = null;
+
+                        Integer frustrationCount=0,confidenceCount=0,excitementCount=0,interestCount = 0;
+                        Map<String,int[]> emotionsValuesMap = new HashMap<>();
+                        for (Document doc : xmlDocumentList) {
+                            Node emotionNode = doc.getFirstChild().getFirstChild();
+                            Element emotionElement = (Element)emotionNode;
+                            String emotion = emotionElement.getAttribute("name");
+                            String emotionLevel = emotionElement.getAttribute("level");
+                            int integerValue;
+                            switch(emotion){
+                                case "Frustration":
+                                    frustrationCount++;
+                                    integerValue = Integer.valueOf(emotionLevel);
+                                    frustrationValues[integerValue - 1] = frustrationValues[integerValue - 1] + 1;
+                                    frustrationValues[5] = frustrationCount;
+                                    emotionsValuesMap.put("Frustration", frustrationValues);
+                                    String studentCommentsFrustration = getCharacterDataFromElement(emotionElement);
+                                    if (frustrationComments == null) {
+                                            frustrationComments = new ArrayList<>();
+                                    }
+                                    frustrationComments.add(studentCommentsFrustration);
+                                    eachEmotionMap.put("Frustration",frustrationComments);
+                                    break;
+
+                                case "Confidence":
+                                    confidenceCount++;
+                                    integerValue = Integer.valueOf(emotionLevel);
+                                    confidenceValues[integerValue - 1] = confidenceValues[integerValue - 1] + 1;
+                                    confidenceValues[5] = confidenceCount;
+                                    emotionsValuesMap.put("Confidence", confidenceValues);
+                                    String studentCommentsConfidence = getCharacterDataFromElement(emotionElement);
+
+                                    if (confidenceComments == null) {
+                                        confidenceComments = new ArrayList<>();
+                                    }
+                                    confidenceComments.add(studentCommentsConfidence);
+                                    eachEmotionMap.put("Confidence", confidenceComments);
+                                    break;
+
+                                case "Excitement":
+                                    excitementCount++;
+                                    integerValue = Integer.valueOf(emotionLevel);
+                                    excitementValues[integerValue - 1] = excitementValues[integerValue - 1] + 1;
+                                    excitementValues[5] = excitementCount;
+                                    emotionsValuesMap.put("Excitement", frustrationValues);
+                                    String studentCommentsExcitement = getCharacterDataFromElement(emotionElement);
+                                    if (excitementComments == null) {
+                                        excitementComments = new ArrayList<>();
+                                    }
+                                    excitementComments.add(studentCommentsExcitement);
+                                    eachEmotionMap.put("Excitement", excitementComments);
+                                    break;
+
+                                case "Interest":
+                                    interestCount++;
+                                    integerValue = Integer.valueOf(emotionLevel);
+                                    interestValues[integerValue - 1] = interestValues[integerValue - 1] + 1;
+                                    interestValues[5] = interestCount;
+                                    emotionsValuesMap.put("Interest", interestValues);
+                                    String studentCommentsInterest = getCharacterDataFromElement(emotionElement);
+                                    if (interestComments == null) {
+                                        interestComments = new ArrayList<>();
+                                    }
+                                    interestComments.add(studentCommentsInterest);
+                                    eachEmotionMap.put("Interest", interestComments);
+                                    break;
+                            }
+
+                        }
+                        fullstudentEmotionsComments.put(studentId,eachEmotionMap);
+                        fullstudentEmotionsMap.put(studentId,emotionsValuesMap);
+                    });
                     ObjectMapper objMapper = new ObjectMapper();
                     Map<String, Object> dataMap = new HashMap<>();
                     dataMap.put("levelOneData", levelOneData);
                     dataMap.put("effortChartValues", effortValues.get("effortMap"));
                     dataMap.put("eachStudentDataValues", effortValues);
+                    dataMap.put("fullstudentEmotionsMap", fullstudentEmotionsMap);
+                    dataMap.put("fullstudentEmotionsComments", fullstudentEmotionsComments);
                     return objMapper.writeValueAsString(dataMap);
 
                 case "perProblemReport":
@@ -115,6 +208,36 @@ public class TTReportServiceImpl implements TTReportService {
             return completeDataMap;
         });
         return completeDataMap;
+    }
+
+
+    @Override
+    public Map<String, List<Document>> generateEmotionMapValues(Map<String, String> studentIds) throws TTCustomException {
+        Map<String, List<Document>> studentEmotionMap = new HashMap<>();
+        studentIds.forEach((studentId, noOfProblems) -> {
+            SqlParameterSource namedParameters = new MapSqlParameterSource("studId", studentId);
+            List<String> studentEmotions = namedParameterJdbcTemplate.query(TTUtil.EMOTION_REPORT, namedParameters, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet resultSet, int i) throws SQLException {
+                    return resultSet.getString("userInput");
+                }
+            });
+            List<Document> documentXmlEmotion = new ArrayList<>();
+            try {
+                if (studentEmotions.isEmpty()) {
+                    documentXmlEmotion.add(parseXmlFromString("<interventionInput class='AskEmotionIS'><emotion name='NoEmotionReported' level='-1'><![CDATA[]]></emotion></interventionInput>"));
+                } else {
+
+                    for (String strEmo : studentEmotions)
+                        documentXmlEmotion.add(parseXmlFromString(strEmo));
+                }
+            } catch (TTCustomException e) {
+                logger.error(e.getErrorMessage());
+                e.printStackTrace();
+            }
+            studentEmotionMap.put(studentId, documentXmlEmotion);
+        });
+        return studentEmotionMap;
     }
 
     @Override
@@ -230,6 +353,30 @@ public class TTReportServiceImpl implements TTReportService {
         return completeDataMap;
     }
 
+    private Document parseXmlFromString(String xmlString) throws TTCustomException{
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            InputSource is = new InputSource();
+            is.setCharacterStream(new StringReader(xmlString));
+            Document document = builder.parse(is);
+            NodeList emotionNode = document.getElementsByTagName("emotion");
+            return document;
+        }catch (Exception excep){
+            excep.printStackTrace();
+            logger.error(excep.getMessage());
+            throw new TTCustomException(ErrorCodeMessageConstants.FAILED_TO_LOAD_PROBLEMS);
+        }
+    }
+
+    private static String getCharacterDataFromElement(Element e) {
+        Node child = e.getFirstChild();
+        if (child instanceof CharacterData) {
+            CharacterData cd = (CharacterData) child;
+            return cd.getData();
+        }
+        return "";
+    }
 
     @Override
     public List<ClassStudents> generateClassReportPerStudent(String teacherId, String classId) {

@@ -124,7 +124,7 @@ public class StudentSummary {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = " SELECT count(*) FROM `studentproblemhistory` where studId=? and (effort='SOF' || effort='SHINT' || effort='ATT' || effort='BOTTOMOUT' || effort='GUESS')";
+            String q = " SELECT count(*) FROM `studentproblemhistory` where studId=? and effort IN ('SOF', 'SHINT', 'ATT', 'BOTTOMOUT', 'GUESS')";
 
             ps = conn.prepareStatement(q);
             ps.setInt(1, studId);
@@ -148,29 +148,30 @@ public class StudentSummary {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-            String q = " select count(*) from (SELECT distinct topicId FROM `studentproblemhistory` where  studId=? and (effort='SOF' || effort='SHINT' || effort='ATT' || effort='BOTTOMOUT' || effort='GUESS') ) as s";
+        String q = " select count(*) from (SELECT distinct topicId FROM `studentproblemhistory` where  studId=? and effort IN ('SOF', 'SHINT', 'ATT', 'BOTTOMOUT', 'GUESS') ) as s";
 
-            ps = conn.prepareStatement(q);
-            ps.setInt(1, studId);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                topicsDone=rs.getInt(1);
-            }
+        ps = conn.prepareStatement(q);
+        ps.setInt(1, studId);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            topicsDone=rs.getInt(1);
+        }
 
 
+        q = "SELECT problemgroup.description, s.mastery FROM `problemgroup`\n" +
+            "INNER JOIN (SELECT s1.studId, s1.topicId, s1.mastery FROM `studentproblemhistory` s1\n" +
+                "INNER JOIN (SELECT studId, topicId, max(problemBeginTime) AS lastProblemBeginTime FROM `studentproblemhistory`\n" +
+                    "WHERE studId=? GROUP BY topicId) AS s2\n" +
+                "ON s1.studId = s2.studId AND s1.problemBeginTime = lastProblemBeginTime) AS s\n" +
+            "ON problemgroup.id = s.topicId";
 
-            q =   "SELECT DISTINCT problemgroup.description,  ss.mastery FROM  `problemgroup`\n"+
-        "INNER JOIN (select s.studId, s.topicId, s.mastery from \n"+
-        "(SELECT studId,topicId,mastery,problemBeginTime FROM `studentproblemhistory` where studId=? order by topicId,problemBeginTime desc) as s group by topicId) as ss\n"+
-        " ON problemgroup.id = ss.topicId";
-
-            ps = conn.prepareStatement(q);
-            ps.setInt(1, studId);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                topicsList.add(rs.getString(1));
-                topicMasteryList.add(rs.getFloat(2));
-            }
+        ps = conn.prepareStatement(q);
+        ps.setInt(1, studId);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            topicsList.add(rs.getString(1));
+            topicMasteryList.add(rs.getFloat(2));
+        }
     }
 
     //welcome message variables
@@ -208,7 +209,7 @@ public class StudentSummary {
                    "            SELECT MAX( sessionId )\n" +
                    "    FROM  `studentproblemhistory`\n" +
                    "    WHERE studId =? )\n" +
-                   "    AND (effort='SOF' || effort='SHINT' || effort='ATT' || effort='BOTTOMOUT' || effort='GUESS')";
+                   "    AND effort IN ('SOF', 'SHINT', 'ATT', 'BOTTOMOUT', 'GUESS')";
 
            ps = conn.prepareStatement(q);
            ps.setInt(1, studId);
@@ -226,26 +227,33 @@ public class StudentSummary {
    }
 
     private int retrieveTotalMasteredTopics() throws Exception {
-       PreparedStatement ps = null;
-       ResultSet rs = null;
-       try {
-           String q = "select count(*) from (select s.mastery as mastery from \n" +
-                   "(SELECT topicId,mastery,problemBeginTime FROM `studentproblemhistory` where studId=? order by topicId,problemBeginTime desc) as s group by topicId) as ss where ss.mastery>=?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q =  "SELECT count(*)\n" +
+                        "FROM `studentproblemhistory` s1\n" +
+                        "  INNER JOIN\n" +
+                        "    (SELECT studId, topicId, max(problemBeginTime) as lastProblemBeginTime\n" +
+                        "    FROM `studentproblemhistory` \n" +
+                        "    WHERE studId=?\n" +
+                        "    GROUP BY topicId) AS s2\n" +
+                        "  ON s1.studId = s2.studId AND s1.problemBeginTime = lastProblemBeginTime\n" +
+                        "WHERE s1.mastery>=?";
 
-           ps = conn.prepareStatement(q);
-           ps.setInt(1, studId);
-           ps.setDouble(2, masteryThreshold);
-           rs = ps.executeQuery();
-           if (rs.next()) {
-               return rs.getInt(1);
-           }
-           return 0;
-       } finally {
+            ps = conn.prepareStatement(q);
+            ps.setInt(1, studId);
+            ps.setDouble(2, masteryThreshold);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } finally {
            if (rs != null)
                rs.close();
            if (ps != null)
                ps.close();
-       }
+        }
    }
 
 
@@ -343,7 +351,7 @@ public class StudentSummary {
 
                 dayString= listOfDays.get(i);
 
-                String q = "SELECT count(*) FROM `studentproblemhistory` where studId=? and (effort='SOF' || effort='SHINT' || effort='ATT' || effort='BOTTOMOUT' || effort='GUESS') and date(problemBeginTime)<=?";
+                String q = "SELECT count(*) FROM `studentproblemhistory` where studId=? and effort IN ('SOF', 'SHINT', 'ATT', 'BOTTOMOUT', 'GUESS') and date(problemBeginTime)<=?";
                 ps = conn.prepareStatement(q);
                 ps.setDouble(1, studId);
                 ps.setString(2, dayString);
@@ -357,7 +365,7 @@ public class StudentSummary {
                 }
 
 
-                q = " select count(*) from (SELECT distinct topicId FROM `studentproblemhistory` where  studId=? and (effort='SOF' || effort='SHINT' || effort='ATT' || effort='BOTTOMOUT' || effort='GUESS') and date(problemBeginTime)<=?) as s";
+                q = " select count(*) from (SELECT distinct topicId FROM `studentproblemhistory` where  studId=? and effort IN ('SOF', 'SHINT', 'ATT', 'BOTTOMOUT', 'GUESS') and date(problemBeginTime)<=?) as s";
 
                 ps = conn.prepareStatement(q);
                 ps.setInt(1, studId);
@@ -369,10 +377,17 @@ public class StudentSummary {
                 }
 
 
-                q =  "SELECT DISTINCT problemgroup.description,  ss.mastery FROM  `problemgroup`\n"+
-                        "INNER JOIN (select s.studId, s.topicId, s.mastery from \n"+
-                        "(SELECT studId,topicId,mastery,problemBeginTime FROM `studentproblemhistory` where studId=? and (effort='SOF' || effort='SHINT' || effort='ATT' || effort='BOTTOMOUT' || effort='GUESS') and date(problemBeginTime)<=? order by topicId,problemBeginTime desc) as s group by topicId) as ss\n"+
-                        " ON problemgroup.id = ss.topicId";
+                q = "SELECT DISTINCT problemgroup.description,  ss.mastery FROM  problemgroup\n" +
+                    "INNER JOIN\n" +
+                    "  (SELECT s1.studId, s1.topicId, s1.mastery\n" +
+                    "  FROM studentproblemhistory s1\n" +
+                    "    INNER JOIN\n" +
+                    "    (SELECT studId, topicId, MAX(problemBeginTime) AS lastProblemBeginTime\n" +
+                    "    FROM studentproblemhistory\n" +
+                    "    WHERE studId=? AND effort IN ('SOF', 'SHINT', 'ATT', 'BOTTOMOUT', 'GUESS') AND date(problemBeginTime)<=?\n" +
+                    "    GROUP BY topicId) AS s2\n" +
+                    "  ON s1.studId = s2.studId AND s1.problemBeginTime = lastProblemBeginTime) AS ss\n" +
+                    "ON problemgroup.id = ss.topicId";
 
                 ps = conn.prepareStatement(q);
                 ps.setInt(1, studId);

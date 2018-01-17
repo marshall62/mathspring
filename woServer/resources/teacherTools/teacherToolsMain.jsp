@@ -184,6 +184,12 @@
             <li>
                 <a href="#" id="createClass_handler"><i class="fa fa-fw fa-pencil"></i> Create a New Class</a>
             </li>
+            <li>
+                <a href="http://rose.cs.umass.edu/msadmin?${teacherId}"><i class="fa fa-fw fa-pencil"></i>Admin system (Content Authoring Tool)</a>
+            </li>
+            <li>
+                <a href="http://rose.cs.umass.edu/testauth/login?${teacherId}"><i class="fa fa-fw fa-pencil"></i>Survey Authoring</a>
+            </li>
         </ul>
         <!-- /#sidebar-end -->
     </nav>
