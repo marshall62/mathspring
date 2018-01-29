@@ -42,6 +42,8 @@ public class Problem implements Activity {
     public static final String META_INFO = "metainfo";
     public static final String IS_EXTERNAL_ACTIVITY = "isExternalActivity";
     public static final String HAS_VARS = "hasVars";
+    public static final String IMAGE_FILE_ID = "imageFileid"; // DM 1/23/18 added
+    public static final String AUDIO_FILE_ID = "audioFileid";  // DM 1/23/18 added
     public static final String SCREENSHOT_URL = "screenShotURL";
     public static String FLASH_PROB_TYPE = "flash";
     public static String HTML_PROB_TYPE = "html5";
@@ -84,6 +86,8 @@ public class Problem implements Activity {
     private ProblemParameters params;
     private String ssURL;
     private String units = null;
+    private int imageFileId; // DM 1/23/18 added to support naming a local image via the ProblemMediaFile table
+    private int audioFileId; // DM 1/23/18 added to support naming a local image via the ProblemMediaFile table
     public Problem () {}
     public Problem (int id) {
         this.id =id;
@@ -92,7 +96,8 @@ public class Problem implements Activity {
     public Problem(int id, String resource, String answer, String name, String nickname,
                    boolean hasStrategicHint, double diff, int[] topicIds,
                    String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL,
-                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units, String problemFormat)
+                   QuestType questType, String statementHTML, String imageURL, String audioResource, String units, String problemFormat,
+                   int imageFileId, int audioFileId)
     {
         this.id = id;
         this.resource = resource;
@@ -119,6 +124,9 @@ public class Problem implements Activity {
         this.questionAudio = audioResource;
         this.units = units;
         this.problemFormat = problemFormat;
+        this.imageFileId=imageFileId; // DM 1/23/18 added these two columns to Problem table which MAY point to ProblemMediaFile row
+        this.audioFileId=audioFileId; // ProblemMgr will go into that table and get filenames if these values have non-negative IDs.
+                                        // The values will then be used to overwrite Problem.imageURL and Problem.questionAudio
         if(problemFormat == null) this.problemFormat = Problem.defaultFormat;
     }
 
@@ -127,7 +135,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null, null, -1, -1);
     }
 
     public static QuestType parseType(String t) {
@@ -150,7 +158,7 @@ public class Problem implements Activity {
     }
 
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null, -1, -1);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();
@@ -197,6 +205,14 @@ public class Problem implements Activity {
 
     public void setResource (String r) {
         this.resource = r;
+    }
+
+    // QuickAuth problems have their resources in a problem_XXX dir underneath /html5Probs/qa.  XXX is the problem.ID  This
+    // builds that name.
+    public String getProblemDir () {
+        if (isQuickAuth())
+            return "problem_" + this.id;
+        else return this.name;
     }
 
     public String logEventName() {
@@ -246,8 +262,9 @@ public class Problem implements Activity {
         if (isQuickAuth()) {
             jo.element("statementHTML", statementHTML);
             jo.element("probContentPath", Settings.webContentPath);
-            jo.element("questionAudio", questionAudio);
-            jo.element("questionImage", imageURL);
+            jo.element("probDir",this.getProblemDir()); // DM 1/23/18 Added probDir so we can have problem_XXX for dir
+            jo.element("questionAudio", questionAudio);  // DM 1/23/18 this will be a filename coming from ProblemMediaFile table via Problem.audioFileID
+            jo.element("questionImage", imageURL); // DM 1/23/18 this will be Either a URL in the Problem table imageURL field OR a filename coming from ProblemMediaFile table via Problem.audioFileID
             jo.element("units", units);
             jo.element("questType",this.questType.name());
             jo.element("hints", new JSONArray());
@@ -591,6 +608,14 @@ public class Problem implements Activity {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public int getImageFileId() {
+        return imageFileId;
+    }
+
+    public int getAudioFileId() {
+        return audioFileId;
     }
 
     public String getPreviewerURL () {

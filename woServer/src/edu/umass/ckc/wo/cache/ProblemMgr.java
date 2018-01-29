@@ -10,8 +10,6 @@ import edu.umass.ckc.wo.tutormeta.VideoSelector;
 import edu.umass.ckc.wo.db.DbHint;
 import edu.umass.ckc.wo.db.DbUtil;
 import edu.umass.ckc.wo.db.DbProblem;
-import edu.umass.ckc.wo.tutor.probSel.BaseExampleSelector;
-import edu.umass.ckc.wo.tutor.vid.BaseVideoSelector;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,7 +19,6 @@ import java.util.*;
 
 
 import edu.umass.ckc.wo.util.Pair;
-import edu.umass.ckc.wo.util.TwoTuple;
 import org.apache.log4j.Logger;
 
 /**
@@ -162,12 +159,13 @@ public class ProblemMgr {
         return vars;
     }
 
+    // DM 1/23/18 Added in imageFileId and audioFileID
     private static PreparedStatement buildProblemQuery(Connection conn, Integer problemId) throws SQLException {
         String problemFilter = problemId != null ? " and p.id = " + problemId : "";
         String s = "select p.id, answer, animationResource, p.name, nickname," +
                 " strategicHintExists, hasVars, screenShotURL, diff_level, form," +
                 " isExternalActivity, type, video, example, p.status, p.questType," +
-                " statementHTML, imageURL, audioResource, units, problemFormat" +
+                " statementHTML, imageURL, audioResource, units, problemFormat, imageFileId, audioFileId" +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid" + problemFilter +
                 " and (status='Ready' or status='ready' or status='testable')" +
@@ -207,6 +205,13 @@ public class ProblemMgr {
         String audioRsc = rs.getString("audioResource");
         String units = rs.getString("units");
         String problemFormat = rs.getString("problemFormat");
+        int imageFileId = rs.getInt(Problem.IMAGE_FILE_ID); // DM 1/23/18 added
+        if (rs.wasNull())
+            imageFileId = -1;
+        int audioFileId = rs.getInt(Problem.AUDIO_FILE_ID); // DM 1/23/18 added
+        if (rs.wasNull())
+            audioFileId = -1;
+
         Problem.QuestType questType = Problem.parseType(t);
         HashMap<String, ArrayList<String>> vars = null;
         if (hasVars) {
@@ -225,7 +230,7 @@ public class ProblemMgr {
             ssURL = null;
         Problem p = new Problem(id, resource, answer, name, nname, stratHint,
                 diff, null, form, instructions, type, status, vars, ssURL,
-                questType, statementHTML, imgURL, audioRsc, units, problemFormat);
+                questType, statementHTML, imgURL, audioRsc, units, problemFormat, imageFileId, audioFileId); // DM 1/23/18 added imageFileId and audioFileId
 
         p.setExternalActivity(isExternal);
         List<Hint> hints = DbHint.getHintsForProblem(conn,id);
@@ -267,7 +272,7 @@ public class ProblemMgr {
         ResultSet rs = ps.executeQuery();
         try {
             while (rs.next()) {
-                Problem p = buildProblem(conn, rs);
+                Problem p = buildProblem1(conn,rs); // DM 1/23/18 changed to buildProblem1
                 problemIds.add(p.getId());
             }
         } finally {
@@ -276,6 +281,49 @@ public class ProblemMgr {
             if (ps != null)
                 ps.close();
         }
+    }
+
+    public static String getProblemMediaFilename (Connection conn, int pmfId) throws SQLException {
+         ResultSet rs = null;
+          PreparedStatement ps = null;
+          try {
+              String q = "select filename from ProblemMediafile where id=?";
+              ps = conn.prepareStatement(q);
+              ps.setInt(1, pmfId);
+              rs = ps.executeQuery();
+              if (rs.next()) {
+                  String filename = rs.getString(1);
+                  return filename;
+              }
+              else return null;
+          } finally {
+                if (ps != null)
+                     ps.close();
+                if (rs != null)
+                     rs.close();
+          }
+    }
+
+
+    // DM 1/23/18 Added this to patch in image and audio coming from the ProblemMediafile table.  If the Problem table has IDs
+    // set for audio and img, go into this other table and get the filenames.   THen overwrite the imageURL and questionAudio fields of the Problem object
+    public static Problem buildProblem1 (Connection conn,  ResultSet rs) throws Exception {
+        Problem p = buildProblem(conn, rs);
+        int imgFileId = p.getImageFileId();
+        int audFileId = p.getAudioFileId();
+        if (imgFileId != -1) {
+            String imgFilename = getProblemMediaFilename(conn,imgFileId);
+            // Now overwrite the Problem.imageURL with {[imgFilename]}   and quickAuth javascript will replace with a URL to the filename within problem dir
+            p.setImageURL("{[" + imgFilename + "]}");
+        }
+        if (audFileId != -1) {
+
+            String audFilename = getProblemMediaFilename(conn,audFileId);
+
+            // Now overwrite the Problem.questionAudio with audFilename   and quickAuth javascript will replace with a URL to the filename within problem dir
+            p.setQuestionAudio(audFilename);
+        }
+        return p;
     }
 
     public static void reloadProblem(Connection conn, int problemId) throws Exception {
@@ -289,7 +337,7 @@ public class ProblemMgr {
         ResultSet rs = ps.executeQuery();
         try {
             while(rs.next()) {
-                Problem p = buildProblem(conn, rs);
+                Problem p = buildProblem1(conn, rs); // DM 1/23/18 changed to buildProblem1
 //                allProblems.put(problemId, p);
             }
         } finally {

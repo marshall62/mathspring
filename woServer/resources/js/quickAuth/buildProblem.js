@@ -11,19 +11,21 @@ function isNotEmpty(value) {
 
 m.build = function(activity, previewMode) {
     var problem = activity.problem;
+    theProblem = problem;
     var questType = problem.questType;
     var mode = problem.mode;
     var probContentPath = activity.probContentPath || problem.probContentPath;
     probContentPath = probContentPath.replace(/\/$/g, "");
-    var resource = problem.resource;
-    var probSound = problem.questionAudio;
+    // var resource = problem.resource;  // This is the problem.name e.g. 5NFA1_1 which is usually a dir under /html5Probs for a quickAuth problem
+    var resource = problem.probDir; // DM 1/23/18 added - will be problem_XXX where XXX is the ID
+    var probSound = problem.questionAudio; // DM 1/23/18 filled with a filename coming from the ProblemMediafile table via Problem.audioFileId - will include .mp3 extension
     var probUnits = problem.units;
     var problemParams = activity.binding;
     pickParams(problemParams); //chooses which set of parameters to use
 
     var problemContainer = document.getElementById("ProblemContainer");
     var probStatement = problem.statementHTML;
-    var probFigure = problem.questionImage;
+    var probFigure = problem.questionImage; // DM 1/23/18 filled with either a full URL OR a filename coming from the ProblemMediafile table via Problem.imageFileId
     var answers = problem.answers;
     var hints = problem.hints;
     var problemFormat = problem.format;
@@ -32,6 +34,7 @@ m.build = function(activity, previewMode) {
     if(isNotEmpty(probStatement)){
         document.getElementById("ProblemStatement").innerHTML = parameterizeText(formatText(probStatement, resource, probContentPath, problemParams, previewMode), problemParams);
     }
+    // DM 1/23/18 Note problemFigure may be loaded with something like {[filename.jpg]} if the Problem has imageFileId and corresponding filename in ProblemMediafile table
     if(isNotEmpty(probFigure)){
         document.getElementById("ProblemFigure").innerHTML = parameterizeText(formatText(probFigure, resource, probContentPath, problemParams, previewMode), problemParams);
     }
@@ -42,7 +45,10 @@ m.build = function(activity, previewMode) {
         // but all hint audioResources have no extension
         // and there's no way to magically figure out which one is right
         // sound_elt.setAttribute("src", getURL(probSound + ".ogg", resource, probContentPath));
-        sound_elt.setAttribute("src", getURL(probSound + ".mp3", resource, probContentPath));
+
+        // DM 1/23/18 commented out line and replaced with a line that doesn't add .mp3 based on the fact that server now sends a full filename
+        // sound_elt.setAttribute("src", getURL(probSound + ".mp3", resource, probContentPath));
+        sound_elt.setAttribute("src", getURL(probSound, resource, probContentPath));
         document.getElementById("ProblemStatement").appendChild(sound_elt);
     }
     if(isNotEmpty(probUnits)) {
@@ -73,19 +79,34 @@ m.build = function(activity, previewMode) {
             var hint = document.createElement("div");
             hint.id = hintId;
             hint.className = "hint";
+            var hintResource = resource + "/" + "hint_" + hint.id; // DM 1/23/18 problem_XXX/hint_YYY is where hints resources are
             hint_content.appendChild(hint);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 var image_parameters = {};
-                var formatted_text = formatTextWithImageParameters(hints[i].statementHTML, resource, probContentPath, problemParams, image_parameters, hintId, previewMode);
+                // DM 1/23/18 add two lines below to get these two new items from the hint
+                var hintImageURL = hints[i].imageURL;
+                var hintImagePlacement = hints[i].placement; // 1 for overlay, 2 for side.
+                // DM 1/23/18 added hintResource below
+                var formatted_text = formatTextWithImageParameters(hints[i].statementHTML, hintResource, probContentPath, problemParams, image_parameters, hintId, previewMode);
+                // DM above function builds image_parameters as a set of mappings like "Hint1-0"=>"side", "Hint1-1"=>"overlay", "Hint2-0"=>"overlay", etc
+                // This mapping is stored in the attribute of hint_thumb below.  Later it will be pulled out and used to set hint image locations.
+                // See problemUtils.js line 101 in this dir for that.
+                // I'm not sure how to change this.  This is more complicated than necessary because we've simplified the statement HTML to contain
+                // NO {[filename overlay|side]}.  THey have all been simplified to {[filename]}.  We do, however, have hintImageURL and hintImagePlacement
+                // variables set above for each hint.  Somehow we need to give the correct info to that routine in problemUtils so it puts this
+                // image in the side or overlay and not ones coming out of the statementHTML.
+
                 hint_thumb.dataset.parameters = JSON.stringify(image_parameters);
                 hint.innerHTML = parameterizeText(formatted_text, problemParams);
             }
             else{
                 alert("text missing for hint: "+i);
             }
+            // DM 1/23/18.  It looks like it might be possible to put images in {[]} in hoverText which means they should be located in problem_XXX/hint_YYY
             if(isNotEmpty(hints[i].hoverText)){
-                document.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, resource, probContentPath, problemParams, previewMode), problemParams));
+                document.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, hintResource, probContentPath, problemParams, previewMode), problemParams));
             }
+            // DM 1/23/18 audioResource will be sent as {[foo]} to indicate hint uses problem_XXX/hint_YYY/foo.mp3
             if (isNotEmpty(hints[i].audioResource)) {
                 //I think this was intended to support ogg as well,
                 // but all hint audioResources have no extension
@@ -93,7 +114,10 @@ m.build = function(activity, previewMode) {
                 var sound_elt = document.createElement("audio");
                 sound_elt.id = hintId+"Sound";
                 // sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".ogg", resource, probContentPath));
-                sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".mp3", resource, probContentPath));
+
+                // DM 1/23/18 commented out line below and replaced with one that assumes sound file has its extension included
+                // sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".mp3", hintResource, probContentPath)); // DM 1/23/18 changed resource to hintResource
+                sound_elt.setAttribute("src", getURL(hints[i].audioResource , hintResource, probContentPath)); // DM 1/23/18 changed resource to hintResource
                 hint.appendChild(sound_elt);
                 if(i == 0) {
                     sound_elt.load()
@@ -204,7 +228,8 @@ function submitMultiSelectAnswer() {
 function getURL(filename, resource, probContentPath) {
     if (filename == null || filename == undefined)
         return filename;
-    return probContentPath + "/html5Probs/" + resource.split(".")[0] + "/" + filename;
+    // DM 1/23/18 - added /qa
+    return probContentPath + "/html5Probs/qa/" + resource.split(".")[0] + "/" + filename;
 }
 
 function getImageHtml(file, ext, resource, probContentPath, id, previewMode){
@@ -256,13 +281,22 @@ function formatTextWithImageParameters(text, resource, probContentPath, problemP
             // when the hint is displayed (e.g. overlay, side, hint)
             var image_parameters = match.split(",");
             var image_parts = image_parameters[0].trim().split("."); //separate into filename, extension
-            var image_id = base_id + "-" + i;
+            var image_id = base_id + "-" + i;  // something like "Hint3-0"
             // currently assuming only one parameter
+            // DM I'm guessing at what's going on here.  The base_id passed in is something like Hint1, Hint2, ... Hint10
+            // For each {[]} in the statementHTML of the hint i is incremented.  So if this is called with "Hint3" and it contains
+            // several {[foo.jpg side]} {[bar.jpg overlay]} we'd have insertions into imageParams of "Hint3-0"=> "side", "Hint3-1"=> "overlay"
             if (base_id != null && image_parameters.length > 1) {
-                imageParams[image_id] = image_parameters[1].trim();
+                imageParams[image_id] = image_parameters[1].trim();  // DM add the mapping like "Hint3-0"=> "side"
             }
+            // DM builds a div containing an img tag with id like Hint3-0.
             replacement = getImageHtml(image_parts[0], image_parts[1], resource, probContentPath, image_id, previewMode);
         }
+        // DM it replaces {[]} in the statement text with the replacement div built above.
+        // The caller of this function buries the imageParams mapping in hint_thumb.dataset.parameters as a JSON string.
+        // My guess os tjat when the user clicks on the hint button, some handler then works with the statement and this mapping in hint_thumb.dataset.parameters
+        // to place the image div in the problem figure, the hint side, or left in the statement.
+        // Where is that event handler???
         text = text.replace(matches[i], replacement);
         //Note that we don't need to worry about duplicates;
         // replace will only do one replacement, and the matches are extracted in order

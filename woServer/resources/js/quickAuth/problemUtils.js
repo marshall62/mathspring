@@ -97,6 +97,8 @@ m.prob_playHint = function(hintLabel) {
     //clear side images
     var hintFigure = document.getElementById("HintFigure");
     if(hintFigure != null) hintFigure.innerHTML = "";
+
+    // DM 1/23/18 This was set in buildProblem.js.  It maps hint ids to locations of side or overlay
     var image_parameters = JSON.parse(hint_thumb.dataset.parameters);
     //add overlay and queue up side images
     var side_figures = [];
