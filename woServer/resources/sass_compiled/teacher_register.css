@@ -12780,6 +12780,78 @@ template {
   }
 }
 
+.main-content {
+  min-height: calc(100vh - 72px);
+  background-color: #3dc3e2;
+  background-image: radial-gradient(#3dc3e2, #3dc3e2 0%, #1887a1 70%, #116275 100%);
+  font-family: Raleway, Helvetica, Arial, "Lucida Grande", sans-serif !important;
+  position: relative;
+  color: #003364;
+  padding: 50px;
+}
+
+.registration-box {
+  background-color: white;
+  border: 1px solid #003364;
+}
+
+.vertical-center {
+  display: flex;
+  align-items: center;
+  min-height: 75vh;
+}
+
+.teacher-registration-form {
+  padding-bottom: 70px;
+  padding-right: 35px;
+}
+
+.bootstrap .teacher-button {
+  background: #f6a623;
+  border-radius: 0;
+  color: white;
+  border: 1px solid #003364;
+  padding: 10px 30px;
+}
+.bootstrap .teacher-button:hover, .bootstrap .teacher-button:active {
+  background: #e2920f;
+  color: white;
+}
+
+.bootstrap .student-button {
+  background: #38a186;
+  border-radius: 0;
+  color: white;
+  border: 1px solid #003364;
+  padding: 10px 30px;
+}
+.bootstrap .student-button:hover, .bootstrap .student-button:active {
+  background: #248d72;
+  color: white;
+}
+
+.bootstrap .form-title {
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background-color: #2ECC71;
+  padding: 10px 0 10px 0;
+  color: white;
+  font-size: 0.9em;
+  font-family: Raleway, Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.msg-bar {
+  margin-top: 20px;
+}
+
 .nav {
   display: -ms-flexbox;
   display: flex;
