@@ -15,10 +15,15 @@ m.build = function(activity, previewMode) {
     var questType = problem.questType;
     var mode = problem.mode;
     var probContentPath = activity.probContentPath || problem.probContentPath;
-    probContentPath = probContentPath.replace(/\/$/g, "");
+    probContentPath = probContentPath.replace(/\/$/g, ""); // removes a trailing slash from the content path
+    theProblem.contentPath = probContentPath; // save this so that at play hint time we can get this and build URLs.
     // var resource = problem.resource;  // This is the problem.name e.g. 5NFA1_1 which is usually a dir under /html5Probs for a quickAuth problem
     var resource = problem.probDir; // DM 1/23/18 added - will be problem_XXX where XXX is the ID
-    var probSound = problem.questionAudio; // DM 1/23/18 filled with a filename coming from the ProblemMediafile table via Problem.audioFileId - will include .mp3 extension
+    var probSound = problem.questionAudio; // DM 2/1/18 e.g. {[question.mp3]} - will include .mp3 extension
+    var pattern = /\{\[[ ]*(\S*)[ ]*\]\}/; // extracts the filename from within {[]}
+    var matchArray = imageURL.exec(pattern);
+    if (matchArray)
+        probSound = matchArray[1]; // e.g. will become question.mp3
     var probUnits = problem.units;
     var problemParams = activity.binding;
     pickParams(problemParams); //chooses which set of parameters to use
@@ -79,22 +84,17 @@ m.build = function(activity, previewMode) {
             var hint = document.createElement("div");
             hint.id = hintId;
             hint.className = "hint";
+            // resource is the animationResource of the problem which is typically a name like problem_45
             var hintResource = resource + "/" + "hint_" + hint.id; // DM 1/23/18 problem_XXX/hint_YYY is where hints resources are
             hint_content.appendChild(hint);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 var image_parameters = {};
-                // DM 1/23/18 add two lines below to get these two new items from the hint
-                var hintImageURL = hints[i].imageURL;
-                var hintImagePlacement = hints[i].placement; // 1 for overlay, 2 for side.
+
                 // DM 1/23/18 added hintResource below
                 var formatted_text = formatTextWithImageParameters(hints[i].statementHTML, hintResource, probContentPath, problemParams, image_parameters, hintId, previewMode);
                 // DM above function builds image_parameters as a set of mappings like "Hint1-0"=>"side", "Hint1-1"=>"overlay", "Hint2-0"=>"overlay", etc
                 // This mapping is stored in the attribute of hint_thumb below.  Later it will be pulled out and used to set hint image locations.
                 // See problemUtils.js line 101 in this dir for that.
-                // I'm not sure how to change this.  This is more complicated than necessary because we've simplified the statement HTML to contain
-                // NO {[filename overlay|side]}.  THey have all been simplified to {[filename]}.  We do, however, have hintImageURL and hintImagePlacement
-                // variables set above for each hint.  Somehow we need to give the correct info to that routine in problemUtils so it puts this
-                // image in the side or overlay and not ones coming out of the statementHTML.
 
                 hint_thumb.dataset.parameters = JSON.stringify(image_parameters);
                 hint.innerHTML = parameterizeText(formatted_text, problemParams);
@@ -106,7 +106,7 @@ m.build = function(activity, previewMode) {
             if(isNotEmpty(hints[i].hoverText)){
                 document.getElementById(hintId+"Thumb").setAttribute("title", parameterizeText(formatText(hints[i].hoverText, hintResource, probContentPath, problemParams, previewMode), problemParams));
             }
-            // DM 1/23/18 audioResource will be sent as {[foo]} to indicate hint uses problem_XXX/hint_YYY/foo.mp3
+            // DM 1/23/18 audioResource will be sent as {[foo.mp3]} to indicate hint uses problem_XXX/hint_YYY/foo.mp3
             if (isNotEmpty(hints[i].audioResource)) {
                 //I think this was intended to support ogg as well,
                 // but all hint audioResources have no extension
@@ -115,9 +115,12 @@ m.build = function(activity, previewMode) {
                 sound_elt.id = hintId+"Sound";
                 // sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".ogg", resource, probContentPath));
 
-                // DM 1/23/18 commented out line below and replaced with one that assumes sound file has its extension included
+                // DM 1/23/18 commented out line below and replaced with lines that assumes sound file is like {[mysound.mp3]}
                 // sound_elt.setAttribute("src", getURL(hints[i].audioResource + ".mp3", hintResource, probContentPath)); // DM 1/23/18 changed resource to hintResource
-                sound_elt.setAttribute("src", getURL(hints[i].audioResource , hintResource, probContentPath)); // DM 1/23/18 changed resource to hintResource
+                var hintAudio = hints[i].audioResource;
+                pattern = /\{\[[ ]*(\S*)[ ]*\]\}/;  // get the filename out of the {[]}}
+                a = pattern.exec(hintAudio); // a[1] will be the filename.mp3
+                sound_elt.setAttribute("src", getURL(a[1] , hintResource, probContentPath)); // DM 1/23/18 changed resource to hintResource
                 hint.appendChild(sound_elt);
                 if(i == 0) {
                     sound_elt.load()
@@ -228,10 +231,19 @@ function submitMultiSelectAnswer() {
 function getURL(filename, resource, probContentPath) {
     if (filename == null || filename == undefined)
         return filename;
-    // DM 1/23/18 - added /qa
-    return probContentPath + "/html5Probs/qa/" + resource.split(".")[0] + "/" + filename;
+    // DM 1/23/18 - added QUICKAUTH_PATH
+    return probContentPath + QUICKAUTH_PATH + resource.split(".")[0] + "/" + filename;
 }
 
+
+
+
+    // file: image filename (no extension)
+    // ext: The extension with no "."
+    // resource: can be a dir like problem_XXX/hint_YYY
+    // probContentPath:  Is the beginning part of the URL
+    // id: an ID for the div tag that gets built
+    // previewMode:  flag to indicate if this is being built for preview or regular display
 function getImageHtml(file, ext, resource, probContentPath, id, previewMode){
     //if id is null, don't add an id to the image
     id = id == null ? "" : ' id="' + id + '"';

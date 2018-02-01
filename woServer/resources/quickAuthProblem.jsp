@@ -19,6 +19,10 @@
             });
         </script>
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script type="text/javascript">
+            var theProblem;  // A global variable which is the problem object.  Gets set in buildProblem.  Gets used in problemUtils
+            const QUICKAUTH_PATH = "/html5Probs/qa/";
+        </script>
     </head>
 
     <body onload="quickAuthLoadProblem.requestProblemData(${problem.id}, ${sessionId}, ${elapsedTime}, ${eventCounter}, '${servletContext}', '${servletName}', ${previewMode}, ${teacherId})">

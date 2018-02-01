@@ -53,11 +53,11 @@ public class Hint  {
         this.givesAnswer=givesAnswer;
         this.is_visual = true ;
         this.statementHTML = statementHTML;
-        this.audioResource = audioResource;
+        this.audioResource = audioResource; // eg. {[mysound.mp3]}
         this.hoverText = hoverText;
         this.order = order;
-        this.placement=placement; // DM 1/23/18 added
-        this.imageURL = imageURL; // DM added
+        this.placement=placement; // DM 1/23/18 added  1 overlay, 2 side
+        this.imageURL = imageURL; // DM added e.g. {[myimage.jpg]} OR full URL
     }
 
     public static boolean isBottomOut(String name) {
@@ -87,10 +87,10 @@ public class Hint  {
         if (p != null && p.isQuickAuth()) {
 //            jo.element("statementHTML", JSONUtil.changeSpecialChars(statementHTML));
             jo.element("statementHTML", statementHTML);
-            jo.element("audioResource", audioResource);
+            jo.element("audioResource", audioResource); // e.g. {[hint1.mp3]}
             jo.element("hoverText",hoverText);
-            jo.element("placement",placement);
-            jo.element("imageURL",imageURL);
+            jo.element("placement",placement); // e.g. 1 or 2
+            jo.element("imageURL",imageURL); // e.g. {[myimage.jpg]}
         }
 
         return jo;

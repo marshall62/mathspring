@@ -30,7 +30,7 @@ public class DbHint extends BaseMgr {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String q = "select h.id, h.name, h.givesAnswer, h.statementHTML, h.audioResource, h.hoverText, h.order, h.is_root, h.placement from Hint h " +
+            String q = "select h.id, h.name, h.givesAnswer, h.statementHTML, h.audioResource, h.hoverText, h.order, h.is_root, h.imageURL, h.placement from Hint h " +
                     "where givesAnswer = 0 and h.problemid= ? and h.order is not null order by h.order";
             ps = conn.prepareStatement(q);
             ps.setInt(1, probId);
@@ -45,8 +45,9 @@ public class DbHint extends BaseMgr {
                 String stmtHTML = rs.getString("h.statementHTML");
                 int order = rs.getInt("h.order");
                 boolean isroot = rs.getBoolean("h.is_root");
+                String imageURL = rs.getString("h.imageURL"); // DM 1/23/18 added
                 int placement = rs.getInt("h.placement"); // DM 1/23/18 DB sets default of 2 on column
-                Hint h = new Hint(id, name, probId, givesAnswer, stmtHTML, audio, hoverText, order, placement, null);
+                Hint h = new Hint(id, name, probId, givesAnswer, stmtHTML, audio, hoverText, order, placement, imageURL);
                 h.setIs_root(isroot);
                 hints.add(h);
             }

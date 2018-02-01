@@ -272,7 +272,8 @@ public class ProblemMgr {
         ResultSet rs = ps.executeQuery();
         try {
             while (rs.next()) {
-                Problem p = buildProblem1(conn,rs); // DM 1/23/18 changed to buildProblem1
+                // Problem p = buildProblem1(conn,rs); // DM 1/23/18 changed to buildProblem1
+                Problem p = buildProblem(conn, rs); // reverted to old way - Don't need to add in imageURL and audioResource from problemMediafile table
                 problemIds.add(p.getId());
             }
         } finally {
@@ -337,7 +338,8 @@ public class ProblemMgr {
         ResultSet rs = ps.executeQuery();
         try {
             while(rs.next()) {
-                Problem p = buildProblem1(conn, rs); // DM 1/23/18 changed to buildProblem1
+//                Problem p = buildProblem1(conn, rs); // DM 1/23/18 changed to buildProblem1
+                Problem p = buildProblem(conn, rs);  // no need for above - imageURL and audioResource are loaded with values by auth tool
 //                allProblems.put(problemId, p);
             }
         } finally {

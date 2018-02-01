@@ -57,7 +57,7 @@ public class Problem implements Activity {
     protected String type = FLASH_PROB_TYPE;
     protected String topicName = "";
     protected String activityType;
-    protected String imageURL;
+    protected String imageURL; // either a full URL or something like {[myImage.jpg]}
     private String answer;   // the letter of the multi-choice answer (a-e)
                         // client forces a prob + topic.   This is then used to make sure logging shows the given topic
     private List<ProblemAnswer> answers;  // for short answer questions we have all possible answers  and multiple choice will be here too for quickAuth probs
@@ -68,7 +68,7 @@ public class Problem implements Activity {
     private String nickname;
     private String instructions ;   //Instructions to the problem that go only with External URL Problems
     private String statementHTML;
-    private String questionAudio;
+    private String questionAudio; // will be like {[mysound.mp3]}
     private List<Hint> allHints;
     private int numHints=0;   // only one client of this class uses this field - AdaptiveProblemGroupProblemSelector
     private boolean hasStrategicHint=false;
@@ -86,8 +86,8 @@ public class Problem implements Activity {
     private ProblemParameters params;
     private String ssURL;
     private String units = null;
-    private int imageFileId; // DM 1/23/18 added to support naming a local image via the ProblemMediaFile table
-    private int audioFileId; // DM 1/23/18 added to support naming a local image via the ProblemMediaFile table
+    private int imageFileId; // DM 1/23/18 added to point to ProblemMediaFile table
+    private int audioFileId; // DM 1/23/18 added to point to ProblemMediaFile table
     public Problem () {}
     public Problem (int id) {
         this.id =id;
@@ -263,8 +263,8 @@ public class Problem implements Activity {
             jo.element("statementHTML", statementHTML);
             jo.element("probContentPath", Settings.webContentPath);
             jo.element("probDir",this.getProblemDir()); // DM 1/23/18 Added probDir so we can have problem_XXX for dir
-            jo.element("questionAudio", questionAudio);  // DM 1/23/18 this will be a filename coming from ProblemMediaFile table via Problem.audioFileID
-            jo.element("questionImage", imageURL); // DM 1/23/18 this will be Either a URL in the Problem table imageURL field OR a filename coming from ProblemMediaFile table via Problem.audioFileID
+            jo.element("questionAudio", questionAudio);  // DM 1/23/18 e.g. {[file.mp3]}
+            jo.element("questionImage", imageURL); // DM 1/23/18 this will be Either a URL or {[myimage.jpg]}
             jo.element("units", units);
             jo.element("questType",this.questType.name());
             jo.element("hints", new JSONArray());
