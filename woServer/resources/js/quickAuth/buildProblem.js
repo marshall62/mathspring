@@ -21,7 +21,7 @@ m.build = function(activity, previewMode) {
     var resource = problem.probDir; // DM 1/23/18 added - will be problem_XXX where XXX is the ID
     var probSound = problem.questionAudio; // DM 2/1/18 e.g. {[question.mp3]} - will include .mp3 extension
     var pattern = /\{\[[ ]*(\S*)[ ]*\]\}/; // extracts the filename from within {[]}
-    var matchArray = imageURL.exec(pattern);
+    var matchArray = pattern.exec(probSound);
     if (matchArray)
         probSound = matchArray[1]; // e.g. will become question.mp3
     var probUnits = problem.units;
@@ -85,7 +85,7 @@ m.build = function(activity, previewMode) {
             hint.id = hintId;
             hint.className = "hint";
             // resource is the animationResource of the problem which is typically a name like problem_45
-            var hintResource = resource + "/" + "hint_" + hint.id; // DM 1/23/18 problem_XXX/hint_YYY is where hints resources are
+            var hintResource = resource + "/" + "hint_" + hints[i].id; // DM 1/23/18 problem_XXX/hint_YYY is where hints resources are
             hint_content.appendChild(hint);
             if(hints[i].statementHTML != undefined && hints[i].statementHTML != ""){
                 var image_parameters = {};

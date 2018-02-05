@@ -102,7 +102,7 @@ m.prob_playHint = function(hintLabel) {
 
     // DM added this to get get hint main image/video
     var imgId = "mainhintimg-" + hintId;
-    var h = getHint(theProblem, hintId);
+    var h = getHint(theProblem, hintLabel);
     var imageURL = h.imageURL;
     var placement = h.placement; // 1 (overlay), 2 (side)
     var probDir = theProblem.probDir; // e.g. problem_123
@@ -165,10 +165,10 @@ m.prob_playHint = function(hintLabel) {
     }
 }
 
-function getHint (prob, hintId) {
+function getHint (prob, label) {
     for (h of prob.hints) {
-        if (hint.id == hintId)
-            return hint;
+        if (h.label == label)
+            return h;
     }
     return null;
 }
@@ -191,7 +191,7 @@ function getQAProbHintURI (probContentPath, probDir, hintDir=null) {
 // Will return an img tag or a video tag for an imageURL that is either {[]} or a full URL.
 function getImgVidTag (imageURL, probContentPath, probDir, hintDir, id) {
     var pattern = /\{\[[ ]*(.*)\.(\S*)[ ]*([A-Za-z]*)[ ]*\]\}/; // extracts the filename, extension, placement
-    var matchArray = imageURL.exec(pattern);
+    var matchArray = pattern.exec(imageURL);
     var size_style = "style='max-height: 100%; max-width: 100%'";
     var localURI = getQAProbHintURI(probContentPath,probDir,hintDir);
     if (matchArray && isImgType(matchArray[2])) {
@@ -209,7 +209,7 @@ function getImgVidTag (imageURL, probContentPath, probDir, hintDir, id) {
     // full URLs
     else {
         pattern = /.*\.([a-zA-Z]+$)/; // get the extension out of the URL
-        matchArray = imageURL.exec(pattern);
+        matchArray = pattern.exec(imageURL);
         if (matchArray && isImgType(matchArray[1]))
             return "<img src='" + imageURL + "' id='" + id + "'  " + size_style + ">";
         else if (matchArray && isVidType(matchArray[1]))
