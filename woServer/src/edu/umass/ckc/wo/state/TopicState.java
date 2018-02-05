@@ -18,6 +18,10 @@ import java.util.Map;
 public class TopicState extends State {
 
 
+    public static final String TOPIC_PROBLEMS_SOLVED = "st.problemsSolvedInTopic";
+    public static final String BEGINNING_OF_TOPIC = "BeginningOfTopic";
+    public static final String IN_TOPIC = "InTopic";
+    public static final String END_OF_TOPIC = "EndOfTopic";
     private static final String CUR_PROBLEM = "st.curProblem";
     private static final String LAST_PROBLEM = "st.lastProblem";
     private static final String NEXT_PROBLEM = "st.nextProblem";
@@ -25,7 +29,6 @@ public class TopicState extends State {
     private static final String NEXT_PROBLEM_MODE = "st.nextProblemMode";
     private static final String CUR_PROB_TYPE= "st.curProbType";
     private static final String TOPIC_INTRO_SHOWN = "st.isTopicIntroShown";
-    public static final String TOPIC_PROBLEMS_SOLVED = "st.problemsSolvedInTopic";
     private static final String PENULTIMATE_PROBLEM_SOLVED_WELL = "st.penultimateProblemSolvedWell";
     private static final String SECOND_EASIEST_PROBLEM_FAILED_SOLVE = "st.secondEasiestProblemFailedSolve";
     private static final String PENULTIMATE_PROBLEM_SHOWN = "st.penultimateProblemShown";
@@ -57,15 +60,9 @@ public class TopicState extends State {
     private static final String TOPIC_HAS_HARDER_PROBLEM = "st.topicHasHarderProblem";
     private static final String EXAMPLE_SHOWN = "st.exampleShown";
     private static final String CUR_PROB_INDEX_IN_TOPIC = "st.curProbIndexInTopic";
+    private static final String CUR_PROB_BROKEN = "st.curProbBroken";
     private static final String TOPIC_INTERNAL_STATE = "st.topicInternalState"; // one of Begin, In, End
     private static final String REVIEW_TOPICS = "st.reviewTopics"; //
-
-
-    public static final String BEGINNING_OF_TOPIC = "BeginningOfTopic";
-    public static final String IN_TOPIC = "InTopic";
-    public static final String END_OF_TOPIC = "EndOfTopic";
-
-
     private static String[] ALL_PROPS = new String[] { CUR_PROBLEM , LAST_PROBLEM , NEXT_PROBLEM , CUR_PROBLEM_MODE , NEXT_PROBLEM_MODE, LAST_PROBLEM_MODE ,
             CUR_PROB_TYPE, TOPIC_INTRO_SHOWN , PENULTIMATE_PROBLEM_SOLVED_WELL ,
             SECOND_EASIEST_PROBLEM_FAILED_SOLVE , PENULTIMATE_PROBLEM_SHOWN ,
@@ -77,7 +74,7 @@ public class TopicState extends State {
             CLIP_COUNTERS , STUDENT_SELECTED_TOPIC , SIDELINED_TOPIC , REVIEW_MODE ,EXAMPLE_SHOWN,
             CHALLENGE_MODE , TEACH_TOPIC_MODE
              , TOPIC_SWITCH , CONTENT_FAILURE_TOPIC_SWITCH,TOPIC_HAS_EASIER_PROBLEM,TOPIC_HAS_HARDER_PROBLEM,
-            CUR_PROB_INDEX_IN_TOPIC, TOPIC_INTERNAL_STATE, TOPIC_PROBLEMS_SOLVED, REVIEW_TOPICS} ;
+            CUR_PROB_INDEX_IN_TOPIC, TOPIC_INTERNAL_STATE, TOPIC_PROBLEMS_SOLVED, REVIEW_TOPICS, CUR_PROB_BROKEN} ;
     private int curProblem;
     private int lastProblem;
     private int nextProblem;
@@ -120,6 +117,7 @@ public class TopicState extends State {
     private String internalState;
     private int topicProblemsSolved;
     private List<String> reviewTopics;
+    private boolean curProblemBroken;
 
 
     public TopicState(Connection conn) {
@@ -131,6 +129,14 @@ public class TopicState extends State {
             clearProp(conn,objid,prop)  ;
     }
 
+    public static String getTopicIntroShown() {
+        return TOPIC_INTRO_SHOWN;
+    }
+
+    public void setTopicIntroShown(boolean b) throws SQLException {
+        this.topicIntroSeen = b;
+        setProp(this.objid,TOPIC_INTRO_SHOWN,b);
+    }
 
     public void extractProps(WoProps props) throws SQLException {
         Map m = props.getMap();
@@ -174,11 +180,9 @@ public class TopicState extends State {
         this.internalState = mapGetPropString(m,TOPIC_INTERNAL_STATE,TopicState.BEGINNING_OF_TOPIC);
         this.topicProblemsSolved = mapGetPropInt(m,TOPIC_PROBLEMS_SOLVED,0);
         this.reviewTopics = mapGetPropList(m,REVIEW_TOPICS);
+        this.curProblemBroken = mapGetPropBoolean(m, CUR_PROB_BROKEN, false);
 
     }
-
-
-
 
     public void initializeState () throws SQLException {
         setCurProblem(-1);
@@ -221,24 +225,24 @@ public class TopicState extends State {
         // each time we initialize the TopicState we set it back to a BeginningOfTopic state.
         setInternalState(TopicState.BEGINNING_OF_TOPIC);
         setTopicProblemsSolved(0);
+        setCurProblemBroken(false);
     }
-
-
 
     public void cleanupState () throws SQLException {
         clearReviewTopics();
     }
 
-
-
+    public int getCurProblem() {
+        return curProblem;
+    }
 
     public void setCurProblem(int curProblem) throws SQLException {
         this.curProblem = curProblem;
         setProp(this.objid, CUR_PROBLEM, curProblem);
     }
 
-    public int getCurProblem() {
-        return curProblem;
+    public int getLastProblem () {
+        return this.lastProblem;
     }
 
     public void setLastProblem (int lastProblem) throws SQLException {
@@ -246,8 +250,8 @@ public class TopicState extends State {
         setProp(this.objid, LAST_PROBLEM, this.lastProblem);
     }
 
-    public int getLastProblem () {
-        return this.lastProblem;
+    public int getNextProblem () {
+        return this.nextProblem;
     }
 
     public void setNextProblem (int nextProblem) throws SQLException {
@@ -255,42 +259,26 @@ public class TopicState extends State {
         setProp(this.objid, NEXT_PROBLEM, this.nextProblem);
     }
 
-    public int getNextProblem () {
-        return this.nextProblem;
+    public String getCurProblemMode() {
+        return curProblemMode;
     }
-
 
     public void setCurProblemMode(String curProblemMode) throws SQLException {
         this.curProblemMode = curProblemMode;
         setProp(this.objid, CUR_PROBLEM_MODE, curProblemMode);
     }
 
-    public String getCurProblemMode() {
-        return curProblemMode;
+    public String getCurProbType() {
+        return curProbType;
     }
-
 
     public void setCurProbType(String type) throws SQLException {
         this.curProbType = type;
         setProp(this.objid, CUR_PROB_TYPE, type);
     }
 
-    public String getCurProbType() {
-        return curProbType;
-    }
-
     public boolean isTopicIntroShown() {
         return this.topicIntroSeen;
-    }
-
-    public void setTopicIntroShown(boolean b) throws SQLException {
-        this.topicIntroSeen = b;
-        setProp(this.objid,TOPIC_INTRO_SHOWN,b);
-    }
-
-    public void setSecondHardestSolvedWell(boolean b) throws SQLException {
-        this.penultimateProblemSolvedWell = b;
-        setProp(this.objid,PENULTIMATE_PROBLEM_SOLVED_WELL,b);
     }
 
     public boolean isSecondHardestSolvedWell() {
@@ -298,14 +286,22 @@ public class TopicState extends State {
 
     }
 
+    public void setSecondHardestSolvedWell(boolean b) throws SQLException {
+        this.penultimateProblemSolvedWell = b;
+        setProp(this.objid,PENULTIMATE_PROBLEM_SOLVED_WELL,b);
+    }
+
+    public boolean isSecondEasiestProblemFailedSolve() {
+        return secondEasiestProblemFailedSolve;
+    }
 
     public void setSecondEasiestProblemFailedSolve(boolean x) throws SQLException {
         this.secondEasiestProblemFailedSolve = x;
         setProp(this.objid,SECOND_EASIEST_PROBLEM_FAILED_SOLVE,x);
     }
 
-    public boolean isSecondEasiestProblemFailedSolve() {
-        return secondEasiestProblemFailedSolve;
+    public boolean isSecondHardestShown() {
+        return secondHardestShown;
     }
 
     public void setSecondHardestShown(boolean b) throws SQLException {
@@ -313,8 +309,8 @@ public class TopicState extends State {
         setProp(this.objid,PENULTIMATE_PROBLEM_SHOWN,b);
     }
 
-    public boolean isSecondHardestShown() {
-        return secondHardestShown;
+    public boolean isHardestSolvedWell() {
+        return this.hardestProblemSolvedWell;
     }
 
     public void setHardestSolvedWell(boolean b) throws SQLException {
@@ -322,8 +318,8 @@ public class TopicState extends State {
         setProp(this.objid,HARDEST_PROBLEM_SOLVED_WELL,b);
     }
 
-    public boolean isHardestSolvedWell() {
-        return this.hardestProblemSolvedWell;
+    public boolean isHardestShown() {
+        return hardestShown;
     }
 
     public void setHardestShown(boolean b) throws SQLException {
@@ -331,11 +327,6 @@ public class TopicState extends State {
         setProp(this.objid,HARDEST_PROBLEM_SHOWN,b);
 
     }
-
-    public boolean isHardestShown() {
-        return hardestShown;
-    }
-
 
     public boolean isEasiestShown() {
         return easiestShown;
@@ -367,7 +358,6 @@ public class TopicState extends State {
     public boolean isSecondEasiestShown() {
         return secondEasiestShown;
     }
-
 
     public void setSecondEasiestShown(boolean x) throws SQLException {
         this.secondEasiestShown = x;
@@ -403,15 +393,13 @@ public class TopicState extends State {
         setProp(this.objid,LAST_ANSWER,this.lastAnswer);
     }
 
-
+    public String getLastProblemMode() {
+        return lastProblemMode;
+    }
 
     public void setLastProblemMode(String lastProblemMode) throws SQLException {
         this.lastProblemMode = lastProblemMode;
         setProp(this.objid, LAST_PROBLEM_MODE, lastProblemMode);
-    }
-
-    public String getLastProblemMode() {
-        return lastProblemMode;
     }
 
     public boolean getInBtwProbIntervention () {
@@ -423,24 +411,23 @@ public class TopicState extends State {
         setProp(this.objid,IN_BTW_PROB_INTERVENTION,b);
     }
 
-    public void setTopicNumProbsSeen(int n) throws SQLException {
-        this.topicNumProbsSeen = n;
-        setProp(this.objid,TOPIC_NUM_PROBS_SEEN,n);
-    }
-
     public int getTopicNumProbsSeen () {
         return this.topicNumProbsSeen;
     }
 
-    public void setTopicNumPracticeProbsSeen(int n) throws SQLException {
-        this.topicNumPracticeProbsSeen = n;
-        setProp(this.objid,TOPIC_NUM_PRACTICE_PROBS_SEEN,n);
+    public void setTopicNumProbsSeen(int n) throws SQLException {
+        this.topicNumProbsSeen = n;
+        setProp(this.objid,TOPIC_NUM_PROBS_SEEN,n);
     }
 
     public int getTopicNumPracticeProbsSeen () {
         return this.topicNumPracticeProbsSeen;
     }
 
+    public void setTopicNumPracticeProbsSeen(int n) throws SQLException {
+        this.topicNumPracticeProbsSeen = n;
+        setProp(this.objid,TOPIC_NUM_PRACTICE_PROBS_SEEN,n);
+    }
 
     public long getTimeInTopic() {
         return timeInTopic;
@@ -460,7 +447,6 @@ public class TopicState extends State {
         setProp(this.objid,CONTENT_FAILURE_COUNTER,contentFailureCounter);
     }
 
-
     public int getStudentSelectedTopic() {
         return studentSelectedTopic;
     }
@@ -469,7 +455,6 @@ public class TopicState extends State {
         this.studentSelectedTopic = studentSelectedTopic;
         setProp(this.objid,STUDENT_SELECTED_TOPIC,studentSelectedTopic);
     }
-
 
     public int getSidelinedTopic() {
         return sidelinedTopic;
@@ -480,23 +465,9 @@ public class TopicState extends State {
         setProp(this.objid,SIDELINED_TOPIC,topicId);
     }
 
-    public void setInReviewMode(boolean inReviewMode) throws SQLException {
-        this.inReviewMode = inReviewMode;
-        setProp(this.objid,REVIEW_MODE,inReviewMode);
-        this.inChallengeMode = false;
-        setProp(this.objid,CHALLENGE_MODE,inChallengeMode);
-    }
-
     public void setInPracticeMode(boolean inPracticeMode) throws SQLException {
         this.setInReviewMode(false);
         this.setInChallengeMode(false);
-    }
-
-    public void setInChallengeMode(boolean inChallengeMode) throws SQLException {
-        this.inChallengeMode = inChallengeMode;
-        setProp(this.objid,CHALLENGE_MODE,inChallengeMode);
-        this.inReviewMode = false;
-        setProp(this.objid,REVIEW_MODE,inReviewMode);
     }
 
     public void setTeachTopicMode(boolean b) throws SQLException {
@@ -512,12 +483,23 @@ public class TopicState extends State {
         return inReviewMode;
     }
 
+    public void setInReviewMode(boolean inReviewMode) throws SQLException {
+        this.inReviewMode = inReviewMode;
+        setProp(this.objid,REVIEW_MODE,inReviewMode);
+        this.inChallengeMode = false;
+        setProp(this.objid,CHALLENGE_MODE,inChallengeMode);
+    }
 
     public boolean isInChallengeMode() {
         return inChallengeMode;
     }
 
-
+    public void setInChallengeMode(boolean inChallengeMode) throws SQLException {
+        this.inChallengeMode = inChallengeMode;
+        setProp(this.objid,CHALLENGE_MODE,inChallengeMode);
+        this.inReviewMode = false;
+        setProp(this.objid,REVIEW_MODE,inReviewMode);
+    }
 
     public boolean isTopicSwitch() {
         return topicSwitch;
@@ -548,7 +530,6 @@ public class TopicState extends State {
 
     }
 
-
     public boolean curTopicHasEasierProblem() {
         return this.curTopicHasEasierProblem;
     }
@@ -556,7 +537,6 @@ public class TopicState extends State {
     public boolean curTopicHasHarderProblem() {
         return this.curTopicHasHarderProblem;
     }
-
 
     public void setIsExampleShown (boolean seenExample) throws SQLException {
         this.exampleShown = seenExample;
@@ -567,29 +547,22 @@ public class TopicState extends State {
         return this.exampleShown;
     }
 
+    public int getCurProblemIndexInTopic() {
+        return curProblemIndexInTopic;
+    }
 
     public void setCurProblemIndexInTopic(int curProblemIndexInTopic) throws SQLException {
         this.curProblemIndexInTopic = curProblemIndexInTopic;
         setProp(this.objid,CUR_PROB_INDEX_IN_TOPIC,curProblemIndexInTopic);
     }
 
-    public int getCurProblemIndexInTopic() {
-        return curProblemIndexInTopic;
-    }
-
-
-    public void setNextProblemMode(String nextProblemMode) throws SQLException {
-        this.nextProblemMode = nextProblemMode;
-        setProp(this.objid,NEXT_PROBLEM_MODE,nextProblemMode);
-    }
-
     public String getNextProblemMode() {
         return nextProblemMode;
     }
 
-
-    public static String getTopicIntroShown() {
-        return TOPIC_INTRO_SHOWN;
+    public void setNextProblemMode(String nextProblemMode) throws SQLException {
+        this.nextProblemMode = nextProblemMode;
+        setProp(this.objid,NEXT_PROBLEM_MODE,nextProblemMode);
     }
 
     public String getInternalState() {
@@ -610,12 +583,6 @@ public class TopicState extends State {
         setProp(this.objid,TOPIC_PROBLEMS_SOLVED,topicProblemsSolved);
     }
 
-    public void setReviewTopics(List<String> reviewTopics) throws SQLException {
-        this.reviewTopics = reviewTopics;
-        for (String topicId: reviewTopics)
-            addProp(this.objid,REVIEW_TOPICS, topicId);
-    }
-
     public void clearReviewTopics () throws SQLException {
         this.reviewTopics = null;
         clearProp(this.objid,REVIEW_TOPICS);
@@ -623,5 +590,19 @@ public class TopicState extends State {
 
     public List<String> getReviewTopics() {
         return reviewTopics;
+    }
+
+    public void setReviewTopics(List<String> reviewTopics) throws SQLException {
+        this.reviewTopics = reviewTopics;
+        for (String topicId: reviewTopics)
+            addProp(this.objid,REVIEW_TOPICS, topicId);
+    }
+
+    public boolean isCurProblemBroken() {
+        return curProblemBroken;
+    }
+
+    public void setCurProblemBroken(boolean curProblemBroken) {
+        this.curProblemBroken = curProblemBroken;
     }
 }

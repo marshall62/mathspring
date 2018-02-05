@@ -132,7 +132,7 @@ public class StudentProblemHistory {
                 state.getNumHintsGivenOnCurProblem(), state.isSolutionHintGiven(),
                 smgr.getStudentModel().getTopicMastery(topicId),
                 effort,state.isVideoShown(),state.getProbExamplesShown(),state.isTextReaderUsed(),
-                state.getTimeToSecondHint(), state.getTimeToThirdHint(), state.getTimeToSecondAttempt(), state.getTimeToThirdAttempt());
+                state.getTimeToSecondHint(), state.getTimeToThirdHint(), state.getTimeToSecondAttempt(), state.getTimeToThirdAttempt(), state.isCurProbBroken());
 
         curProbData.setNumAttemptsToSolve(numAttemptsToSolve);
         curProbData.setNumHintsBeforeCorrect(state.getNumHintsBeforeCorrect());
@@ -150,6 +150,7 @@ public class StudentProblemHistory {
         curProbData.setSeenVideo(state.isVideoShown());
         curProbData.setSeenExample(state.isExampleShown());
         curProbData.setUsedTextReader(state.isTextReaderUsed());
+        curProbData.setProblemBroken(state.isCurProbBroken());
 
 
     }

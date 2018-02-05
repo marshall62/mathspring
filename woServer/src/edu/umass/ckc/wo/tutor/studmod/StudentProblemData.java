@@ -43,11 +43,7 @@ public class StudentProblemData {
     private boolean seenExample=false;
     private boolean usedTextReader=false;
     private double probDifficulty=-1;
-
-    public String toString () {
-        return String.format("prob %d: sess: %d solved:%b mode:%s begin:%s end:%s",probId,sessId,isSolved,mode,new Date(problemBeginTime).toString(),
-                (problemEndTime > 0 ) ? new Date(problemEndTime).toString() : "");
-    }
+    private boolean problemBroken=false;
 
     public StudentProblemData () {}
 
@@ -91,67 +87,25 @@ public class StudentProblemData {
 
     }
 
-    public void setEffort(String effort) {
-        this.effort = effort;
+    public String toString () {
+        return String.format("prob %d: sess: %d solved:%b mode:%s begin:%s end:%s",probId,sessId,isSolved,mode,new Date(problemBeginTime).toString(),
+                (problemEndTime > 0 ) ? new Date(problemEndTime).toString() : "");
     }
 
-    public void setEmotionLevel(int emotionLevel) {
-        this.emotionLevel = emotionLevel;
-    }
-
-    public void setEmotion(String emotion) {
-        this.emotion = emotion;
-    }
-
-    public void setMastery(double mastery) {
-        this.mastery = mastery;
-    }
-
-    public void setGivenAnswerHint(boolean givenAnswerHint) {
-        this.givenAnswerHint = givenAnswerHint;
-    }
-
-    public void setNumAttemptsToSolve(int numAttemptsToSolve) {
-        this.numAttemptsToSolve = numAttemptsToSolve;
-    }
-
-    public void setNumMistakes(int numMistakes) {
-        this.numMistakes = numMistakes;
-    }
-
-    public void setNumHelpAids(int numHelpAids) {
-        this.numHelpAids = numHelpAids;
-    }
-
-    public void setNumHintsBeforeCorrect(int numHintsBeforeCorrect) {
-        this.numHintsBeforeCorrect = numHintsBeforeCorrect;
-    }
-
-    public void setTimeToSolve(long timeToSolve) {
-        this.timeToSolve = timeToSolve;
-    }
-
-    public void setTimeToFirstHint(long timeToFirstHint) {
-        this.timeToFirstHint = timeToFirstHint;
-    }
     public void setTimeToSecondHint(long timeToHint2) {
         this.timeToSecondHint = timeToHint2;
     }
+
     public void setTimeToThirdHint(long timeToHint3) {
         this.timeToThirdHint = timeToHint3;
     }
 
-    public void setTimeToFirstAttempt(long timeToFirstAttempt) {
-        this.timeToFirstAttempt = timeToFirstAttempt;
-    }
     public void setTimeToSecondAttempt(long timeToAttempt2) {
         this.timeToSecondAttempt = timeToAttempt2;
     }
+
     public void setTimeToThirdAttempt(long timeToAttempt3) {
         this.timeToThirdAttempt = timeToAttempt3;
-    }
-    public void setProblemEndTime(long problemEndTime) {
-        this.problemEndTime = problemEndTime;
     }
 
     public boolean isSolved() {
@@ -166,80 +120,160 @@ public class StudentProblemData {
         return probId;
     }
 
+    public void setProbId(int probId) {
+        this.probId = probId;
+    }
+
     public int getTopicId() {
         return topicId;
+    }
+
+    public void setTopicId(int topicId) {
+        this.topicId = topicId;
     }
 
     public int getSessId() {
         return sessId;
     }
 
+    public void setSessId(int sessId) {
+        this.sessId = sessId;
+    }
+
     public long getProblemBeginTime() {
         return problemBeginTime;
+    }
+
+    public void setProblemBeginTime(long problemBeginTime) {
+        this.problemBeginTime = problemBeginTime;
     }
 
     public long getProblemEndTime() {
         return problemEndTime;
     }
 
+    public void setProblemEndTime(long problemEndTime) {
+        this.problemEndTime = problemEndTime;
+    }
+
     public long getTimeInSession() {
         return timeInSession;
+    }
+
+    public void setTimeInSession(long timeInSession) {
+        this.timeInSession = timeInSession;
     }
 
     public long getTimeInTutor() {
         return timeInTutor;
     }
 
+    public void setTimeInTutor(long timeInTutor) {
+        this.timeInTutor = timeInTutor;
+    }
+
     public long getTimeToFirstAttempt() {
         return timeToFirstAttempt;
+    }
+
+    public void setTimeToFirstAttempt(long timeToFirstAttempt) {
+        this.timeToFirstAttempt = timeToFirstAttempt;
     }
 
     public long getTimeToFirstHint() {
         return timeToFirstHint;
     }
 
+    public void setTimeToFirstHint(long timeToFirstHint) {
+        this.timeToFirstHint = timeToFirstHint;
+    }
+
     public long getTimeToSolve() {
         return timeToSolve;
+    }
+
+    public void setTimeToSolve(long timeToSolve) {
+        this.timeToSolve = timeToSolve;
     }
 
     public int getNumHintsBeforeCorrect() {
         return numHintsBeforeCorrect;
     }
 
+    public void setNumHintsBeforeCorrect(int numHintsBeforeCorrect) {
+        this.numHintsBeforeCorrect = numHintsBeforeCorrect;
+    }
+
     public int getNumHelpAids() {
         return numHelpAids;
+    }
+
+    public void setNumHelpAids(int numHelpAids) {
+        this.numHelpAids = numHelpAids;
     }
 
     public int getNumMistakes() {
         return numMistakes;
     }
 
+    public void setNumMistakes(int numMistakes) {
+        this.numMistakes = numMistakes;
+    }
+
     public int getNumAttemptsToSolve() {
         return numAttemptsToSolve;
+    }
+
+    public void setNumAttemptsToSolve(int numAttemptsToSolve) {
+        this.numAttemptsToSolve = numAttemptsToSolve;
     }
 
     public boolean getGivenAnswerHint() {
         return givenAnswerHint;
     }
 
+    public void setGivenAnswerHint(boolean givenAnswerHint) {
+        this.givenAnswerHint = givenAnswerHint;
+    }
+
     public String getMode() {
         return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     public double getMastery() {
         return mastery;
     }
 
+    public void setMastery(double mastery) {
+        this.mastery = mastery;
+    }
+
     public String getEmotion() {
         return emotion;
+    }
+
+    public void setEmotion(String emotion) {
+        this.emotion = emotion;
     }
 
     public int getEmotionLevel() {
         return emotionLevel;
     }
 
+    public void setEmotionLevel(int emotionLevel) {
+        this.emotionLevel = emotionLevel;
+    }
+
     public String getEffort() {
         return effort;
+    }
+
+    public void setEffort(String effort) {
+        this.effort = effort;
     }
 
     public void setSeenVideo(boolean seenVideo) {
@@ -254,44 +288,16 @@ public class StudentProblemData {
         this.usedTextReader = usedTextReader;
     }
 
-    public void setProbId(int probId) {
-        this.probId = probId;
-    }
-
-    public void setTopicId(int topicId) {
-        this.topicId = topicId;
-    }
-
-    public void setSessId(int sessId) {
-        this.sessId = sessId;
-    }
-
-    public void setProblemBeginTime(long problemBeginTime) {
-        this.problemBeginTime = problemBeginTime;
-    }
-
-    public void setTimeInSession(long timeInSession) {
-        this.timeInSession = timeInSession;
-    }
-
-    public void setTimeInTutor(long timeInTutor) {
-        this.timeInTutor = timeInTutor;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setNumHints(int numHints) {
-        this.numHints = numHints;
-    }
-
     public int getNumHints () {
         return this.numHints;
+    }
+
+    public void setNumHints(int numHints) {
+        this.numHints = numHints;
     }
 
     public boolean isPracticeProblem() {
@@ -314,11 +320,19 @@ public class StudentProblemData {
         return Math.max(0,this.getProblemEndTime() - this.getProblemBeginTime()) / 1000;
     }
 
+    public double getProbDifficulty() {
+        return probDifficulty;
+    }
+
     public void setProbDifficulty(double probDifficulty) {
         this.probDifficulty = probDifficulty;
     }
 
-    public double getProbDifficulty() {
-        return probDifficulty;
+    public boolean isProblemBroken() {
+        return problemBroken;
+    }
+
+    public void setProblemBroken(boolean problemBroken) {
+        this.problemBroken = problemBroken;
     }
 }

@@ -689,7 +689,8 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
         StudentState state = smgr.getStudentState();
         Problem curProb=null;
         // First grade the last practice problem which sets the lastProblemScore property of this class (used by subsequent code)
-        gradeLastProblem();
+        this.lastProblemScore = gradeLastProblem();
+
         // NextProblem is an event that the lesson/topic models want to watch.   They may change their internal state or return EndOfLesson/Topic
         // Many interventions are generated in this call because the Lesson Model wants to notify the student about beginnings of new
         // lessons, endings of lessons, etc.

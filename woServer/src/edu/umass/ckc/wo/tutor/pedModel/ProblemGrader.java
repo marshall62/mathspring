@@ -23,9 +23,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ProblemGrader {
-    private SessionManager smgr;
-
     private static Logger logger = Logger.getLogger(ProblemGrader.class);
+    private SessionManager smgr;
 
 
     public ProblemGrader(SessionManager smgr) {
@@ -40,6 +39,7 @@ public class ProblemGrader {
         int hints = state.getNumHintsBeforeCorrect();
         boolean isCorrect = state.isProblemSolved();
         ProblemScore score = new ProblemScore();
+        score.setProblemBroken(state.isCurProbBroken()); // DM added to detect problems reported as broken so score reflects it.
         score.setMistakes(mistakes);
         score.setHints(hints);
         score.setCorrect(isCorrect);

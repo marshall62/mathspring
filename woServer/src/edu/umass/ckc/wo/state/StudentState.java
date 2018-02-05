@@ -26,22 +26,15 @@ import java.util.List;
  */
 public class StudentState extends State implements TutorEventHandler {
 
-     private static Logger logger = Logger.getLogger(StudentState.class);
-
-
-
-
-
     public static final String HINT_EVENT = "hint";
     public static final String ATTEMPT_EVENT = "attempt";
     public static final String NO_EVENT = null;
-    private static final String END_PROBLEM_EVENT = "endProblem";
     public static final String CORRECT_ATTEMPT_EVENT = "correct attempt";
     public static final String INCORRECT_ATTEMPT_EVENT = "incorrect attempt";
+    private static final String END_PROBLEM_EVENT = "endProblem";
+     private static Logger logger = Logger.getLogger(StudentState.class);
 
    // variables that are only needed for the duration of the student's session
-
-
     private ProblemState problemState;
     private TopicState topicState;
     private LessonState2 lessonState;
@@ -101,18 +94,14 @@ public class StudentState extends State implements TutorEventHandler {
 
     /* Methods that are dealing with state during teaching a topic */
 
-    public void setCurProblem(int curProblem) throws SQLException {
-//        topicState.setCurProblem(curProblem);
-        lessonState.setCurProblem(curProblem);
-    }
     public int getCurProblem() {
 //        return topicState.getCurProblem();
         return lessonState.getCurProblem();
     }
 
-    public void setLastProblem (int lastProblem) throws SQLException {
-//       topicState.setLastProblem(lastProblem);
-       lessonState.setLastProblem(lastProblem);
+    public void setCurProblem(int curProblem) throws SQLException {
+//        topicState.setCurProblem(curProblem);
+        lessonState.setCurProblem(curProblem);
     }
 
     public int getLastProblem () {
@@ -120,9 +109,9 @@ public class StudentState extends State implements TutorEventHandler {
         return lessonState.getLastProblem();
     }
 
-    public void setNextProblem (int nextProblem) throws SQLException {
-//        topicState.setNextProblem(nextProblem);
-        lessonState.setNextProblem(nextProblem);
+    public void setLastProblem (int lastProblem) throws SQLException {
+//       topicState.setLastProblem(lastProblem);
+       lessonState.setLastProblem(lastProblem);
     }
 
     public int getNextProblem () {
@@ -130,9 +119,9 @@ public class StudentState extends State implements TutorEventHandler {
         return lessonState.getNextProblem();
     }
 
-    public void setCurProblemMode(String curProblemMode) throws SQLException {
-//        topicState.setCurProblemMode(curProblemMode);
-        lessonState.setCurProblemMode(curProblemMode);
+    public void setNextProblem (int nextProblem) throws SQLException {
+//        topicState.setNextProblem(nextProblem);
+        lessonState.setNextProblem(nextProblem);
     }
 
     public String getCurProblemMode() {
@@ -140,9 +129,9 @@ public class StudentState extends State implements TutorEventHandler {
         return lessonState.getCurProblemMode();
     }
 
-    public void setLastProblemMode(String mode) throws SQLException {
-//        topicState.setLastProblemMode(mode);
-        lessonState.setLastProblemMode(mode);
+    public void setCurProblemMode(String curProblemMode) throws SQLException {
+//        topicState.setCurProblemMode(curProblemMode);
+        lessonState.setCurProblemMode(curProblemMode);
     }
 
     public String getLastProblemMode() {
@@ -150,14 +139,18 @@ public class StudentState extends State implements TutorEventHandler {
         return lessonState.getLastProblemMode();
     }
 
-
-    public void setCurProbType(String type) throws SQLException {
-        problemState.getPojo().setProblemType(type);
-
+    public void setLastProblemMode(String mode) throws SQLException {
+//        topicState.setLastProblemMode(mode);
+        lessonState.setLastProblemMode(mode);
     }
 
     public String getCurProbType() {
         return problemState.getPojo().getProblemType();
+    }
+
+    public void setCurProbType(String type) throws SQLException {
+        problemState.getPojo().setProblemType(type);
+
     }
 
     public boolean isTopicIntroShown() {
@@ -168,50 +161,47 @@ public class StudentState extends State implements TutorEventHandler {
         topicState.setTopicIntroShown(b);
     }
 
-
-    public void setSecondHardestSolvedWell(boolean b) throws SQLException {
-        topicState.setSecondHardestSolvedWell(b);
-    }
-
     public boolean isSecondHardestSolvedWell() {
         return topicState.isSecondHardestSolvedWell();
 
     }
 
-
-    public void setSecondEasiestProblemFailedSolve(boolean x) throws SQLException {
-        topicState.setSecondEasiestProblemFailedSolve(x);
+    public void setSecondHardestSolvedWell(boolean b) throws SQLException {
+        topicState.setSecondHardestSolvedWell(b);
     }
 
     public boolean isSecondEasiestProblemFailedSolve() {
         return topicState.isSecondEasiestProblemFailedSolve();
     }
 
-    public void setSecondHardestShown(boolean b) throws SQLException {
-        topicState.setSecondHardestShown(b);
+    public void setSecondEasiestProblemFailedSolve(boolean x) throws SQLException {
+        topicState.setSecondEasiestProblemFailedSolve(x);
     }
 
     public boolean isSecondHardestShown() {
         return topicState.isSecondHardestShown();
     }
 
-    public void setHardestSolvedWell(boolean b) throws SQLException {
-        topicState.setSecondHardestSolvedWell(b);
+    public void setSecondHardestShown(boolean b) throws SQLException {
+        topicState.setSecondHardestShown(b);
     }
 
     public boolean isHardestSolvedWell() {
         return topicState.isHardestSolvedWell();
     }
 
-    public void setHardestShown(boolean b) throws SQLException {
-        topicState.setHardestShown(b);
-
+    public void setHardestSolvedWell(boolean b) throws SQLException {
+        topicState.setSecondHardestSolvedWell(b);
     }
 
     public boolean isHardestShown() {
         return topicState.isHardestShown();
     }
 
+    public void setHardestShown(boolean b) throws SQLException {
+        topicState.setHardestShown(b);
+
+    }
 
     public boolean isEasiestShown() {
         return topicState.isEasiestShown();
@@ -276,22 +266,21 @@ public class StudentState extends State implements TutorEventHandler {
         topicState.setInBtwProbIntervention(b);
     }
 
-    public void setTopicNumProbsSeen(int n) throws SQLException {
-       topicState.setTopicNumProbsSeen(n);
-    }
-
     public int getTopicNumProbsSeen () {
         return topicState.getTopicNumProbsSeen();
     }
 
-    public void setTopicNumPracticeProbsSeen(int n) throws SQLException {
-        topicState.setTopicNumPracticeProbsSeen(n);
+    public void setTopicNumProbsSeen(int n) throws SQLException {
+       topicState.setTopicNumProbsSeen(n);
     }
 
     public int getTopicNumPracticeProbsSeen () {
         return topicState.getTopicNumPracticeProbsSeen();
     }
 
+    public void setTopicNumPracticeProbsSeen(int n) throws SQLException {
+        topicState.setTopicNumPracticeProbsSeen(n);
+    }
 
     public int getStudentSelectedTopic() {
         return topicState.getStudentSelectedTopic();
@@ -314,13 +303,17 @@ public class StudentState extends State implements TutorEventHandler {
         return topicState.isInReviewMode();
     }
 
+    public void setInReviewMode(boolean inReviewMode) throws SQLException {
+        topicState.setInReviewMode(inReviewMode);
+    }
 
     public boolean isInChallengeMode() {
         return topicState.isInChallengeMode();
     }
 
-
-
+    public void setInChallengeMode(boolean inChallengeMode) throws SQLException {
+        topicState.setInChallengeMode(inChallengeMode);
+    }
 
     public boolean isTopicSwitch() {
         return topicState.isTopicSwitch();
@@ -338,23 +331,12 @@ public class StudentState extends State implements TutorEventHandler {
         topicState.setContentFailureTopicSwitch(contentFailureTopicSwitch);
     }
 
-
     public void setTeachTopicMode(boolean b) throws SQLException {
         topicState.setTeachTopicMode(b);
     }
 
     public boolean inTeachTopicMode () {
         return topicState.inTeachTopicMode();
-    }
-
-
-    public void setInReviewMode(boolean inReviewMode) throws SQLException {
-        topicState.setInReviewMode(inReviewMode);
-    }
-
-
-    public void setInChallengeMode(boolean inChallengeMode) throws SQLException {
-        topicState.setInChallengeMode(inChallengeMode);
     }
 
     public void setInPracticeMode(boolean inPracticeMode) throws SQLException {
@@ -369,18 +351,12 @@ public class StudentState extends State implements TutorEventHandler {
         return topicState.isExampleShown();
     }
 
-
-    public void setCurProblemIndexInTopic(int curProblemIndexInTopic) throws SQLException {
-        topicState.setCurProblemIndexInTopic(curProblemIndexInTopic);
-    }
-
     public int getCurProblemIndexInTopic() {
         return topicState.getCurProblemIndexInTopic();
     }
 
-    public void setNextProblemMode(String mode) throws SQLException {
-//        topicState.setNextProblemMode(mode);
-        lessonState.setNextProblemMode(mode);
+    public void setCurProblemIndexInTopic(int curProblemIndexInTopic) throws SQLException {
+        topicState.setCurProblemIndexInTopic(curProblemIndexInTopic);
     }
 
     private String getNextProblemMode () {
@@ -388,6 +364,10 @@ public class StudentState extends State implements TutorEventHandler {
         return lessonState.getNextProblemMode();
     }
 
+    public void setNextProblemMode(String mode) throws SQLException {
+//        topicState.setNextProblemMode(mode);
+        lessonState.setNextProblemMode(mode);
+    }
 
     public long getTimeInTopic() {
         return topicState.getTimeInTopic();
@@ -421,6 +401,14 @@ public class StudentState extends State implements TutorEventHandler {
         topicState.setTopicProblemsSolved(n);
     }
 
+    public void clearReviewTopics () throws SQLException {
+        topicState.clearReviewTopics();
+    }
+
+    public List<String> getReviewTopics () {
+        return topicState.getReviewTopics();
+    }
+
     /** WHen an interleaved topic is given we save the topics from which problems are pulled.   This is only used
      * for two purposes.
      * @param topicIds
@@ -430,13 +418,9 @@ public class StudentState extends State implements TutorEventHandler {
 
     }
 
-    public void clearReviewTopics () throws SQLException {
-        topicState.clearReviewTopics();
-    }
+    public boolean isCurProbBroken () { return topicState.isCurProblemBroken(); }
 
-    public List<String> getReviewTopics () {
-        return topicState.getReviewTopics();
-    }
+    public void setCurProbBroken (boolean b) { topicState.setCurProblemBroken(b);}
 
 
     /////////////////  End of Topic State methods
@@ -459,12 +443,12 @@ public class StudentState extends State implements TutorEventHandler {
         sessionState.setLcClipCount(clipName, count);
     }
 
-    public void setLastInterventionTime(long time) throws SQLException  {
-        sessionState.setLastInterventionTime(time);
-    }
-
     public long getLastInterventionTime() {
         return sessionState.getLastInterventionTime();
+    }
+
+    public void setLastInterventionTime(long time) throws SQLException  {
+        sessionState.setLastInterventionTime(time);
     }
 
     public long getTimeLastChange() {
@@ -511,19 +495,9 @@ public class StudentState extends State implements TutorEventHandler {
         problemState.getPojo().setProbElapsedTime(probElapsed);
     }
 
-    public void setStrategicHintShown(boolean b) throws SQLException {
-        problemState.getPojo().setStrategicHintShown(b);
-    }
-
-    public void setCurIntervention(String s) throws SQLException {
-        problemState.getPojo().setCurIntervention(s);
-    }
-
     public void setIsTextReaderUsed(boolean b) throws SQLException {
         problemState.getPojo().setIsTextReaderUsed(b);
     }
-
-
 
     public void setIsVideoShown(boolean b) throws SQLException {
         problemState.getPojo().setIsVideoShown(b);
@@ -532,7 +506,6 @@ public class StudentState extends State implements TutorEventHandler {
     public void setProblemIdleTime(int t) throws SQLException {
         problemState.getPojo().setIdleTime(t);
     }
-
 
     public int getCurHintId () {
         return problemState.getPojo().getCurHintId();
@@ -570,11 +543,9 @@ public class StudentState extends State implements TutorEventHandler {
         return problemState.getPojo().getNumMistakes();
     }
 
-
     public int getNumHintsGivenOnCurProblem() {
         return problemState.getPojo().getNumHintsGiven();
     }
-
 
     public int getNumHelpAidsGivenOnCurProblem() {
         return problemState.getPojo().getNumHelpAidsGiven();
@@ -585,16 +556,13 @@ public class StudentState extends State implements TutorEventHandler {
         return problemState.getPojo().isProblemSolved();
     }
 
-
     public long getTimeToSolve() {
         return problemState.getPojo().getTimeToSolve();
     }
 
-
     public long getTimeToFirstEvent() {
         return problemState.getPojo().getTimeToFirstEvent();
     }
-
 
     public long getTimeToFirstHint() {
         return problemState.getPojo().getTimeToFirstHint();
@@ -608,7 +576,6 @@ public class StudentState extends State implements TutorEventHandler {
         return problemState.getPojo().getTimeToThirdHint();
     }
 
-
     public long getTimeInHintsBeforeCorrect() {
         return problemState.getPojo().getTimeInHintsBeforeCorrect();
     }
@@ -616,9 +583,11 @@ public class StudentState extends State implements TutorEventHandler {
     public long getTimeToFirstAttempt() {
         return problemState.getPojo().getTimeToFirstAttempt();
     }
+
     public long getTimeToSecondAttempt() {
         return problemState.getPojo().getTimeToSecondAttempt();
     }
+
     public long getTimeToThirdAttempt() {
         return problemState.getPojo().getTimeToThirdAttempt();
     }
@@ -639,17 +608,17 @@ public class StudentState extends State implements TutorEventHandler {
         return problemState.getPojo().getLastEvent();
     }
 
-
     public boolean isStrategicHintShown () {
         return problemState.getPojo().isStrategicHintShown();
     }
 
+    public void setStrategicHintShown(boolean b) throws SQLException {
+        problemState.getPojo().setStrategicHintShown(b);
+    }
 
     public boolean isVideoShown () {
         return problemState.getPojo().isVideoShown();
     }
-
-
 
     public boolean isTextReaderUsed () {
         return problemState.getPojo().isTextReaderUsed();
@@ -663,13 +632,16 @@ public class StudentState extends State implements TutorEventHandler {
         return problemState.getPojo().getCurIntervention();
     }
 
-
-    public void setInProblem(boolean inProblem) {
-        problemState.getPojo().setInProblem(inProblem);
+    public void setCurIntervention(String s) throws SQLException {
+        problemState.getPojo().setCurIntervention(s);
     }
 
     public boolean isInProblem() {
         return problemState.getPojo().isInProblem();
+    }
+
+    public void setInProblem(boolean inProblem) {
+        problemState.getPojo().setInProblem(inProblem);
     }
 
     public boolean isLastEvent(String ev) {
@@ -681,23 +653,22 @@ public class StudentState extends State implements TutorEventHandler {
         problemState.getPojo().setInterventionStartTime(getTime());
     }
 
-    public void setProblemBinding(String binding) throws SQLException {
-        problemState.getPojo().setProblemBinding(binding);
-    }
-
     public String getProblemBinding()
     {
         return problemState.getPojo().getProblemBinding();
     }
 
-    public void setProblemAnswer(String ans) throws SQLException {
-        problemState.getPojo().setAnswer(ans);
+    public void setProblemBinding(String binding) throws SQLException {
+        problemState.getPojo().setProblemBinding(binding);
     }
 
     public String getProblemAnswer() {
         return problemState.getPojo().getAnswer();
     }
 
+    public void setProblemAnswer(String ans) throws SQLException {
+        problemState.getPojo().setAnswer(ans);
+    }
 
     public List<String> getPossibleShortAnswers() {
         return problemState.getPojo().getPossibleShortAnswersList();
@@ -852,18 +823,25 @@ public class StudentState extends State implements TutorEventHandler {
         workspaceState.addPrereqStdStack(std);
     }
 
+    public List<String> getBrokenProblemIds () {
+        return workspaceState.getBrokenProblemIds();
+    }
 
+    public void addBrokenProblemId (String pid) throws SQLException {
+        workspaceState.addBrokenProblemId(pid);
+    }
 
 
     public int getCurTopic() {
         return workspaceState.getCurTopic();
     }
-    public int getLastTopic() {
-        return workspaceState.getLastTopic();
-    }
 
     public void setCurTopic(int pgroupID) throws SQLException {
         workspaceState.setCurTopic(pgroupID);
+    }
+
+    public int getLastTopic() {
+        return workspaceState.getLastTopic();
     }
 
     /*end of workspace state methods */
@@ -886,8 +864,16 @@ public class StudentState extends State implements TutorEventHandler {
         return ppState.getPretestProblemSet();
     }
 
+    public void setPretestProblemSet (int p) throws SQLException {
+        ppState.setPretestProblemSet(p);
+    }
+
     public int getPosttestProblemSet() {
         return ppState.getPosttestProblemSet();
+    }
+
+    public void setPosttestProblemSet(int problemSet) throws SQLException {
+        ppState.setPosttestProblemSet(problemSet);
     }
 
     public List getPretestProblemsGiven() {
@@ -898,20 +884,24 @@ public class StudentState extends State implements TutorEventHandler {
         return ppState.getPosttestProblemsGiven();
     }
 
-
     public boolean isPretestCompleted() {
         return ppState.isPretestCompleted();
+    }
+
+    public void setPretestCompleted(boolean pretestCompleted) throws SQLException {
+        ppState.setPretestCompleted(pretestCompleted);
     }
 
     public boolean isPosttestCompleted() {
         return ppState.isPosttestCompleted();
     }
 
+    public void setPosttestCompleted(boolean b) throws SQLException {
+        ppState.setPosttestCompleted(b);
+    }
+
     public boolean isSatHutCompleted(){
         return false;
-    }
-    public void setPretestProblemSet (int p) throws SQLException {
-        ppState.setPretestProblemSet(p);
     }
 
     public void addPretestProblem(int id) throws SQLException {
@@ -930,22 +920,7 @@ public class StudentState extends State implements TutorEventHandler {
         ppState.setCurPostProblem(id);
     }
 
-    public void setPretestCompleted(boolean pretestCompleted) throws SQLException {
-        ppState.setPretestCompleted(pretestCompleted);
-    }
-
-    public void setPosttestCompleted(boolean b) throws SQLException {
-        ppState.setPosttestCompleted(b);
-    }
-
-    public void setPosttestProblemSet(int problemSet) throws SQLException {
-        ppState.setPosttestProblemSet(problemSet);
-    }
-
         /* End of Methods for pre / post tests */
-
-
-
 
     public void newTopic () throws SQLException {
         lessonState.initializeState();
