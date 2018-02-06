@@ -133,11 +133,6 @@ public class TopicState extends State {
         return TOPIC_INTRO_SHOWN;
     }
 
-    public void setTopicIntroShown(boolean b) throws SQLException {
-        this.topicIntroSeen = b;
-        setProp(this.objid,TOPIC_INTRO_SHOWN,b);
-    }
-
     public void extractProps(WoProps props) throws SQLException {
         Map m = props.getMap();
         this.curProblem = mapGetPropInt(m, CUR_PROBLEM, -1);
@@ -279,6 +274,11 @@ public class TopicState extends State {
 
     public boolean isTopicIntroShown() {
         return this.topicIntroSeen;
+    }
+
+    public void setTopicIntroShown(boolean b) throws SQLException {
+        this.topicIntroSeen = b;
+        setProp(this.objid,TOPIC_INTRO_SHOWN,b);
     }
 
     public boolean isSecondHardestSolvedWell() {
@@ -602,7 +602,9 @@ public class TopicState extends State {
         return curProblemBroken;
     }
 
-    public void setCurProblemBroken(boolean curProblemBroken) {
+    public void setCurProblemBroken(boolean curProblemBroken) throws SQLException {
+
         this.curProblemBroken = curProblemBroken;
+        setProp(this.objid,CUR_PROB_BROKEN,curProblemBroken);
     }
 }

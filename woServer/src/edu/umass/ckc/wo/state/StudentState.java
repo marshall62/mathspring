@@ -420,7 +420,7 @@ public class StudentState extends State implements TutorEventHandler {
 
     public boolean isCurProbBroken () { return topicState.isCurProblemBroken(); }
 
-    public void setCurProbBroken (boolean b) { topicState.setCurProblemBroken(b);}
+    public void setCurProbBroken (boolean b) throws SQLException { topicState.setCurProblemBroken(b);}
 
 
     /////////////////  End of Topic State methods
