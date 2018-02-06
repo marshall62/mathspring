@@ -33,6 +33,7 @@ public class WorkspaceState extends State {
     private static final String CUR_PROB = "wkspcst.curProb";
     private static final String PREREQ_STD = "wkspcst.prereqStd";
     private static final String PREREQ_STD_STACK = "wkspcst.prereqStdStack";
+    private static final String BROKEN_PROB_IDS = "wkspcst.brokenProbIds";
 
 
     private static final String POST_SURVEY_DONE = "wkspcst.postSurveyDone";
@@ -47,14 +48,25 @@ public class WorkspaceState extends State {
     private int curProb;
     private String prereqStd;
     private List<String> prereqStdStack;
+    private List<String> brokenProblemIds;
 
     public WorkspaceState(Connection conn) {
         this.conn = conn;
     }
 
+    public static void clearState(Connection conn, int id) throws SQLException {
 
-
-
+       clearProp(conn,id,CUR_LESSON);
+       clearProp(conn,id,CUR_CU);
+        clearProp(conn,id,CUR_CLUSTER);
+        clearProp(conn,id,CUR_STD);
+        clearProp(conn,id,PREREQ_STD);
+        clearProp(conn,id,PREREQ_STD_STACK);
+        clearProp(conn,id,BROKEN_PROB_IDS);
+        clearProp(conn,id,POST_SURVEY_DONE);
+        clearProp(conn,id,CUR_TOPIC);
+        clearProp(conn,id,LAST_TOPIC);
+    }
 
     public void extractProps(WoProps props) throws SQLException {
         Map m = props.getMap();
@@ -67,17 +79,12 @@ public class WorkspaceState extends State {
         this.curProb = mapGetPropInt(m, CUR_PROB, -1);
         this.prereqStd = mapGetPropString(m, PREREQ_STD, null);
         this.prereqStdStack = mapGetPropList(m, PREREQ_STD_STACK);
+        this.brokenProblemIds = mapGetPropList(m, BROKEN_PROB_IDS);
         this.postSurveyDone = mapGetPropBoolean(m, POST_SURVEY_DONE, false);
     }
 
-
-
-
     public int getCurTopic() {
         return curTopic;
-    }
-    public int getLastTopic() {
-        return lastTopic;
     }
 
     public void setCurTopic(int pgroupID) throws SQLException {
@@ -87,6 +94,9 @@ public class WorkspaceState extends State {
         setProp(this.objid, CUR_TOPIC,pgroupID);
     }
 
+    public int getLastTopic() {
+        return lastTopic;
+    }
 
     // We save the curProb in both the workspace state and the lesson state.   It is in here so that on a new session
     // we can regain where the student was in the common core lesson structure.
@@ -99,22 +109,6 @@ public class WorkspaceState extends State {
         setProp(this.objid, CUR_PROB,probId);
     }
 
-
-
-    public static void clearState(Connection conn, int id) throws SQLException {
-
-       clearProp(conn,id,CUR_LESSON);
-       clearProp(conn,id,CUR_CU);
-        clearProp(conn,id,CUR_CLUSTER);
-        clearProp(conn,id,CUR_STD);
-        clearProp(conn,id,PREREQ_STD);
-        clearProp(conn,id,PREREQ_STD_STACK);
-        clearProp(conn,id,POST_SURVEY_DONE);
-        clearProp(conn,id,CUR_TOPIC);
-        clearProp(conn,id,LAST_TOPIC);
-    }
-
-
     public int getCurLesson() {
         return curLesson;
     }
@@ -124,10 +118,6 @@ public class WorkspaceState extends State {
         setProp(objid,CUR_LESSON,curLesson);
     }
 
-    public void setPrereqStdStack(List<String> prereqStdStack) {
-        this.prereqStdStack = prereqStdStack;
-    }
-
     public void addPrereqStdStack(String std) throws SQLException {
         this.prereqStdStack.add(0,std);
         addProp(objid,PREREQ_STD_STACK,std);
@@ -135,6 +125,19 @@ public class WorkspaceState extends State {
 
     public List<String> getPrereqStdStack() {
         return prereqStdStack;
+    }
+
+    public void setPrereqStdStack(List<String> prereqStdStack) {
+        this.prereqStdStack = prereqStdStack;
+    }
+
+    public void addBrokenProblemId (String pid) throws SQLException {
+        this.brokenProblemIds.add(0,pid);
+        addProp(objid,BROKEN_PROB_IDS,pid);
+    }
+
+    public List<String> getBrokenProblemIds () {
+        return brokenProblemIds;
     }
 
     public String getPrereqStd() {

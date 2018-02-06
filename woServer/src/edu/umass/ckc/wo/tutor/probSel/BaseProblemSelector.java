@@ -50,63 +50,6 @@ public class BaseProblemSelector implements ProblemSelector {
         else this.lessonModelParameters = tmParams; // pedagogies will have them here.
     }
 
-
-
-
-    @Override
-    /**
-     * precondition:  This method is only called if we know the topic has no upcoming content failure and all other conditions for continuing in a topic
-     * are met.    In theory,  there should be no fencepost errors based on this.
-     */
-    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
-        long t = System.currentTimeMillis();
-        if (topicModel.isInInterleavedTopic()) {
-            return selectInterleavedProblem(smgr.getConnection(),smgr.getStudentId());
-        }
-        TopicModel.difficulty nextDiff = topicModel.getNextProblemDifficulty(lastProblemScore);
-        StudentState state = smgr.getStudentState();
-        // Gets problems with testable problems included if the user is marked to receive testable stuff.
-        List<Integer> topicProbIds = topicModel.getUnsolvedProblems();
-        int lastProbId = smgr.getStudentState().getCurProblem();
-        // if the last problem given wasn't solved it'll still be in the list.  Toss it out.  We don't want to show the same problem 2X in a row
-        int loc = topicProbIds.indexOf(lastProbId);
-        if (loc != -1)
-            topicProbIds.remove(loc);
-//        List<Problem> topicProblems = xx;
-        int lastIx = state.getCurProblemIndexInTopic();
-        int nextIx=-1;
-        // lastIx is -1 when the topic is new.
-        if (lastIx == -1)
-            nextIx = (int) Math.round((topicProbIds.size()-1) / parameters.getDifficultyRate());
-
-        if (nextIx == -1 && nextDiff == LessonModel.difficulty.EASIER) {
-            if (lastIx <= 0)
-                throw new DeveloperException("Last problem index=0 and want easier problem.   Content failure NOT PREDICTED by TopicSelector");
-            nextIx =(int) Math.round(lastIx / parameters.getDifficultyRate());
-        }
-        else if (nextIx == -1 && nextDiff == LessonModel.difficulty.HARDER) {
-            if (lastIx >= topicProbIds.size())
-                throw new DeveloperException("Last problem >= number of problems in topic.   Content failure NOT PREDICTED by TopicSelector");
-            nextIx = lastIx + ((int) Math.round((topicProbIds.size()-1 - lastIx) / parameters.getDifficultyRate()));
-
-        }
-        else if (nextIx == -1 && nextDiff == LessonModel.difficulty.SAME) {
-            nextIx = Math.min(lastIx, topicProbIds.size()-1);
-        }
-        nextIx = Math.min(nextIx, topicProbIds.size()-1);
-        int nextProbId = topicProbIds.get( nextIx);
-        state.setCurProblemIndexInTopic( nextIx);
-        state.setCurTopicHasEasierProblem(nextIx > 0);
-        if (nextIx < topicProbIds.size() - 1)
-            state.setCurTopicHasHarderProblem(true);
-        else state.setCurTopicHasHarderProblem(false);
-        // it takes 125 ms to get to here
-
-        Problem p = ProblemMgr.getProblem(nextProbId);
-
-        return p;
-    }
-
     public static boolean hasInterleavedProblem (Connection conn, int studId) throws SQLException {
         ResultSet rs=null;
          PreparedStatement stmt=null;
@@ -152,6 +95,68 @@ public class BaseProblemSelector implements ProblemSelector {
         }
     }
 
+    @Override
+    /**
+     * precondition:  This method is only called if we know the topic has no upcoming content failure and all other conditions for continuing in a topic
+     * are met.    In theory,  there should be no fencepost errors based on this.
+     */
+    public Problem selectProblem(SessionManager smgr, NextProblemEvent e, ProblemScore lastProblemScore) throws Exception {
+        long t = System.currentTimeMillis();
+        if (topicModel.isInInterleavedTopic()) {
+            return selectInterleavedProblem(smgr.getConnection(),smgr.getStudentId());
+        }
+        // DM 2/18 - note that this will take into account if curProb is broken and return SAME difficulty
+        TopicModel.difficulty nextDiff = topicModel.getNextProblemDifficulty(lastProblemScore);
+        StudentState state = smgr.getStudentState();
+        // Gets problems with testable problems included if the user is marked to receive testable stuff.
+        List<Integer> topicProbIds = topicModel.getUnsolvedProblems();
+        int lastProbId = smgr.getStudentState().getCurProblem();
+        List<String> brokenProblemsForThisStudent = smgr.getStudentState().getBrokenProblemIds(); // DM 2/5/18 added for Ivon request
+        // if the last problem given wasn't solved it'll still be in the list.  Toss it out.  We don't want to show the same problem 2X in a row
+        int loc = topicProbIds.indexOf(lastProbId);
+        if (loc != -1)
+            topicProbIds.remove(loc);
+        // now remove broken problems from the list
+        for (String pidstr: brokenProblemsForThisStudent) {
+            loc = topicProbIds.indexOf(pidstr);
+            if (loc != -1)
+                topicProbIds.remove(loc);
+        }
+
+//        List<Problem> topicProblems = xx;
+        int lastIx = state.getCurProblemIndexInTopic();
+        int nextIx=-1;
+        // lastIx is -1 when the topic is new.
+        if (lastIx == -1)
+            nextIx = (int) Math.round((topicProbIds.size()-1) / parameters.getDifficultyRate());
+
+        if (nextIx == -1 && nextDiff == LessonModel.difficulty.EASIER) {
+            if (lastIx <= 0)
+                throw new DeveloperException("Last problem index=0 and want easier problem.   Content failure NOT PREDICTED by TopicSelector");
+            nextIx =(int) Math.round(lastIx / parameters.getDifficultyRate());
+        }
+        else if (nextIx == -1 && nextDiff == LessonModel.difficulty.HARDER) {
+            if (lastIx >= topicProbIds.size())
+                throw new DeveloperException("Last problem >= number of problems in topic.   Content failure NOT PREDICTED by TopicSelector");
+            nextIx = lastIx + ((int) Math.round((topicProbIds.size()-1 - lastIx) / parameters.getDifficultyRate()));
+
+        }
+        else if (nextIx == -1 && nextDiff == LessonModel.difficulty.SAME) {
+            nextIx = Math.min(lastIx, topicProbIds.size()-1);
+        }
+        nextIx = Math.min(nextIx, topicProbIds.size()-1);
+        int nextProbId = topicProbIds.get( nextIx);
+        state.setCurProblemIndexInTopic( nextIx);
+        state.setCurTopicHasEasierProblem(nextIx > 0);
+        if (nextIx < topicProbIds.size() - 1)
+            state.setCurTopicHasHarderProblem(true);
+        else state.setCurTopicHasHarderProblem(false);
+        // it takes 125 ms to get to here
+
+        Problem p = ProblemMgr.getProblem(nextProbId);
+
+        return p;
+    }
 
     @Override
     public void setParameters(PedagogicalModelParameters params) {

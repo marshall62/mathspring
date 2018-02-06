@@ -38,6 +38,7 @@ public class NextProblemEvent extends IntraProblemEvent {
     private int topicToForce=-1 ;
     private boolean isEnteringPracticeArea=false;  // true if this NPEvent is the first one on entering into the practice area from some other place.
     private String lastLocation="";  // one of: Login, Dashboard-ReviewTopic, Dashboard-ChallengeTopic, Dashboard-ContinueTopic, MPP-ChallengeTopic, MPP-ReviewTopic, MPP-ContinueTopic, MPP-TryProblem
+    private boolean problemBroken = false; // added to support reporting on broken problems and getting a new problem in response
 
     private Lesson lesson; // a way to force a Lesson
 
@@ -92,6 +93,10 @@ public class NextProblemEvent extends IntraProblemEvent {
         this.probMode = probMode;
     }
 
+    public void setProblemBroken (boolean b) {
+        this.problemBroken = b;
+    }
+
     public boolean isIntervene() {
         return intervene;
     }
@@ -108,6 +113,10 @@ public class NextProblemEvent extends IntraProblemEvent {
         return mode;
     }
 
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
     public String getProbName() {
         return probName;
     }
@@ -120,16 +129,20 @@ public class NextProblemEvent extends IntraProblemEvent {
         this.probId = probId;
     }
 
-    public void setForceIntro(boolean forceIntro) {
-        this.forceIntro = forceIntro;
-    }
-
     public boolean isForceIntro () {
         return this.forceIntro;
     }
 
+    public void setForceIntro(boolean forceIntro) {
+        this.forceIntro = forceIntro;
+    }
+
     public int getTopicToForce()  {
         return topicToForce ;
+    }
+
+    public void setTopicToForce(int topicToForce) {
+        this.topicToForce = topicToForce;
     }
 
     public void clearTopicToForce () {
@@ -172,15 +185,6 @@ public class NextProblemEvent extends IntraProblemEvent {
         return probMode.equals(Problem.DEMO);
     }
 
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    public void setTopicToForce(int topicToForce) {
-        this.topicToForce = topicToForce;
-    }
-
     public Lesson getLesson() {
         return lesson;
     }
@@ -197,5 +201,9 @@ public class NextProblemEvent extends IntraProblemEvent {
     }
     public void setLastLocation (String loc) {
         this.lastLocation = loc;
+    }
+
+    public boolean isProblemIsBroken() {
+        return this.problemBroken;
     }
 }

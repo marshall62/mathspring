@@ -13,6 +13,9 @@ import java.sql.Blob;
  * Time: 11:09:23 AM
  */
 public class PrePostProblemDefn extends Problem {
+    public static final int SHORT_ANSWER = 0;
+    public static final int MULTIPLE_CHOICE = 1;
+    public static final int LONG_ANSWER = 2;
     private int id;
     private String name;
     private String descr;
@@ -32,30 +35,21 @@ public class PrePostProblemDefn extends Problem {
     private String cURL;
     private String dURL;
     private String eURL;
-    public static final int SHORT_ANSWER = 0;
-    public static final int MULTIPLE_CHOICE = 1;
-    public static final int LONG_ANSWER = 2;
     private int numProbsInTest;   // these two variables really don't belong here but at the time we
     private int numProbsSeen;     // create the problem we know these two things and need a package for returning them from the selector
     private int preNumProbsCorrect=0;
     private int postNumProbsCorrect=0;
     private int waitTimeSecs;  // how many seconds we wait before warning student they need to answer.
     private String answerString;
+    private String imageFilename;
 
     public PrePostProblemDefn () {
         id = -1;
     }
 
-    private String cleanAns (String a) {
-        if (a == null) return null;
-        if (a.trim().equals(""))
-            return null;
-        else return a;
-    }
-
     public PrePostProblemDefn(int id, String name, String descr, String url, int ansType, String answer, int problemSet,
                               String aAns, String bAns, String cAns, String dAns, String eAns, String aURL,
-                              String bURL, String cURL, String dURL, String eURL, int waitTimeSecs, Blob img) {
+                              String bURL, String cURL, String dURL, String eURL, int waitTimeSecs, String imgFilename) {
         this.id = id;
         this.name = name;
         this.descr = descr;
@@ -74,8 +68,15 @@ public class PrePostProblemDefn extends Problem {
         this.dURL = cleanAns(dURL);
         this.eURL = cleanAns(eURL);
         this.waitTimeSecs = waitTimeSecs;
-        this.img = img;
-        this.hasImage= (img != null);
+        this.imageFilename = imgFilename;
+        this.hasImage= (imgFilename != null);
+    }
+
+    private String cleanAns (String a) {
+        if (a == null) return null;
+        if (a.trim().equals(""))
+            return null;
+        else return a;
     }
 
     public int getId() {
@@ -373,6 +374,10 @@ public class PrePostProblemDefn extends Problem {
 
     public Blob getImg() {
         return img;
+    }
+
+    public String getImageFilename() {
+        return imageFilename;
     }
 
     public String getAnswerString() {

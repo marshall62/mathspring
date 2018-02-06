@@ -10,6 +10,7 @@ import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
 import edu.umass.ckc.wo.tutormeta.ProblemSelector;
+import edu.umass.ckc.wo.util.Lists;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -48,6 +49,8 @@ public class ReviewModeProblemSelector  implements ProblemSelector {
         StudentState state = smgr.getStudentState();
         List<Integer> topicProbIds = topicModel.getClassTopicProblems(state.getCurTopic(), smgr.getClassID(), DbUser.isShowTestControls(smgr.getConnection(), smgr.getStudentId()));
 //        List<Problem> topicProblems = xx;
+
+
         int nextIx = state.getCurProblemIndexInTopic();
         nextIx++;
         if (nextIx >= topicProbIds.size()) {
@@ -56,6 +59,16 @@ public class ReviewModeProblemSelector  implements ProblemSelector {
         }
         state.setCurProblemIndexInTopic(nextIx);
         int nextProbId = topicProbIds.get(nextIx);
+        // 2/18 Ugly shit to deal with broken problems in the topic.
+        // now make sure the problem isn't among the broken ones and move to the next one if so.
+        while (Lists.inList(nextProbId,state.getBrokenProblemIds())) {
+            nextIx++;
+            if (nextIx >= topicProbIds.size()) {
+                state.setInReviewMode(false);
+                return null;
+            }
+            nextProbId = topicProbIds.get(nextIx);
+        }
         Problem p = ProblemMgr.getProblem(nextProbId);
         p.setMode(Problem.PRACTICE);
         return p;

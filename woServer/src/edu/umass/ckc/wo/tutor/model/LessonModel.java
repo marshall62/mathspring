@@ -63,6 +63,33 @@ public class LessonModel implements TutorEventProcessor {
 
     }
 
+    public static LessonModel buildModel(SessionManager smgr, TutorStrategy strategy ) throws SQLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        ClassStrategyComponent lessonSC = strategy.getLesson_sc();
+        String lessonModelClassname = lessonSC.getClassName();
+        Class cl = Class.forName(lessonModelClassname);
+        Constructor constr = cl.getConstructor(new Class[] {SessionManager.class}) ;
+        LessonModel lm= (LessonModel) constr.newInstance(smgr);
+        lm.setLessonModelParameters(lessonSC);
+        return lm;
+    }
+
+    /**
+     * Called by the PedagogicalModel to build the lesson model (or topic model).  It uses the class name found in the lesson XML coming from the db.
+     * It builds an instance of the lesson model and then sets its parameters from values found in the lesson's control element and then overloading
+     * based on values that are set up for the class and finally the student.
+     * @return
+     * @throws SQLException
+     */
+    public static LessonModel buildModel(SessionManager smgr, Pedagogy ped , int classId, int studId) throws SQLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        LessonXML lx  = Settings.lessonMap.get(ped.getLessonName().trim());
+        String lessonModelClassname = lx.getLessonModelClassname();
+        Class cl = Class.forName(lessonModelClassname);
+        Constructor constr = cl.getConstructor(new Class[] {SessionManager.class}) ;
+        LessonModel lm= (LessonModel) constr.newInstance(smgr);
+        lm.setLessonModelParametersForUser(smgr.getConnection(),ped,classId,studId);
+        return lm;
+    }
+
     public LessonModelParameters getLmParams() {
         return lmParams;
     }
@@ -92,38 +119,6 @@ public class LessonModel implements TutorEventProcessor {
         }
         interventionGroup.buildInterventions(smgr,pedagogicalModel);
     }
-
-
-    public static LessonModel buildModel(SessionManager smgr, TutorStrategy strategy ) throws SQLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        ClassStrategyComponent lessonSC = strategy.getLesson_sc();
-        String lessonModelClassname = lessonSC.getClassName();
-        Class cl = Class.forName(lessonModelClassname);
-        Constructor constr = cl.getConstructor(new Class[] {SessionManager.class}) ;
-        LessonModel lm= (LessonModel) constr.newInstance(smgr);
-        lm.setLessonModelParameters(lessonSC);
-        return lm;
-    }
-
-
-    /**
-     * Called by the PedagogicalModel to build the lesson model (or topic model).  It uses the class name found in the lesson XML coming from the db.
-     * It builds an instance of the lesson model and then sets its parameters from values found in the lesson's control element and then overloading
-     * based on values that are set up for the class and finally the student.
-     * @return
-     * @throws SQLException
-     */
-    public static LessonModel buildModel(SessionManager smgr, Pedagogy ped , int classId, int studId) throws SQLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        LessonXML lx  = Settings.lessonMap.get(ped.getLessonName().trim());
-        String lessonModelClassname = lx.getLessonModelClassname();
-        Class cl = Class.forName(lessonModelClassname);
-        Constructor constr = cl.getConstructor(new Class[] {SessionManager.class}) ;
-        LessonModel lm= (LessonModel) constr.newInstance(smgr);
-        lm.setLessonModelParametersForUser(smgr.getConnection(),ped,classId,studId);
-        return lm;
-    }
-
-
-
 
     @Override
     public Response processUserEvent(TutorHutEvent e) throws Exception {
@@ -175,7 +170,7 @@ public class LessonModel implements TutorEventProcessor {
 
     public difficulty getNextProblemDifficulty (ProblemScore score) {
         // New sessions won't have a previous problem score so we just return same difficulty
-        if (score == null)
+        if (score == null || score.isProblemBroken())
             return difficulty.SAME;
         if (!score.isCorrect())
             return difficulty.EASIER;

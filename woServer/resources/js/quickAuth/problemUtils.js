@@ -77,6 +77,8 @@ m.prob_readProblem = function() {
     document.getElementById("QuestionSound").play();
 }
 
+
+
 m.prob_playHint = function(hintLabel) {
     document.getElementById("HintContainer").style.display = "block";
     hintId = m.getIdCorrespondingToHint(hintLabel);
@@ -97,9 +99,31 @@ m.prob_playHint = function(hintLabel) {
     //clear side images
     var hintFigure = document.getElementById("HintFigure");
     if(hintFigure != null) hintFigure.innerHTML = "";
+
+    // DM added this to get get hint main image/video
+    var imgId = "mainhintimg-" + hintId;
+    var h = getHint(theProblem, hintLabel);
+    var imageURL = h.imageURL;
+    var placement = h.placement; // 1 (overlay), 2 (side)
+    var probDir = theProblem.probDir; // e.g. problem_123
+    var contentPath = theProblem.contentPath; // e.g. http://rose.cs.umass.edu/mathspring/mscontent
+    var hintDir = 'hint_' + h.id;
+    var imgVidTag = getImgVidTag(imageURL,contentPath,probDir,hintDir,imgId);
+
+    // DM 1/23/18 This was set in buildProblem.js.  It maps hint ids to locations of side or overlay
     var image_parameters = JSON.parse(hint_thumb.dataset.parameters);
     //add overlay and queue up side images
     var side_figures = [];
+
+    // DM add the main side image to the side figures if its a side placement (2).  If its an overlay (1)
+    // set the problem's main figure to be this image.
+    if (imageURL && placement==2)
+        side_figures.push(imgVidTag);
+    else if (imageURL)
+        figure_parent.innerHTML = imgVidTag;
+
+    // Now it does the original processing of overlay and side images found in the statementHTML.
+    // If the main image is overlay, this won't overwrite it.  Additional side images can be added.
     for(var image_id in image_parameters) {
         var parameter = image_parameters[image_id];
         var image = document.getElementById(image_id);
@@ -125,6 +149,8 @@ m.prob_playHint = function(hintLabel) {
         side_figure.style.display = "inline-block";
         hintFigure.appendChild(side_figure);
     }
+
+
     var videos = document.getElementsByTagName("VIDEO");
     for(var vi = 0; vi < videos.length; ++vi) {
         videos[vi].currentTime = 0;
@@ -137,6 +163,59 @@ m.prob_playHint = function(hintLabel) {
     if(preload != null && document.getElementById(hintId+"Thumb").style.display != "initial"){
         preload.load();
     }
+}
+
+function getHint (prob, label) {
+    for (h of prob.hints) {
+        if (h.label == label)
+            return h;
+    }
+    return null;
+}
+
+function isImgType (ext) {
+    return ext.match(/^(gif|png|jpe?g|svg)$/i);
+}
+
+function isVidType (ext) {
+    return ext.match(/^(mp4|ogg|webm)$/i);
+}
+
+function getQAProbHintURI (probContentPath, probDir, hintDir=null) {
+    var localURI = probContentPath + QUICKAUTH_PATH + probDir + "/";
+    if (hintDir)
+        localURI = localURI +  hintDir + "/";
+    return localURI;
+}
+
+// Will return an img tag or a video tag for an imageURL that is either {[]} or a full URL.
+function getImgVidTag (imageURL, probContentPath, probDir, hintDir, id) {
+    var pattern = /\{\[[ ]*(.*)\.(\S*)[ ]*([A-Za-z]*)[ ]*\]\}/; // extracts the filename, extension, placement
+    var matchArray = pattern.exec(imageURL);
+    var size_style = "style='max-height: 100%; max-width: 100%'";
+    var localURI = getQAProbHintURI(probContentPath,probDir,hintDir);
+    if (matchArray && isImgType(matchArray[2])) {
+        var filename = matchArray[1];
+        var ext = matchArray[2];
+        var placement = matchArray[3];
+        return "<img src='" + localURI + filename + "." + ext + "' id='" + id + "' " + size_style + ">";
+    }
+    else if (matchArray && isVidType(matchArray[2])) {
+        var filename = matchArray[1];
+        var ext = matchArray[2];
+        var placement = matchArray[3];
+        return '<video id="' + id + '" ' + size_style + ' src="' +localURI+ filename + "." + ext + '" preload="auto"></video>';
+    }
+    // full URLs
+    else {
+        pattern = /.*\.([a-zA-Z]+$)/; // get the extension out of the URL
+        matchArray = pattern.exec(imageURL);
+        if (matchArray && isImgType(matchArray[1]))
+            return "<img src='" + imageURL + "' id='" + id + "'  " + size_style + ">";
+        else if (matchArray && isVidType(matchArray[1]))
+            return "<video preload='auto' src='" + imageURL + "' id='" + id + "'  " + size_style + ">";
+    }
+    return null;
 }
 
 function findFigure(element) {

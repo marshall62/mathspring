@@ -32,8 +32,8 @@ public class Settings {
 
 //  public static ProblemSelector mlProblemSelector = new MLProblemSelector();
 
-  public static AdventureProblemSelector adventureProblemSelector_= new AdventureProblemSelector();
-  public static AdventureProblemSelector userAdventureProblemSelector_= adventureProblemSelector_;  // only 1 choice so everyone gets it
+  public static final int duplicateRowError = 2627;
+  public static final int keyConstraintViolation = 1062;
 //  public static InterventionSelector bayesianInterventionSelector= new BayesianMotivationalSelector() ;
     
 
@@ -43,15 +43,17 @@ public class Settings {
 //  public static InterventionSelector immFeedbackEngTimeAdaptiveInterventionSelector = new ImmFeedbackEngTimeAdaptiveIS() ;
     // only used by the test module.  These are subclasses of the random and prepost that behave in a non-random way.
 //  public static ProblemSelector randomProblemSelectorTester= new FixedSequenceSATProblemSelector() ;
-
-  public static PrePostProblemSelector prepostProblemSelectorTester= new FixedSequencePrePostProblemSelectorImpl() ;
-  public static PrePostProblemSelector prepostProblemSelector = new PrePostProblemSelectorImpl();
+  public static final boolean debugAllClasses = false ;
+    public static final long sessionDemonCleanupInterval = 10 * 60 * 1000;  // cleanup idle sessions every 10 minutes
 
 //  public static InterventionSelector bayesianInterventionSelectorTester= new BayesianMotivationalSelector() ;
 //  public static ProblemSelector mlProblemSelectorTester = new MLProblemSelector();
-
-
-
+    public static final int sessionIdleTimeout = 18 * 60 * 60 * 1000; // session becomes idle after 18 hours of non-use
+    public static final int session4MonthsOldTimeout = 4 * 30 * 24 * 60 * 60 * 1000; // session becomes idle after 18 hours of non-use
+  public static AdventureProblemSelector adventureProblemSelector_= new AdventureProblemSelector();
+  public static AdventureProblemSelector userAdventureProblemSelector_= adventureProblemSelector_;  // only 1 choice so everyone gets it
+  public static PrePostProblemSelector prepostProblemSelectorTester= new FixedSequencePrePostProblemSelectorImpl() ;
+  public static PrePostProblemSelector prepostProblemSelector = new PrePostProblemSelectorImpl();
   public static String dbhost = "localhost";
   public static boolean isDevelopmentEnv = false; // read from web.xml to determine if html5 comes from tomcat or apache
   public static String webContentPath = "should be URI of path to mathspring under apache webroot";  // has trailing slash: root of apache content read from web.xml as context param webContentPath
@@ -60,24 +62,13 @@ public class Settings {
     // "cadmium.cs.umass.edu";
   public static String probplayerPath; // read from web.xml file
   public static String probPreviewerPath; // read from web.xml file
-
   public static String videoURI = "http://chinacat.cs.umass.edu/wayang/video/";
   public static String emoteServletURI = "http://localhost:8082/emote/EmoteServlet";
   public static String formalityServletURI =null; // full URL to the Formality servlet
   public static  String host = "should be set to the name of the host (e.g. localhost or rose.cs.umass.edu)";
   public static  String port = "should be set to the name of the port only when its not 80";
-
   public static String gui = "old"; // sets to either huy or old to control which GUI is displayed
-
   public static String tomcatDatasourceURL;
-
-  public static final int duplicateRowError = 2627;
-  public static final int keyConstraintViolation = 1062;
-  public static final boolean debugAllClasses = false ;
-
-    public static final long sessionDemonCleanupInterval = 10 * 60 * 1000;  // cleanup idle sessions every 10 minutes
-    public static final int sessionIdleTimeout = 18 * 60 * 60 * 1000; // session becomes idle after 18 hours of non-use
-    public static final int session4MonthsOldTimeout = 4 * 30 * 24 * 60 * 60 * 1000; // session becomes idle after 18 hours of non-use
 //    public static final int sessionIdleTimeout = 30 * 1000; // every 24 hours
     public static String policyFile = "";
     public static String mlLogFile = "";
@@ -118,6 +109,9 @@ public class Settings {
     public static boolean sendStudentStatusEmail = false;
 
     public static int interleavedTopicID;  // id of a problemGroup row in the db with the description Interleaved Problem Set.
+
+    public static String surveyDir;
+    public static String surveyURI;
 
     public static void setSurveys (Connection conn, String preSurvey, String postSurvey) throws SQLException {
         PreparedStatement stmt=null;

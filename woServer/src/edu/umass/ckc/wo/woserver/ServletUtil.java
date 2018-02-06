@@ -102,6 +102,12 @@ public class ServletUtil {
 
         Settings.html5ProblemURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
                 servletContext.getContextPath(),Settings.webContentPath,Settings.html5Probs);
+
+        Settings.surveyDir = "/surveys"; // the dir that holds surveyq_xxx dirs that contain images for survey questions
+
+        Settings.surveyURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
+                servletContext.getContextPath(),Settings.webContentPath,Settings.surveyDir);
+
         // Flash client must be on same machine but can be served by other than servletEngine
         // (e.g. it is best served by apache)
         // read pedagogies from db

@@ -31,6 +31,91 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
     public PrePostProblemSelectorImpl() {
     }
 
+   /**
+     * @param conn
+     * @param testId
+     * @return a Vector of PrePostTestProblem objects
+     * @throws SQLException
+     */
+    public static Vector getPrePostProblems(Connection conn, int testId) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Vector result = new Vector();
+        try {
+            // DM 3/09 Get problems from the map joined with the prePostProblem.   This is because
+            // problems now can be in more than one test.
+            String q = "select id,name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
+                    "aURL,bURL,cURL,dURL,eURL,waitTimeSecs,imageFilename from PrePostProblem p, PrepostProblemTestMap m where m.testId=? and p.id=m.probId";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1, testId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String url = rs.getString(3);
+                if (rs.wasNull())
+                    url = null;
+                String description = rs.getString(4);
+                if (rs.wasNull())
+                    description = null;
+                String answer = rs.getString(5);
+                int ansType = rs.getInt(6);
+                String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
+                String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
+
+                PrePostProblemDefn p;
+                int waitTimeSecs = 0;
+                waitTimeSecs = rs.getInt(17);
+                if (rs.wasNull())
+                    waitTimeSecs = 0;
+                String imgFilename = rs.getString(18);
+                if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
+                    ;
+                } else {
+                    aChoice = rs.getString(7);
+                    if (rs.wasNull())
+                        aChoice = null;
+                    bChoice = rs.getString(8);
+                    if (rs.wasNull())
+                        bChoice = null;
+                    cChoice = rs.getString(9);
+                    if (rs.wasNull())
+                        cChoice = null;
+                    dChoice = rs.getString(10);
+                    if (rs.wasNull())
+                        dChoice = null;
+                    eChoice = rs.getString(11);
+                    if (rs.wasNull())
+                        eChoice = null;
+                    aURL = rs.getString(12);
+                    if (rs.wasNull())
+                        aURL = null;
+                    bURL = rs.getString(13);
+                    if (rs.wasNull())
+                        bURL = null;
+                    cURL = rs.getString(14);
+                    if (rs.wasNull())
+                        cURL = null;
+                    dURL = rs.getString(15);
+                    if (rs.wasNull())
+                        dURL = null;
+                    eURL = rs.getString(16);
+                    if (rs.wasNull())
+                        eURL = null;
+
+                }
+                result.add(new PrePostProblemDefn(id, name, description, url, ansType, answer, testId, aChoice, bChoice, cChoice,
+                        dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs, imgFilename));
+            }
+            return result;
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (ps != null)
+            ps.close();
+        }
+    }
+
     public boolean isTestingComplete(SessionManager smgr, StudentModel studentModel) throws SQLException {
         if (smgr.getStudentState().getPretestCompleted() &&
                 smgr.getStudentState().getPosttestCompleted())
@@ -50,13 +135,13 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
         } else
             return false;
     }
+//    public Problem selectProblem(ActionEvent e, SessionManager smgr, StudentModel studentModel) throws Exception {
+//        return getRandomProblem();
+//    }
 
     public Problem selectProblem(ActionEvent e, SessionManager smgr, StudentModel studentModel) throws Exception {
         return null;
     }
-//    public Problem selectProblem(ActionEvent e, SessionManager smgr, StudentModel studentModel) throws Exception {
-//        return getRandomProblem();
-//    }
 
     public Problem selectProblemX(ActionEvent e, SessionManager smgr, StudentModel studentModel) throws Exception {
         return null;
@@ -168,7 +253,6 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
         return ((Integer) ids.get(ix)).intValue();
     }
 
-
     // This seems to be based on the concept that a pool can contain more than two tests.  In
        // practice I don't think they ever do so that this is unecessary.   We strictly need
        // to select the ungiven test.
@@ -186,7 +270,6 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
                return -1;
            return ((Integer) ids.get(0)).intValue();
        }
-
 
     // This seems to be based on the concept that a pool can contain more than two tests.  In
     // practice I don't think they ever do so that this is unecessary.   We strictly need
@@ -206,7 +289,6 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
         int ix = new Random().nextInt(ids.size());
         return ((Integer) ids.get(ix)).intValue();
     }
-
 
     private int getTestSize (int problemSet) throws SQLException {
         // DM 3/09 since problems can now exist in multiple tests we get it from the map
@@ -279,94 +361,6 @@ public class PrePostProblemSelectorImpl implements PrePostProblemSelector {
             return new PrePostProblem(PrePostProblem.END_OF_TEST,numCorrect,count);
         }
     }
-
-   /**
-     * @param conn
-     * @param testId
-     * @return a Vector of PrePostTestProblem objects
-     * @throws SQLException
-     */
-    public static Vector getPrePostProblems(Connection conn, int testId) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Vector result = new Vector();
-        try {
-            // DM 3/09 Get problems from the map joined with the prePostProblem.   This is because
-            // problems now can be in more than one test.
-            String q = "select id,name,url,description,answer,ansType,aChoice,bChoice,cChoice,dChoice,eChoice," +
-                    "aURL,bURL,cURL,dURL,eURL,waitTimeSecs from PrePostProblem p, PrepostProblemTestMap m where m.testId=? and p.id=m.probId";
-            ps = conn.prepareStatement(q);
-            ps.setInt(1, testId);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt(1);
-                String name = rs.getString(2);
-                String url = rs.getString(3);
-                if (rs.wasNull())
-                    url = null;
-                String description = rs.getString(4);
-                if (rs.wasNull())
-                    description = null;
-                String answer = rs.getString(5);
-                int ansType = rs.getInt(6);
-                String aURL = null, bURL = null, cURL = null, dURL = null, eURL = null;
-                String aChoice = null, bChoice = null, cChoice = null, dChoice = null, eChoice = null;
-
-                PrePostProblemDefn p;
-                int waitTimeSecs = 0;
-                Blob img=null;
-                waitTimeSecs = rs.getInt(17);
-                if (rs.wasNull())
-                    waitTimeSecs = 0;
-                img = rs.getBlob(18);
-                if (ansType == PrePostProblemDefn.SHORT_ANSWER) {
-                    ;
-                } else {
-                    aChoice = rs.getString(7);
-                    if (rs.wasNull())
-                        aChoice = null;
-                    bChoice = rs.getString(8);
-                    if (rs.wasNull())
-                        bChoice = null;
-                    cChoice = rs.getString(9);
-                    if (rs.wasNull())
-                        cChoice = null;
-                    dChoice = rs.getString(10);
-                    if (rs.wasNull())
-                        dChoice = null;
-                    eChoice = rs.getString(11);
-                    if (rs.wasNull())
-                        eChoice = null;
-                    aURL = rs.getString(12);
-                    if (rs.wasNull())
-                        aURL = null;
-                    bURL = rs.getString(13);
-                    if (rs.wasNull())
-                        bURL = null;
-                    cURL = rs.getString(14);
-                    if (rs.wasNull())
-                        cURL = null;
-                    dURL = rs.getString(15);
-                    if (rs.wasNull())
-                        dURL = null;
-                    eURL = rs.getString(16);
-                    if (rs.wasNull())
-                        eURL = null;
-
-                }
-                result.add(new PrePostProblemDefn(id, name, description, url, ansType, answer, testId, aChoice, bChoice, cChoice,
-                        dChoice, eChoice, aURL, bURL, cURL, dURL, eURL, waitTimeSecs, img));
-            }
-            return result;
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (ps != null)
-            ps.close();
-        }
-    }    
-
-   
 
     /**
      * Select the problem set for the pretest. It is selected randomly from all the pre/post tests.

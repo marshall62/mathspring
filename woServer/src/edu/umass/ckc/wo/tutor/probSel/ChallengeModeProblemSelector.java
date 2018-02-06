@@ -7,6 +7,7 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutor.model.LessonModel;
 import edu.umass.ckc.wo.tutor.pedModel.ProblemScore;
+import edu.umass.ckc.wo.util.Lists;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -65,10 +66,23 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
                 state.setInChallengeMode(false);
                 return null;
             }
-            else  state.setCurProblemIndexInTopic(nextIx);
         }
 
         int nextProbId = topicProbIds.get(nextIx);
+        // 2/18 Ugly shit to deal with broken problems in the topic.
+        // now make sure the problem isn't among the broken ones and move to the next one if so.
+        // Jumps over broken problems.
+        while (Lists.inList(nextProbId,state.getBrokenProblemIds())) {
+            nextIx++;
+            if (nextIx >= topicProbIds.size()) {
+                state.setInChallengeMode(false);
+                return null;
+            }
+            nextProbId = topicProbIds.get(nextIx);
+        }
+
+        state.setCurProblemIndexInTopic(nextIx); // save the index of the place we are in.
+
         Problem p = ProblemMgr.getProblem(nextProbId);
         p.setMode(Problem.PRACTICE);
         return p;

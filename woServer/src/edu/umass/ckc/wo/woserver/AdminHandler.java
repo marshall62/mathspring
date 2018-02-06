@@ -90,7 +90,7 @@ public class AdminHandler {
             return false;
         }
         else if(e instanceof AdminEditProblemFormatEvent) {
-            EditProblemFormatHandler.handleEvent(e, sc, conn, servletRequest, servletResponse);
+            EditProblemFormatHandler.handleEvent((AdminEditProblemFormatEvent) e, sc, conn, servletRequest, servletResponse);
             return false;
         }
         else if (e instanceof AdminGetQuickAuthSkeletonEvent) {

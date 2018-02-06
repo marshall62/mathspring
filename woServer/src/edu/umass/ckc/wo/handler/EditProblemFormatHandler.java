@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.handler;
 
 import ckc.servlet.servbase.ServletEvent;
+import edu.umass.ckc.wo.event.admin.AdminEditProblemFormatEvent;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -18,14 +19,14 @@ import java.util.List;
 public abstract class EditProblemFormatHandler {
     public static final String JSP = "/teacherTools/editProblemFormat.jsp";
 
-    public static void handleEvent(ServletEvent e, ServletContext sc, Connection conn, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public static void handleEvent(AdminEditProblemFormatEvent e, ServletContext sc, Connection conn, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         List<String> templates = getSettingsFromDatabase(conn, "quickauthformattemplates", "problemFormat", false);
         List<String> fonts = getSettingsFromDatabase(conn, "quickauthformatfonts", "font", true);
         List<String> colors = getSettingsFromDatabase(conn, "quickauthformatcolors", "color", true);
         req.setAttribute("templates", templates);
         req.setAttribute("fonts", fonts);
         req.setAttribute("colors", colors);
-        int problemId = e.getServletParams().getInt("problemId", -1);
+        int problemId = e.getProbId();
         String problemFormat = "null"; //this looks weird but it will be output directly by jsp
         if(problemId != -1) problemFormat = getProblemFormat(conn, problemId);
         req.setAttribute("problemFormat", problemFormat);

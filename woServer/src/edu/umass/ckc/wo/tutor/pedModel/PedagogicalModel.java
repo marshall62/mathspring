@@ -43,10 +43,9 @@ import java.util.List;
  */
 public abstract class PedagogicalModel implements TutorEventProcessor { // extends PedagogicalModelOld {
 
-    private static Logger logger = Logger.getLogger(PedagogicalModel.class);
-
     public static final String CHALLENGE_MODE = "challenge";
     public static final String REVIEW_MODE = "review";
+    private static Logger logger = Logger.getLogger(PedagogicalModel.class);
     protected Pedagogy pedagogy;
     protected LessonModel lessonModel;
     protected PedagogicalModelParameters params;
@@ -85,20 +84,12 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         this.params = params;
     }
 
-    public void setStudentModel(StudentModel studentModel) {
-        this.studentModel = studentModel;
-    }
-
-    public void setProblemSelector(ProblemSelector problemSelector) {
-        this.problemSelector = problemSelector;
+    public HintSelector getHintSelector() {
+        return hintSelector;
     }
 
     public void setHintSelector(HintSelector hintSelector) {
         this.hintSelector = hintSelector;
-    }
-
-    public HintSelector getHintSelector() {
-        return hintSelector;
     }
 
     public void setSmgr(SessionManager smgr) {
@@ -121,16 +112,12 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         this.videoSelector = videoSelector;
     }
 
-    public void setChallengeModeSelector(ChallengeModeProblemSelector challengeModeSelector) {
-        this.challengeModeSelector = challengeModeSelector;
-    }
-
-    public void setReviewModeSelector(ReviewModeProblemSelector reviewModeSelector) {
-        this.reviewModeSelector = reviewModeSelector;
-    }
-
     public StudentModel getStudentModel() {
         return studentModel;
+    }
+
+    public void setStudentModel(StudentModel studentModel) {
+        this.studentModel = studentModel;
     }
 
     public SessionManager getSessionMgr () {
@@ -140,7 +127,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
     public boolean isCollaborative () {
         return false;
     }
-
 
     @Override
     public Response processInternalEvent(InternalEvent e) throws Exception {
@@ -287,10 +273,11 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         }
 
         else if (e instanceof ReportErrorEvent) {
-            r = new Response();
-            new TutorLogger(smgr).logReportedError((ReportErrorEvent) e);
-            int sessId = e.getSessionId();
-            Emailer.sendErrorEmail(BaseServlet.adminEmail, BaseServlet.emailServer, "wayang error for session: " + sessId, ((ReportErrorEvent) e).getMessage(), null);
+            ReportErrorEvent ee = (ReportErrorEvent) e;
+            // an error is reported by the user.
+            r = disableProblemForStudent(ee,state);
+
+//            Emailer.sendErrorEmail(BaseServlet.adminEmail, BaseServlet.emailServer, "wayang error for session: " + sessId, ((ReportErrorEvent) e).getMessage(), null);
             studentModel.save();
             return r;
         }
@@ -356,31 +343,68 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 
     }
 
+    // On request from Ivon 2/5/18 if a student report comes in about a problem we need to put it on a list of problems
+    // that are broken for that user.   This gets stored in the student state that persists for all their sessions.
+    //  The problem selectors will not select problems in this list.   Logs (event and problemhistory will have a special
+    // status for this broken problem)
+    private Response disableProblemForStudent(ReportErrorEvent ee, StudentState state) throws Exception {
+        Response r = new Response();
+        new TutorLogger(smgr).logReportedError(ee);
+        int sessId = ee.getSessionId();
+        // If the prob is broken, save its id in the student state so that it will not be given again
+        // Also set that the curProb is broken so that next problem event processing will grade it and log it correctly
+        if (ee.isProbBroken()) {
+            state.addBrokenProblemId(Integer.toString(state.getCurProblem()));
+            state.setCurProbBroken(true);
+        }
+        // If the problem ID is passed and set as broken=true
+        // try to process this as a NextProb event.
+//        if (ee.isProbBroken()) {
+//            NextProblemEvent npe = new NextProblemEvent(ee.getElapsedTime(), ee.getProbElapsedTime(), null, ee.getMode());
+//            if (ee.getMode().equalsIgnoreCase(CHALLENGE_MODE) || state.isInChallengeMode())
+//                r = processChallengeModeNextProblemRequest(npe);
+//            else if (ee.getMode().equalsIgnoreCase(REVIEW_MODE) || state.isInReviewMode())
+//                r = processReviewModeNextProblemRequest(npe);
+//            else r = processNextProblemRequest(npe);
+//        }
+        return r;
 
-
-
-
+    }
 
     // results:  AttemptResponse | InterventionResponse
     public abstract Response processAttempt (AttemptEvent e) throws Exception;
 
     public abstract Response processBeginProblemEvent (BeginProblemEvent e) throws Exception;
+
     public abstract Response processEndProblemEvent (EndProblemEvent e) throws Exception;
+
     public abstract Response processResumeProblemEvent (ResumeProblemEvent e) throws Exception;
 
     // results: HintResponse | InterventionResponse
     public abstract Response processHintRequest (HintEvent e) throws Exception;
+
     public abstract Response processShowExampleRequest (ShowExampleEvent e) throws Exception;
+
     public abstract Response processShowVideoRequest (ShowVideoEvent e) throws Exception;
 
     // results: ProblemResponse | InterventionResponse
     public abstract Response processNextProblemRequest (NextProblemEvent e) throws Exception;
+
     public abstract Response processStudentSelectsProblemRequest (NextProblemEvent e) throws Exception;
+
     public abstract Response processMPPSelectProblemRequest (NextProblemEvent e) throws Exception;
+
     public abstract Response processChallengeModeNextProblemRequest (NextProblemEvent e) throws Exception;
+
     public abstract Response processReviewModeNextProblemRequest (NextProblemEvent e) throws Exception;
 
     public abstract ProblemResponse getNextProblem(NextProblemEvent e) throws Exception;
+
+    public abstract Response processBeginInterventionEvent (BeginInterventionEvent e)  throws Exception;
+
+    public abstract Response processEndInterventionEvent (EndInterventionEvent e)  throws Exception;
+
+    public abstract Response processBeginExampleEvent (BeginExampleEvent e)  throws Exception;
 
 //    protected abstract Response startTutor(EnterTutorEvent e) throws Exception ;
 
@@ -390,33 +414,32 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
 //    public abstract Response processContinueRequestInternal(ContinueEvent e) throws Exception;
 //    public abstract Response processInputResponseInternal(InputResponseEvent e) throws Exception;
 
-    public abstract Response processBeginInterventionEvent (BeginInterventionEvent e)  throws Exception;
-    public abstract Response processEndInterventionEvent (EndInterventionEvent e)  throws Exception;
-    public abstract Response processBeginExampleEvent (BeginExampleEvent e)  throws Exception;
     public abstract Response processEndExampleEvent (EndExampleEvent e)  throws Exception;
+
     public abstract Response processBeginExternalActivityEvent (BeginExternalActivityEvent e) throws Exception;
+
     public abstract Response processEndExternalActivityEvent (EndExternalActivityEvent e) throws Exception;
 
     public abstract Response processClickCharacterEvent (ClickCharacterEvent e)  throws Exception;
+
     public abstract Response processMuteCharacterEvent (MuteCharacterEvent e)  throws Exception;
+
     public abstract Response processUnMuteCharacterEvent (UnMuteCharacterEvent e)  throws Exception;
+
     public abstract Response processEliminateCharacterEvent (EliminateCharacterEvent e)  throws Exception;
+
     public abstract Response processShowCharacterEvent (ShowCharacterEvent e)  throws Exception;
 
     public abstract Response processReadProblemEvent(ReadProblemEvent e) throws Exception;
 
-
-
    // public abstract Response processContinueNextProblemInterventionEvent(ContinueNextProblemInterventionEvent e) throws Exception;
     public abstract Response processInterventionTimeoutEvent(InterventionTimeoutEvent e) throws Exception;
+
     public abstract Response processContinueAttemptInterventionEvent(ContinueAttemptInterventionEvent e) throws Exception;
+
     public abstract Response processInputResponseAttemptInterventionEvent(InputResponseAttemptInterventionEvent e) throws Exception;
+
     public abstract Response processInputResponseNextProblemInterventionEvent(InputResponseNextProblemInterventionEvent e) throws Exception;
-
-
-
-
-
 
     /** These two methods are called each time a pedagogical model makes a problem/hint selection as a result
      * of an intervention selector requesting that a problem/hint be given in response to an intervention.
@@ -431,8 +454,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
      * @throws Exception
      */
     public abstract HintResponse doSelectHint (SelectHintSpecs selectionCriteria) throws Exception;
-
-
 
     public LearningCompanion getLearningCompanion() {
         return learningCompanion;
@@ -467,8 +488,6 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         return defaultParams;
     }
 
-
-
     public void setChallengeModeProblemSelector (ChallengeModeProblemSelector challengeModeProblemSelector)  {
         this.challengeModeSelector = challengeModeProblemSelector;
     }
@@ -481,14 +500,25 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         return this.challengeModeSelector;
     }
 
+    public void setChallengeModeSelector(ChallengeModeProblemSelector challengeModeSelector) {
+        this.challengeModeSelector = challengeModeSelector;
+    }
+
     public ReviewModeProblemSelector getReviewModeSelector () {
         return this.reviewModeSelector;
+    }
+
+    public void setReviewModeSelector(ReviewModeProblemSelector reviewModeSelector) {
+        this.reviewModeSelector = reviewModeSelector;
     }
 
     public ProblemSelector getProblemSelector () {
         return this.problemSelector;
     }
 
+    public void setProblemSelector(ProblemSelector problemSelector) {
+        this.problemSelector = problemSelector;
+    }
 
     public abstract void newSession (int sessionId) throws SQLException;
 
