@@ -12,7 +12,6 @@ import edu.umass.ckc.wo.content.Problem;
 public class ReportErrorEvent extends TutorHutEvent {
     public static final String PROB_ELAPSED_TIME = "probElapsedTime";
     private String message;
-    private String probId;
     private long probElapsedTime;
     private String mode;  // practice, challenge, review
     private boolean isProbBroken=true;
@@ -20,7 +19,6 @@ public class ReportErrorEvent extends TutorHutEvent {
 
     public ReportErrorEvent(ServletParams p) throws Exception {
         super(p);
-        this.probId = p.getString("probId", null);
         this.probElapsedTime = p.getLong(PROB_ELAPSED_TIME, -1);
         this.isProbBroken = p.getBoolean("isBroken",true);
         this.mode = p.getString("mode", Problem.PRACTICE);
@@ -33,10 +31,6 @@ public class ReportErrorEvent extends TutorHutEvent {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getProbId() {
-        return probId;
     }
 
     public long getProbElapsedTime() {

@@ -351,21 +351,22 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
         Response r = new Response();
         new TutorLogger(smgr).logReportedError(ee);
         int sessId = ee.getSessionId();
-
-        if (ee.getProbId() != null) {
-            state.addBrokenProblemId(ee.getProbId());
+        // If the prob is broken, save its id in the student state so that it will not be given again
+        // Also set that the curProb is broken so that next problem event processing will grade it and log it correctly
+        if (ee.isProbBroken()) {
+            state.addBrokenProblemId(Integer.toString(state.getCurProblem()));
             state.setCurProbBroken(true);
         }
         // If the problem ID is passed and set as broken=true
         // try to process this as a NextProb event.
-        if (ee.getProbId() != null && ee.isProbBroken()) {
-            NextProblemEvent npe = new NextProblemEvent(ee.getElapsedTime(), ee.getProbElapsedTime(), ee.getProbId(), ee.getMode());
-            if (ee.getMode().equalsIgnoreCase(CHALLENGE_MODE) || state.isInChallengeMode())
-                r = processChallengeModeNextProblemRequest(npe);
-            else if (ee.getMode().equalsIgnoreCase(REVIEW_MODE) || state.isInReviewMode())
-                r = processReviewModeNextProblemRequest(npe);
-            else r = processNextProblemRequest(npe);
-        }
+//        if (ee.isProbBroken()) {
+//            NextProblemEvent npe = new NextProblemEvent(ee.getElapsedTime(), ee.getProbElapsedTime(), null, ee.getMode());
+//            if (ee.getMode().equalsIgnoreCase(CHALLENGE_MODE) || state.isInChallengeMode())
+//                r = processChallengeModeNextProblemRequest(npe);
+//            else if (ee.getMode().equalsIgnoreCase(REVIEW_MODE) || state.isInReviewMode())
+//                r = processReviewModeNextProblemRequest(npe);
+//            else r = processNextProblemRequest(npe);
+//        }
         return r;
 
     }
