@@ -55,13 +55,13 @@ public class TTReportServiceImpl implements TTReportService {
             switch (reportType) {
                 case "perStudentReport":
                     List<ClassStudents> classStudents = generateClassReportPerStudent(teacherId, classId);
-
                     String[][] levelOneData = classStudents.stream().map(classStudents1 -> new String[]{classStudents1.getStudentId(), classStudents1.getStudentName(), classStudents1.getUserName(), classStudents1.getNoOfProblems()}).toArray(String[][]::new);
                     Map<String, String> studentIdMap = classStudents.stream().collect(Collectors.toMap(studMap -> studMap.getStudentId(), studMap -> studMap.getNoOfProblems()));
                     Map<String, Map<String, List<String>>> effortValues = generateEfortMapValues(studentIdMap, classId);
                     Map<String, List<Document>> genemotioMap   = generateEmotionMapValues(studentIdMap);
                     Map<String,Map<String,int[]>> fullstudentEmotionsMap = new HashMap<>();
                     Map<String,Map<String,List<String>>> fullstudentEmotionsComments = new HashMap<>();
+                    String[] barLabels = {"Not at All", "A Little", "Somewhat", "Quite a Bit", "Extremely"};
                     genemotioMap.forEach((studentId, xmlDocumentList) -> {
                         Map<String,List<String>> eachEmotionMap = new HashMap<>();
                         int[] frustrationValues = new int[6];
@@ -89,6 +89,8 @@ public class TTReportServiceImpl implements TTReportService {
                                     frustrationValues[5] = frustrationCount;
                                     emotionsValuesMap.put("Frustration", frustrationValues);
                                     String studentCommentsFrustration = getCharacterDataFromElement(emotionElement);
+                                    if(!"".equals(studentCommentsFrustration))
+                                        studentCommentsFrustration = barLabels[integerValue-1]+": "+studentCommentsFrustration;
                                     if (frustrationComments == null) {
                                             frustrationComments = new ArrayList<>();
                                     }
@@ -103,7 +105,8 @@ public class TTReportServiceImpl implements TTReportService {
                                     confidenceValues[5] = confidenceCount;
                                     emotionsValuesMap.put("Confidence", confidenceValues);
                                     String studentCommentsConfidence = getCharacterDataFromElement(emotionElement);
-
+                                    if(!"".equals(studentCommentsConfidence))
+                                        studentCommentsConfidence = barLabels[integerValue-1]+": "+studentCommentsConfidence;
                                     if (confidenceComments == null) {
                                         confidenceComments = new ArrayList<>();
                                     }
@@ -118,6 +121,8 @@ public class TTReportServiceImpl implements TTReportService {
                                     excitementValues[5] = excitementCount;
                                     emotionsValuesMap.put("Excitement", frustrationValues);
                                     String studentCommentsExcitement = getCharacterDataFromElement(emotionElement);
+                                    if(!"".equals(studentCommentsExcitement))
+                                        studentCommentsExcitement = barLabels[integerValue-1]+": "+studentCommentsExcitement;
                                     if (excitementComments == null) {
                                         excitementComments = new ArrayList<>();
                                     }
@@ -132,6 +137,9 @@ public class TTReportServiceImpl implements TTReportService {
                                     interestValues[5] = interestCount;
                                     emotionsValuesMap.put("Interest", interestValues);
                                     String studentCommentsInterest = getCharacterDataFromElement(emotionElement);
+                                    if(!"".equals(studentCommentsInterest))
+                                        studentCommentsInterest = barLabels[integerValue-1]+": "+studentCommentsInterest;
+
                                     if (interestComments == null) {
                                         interestComments = new ArrayList<>();
                                     }
@@ -553,7 +561,6 @@ public class TTReportServiceImpl implements TTReportService {
         String html5ProblemURI = Settings.html5ProblemURI;
         selectParams.put("classId", classId);
         for (String problemId : problemIdsList) {
-
             selectParams.put("problemId",problemId);
             List<PerProblemReportBean> perProblemReportBean = namedParameterJdbcTemplate.query(TTUtil.PER_PROBLEM_QUERY_SECOND, selectParams, new RowMapper<PerProblemReportBean>() {
                 @Override
@@ -570,6 +577,7 @@ public class TTReportServiceImpl implements TTReportService {
                     if (studId != perProblemReportBeanObj.lastStud) {
                         // gather stats on last student
                         if (perProblemReportBeanObj.lastStud != -1) {
+
                             perProblemReportBeanObj.nStudsSeen++;
                             int nStudsRepeated = perProblemReportBeanObj.getPercStudentsRepeated();
                             nStudsRepeated += (perProblemReportBeanObj.studEncounters > 1) ? 1 : 0;
@@ -581,6 +589,7 @@ public class TTReportServiceImpl implements TTReportService {
                             nStudsGiveSolved += perProblemReportBeanObj.solved ? 1 : 0;
 
                             perProblemReportBeanObj.setNoStudentsSeenProblem(perProblemReportBeanObj.nStudsSeen);
+
                             perProblemReportBeanObj.setPercStudentsRepeated(nStudsRepeated);
                             perProblemReportBeanObj.setPercStudentsSkipped(nStudsSkipped);
                             perProblemReportBeanObj.setPercStudentsGaveUp(nStudsGiveUp);
@@ -660,11 +669,6 @@ public class TTReportServiceImpl implements TTReportService {
                                 perProblemReportBeanObj.nD++;
                         }
                     }
-                   /* if (action.equals("EndProblem") && perProblemReportBeanObj.isExample) {
-                        perProblemReportBeanMap.remove(problemId);
-                    } else{*/
-
-                   // }
                     Problem probDetails = ProblemMgr.getProblem(Integer.valueOf(problemID));
                     if(probDetails != null) {
                         if ("flash".equals(probDetails.getType())) {
@@ -675,12 +679,58 @@ public class TTReportServiceImpl implements TTReportService {
                     }else{
                         perProblemReportBeanObj.setProblemURLWindow( html5ProblemURI );
                     }
+                    perProblemReportBeanObj.setSimilarproblems("Similar Problems");
+
                     perProblemReportBeanMap.put(problemID, perProblemReportBeanObj);
                     return perProblemReportBeanObj;
                 }
             });
         }
         perProblemReportBeanMap.forEach((problemId, perProblemReportBeanObj) -> {
+            int SKIP = 0, NOTR = 0, GIVEUP = 0, SOF = 0, SHINT = 0, SHELP = 0, ATT = 0, GUESS = 0, NODATA = 0;
+            selectParams.put("problemId",problemId);
+            List<String> combinedStudentEffortsOnProblem = namedParameterJdbcTemplate.query(TTUtil.PER_PROBLEM_QUERY_THIRD, selectParams, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet resultSet, int i) throws SQLException {
+                    String effort = resultSet.getString("sh.effort");
+                    return effort;
+                }
+            });
+            // Calculate Effort Percentages
+            for (String effortVal : combinedStudentEffortsOnProblem) {
+                switch (effortVal) {
+                    case "SKIP":
+                        SKIP++;
+                        break;
+                    case "NOTR":
+                        NOTR++;
+                        break;
+                    case "SOF":
+                        SOF++;
+                        break;
+                    case "ATT":
+                        ATT++;
+                        break;
+                    case "GIVEUP":
+                        GIVEUP++;
+                        break;
+                    case "GUESS":
+                        GUESS++;
+                        break;
+                    case "SHINT":
+                        SHINT++;
+                        break;
+                    case "SHELP":
+                        SHELP++;
+                        break;
+                    case "NODATA":
+                        NODATA++;
+                        break;
+                    default:
+                        NODATA++;
+                        break;
+                }
+            }
 
             String[] problemDescriptionValues =  problemDescriptionMap.get(problemId).split("~~");
             perProblemReportBeanObj.setProblemName(problemDescriptionValues[0]);
@@ -699,6 +749,18 @@ public class TTReportServiceImpl implements TTReportService {
                 nStudsGiveSolved += perProblemReportBeanObj.solved ? 1 : 0;
 
                 perProblemReportBeanObj.setNoStudentsSeenProblem(perProblemReportBeanObj.nStudsSeen);
+                String[] effortvalues = new String[9];
+                effortvalues[0] = Double.toString((double) ((SKIP * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[1] = Double.toString((double) ((NOTR * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[2] = Double.toString((double) ((GIVEUP * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[3] = Double.toString((double) ((SOF * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[4] = Double.toString((double) ((ATT * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[5] = Double.toString((double) ((GUESS * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[6] = Double.toString((double) ((SHINT * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[7] = Double.toString((double) ((SHELP * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[8] = Double.toString((double) ((NODATA * 100) / perProblemReportBeanObj.nStudsSeen));
+
+                perProblemReportBeanObj.setStudentEffortsPerProblem(effortvalues);
                 perProblemReportBeanObj.setPercStudentsRepeated(nStudsRepeated);
                 perProblemReportBeanObj.setPercStudentsSkipped(nStudsSkipped);
                 perProblemReportBeanObj.setPercStudentsGaveUp(nStudsGiveUp);

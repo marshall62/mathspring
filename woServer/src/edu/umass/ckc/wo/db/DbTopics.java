@@ -98,10 +98,10 @@ public class DbTopics {
             }
             String q;
             if (sb.length() == 0)
-                q = "select id, description from problemgroup where active=1";
+                q = "select id, description,summary from problemgroup where active=1";
             else {
                 String ids = sb.substring(0,sb.toString().length()-1);
-                q = "select id, description from problemgroup where active=1 and " +
+                q = "select id, description, summary from problemgroup where active=1 and " +
                      "id not in (" + ids + ")";
             }
 
@@ -111,6 +111,10 @@ public class DbTopics {
 
             while (rs.next()) {
                 Topic t = new Topic(rs.getInt(1),rs.getString(2));
+                String topicSummary = rs.getString("summary");
+                if("".equals(topicSummary) || topicSummary == null)
+                    topicSummary = "The problemset does not have a description";
+                t.setSummary(topicSummary);
                 inactiveTopics.add(t);
             }
             return inactiveTopics;
@@ -168,7 +172,7 @@ public class DbTopics {
         ResultSet rs=null;
         PreparedStatement stmt=null;
         try {
-            String q = "select probGroupId, topic.description, seqPos from classlessonplan, problemgroup topic where " +
+            String q = "select probGroupId, topic.description, seqPos,topic.summary from classlessonplan, problemgroup topic where " +
                     (isDefault ? "isDefault=1" : "classid=?") + " and topic.id=probGroupId and seqPos > 0 and topic.active=1 " +
                     "and topic.id in (select distinct pgroupid from probprobgroup) order by seqPos";
             stmt = conn.prepareStatement(q);
@@ -180,6 +184,10 @@ public class DbTopics {
                 Topic t = new Topic(rs.getInt(1),rs.getString(2));
                 t.setSeqPos(rs.getInt(3));
                 t.setOldSeqPos(t.getSeqPos());
+                String topicSummary = rs.getString("summary");
+                    if("".equals(topicSummary) || topicSummary == null)
+                        topicSummary = "The problemset does not have a description";
+                t.setSummary(topicSummary);
                 // We get the set of CCStandards for this topic from the ProblemMgr
                 Set<CCStandard> stds = ProblemMgr.getTopicStandards(t.getId());
                 t.setCcStandards(stds);

@@ -74,12 +74,14 @@
                 <th>Problem Name</th>
                 <th>CC Standard</th>
                 <th># of Students seen the problem</th>
+                <th>Collective effort on Problem</th>
                 <th>% of Students solved the problem on the first attempt</th>
                 <th># of Students solved the problem on the second attempt</th>
                 <th>% of Students repeated the problem</th>
                 <th>% of Students skipped the problem</th>
                 <th>% of Students gave up</th>
                 <th>Most Frequent Incorrect Response</th>
+                <th>Similar Problems</th>
             </tr>
             </thead>
         </table>
@@ -210,7 +212,7 @@
                             <c:set var="gradeWiseProbNos" value="${problemSet.gradewiseProblemDistribution}"/>
                             <tr>
                                 <td>${i.index + 1}</td>
-                                <td>${problemSet.name}</td>
+                                <td>${problemSet.name}&nbsp;&nbsp;<a rel="popoverproblemsetSummary" data-content='${problemSet.summary}'><i class="fa fa-question-circle-o" aria-hidden="true"></i></a></td>
                                 <td>
                                     <label style="width: 50%;">${problemSet.numProbs}</label>
                                     <a  class="active" aria-expanded="true" aria-controls="collapseOne">
@@ -350,6 +352,103 @@
 
                         </div>
                     </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a id="report_four" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                    Class Summary Per Common Core Cluster
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul>
+                                    <li><label>Common core cluster evaluation of students in this class</label>
+                                        <a href="${pageContext.request.contextPath}/tt/tt/downLoadPerClusterReport?teacherId=${teacherId}&classId=${classInfo.classid}"
+                                           data-toggle="tooltip" title="Download this report"
+                                           class="downloadPerStudentReport" aria-expanded="true"
+                                           aria-controls="collapseOne">
+                                            <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                        </a></li>
+                                    <li><label>Problem wise performance of students in this class</label>
+                                        <a href="${pageContext.request.contextPath}/tt/tt/downLoadPerProblemReport?teacherId=${teacherId}&classId=${classInfo.classid}"
+                                           data-toggle="tooltip" title="Download this report"
+                                           class="downloadPerStudentReport" aria-expanded="true"
+                                           aria-controls="collapseOne">
+                                            <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                        </a></li>
+                                </ul>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="60%">
+                                    <thead>
+                                    <tr>
+                                        <th>% Range</th>
+                                        <th>Meaning</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Only 20%-40% problems for this standard have been solved correctly on first attempt, and more than 1 hint has been seen for these problems on average</td>
+                                        <td class="span-warning-layer-one">Clusters that students found challenging</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Less than 20% problems for this standard have been solved correctly on first attempt, and more than 1.5 hints have been seen for these problems, on average</td>
+                                        <td class="span-danger-layer-one">Clusters that students found really hard</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div id="collapseFourLoader" class="loader" style="display: none" ></div>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perClusterReport" class="table table-striped table-bordered hover" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+
+                   <%-- <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a id="report_two" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    Class Summary Per Problem
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <label>Problem wise performance of students in this class</label>
+                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerProblemReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perProblemReportLegendTable" class="table table-striped table-bordered hover" width="40%">
+                                    <thead>
+                                    <tr>
+                                        <th>% Range</th>
+                                        <th>Symbol</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>% greater than or equal to 80</td>
+                                        <td><i class='fa fa-thumbs-up' aria-hidden='true'></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>% less than 20</td>
+                                        <td class="span-danger-layer-one">Unsatisfactory</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="loader" style="display: none"></div>
+                            </div>
+                            <div class="panel-body">
+                                <table id="perProblemReport" class="table table-striped table-bordered hover" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>--%>
+
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -410,88 +509,7 @@
 
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a id="report_two" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                    Class Summary Per Problem
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <label>Problem wise performance of students in this class</label>
-                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerProblemReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
-                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                            <div class="panel-body">
-                                <table id="perProblemReportLegendTable" class="table table-striped table-bordered hover" width="40%">
-                                    <thead>
-                                    <tr>
-                                        <th>% Range</th>
-                                        <th>Symbol</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>% greater than or equal to 80</td>
-                                        <td><i class='fa fa-thumbs-up' aria-hidden='true'></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td>% less than 20</td>
-                                        <td class="span-danger-layer-one">Unsatisfactory</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="loader" style="display: none"></div>
-                            </div>
-                            <div class="panel-body">
-                                <table id="perProblemReport" class="table table-striped table-bordered hover" width="100%"></table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a id="report_four" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                                    Class Summary Per Common Core Cluster
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseFour" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <label>Common core cluster evaluation of students in this class</label>
-                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerClusterReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseOne">
-                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                            <div class="panel-body">
-                                <table id="perClusterLegendTable" class="table table-striped table-bordered hover" width="60%">
-                                    <thead>
-                                    <tr>
-                                        <th>% Range</th>
-                                        <th>Meaning</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Only 20%-40% problems for this standard have been solved correctly on first attempt, and more than 1 hint has been seen for these problems on average</td>
-                                        <td class="span-warning-layer-one">Clusters that students found challenging</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Less than 20% problems for this standard have been solved correctly on first attempt, and more than 1.5 hints have been seen for these problems, on average</td>
-                                        <td class="span-danger-layer-one">Clusters that students found really hard</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div id="collapseFourLoader" class="loader" style="display: none" ></div>
-                            </div>
-                            <div class="panel-body">
-                                <table id="perClusterReport" class="table table-striped table-bordered hover" width="100%"></table>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
             </div>
@@ -673,6 +691,28 @@
 </div>
 
 <div id = "statusMessage" class="spin-loader-message" align = "center" style="display: none;"></div>
+
+<!-- Modal For Mastery Trajecotory Report-->
+<div id="studentEffortRecordedProblem" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Collective Students Effort on This Problem</h4>
+            </div>
+            <div class="modal-body" role="alert">
+                <div id="problemSnapshot">
+                </div>
+                <canvas id="studentEffortRecordedProblemCanvas" width='900' height='150'></canvas>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+
 <!-- Modal Error-->
 <div id="errorMsgModelPopup" class="modal fade" role="dialog" style="display: none;">
     <div class="modal-dialog">
@@ -746,8 +786,6 @@
             </div>
             <div class="modal-body" role="alert">
                 <canvas id="completeMasteryForStudentCanvas"></canvas>
-
-
             </div>
 
         </div>
@@ -769,7 +807,6 @@
                     <table id="masteryTrajecotoryLegend" class="table table-striped table-bordered" cellspacing="0"
                            width="50%"/>
                 </div>
-
             </div>
 
         </div>
