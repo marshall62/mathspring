@@ -24,6 +24,8 @@ public class PerProblemReportBean {
     public int getGetPercStudentsSolvedFirstTry;
     public int getGetPercStudentsSolvedSecondTry;
     private String mostIncorrectResponse;
+    private String similarproblems;
+    private String[] studentEffortsPerProblem;
 
     private Problem problem;
 
@@ -138,4 +140,21 @@ public class PerProblemReportBean {
     public void setProblemURLWindow(String problemURLWindow) {
         this.problemURLWindow = problemURLWindow;
     }
+
+    public String getSimilarproblems() {
+        return similarproblems;
+    }
+
+    public void setSimilarproblems(String similarproblems) {
+        this.similarproblems = similarproblems;
+    }
+
+    public String[] getStudentEffortsPerProblem() {
+        return studentEffortsPerProblem;
+    }
+
+    public void setStudentEffortsPerProblem(String[] studentEffortsPerProblem) {
+        this.studentEffortsPerProblem = studentEffortsPerProblem;
+    }
 }
+

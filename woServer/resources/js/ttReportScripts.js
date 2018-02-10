@@ -19,6 +19,7 @@ var perClusterReportTable
 //Report5 Varribales
 var perStudentReport;
 var effortMap;
+var perProblemObject;
 var emotionMap;
 var commentsMap;
 var eachStudentData = [];
@@ -30,191 +31,272 @@ var effortLabelMap = {"SKIP" : "The student SKIPPED the problem (didn't do anyth
                        "NOTR" : "NOT even READING the problem --The student answered too fast, in less than 4 seconds",
                         "GIVEUP" : "The student started working on the problem, but then GAVE UP and moved on without solving it correctly.",
                         "SOF" :  "The student SOLVED the problem correctly on the FIRST attempt, without any help.",
-                        "ATT" : "The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.",
-                        "GUESS" : "The student apparently GUESSED, clicked through 3-5 answers until getting the right one.",
+                        "ATT" : "The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help request.",
+                        "GUESS" : "The student apparently GUESSED, clicked through 3-5 answers until getting the right one, and did not ask for hints/videos etc.",
                         "SHINT" : "Student SOLVED problem correctly after seeing HINTS.",
                         "SHELP" : "Got the problem correct but saw atleast one video.",
                         "NO DATA" : "No data could be gathered."
                         }
-
-function loadEffortMap (rows) {
-    var effortChartIdSelector = "#effortChart"+rows;
-    var containerChartSelector = "#containerChart"+rows;
-    var legendChart = "#legendChart"+rows;
-    var effortValues = effortMap[rows];
-    $("#iconID"+rows).hide();
-
-    var data = {
-        labels: ["Type of behaviour in problem"],
-        datasets: [{
-            label: 'SKIP: The student SKIPPED the problem (did not do anything on the problem)',
-            backgroundColor: "#8dd3c7",
-            data: [effortValues[0]],
-        },
-            {
-                label: 'NOTR: NOT even READING the problem --The student answered too fast, in less than 4 seconds',
-                backgroundColor: "#ffffb3",
-                data: [effortValues[1]],
+var effortChartOnPopup;
+function loadEffortMap (rows,flag) {
+    if (flag) {
+        if ($("#iconID" + rows).hasClass('fa fa-th')) {
+            $("#iconID" + rows).removeClass();
+            $("#iconID" + rows).addClass('fa fa-times');
+            var effortChartIdSelector = "#effortChart" + rows;
+            var containerChartSelector = "#containerChart" + rows;
+            var legendChart = "#legendChart" + rows;
+            var effortValues = effortMap[rows];
+            var emotionChart = new Chart($(effortChartIdSelector), {
+            type: 'horizontalBar',
+            data: {
+                labels: ["Type of behaviour in problem"],
+                datasets: [{
+                    backgroundColor: "#8dd3c7",
+                    label: 'SKIP: The student SKIPPED the problem (did not do anything on the problem)',
+                    data: [effortValues[0]]
+                }, {
+                    backgroundColor: "#ffffb3",
+                    label: 'NOTR: NOT even READING the problem --The student answered too fast, in less than 4 seconds',
+                    data: [effortValues[1]]
+                }, {
+                    backgroundColor: "#bebada",
+                    label: 'GIVEUP: The student started working on the problem, but then GAVE UP and moved on without solving it correctly.',
+                    data: [effortValues[2]]
+                }, {
+                    backgroundColor: "#fb8072",
+                    label: 'SOF: The student SOLVED the problem correctly on the FIRST attempt, without any help.',
+                    data: [effortValues[3]]
+                }, {
+                    backgroundColor: "#b3de69",
+                    label: 'ATT: The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.',
+                    data: [effortValues[4]]
+                }, {
+                    backgroundColor: "#fccde5",
+                    label: 'GUESS: The student apparently GUESSED, clicked through 3-5 answers until getting the right one',
+                    data: [effortValues[5]]
+                }, {
+                    backgroundColor: "#80b1d3",
+                    label: 'SHINT: Student SOLVED problem correctly after seeing HINTS.',
+                    data: [effortValues[6]]
+                }, {
+                    backgroundColor: "#fdb462",
+                    label: 'SHELP: Got the problem correct but saw atleast one video.',
+                    data: [effortValues[7]]
+                }, {
+                    label: 'NO DATA: No data could be gathered.',
+                    backgroundColor: "#d9d9d9",
+                    data: [effortValues[8]],
+                },]
             },
-            {
-                label: 'GIVEUP: The student started working on the problem, but then GAVE UP and moved on without solving it correctly.',
-                backgroundColor: "#bebada",
-                data: [effortValues[2]],
-            },
-            {
-                label: 'SOF: The student SOLVED the problem correctly on the FIRST attempt, without any help.',
-                backgroundColor: "#fb8072",
-                data: [effortValues[3]],
-            },
-            {
-                label: 'ATT: The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.',
-                backgroundColor: "#b3de69",
-                data: [effortValues[4]],
-            },
-            {
-                label: 'GUESS: The student apparently GUESSED, clicked through 3-5 answers until getting the right one',
-                backgroundColor: "#fccde5",
-                data: [effortValues[5]],
-            },
-            {
-                label: 'SHINT: Student SOLVED problem correctly after seeing HINTS.',
-                backgroundColor: "#80b1d3",
-                data: [effortValues[6]],
-            },
-            {
-                label: 'SHELP: Got the problem correct but saw atleast one video.',
-                backgroundColor: "#fdb462",
-                data: [effortValues[7]],
-            },
-            {
-                label: 'NO DATA: No data could be gathered.',
-                backgroundColor: "#d9d9d9",
-                data: [effortValues[8]],
-            },
-        ]
-    };
-    var myBarChart = new Chart( $(effortChartIdSelector), {
-        type: 'bar',
-        data: data,
-        options: {
-            legend: {
-                display: false,
-                position: 'bottom',
-            },
-            legendCallback: function(chart) {
-                var text = [];
-                text.push('<table align="center" class="' + chart.id + '-legend">');
-                for (var i = 0; i < chart.data.datasets.length; i++) {
-                    text.push('<tr><td style="padding-right: 10px;" ><span style="background-color:' + chart.data.datasets[i].backgroundColor + '">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>');
-                    if (chart.data.datasets[i].label) {
-                        text.push('<td>'+ chart.data.datasets[i].label + '</td></tr>');
-                    }
-                }
-                text.push('</table>');
-                return text.join('');
-            },scales: {
-            yAxes: [{
-                display: true,
-                ticks: {
-                    suggestedMin: 0,
-                    max: 100,
-                    callback: function(value, index, values) {
-                        return value + '%';
-                    }
+            options: {
+                responsive: false,
+                legend: {
+                    display: false
                 },
-                scaleLabel: {
-                    display: true,
-                    labelString: '% times behavior occurred'
+                scales: {
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: false,
+                            callback: function (value) {
+                                return value + "%"
+                            }
+                        },
+                        display: false
+                    }],
+                    xAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: false
+                        },
+                        display: false
+                    }]
                 }
-            }]
+            }
+        });
+        $(containerChartSelector).show();
+    } else if ($("#iconID" + rows).hasClass('fa fa-times')) {
+        $("#iconID" + rows).removeClass();
+        $("#iconID" + rows).addClass('fa fa-th');
+        var containerChartSelector = "#containerChart" + rows;
+        var legendChart = "#legendChart" + rows;
+        $(containerChartSelector).hide();
+        $(legendChart).empty();
+    } }else {
+        $('#problemSnapshot').empty();
+        var completeValues = perProblemObject[rows];
+        var effortValues = completeValues['studentEffortsPerProblem'];
+        var imageURL = completeValues['imageURL']
+        $('#problemSnapshot').append('<span><strong>Problem ID :'+rows+'</strong></span>');
+        $('#problemSnapshot').append('<img src="'+imageURL +'"/>');
+        if(effortChartOnPopup) {
+            effortChartOnPopup.destroy();
         }
-        }
-    });
-    $(legendChart).prepend(myBarChart.generateLegend());
-    $(containerChartSelector).show();
+            effortChartOnPopup = new Chart($("#studentEffortRecordedProblemCanvas"), {
+            type: 'horizontalBar',
+            data: {
+                labels: ["Type of behaviour in problem"],
+                datasets: [{
+                    backgroundColor: "#8dd3c7",
+                    label: 'SKIP: The student SKIPPED the problem (did not do anything on the problem)',
+                    data: [effortValues[0]]
+                }, {
+                    backgroundColor: "#ffffb3",
+                    label: 'NOTR: NOT even READING the problem --The student answered too fast, in less than 4 seconds',
+                    data: [effortValues[1]]
+                }, {
+                    backgroundColor: "#bebada",
+                    label: 'GIVEUP: The student started working on the problem, but then GAVE UP and moved on without solving it correctly.',
+                    data: [effortValues[2]]
+                }, {
+                    backgroundColor: "#fb8072",
+                    label: 'SOF: The student SOLVED the problem correctly on the FIRST attempt, without any help.',
+                    data: [effortValues[3]]
+                }, {
+                    backgroundColor: "#b3de69",
+                    label: 'ATT: The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.',
+                    data: [effortValues[4]]
+                }, {
+                    backgroundColor: "#fccde5",
+                    label: 'GUESS: The student apparently GUESSED, clicked through 3-5 answers until getting the right one',
+                    data: [effortValues[5]]
+                }, {
+                    backgroundColor: "#80b1d3",
+                    label: 'SHINT: Student SOLVED problem correctly after seeing HINTS.',
+                    data: [effortValues[6]]
+                }, {
+                    backgroundColor: "#fdb462",
+                    label: 'SHELP: Got the problem correct but saw atleast one video.',
+                    data: [effortValues[7]]
+                }, {
+                    label: 'NO DATA: No data could be gathered.',
+                    backgroundColor: "#d9d9d9",
+                    data: [effortValues[8]],
+                },]
+            },
+            options: {
+                responsive: false,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: false,
+                            callback: function (value) {
+                                return value + "%"
+                            }
+                        },
+                        display: false
+                    }],
+                    xAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: false
+                        },
+                        display: false
+                    }]
+                }
+            }
+        });
+        $("#studentEffortRecordedProblem").modal('show');
+    }
+
 }
 
 
 function loadEmotionMap (rows) {
-    $("#emotioniconID"+rows).hide();
     var studentEmotions = emotionMap[rows];
     var containerChartSelector = "#emotionContainerChart" + rows;
-    if(!jQuery.isEmptyObject(studentEmotions)) {
-        Object.keys(studentEmotions).forEach(function (key) {
-            var emotionChartCanvas = "#" + rows + key;
+    if($("#emotioniconID" + rows).hasClass('fa fa-heart')) {
+        $("#emotioniconID" + rows).removeClass();
+        $("#emotioniconID" + rows).addClass('fa fa-times');
+        if (!jQuery.isEmptyObject(studentEmotions)) {
+            Object.keys(studentEmotions).forEach(function (key) {
+                var emotionChartCanvas = "#" + rows + key;
 
-            var percentValues = studentEmotions[key];
-            var keyValue = key;
-            percentValues[0] = Math.round(percentValues[0] / percentValues[5] * 100);
-            percentValues[1] = Math.round(percentValues[1] / percentValues[5] * 100);
-            percentValues[2] = Math.round(percentValues[2] / percentValues[5] * 100);
-            percentValues[3] = Math.round(percentValues[3] / percentValues[5] * 100);
-            percentValues[4] = Math.round(percentValues[4] / percentValues[5] * 100);
-            var barLabels = ['Not at All', 'A Little', 'Somewhat', 'Quite a Bit', 'Extremely']
-            var colorCodes;
-            if (keyValue == 'Frustration') {
-                colorCodes = ['#FFB2B2', '#FF7F7F', '#FF4C4C', '#FF1919', '#CC0000'];
-            } else if (keyValue == 'Confidence') {
-                colorCodes = ['#CCD8F1', '#99B1E3', '#668BD5', '#3364C7', '#003EBA'];
-            } else if (keyValue == 'Excitement') {
-                colorCodes = ['#FFEAD2', '#FFD6A5', '#FFC278', '#FFAE4B', '#FF9A1F'];
-            } else if (keyValue == 'Interest') {
-                colorCodes = ['#D4FBD1', '#AAF7A3', '#7FF375', '#55EF47', '#2BEB1A'];
-            }
-
-            var emotionChart = new Chart($(emotionChartCanvas), {
-                type: 'horizontalBar',
-                data: {
-                    labels: [keyValue],
-                    datasets: [{
-                        backgroundColor: colorCodes[0],
-                        label: barLabels[0],
-                        data: [percentValues[0]]
-                    }, {
-                        backgroundColor: colorCodes[1],
-                        label: barLabels[1],
-                        data: [percentValues[1]]
-                    }, {
-                        backgroundColor: colorCodes[2],
-                        label: barLabels[2],
-                        data: [percentValues[2]]
-                    }, {
-                        backgroundColor: colorCodes[3],
-                        label: barLabels[3],
-                        data: [percentValues[3]]
-                    }, {
-                        backgroundColor: colorCodes[4],
-                        label: barLabels[4],
-                        data: [percentValues[4]]
-                    }]
-                },
-                options: {
-                    responsive: false,
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        yAxes: [{
-                            stacked: true,
-                            ticks: {
-                                beginAtZero: false
-                            },
-                            display: false
-                        }],
-                        xAxes: [{
-                            stacked: true,
-                            ticks: {
-                                beginAtZero: false
-                            },
-                            display: false
-                        }]
-                    }
+                var percentValues = studentEmotions[key];
+                var keyValue = key;
+                percentValues[0] = Math.round(percentValues[0] / percentValues[5] * 100);
+                percentValues[1] = Math.round(percentValues[1] / percentValues[5] * 100);
+                percentValues[2] = Math.round(percentValues[2] / percentValues[5] * 100);
+                percentValues[3] = Math.round(percentValues[3] / percentValues[5] * 100);
+                percentValues[4] = Math.round(percentValues[4] / percentValues[5] * 100);
+                var barLabels = ['Not at All', 'A Little', 'Somewhat', 'Quite a Bit', 'Extremely'];
+                var colorCodes;
+                if (keyValue == 'Frustration') {
+                    colorCodes = ['#FFB2B2', '#FF7F7F', '#FF4C4C', '#FF1919', '#CC0000'];
+                } else if (keyValue == 'Confidence') {
+                    colorCodes = ['#CCD8F1', '#99B1E3', '#668BD5', '#3364C7', '#003EBA'];
+                } else if (keyValue == 'Excitement') {
+                    colorCodes = ['#FFEAD2', '#FFD6A5', '#FFC278', '#FFAE4B', '#FF9A1F'];
+                } else if (keyValue == 'Interest') {
+                    colorCodes = ['#D4FBD1', '#AAF7A3', '#7FF375', '#55EF47', '#2BEB1A'];
                 }
-            });
 
-        });
+                var emotionChart = new Chart($(emotionChartCanvas), {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: [keyValue],
+                        datasets: [{
+                            backgroundColor: colorCodes[0],
+                            label: barLabels[0],
+                            data: [percentValues[0]]
+                        }, {
+                            backgroundColor: colorCodes[1],
+                            label: barLabels[1],
+                            data: [percentValues[1]]
+                        }, {
+                            backgroundColor: colorCodes[2],
+                            label: barLabels[2],
+                            data: [percentValues[2]]
+                        }, {
+                            backgroundColor: colorCodes[3],
+                            label: barLabels[3],
+                            data: [percentValues[3]]
+                        }, {
+                            backgroundColor: colorCodes[4],
+                            label: barLabels[4],
+                            data: [percentValues[4]]
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            yAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: false,
+                                    callback: function(value) {
+                                        return value + "%"
+                                    }
+                                },
+                                display: false
+                            }],
+                            xAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: false
+                                },
+                                display: false
+                            }]
+                        }
+                    }
+                });
+
+            });
+        }
+        $(containerChartSelector).show();
+    }else if($("#emotioniconID" + rows).hasClass('fa fa-times')){
+        $("#emotioniconID" + rows).removeClass();
+        $("#emotioniconID" + rows).addClass('fa fa-heart');
+        $(containerChartSelector).hide();
     }
-    $(containerChartSelector).show();
 }
 
 
@@ -529,6 +611,13 @@ function handleclickHandlers() {
         }
     });
 
+    $('a[rel="popoverproblemsetSummary"]').popover({
+        html: false,
+        trigger: 'hover',
+        container: 'body',
+        placement: 'top'
+    });
+
 
 }
 
@@ -625,7 +714,7 @@ function registerAllEvents(){
 
     } );
 
-    perStudentReport =  $('#perStudentReport').DataTable({
+    perStudentReport  =  $('#perStudentReport').DataTable({
         data: [],
         destroy: true,
         columns: [
@@ -643,23 +732,23 @@ function registerAllEvents(){
         "bSort" : false,
         "columnDefs": [
             {
-                "width": "10%",
+                "width": "5%",
                 "targets": [ 0 ],
                 "visible": false
 
             },{
-                "width": "10%",
+                "width": "5%",
                 "targets": [ 1 ],
                 "visible": true
 
             },{
-                "width": "10%",
+                "width": "5%",
                 "targets": [ 2 ],
                 "visible": true
 
             },
             {
-                "width": "10%",
+                "width": "5%",
                 "targets": [ 3 ],
                 "visible": true,
                 'className': 'dt-body-center',
@@ -670,18 +759,18 @@ function registerAllEvents(){
             },
             {
                 "targets": [ 4 ],
-                "width": "30%",
+                "width": "10%",
                 'className': 'dt-body-center',
                 'render': function ( data, type, row ) {
                     var effortChartId = "effortChart"+row[0];
                     var containerChart = "containerChart"+row[0];
                     var legendChart = "legendChart"+row[0];
-                    var dataContent = "<div id="+containerChart+" style='width:900px;height:680px;display:none'><canvas id="+effortChartId+"></canvas> <div id='"+legendChart+"'></div></div>";
-                    return "<i id='iconID"+row[0]+"' style='cursor:pointer;' class='fa fa-th' aria-hidden='true' onclick='loadEffortMap("+row[0]+");'></i>"+dataContent;
+                    var dataContent = "<div id="+containerChart+" style='width:900px;height:300px;display:none'><div class='panel panel-default'><div class='panel-heading'>Effort Chart</div><div class='panel-body'><canvas width='800' height='150' id="+effortChartId+"></canvas></div></div></div>";
+                    return "<i id='iconID"+row[0]+"' style='cursor:pointer;' class='fa fa-th' aria-hidden='true' onclick='loadEffortMap("+row[0]+",true);'></i>"+dataContent;
                 }
             }, {
                 "targets": [ 5 ],
-                "width": "30%",
+                "width": "70%",
                 'className': 'dt-body-center',
                 'render': function ( data, type, row ) {
                     var studentEmotions = emotionMap[row[0]];
@@ -694,13 +783,13 @@ function registerAllEvents(){
                          containerConvas += noEmotionReported;
                     }else {
                         var i = 0;
-                        var divBlockOne = "<div id='bloc1' style='width:50%'>";
-                        var divBlockTwo = "<div id='bloc2' style='width:50%'>";
+                        var divBlockOne = "<div id='bloc1' style='width:48%; margin: 1%; float: left;'>";
+                        var divBlockTwo = "<div id='bloc2' style='width:48%; margin: 1%; float: left;'>";
                         Object.keys(studentEmotions).forEach(function (key) {
                             var eachEmotionComment = studentComments[key];
                             var commentsTable = "";
                             if (!jQuery.isEmptyObject(eachEmotionComment)) {
-                                commentsTable = "<table class='table table-striped table-bordered hover'><thead><tr>" + key + " Comments" + "</tr></thead><tbody>"
+                                commentsTable = "<table style='width:80%;' class='table table-striped table-bordered hover'><thead><tr>Comments</tr></thead><tbody>"
                                 var emotionComments = "";
                                 eachEmotionComment.forEach(function (comments) {
                                     if (comments != "")
@@ -709,7 +798,7 @@ function registerAllEvents(){
                                 emotionComments += "</tbody></table>"
                                 commentsTable += emotionComments;
                             }
-                            var canvasTags = "<fieldset><legend>" + key + "</legend><canvas width='400' height='100' id='" + row[0] + key + "'></canvas>" + commentsTable + "</fieldset>";
+                            var canvasTags = "<div class='panel panel-default'><div class='panel-heading'>" + key + "</div><div class='panel-body'><canvas width='300' height='100' id='" + row[0] + key + "'></canvas>" + commentsTable+"</div></div>"
 
                             if (i == 0 || i == 1)
                                 divBlockOne += canvasTags;
@@ -1130,7 +1219,7 @@ function registerAllEvents(){
         if (row.child.isShown()) {
             row.child.hide();
         } else {
-          var tabPanel =  '<ul class="nav nav-tabs"> <li class="active"> <a  href="#1" data-toggle="tab">Problems solved today</a></li> <li><a href="#2" data-toggle="tab">Problems solved yesterday</a> </li> <li><a href="#3" data-toggle="tab">Previously solved problems</a> </li> </ul>';
+          var tabPanel =  '<ul class="nav nav-tabs"> <li class="active"><a  href="#1" data-toggle="tab">Problems solved today</a></li> <li><a href="#2" data-toggle="tab">Problems solved most recently</a> </li> <li><a href="#3" data-toggle="tab">All solved problems</a> </li> </ul>';
             var studentDataList = eachStudentData[rowID];
             var outputStudentDataList = Object.keys(studentDataList).map(function(key) {return studentDataList[key];});
             var outputStudentDataTodayList =[];
@@ -1161,7 +1250,7 @@ function registerAllEvents(){
                       secondHeader = '<div id=' + "panel1" + rowID + ' class="panel-body animated zoomOut">No Problems Done Today</div>'
                   } else {
                       secondHeader = '<div id='+"panel1"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
-                    $.each(outputStudentDataList, function (i, obj) {
+                    $.each(outputStudentDataTodayList, function (i, obj) {
                         var correctHtml = "";
                         var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
                         var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
@@ -1178,11 +1267,15 @@ function registerAllEvents(){
 
                 }else if(i == 1){
                     //Show only problems done yesterday
-                    var yesterday = new Date();
-                    yesterday.setDate(currentDate.getDate() - 1);
+                    var firstDate = 0;
+                    var latestDate;
                     outputStudentDataList.forEach(function(e){
-                        var tempDateHolder  = new Date(e[10]).getTime();
-                        if(yesterday === tempDateHolder){
+                        if(firstDate == 0) {
+                            latestDate = new Date(e[10]).getDate();
+                            firstDate++;
+                        }
+                        var tempDateHolder  = new Date(e[10]).getDate();
+                        if(latestDate === tempDateHolder){
                             outputStudentDataYesterdayList.push(e);
                         }
                     });
@@ -1190,7 +1283,7 @@ function registerAllEvents(){
                         thirdHeader = '<div id=' + "panel2" + rowID + ' class="panel-body animated zoomOut">No Problems Done Yesterday</div>'
                     } else {
                         thirdHeader = '<div id='+"panel2"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
-                        $.each(outputStudentDataList, function (i, obj) {
+                        $.each(outputStudentDataYesterdayList, function (i, obj) {
                             var correctHtml = "";
                             var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
                             var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
@@ -1247,9 +1340,6 @@ function registerAllEvents(){
         }
 
     });
-    function testMethod() {
-        console.log("a");
-    }
 var completeDataChart;
     $(document).on('click', 'a.getCompleteMasteryByAverage', function () {
         var tr = $(this).closest('tr');
@@ -1795,6 +1885,7 @@ var completeDataChart;
                     "columns": columDvalues,
                     "columnDefs": columNvalues,
                     "bFilter": false,
+                    "bPaginate": false,
                     "bLengthChange": false,
                     rowReorder: false,
                     "bSort": true,
@@ -1835,6 +1926,7 @@ var completeDataChart;
                 success: function (data) {
                     var jsonData = $.parseJSON(data);
                     var eachProblemData = jsonData;
+                    perProblemObject = eachProblemData;
                     var perProblemSetLevelOneFullTemp = [];
                     var problemImageMap = [];
                     var problemImageWindow = [];
@@ -1844,7 +1936,7 @@ var completeDataChart;
                         $.map(item, function (itemValues, k) {
                             if (k == 'problemName' || k == 'noStudentsSeenProblem' ||
                                 k == 'getGetPercStudentsSolvedFirstTry' || k == 'getGetPercStudentsSolvedSecondTry' || k == 'percStudentsRepeated' ||
-                                k == 'percStudentsSkipped' || k == 'percStudentsGaveUp' || k == 'mostIncorrectResponse' || k == 'problemStandardAndDescription') {
+                                k == 'percStudentsSkipped' || k == 'percStudentsGaveUp' || k == 'mostIncorrectResponse' || k == 'problemStandardAndDescription' || k == 'similarproblems') {
                                 perProblemSetLevelOneTemp[k] = itemValues;
                             } else if (k == 'imageURL') {
                                 problemImageMap[key] = itemValues;
@@ -1865,7 +1957,7 @@ var completeDataChart;
                                 var problemId = full['problemId'];
                                 var attri = ", 'ProblemPreview'"+","+"'width=750,height=550,status=yes,resizable=yes'";
                                 var window = "'" + problemImageWindow[problemId] + "'" + attri ;
-                                return '<a  onclick="window.open('+window+');" style="cursor:pointer" rel="popoverPerProblem" data-img="' + problemImageMap[problemId] + '">' + data + '</a>';
+                                return '<a style="cursor:pointer" rel="popoverPerProblem" data-img="' + problemImageMap[problemId] + '">' + data + '</a>';
                             }
                         },
                         {
@@ -1883,9 +1975,9 @@ var completeDataChart;
                             "name": "getGetPercStudentsSolvedFirstTry",
                             "targets": [4],
                             "createdCell": function (td, cellData, rowData, row, col) {
-                                if(cellData >= 80){
+                                if(cellData >= 80 && rowData['noStudentsSeenProblem'] > 5){
                                     $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
-                                }else if(cellData <= 20){
+                                }else if(cellData <= 20 && rowData['noStudentsSeenProblem'] > 5 ){
                                     $(td).addClass('span-danger-layer-one');
                                 }
                             },"render": function ( data, type, full, meta ) {
@@ -1922,7 +2014,32 @@ var completeDataChart;
                             return data+" %";
                         }
                         },
-                        {"title": "Most Frequent Incorrect Response", "name": "mostIncorrectResponse", "targets": [9]}
+                        {"title": "Most Frequent Incorrect Response", "name": "mostIncorrectResponse", "targets": [9]},
+                        {
+                            "title": "Similar problems",
+                            "name": "similarproblems",
+                            "targets": [10],"render": function ( data, type, full, meta ) {
+                                var gradeIdCode = full['problemStandardAndDescription'].split(":")[0];
+                                var grade = gradeIdCode.split(".")[0];
+                                var strandValue = "Mathematics."+gradeIdCode.split(".")[0]+"."+gradeIdCode.split(".")[1];
+                                var standardValue = "Mathematics."+full['problemStandardAndDescription'].split(":")[0];
+                                return '<a href="http://www.doe.mass.edu/MCAS/SEarch/default.aspx?YearCode=%25&GradeID='+grade+'&QuestionTypeCode=%25&QuestionSetID=All&FrameworkCode=Mathematics&Strand='+strandValue+'&Standard='+standardValue+'&KeywordVal=&ReportingCategoryCode=&ShowReportingCategory=&originalpage=1&allowCalculator=&page=1&mode=&answers=&questionanswer=&removeQuestionID=&unreleased=no&intro=no&FormSubmitted=yes" target="_blank" ><i class="fa fa-question" aria-hidden="true"></i></a>';
+
+                            }
+                        },{
+                            "title": "Collective effort on Problem",
+                            "name": "collectiveEffortOnProblem",
+                            "targets": [ 11 ],
+                            "width": "10%",
+                            'className': 'dt-body-center',
+                            'render': function ( data, type, row ) {
+                                var effortChartId = "effortChart"+row['problemId'];
+                                var containerChart = "containerChart"+row['problemId'];
+                                var legendChart = "legendChart"+row['problemId'];
+                                var dataContent = "<div id="+containerChart+" style='width:900px;height:300px;display:none'><div class='panel panel-default'><div class='panel-heading'>Effort Chart</div><div class='panel-body'><canvas width='800' height='150' id="+effortChartId+"></canvas></div></div></div>";
+                                return "<i id='iconID"+row['problemId']+"' style='cursor:pointer;' class='fa fa-th' aria-hidden='true' onclick='loadEffortMap("+row['problemId']+",false);'></i>"+dataContent;
+                            }
+                        }
                     ];
 
                     var columDvalues = [
@@ -1935,29 +2052,21 @@ var completeDataChart;
                         {width: "10%", data: "percStudentsRepeated"},
                         {width: "10%", data: "percStudentsSkipped"},
                         {width: "10%", data: "percStudentsGaveUp"},
-                        {width: "10%", data: "mostIncorrectResponse"}
+                        {width: "10%", data: "mostIncorrectResponse"},
+                        {width: "5%", data: "similarproblems"},
+                        {width: "5%", data: "collectiveEffortOnProblem"},
                     ];
 
 
                     var $perClusterChildtable = $($('#child_table_perCluster').html());
                     $perClusterChildtable.css('width', '100%');
-
-                    var $perClusterChildtableLegend = $($('#child_table_legendCluster').html());
-                    $perClusterChildtableLegend.css('width', '40%');
-
-                    var perClusterChildtableLegend = $perClusterChildtableLegend.DataTable({
-                        "bPaginate": false,
-                        "bFilter": false,
-                        "bLengthChange": false,
-                        rowReorder: false,
-                        "bSort": false});
-
-                    var perClusterChildtable = $perClusterChildtable.DataTable({
+                        var perClusterChildtable = $perClusterChildtable.DataTable({
                         data: perProblemSetLevelOneFullTemp,
                         destroy: true,
-                        "columns": columDvalues,
+                        responsive: true,
+                        columns: columDvalues,
                         "columnDefs": columNvalues,
-                        "bPaginate": true,
+                        "bPaginate": false,
                         "bFilter": false,
                         "bLengthChange": false,
                         rowReorder: false,
@@ -1966,7 +2075,7 @@ var completeDataChart;
                             $('a[rel=popoverPerProblem]').popover({
                                 html: true,
                                 trigger: 'hover',
-                                placement: 'right',
+                                placement: 'top',
                                 container: 'body',
                                 content: function () {
                                     return '<img src="' + $(this).data('img') + '" />';
@@ -1976,14 +2085,14 @@ var completeDataChart;
                             $('a[rel=popoverstandard]').popover({
                                 html: false,
                                 trigger: 'hover',
-                                placement: 'right',
+                                placement: 'top',
                                 container: 'body'
                             });
 
                             $('a[rel=popoverHeader]').popover({
                                 container: 'body',
                                 trigger: 'hover',
-                                placement: 'top',
+                                placement: 'top'
                             });
 
                         },
@@ -1991,10 +2100,13 @@ var completeDataChart;
                             $(thead).find('th').eq(5).html('% of Students repeated the problem &nbsp;&nbsp;<a rel="popoverHeader"  data-content="Students who received the problem again, because the last time they did NOT solve it."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
                             $(thead).find('th').eq(6).html('% of Students skipped the problem &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who received the problem and immediately clicked the '+"New Problem"+' button"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
                             $(thead).find('th').eq(7).html('% of Students gave up &nbsp;&nbsp;<a rel="popoverHeader" data-content="Students who started working on the problem, but decided to move on to another one (quit)."><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
+                            $(thead).find('th').eq(9).html('See Similar Problems &nbsp;&nbsp;<a rel="popoverHeader" data-content="Click here to see similar problems like the one seen in each row"><i class="fa fa-question-circle-o" aria-hidden="true"></i></a>');
 
                         }
                     });
                     perClusterReportTable.row(tr).child(perClusterChildtable.table().container()).show();
+                    var oTable = $perClusterChildtable.dataTable();
+                    oTable.fnSort( [ [0,'asc']] );
                 }
             });
         }
