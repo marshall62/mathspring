@@ -87,8 +87,9 @@ m.prob_playHint = function(hintLabel) {
     var hint_thumb = document.getElementById(hintId+"Thumb");
     hint_thumb.style.visibility = "visible";
     hint_thumb.className = "hint-thumb-selected";
+    // figure is the img or video child element of the ProblemFigure div
     var figure = findFigure(document.getElementById("ProblemFigure"));
-    var figure_parent = figure != null ? figure.parentNode : null;
+    var figure_parent = figure != null ? figure.parentNode : null; // parent of the img or video - a div
     var figure_html = figure != null ? figure.outerHTML : "";
     //Clear any overlaid hint images
     if(figure != null && figure.parentNode.dataset.figureHtml != null) {
@@ -115,6 +116,9 @@ m.prob_playHint = function(hintLabel) {
     //add overlay and queue up side images
     var side_figures = [];
 
+    // set some id on the figure_parent so that we can do operations on it
+    figure_parent.id = "figureParentID_1469"; // TODO should be a gensym or something more unique.
+
     // DM add the main side image to the side figures if its a side placement (2).  If its an overlay (1)
     // set the problem's main figure to be this image.
     if (imageURL && placement==2)
@@ -132,7 +136,15 @@ m.prob_playHint = function(hintLabel) {
             //don't overwrite it if it's already there (so multiple overlays don't screw everything up)
             figure_parent.dataset.figureHtml = figure_parent.dataset.figureHtml || figure_html;
             image.style.display = "block"; //set it to display before we grab the html
-            figure_parent.innerHTML = image.outerHTML;
+            var originalFigure = figure_parent.innerHTML;
+            // figure_parent.innerHTML = image.outerHTML;   // put the image HTML into the div
+            // $('#figureParentID_1469').html(image.outerHTML);
+            // DM Can't seem to get the onclick function to work.  If I try to use the restoreProblemFigure function below it can't find it.
+            // var figimg = "<a href='#' text='Click to see the orginal problem figure' onClick=\"alert('TODO: revert to original image'); \">" +image.outerHTML+ "</a>";
+            var figimg = "<a href='#' title='Click to see the orginal problem figure' onClick=\"prob_restoreProblemFigure(); \">" +image.outerHTML+ "</a>";
+            $('#figureParentID_1469').html(figimg);
+            // figure_parent.innerHTML = figimg;   // put the image HTML into the div
+            // $('#figureParentID_1469').append(removeOverlayButton);
             image.style.display = "none"; //don't display the original in the hint area
         } else if(parameter == "side" && hintFigure != null) {
             image.style.display = "block"; //set it to display before we grab the html
@@ -164,6 +176,13 @@ m.prob_playHint = function(hintLabel) {
         preload.load();
     }
 }
+// a kludge to convert the original problem imageURL to an img or video tag and then insert it back into the div that holds the problem figure.
+m.restoreProblemFigure = function () {
+        theProblem.questionImage; // the original image as a full URL or a {[]}
+        var imgOrvid = getImgVidTag(theProblem.questionImage,theProblem.contentPath,theProblem.probDir,null,"orginalProblemFigure");
+        $('#figureParentID_1469').html(imgOrvid);
+    }
+
 
 function getHint (prob, label) {
     for (h of prob.hints) {
@@ -292,9 +311,12 @@ return m;
 
 })();
 
+
+
 //These unfortunately need to be globals,
 // unless the parts of tutorhut that reference them are rewritten
 //TODO: do that?
 var prob_gradeAnswer = problemUtils.prob_gradeAnswer;
 var prob_playHint = problemUtils.prob_playHint;
 var prob_readProblem = problemUtils.prob_readProblem;
+var prob_restoreProblemFigure = problemUtils.restoreProblemFigure;

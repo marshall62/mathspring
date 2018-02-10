@@ -262,7 +262,7 @@ public class ProblemMgr {
             else vidURL = v.getUrl();
         }
         p.setVideo(vidURL);
-        logger.debug("Problem id="+p.getId() + " name=" + p.getName() + " video="+ p.getVideo() + " example=" + p.getExample());
+        logger.debug("Loaded ready Problem id="+p.getId() + " name=" + p.getName() + " form=" + (p.isQuickAuth() ? "quickAuth" : type) );
         return p;
     }
 
