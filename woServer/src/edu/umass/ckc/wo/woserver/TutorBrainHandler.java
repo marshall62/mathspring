@@ -349,9 +349,9 @@ public class TutorBrainHandler {
                     clientType = LoginParams.K12;
                 String loginJSP = clientType.equals(LoginParams.ADULT)
                         ? LoginAdult_2.LOGIN_JSP
-                        : Settings.useNewGUI()
-                            ? LoginK12_2.LOGIN_JSP_NEW
-                            : LoginK12_2.LOGIN_JSP;
+                       // : Settings.useNewGUI()
+                           // :LoginK12_2.LOGIN_JSP_NEW
+                           : LoginK12_2.LOGIN_JSP;
                 servletInfo.request.setAttribute("var", e.getServletParams().getString("var"));
                 if (clientType.equals(LoginParams.ADULT) )
                     servletInfo.request.setAttribute("startPage","LoginAdult_1");

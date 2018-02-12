@@ -404,6 +404,12 @@
                         <label for="message-text" class="form-control-label">Message:</label>
                         <textarea class="form-control" id="message-text" name="message"></textarea>
                     </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="is-broken" type="checkbox" class="form-check-input">
+                            Is the current problem broken?
+                        </label>
+                    </div>
                     <button type="submit" class="btn btn-success">Submit</button>
                 </form>
             </div>
@@ -736,14 +742,19 @@
         $('#report-form').submit(function (event) {
             var formData = {
                 'sessionId': globals.sessionId,
-                'message': $('textarea[name=message]').val()
+                'message': $('textarea[name=message]').val(),
+                'isBroken': $('#is-broken').is(':checked')
             };
 
             $.ajax({
                 type: 'GET',
                 url: "${pageContext.request.contextPath}/TutorBrain"
                 + "?action=ReportError"
+                + "&isBroken=" + formData.isBroken
                 + "&sessionId=" + formData.sessionId
+                    + "&elapsedTime=" + globals.elapsedTime
+                    + "&probElapsedTime=" + globals.probElapsedTime
+                    + "&mode=" + globals.probMode
                 + "&message=" + formData.message
             }).done(function (data) {
                 console.log(data);
@@ -751,7 +762,12 @@
             $('#reportModal').modal('toggle');
 
             event.preventDefault();
-        })
+        });
+
+        $('#reportModal').on('hidden.bs.modal', function(){
+            $(this).find('form')[0].reset();
+        });
+
     });
 </script>
 
