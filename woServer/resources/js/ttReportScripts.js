@@ -47,9 +47,7 @@ function loadEffortMap (rows,flag) {
             var containerChartSelector = "#containerChart" + rows;
             var legendChart = "#legendChart" + rows;
             var effortValues = effortMap[rows];
-            var emotionChart = new Chart($(effortChartIdSelector), {
-            type: 'horizontalBar',
-            data: {
+            var effortData = {
                 labels: ["Type of behaviour in problem"],
                 datasets: [{
                     backgroundColor: "#8dd3c7",
@@ -88,11 +86,25 @@ function loadEffortMap (rows,flag) {
                     backgroundColor: "#d9d9d9",
                     data: [effortValues[8]],
                 },]
-            },
+            };
+            var emotionChart = new Chart($(effortChartIdSelector), {
+            type: 'horizontalBar',
+            data: effortData,
             options: {
                 responsive: false,
                 legend: {
                     display: false
+                }, legendCallback: function(chart) {
+                    var text = [];
+                    text.push('<table class="' + chart.id + '-legend">');
+                    for (var i = 0; i < chart.data.datasets.length; i++) {
+                        text.push('<tr><td><span style="background-color:' + chart.data.datasets[i].backgroundColor + '">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>');
+                        if (chart.data.datasets[i].label) {
+                            text.push('<td>'+ chart.data.datasets[i].label + '</td></tr>');
+                        }
+                    }
+                    text.push('</table>');
+                    return text.join('');
                 },
                 scales: {
                     yAxes: [{
@@ -115,6 +127,7 @@ function loadEffortMap (rows,flag) {
                 }
             }
         });
+        $(legendChart).prepend(emotionChart.generateLegend());
         $(containerChartSelector).show();
     } else if ($("#iconID" + rows).hasClass('fa fa-times')) {
         $("#iconID" + rows).removeClass();
@@ -127,58 +140,72 @@ function loadEffortMap (rows,flag) {
         $('#problemSnapshot').empty();
         var completeValues = perProblemObject[rows];
         var effortValues = completeValues['studentEffortsPerProblem'];
-        var imageURL = completeValues['imageURL']
+        var imageURL = completeValues['imageURL'];
+        var legendChart = "#lengendTable";
         $('#problemSnapshot').append('<span><strong>Problem ID :'+rows+'</strong></span>');
         $('#problemSnapshot').append('<img src="'+imageURL +'"/>');
         if(effortChartOnPopup) {
             effortChartOnPopup.destroy();
+            $(legendChart).empty();
         }
+        var effortData = {
+            labels: ["Type of behaviour in problem"],
+            datasets: [{
+                backgroundColor: "#8dd3c7",
+                label: 'SKIP: The student SKIPPED the problem (did not do anything on the problem)',
+                data: [effortValues[0]]
+            }, {
+                backgroundColor: "#ffffb3",
+                label: 'NOTR: NOT even READING the problem --The student answered too fast, in less than 4 seconds',
+                data: [effortValues[1]]
+            }, {
+                backgroundColor: "#bebada",
+                label: 'GIVEUP: The student started working on the problem, but then GAVE UP and moved on without solving it correctly.',
+                data: [effortValues[2]]
+            }, {
+                backgroundColor: "#fb8072",
+                label: 'SOF: The student SOLVED the problem correctly on the FIRST attempt, without any help.',
+                data: [effortValues[3]]
+            }, {
+                backgroundColor: "#b3de69",
+                label: 'ATT: The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.',
+                data: [effortValues[4]]
+            }, {
+                backgroundColor: "#fccde5",
+                label: 'GUESS: The student apparently GUESSED, clicked through 3-5 answers until getting the right one',
+                data: [effortValues[5]]
+            }, {
+                backgroundColor: "#80b1d3",
+                label: 'SHINT: Student SOLVED problem correctly after seeing HINTS.',
+                data: [effortValues[6]]
+            }, {
+                backgroundColor: "#fdb462",
+                label: 'SHELP: Got the problem correct but saw atleast one video.',
+                data: [effortValues[7]]
+            }, {
+                label: 'NO DATA: No data could be gathered.',
+                backgroundColor: "#d9d9d9",
+                data: [effortValues[8]],
+            },]
+        };
             effortChartOnPopup = new Chart($("#studentEffortRecordedProblemCanvas"), {
             type: 'horizontalBar',
-            data: {
-                labels: ["Type of behaviour in problem"],
-                datasets: [{
-                    backgroundColor: "#8dd3c7",
-                    label: 'SKIP: The student SKIPPED the problem (did not do anything on the problem)',
-                    data: [effortValues[0]]
-                }, {
-                    backgroundColor: "#ffffb3",
-                    label: 'NOTR: NOT even READING the problem --The student answered too fast, in less than 4 seconds',
-                    data: [effortValues[1]]
-                }, {
-                    backgroundColor: "#bebada",
-                    label: 'GIVEUP: The student started working on the problem, but then GAVE UP and moved on without solving it correctly.',
-                    data: [effortValues[2]]
-                }, {
-                    backgroundColor: "#fb8072",
-                    label: 'SOF: The student SOLVED the problem correctly on the FIRST attempt, without any help.',
-                    data: [effortValues[3]]
-                }, {
-                    backgroundColor: "#b3de69",
-                    label: 'ATT: The student ATTEMPTED once incorrectly, but self-corrected (answered correctly) in the second attempt, no help.',
-                    data: [effortValues[4]]
-                }, {
-                    backgroundColor: "#fccde5",
-                    label: 'GUESS: The student apparently GUESSED, clicked through 3-5 answers until getting the right one',
-                    data: [effortValues[5]]
-                }, {
-                    backgroundColor: "#80b1d3",
-                    label: 'SHINT: Student SOLVED problem correctly after seeing HINTS.',
-                    data: [effortValues[6]]
-                }, {
-                    backgroundColor: "#fdb462",
-                    label: 'SHELP: Got the problem correct but saw atleast one video.',
-                    data: [effortValues[7]]
-                }, {
-                    label: 'NO DATA: No data could be gathered.',
-                    backgroundColor: "#d9d9d9",
-                    data: [effortValues[8]],
-                },]
-            },
+            data: effortData,
             options: {
                 responsive: false,
                 legend: {
                     display: false
+                }, legendCallback: function(chart) {
+                    var text = [];
+                    text.push('<table class="' + chart.id + '-legend">');
+                    for (var i = 0; i < chart.data.datasets.length; i++) {
+                        text.push('<tr><td><span style="background-color:' + chart.data.datasets[i].backgroundColor + '">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>');
+                        if (chart.data.datasets[i].label) {
+                            text.push('<td>'+ chart.data.datasets[i].label + '</td></tr>');
+                        }
+                    }
+                    text.push('</table>');
+                    return text.join('');
                 },
                 scales: {
                     yAxes: [{
@@ -201,6 +228,7 @@ function loadEffortMap (rows,flag) {
                 }
             }
         });
+        $(legendChart).prepend(effortChartOnPopup.generateLegend());
         $("#studentEffortRecordedProblem").modal('show');
     }
 
@@ -345,6 +373,32 @@ function resetPassWordForThisStudent(id,uname){
      });
     return false;
 
+}
+
+function cnfirmStudentPasswordForTagDownload(){
+    var dataForm = $("#validatestudentPasswordForDownload").serializeArray();
+    var values = [];
+    $.each(dataForm, function(i, field){
+        values[i] = field.value;
+    });
+    $.ajax({
+        type : "POST",
+        url : pgContext+"/tt/tt/printStudentTags",
+        data : {
+            classId: classID,
+            formData: values
+        },
+        success : function(response) {
+            if (response.includes("***")) {
+                $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
+                $('#errorMsgModelPopup').modal('show');
+            }else{
+                $("#successMsgModelPopup").find("[class*='modal-body']").html( response );
+                $('#successMsgModelPopup').modal('show');
+            }
+        }
+
+    });
 }
 
 
@@ -765,7 +819,7 @@ function registerAllEvents(){
                     var effortChartId = "effortChart"+row[0];
                     var containerChart = "containerChart"+row[0];
                     var legendChart = "legendChart"+row[0];
-                    var dataContent = "<div id="+containerChart+" style='width:900px;height:300px;display:none'><div class='panel panel-default'><div class='panel-heading'>Effort Chart</div><div class='panel-body'><canvas width='800' height='150' id="+effortChartId+"></canvas></div></div></div>";
+                    var dataContent = "<div id="+containerChart+" style='width:900px;height:500px;display:none'><div class='panel panel-default'><div class='panel-heading'>Effort Chart</div><div class='panel-body'><canvas width='800' height='150' id="+effortChartId+"></canvas></div><div class='panel-body' id='"+legendChart+"'></div></div></div>";
                     return "<i id='iconID"+row[0]+"' style='cursor:pointer;' class='fa fa-th' aria-hidden='true' onclick='loadEffortMap("+row[0]+",true);'></i>"+dataContent;
                 }
             }, {
@@ -2036,8 +2090,8 @@ var completeDataChart;
                                 var effortChartId = "effortChart"+row['problemId'];
                                 var containerChart = "containerChart"+row['problemId'];
                                 var legendChart = "legendChart"+row['problemId'];
-                                var dataContent = "<div id="+containerChart+" style='width:900px;height:300px;display:none'><div class='panel panel-default'><div class='panel-heading'>Effort Chart</div><div class='panel-body'><canvas width='800' height='150' id="+effortChartId+"></canvas></div></div></div>";
-                                return "<i id='iconID"+row['problemId']+"' style='cursor:pointer;' class='fa fa-th' aria-hidden='true' onclick='loadEffortMap("+row['problemId']+",false);'></i>"+dataContent;
+                                //var dataContent = "<div id="+containerChart+" style='width:900px;height:300px;display:none'><div class='panel panel-default'><div class='panel-heading'>Effort Chart</div><div class='panel-body'><canvas width='800' height='150' id="+effortChartId+"></canvas></div><div class='panel-body' id='"+legendChart+"'></div></div></div>";
+                                return "<i id='iconID"+row['problemId']+"' style='cursor:pointer;' class='fa fa-th' aria-hidden='true' onclick='loadEffortMap("+row['problemId']+",false);'></i>";
                             }
                         }
                     ];

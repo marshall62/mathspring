@@ -2,10 +2,12 @@ package edu.umass.ckc.wo.ttmain.ttservice.classservice.impl;
 
 import edu.umass.ckc.wo.cache.ProblemMgr;
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.login.PasswordAuthentication;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.TTConfiguration;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.ErrorCodeMessageConstants;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.TTCustomException;
 import edu.umass.ckc.wo.ttmain.ttmodel.ClassStudents;
+import edu.umass.ckc.wo.ttmain.ttmodel.EditStudentInfoForm;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.datamapper.ClassStudentsMapper;
@@ -800,5 +802,34 @@ public class TTReportServiceImpl implements TTReportService {
             }
         });
         return  generatePerProblemReportForGivenProblemIDs(classId,problemIdsList,problemDescriptionMap);
+    }
+
+    @Override
+    public List<EditStudentInfoForm> printStudentTags(String studentPassword, String classId) throws TTCustomException {
+        Map<String, String> selectParams = new LinkedHashMap<String, String>();
+        selectParams.put("classId", classId);
+        List<EditStudentInfoForm> studentInfoList = namedParameterJdbcTemplate.query(TTUtil.GET_STUDENTS_INFO_FOR_CLASS, selectParams, new RowMapper<EditStudentInfoForm>() {
+            @Override
+            public EditStudentInfoForm mapRow(ResultSet resultSet, int i) throws SQLException {
+                EditStudentInfoForm editInfoForm = new EditStudentInfoForm(resultSet.getInt(0),resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
+                editInfoForm.setClassName(resultSet.getString(4));
+                editInfoForm.setClassPassword(studentPassword);
+                return editInfoForm;
+            }
+        });
+        return studentInfoList;
+    }
+
+
+    private boolean validateEnteredPassWordForClass(String studentPassword, String classId) {
+        String token = studentPassword;
+        String passWordFromTeacher = PasswordAuthentication.getInstance().hash(token.toCharArray());
+        Map<String, String> selectParams = new LinkedHashMap<String, String>();
+        selectParams.put("classId", classId);
+        String passWordInDatabase = namedParameterJdbcTemplate.queryForObject(TTUtil.VALIDATE_STUDENT_PASSWORD_TO_DOWNLOAD, selectParams, String.class);
+        if (passWordFromTeacher.equals(passWordInDatabase))
+            return true;
+        else
+            return false;
     }
 }

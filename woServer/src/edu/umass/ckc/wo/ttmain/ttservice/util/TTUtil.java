@@ -30,6 +30,8 @@ public class TTUtil {
     public static final String INSERT_ON_CLASSOMITTED_PROBLEMS = "INSERT INTO ClassOmittedProblems (classId,topicId,probId) values (:classId, :topicId, :probId)";
     public static final String UPDATE_PASSWORD_FOR_STUDENT = "UPDATE STUDENT SET password=(:resetPassword) where id=(:studentId)";
     public static final String UPDATE_STUDENT_INFO = "UPDATE STUDENT SET fname=(:fname),lname=(:lname),userName=(:uname) where id=(:studentId)";
+    public static final String GET_STUDENTS_INFO_FOR_CLASS = "select s.id,s.fname,s.lname,s.userName,c.name from student s,class c where s.classId=c.id and s.classId=(:classId)";
+    public static final String VALIDATE_STUDENT_PASSWORD_TO_DOWNLOAD = "select s.password from student s,class c where s.classId=c.id and s.classId=(:classId) order by s.id limit 1";
     public static final String PASSWORD_TOKEN = "M8$tek@12";
 
     /** SQL Queries For Reports **/
@@ -109,4 +111,5 @@ public class TTUtil {
             headerGradeMap.putIfAbsent(gradeEntry.getKey(),gradeEntry.getValue());
         return headerGradeMap;
     }
+
 }

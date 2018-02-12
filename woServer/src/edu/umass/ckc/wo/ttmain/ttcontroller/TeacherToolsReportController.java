@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.ttmain.ttcontroller;
 
 import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.TTCustomException;
 import edu.umass.ckc.wo.ttmain.ttmodel.ClassStudents;
+import edu.umass.ckc.wo.ttmain.ttmodel.EditStudentInfoForm;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
 import edu.umass.ckc.wo.ttmain.ttservice.classservice.TTReportService;
@@ -91,8 +92,19 @@ public class TeacherToolsReportController {
     public ModelAndView downLoadPerClusterReport(ModelMap map, @RequestParam("teacherId") String teacherId, @RequestParam("classId") String classId) {
         Map<String, PerClusterObjectBean> perClusterReport =  reportService.generatePerCommonCoreClusterReport(classId);
         map.addAttribute("classId", classId);
+        map.addAttribute("teacherId", teacherId);
         map.addAttribute("dataForProblem",perClusterReport);
         map.addAttribute("reportType", "perClusterReport");
+        return new ModelAndView("teachersReport", map);
+
+    }
+
+    @RequestMapping(value = "/tt/printStudentTags", method = RequestMethod.GET)
+    public ModelAndView printStudentTags(ModelMap map, @RequestParam("classId") String classId,@RequestParam(value = "formData[]") String[] formData) throws TTCustomException {
+        List<EditStudentInfoForm> studentInfoForTags =  reportService.printStudentTags(formData[0],classId);
+        map.addAttribute("classId", classId);
+        map.addAttribute("dataForProblem",studentInfoForTags);
+        map.addAttribute("reportType", "studentInfoDownload");
         return new ModelAndView("teachersReport", map);
 
     }

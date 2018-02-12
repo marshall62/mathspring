@@ -9,6 +9,8 @@ public class EditStudentInfoForm {
     private String studentFname;
     private String studentLname;
     private String studentUsername;
+    private String className;
+    private String classPassword;
 
     public EditStudentInfoForm(Integer studentId, String studentFname, String studentLname, String studentUsername) {
         this.studentId = studentId;
@@ -47,5 +49,21 @@ public class EditStudentInfoForm {
 
     public void setStudentUsername(String studentUsername) {
         this.studentUsername = studentUsername;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getClassPassword() {
+        return classPassword;
+    }
+
+    public void setClassPassword(String classPassword) {
+        this.classPassword = classPassword;
     }
 }

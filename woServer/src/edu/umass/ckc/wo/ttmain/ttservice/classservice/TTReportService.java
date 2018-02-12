@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.ttmain.ttservice.classservice;
 
 import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.TTCustomException;
 import edu.umass.ckc.wo.ttmain.ttmodel.ClassStudents;
+import edu.umass.ckc.wo.ttmain.ttmodel.EditStudentInfoForm;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
 import org.w3c.dom.Document;
@@ -33,4 +34,6 @@ public interface TTReportService {
     public String generateReportForProblemsInCluster(String teacherId, String classId, String clusterId) throws TTCustomException;
 
     public Map<String, PerProblemReportBean> generatePerProblemReportForClass(String classId) throws TTCustomException;
+
+    public List<EditStudentInfoForm> printStudentTags(String studentPassword, String classId) throws TTCustomException;
 }
