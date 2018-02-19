@@ -8,58 +8,81 @@
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link href="css/common_new.css" rel="stylesheet" type="text/css" />
-    <link href="login/css/userregistration_new.css" rel="stylesheet" type="text/css" />
+    <link href="sass_compiled/teacher_register.css" rel="stylesheet">
 </head>
 <body>
-    <div class="main-content">
-        <header class="site-header" role="banner">
-            <div class="row" id="wrapper">
-                <div class="navbar-header">
-                    <img class="logo" src="img/ms_mini_logo_new.png">
-                </div><!-- navbar-header -->
-            </div>
-        </header>
-        <div class="row registration-box-wrapper">
+    <div class="nav">
+        <div class="nav__logo">
+            <img src="img/mstile-150x150.png" alt="" class="nav__logo-image">
+            <span class="nav__logo-text">
+                    <span class="nav__logo-text--green-letter">M</span>ATH<span class="nav__logo-text--green-letter">S</span>PRING
+                </span>
+        </div>
+    </div>
+
+    <div class="bootstrap main-content">
+        <div class="registration-form vertical-center">
             <div class="col-sm-6 col-sm-offset-3 registration-box">
+
                 <div class="alert alert-danger msg-bar hidden" role="alert"></div>
-                <h1 class="text-center form-label">Sign up for students</h1>
-                <form class="student-registration-form" method="post">
+
+                <h3 class="text-center form-label form-title">Sign up for students</h3>
+                <hr>
+
+                <form class="form-horizontal student-registration-form" method="post">
                     <input type="hidden" name="action" value="LoginK12_2"/>
                     <input type="hidden" name="skin" value="k12"/>
                     <input type="hidden" name="var" value="b"/>
-                    <div class="row">
-                        <div class="form-group col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="first_name">First Name:</label>
+                        <div class="col-sm-6">
                             <input type="text" class="form-control" id="first_name" placeholder="Enter your first name" name="fname">
-                        </div><!-- form-group -->
-                        <div class="form-group col-sm-6">
+                        </div>
+                    </div><!-- form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="last_name">Last Name:</label>
+                        <div class="col-sm-6">
                             <input type="text" class="form-control" id="last_name" placeholder="Enter your last name" name="lname">
-                        </div><!-- form-group -->
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                           <input type="text" class="form-control" id="age" placeholder="Age" name="age">
-                        </div><!-- form-group -->
-                        <div class="form-group col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="age">Age</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="age" placeholder="Age" name="age">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="gender">Gender</label>
+                        <div class="col-sm-6">
                             <select class="form-control" id="gender" name="gender">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
-                        </div><!-- form-group -->
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                        <label class="control-label col-sm-4" for="email">Email</label>
+                        <div class="col-sm-6">
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="username">Username:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="username" placeholder="Enter username" name="uname">
+                        </div>
                     </div><!-- form-group -->
-                    <div class="form-group username-wrapper">
-                        <input type="text" class="form-control" id="username" placeholder="Enter username" name="uname">
-                    </div><!-- form-group -->
-                    <div class="form-group password-wrapper">
-                        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="password">Password:</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+                        </div>
                     </div><!-- form-group -->
                     <div class="form-group row">
-                        <div class="col-md-offset-2 col-md-8">
+                        <div class="col-md-offset-4 col-md-8">
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="radio" name="userType" id="exampleRadios1" value="student" checked>
@@ -81,16 +104,92 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-sm-offset-3 col-sm-6">
-                            <button type="submit" class="btn btn-default btn-block mathspring-btn">Submit</button>
+                        <div class="col-sm-offset-4 col-sm-4">
+                            <button type="submit" class="btn btn-default btn-block student-button">Submit</button>
                         </div>
                     </div><!-- form-group -->
                 </form>
             </div>
         </div>
     </div>
-    <footer class="bottom-sticky-footer">
-        &copy; 2016 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.
+
+    <%--<div class="main-content">--%>
+        <%--<header class="site-header" role="banner">--%>
+            <%--<div class="row" id="wrapper">--%>
+                <%--<div class="navbar-header">--%>
+                    <%--<img class="logo" src="img/ms_mini_logo_new.png">--%>
+                <%--</div><!-- navbar-header -->--%>
+            <%--</div>--%>
+        <%--</header>--%>
+        <%--<div class="row registration-box-wrapper">--%>
+            <%--<div class="col-sm-6 col-sm-offset-3 registration-box">--%>
+                <%--<div class="alert alert-danger msg-bar hidden" role="alert"></div>--%>
+                <%--<h1 class="text-center form-label">Sign up for students</h1>--%>
+                <%--<form class="student-registration-form" method="post">--%>
+                    <%--<input type="hidden" name="action" value="LoginK12_2"/>--%>
+                    <%--<input type="hidden" name="skin" value="k12"/>--%>
+                    <%--<input type="hidden" name="var" value="b"/>--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group col-sm-6">--%>
+                            <%--<input type="text" class="form-control" id="first_name" placeholder="Enter your first name" name="fname">--%>
+                        <%--</div><!-- form-group -->--%>
+                        <%--<div class="form-group col-sm-6">--%>
+                            <%--<input type="text" class="form-control" id="last_name" placeholder="Enter your last name" name="lname">--%>
+                        <%--</div><!-- form-group -->--%>
+                    <%--</div>--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group col-sm-6">--%>
+                           <%--<input type="text" class="form-control" id="age" placeholder="Age" name="age">--%>
+                        <%--</div><!-- form-group -->--%>
+                        <%--<div class="form-group col-sm-6">--%>
+                            <%--<select class="form-control" id="gender" name="gender">--%>
+                                <%--<option value="male">Male</option>--%>
+                                <%--<option value="female">Female</option>--%>
+                            <%--</select>--%>
+                        <%--</div><!-- form-group -->--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group">--%>
+                        <%--<input type="email" class="form-control" id="email" placeholder="Enter email" name="email">--%>
+                    <%--</div><!-- form-group -->--%>
+                    <%--<div class="form-group username-wrapper">--%>
+                        <%--<input type="text" class="form-control" id="username" placeholder="Enter username" name="uname">--%>
+                    <%--</div><!-- form-group -->--%>
+                    <%--<div class="form-group password-wrapper">--%>
+                        <%--<input type="password" class="form-control" id="password" placeholder="Enter password" name="password">--%>
+                    <%--</div><!-- form-group -->--%>
+                    <%--<div class="form-group row">--%>
+                        <%--<div class="col-md-offset-2 col-md-8">--%>
+                            <%--<div class="form-check">--%>
+                                <%--<label class="form-check-label">--%>
+                                    <%--<input class="form-check-input" type="radio" name="userType" id="exampleRadios1" value="student" checked>--%>
+                                    <%--&nbsp;Regular Student--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="form-check">--%>
+                                <%--<label class="form-check-label">--%>
+                                    <%--<input class="form-check-input" type="radio" name="userType" id="exampleRadios2" value="testStudent">--%>
+                                    <%--&nbsp;System testing (student view)--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="form-check">--%>
+                                <%--<label class="form-check-label">--%>
+                                    <%--<input class="form-check-input" type="radio" name="userType" id="exampleRadios3" value="testDeveloper">--%>
+                                    <%--&nbsp;System testing (developer view)--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group row">--%>
+                        <%--<div class="col-sm-offset-3 col-sm-6">--%>
+                            <%--<button type="submit" class="btn btn-default btn-block mathspring-btn">Submit</button>--%>
+                        <%--</div>--%>
+                    <%--</div><!-- form-group -->--%>
+                <%--</form>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <footer>
+        &copy; 2018 University of Massachusetts Amherst and Worcester Polytechnic Institute ~ All Rights Reserved.
     </footer>
     <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
     <script type="text/javascript">

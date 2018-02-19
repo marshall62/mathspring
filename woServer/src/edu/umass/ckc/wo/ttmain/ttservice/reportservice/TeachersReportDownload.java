@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.ttmain.ttservice.reportservice;
 
 import edu.umass.ckc.wo.ttmain.ttmodel.ClassStudents;
+import edu.umass.ckc.wo.ttmain.ttmodel.EditStudentInfoForm;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
 import org.apache.poi.common.usermodel.HyperlinkType;
@@ -31,6 +32,160 @@ public class TeachersReportDownload extends AbstractXlsView {
             buildPerProblemReport(map, workbook, httpServletRequest, httpServletResponse);
         else if (reportType.equals("perClusterReport"))
             buildPerClusterReport(map, workbook, httpServletRequest, httpServletResponse);
+        else if(reportType.equals("studentInfoDownload"))
+            buildStudentTagsForDownload(map, workbook, httpServletRequest, httpServletResponse);
+    }
+
+    private void buildStudentTagsForDownload(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        try {
+            String classId = (String) map.get("classId");
+            CreationHelper helper = workbook.getCreationHelper();
+            httpServletResponse.setContentType("application/vnd.ms-excel");
+            httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"student_tags" + classId + ".xls\"");
+            List<EditStudentInfoForm> studentInfoForTags = (List<EditStudentInfoForm>) map.get("dataForProblem");
+            Sheet sheet = workbook.createSheet(classId);
+            AtomicInteger atomicIntegerForNewRow = new AtomicInteger(2);
+            AtomicInteger atomicIntegerForRowSplit = new AtomicInteger(0);
+
+            CellStyle classNamestyle = workbook.createCellStyle();
+            classNamestyle.setBorderLeft(BorderStyle.DASHED);
+            classNamestyle.setBorderTop(BorderStyle.DASHED);
+
+            CellStyle classNameValueStyle = workbook.createCellStyle();
+            classNameValueStyle.setBorderRight(BorderStyle.DASHED);
+            classNameValueStyle.setBorderTop(BorderStyle.DASHED);
+
+            CellStyle headerStyles = workbook.createCellStyle();
+            headerStyles.setBorderLeft(BorderStyle.DASHED);
+
+            CellStyle headerStylesValue = workbook.createCellStyle();
+            headerStylesValue.setBorderRight(BorderStyle.DASHED);
+
+            CellStyle urlStyleHeader = workbook.createCellStyle();
+            urlStyleHeader.setBorderLeft(BorderStyle.DASHED);
+            urlStyleHeader.setBorderBottom(BorderStyle.DASHED);
+
+            CellStyle urlStyleHeaderValue = workbook.createCellStyle();
+            urlStyleHeaderValue.setBorderRight(BorderStyle.DASHED);
+            urlStyleHeaderValue.setBorderBottom(BorderStyle.DASHED);
+
+            studentInfoForTags.forEach(studentInfoForm -> {
+                int currentValue = atomicIntegerForRowSplit.getAndIncrement();
+
+                if(currentValue%2 == 0){
+                    Row className = sheet.createRow(atomicIntegerForNewRow.get());
+                    Cell classNameHeader = className.createCell(0);
+                    classNameHeader.setCellValue(studentInfoForm.getClassName());
+                    classNameHeader.setCellStyle(classNamestyle);
+                    Cell classNameValue= className.createCell(1);
+                    classNameValue.setCellValue("");
+                    classNameValue.setCellStyle(classNameValueStyle);
+
+                    Row fname = sheet.createRow(atomicIntegerForNewRow.get()+1);
+                    Cell fnameLabel = fname.createCell(0);
+                    fnameLabel.setCellValue("First Name:");
+                    fnameLabel.setCellStyle(headerStyles);
+                    Cell fnameValue = fname.createCell(1);
+                    fnameValue.setCellValue(studentInfoForm.getStudentFname());
+                    fnameValue.setCellStyle(headerStylesValue);
+
+                    Row lname = sheet.createRow(atomicIntegerForNewRow.get()+2);
+                    Cell lnameLabel = lname.createCell(0);
+                    lnameLabel.setCellValue("Last Name:");
+                    lnameLabel.setCellStyle(headerStyles);
+                    Cell lnameValue = lname.createCell(1);
+                    lnameValue.setCellValue(studentInfoForm.getStudentLname());
+                    lnameValue.setCellStyle(headerStylesValue);
+
+
+                    Row uname = sheet.createRow(atomicIntegerForNewRow.get()+3 );
+                    Cell unameLabel = uname.createCell(0);
+                    unameLabel.setCellValue("User Name:");
+                    unameLabel.setCellStyle(headerStyles);
+                    Cell unameValue = uname.createCell(1);
+                    unameValue.setCellValue(studentInfoForm.getStudentUsername());
+                    unameValue.setCellStyle(headerStylesValue);
+
+                    Row passwordRow = sheet.createRow(atomicIntegerForNewRow.get()+4 );
+                    Cell passwordRowLabel = passwordRow.createCell(0);
+                    passwordRowLabel.setCellValue("Password:");
+                    passwordRowLabel.setCellStyle(headerStyles);
+                    Cell passwordValue = passwordRow.createCell(1);
+                    passwordValue.setCellValue(studentInfoForm.getClassPassword());
+                    passwordValue.setCellStyle(headerStylesValue);
+
+                    Row header = sheet.createRow(atomicIntegerForNewRow.get()+5);
+                    Cell clusterIdHeader = header.createCell(0);
+                    clusterIdHeader.setCellValue("www.mathspring.org");
+                    clusterIdHeader.setCellStyle(urlStyleHeader);
+                    Cell clusterIdValue = header.createCell(1);
+                    clusterIdValue.setCellValue("");
+                    clusterIdValue.setCellStyle(urlStyleHeaderValue);
+
+                }else{
+                    //Odd Entries
+                    Row className = sheet.getRow(atomicIntegerForNewRow.get());
+                    Cell classNameHeader = className.createCell(3);
+                    classNameHeader.setCellValue(studentInfoForm.getClassName());
+                    classNameHeader.setCellStyle(classNamestyle);
+                    Cell classNameValue= className.createCell(4);
+                    classNameValue.setCellValue("");
+                    classNameValue.setCellStyle(classNameValueStyle);
+
+                    Row fname = sheet.getRow(atomicIntegerForNewRow.get()+1);
+                    Cell fnameLabel = fname.createCell(3);
+                    fnameLabel.setCellValue("First Name:");
+                    fnameLabel.setCellStyle(headerStyles);
+                    Cell fnameValue = fname.createCell(4);
+                    fnameValue.setCellValue(studentInfoForm.getStudentFname());
+                    fnameValue.setCellStyle(headerStylesValue);
+
+                    Row lname = sheet.getRow(atomicIntegerForNewRow.get()+2);
+                    Cell lnameLabel = lname.createCell(3);
+                    lnameLabel.setCellValue("Last Name:");
+                    lnameLabel.setCellStyle(headerStyles);
+                    Cell lnameValue = lname.createCell(4);
+                    lnameValue.setCellValue(studentInfoForm.getStudentLname());
+                    lnameValue.setCellStyle(headerStylesValue);
+
+
+                    Row uname = sheet.getRow(atomicIntegerForNewRow.get()+3 );
+                    Cell unameLabel = uname.createCell(3);
+                    unameLabel.setCellValue("User Name:");
+                    unameLabel.setCellStyle(headerStyles);
+                    Cell unameValue = uname.createCell(4);
+                    unameValue.setCellValue(studentInfoForm.getStudentUsername());
+                    unameValue.setCellStyle(headerStylesValue);
+
+                    Row passwordRow = sheet.getRow(atomicIntegerForNewRow.get()+4 );
+                    Cell passwordRowLabel = passwordRow.createCell(3);
+                    passwordRowLabel.setCellValue("Password:");
+                    passwordRowLabel.setCellStyle(headerStyles);
+                    Cell passwordValue = passwordRow.createCell(4);
+                    passwordValue.setCellValue(studentInfoForm.getClassPassword());
+                    passwordValue.setCellStyle(headerStylesValue);
+
+                    Row header = sheet.getRow(atomicIntegerForNewRow.get()+5);
+                    Cell clusterIdHeader = header.createCell(3);
+                    clusterIdHeader.setCellValue("www.mathspring.org");
+                    clusterIdHeader.setCellStyle(urlStyleHeader);
+                    Cell clusterIdValue = header.createCell(4);
+                    clusterIdValue.setCellValue("");
+                    clusterIdValue.setCellStyle(urlStyleHeaderValue);
+
+                    atomicIntegerForNewRow.set(atomicIntegerForNewRow.get()+7);
+                }
+            });
+
+            workbook.write(httpServletResponse.getOutputStream());
+            httpServletResponse.getOutputStream().flush();
+            httpServletResponse.getOutputStream().close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
     }
 
 

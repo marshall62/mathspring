@@ -63,6 +63,10 @@
             registerAllEvents();
             handleclickHandlers();
 
+            $('.modal').on('hidden.bs.modal', function(){
+                $(this).find('form')[0].reset();
+            });
+
         });
 
     </script>
@@ -264,7 +268,7 @@
                             <c:set var="gradeWiseProbNo" value="${problemSet.gradewiseProblemDistribution}"/>
                             <tr>
                                 <td>${i.index + 1}</td>
-                                <td>${problemSet.name}</td>
+                                <td>${problemSet.name}&nbsp;&nbsp;<a rel="popoverproblemsetSummary" data-content='${problemSet.summary}'><i class="fa fa-question-circle-o" aria-hidden="true"></i></a></td>
                                 <td>
                                     <label style="width: 50%;">${problemSet.numProbs}</label>
                                     <a  class="passive" aria-expanded="true" aria-controls="collapseOne">
@@ -574,6 +578,7 @@
                         </div>
                         <div class="panel-body">
                             <button id="addMoreStudentsToClass" class="btn btn-primary btn-lg" aria-disabled="true">Create Student Id</button>
+                            <a  data-toggle="modal" data-target="#cnfirmPasswordToDownLoadTag" title="Download Student Tags" class="btn btn-primary btn-lg pull-right">Download Student Tags</a>
                         </div>
 
                             <div class="panel-body" id="addMoreStudents" style="display: none;">
@@ -702,9 +707,9 @@
                 <h4 class="modal-title">Collective Students Effort on This Problem</h4>
             </div>
             <div class="modal-body" role="alert">
-                <div id="problemSnapshot">
-                </div>
+                <div id="problemSnapshot"></div>
                 <canvas id="studentEffortRecordedProblemCanvas" width='900' height='150'></canvas>
+                <div id="lengendTable"></div>
             </div>
 
         </div>
@@ -791,6 +796,41 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal For Mastery Trajecotory Report-->
+<div id="cnfirmPasswordToDownLoadTag" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm password to download tags</h4>
+            </div>
+            <div class="modal-body" role="alert">
+                <div class="panel-body">
+                    <span class="input-group label label-warning">P.S</span>
+                    <label>Please provide the student's password you set while creating this class to confirm your download.</label>
+                </div>
+                <div class="panel-body">
+                    <form id="validatestudentPasswordForDownload" onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <div class="input-group"><label for="newPassword">Password created for this class</label>
+                            </div>
+                            <div class="input-group"><input type="password" placeholder="Password provided on setup" id="newPassword" class="form-control" name="newPassword"/>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <button role="button" onclick="cnfirmStudentPasswordForTagDownload()" type="button" data-dismiss="modal" class="btn btn-primary">Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 
 <!-- Modal For Mastery Trajecotory Report-->
 <div id="masteryTrajectoryReport" class="modal fade" role="dialog" style="display: none;">

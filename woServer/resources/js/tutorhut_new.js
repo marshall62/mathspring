@@ -192,7 +192,11 @@ function displayHintCount () {
 
 function showProblemInfo (pid, name, topic, standards) {
     $("#pid").text(pid + ":" + name);  // shows the problem ID + resource
-    $("#problemTopicAndStandards").html("Topic:" + topic + "<br>Standards:" + standards);
+
+    $("#problemTopicAndStandards").html(
+            "<p style='float: left'>Current Topic: " + topic + "</p>" +
+            "<p style='float: right'>Standards: " + standards + "</p>"
+    );
     displayHintCount();
 }
 

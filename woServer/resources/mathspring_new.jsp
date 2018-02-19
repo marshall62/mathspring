@@ -8,10 +8,12 @@
     <link href="js/jquery-ui-1.10.4.custom/css/spring/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 
     <link href="sass_compiled/tutor.css" rel="stylesheet">
+    <link rel="stylesheet" href="<c:url value="/js/bootstrap/css/bootstrap.css" />" />
 
     <script type="text/javascript" src="<c:url value="/js/bootstrap/js/jquery-2.2.2.min.js" />"></script>
     <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="js/jquery.dialogextend.min.js"></script>
+    <script type="text/javascript" src="<c:url value="/js/bootstrap/js/bootstrap.min.js" />"></script>
 
     <%--Developer Mode--%>
     <c:if test="${showProblemSelector}">
@@ -20,13 +22,11 @@
         <link href="https://cdn.datatables.net/colreorder/1.3.2/css/colReorder.bootstrap4.min.css" rel="stylesheet" type="text/css">
 
         <!-- css for bootstrap / Font Awesome -->
-        <link rel="stylesheet" href="<c:url value="/js/bootstrap/css/bootstrap.css" />" />
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
         <!-- js for bootstrap-->
-        <script type="text/javascript" src="<c:url value="/js/bootstrap/js/bootstrap.min.js" />"></script>
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
@@ -159,7 +159,7 @@
 
     <style type="text/css">
         /*Overwrite bootstrap rule for developer mode*/
-        <c:if test="${showProblemSelector}">
+        <%--<c:if test="${showProblemSelector}">--%>
         fieldset.scheduler-border {
             border: 1px groove #ddd !important;
             padding: 0 1.4em 1.4em 1.4em !important;
@@ -189,7 +189,7 @@
         .glyphicon {
             font-family: 'Glyphicons Halflings' !important;
         }
-        </c:if>
+        <%--</c:if>--%>
 
     </style>
 </head>
@@ -265,10 +265,6 @@
 					</span>
                 <span class="huytran-sitenav__buttontitle">Show Example</span>
             </a>
-
-            <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="clock" style="display: none">
-            </a>
-
             <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="video">
 					<span class="huytran-sitenav__icon">
 						<i class="fa fa-video-camera" aria-hidden="true"></i>
@@ -280,6 +276,12 @@
 						<i class="fa fa-magic" aria-hidden="true"></i>
 					</span>
                 <span class="huytran-sitenav__buttontitle">Formula</span>
+            </a>
+            <a class="huytran-sitenav__button huytran-sitenav__showmore-target" data-toggle="modal" data-target="#reportModal">
+                    <span class="huytran-sitenav__icon">
+                        <i class="fa fa-exclamation aria-hidden="true"></i>
+                    </span>
+                <span class="huytran-sitenav__buttontitle">Report Error</span>
             </a>
             <a href="#" class="huytran-sitenav__button huytran-sitenav__showmore-target" id="glossary">
 					<span class="huytran-sitenav__icon">
@@ -302,6 +304,12 @@
                     <span class="huytran-sitenav__buttontitle">View Log</span>
                 </a>
             </c:if>
+            <a href="#" class="huytran-sitenav__button" id="video">
+					<span class="huytran-sitenav__icon">
+						<i class="fa fa-clock-o" aria-hidden="true"></i>
+					</span>
+                <span id="clock"></span>
+            </a>
             <label class="huytran-sitenav__showmore-trigger" for="post">
             </label>
         </div>
@@ -328,6 +336,9 @@
 
         <div class="huytran-practice__container">
             <div class="huytran-practice__main" id="frameContainer">
+                <div class="huytran-practice__topic">
+                    <div id="problemTopicAndStandards" style="clear: both;"></div>
+                </div>
                 <iframe id="problemWindow" class="probWindow"
                     name="iframe1"
                     width="600"
@@ -338,6 +349,13 @@
                 </iframe>
                 <div id="flashContainer1">
                     <div id="flashContainer2"></div>
+                </div>
+                <div class="huytran-practice__info">
+                    <p id="pid">${probId}</p>
+                    <div class="dev-view">
+                        <p id="effort">${effort}</p>
+                        <p class="dev-view-label" id="answer">Answer: ${globals.answer}</p>
+                    </div>
                 </div>
             </div>
             <div class="huytran-practice__character">
@@ -371,9 +389,38 @@
     </div>
 </div>
 
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Report Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="report-form" data-target="#reportModal" method="POST">
+                    <div class="form-group">
+                        <label for="message-text" class="form-control-label">Message:</label>
+                        <textarea class="form-control" id="message-text" name="message"></textarea>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="is-broken" type="checkbox" class="form-check-input">
+                            Is the current problem broken?
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="eventLogWindow" title="Event Logs" style="display:none;">
-    <div class="bootstrap">
     <div class = "containers">
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
@@ -690,6 +737,38 @@
         $('.huytran-practice__character').toggleClass('hide');
         $('.huytran-practice__character-collapse').toggleClass('hide');
     }
+
+    $(document).ready(function() {
+        $('#report-form').submit(function (event) {
+            var formData = {
+                'sessionId': globals.sessionId,
+                'message': $('textarea[name=message]').val(),
+                'isBroken': $('#is-broken').is(':checked')
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: "${pageContext.request.contextPath}/TutorBrain"
+                + "?action=ReportError"
+                + "&isBroken=" + formData.isBroken
+                + "&sessionId=" + formData.sessionId
+                    + "&elapsedTime=" + globals.elapsedTime
+                    + "&probElapsedTime=" + globals.probElapsedTime
+                    + "&mode=" + globals.probMode
+                + "&message=" + formData.message
+            }).done(function (data) {
+                console.log(data);
+            });
+            $('#reportModal').modal('toggle');
+
+            event.preventDefault();
+        });
+
+        $('#reportModal').on('hidden.bs.modal', function(){
+            $(this).find('form')[0].reset();
+        });
+
+    });
 </script>
 
 
@@ -698,7 +777,7 @@
     <div class="empty"></div>
 </div>
 <%-- This div contains information about the current problem (its topic and standard)--%>
-<div id="problemTopicAndStandards" style="display: none;">Topic:<br/>Standards:</div>
+<%--<div id="problemTopicAndStandards" style="display: none;">Topic:<br/>Standards:</div>--%>
 <%-- Only shown to test users--%>
 <div id="varBindings" style="display: none;"></div>
 
