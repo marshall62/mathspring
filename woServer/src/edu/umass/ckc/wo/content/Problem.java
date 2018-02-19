@@ -278,9 +278,10 @@ public class Problem implements Activity {
                 }
                 jo.element("answers", answers);
             }
-            if(problemFormat != null) {
+            if(problemFormat != null && !problemFormat.equals("")) {
                 jo.accumulate("format", JSONObject.fromObject(problemFormat));
             }
+
         }
         if (solution != null) {
             for (Hint h : solution) {

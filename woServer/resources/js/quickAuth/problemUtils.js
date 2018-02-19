@@ -117,13 +117,14 @@ m.prob_playHint = function(hintLabel) {
     var side_figures = [];
 
     // set some id on the figure_parent so that we can do operations on it
-    figure_parent.id = "figureParentID_1469"; // TODO should be a gensym or something more unique.
+    if (figure_parent != null)
+        figure_parent.id = "figureParentID_1469"; // TODO should be a gensym or something more unique.
 
     // DM add the main side image to the side figures if its a side placement (2).  If its an overlay (1)
     // set the problem's main figure to be this image.
     if (imageURL && placement==2)
         side_figures.push(imgVidTag);
-    else if (imageURL)
+    else if (imageURL && figure_parent != null)
         figure_parent.innerHTML = imgVidTag;
 
     // Now it does the original processing of overlay and side images found in the statementHTML.
@@ -170,7 +171,9 @@ m.prob_playHint = function(hintLabel) {
     }
     var hint = document.getElementById(hintId);
     hint.style.display = "initial";
-    document.getElementById(hintId+"Sound").play();
+    var aud = document.getElementById(hintId+"Sound");
+    if (aud)
+        aud.play();
     var preload = document.getElementById(getNextHint(hintId) + "Sound");
     if(preload != null && document.getElementById(hintId+"Thumb").style.display != "initial"){
         preload.load();

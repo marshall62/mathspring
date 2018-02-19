@@ -165,7 +165,7 @@ public class ProblemMgr {
         String s = "select p.id, answer, animationResource, p.name, nickname," +
                 " strategicHintExists, hasVars, screenShotURL, diff_level, form," +
                 " isExternalActivity, type, video, example, p.status, p.questType," +
-                " statementHTML, imageURL, audioResource, units, problemFormat, imageFileId, audioFileId" +
+                " statementHTML, imageURL, audioResource, units, problemFormat, imageFileId, audioFileId, layoutID" +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid" + problemFilter +
                 " and (status='Ready' or status='ready' or status='testable')" +
@@ -228,6 +228,17 @@ public class ProblemMgr {
         String ssURL = rs.getString("screenShotURL");
         if (rs.wasNull())
             ssURL = null;
+
+        int layoutID = rs.getInt("layoutID");
+        // If no problemFormat has been set try to get from the layoutId which points into quickauthformattemplates table
+        if (problemFormat == null || problemFormat.equals("") && !rs.wasNull()) {
+            problemFormat = getLayoutFormat(conn, layoutID);
+        }
+        // No layoutID and no problemFormat means use the system default
+        else {
+            problemFormat =Problem.defaultFormat ;
+        }
+
         Problem p = new Problem(id, resource, answer, name, nname, stratHint,
                 diff, null, form, instructions, type, status, vars, ssURL,
                 questType, statementHTML, imgURL, audioRsc, units, problemFormat, imageFileId, audioFileId); // DM 1/23/18 added imageFileId and audioFileId
@@ -348,6 +359,28 @@ public class ProblemMgr {
             if (ps != null)
                 ps.close();
         }
+    }
+
+    // From the given the layoutID which is a field in the problem table, lookup the format from this id
+    public static String getLayoutFormat (Connection conn, int formatID) throws SQLException {
+         ResultSet rs = null;
+          PreparedStatement ps = null;
+          try {
+              String q = "select problemFormat from quickauthformattemplates where id=?";
+              ps = conn.prepareStatement(q);
+              ps.setInt(1, formatID);
+              rs = ps.executeQuery();
+              if (rs.next()) {
+                  String fmt = rs.getString(1);
+                  return fmt;
+              }
+              else return null;
+          } finally {
+                if (ps != null)
+                     ps.close();
+                if (rs != null)
+                     rs.close();
+          }
     }
 
     private static void loadDefaultProblemFormat(Connection conn) throws SQLException {
