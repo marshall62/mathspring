@@ -758,6 +758,10 @@
                 + "&message=" + formData.message
             }).done(function (data) {
                 console.log(data);
+                // if the problem is reported as broken, then request the next one.
+                if (formData.isBroken) {
+                    nextProb(globals);
+                }
             });
             $('#reportModal').modal('toggle');
 
