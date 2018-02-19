@@ -821,7 +821,7 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <button role="button" onclick="cnfirmStudentPasswordForTagDownload()" type="button" class="btn btn-primary">Submit
+                            <button role="button" onclick="cnfirmStudentPasswordForTagDownload()" type="button" data-dismiss="modal" class="btn btn-primary">Submit
                             </button>
                         </div>
                     </form>

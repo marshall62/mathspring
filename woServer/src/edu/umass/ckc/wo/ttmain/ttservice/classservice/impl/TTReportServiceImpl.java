@@ -811,8 +811,8 @@ public class TTReportServiceImpl implements TTReportService {
         List<EditStudentInfoForm> studentInfoList = namedParameterJdbcTemplate.query(TTUtil.GET_STUDENTS_INFO_FOR_CLASS, selectParams, new RowMapper<EditStudentInfoForm>() {
             @Override
             public EditStudentInfoForm mapRow(ResultSet resultSet, int i) throws SQLException {
-                EditStudentInfoForm editInfoForm = new EditStudentInfoForm(resultSet.getInt(0),resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
-                editInfoForm.setClassName(resultSet.getString(4));
+                EditStudentInfoForm editInfoForm = new EditStudentInfoForm(resultSet.getInt("id"),resultSet.getString("fname"),resultSet.getString("lname"),resultSet.getString("userName"));
+                editInfoForm.setClassName(resultSet.getString("name"));
                 editInfoForm.setClassPassword(studentPassword);
                 return editInfoForm;
             }

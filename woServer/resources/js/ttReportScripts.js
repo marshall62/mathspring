@@ -375,30 +375,14 @@ function resetPassWordForThisStudent(id,uname){
 
 }
 
-function cnfirmStudentPasswordForTagDownload(){
+function cnfirmStudentPasswordForTagDownload() {
     var dataForm = $("#validatestudentPasswordForDownload").serializeArray();
     var values = [];
-    $.each(dataForm, function(i, field){
+    $.each(dataForm, function (i, field) {
         values[i] = field.value;
     });
-    $.ajax({
-        type : "POST",
-        url : pgContext+"/tt/tt/printStudentTags",
-        data : {
-            classId: classID,
-            formData: values
-        },
-        success : function(response) {
-            if (response.includes("***")) {
-                $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
-                $('#errorMsgModelPopup').modal('show');
-            }else{
-                $("#successMsgModelPopup").find("[class*='modal-body']").html( response );
-                $('#successMsgModelPopup').modal('show');
-            }
-        }
-
-    });
+    window.location.href = pgContext + "/tt/tt/printStudentTags" + "?classId=" + classID + "&formdata=" + values[0];
+    cnfirmPasswordToDownLoadTag
 }
 
 

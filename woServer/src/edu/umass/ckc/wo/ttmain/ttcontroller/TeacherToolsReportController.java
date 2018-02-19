@@ -100,8 +100,8 @@ public class TeacherToolsReportController {
     }
 
     @RequestMapping(value = "/tt/printStudentTags", method = RequestMethod.GET)
-    public ModelAndView printStudentTags(ModelMap map, @RequestParam("classId") String classId,@RequestParam(value = "formData[]") String[] formData) throws TTCustomException {
-        List<EditStudentInfoForm> studentInfoForTags =  reportService.printStudentTags(formData[0],classId);
+    public ModelAndView printStudentTags(ModelMap map, @RequestParam("classId") String classId,@RequestParam("formdata") String formData) throws TTCustomException {
+        List<EditStudentInfoForm> studentInfoForTags =  reportService.printStudentTags(formData,classId);
         map.addAttribute("classId", classId);
         map.addAttribute("dataForProblem",studentInfoForTags);
         map.addAttribute("reportType", "studentInfoDownload");
