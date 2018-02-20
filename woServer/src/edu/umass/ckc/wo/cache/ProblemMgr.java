@@ -235,7 +235,7 @@ public class ProblemMgr {
             problemFormat = getLayoutFormat(conn, layoutID);
         }
         // No layoutID and no problemFormat means use the system default
-        else {
+        if (problemFormat == null) {
             problemFormat =Problem.defaultFormat ;
         }
 

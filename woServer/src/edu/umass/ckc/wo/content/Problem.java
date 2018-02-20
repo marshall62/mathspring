@@ -127,7 +127,7 @@ public class Problem implements Activity {
         this.imageFileId=imageFileId; // DM 1/23/18 added these two columns to Problem table which MAY point to ProblemMediaFile row
         this.audioFileId=audioFileId; // ProblemMgr will go into that table and get filenames if these values have non-negative IDs.
                                         // The values will then be used to overwrite Problem.imageURL and Problem.questionAudio
-        if(problemFormat == null) this.problemFormat = Problem.defaultFormat;
+
     }
 
     /** Constructor used by ProblemMgr in the service of AdaptiveProblemGroupProblemSelector which wants to know how many
