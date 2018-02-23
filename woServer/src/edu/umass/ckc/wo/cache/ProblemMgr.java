@@ -159,6 +159,7 @@ public class ProblemMgr {
         return vars;
     }
 
+
     // DM 1/23/18 Added in imageFileId and audioFileID
     private static PreparedStatement buildProblemQuery(Connection conn, Integer problemId) throws SQLException {
         String problemFilter = problemId != null ? " and p.id = " + problemId : "";
@@ -339,10 +340,15 @@ public class ProblemMgr {
     }
 
     public static void reloadProblem(Connection conn, int problemId) throws Exception {
+        boolean notPreviouslyLoaded = false;
         if(!allProblems.containsKey(problemId)) {
             //Allowing for "re"loading an unloaded problem would require special handling
             //For now, just fail in this case rather than introduce subtle bugs
-            throw new Exception("Problem " + problemId + " was not loaded in the first place.");
+//            throw new Exception("Problem " + problemId + " was not loaded in the first place.");
+            // Not sure why Rafael inserted the comment implying that a non-previously-loaded problem (i.e. a new one) cannot be
+            // loaded (or reloaded) in a simple manner such as what I am now doing below - what subtle bugs?  It is possible
+            // that if its marked 'ready' that users of mathspring might start seeing a new problem that is broken.  Not sure what else.
+            notPreviouslyLoaded = true;
         }
         loadDefaultProblemFormat(conn);
         PreparedStatement ps = buildProblemQuery(conn, problemId);
@@ -351,7 +357,8 @@ public class ProblemMgr {
             while(rs.next()) {
 //                Problem p = buildProblem1(conn, rs); // DM 1/23/18 changed to buildProblem1
                 Problem p = buildProblem(conn, rs);  // no need for above - imageURL and audioResource are loaded with values by auth tool
-//                allProblems.put(problemId, p);
+                if (notPreviouslyLoaded)
+                    allProblems.put(problemId, p);
             }
         } finally {
             if (rs != null)
