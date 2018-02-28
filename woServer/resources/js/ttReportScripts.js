@@ -472,7 +472,25 @@ function problemDetails(data, response) {
     });
     var selector = "#"+JSONData["problemLevelId"]+"_handler";
     $(document.body).on('click', selector ,function(){
-        var rows = $("#"+JSONData["problemLevelId"]).dataTable({ "bPaginate": false,  "bFilter": false,  "bLengthChange": false, rowReorder: false, "bSort": false}).fnGetNodes();
+        var rows = $("#"+JSONData["problemLevelId"]).dataTable(
+            { "bPaginate": false,
+                "bFilter": false,
+                "bLengthChange": false,
+                rowReorder: false,
+                "bSort": false,
+                "drawCallback": function () {
+                $('a[rel=popoverPerProblem]').popover({
+                html: true,
+                trigger: 'hover',
+                placement: 'right',
+                container: 'body',
+                content: function () {
+                    return '<img src="' + $(this).data('img') + '" />';
+                }
+                });
+            }
+            }).fnGetNodes();
+
         var rowsArray = [];
         var problemIds = [""];
         var i = 0;
@@ -529,9 +547,9 @@ function problemLevelDetails(JSONData,problems){
             html += '<span style="margin-right: 10px;"><a href=' + obj.url + '>' + obj.code + '</a></span>';
         });
         if(obj.type=='flash'){
-            flash = '<td><a onclick="window.open('+flashWindow+');">'+obj.name+'</a></td>';
+            flash = '<td><a onclick="window.open('+flashWindow+');" rel="popoverPerProblem" data-img="' + flashWindow + '">'+obj.name+'</a></td>';
         }else{
-            flash = '<td><a onclick="window.open('+htmlWindow+');">'+obj.name+'</a></td>';
+            flash = '<td><a onclick="window.open('+htmlWindow+');" rel="popoverPerProblem" data-img="' + htmlWindow + '">'+obj.name+'</a></td>';
         }
         if(obj.activated){
             checkBox =  "<tr><td><input type='checkbox' name='activated' checked='checked'></td>"
@@ -767,6 +785,7 @@ function registerAllEvents(){
         "bFilter": false,
         "bLengthChange": false,
         rowReorder: false,
+        "scrollX": true,
         "bSort" : false,
         "columnDefs": [
             {
@@ -821,8 +840,8 @@ function registerAllEvents(){
                          containerConvas += noEmotionReported;
                     }else {
                         var i = 0;
-                        var divBlockOne = "<div id='bloc1' style='width:48%; margin: 1%; float: left;'>";
-                        var divBlockTwo = "<div id='bloc2' style='width:48%; margin: 1%; float: left;'>";
+                        var divBlockOne = "<div id='bloc1' style='margin: 1%; float: left;'>";
+                        var divBlockTwo = "<div id='bloc2' style='margin: 1%; float: left;'>";
                         Object.keys(studentEmotions).forEach(function (key) {
                             var eachEmotionComment = studentComments[key];
                             var commentsTable = "";

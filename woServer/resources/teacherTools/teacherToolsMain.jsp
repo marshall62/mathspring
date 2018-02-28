@@ -363,7 +363,7 @@
                                             <springForm:option value="above3">Three Grades Above</springForm:option>
                                             <springForm:option value="above2">Two Grades Above</springForm:option>
                                             <springForm:option value="above1">One Grade Above</springForm:option>
-                                            <springForm:option value="above0">No Grade Below</springForm:option>
+                                            <springForm:option value="above0">No Grade Above</springForm:option>
                                         </springForm:select>
                                     </div>
                                 </div>
