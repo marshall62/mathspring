@@ -18,6 +18,8 @@ import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -207,12 +209,13 @@ public class TTReportServiceImpl implements TTReportService {
              }
           return completeDataMap;
         });
-        Map<String,PerClusterObjectBean> resultFirstAttemptValues = namedParameterJdbcTemplate.query(TTUtil.PER_STANDARD_QUERY_SECOND, namedParameters, (ResultSet mappedrow) -> {
+        Map<String,PerClusterObjectBean> resultFirstAttemptValues = namedParameterJdbcTemplate.query(TTUtil.PER_STANDARD_QUERY_FOURTH, namedParameters, (ResultSet mappedrow) -> {
             while (mappedrow.next()) {
                 String clusterID = mappedrow.getString("clusterId");
-                int noOfFirstAttemptProblems = mappedrow.getInt("noOfProblems");
+                int noOfTotalEfforts = mappedrow.getInt("totalSOFLogged");
+                int noOfSOFLogged = mappedrow.getInt("totoaleffortlogged");
                 PerClusterObjectBean result = completeDataMap.get(clusterID);
-                int firstAttempt = (int)Math.round(100.0 / result.getNoOfProblemsInCluster() * noOfFirstAttemptProblems);
+                int firstAttempt = (int)Math.round(100.0 / noOfSOFLogged * noOfTotalEfforts);
                 result.setNoOfProblemsonFirstAttempt(firstAttempt);
             }
             return completeDataMap;
@@ -302,6 +305,8 @@ public class TTReportServiceImpl implements TTReportService {
                         studentRecordValues.add("Problem was not completed");
                     else
                         studentRecordValues.add(mappedRow.getString("problemEndTime"));
+
+                    studentRecordValues.add(mappedRow.getString("problemId"));
 
                 }
 
@@ -547,7 +552,7 @@ public class TTReportServiceImpl implements TTReportService {
                     return resultSet.getString("problemID");
                 }
             });
-            Map<String, PerProblemReportBean> resultObjectPerCluster = generatePerProblemReportForGivenProblemIDs(classId, problemIdsList, problemDescriptionMap);
+            Map<String, PerProblemReportBean> resultObjectPerCluster = generatePerProblemReportForGivenProblemID(classId, problemIdsList, problemDescriptionMap);
             ObjectMapper perStudentPerProblemClusterReportMapper = new ObjectMapper();
             return perStudentPerProblemClusterReportMapper.writeValueAsString(resultObjectPerCluster);
         } catch (IOException excep) {
@@ -556,7 +561,7 @@ public class TTReportServiceImpl implements TTReportService {
         }
     }
 
-    private Map<String, PerProblemReportBean> generatePerProblemReportForGivenProblemIDs(String classId, List<String> problemIdsList, Map<String, String> problemDescriptionMap)  {
+  /*  private Map<String, PerProblemReportBean> generatePerProblemReportForGivenProblemIDs(String classId, List<String> problemIdsList, Map<String, String> problemDescriptionMap)  {
         Map<String, PerProblemReportBean> perProblemReportBeanMap = new LinkedHashMap<String, PerProblemReportBean>();
         Map<String, String> selectParams = new LinkedHashMap<String, String>();
         String URI = Settings.probPreviewerPath;
@@ -778,7 +783,7 @@ public class TTReportServiceImpl implements TTReportService {
                     perProblemReportBeanObj.setMostIncorrectResponse("D");
                 else perProblemReportBeanObj.setMostIncorrectResponse("-");
             }
-            /* Round while converting to Percentage */
+            *//* Round while converting to Percentage *//*
             perProblemReportBeanObj.setPercStudentsRepeated((int)Math.round(100.0 / perProblemReportBeanObj.getNoStudentsSeenProblem() * perProblemReportBeanObj.getPercStudentsRepeated()));
             perProblemReportBeanObj.setPercStudentsSkipped((int)Math.round(100.0 / perProblemReportBeanObj.getNoStudentsSeenProblem() * perProblemReportBeanObj.getPercStudentsSkipped()));
             perProblemReportBeanObj.setPercStudentsGaveUp((int)Math.round(100.0 / perProblemReportBeanObj.getNoStudentsSeenProblem() * perProblemReportBeanObj.getPercStudentsGaveUp()));
@@ -787,7 +792,176 @@ public class TTReportServiceImpl implements TTReportService {
 
         });
         return perProblemReportBeanMap;
+    }*/
+
+
+    private Map<String, PerProblemReportBean> generatePerProblemReportForGivenProblemID(String classId, List<String> problemIdsList, Map<String, String> problemDescriptionMap){
+        Map<String, PerProblemReportBean> perProblemReportBeanMap = new LinkedHashMap<String, PerProblemReportBean>();
+        Map<String, String> selectParams = new LinkedHashMap<String, String>();
+        String URI = Settings.probPreviewerPath;
+        String html5ProblemURI = Settings.html5ProblemURI;
+        selectParams.put("classId", classId);
+        for (String problemId : problemIdsList) {
+            selectParams.put("problemId", problemId);
+            PerProblemReportBean perProblemReportBean = namedParameterJdbcTemplate.query(TTUtil.PER_PROBLEM_QUERY_FIFTH, selectParams, new ResultSetExtractor<PerProblemReportBean>() {
+                @Override
+                public PerProblemReportBean extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+                    PerProblemReportBean perProblemReportBean = new PerProblemReportBean();
+                    while (resultSet.next()) {
+                        perProblemReportBean.setNoStudentsSeenProblem(resultSet.getInt("noOfStudents"));
+                    }
+                    Problem probDetails = ProblemMgr.getProblem(Integer.valueOf(problemId));
+                    if (probDetails != null) {
+                        if ("flash".equals(probDetails.getType())) {
+                            perProblemReportBean.setProblemURLWindow(URI + "?questionNum=" + probDetails.getProbNumber());
+                        } else {
+                            perProblemReportBean.setProblemURLWindow(html5ProblemURI + probDetails.getHTMLDir() + "/" + probDetails.getResource());
+                        }
+                    } else {
+                        perProblemReportBean.setProblemURLWindow(html5ProblemURI);
+                    }
+
+                    return perProblemReportBean;
+                }
+            });
+            perProblemReportBean.setSimilarproblems("Similar Problems");
+            String[] problemDescriptionValues = problemDescriptionMap.get(problemId).split("~~");
+            perProblemReportBean.setProblemName(problemDescriptionValues[0]);
+            perProblemReportBean.setImageURL(problemDescriptionValues[1]);
+            perProblemReportBean.setProblemStandardAndDescription(problemDescriptionValues[2]);
+            perProblemReportBeanMap.put(problemId, perProblemReportBean);
+        }
+            perProblemReportBeanMap.forEach((problemID, perProblemReportBeanObj) -> {
+                selectParams.put("problemId", problemID);
+                int SKIPO = 0, NOTRO = 0, GIVEUPO = 0, SOFO = 0, SHINTO = 0, SHELPO = 0, ATTO = 0, GUESSO = 0, NODATAO = 0;
+                List<PerProblemReportBean> perProblemReportBeans = namedParameterJdbcTemplate.query(TTUtil.PER_PROBLEM_QUERY_FOURTH, selectParams, new RowMapper<PerProblemReportBean>() {
+                    int SKIP = 0, GIVEUP = 0, SOF = 0;
+                    @Override
+                    public PerProblemReportBean mapRow(ResultSet resultSet, int i) throws SQLException {
+                        perProblemReportBeanObj.nStudsSeen++;
+                        String effortGot = resultSet.getString("h.effort");
+                        effortGot = effortGot == null ? "NODATA" : effortGot;
+                        switch (effortGot) {
+                            case "SKIP":
+                                SKIP++;
+                                perProblemReportBeanObj.setPercStudentsSkipped(SKIP);
+                                break;
+                            case "SOF":
+                                SOF++;
+                                perProblemReportBeanObj.setGetGetPercStudentsSolvedFirstTry(SOF);
+                                break;
+                            case "GIVEUP":
+                                GIVEUP++;
+                                perProblemReportBeanObj.setPercStudentsGaveUp(GIVEUP);
+                                break;
+                            default:
+                                break;
+                        }
+                        return perProblemReportBeanObj;
+                    }
+                });
+                perProblemReportBeanObj.setGetGetPercStudentsSolvedFirstTry((int)Math.round(100.0 / perProblemReportBeanObj.nStudsSeen * perProblemReportBeanObj.getGetGetPercStudentsSolvedFirstTry()));
+                perProblemReportBeanObj.setPercStudentsSkipped((int)Math.round(100.0 / perProblemReportBeanObj.nStudsSeen * perProblemReportBeanObj.getPercStudentsSkipped()));
+                perProblemReportBeanObj.setPercStudentsGaveUp((int)Math.round(100.0 / perProblemReportBeanObj.nStudsSeen * perProblemReportBeanObj.getPercStudentsGaveUp()));
+                List<String> combinedStudentEffortsOnProblem = namedParameterJdbcTemplate.query(TTUtil.PER_PROBLEM_QUERY_THIRD, selectParams, new RowMapper<String>() {
+                    @Override
+                    public String mapRow(ResultSet resultSet, int i) throws SQLException {
+                        String effort = resultSet.getString("sh.effort");
+                        return effort;
+                    }
+                });
+                // Calculate Effort Percentages
+                for (String effortVal : combinedStudentEffortsOnProblem) {
+                    effortVal = effortVal == null ? "NODATA" : effortVal;
+                    switch (effortVal) {
+                        case "SKIP":
+                            SKIPO++;
+                            break;
+                        case "NOTR":
+                            NOTRO++;
+                            break;
+                        case "SOF":
+                            SOFO++;
+                            break;
+                        case "ATT":
+                            ATTO++;
+                            break;
+                        case "GIVEUP":
+                            GIVEUPO++;
+                            break;
+                        case "GUESS":
+                            GUESSO++;
+                            break;
+                        case "SHINT":
+                            SHINTO++;
+                            break;
+                        case "SHELP":
+                            SHELPO++;
+                            break;
+                        case "NODATA":
+                            NODATAO++;
+                            break;
+                        default:
+                            NODATAO++;
+                            break;
+                    }
+                }
+                String[] effortvalues = new String[9];
+                effortvalues[0] = Double.toString((double) ((SKIPO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[1] = Double.toString((double) ((NOTRO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[2] = Double.toString((double) ((GIVEUPO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[3] = Double.toString((double) ((SOFO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[4] = Double.toString((double) ((ATTO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[5] = Double.toString((double) ((GUESSO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[6] = Double.toString((double) ((SHINTO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[7] = Double.toString((double) ((SHELPO * 100) / perProblemReportBeanObj.nStudsSeen));
+                effortvalues[8] = Double.toString((double) ((NODATAO * 100) / perProblemReportBeanObj.nStudsSeen));
+                perProblemReportBeanObj.setStudentEffortsPerProblem(effortvalues);
+
+                List<PerProblemReportBean> perProblemReportBean = namedParameterJdbcTemplate.query(TTUtil.PER_PROBLEM_QUERY_SECOND, selectParams, new RowMapper<PerProblemReportBean>() {
+                    @Override
+                    public PerProblemReportBean mapRow(ResultSet resultSet, int i) throws SQLException {
+                        String action = resultSet.getString("e.action");
+                        boolean isCorrect = resultSet.getBoolean("e.isCorrect");
+                        long elapsedTime = resultSet.getLong("e.elapsedTime");
+                        String userInput = resultSet.getString("e.userInput");
+                        String activityName = resultSet.getString("e.activityName"); // on beginProblem will be either practice or demo
+                        if (action.equals("BeginProblem") && activityName.equals("practice")) {
+                            perProblemReportBeanObj.isExample = false;
+                        } else if (action.equals("BeginProblem"))
+                            perProblemReportBeanObj.isExample = true;
+                        else if (action.equals("Attempt") && !perProblemReportBeanObj.isExample) {
+                            if (!isCorrect) {
+                                if (userInput.equalsIgnoreCase("a"))
+                                    perProblemReportBeanObj.nA++;
+                            } else if (userInput.equalsIgnoreCase("b")) {
+                                    perProblemReportBeanObj.nB++;
+                            } else if (userInput.equalsIgnoreCase("c")) {
+                                    perProblemReportBeanObj.nC++;
+                            } else if (userInput.equalsIgnoreCase("d")) {
+                                    perProblemReportBeanObj.nD++;
+                            }
+                        }
+                        return perProblemReportBeanObj;
+                    }
+                });
+                if (perProblemReportBeanObj.nA > perProblemReportBeanObj.nB && perProblemReportBeanObj.nA > perProblemReportBeanObj.nC && perProblemReportBeanObj.nA > perProblemReportBeanObj.nD)
+                    perProblemReportBeanObj.setMostIncorrectResponse("A");
+                else if (perProblemReportBeanObj.nB > perProblemReportBeanObj.nA && perProblemReportBeanObj.nB > perProblemReportBeanObj.nC && perProblemReportBeanObj.nB > perProblemReportBeanObj.nD)
+                    perProblemReportBeanObj.setMostIncorrectResponse("B");
+                else if (perProblemReportBeanObj.nC > perProblemReportBeanObj.nA && perProblemReportBeanObj.nC > perProblemReportBeanObj.nB && perProblemReportBeanObj.nC > perProblemReportBeanObj.nD)
+                    perProblemReportBeanObj.setMostIncorrectResponse("C");
+                else if (perProblemReportBeanObj.nD > perProblemReportBeanObj.nA && perProblemReportBeanObj.nD > perProblemReportBeanObj.nB && perProblemReportBeanObj.nD > perProblemReportBeanObj.nC)
+                    perProblemReportBeanObj.setMostIncorrectResponse("D");
+                else perProblemReportBeanObj.setMostIncorrectResponse("-");
+
+            });
+
+        return perProblemReportBeanMap;
     }
+
+
+
     @Override
     public Map<String, PerProblemReportBean> generatePerProblemReportForClass(String classId) {
         Map<String, String> selectParams = new LinkedHashMap<String, String>();
@@ -801,7 +975,7 @@ public class TTReportServiceImpl implements TTReportService {
                 return resultSet.getString("problemID");
             }
         });
-        return  generatePerProblemReportForGivenProblemIDs(classId,problemIdsList,problemDescriptionMap);
+        return  generatePerProblemReportForGivenProblemID(classId,problemIdsList,problemDescriptionMap);
     }
 
     @Override

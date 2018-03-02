@@ -59,11 +59,13 @@
         var classID = '${classInfo.classid}';
         var teacherID = '${teacherId}';
 
+        var problem_imageURL = '${pageContext.request.contextPath}'+'/mathspring/mscontent/problemSnapshots/prob_';
+
         $(document).ready(function () {
             registerAllEvents();
             handleclickHandlers();
 
-            $('.modal').on('hidden.bs.modal', function(){
+            $('#cnfirmPasswordToDownLoadTag').on('hidden.bs.modal', function(){
                 $(this).find('form')[0].reset();
             });
 

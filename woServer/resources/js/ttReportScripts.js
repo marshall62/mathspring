@@ -140,7 +140,7 @@ function loadEffortMap (rows,flag) {
         $('#problemSnapshot').empty();
         var completeValues = perProblemObject[rows];
         var effortValues = completeValues['studentEffortsPerProblem'];
-        var imageURL = completeValues['imageURL'];
+        var imageURL = problem_imageURL+rows+'.jpg';
         var legendChart = "#lengendTable";
         $('#problemSnapshot').append('<span><strong>Problem ID :'+rows+'</strong></span>');
         $('#problemSnapshot').append('<img src="'+imageURL +'"/>');
@@ -233,7 +233,6 @@ function loadEffortMap (rows,flag) {
     }
 
 }
-
 
 function loadEmotionMap (rows) {
     var studentEmotions = emotionMap[rows];
@@ -470,6 +469,7 @@ function problemDetails(data, response) {
     $.each(standards, function (i, obj) {
         html += '<span style="margin-right: 10px;"><a href=' + obj.url + '>' + obj.code + '</a></span>';
     });
+
     var selector = "#"+JSONData["problemLevelId"]+"_handler";
     $(document.body).on('click', selector ,function(){
         var rows = $("#"+JSONData["problemLevelId"]).dataTable(
@@ -477,18 +477,7 @@ function problemDetails(data, response) {
                 "bFilter": false,
                 "bLengthChange": false,
                 rowReorder: false,
-                "bSort": false,
-                "drawCallback": function () {
-                $('a[rel=popoverPerProblem]').popover({
-                html: true,
-                trigger: 'hover',
-                placement: 'right',
-                container: 'body',
-                content: function () {
-                    return '<img src="' + $(this).data('img') + '" />';
-                }
-                });
-            }
+                "bSort": false
             }).fnGetNodes();
 
         var rowsArray = [];
@@ -543,13 +532,14 @@ function problemLevelDetails(JSONData,problems){
         var checkBox = "";
         var flashWindow = "'" + JSONData["uri"]+"?questionNum="+obj.problemNo + "'" + attri ;
         var htmlWindow =  "'" + JSONData["html5ProblemURI"]+obj.htmlDirectory+"/"+obj.resource+ "'" + attri;
+        var imageURL = problem_imageURL+obj['id']+'.jpg';
         $.each(obj.ccStand, function (i, obj) {
             html += '<span style="margin-right: 10px;"><a href=' + obj.url + '>' + obj.code + '</a></span>';
         });
         if(obj.type=='flash'){
-            flash = '<td><a onclick="window.open('+flashWindow+');" rel="popoverPerProblem" data-img="' + flashWindow + '">'+obj.name+'</a></td>';
+            flash = '<td><a rel="popoverPerProblem" data-img="' + imageURL + '">'+obj.name+'</a></td>';
         }else{
-            flash = '<td><a onclick="window.open('+htmlWindow+');" rel="popoverPerProblem" data-img="' + htmlWindow + '">'+obj.name+'</a></td>';
+            flash = '<td><a rel="popoverPerProblem" data-img="' + imageURL + '">'+obj.name+'</a></td>';
         }
         if(obj.activated){
             checkBox =  "<tr><td><input type='checkbox' name='activated' checked='checked'></td>"
@@ -1095,6 +1085,15 @@ function registerAllEvents(){
                     }else {
                         var child = problemDetails(row.data(), response);
                         row.child(child).show();
+                        $('a[rel=popoverPerProblem]').popover({
+                            html: true,
+                            trigger: 'hover',
+                            placement: 'top',
+                            container: 'body',
+                            content: function () {
+                                return '<img src="' + $(this).data('img') + '" />';
+                            }
+                        });
                         $(rowID).toggleClass('zoomIn zoomOut');
                     }
                 }
@@ -1126,6 +1125,15 @@ function registerAllEvents(){
                     }else {
                         var child = problemDetails(row.data(), response);
                         row.child(child).show();
+                        $('a[rel=popoverPerProblem]').popover({
+                            html: true,
+                            trigger: 'hover',
+                            placement: 'top',
+                            container: 'body',
+                            content: function () {
+                                return '<img src="' + $(this).data('img') + '" />';
+                            }
+                        });
                         $(rowID).toggleClass('zoomIn zoomOut');
                     }
                 }
@@ -1189,7 +1197,8 @@ function registerAllEvents(){
 
                 var columDvalues = [{data : "problemId"},{data : "problemName"},{data : "studentEffort"}]
                 var columNvalues = [{"title" : "Problem ID", "targets": [0]},{"title" : "Problem Name", "targets": [1], "render": function ( data, type, row ) {
-                    return  "<a style='cursor:pointer' rel='popover' data-img='" + problemsMap[data] + "'>" + data + "</a>";
+                    var imageURL = problem_imageURL+row['problemId']+'.jpg';
+                    return  "<a style='cursor:pointer' rel='popover' data-img='" + imageURL + "'>" + data + "</a>";
                 }
                 },{"title" : "Student Effort", "targets": [2], "render": function ( data, type, row ) {
                     return  "<a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[data]+"'>" + data + "</a>";
@@ -1309,7 +1318,8 @@ function registerAllEvents(){
                       secondHeader = '<div id='+"panel1"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
                     $.each(outputStudentDataTodayList, function (i, obj) {
                         var correctHtml = "";
-                        var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
+                        var imageURL = problem_imageURL+obj[11]+'.jpg';
+                        var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + imageURL + "'>" + obj[0] + "</a></td>"
                         var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
                         if ("1" == obj[4])
                             correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/check.png'/></td>";
@@ -1342,7 +1352,8 @@ function registerAllEvents(){
                         thirdHeader = '<div id='+"panel2"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
                         $.each(outputStudentDataYesterdayList, function (i, obj) {
                             var correctHtml = "";
-                            var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
+                            var imageURL = problem_imageURL+obj[11]+'.jpg';
+                            var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + imageURL + "'>" + obj[0] + "</a></td>"
                             var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
                             if ("1" == obj[4])
                                 correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/check.png'/></td>";
@@ -1359,7 +1370,8 @@ function registerAllEvents(){
                     firstHeader = '<div id='+"panel"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
                     $.each(outputStudentDataList, function (i, obj) {
                         var correctHtml = "";
-                        var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + obj[3] + "'>" + obj[0] + "</a></td>"
+                        var imageURL = problem_imageURL+obj[11]+'.jpg';
+                        var problemImgHTML = "<td> <a style='cursor:pointer' rel='popover' data-img='" + imageURL + "'>" + obj[0] + "</a></td>"
                         var effortLabelHTML = "<td> <a style='cursor:pointer' rel='popoverLabel' data-content='"+effortLabelMap[obj[8]]+"'>" + obj[8] + "</a></td>"
                         if ("1" == obj[4])
                             correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/check.png'/></td>";
@@ -1383,7 +1395,8 @@ function registerAllEvents(){
             $('a[rel=popover]').popover({
                 html: true,
                 trigger: 'hover',
-                placement: 'right',
+                placement: 'top',
+                container: 'body',
                 content: function () {
                     return '<img src="' + $(this).data('img') + '" />';
                 }
@@ -2014,7 +2027,8 @@ var completeDataChart;
                                 var problemId = full['problemId'];
                                 var attri = ", 'ProblemPreview'"+","+"'width=750,height=550,status=yes,resizable=yes'";
                                 var window = "'" + problemImageWindow[problemId] + "'" + attri ;
-                                return '<a style="cursor:pointer" rel="popoverPerProblem" data-img="' + problemImageMap[problemId] + '">' + data + '</a>';
+                                var imageURL = problem_imageURL+full['problemId']+'.jpg';
+                                return '<a style="cursor:pointer" rel="popoverPerProblem" data-img="' + imageURL + '">' + data + '</a>';
                             }
                         },
                         {
