@@ -59,7 +59,7 @@
         var classID = '${classInfo.classid}';
         var teacherID = '${teacherId}';
 
-        var problem_imageURL = '${pageContext.request.contextPath}'+'/mathspring/mscontent/problemSnapshots/prob_';
+        var problem_imageURL = "http://rose.cs.umass.edu/mathspring/mscontent/problemSnapshots/prob_";
 
         $(document).ready(function () {
             registerAllEvents();
