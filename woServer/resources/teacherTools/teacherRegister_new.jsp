@@ -18,37 +18,37 @@
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="first_name">First Name:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="first_name" placeholder="Enter your first name">
+                        <input type="text" name="fname" class="form-control" id="first_name" placeholder="Enter your first name">
                     </div>
                 </div><!-- form-group -->
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="last_name">Last Name:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="last_name" placeholder="Enter your last name">
+                        <input type="text" name="lname" class="form-control" id="last_name" placeholder="Enter your last name">
                     </div>
                 </div><!-- form-group -->
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="email">Email:</label>
                     <div class="col-sm-6">
-                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
                     </div>
                 </div><!-- form-group -->
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="username">Username:</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="username" placeholder="Enter username">
+                        <input type="text" name="userName" class="form-control" id="username" placeholder="Enter username">
                     </div>
                 </div><!-- form-group -->
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="password">Password:</label>
                     <div class="col-sm-6">
-                        <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        <input type="password" name="pw1" class="form-control" id="password" placeholder="Enter password">
                     </div>
                 </div><!-- form-group -->
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="password">Retype password:</label>
                     <div class="col-sm-6">
-                        <input type="password" class="form-control" id="password-confirmation" placeholder="Retype password">
+                        <input type="password" name="pw2" class="form-control" id="password-confirmation" placeholder="Retype password">
                     </div>
                 </div><!-- form-group -->
 

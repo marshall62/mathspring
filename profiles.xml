@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<profilesXml xmlns="http://maven.apache.org/PROFILES/1.0.0"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<profilesXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://maven.apache.org/PROFILES/1.0.0"
              xsi:schemaLocation="http://maven.apache.org/PROFILES/1.0.0 http://maven.apache.org/xsd/profiles-1.0.0.xsd">
     <profiles>
         <profile>
-            <id>mathTutor</id>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>production</value>
+                </property>
+            </activation>
+            <properties>
+                <webdir>webProduction</webdir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>beta</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>beta</value>
+                </property>
+            </activation>
+            <properties>
+                <webdir>webBeta</webdir>
+            </properties>
         </profile>
     </profiles>
 </profilesXml>

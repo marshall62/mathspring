@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.umass.ckc</groupId>
-    <artifactId>woServer</artifactId>
-    <version>0.1.0</version>
 
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>edu.umass.ckc</groupId>
+        <artifactId>mathspring</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>woServer</artifactId>
+    <packaging>war</packaging>
+    <!-- <version>0.0.1-SNAPSHOT</version>-->
+
+
+    <!--<modules>-->
+        <!--<module>../emailer</module>-->
+        <!--<module>../servletFramework</module>-->
+    <!--</modules>-->
 
     <!-- tag::joda[] -->
     <dependencies>
@@ -154,15 +166,17 @@
             <!--<artifactId>cglib</artifactId>-->
             <!--<version>2.2</version>-->
         <!--</dependency>-->
+
+
         <dependency>
-            <groupId>edu.umass.ckc</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>emailer</artifactId>
-            <version>0.1.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>edu.umass.ckc</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>servlet-framework</artifactId>
-            <version>0.1.0</version>
+            <version>${project.version}</version>
         </dependency>
 
 
@@ -251,6 +265,7 @@
     </dependencies>
     <!-- end::joda[] -->
     <build>
+        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -258,8 +273,10 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+
                 </configuration>
             </plugin>
+
             <!--Sass compiler
             Normally, Intellij will automatically import the plugin. If not, go to View -> Tool Windows -> Maven Projects -> Right Click woServer -> Reimport
 
