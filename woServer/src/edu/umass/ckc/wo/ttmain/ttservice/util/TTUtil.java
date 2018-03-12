@@ -34,6 +34,9 @@ public class TTUtil {
     public static final String VALIDATE_STUDENT_PASSWORD_TO_DOWNLOAD = "select s.password from student s,class c where s.classId=c.id and s.classId=(:classId) order by s.id limit 1";
     public static final String PASSWORD_TOKEN = "M8$tek@12";
 
+    /** SQL Queries for Survey Settings **/
+    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS = "UPDATE classconfig SET pretest=(:pretest), posttest=(:posttest) where classId=(:classId)";
+
     /** SQL Queries For Reports **/
     public static final String PER_STUDENT_QUERY_FIRST ="Select studId AS studentId,concat(s.fname,' ',s.lname) As studentName, s.userName As userName,count(problemId) AS noOfProblems  from student s,studentproblemhistory sh where s.id=sh.studId and s.classId=(:classId) and sh.mode != 'demo' GROUP BY studId order by studId ; ";
     public static final String PER_STUDENT_QUERY_SECOND ="select sh.id,sh.problemId, pg.description,sh.problemEndTime,pr.name,pr.nickname, pr.statementHTML,pr.screenShotURL,sh.isSolved,sh.numMistakes,sh.numHints,sh.numAttemptsToSolve,sh.effort from studentproblemhistory sh, problem pr, problemgroup pg where sh.studId in ( select id from student where classId=(:classId)) and sh.studId=(:studId) and sh.mode != 'demo'and sh.problemId = pr.id and sh.topicId=pg.id order by sh.problemEndTime desc;";

@@ -4,10 +4,7 @@ import edu.umass.ckc.wo.admin.ClassCloner;
 import edu.umass.ckc.wo.admin.ClassContentSelector;
 import edu.umass.ckc.wo.beans.ClassInfo;
 import edu.umass.ckc.wo.beans.Topic;
-import edu.umass.ckc.wo.db.DbClass;
-import edu.umass.ckc.wo.db.DbProblem;
-import edu.umass.ckc.wo.db.DbTeacher;
-import edu.umass.ckc.wo.db.DbTopics;
+import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.smgr.User;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.TTConfiguration;
 import edu.umass.ckc.wo.ttmain.ttconfiguration.errorCodes.ErrorCodeMessageConstants;
@@ -50,10 +47,12 @@ public class TTCreateClassAssistServiceImpl implements TTCreateClassAssistServic
         String teacherName = DbTeacher.getTeacherName(connection.getConnection(), Integer.valueOf(teacherId));
         ClassInfo classInfo = DbClass.getClass(connection.getConnection(),Integer.valueOf(classId));
         List<User> students = DbClass.getClassStudents(connection.getConnection(), Integer.valueOf(classId));
+        Map<Integer,String> activeSurveys = DbPrePost.getActiveSurveyList(connection.getConnection());
         map.addAttribute("students",students );
         map.addAttribute("teacherName", teacherName);
         map.addAttribute("teacherId", teacherId);
         map.addAttribute("classInfo", classInfo);
+        map.addAttribute("activeSurveys",activeSurveys );
         } catch (Exception e) {
             e.printStackTrace();
         }

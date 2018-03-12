@@ -95,6 +95,15 @@ public class TeacherToolsViewClassDetailsController {
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/tt/activatePrePostSurveys", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<String> activatePrePostSurveys(@RequestParam(value = "activatePrePostSurveys") String surveyIds,
+                                                    @RequestParam(value = "classid") String classid) throws TTCustomException {
+        String[] prePostToActivate = surveyIds.split(",");
+        pvService.saveSurveySettingsForClass(Integer.valueOf(prePostToActivate[0]),Integer.valueOf(prePostToActivate[1]),Integer.valueOf(classid));
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/tt/resetStudentdata", method = RequestMethod.POST)
     public @ResponseBody

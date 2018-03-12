@@ -4,8 +4,10 @@ import edu.umass.ckc.wo.beans.PretestPool;
 import edu.umass.ckc.wo.content.PrePostProblemDefn;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -130,6 +132,20 @@ public class DbPrePost {
             pools.add(new PretestPool(id,descr));
         }
         return pools;
+    }
+
+
+    public static Map<Integer,String> getActiveSurveyList(Connection conn) throws SQLException {
+        Map<Integer,String> activeSurveys = new HashMap<Integer,String>();
+        String q = "select * from preposttest where isActive = 1";
+        PreparedStatement ps = conn.prepareStatement(q);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int surveyId = rs.getInt("id");
+            String surveyName = rs.getString("name");
+            activeSurveys.put(surveyId,surveyName);
+        }
+        return activeSurveys;
     }
 
     public static PretestPool getPretestPool (Connection conn, int classId) throws SQLException {

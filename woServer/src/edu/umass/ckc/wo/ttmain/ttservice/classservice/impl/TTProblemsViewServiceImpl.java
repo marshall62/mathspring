@@ -166,4 +166,15 @@ public class TTProblemsViewServiceImpl implements TTProblemsViewService {
         return "success";
     }
 
+    @Override
+    public boolean saveSurveySettingsForClass(Integer presSurveyId, Integer postSurveyId, Integer classId) throws TTCustomException {
+        Map<String, Integer> updateparams = new HashMap<String, Integer>();
+        updateparams.put("classId", classId);
+        updateparams.put("pretest", presSurveyId);
+        updateparams.put("posttest", postSurveyId);
+        this.namedParameterJdbcTemplate.update(TTUtil.UPDATE_SURVEY_SETTING_FOR_CLASS, updateparams);
+
+        return true;
+    }
+
 }
