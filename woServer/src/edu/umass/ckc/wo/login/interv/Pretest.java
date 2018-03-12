@@ -130,16 +130,19 @@ public class Pretest extends LoginInterventionSelector {
     public static final String ELAPSED_TIME = "elapsedTime";
     public static final String NUM_PROBS_IN_TEST = "numProbsInTest";
     public static final String NUM_PROBS_COMPLETED = "numProbsCompleted";
+    public static final String NUM_PROBS_CORRECT = "numProbsCorrect";
     public static final String TEST_NAME = "preposttestName";
     private static final String ANSWER = "answer";
     private static final String PROBID = "probId";
     private static final String QUESTION = "question";
     private static final String SURVEY_URI = "surveyURI";
     private static final String JSP = "pretestQuestion.jsp";
+    private static final String END_SURVEY_JSP = "endPretest.jsp";
     protected int testId;
     protected int classId;
     protected int numProbsInTest;
     protected int numTestProbsCompleted;
+    protected int numCorrect;
     protected String testType;
     private String startMessage;
     private String terminationPredicate;
@@ -163,6 +166,7 @@ public class Pretest extends LoginInterventionSelector {
             System.out.println("Cannot run pretest.  The test cannot be found.  name: " + testName);
         this.numProbsInTest = DbPrePost.getPrePostTestNumProblems(smgr.getConnection(),this.testId);
         this.numTestProbsCompleted = DbPrePost.getStudentCompletedNumProblems(smgr.getConnection(),this.testId, smgr.getStudentId(),testType);
+        this.numCorrect = DbPrePost.getStudentCorrectNumProblems(smgr.getConnection(),this.testId, smgr.getStudentId(),testType);
 
     }
 
@@ -255,18 +259,32 @@ public class Pretest extends LoginInterventionSelector {
 
     public LoginIntervention processInput (ServletParams params) throws Exception {
         String userAnswer = params.getString(ANSWER);
-        int probId = params.getInt(PROBID);
+        int probId = params.getInt(PROBID,-1);
         int timeOnProb = params.getInt(ELAPSED_TIME) / 1000; // convert to seconds
-        PrePostProblemDefn thisProb = DbPrePost.getPrePostProblem(conn,probId);
+        PrePostProblemDefn thisProb = null;
+        if (probId != -1)
+            thisProb = DbPrePost.getPrePostProblem(conn,probId);
+
         boolean isCorrect = true;
+
+        // the last screen shows a score and sends no problemId.  If we get no problem Id it means we've told the student
+        // the test is over and showed a score.   Done with the sequence and return nothing.
         if (thisProb != null) {
             isCorrect = gradeProb(thisProb,userAnswer);
+        }
+        else {
+            return null;
         }
         // Store the student answer to this question (need studId, probId, and answer)
         DbPrePost.storeStudentAnswer(conn,smgr.getSessionNum(),smgr.getStudentId(),probId,userAnswer,testType, timeOnProb, isCorrect,this.numTestProbsCompleted++);
         PrePostProblemDefn p = getNextPretestQuestion(smgr);
-        if (p == null)
-            return null;
+        if (p == null) {
+            HttpServletRequest req = this.servletInfo.getRequest();
+            req.setAttribute(NUM_PROBS_IN_TEST, this.numProbsInTest);
+            req.setAttribute(NUM_PROBS_CORRECT, this.numCorrect);
+            req.setAttribute(LoginInterventionSelector.INTERVENTION_CLASS,getClass().getName());
+            return new LoginIntervention(END_SURVEY_JSP); // shows the last screen which is the score.
+        }
         else {
             HttpServletRequest req = this.servletInfo.getRequest();
             req.setAttribute(QUESTION,p);

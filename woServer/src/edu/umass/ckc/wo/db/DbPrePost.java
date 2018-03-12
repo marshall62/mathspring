@@ -300,6 +300,31 @@ public class DbPrePost {
         }
     }
 
+
+    public static int getStudentCorrectNumProblems(Connection conn, int testId, int studentId, String testType) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select sum(d.iscorrect) from preposttestdata d, prepostproblemtestmap m where d.studId=? and d.probId = m.probId and m.testid=? and d.testType=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studentId);
+            stmt.setInt(2,testId);
+            stmt.setString(3,testType);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int numCorrect= rs.getInt(1);
+                return numCorrect;
+            }
+            return 0;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
     public static boolean isTestActive(Connection conn, int testId) throws SQLException {
         ResultSet rs=null;
         PreparedStatement stmt=null;
