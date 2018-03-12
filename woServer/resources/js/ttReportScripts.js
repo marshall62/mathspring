@@ -616,6 +616,39 @@ function handleclickHandlers() {
         }
     });
 
+    $('#select_activeSurveyList').click(function () {
+        var client_table = $("#activeSurveyList").dataTable();
+        var activate_Pre_Data;
+        var activate_Post_Data;
+        $( client_table.$('input[type="radio"]:checked').map(function () {
+            var name = $(this)[0].name;
+            if(name == 'pre_id')
+                activate_Pre_Data =  $("#activeSurveyList").DataTable().row($(this).closest('tr') ).data()[0];
+            else
+                activate_Post_Data =  $("#activeSurveyList").DataTable().row($(this).closest('tr') ).data()[0];
+        } ) );
+
+        var surveyToActivate = activate_Pre_Data+","+activate_Post_Data
+        $.ajax({
+            type : "POST",
+            url :pgContext+"/tt/tt/activatePrePostSurveys",
+            data : {
+                activatePrePostSurveys: surveyToActivate,
+                classid: classID,
+            },
+            success : function(response) {
+                if (response.includes("***")) {
+                    $("#errorMsgModelPopup").find("[class*='modal-body']").html( response );
+                    $('#errorMsgModelPopup').modal('show');
+                }else{
+                    $("#successMsgModelPopupForProblemSets").find("[class*='modal-body']").html( "The Selected Surveys are activated for this class" );
+                    $('#successMsgModelPopupForProblemSets').modal('show');
+                }
+            }
+        });
+
+    });
+
     $('#inActiveProbSetTable input[type="checkbox"]').click(function () {
         if ($('#inActiveProbSetTable input[type="checkbox"]:checked').size()) {
             $('#acivateProblemSets').prop('disabled', false);

@@ -69,6 +69,36 @@
                 $(this).find('form')[0].reset();
             });
 
+            $('#activeSurveyList').DataTable({
+                "bPaginate": false,
+                "bFilter": false,
+                "bLengthChange": false,
+                rowReorder: true,
+                columnDefs: [{
+                    "targets": [2],
+                    "orderable": false,
+                    "width": "20%",
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+                        return '<input type="radio" name="pre_id" value="' + data + '">';
+                    }
+                },
+                    {
+                        "targets": [3],
+                        "orderable": false,
+                        "width": "20%",
+                        'className': 'dt-body-center',
+                        'render': function (data, type, full, meta) {
+                            return '<input type="radio" name="post_id" value="' + data + '">';
+                        }
+                    }
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                },
+            });
+
         });
 
     </script>
@@ -522,9 +552,51 @@
 
 
             <div id="reset_survey_setting_out" style="display:none; width: 75%;">
-                <h1 class="page-header">
-                    <small>Survey Settings</small>
-                </h1>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                    <h1 class="page-header">
+                        <small>Available Surveys</small>
+                    </h1>
+                    </div>
+                    <div class="panel-body">
+
+                        <table id="activeSurveyList" class="table table-striped table-bordered hover" width="80%">
+                            <thead>
+                            <tr>
+                                <th>Survey ID</th>
+                                <th>List of surveys/quizzes</th>
+                                <th>*First Time Student Logs In</th>
+                                <th>*Next Time Student Logs In</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="activeSurvey" items="${activeSurveys}">
+                                <tr>
+                                    <td><c:out value="${activeSurvey.key}"/></td>
+                                    <td><c:out value="${activeSurvey.value}"/></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>
+                                * Note: This survey will show only ONCE, the first time a student logs in to MathSpring.
+                            </li>
+                            <li>
+                                ** Note: If there is a survey chosen for the “next time the student logs in”, students will see this survey every next time they log in. You should only turn this on when you are sure that you want them to get this new survey/quiz.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <button id="select_activeSurveyList" class="btn btn-primary btn-lg" aria-disabled="true">Publish Survey Settings</button>
+                    </div>
+                </div>
 
                 <springForm:form id="rest_survey_setting_form" method="post"
                                  action="${pageContext.request.contextPath}/tt/tt/ttResetSurvey"
@@ -532,18 +604,27 @@
 
 
                     <div class="panel panel-default">
-                        <div class="panel-body">If the post survey is on, the next time students in this class login, a survey will be shown. It will only be shown to them once.
-                            This will only happen if the class uses a pedagogy that has a post-survey login intervention (defined in logins.xml)
+
+                        <div class="panel-body">
+                            <h1 class="page-header">
+                                <small>Survey Settings</small>
+                            </h1>
+                        </div>
+
+                        <div class="panel-body">If the post survey is on, the next time students in this class login, a
+                            survey will be shown. It will only be shown to them once.
+                            This will only happen if the class uses a pedagogy that has a post-survey login intervention
+                            (defined in logins.xml)
                         </div>
 
 
                         <div class="panel-body">
                             <c:choose>
                                 <c:when test="${classInfo.showPostSurvey}">
-                                <label>Survey settings are Turned on</label>
-                                 </c:when>
+                                    <label>Survey settings are Turned on</label>
+                                </c:when>
                                 <c:otherwise>
-                                <label>Survey settings are Turned off</label>
+                                    <label>Survey settings are Turned off</label>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -553,19 +634,23 @@
                             <div class="form-group">
                                 <c:choose>
                                     <c:when test="${classInfo.showPostSurvey}">
-                                        <button role="button" type="submit" class="btn btn-primary">Turn of Survey Settings</button>
-                                        <springForm:hidden path="showPostSurvey" value="false" />
+                                        <button role="button" type="submit" class="btn btn-primary">Turn of Survey
+                                            Settings
+                                        </button>
+                                        <springForm:hidden path="showPostSurvey" value="false"/>
                                     </c:when>
                                     <c:otherwise>
-                                        <button role="button" type="submit" class="btn btn-primary">Turn on Survey Settings</button>
-                                        <springForm:hidden path="showPostSurvey" value="true" />
+                                        <button role="button" type="submit" class="btn btn-primary">Turn on Survey
+                                            Settings
+                                        </button>
+                                        <springForm:hidden path="showPostSurvey" value="true"/>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
                         </div>
                     </div>
                 </springForm:form>
-        </div>
+            </div>
 
 
             <div id="student_roster_out" style="display:none;width: 100%;">

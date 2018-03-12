@@ -23,4 +23,6 @@ public interface TTProblemsViewService {
     public String editStudentInfo(EditStudentInfoForm editStudentInfoForm) throws TTCustomException;
 
     public String createAdditionalIdForClass(String[] formValues) throws TTCustomException;
+
+    public boolean saveSurveySettingsForClass(Integer presSurveyId,Integer postSurveyId, Integer classId) throws TTCustomException;
 }
