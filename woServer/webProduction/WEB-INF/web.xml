@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This is the web.xml used for production version of mathspring-->
 
 <!-- N.B.  This web-app element only works with Tomcat 6.0.  This is what runs on Cadmium - our production server.
   If you use an older version of Tomcat, you should alter the below version 2.4.  You will know if things are working

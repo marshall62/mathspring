@@ -1,25 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.umass.ckc</groupId>
     <artifactId>mathspring</artifactId>
-    <packaging>war</packaging>
-    <version>0.1.0</version>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>mathspring</name>
 
     <!-- tag::joda[] -->
-    <dependencies>
-        <dependency>
-            <groupId>edu.umass.ckc</groupId>
-            <artifactId>woServer</artifactId>
-            <version>0.1.0</version>
-        </dependency>
+    <!--<dependencies>-->
+        <!--<dependency>-->
+            <!--<groupId>edu.umass.ckc</groupId>-->
+            <!--<artifactId>woServer</artifactId>-->
+            <!--<version>0.1.0</version>-->
+        <!--</dependency>-->
 
-    </dependencies>
+    <!--</dependencies>-->
     <!-- end::joda[] -->
+    <modules>
+        <module>woServer</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>production</value>
+                </property>
+            </activation>
+            <properties>
+                <webdir>webProduction</webdir>
+                <warfile>ms</warfile>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>beta</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>beta</value>
+                </property>
+            </activation>
+            <properties>
+                <webdir>webBeta</webdir>
+                <warfile>woj</warfile>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
+        <directory>${project.basedir}/release</directory>
+        <!-- The name of the war file is in the profile that is activated using -Denv=beta or -Denv=production -->
+        <finalName>${warfile}</finalName>
+        <resources>
+            <!-- Use everything in resources except machine specific folders-->
+            <resource>
+                <directory>woServer/resources</directory>
+                <!--<excludes>-->
+                    <!--<exclude>**/machines/**</exclude>-->
+                <!--</excludes>-->
+            </resource>
+            <!-- Add in the machines/rose resources to get the right log4j.properties-->
+            <resource>
+                <directory>woServer/webBeta/WEB-INF/classes</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <!-- get the web.xml from WEB-INF/rose/web.xml-->
+                    <webXml>${pom.basedir}/${webdir}/WEB-INF/web.xml</webXml>
+                    <webResources>
+                        <resource>
+                            <!--relative to the pom.xml directory -->
+                            <directory>resources</directory>
+                        </resource>
+                        <resource>
+                            <directory>${pom.basedir}/web/META-INF</directory>
+                            <targetPath>META-INF</targetPath>
+                            <includes>
+                                <include>context.xml</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <directory>${pom.basedir}/${webdir}/WEB-INF/classes</directory>
+                            <targetPath>WEB-INF/classes</targetPath>
+                            <includes>
+                                <include>log4j.properties</include>
+                            </includes>
+                        </resource>
+                    </webResources>
 
-
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+        </plugins>
     </build>
+
 </project>

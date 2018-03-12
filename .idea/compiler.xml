@@ -17,8 +17,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="emailer" />
-        <module name="main" />
         <module name="servletFramework" />
+      </profile>
+      <profile name="Annotation profile for mathspring" enabled="true">
+        <sourceOutputDir name="release/generated-sources/annotations" />
+        <sourceTestOutputDir name="release/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="woServer" />
       </profile>
     </annotationProcessing>
