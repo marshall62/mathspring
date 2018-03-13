@@ -129,6 +129,7 @@ public class Pretest extends LoginInterventionSelector {
     public static final String START_MESSAGE = "startMessage";
     public static final String ELAPSED_TIME = "elapsedTime";
     public static final String NUM_PROBS_IN_TEST = "numProbsInTest";
+    public static final String NUM_SOLVABLE_PROBS_IN_TEST = "numSolvableProbsInTest";
     public static final String NUM_PROBS_COMPLETED = "numProbsCompleted";
     public static final String NUM_PROBS_CORRECT = "numProbsCorrect";
     public static final String TEST_NAME = "preposttestName";
@@ -143,6 +144,7 @@ public class Pretest extends LoginInterventionSelector {
     protected int numProbsInTest;
     protected int numTestProbsCompleted;
     protected int numCorrect;
+    protected int numSolvableProblems;
     protected String testType;
     private String startMessage;
     private String terminationPredicate;
@@ -167,6 +169,7 @@ public class Pretest extends LoginInterventionSelector {
         this.numProbsInTest = DbPrePost.getPrePostTestNumProblems(smgr.getConnection(),this.testId);
         this.numTestProbsCompleted = DbPrePost.getStudentCompletedNumProblems(smgr.getConnection(),this.testId, smgr.getStudentId(),testType);
         this.numCorrect = DbPrePost.getStudentCorrectNumProblems(smgr.getConnection(),this.testId, smgr.getStudentId(),testType);
+        this.numSolvableProblems = DbPrePost.getPrePostTestNumSolvableProblems(smgr.getConnection(),this.testId);
 
     }
 
@@ -280,6 +283,7 @@ public class Pretest extends LoginInterventionSelector {
         PrePostProblemDefn p = getNextPretestQuestion(smgr);
         if (p == null) {
             HttpServletRequest req = this.servletInfo.getRequest();
+            req.setAttribute(NUM_SOLVABLE_PROBS_IN_TEST, this.numSolvableProblems);
             req.setAttribute(NUM_PROBS_IN_TEST, this.numProbsInTest);
             req.setAttribute(NUM_PROBS_CORRECT, this.numCorrect);
             req.setAttribute(LoginInterventionSelector.INTERVENTION_CLASS,getClass().getName());

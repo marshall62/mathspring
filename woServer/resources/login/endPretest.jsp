@@ -71,7 +71,15 @@
 
 
     <p>&nbsp;</p>
-    You are done with this part.  Your score is ${numProbsCorrect}/${numProbsInTest}
+    <c:when test="${numSolvableProbsInTest > 0}">
+        Thanks for taking the survey!<br>
+        Your score is ${numProbsCorrect}/${numSolvableProbsInTest} <br>
+        Please click continue to move on.
+    </c:when>
+    <c:otherwise>
+        Thanks for taking the survey!<br>
+        Please click continue to move on.
+    </c:otherwise>
     <br>
 
     <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
