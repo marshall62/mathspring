@@ -296,6 +296,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <input type="hidden" id="problemSetSize" name="problemSetSize" value="${inactiveproblemSets.size()}">
                         <c:forEach var="problemSet" varStatus="i" items="${inactiveproblemSets}">
                             <c:set var="gradeWiseProbNo" value="${problemSet.gradewiseProblemDistribution}"/>
                             <tr>
@@ -695,7 +696,7 @@
                                         </div>
                                     </div>
                                     <input type="hidden" name="teacherId" id="teacherId" value="${teacherId}">
-                                    <input type="hidden" name="classId" id="teacherId" value="${classInfo.classid}">
+                                    <input type="hidden" name="classId" id="classId" value="${classInfo.classid}">
                                     <div class="form-group">
                                     <button role="button" type="submit" id="createMoreStudentId" class="btn btn-primary">Add Student Ids</button>
                                     <button role="button" type="button" id="cancelForm" class="btn btn-default">Cancel</button>
@@ -725,6 +726,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <input type="hidden" id="studentRosterSize" name="studentRosterSize" value="${students.size()}">
                         <c:forEach var="studentInfo" varStatus="i" items="${students}">
                             <tr>
                                 <td>${studentInfo.id}</td>
