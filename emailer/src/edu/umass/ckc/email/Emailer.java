@@ -44,7 +44,7 @@ public class Emailer {
   String body="Your login is: "+userName+'\n'+
               "Your password is: "+password;
   boolean mailSent = Mailer.send(email, techEmail,
-          "vrroom message ", body, emailHost);
+          "Mathspring message ", body, emailHost);
   return mailSent;
  }
 
