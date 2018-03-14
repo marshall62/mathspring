@@ -283,6 +283,27 @@ public class DbPrePost {
         }
     }
 
+    public static int getPrePostTestNumSolvableProblems(Connection conn, int testId) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select count(*) from prepostproblemtestmap m, prepostproblem p where m.testid=? and m.probId=p.id and p.answer is not null";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,testId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int c= rs.getInt(1);
+                return c;
+            }
+            else return -1;
+        } finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
     /**
      * Counts the number of questions a student has completed in a pre or post test
      * @param conn
@@ -307,6 +328,31 @@ public class DbPrePost {
                 return c;
             }
             return -1;
+        }
+        finally {
+            if (stmt != null)
+                stmt.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
+
+    public static int getStudentCorrectNumProblems(Connection conn, int testId, int studentId, String testType) throws SQLException {
+        ResultSet rs=null;
+        PreparedStatement stmt=null;
+        try {
+            String q = "select sum(d.iscorrect) from preposttestdata d, prepostproblemtestmap m, prepostproblem p where d.studId=? and d.probId = m.probId and p.id = m.probId and p.answer is not null and m.testid=? and d.testType=?";
+            stmt = conn.prepareStatement(q);
+            stmt.setInt(1,studentId);
+            stmt.setInt(2,testId);
+            stmt.setString(3,testType);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                int numCorrect= rs.getInt(1);
+                return numCorrect;
+            }
+            return 0;
         }
         finally {
             if (stmt != null)

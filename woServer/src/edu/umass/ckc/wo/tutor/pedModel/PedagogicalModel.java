@@ -28,6 +28,7 @@ import edu.umass.ckc.wo.tutor.response.Response;
 import edu.umass.ckc.wo.tutormeta.*;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -276,7 +277,21 @@ public abstract class PedagogicalModel implements TutorEventProcessor { // exten
             ReportErrorEvent ee = (ReportErrorEvent) e;
             // an error is reported by the user.
             r = disableProblemForStudent(ee,state);
+            String errorMsg = "User reported error on problem:  " + state.getCurProblem() + "  problem-broken:  "
+                    + ((ReportErrorEvent) e).isProbBroken() + ".  User message: " +  ((ReportErrorEvent) e).getMessage();
+            new Thread(new Runnable() {
 
+                @Override
+                public void run() {
+                    try {
+                        Emailer.sendEmail("contact_mathspring@cs.umass.edu",
+                                "no-reply@wayangoutpost.net", Settings.mailServer,"Mathspring User Reported Error",errorMsg);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
+                }
+            }).start();
 //            Emailer.sendErrorEmail(BaseServlet.adminEmail, BaseServlet.emailServer, "wayang error for session: " + sessId, ((ReportErrorEvent) e).getMessage(), null);
             studentModel.save();
             return r;

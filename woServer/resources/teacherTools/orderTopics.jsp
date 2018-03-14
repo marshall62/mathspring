@@ -3,7 +3,7 @@
 <jsp:include page="${sideMenu}" />
 
 
-<jsp:useBean id="topicConfigParams" scope="request" type="edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams"/>
+<jsp:useBean id="tutorConfigParams" scope="request" type="edu.umass.ckc.wo.tutor.probSel.ClassTutorConfigParams"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="mainPageMargin">
