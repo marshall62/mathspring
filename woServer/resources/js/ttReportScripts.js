@@ -351,7 +351,6 @@ function resetStudentData( title,studentId) {
 
 function resetPassWordForThisStudent(id,uname){
     var newPassWordToSet = $("#resetPasswordfor"+id).serializeArray()[0].value;
-    console.log(newPassWordToSet);
      $.ajax({
          type : "POST",
          url :pgContext+"/tt/tt/resetStudentPassword",
@@ -449,7 +448,7 @@ function editStudentInformation(id,fname,lname,uname,context){
             '<div class="input-group"><button role="button" onclick="resetPassWordForThisStudent('+id+',\'' + uname + '\')" type="button" class="btn btn-primary">Reset Password</button></div></form></div>';
 
 
-        console.log(formHtml);
+
         var tabPanel = '<div style="width: 40%"> <ul class="nav nav-tabs" role="tablist"> <li class="active"> ' +
             '<a href="#home'+id+'" role="tab" data-toggle="tab"> <i class="fa fa-address-card-o" aria-hidden="true"></i> Update Student Information </a> </li> ' +
             '<li><a href="#profile'+id+'" role="tab" data-toggle="tab"> <i class="fa fa-key" aria-hidden="true"></i> Reset Password for Student </a> </li> </ul>'+
@@ -940,7 +939,8 @@ function registerAllEvents(){
 
     });
 
-
+    var inactiveProblemSetsize = $('#problemSetSize').val();
+    if(inactiveProblemSetsize != 0){
     inactivetable = $('#inActiveProbSetTable').DataTable({
         "bPaginate": false,
         "bFilter": false,
@@ -982,27 +982,37 @@ function registerAllEvents(){
         ]
 
     });
+    }
 
+    var studentRosterSize = $('#studentRosterSize').val();
 
-    studentRosterTable = $('#student_roster').DataTable({
-        "bPaginate": false,
-        "bFilter": false,
-        "bLengthChange": false,
-        "bSort" : false,
-    });
+    if(studentRosterSize != 0) {
+        studentRosterTable = $('#student_roster').DataTable({
+            "bPaginate": false,
+            "bFilter": false,
+            "bLengthChange": false,
+            "bSort": false
+        });
+
+    }
 
     $("#deacivateProblemSets").click(function () {
         var rows = $("#activateProbSetTable").dataTable().fnGetNodes();
         var rowsArray = [];
         var activateData = [];
         var i = 0;
+
+        if (rows.length == 1) {
+            $("#errorMsgModelPopup").find("[class*='modal-body']").html("Every class must have atleast one active problem set");
+            $('#errorMsgModelPopup').modal('show');
+        }
         $("input:checkbox:not(:checked)",rows).each(function(){
             rowsArray[i] = $(this).closest('tr');
             i++;
         });
-        for(var j=0; j < rowsArray.length; j++)
-            activateData[j]  =  $("#activateProbSetTable").DataTable().row( rowsArray [j] ).data()[3];
-
+        for(var j=0; j < rowsArray.length; j++) {
+            activateData[j] = $("#activateProbSetTable").DataTable().row(rowsArray [j]).data()[3];
+        }
         $.ajax({
             type : "POST",
             url :pgContext+"/tt/tt/configureProblemSets",
@@ -1039,7 +1049,6 @@ function registerAllEvents(){
                 formData: values
             },
             success: function (data) {
-                console.log("SUCCESS: ", data);
                 if (data.includes("***")) {
                     $("#errorMsgModelPopup").find("[class*='modal-body']").html( data );
                     $('#errorMsgModelPopup').modal('show');
@@ -1088,10 +1097,12 @@ function registerAllEvents(){
     });
 
     $("#successMsgModelPopupForProblemSets").find("[class*='btn btn-default']").click(function () {
-            location.reload();
+        var newlocation = pgContext+'/tt/tt/viewClassDetails?teacherId='+teacherID+'&classId='+classID;
+        $(location).attr('href', newlocation);
     });
     $("#successMsgModelPopupForProblemSets").find("[class*='close']").click(function () {
-        location.reload();
+        var newlocation = pgContext+'/tt/tt/viewClassDetails?teacherId='+teacherID+'&classId='+classID;
+        $(location).attr('href', newlocation);
     });
 
 
@@ -1611,7 +1622,6 @@ var completeDataChart;
     activetable.on( 'row-reorder', function ( e, diff, edit ) {
         activetable.$('input').removeAttr( 'checked' );
         var result = [];
-        console.log(pgContext);
         for ( var i=0; i< diff.length ; i++ ) {
             var rowData = activetable.row( diff[i].node ).data();
             result[i] = rowData[3]+'~~'+ diff[i].newData+'~~'+diff[i].oldData;
