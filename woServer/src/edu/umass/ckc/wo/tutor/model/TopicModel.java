@@ -162,8 +162,11 @@ public class TopicModel extends LessonModel {
         int nextTopic = e.getTopicId();
 
         if (curTopic == -1)  {
-
-            curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState(), smgr.getStudentModel());
+            // If the BeginningOfTopicEvent has a next topic, then we want to go to it because MPP selection of a topic at the beginning of a session
+            // will send in a topic here where the curTopic is -1; otherwise we will select the next one
+            if (nextTopic == -1)
+                curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState(), smgr.getStudentModel());
+            else curTopic = nextTopic;
             curTopic = switchTopics(curTopic);
 
         }
