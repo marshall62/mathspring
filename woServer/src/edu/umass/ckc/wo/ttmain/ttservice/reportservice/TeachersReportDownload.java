@@ -475,7 +475,9 @@ public class TeachersReportDownload extends AbstractXlsView {
             Cell childCellHeadermistakesMade = header.createCell(11);
             Cell childCellHedarHintsSeen = header.createCell(12);
             Cell childCellHeaderAttemptsMade = header.createCell(13);
-            Cell childCellHeaderEffort = header.createCell(14);
+            Cell childCellExampleSeen = header.createCell(14);
+            Cell childCellVideosSeen = header.createCell(15);
+            Cell childCellHeaderEffort = header.createCell(16);
 
             studentNameID.setCellValue("Student ID");
             studentNameCell.setCellValue("Student Name");
@@ -489,7 +491,9 @@ public class TeachersReportDownload extends AbstractXlsView {
             childCellHeadermistakesMade.setCellValue("# of mistakes made");
             childCellHedarHintsSeen.setCellValue("# of hints seen");
             childCellHeaderAttemptsMade.setCellValue("# of attempts made");
-            childCellHeaderEffort.setCellValue("Effort");
+            childCellExampleSeen.setCellValue("Effort");
+            childCellVideosSeen.setCellValue("# of video seen");
+            childCellHeaderEffort.setCellValue("# of example seen");
 
             AtomicInteger atomicInteger = new AtomicInteger(4);
             detailDataMap.forEach((key, dataObject) -> {
@@ -529,6 +533,10 @@ public class TeachersReportDownload extends AbstractXlsView {
                     childCellAttemptsMade.setCellValue(studentVal.get(7));
                     Cell childCellEffort = dataRow.createCell(14);
                     childCellEffort.setCellValue(studentVal.get(8));
+                    Cell childCellExampleSeenValue = dataRow.createCell(15);
+                    childCellExampleSeenValue.setCellValue(studentVal.get(13));
+                    Cell childCellVideoValue = dataRow.createCell(16);
+                    childCellVideoValue.setCellValue(studentVal.get(12));
                 });
 
             });

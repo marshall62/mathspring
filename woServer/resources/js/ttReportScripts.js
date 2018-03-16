@@ -243,8 +243,7 @@ function loadEmotionMap (rows) {
         if (!jQuery.isEmptyObject(studentEmotions)) {
             Object.keys(studentEmotions).forEach(function (key) {
                 var emotionChartCanvas = "#" + rows + key;
-
-                var percentValues = studentEmotions[key];
+                var percentValues = jQuery.extend(true, [], studentEmotions[key]);
                 var keyValue = key;
                 percentValues[0] = Math.round(percentValues[0] / percentValues[5] * 100);
                 percentValues[1] = Math.round(percentValues[1] / percentValues[5] * 100);
@@ -1359,7 +1358,7 @@ function registerAllEvents(){
                   if(jQuery.isEmptyObject(outputStudentDataTodayList)) {
                       secondHeader = '<div id=' + "panel1" + rowID + ' class="panel-body animated zoomOut">No Problems Done Today</div>'
                   } else {
-                      secondHeader = '<div id='+"panel1"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
+                      secondHeader = '<div id='+"panel1"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th># of videos Seen</th><th># of examples seen</th><th>Effort</th></tr></thead><tbody>';
                     $.each(outputStudentDataTodayList, function (i, obj) {
                         var correctHtml = "";
                         var imageURL = problem_imageURL+obj[11]+'.jpg';
@@ -1370,7 +1369,7 @@ function registerAllEvents(){
                         else
                             correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/x.png'/></td>";
 
-                        secondHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td>"+effortLabelHTML+"</tr>";
+                        secondHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td><td>" + obj[12] + "</td><td>" + obj[13] + "</td>"+effortLabelHTML+"</tr>";
 
                     });
                       secondHeader += "</tbody></table></div>"
@@ -1393,7 +1392,7 @@ function registerAllEvents(){
                     if(jQuery.isEmptyObject(outputStudentDataYesterdayList)) {
                         thirdHeader = '<div id=' + "panel2" + rowID + ' class="panel-body animated zoomOut">No Problems Done Yesterday</div>'
                     } else {
-                        thirdHeader = '<div id='+"panel2"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
+                        thirdHeader = '<div id='+"panel2"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th># of videos Seen</th><th># of examples seen</th><th>Effort</th></tr></thead><tbody>';
                         $.each(outputStudentDataYesterdayList, function (i, obj) {
                             var correctHtml = "";
                             var imageURL = problem_imageURL+obj[11]+'.jpg';
@@ -1404,14 +1403,14 @@ function registerAllEvents(){
                             else
                                 correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/x.png'/></td>";
 
-                            thirdHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td>"+effortLabelHTML+"</tr>";
+                            thirdHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td><td>" + obj[12] + "</td><td>" + obj[13] + "</td>"+effortLabelHTML+"</tr>";
 
                         });
                         thirdHeader += "</tbody></table></div>"
                     }
                 }else{
                     //show all other problems
-                    firstHeader = '<div id='+"panel"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th>Effort</th></tr></thead><tbody>';
+                    firstHeader = '<div id='+"panel"+rowID+' class="panel-body animated zoomOut"><table id='+rowID+' class="table table-striped table-bordered" cellspacing="0" width="100%"><thead><tr><th>Problem</th><th>Problem Nickname</th><th>Problem finished on</th><th>Problem Description</th><th>Solved Correctly</th><th># of mistakes made</th><th># of hints seen</th><th># of attempts made</th><th># of videos Seen</th><th># of examples seen</th><th>Effort</th></tr></thead><tbody>';
                     $.each(outputStudentDataList, function (i, obj) {
                         var correctHtml = "";
                         var imageURL = problem_imageURL+obj[11]+'.jpg';
@@ -1422,7 +1421,7 @@ function registerAllEvents(){
                         else
                             correctHtml = "<td><img style='width:15%;' src='"+servletContextPath+"/images/x.png'/></td>";
 
-                        firstHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td>"+effortLabelHTML+"</tr>";
+                        firstHeader += "<tr>" + problemImgHTML + "<td>" + obj[1] + "</td><td>" +obj[10]+ "</td><td>" + obj[2] + "</td>" + correctHtml + "<td>" + obj[5] + "</td><td>" + obj[6] + "</td><td>" + obj[7] + "</td><td>" + obj[12] + "</td><td>" + obj[13] + "</td>"+effortLabelHTML+"</tr>";
 
                     });
                     firstHeader += "</tbody></table></div>"

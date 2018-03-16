@@ -195,7 +195,7 @@
                 <a href="#" id="copyClass_handler"><i class="fa fa-files-o"></i> Replicate Class</a>
             </li>
 
-            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i> Reset Survey Settings</a></li>
+            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i>Survey Settings</a></li>
 
         </ul>
         <!-- /#sidebar-end -->
