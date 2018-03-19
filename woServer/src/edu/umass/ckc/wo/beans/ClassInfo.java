@@ -27,6 +27,7 @@ public class ClassInfo {
     private String simpleLowDiff;
     private String simpleHighDiff;
     private boolean showPostSurvey;
+    private boolean showPreSurvey;
 
     public ClassInfo(String school, int schoolYear, String name, String town, String section,
                      int classid, int teachid, String teacherName, int propGroupId, int pretestPoolId, String pretestPoolDescr,
@@ -226,5 +227,13 @@ public class ClassInfo {
 
     public void setShowPostSurvey(boolean showPostSurvey) {
         this.showPostSurvey = showPostSurvey;
+    }
+
+    public boolean isShowPreSurvey() {
+        return showPreSurvey;
+    }
+
+    public void setShowPreSurvey(boolean showPreSurvey) {
+        this.showPreSurvey = showPreSurvey;
     }
 }

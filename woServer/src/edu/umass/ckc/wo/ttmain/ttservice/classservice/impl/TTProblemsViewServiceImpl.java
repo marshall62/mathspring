@@ -167,12 +167,28 @@ public class TTProblemsViewServiceImpl implements TTProblemsViewService {
     }
 
     @Override
-    public boolean saveSurveySettingsForClass(Integer presSurveyId, Integer postSurveyId, Integer classId) throws TTCustomException {
+    public boolean saveSurveySettingsForClass(String[] prePostToActivate, Integer classId) throws TTCustomException {
         Map<String, Integer> updateparams = new HashMap<String, Integer>();
         updateparams.put("classId", classId);
-        updateparams.put("pretest", presSurveyId);
-        updateparams.put("posttest", postSurveyId);
-        this.namedParameterJdbcTemplate.update(TTUtil.UPDATE_SURVEY_SETTING_FOR_CLASS, updateparams);
+        if (prePostToActivate[0].equals("undefined") && !prePostToActivate[1].equals("undefined") ) {
+            if(prePostToActivate[1].equals("0"))
+                updateparams.put("showPostSurvey", 0);
+            else
+                updateparams.put("showPostSurvey", 1);
+            updateparams.put("posttest", Integer.valueOf(prePostToActivate[1]));
+            this.namedParameterJdbcTemplate.update(TTUtil.UPDATE_SURVEY_SETTING_FOR_CLASS_POST, updateparams);
+        } else if (prePostToActivate[1].equals("undefined") && !prePostToActivate[0].equals("undefined")) {
+            updateparams.put("pretest", Integer.valueOf(prePostToActivate[0]));
+            this.namedParameterJdbcTemplate.update(TTUtil.UPDATE_SURVEY_SETTING_FOR_CLASS_PRE, updateparams);
+        } else if (!prePostToActivate[0].equals("undefined") && !prePostToActivate[1].equals("undefined")) {
+            updateparams.put("pretest", Integer.valueOf(prePostToActivate[0]));
+            updateparams.put("posttest", Integer.valueOf(prePostToActivate[1]));
+            if(prePostToActivate[1].equals("0"))
+                updateparams.put("showPostSurvey", 0);
+            else
+                updateparams.put("showPostSurvey", 1);
+            this.namedParameterJdbcTemplate.update(TTUtil.UPDATE_SURVEY_SETTING_FOR_CLASS_ALL, updateparams);
+        }
 
         return true;
     }

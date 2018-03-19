@@ -35,7 +35,9 @@ public class TTUtil {
     public static final String PASSWORD_TOKEN = "M8$tek@12";
 
     /** SQL Queries for Survey Settings **/
-    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS = "UPDATE classconfig SET pretest=(:pretest), posttest=(:posttest) where classId=(:classId)";
+    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS_ALL = "UPDATE classconfig SET pretest=(:pretest), posttest=(:posttest), showPostSurvey=(:showPostSurvey) where classId=(:classId)";
+    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS_PRE = "UPDATE classconfig SET pretest=(:pretest) where classId=(:classId)";
+    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS_POST = "UPDATE classconfig SET posttest=(:posttest), showPostSurvey=(:showPostSurvey) where classId=(:classId)";
 
     /** SQL Queries For Reports **/
     public static final String PER_STUDENT_QUERY_FIRST ="Select studId AS studentId,concat(s.fname,' ',s.lname) As studentName, s.userName As userName,count(problemId) AS noOfProblems  from student s,studentproblemhistory sh where s.id=sh.studId and s.classId=(:classId) and sh.mode != 'demo' GROUP BY studId order by studId ; ";

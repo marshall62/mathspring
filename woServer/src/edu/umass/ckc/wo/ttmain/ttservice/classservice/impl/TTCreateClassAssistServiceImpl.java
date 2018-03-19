@@ -47,12 +47,14 @@ public class TTCreateClassAssistServiceImpl implements TTCreateClassAssistServic
         String teacherName = DbTeacher.getTeacherName(connection.getConnection(), Integer.valueOf(teacherId));
         ClassInfo classInfo = DbClass.getClass(connection.getConnection(),Integer.valueOf(classId));
         List<User> students = DbClass.getClassStudents(connection.getConnection(), Integer.valueOf(classId));
+        String[] prepostIds = DbPrePost.getActivatedSurveyIdsForClass(connection.getConnection(), Integer.valueOf(classId));
         Map<Integer,String> activeSurveys = DbPrePost.getActiveSurveyList(connection.getConnection());
         map.addAttribute("students",students );
         map.addAttribute("teacherName", teacherName);
         map.addAttribute("teacherId", teacherId);
         map.addAttribute("classInfo", classInfo);
         map.addAttribute("activeSurveys",activeSurveys );
+        map.addAttribute("prepostIds",prepostIds[0]+"~~"+prepostIds[1] );
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,6 +238,7 @@ public class TTCreateClassAssistServiceImpl implements TTCreateClassAssistServic
     public boolean restSurveySettings(Integer classId, CreateClassForm createForm) throws TTCustomException {
         try {
             DbClass.setClassConfigShowPostSurvey(connection.getConnection(), classId, createForm.isShowPostSurvey());
+            DbClass.setClassConfigShowPreSurvey(connection.getConnection(), classId, createForm.isShowPreSurvey());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
