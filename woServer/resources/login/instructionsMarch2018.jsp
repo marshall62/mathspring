@@ -12,7 +12,7 @@
 
 </head>
 <body>
-<img src="../instructionResources/MathspringInstructions.png">
+<img src="${pageContext.request.contextPath}/login/instructionResources/MathspringInstructions.png">
 <form method="post" name="login" action="${pageContext.request.contextPath}/WoLoginServlet">
     <input type="hidden" name="action" value="LoginInterventionInput"/>
     <input type="hidden" name="sessionId" value="${sessionId}"/>
