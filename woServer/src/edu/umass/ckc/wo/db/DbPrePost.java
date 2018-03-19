@@ -148,6 +148,25 @@ public class DbPrePost {
         return activeSurveys;
     }
 
+    public static String[] getActivatedSurveyIdsForClass(Connection conn, int classId) throws SQLException {
+        String[] activeSurveys = new String[2];
+        String q = "select pretest,posttest from classconfig where classId = ?";
+        PreparedStatement ps = conn.prepareStatement(q);
+        ps.setInt(1,classId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            String preSurverId = rs.getString("pretest");
+            String postServeyId = rs.getString("posttest");
+            if(preSurverId == null)
+                preSurverId = "";
+            if(postServeyId == null)
+                postServeyId = "";
+            activeSurveys[0] = preSurverId;
+            activeSurveys[1] = postServeyId;
+        }
+        return activeSurveys;
+    }
+
     public static PretestPool getPretestPool (Connection conn, int classId) throws SQLException {
         String q = "select pretestPoolId from class where Id=?";
         PreparedStatement ps = conn.prepareStatement(q);

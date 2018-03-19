@@ -24,5 +24,5 @@ public interface TTProblemsViewService {
 
     public String createAdditionalIdForClass(String[] formValues) throws TTCustomException;
 
-    public boolean saveSurveySettingsForClass(Integer presSurveyId,Integer postSurveyId, Integer classId) throws TTCustomException;
+    public boolean saveSurveySettingsForClass(String[] prePostToActivate, Integer classId) throws TTCustomException;
 }

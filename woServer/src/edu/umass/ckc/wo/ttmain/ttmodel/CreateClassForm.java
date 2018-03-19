@@ -58,6 +58,15 @@ public class CreateClassForm {
 
 
     private boolean showPostSurvey;
+    private boolean showPreSurvey;
+
+    public boolean isShowPreSurvey() {
+        return showPreSurvey;
+    }
+
+    public void setShowPreSurvey(boolean showPreSurvey) {
+        this.showPreSurvey = showPreSurvey;
+    }
 
     public boolean isShowPostSurvey() {
         return showPostSurvey;
