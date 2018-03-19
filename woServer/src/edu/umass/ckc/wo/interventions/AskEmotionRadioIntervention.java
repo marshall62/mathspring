@@ -63,23 +63,23 @@ public class AskEmotionRadioIntervention extends InputResponseIntervention imple
                                  getFormOpen() + " <p>" + this.questionHeader + "<br>" +
                 String.format(question,emotion.getName());
 
-        str += "<br><input type=\"hidden\" name=\"" + EMOTION + "\" value=\"" + emotion.getName() + "\"><br>";
+        str += "<input type=\"hidden\" name=\"" + EMOTION + "\" value=\"" + emotion.getName() + "\"><br>";
         for (int i =0;i<emotion.getLabels().size();i++)
             str += "<input name=\"" + LEVEL + "\" type=\"radio\" value=\"" + emotion.getVals().get(i) + "\">" + emotion.getLabels().get(i) + "</input><br>";
-        str += "<br><br>";
+        str += "<br>";
         if (askWhy) {
             str += "Why is that?<br>";
-            str += "<textarea name=\"" + REASON + "\" rows=\"4\" cols=\"40\"/>";
+            str += "<textarea name=\"" + REASON + "\" rows=\"2\" cols=\"50\"/>";
         }
         str+= "</p>";
         if (askAboutSkipping && skippedProblem) {
             str += "<br>";
-            str += "Have you skipped a problem recently (clicked on 'new problem' without answering)?";
+            str += "Have you skipped a problem recently (clicked on 'new problem' without answering)?<br>";
             str += "<input type='radio' name='skipFrequency' value='never'> Never<br>";
             str += "<input type='radio' name='skipFrequency' value='fewTimes'> A few times<br>";
             str += "<input type='radio' name='skipFrequency' value='aLot'> A lot<br>";
-            str += "If you skipped can you please say why?<br>";
-            str += "<textarea name=\"" + SKIP_REASON + "\" rows=\"3\" cols=\"40\"/>";
+            str += "<br>If you skipped can you please say why?<br>";
+            str += "<textarea name=\"" + SKIP_REASON + "\" rows=\"2\" cols=\"50\"/>";
         }
         str+="</form></div>";
 
