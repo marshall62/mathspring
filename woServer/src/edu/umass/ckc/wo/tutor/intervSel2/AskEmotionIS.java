@@ -44,6 +44,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
     private static Logger logger = Logger.getLogger(AskEmotionIS.class);
     private List<Emotion> emotions;
     private boolean askWhy=false;
+    private boolean askAboutSkipping=false; // Adds in a question about skipping problems
     private MyState state;
 
     private String timeInterval ;
@@ -90,6 +91,11 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
                 boolean b = Boolean.parseBoolean(askWhyTxt);
                 this.askWhy= b;
             }
+            String askAboutSkip = getConfigParameter2("askAboutSkipping");
+            if (askAboutSkip != null) {
+                boolean b = Boolean.parseBoolean(askWhyTxt);
+                this.askAboutSkipping= b;
+            }
         }
         question = getConfigParameter2("question");
         questionHeader = getConfigParameter2("questionHeader");
@@ -117,6 +123,8 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String curProbMode = smgr.getStudentState().getCurProblemMode();
         if (curProbMode == null)
             return null;
+        int numAttempts= smgr.getStudentState().getNumAttemptsOnCurProblem();
+        boolean skippedProblem = numAttempts < 1;
         int problemsSinceLastQuery =  state.getNumProblemsSinceLastIntervention();
 
         NextProblemIntervention intervention=null;
@@ -132,13 +140,13 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
             Emotion emotionToQuery;
             if (inputType.equals("slider"))  {
                 emotionToQuery= getEmotionToQueryRandom();
-                intervention = new AskEmotionSliderIntervention(emotionToQuery,this.numVals,this.askWhy,this.questionHeader, this.question);
+                intervention = new AskEmotionSliderIntervention(emotionToQuery,this.numVals,this.askWhy, askAboutSkipping, this.questionHeader, this.question, skippedProblem);
             }
             else if (inputType.equals("freeAnswer"))
-                intervention = new AskEmotionFreeAnswerIntervention();
+                intervention = new AskEmotionFreeAnswerIntervention(askAboutSkipping, skippedProblem);
             else   {
                 emotionToQuery= getEmotionToQueryRandom();
-                intervention = new AskEmotionRadioIntervention(emotionToQuery, this.askWhy);
+                intervention = new AskEmotionRadioIntervention(emotionToQuery, this.askWhy, askAboutSkipping, skippedProblem);
             }
 
             state.setTimeOfLastIntervention(now);
@@ -205,8 +213,12 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
             ((AffectStudentModel) sm).setLastReportedEmotion(emotion,levelInt,e.getElapsedTime());
 
         String reason = params.getString(AskEmotionSliderIntervention.REASON);
+        String skipFreq = params.getString(AskEmotionFreeAnswerIntervention.SKIP_FREQ,"");
+        String skipReason = params.getString(AskEmotionFreeAnswerIntervention.SKIP_REASON,"");
         // build XML like <interventionInput class="%AskEmotionIS"> <emotion> .... </emotion> </interventionInput>
-        setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\"><![CDATA[" + reason + "]]></emotion>", e);
+        setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\">" +
+                "<skipInfo><frequency>\" +skipFreq+ \"</frequency><reason><![CDATA[\" + skipReason + \"]]></reason></skipInfo>" +
+                "<![CDATA[" + reason + "]]></emotion>", e);
         DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId(), null, null, null,null);
         return null;  // no more interventions to return.
     }
@@ -216,9 +228,11 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String feeling = params.getString(AskEmotionFreeAnswerIntervention.FEELING);
         String reason = params.getString(AskEmotionFreeAnswerIntervention.REASON);
         String goal = params.getString(AskEmotionFreeAnswerIntervention.GOAL);
+        String skipFreq = params.getString(AskEmotionFreeAnswerIntervention.SKIP_FREQ,"");
+        String skipReason = params.getString(AskEmotionFreeAnswerIntervention.SKIP_REASON,"");
 //        String desiredResult = params.getString(AskEmotionFreeAnswerIntervention.RESULT);
         setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel><reason><![CDATA[" + reason + "]]></reason>" +
-                "<goal><![CDATA[" + goal + "]]></goal></emotion>", e);
+                "<goal><![CDATA[" + goal + "]]></goal><skipInfo><frequency>" +skipFreq+ "</frequency><reason><![CDATA[" + skipReason + "]]></reason></skipInfo></emotion>", e);
         DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), null, reason, goal, null);
     }
 
