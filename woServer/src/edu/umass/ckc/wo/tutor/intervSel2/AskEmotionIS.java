@@ -216,10 +216,17 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String skipFreq = params.getString(AskEmotionFreeAnswerIntervention.SKIP_FREQ,"");
         String skipReason = params.getString(AskEmotionFreeAnswerIntervention.SKIP_REASON,"");
         // build XML like <interventionInput class="%AskEmotionIS"> <emotion> .... </emotion> </interventionInput>
-        setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\">" +
-                "<skipInfo><frequency>\" +skipFreq+ \"</frequency><reason><![CDATA[\" + skipReason + \"]]></reason></skipInfo>" +
-                "<![CDATA[" + reason + "]]></emotion>", e);
-        DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId(), null, null, null,null);
+        if (this.askAboutSkipping)
+            setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\">" +
+                    "<skipInfo><frequency>\" +skipFreq+ \"</frequency><reason><![CDATA[\" + skipReason + \"]]></reason></skipInfo>" +
+                    "<![CDATA[" + reason + "]]></emotion>", e);
+        else {
+            setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\">" +
+                    "<![CDATA[" + reason + "]]></emotion>", e);
+            skipFreq=null;
+            skipReason=null;
+        }
+        DbEmotionResponses.saveResponse(conn,emotion,levelInt,reason,smgr.getSessionNum(),smgr.getStudentId(), null, null, null,null, skipFreq, skipReason);
         return null;  // no more interventions to return.
     }
 
@@ -231,9 +238,15 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         String skipFreq = params.getString(AskEmotionFreeAnswerIntervention.SKIP_FREQ,"");
         String skipReason = params.getString(AskEmotionFreeAnswerIntervention.SKIP_REASON,"");
 //        String desiredResult = params.getString(AskEmotionFreeAnswerIntervention.RESULT);
-        setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel><reason><![CDATA[" + reason + "]]></reason>" +
-                "<goal><![CDATA[" + goal + "]]></goal><skipInfo><frequency>" +skipFreq+ "</frequency><reason><![CDATA[" + skipReason + "]]></reason></skipInfo></emotion>", e);
-        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), null, reason, goal, null);
+        if (this.askAboutSkipping)
+            setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel><reason><![CDATA[" + reason + "]]></reason>" +
+                    "<goal><![CDATA[" + goal + "]]></goal><skipInfo><frequency>" +skipFreq+ "</frequency><reason><![CDATA[" + skipReason + "]]></reason></skipInfo></emotion>", e);
+        else {
+            setUserInput(this, "<emotion><howDoYouFeel><![CDATA[" + feeling + "]]></howDoYouFeel></emotion>", e);
+            skipFreq=null;
+            skipReason=null;
+        }
+        DbEmotionResponses.saveResponse(conn,"",0,feeling,smgr.getSessionNum(),smgr.getStudentId(), null, reason, goal, null, skipFreq, skipReason);
     }
 
 

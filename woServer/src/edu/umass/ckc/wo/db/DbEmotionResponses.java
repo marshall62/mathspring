@@ -14,13 +14,16 @@ import java.sql.*;
 public class DbEmotionResponses {
 
 
-    public static int saveResponse(Connection conn, String emotion, int level, String explanation, int sessionId, int studId, String continueMathspring, String reasons, String goal, String desiredResult) throws SQLException {
+    public static int saveResponse(Connection conn, String emotion, int level, String explanation,
+                                   int sessionId, int studId, String continueMathspring, String reasons,
+                                   String goal, String desiredResult, String skipFreq, String skipReason) throws SQLException {
         long now = System.currentTimeMillis();
         ResultSet rs = null;
         PreparedStatement s = null;
         try {
-            String q = "insert into emotionInterventionResponse (emotion, level, explanation, sessionId, studId,timestamp, continueMathspring,reasons,goal,desiredResult) " +
-                    "values (?,?,?,?,?,?,?,?,?,?)";
+            String q = "insert into emotionInterventionResponse (emotion, level, explanation, sessionId, studId,timestamp, " +
+                    "continueMathspring,reasons,goal,desiredResult,skipfrequency,skipreason) " +
+                    "values (?,?,?,?,?,?,?,?,?,?,?,?)";
             s = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
             s.setString(1, emotion);
             s.setInt(2, level);
@@ -40,6 +43,12 @@ public class DbEmotionResponses {
             if (desiredResult != null)
                 s.setString(10,desiredResult);
             else s.setNull(10,Types.VARCHAR);
+            if (skipFreq != null)
+                s.setString(11,skipFreq);
+            else s.setNull(11,Types.VARCHAR);
+            if (skipReason != null)
+                s.setString(12,skipReason);
+            else s.setNull(12,Types.VARCHAR);
             s.execute();
             rs = s.getGeneratedKeys();
             rs.next();
