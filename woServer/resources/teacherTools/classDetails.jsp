@@ -666,7 +666,11 @@
                         </div>
                     </div>
                 </div>
+            <div id="class_Level_Reports_Container" class="row" style="display:none;width: 75%;">
 
+            </div>
+
+    </div>
 
             <div id="student_roster_out" style="display:none;width: 100%;">
 
@@ -683,41 +687,41 @@
                             <a  data-toggle="modal" data-target="#cnfirmPasswordToDownLoadTag" title="Download Student Tags" class="btn btn-primary btn-lg pull-right">Download Student Tags</a>
                         </div>
 
-                            <div class="panel-body" id="addMoreStudents" style="display: none;">
-                                <springForm:form id="create_Student_id" method="post"
-                                                 action="${pageContext.request.contextPath}/tt/tt/createStudentId"
-                                                 modelAttribute="createClassForm" onsubmit="event.preventDefault();">
+                        <div class="panel-body" id="addMoreStudents" style="display: none;">
+                            <springForm:form id="create_Student_id" method="post"
+                                             action="${pageContext.request.contextPath}/tt/tt/createStudentId"
+                                             modelAttribute="createClassForm" onsubmit="event.preventDefault();">
 
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user-o"></i></span>
-                                            <springForm:input path="userPrefix" id="userPrefix" name="userPrefix"
-                                                              placeholder="Username Prefix" class="form-control" type="text"/>
-                                        </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user-o"></i></span>
+                                        <springForm:input path="userPrefix" id="userPrefix" name="userPrefix"
+                                                          placeholder="Username Prefix" class="form-control" type="text"/>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-eye"></i></span>
-                                            <springForm:input path="passwordToken" id="passwordToken" name="passwordToken"
-                                                              placeholder="Password" class="form-control" type="password"/>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-eye"></i></span>
+                                        <springForm:input path="passwordToken" id="passwordToken" name="passwordToken"
+                                                          placeholder="Password" class="form-control" type="password"/>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-                                            <springForm:input path="noOfStudentAccountsForClass" id="noOfStudentAccountsForClass" name="noOfStudentAccountsForClass"
-                                                              placeholder="Number of Student Id's to be create for this class" class="form-control" type="text"/>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                                        <springForm:input path="noOfStudentAccountsForClass" id="noOfStudentAccountsForClass" name="noOfStudentAccountsForClass"
+                                                          placeholder="Number of Student Id's to be create for this class" class="form-control" type="text"/>
                                     </div>
-                                    <input type="hidden" name="teacherId" id="teacherId" value="${teacherId}">
-                                    <input type="hidden" name="classId" id="classId" value="${classInfo.classid}">
-                                    <div class="form-group">
+                                </div>
+                                <input type="hidden" name="teacherId" id="teacherId" value="${teacherId}">
+                                <input type="hidden" name="classId" id="classId" value="${classInfo.classid}">
+                                <div class="form-group">
                                     <button role="button" type="submit" id="createMoreStudentId" class="btn btn-primary">Add Student Ids</button>
                                     <button role="button" type="button" id="cancelForm" class="btn btn-default">Cancel</button>
-                                    </div>
-                                </springForm:form>
+                                </div>
+                            </springForm:form>
 
-                            </div>
+                        </div>
                     </div>
                     <table id="student_roster" class="table table-striped table-bordered hover" cellspacing="0" width="100%">
                         <thead>
@@ -730,11 +734,11 @@
                         </tr>
 
                         <tr>
-                          <%--  <th>Clear All</th>--%>
+                            <%--  <th>Clear All</th>--%>
                             <th>Delete math problem data from this student</th>
-                           <%-- <th>Reset Practice Hut</th>
-                            <th>Clear Pretest</th>
-                            <th>Clear Posttest</th>--%>
+                            <%-- <th>Reset Practice Hut</th>
+                             <th>Clear Pretest</th>
+                             <th>Clear Posttest</th>--%>
                             <th>Delete username, and all its data</th>
                             <th>Change Password or Username</th>
                         </tr>
@@ -747,31 +751,31 @@
                                 <td>${studentInfo.fname}</td>
                                 <td>${studentInfo.lname}</td>
                                 <td>${studentInfo.uname}</td>
-                               <%-- <td>
-                                    <a  onclick="resetStudentData(4,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>--%>
+                                    <%-- <td>
+                                         <a  onclick="resetStudentData(4,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(5,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
                                 </td>
-                               <%-- <td>
-                                    <a  onclick="resetStudentData(6,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a  onclick="resetStudentData(7,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a  onclick="resetStudentData(8,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>--%>
+                                    <%-- <td>
+                                         <a  onclick="resetStudentData(6,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>
+                                     <td>
+                                         <a  onclick="resetStudentData(7,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>
+                                     <td>
+                                         <a  onclick="resetStudentData(8,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(9,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
@@ -788,13 +792,7 @@
                     </table>
                 </div>
             </div>
-
-            <div id="class_Level_Reports_Container" class="row" style="display:none;width: 75%;">
-
-            </div>
-
-    </div>
-
+        </div>
 </div>
 </div>
 
