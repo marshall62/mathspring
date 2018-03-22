@@ -218,7 +218,7 @@ public class AskEmotionIS extends NextProblemInterventionSelector  {
         // build XML like <interventionInput class="%AskEmotionIS"> <emotion> .... </emotion> </interventionInput>
         if (this.askAboutSkipping)
             setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\">" +
-                    "<skipInfo><frequency>\" +skipFreq+ \"</frequency><reason><![CDATA[\" + skipReason + \"]]></reason></skipInfo>" +
+                    "<skipInfo><frequency>" +skipFreq+ "</frequency><reason><![CDATA[" + skipReason + "]]></reason></skipInfo>" +
                     "<![CDATA[" + reason + "]]></emotion>", e);
         else {
             setUserInput(this, "<emotion name=\"" + emotion + "\" level=\"" + levelInt + "\">" +
