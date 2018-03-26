@@ -299,7 +299,6 @@ public class TTReportServiceImpl implements TTReportService {
 
                     studentRecordValues.add(mappedRow.getString("description"));
 
-                    studentData.put(mappedRow.getString("id"), studentRecordValues);
 
                     if ("".equals(mappedRow.getString("problemEndTime")) || mappedRow.getString("problemEndTime") == null)
                         studentRecordValues.add("Problem was not completed");
@@ -307,6 +306,10 @@ public class TTReportServiceImpl implements TTReportService {
                         studentRecordValues.add(mappedRow.getString("problemEndTime"));
 
                     studentRecordValues.add(mappedRow.getString("problemId"));
+                    studentRecordValues.add(mappedRow.getString("videoSeen"));
+                    studentRecordValues.add(mappedRow.getString("exampleSeen"));
+
+                    studentData.put(mappedRow.getString("id"), studentRecordValues);
 
                 }
 

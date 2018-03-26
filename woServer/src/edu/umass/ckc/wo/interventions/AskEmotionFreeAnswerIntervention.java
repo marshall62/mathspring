@@ -1,7 +1,5 @@
 package edu.umass.ckc.wo.interventions;
 
-import edu.umass.ckc.wo.tutor.intervSel2.AskEmotionIS;
-
 /**
  * Created with IntelliJ IDEA.
  * User: marshall
@@ -14,14 +12,19 @@ public class AskEmotionFreeAnswerIntervention extends InputResponseIntervention 
 
 
     public static final String REASON = "reason" ;
+    public static final String SKIP_REASON = "skipReason" ;
+    public static final String SKIP_FREQ = "skipFrequency" ;
     public static final String FEELING = "feeling" ;
     public static final String CONTINUE = "continue" ;
     public static final String GOAL = "goal" ;
     public static final String RESULT = "result" ;
 
-    public AskEmotionFreeAnswerIntervention() {
+    private boolean askAboutSkipping;
+    private boolean skippedProblem;
 
-
+    public AskEmotionFreeAnswerIntervention(boolean askAboutSkipping, boolean skippedProblem) {
+        this.askAboutSkipping = askAboutSkipping;
+        this.skippedProblem = skippedProblem;
     }
 
     @Override
@@ -65,7 +68,15 @@ public class AskEmotionFreeAnswerIntervention extends InputResponseIntervention 
 //        str += "<br><br>3. What do you want to happen?";
 //        str += "<textarea name=\"" + RESULT + "\" rows=\"3\" cols=\"40\"/>" ;
         str+= "</p>";
-
+        if (askAboutSkipping && skippedProblem) {
+            str += "<br>";
+            str += "Have you skipped a problem recently (clicked on 'new problem' without answering)?";
+            str += "<input type='radio' name='skipFrequency' value='never'> Never<br>";
+            str += "<input type='radio' name='skipFrequency' value='fewTimes'> A few times<br>";
+            str += "<input type='radio' name='skipFrequency' value='aLot'> A lot<br>";
+            str += "If you skipped can you please say why?<br>";
+            str += "<textarea name=\"" + SKIP_REASON + "\" rows=\"3\" cols=\"40\"/>";
+        }
         str+="</form></div>";
 
         return str;

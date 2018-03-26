@@ -50,7 +50,7 @@ public class ChildAssent extends LoginInterventionSelector {
 
     public LoginIntervention processInput (ServletParams params) throws Exception {
         String assent = params.getString(LoginParams.ASSENT);
-        if (assent.equalsIgnoreCase("no"))
+        if (assent != null && assent.equalsIgnoreCase("no"))
             return new LoginPage1Intervention("login/loginK12.jsp");
         else
             return null;

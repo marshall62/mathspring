@@ -58,6 +58,7 @@
         var pgContext = '${pageContext.request.contextPath}';
         var classID = '${classInfo.classid}';
         var teacherID = '${teacherId}';
+        var prePostIds = '${prepostIds}'.split("~~");
 
         var problem_imageURL = "http://rose.cs.umass.edu/mathspring/mscontent/problemSnapshots/prob_";
 
@@ -80,6 +81,8 @@
                     "width": "20%",
                     'className': 'dt-body-center',
                     'render': function (data, type, full, meta) {
+                        if(full[0] == prePostIds[0])
+                            return '<input type="radio" checked="checked" name="pre_id" value="' + data + '">';
                         return '<input type="radio" name="pre_id" value="' + data + '">';
                     }
                 },
@@ -89,6 +92,8 @@
                         "width": "20%",
                         'className': 'dt-body-center',
                         'render': function (data, type, full, meta) {
+                            if(full[0] == prePostIds[1])
+                                return '<input type="radio" checked="checked" name="post_id" value="' + data + '">';
                             return '<input type="radio" name="post_id" value="' + data + '">';
                         }
                     }
@@ -195,7 +200,7 @@
                 <a href="#" id="copyClass_handler"><i class="fa fa-files-o"></i> Replicate Class</a>
             </li>
 
-            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i> Reset Survey Settings</a></li>
+            <li><a id="resetSurveySettings_handler"><i class="fa fa-fw fa-cog"></i>Survey Settings</a></li>
 
         </ul>
         <!-- /#sidebar-end -->
@@ -552,107 +557,120 @@
             </div>
 
 
-            <div id="reset_survey_setting_out" style="display:none; width: 75%;">
+            <div id="reset_survey_setting_out" style="display:none; width: 100%;">
+
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="panel panel-default">
+
+                                <div class="panel-body">
+                                    <h1 class="page-header">
+                                        <small>Turn On/Off Surveys</small>
+                                    </h1>
+                                </div>
+                                <springForm:form id="rest_survey_setting_form" method="post"
+                                                 action="${pageContext.request.contextPath}/tt/tt/ttResetSurvey"
+                                                 modelAttribute="createClassForm">
 
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                    <h1 class="page-header">
-                        <small>Available Surveys</small>
-                    </h1>
-                    </div>
-                    <div class="panel-body">
-
-                        <table id="activeSurveyList" class="table table-striped table-bordered hover" width="80%">
-                            <thead>
-                            <tr>
-                                <th>Survey ID</th>
-                                <th>List of surveys/quizzes</th>
-                                <th>*First Time Student Logs In</th>
-                                <th>*Next Time Student Logs In</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="activeSurvey" items="${activeSurveys}">
-                                <tr>
-                                    <td><c:out value="${activeSurvey.key}"/></td>
-                                    <td><c:out value="${activeSurvey.value}"/></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="panel-body">
-                        <ul>
-                            <li>
-                                * Note: This survey will show only ONCE, the first time a student logs in to MathSpring.
-                            </li>
-                            <li>
-                                ** Note: If there is a survey chosen for the “next time the student logs in”, students will see this survey every next time they log in. You should only turn this on when you are sure that you want them to get this new survey/quiz.
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="panel-body">
-                        <button id="select_activeSurveyList" class="btn btn-primary btn-lg" aria-disabled="true">Publish Survey Settings</button>
-                    </div>
-                </div>
-
-                <springForm:form id="rest_survey_setting_form" method="post"
-                                 action="${pageContext.request.contextPath}/tt/tt/ttResetSurvey"
-                                 modelAttribute="createClassForm">
-
-
-                    <div class="panel panel-default">
-
-                        <div class="panel-body">
-                            <h1 class="page-header">
-                                <small>Survey Settings</small>
-                            </h1>
-                        </div>
-
-                        <div class="panel-body">If the post survey is on, the next time students in this class login, a
-                            survey will be shown. It will only be shown to them once.
-                            This will only happen if the class uses a pedagogy that has a post-survey login intervention
-                            (defined in logins.xml)
+                                <input type="hidden" name="teacherId" value="${teacherId}">
+                                <input type="hidden" name="classId" value=" ${classInfo.classid}">
+                                <div class="panel-body">
+                                    <div class="form-check">
+                                        <c:choose>
+                                            <c:when test="${classInfo.showPreSurvey}">
+                                            <springForm:checkbox path="showPreSurvey" value="${classInfo.showPreSurvey}" checked = "checked"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <springForm:checkbox path="showPreSurvey" value="${classInfo.showPreSurvey}" disabled="true"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <span class="form-check-label">Pre-Test Survey : Students will see this survey  - the first time a student logs in to MathSpring.</span>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-check">
+                                        <c:choose>
+                                            <c:when test="${classInfo.showPostSurvey}">
+                                                <springForm:checkbox path="showPostSurvey" value="${classInfo.showPostSurvey}" checked = "checked"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <springForm:checkbox path="showPostSurvey" value="${classInfo.showPostSurvey}"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <span class="form-check-label">Post-Test Survey : Students will see this survey every time they log in.</span>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <button role="button" type="submit" class="btn btn-primary">Submit
+                                    </button>
+                                </div>
+                            </div>
+                            </springForm:form>
                         </div>
 
 
-                        <div class="panel-body">
-                            <c:choose>
-                                <c:when test="${classInfo.showPostSurvey}">
-                                    <label>Survey settings are Turned on</label>
-                                </c:when>
-                                <c:otherwise>
-                                    <label>Survey settings are Turned off</label>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                        <div class="panel-body">
-                            <input type="hidden" name="teacherId" value="${teacherId}">
-                            <input type="hidden" name="classId" value=" ${classInfo.classid}">
-                            <div class="form-group">
-                                <c:choose>
-                                    <c:when test="${classInfo.showPostSurvey}">
-                                        <button role="button" type="submit" class="btn btn-primary">Turn of Survey
-                                            Settings
-                                        </button>
-                                        <springForm:hidden path="showPostSurvey" value="false"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button role="button" type="submit" class="btn btn-primary">Turn on Survey
-                                            Settings
-                                        </button>
-                                        <springForm:hidden path="showPostSurvey" value="true"/>
-                                    </c:otherwise>
-                                </c:choose>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <h1 class="page-header">
+                                        <small>Available Surveys</small>
+                                    </h1>
+                                </div>
+                                <div class="panel-body">
+
+                                    <table id="activeSurveyList" class="table table-striped table-bordered hover"
+                                           width="80%">
+                                        <thead>
+                                        <tr>
+                                            <th>Survey ID</th>
+                                            <th>List of surveys/quizzes</th>
+                                            <th>*First Time Student Logs In</th>
+                                            <th>*Next Time Student Logs In</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="activeSurvey" items="${activeSurveys}">
+                                            <tr>
+                                                <td><c:out value="${activeSurvey.key}"/></td>
+                                                <td><c:out value="${activeSurvey.value}"/></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <ul>
+                                        <li>
+                                            * Note: This survey will show only ONCE, the first time a student logs in to
+                                            MathSpring.
+                                        </li>
+                                        <li>
+                                            ** Note: If there is a survey chosen for the “next time the student logs
+                                            in”, students will see this survey every next time they log in. You should
+                                            only turn this on when you are sure that you want them to get this new
+                                            survey/quiz.
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="panel-body">
+                                    <button id="select_activeSurveyList" class="btn btn-primary btn-lg"
+                                            aria-disabled="true">Publish Survey Settings
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </springForm:form>
+                </div>
+            <div id="class_Level_Reports_Container" class="row" style="display:none;width: 75%;">
+
             </div>
 
+    </div>
 
             <div id="student_roster_out" style="display:none;width: 100%;">
 
@@ -669,41 +687,41 @@
                             <a  data-toggle="modal" data-target="#cnfirmPasswordToDownLoadTag" title="Download Student Tags" class="btn btn-primary btn-lg pull-right">Download Student Tags</a>
                         </div>
 
-                            <div class="panel-body" id="addMoreStudents" style="display: none;">
-                                <springForm:form id="create_Student_id" method="post"
-                                                 action="${pageContext.request.contextPath}/tt/tt/createStudentId"
-                                                 modelAttribute="createClassForm" onsubmit="event.preventDefault();">
+                        <div class="panel-body" id="addMoreStudents" style="display: none;">
+                            <springForm:form id="create_Student_id" method="post"
+                                             action="${pageContext.request.contextPath}/tt/tt/createStudentId"
+                                             modelAttribute="createClassForm" onsubmit="event.preventDefault();">
 
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user-o"></i></span>
-                                            <springForm:input path="userPrefix" id="userPrefix" name="userPrefix"
-                                                              placeholder="Username Prefix" class="form-control" type="text"/>
-                                        </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user-o"></i></span>
+                                        <springForm:input path="userPrefix" id="userPrefix" name="userPrefix"
+                                                          placeholder="Username Prefix" class="form-control" type="text"/>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-eye"></i></span>
-                                            <springForm:input path="passwordToken" id="passwordToken" name="passwordToken"
-                                                              placeholder="Password" class="form-control" type="password"/>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-eye"></i></span>
+                                        <springForm:input path="passwordToken" id="passwordToken" name="passwordToken"
+                                                          placeholder="Password" class="form-control" type="password"/>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-                                            <springForm:input path="noOfStudentAccountsForClass" id="noOfStudentAccountsForClass" name="noOfStudentAccountsForClass"
-                                                              placeholder="Number of Student Id's to be create for this class" class="form-control" type="text"/>
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                                        <springForm:input path="noOfStudentAccountsForClass" id="noOfStudentAccountsForClass" name="noOfStudentAccountsForClass"
+                                                          placeholder="Number of Student Id's to be create for this class" class="form-control" type="text"/>
                                     </div>
-                                    <input type="hidden" name="teacherId" id="teacherId" value="${teacherId}">
-                                    <input type="hidden" name="classId" id="classId" value="${classInfo.classid}">
-                                    <div class="form-group">
+                                </div>
+                                <input type="hidden" name="teacherId" id="teacherId" value="${teacherId}">
+                                <input type="hidden" name="classId" id="classId" value="${classInfo.classid}">
+                                <div class="form-group">
                                     <button role="button" type="submit" id="createMoreStudentId" class="btn btn-primary">Add Student Ids</button>
                                     <button role="button" type="button" id="cancelForm" class="btn btn-default">Cancel</button>
-                                    </div>
-                                </springForm:form>
+                                </div>
+                            </springForm:form>
 
-                            </div>
+                        </div>
                     </div>
                     <table id="student_roster" class="table table-striped table-bordered hover" cellspacing="0" width="100%">
                         <thead>
@@ -716,11 +734,11 @@
                         </tr>
 
                         <tr>
-                          <%--  <th>Clear All</th>--%>
+                            <%--  <th>Clear All</th>--%>
                             <th>Delete math problem data from this student</th>
-                           <%-- <th>Reset Practice Hut</th>
-                            <th>Clear Pretest</th>
-                            <th>Clear Posttest</th>--%>
+                            <%-- <th>Reset Practice Hut</th>
+                             <th>Clear Pretest</th>
+                             <th>Clear Posttest</th>--%>
                             <th>Delete username, and all its data</th>
                             <th>Change Password or Username</th>
                         </tr>
@@ -733,31 +751,31 @@
                                 <td>${studentInfo.fname}</td>
                                 <td>${studentInfo.lname}</td>
                                 <td>${studentInfo.uname}</td>
-                               <%-- <td>
-                                    <a  onclick="resetStudentData(4,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>--%>
+                                    <%-- <td>
+                                         <a  onclick="resetStudentData(4,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(5,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
                                     </a>
                                 </td>
-                               <%-- <td>
-                                    <a  onclick="resetStudentData(6,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a  onclick="resetStudentData(7,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a  onclick="resetStudentData(8,${studentInfo.id})" class="success details-control" aria-expanded="true">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </a>
-                                </td>--%>
+                                    <%-- <td>
+                                         <a  onclick="resetStudentData(6,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>
+                                     <td>
+                                         <a  onclick="resetStudentData(7,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>
+                                     <td>
+                                         <a  onclick="resetStudentData(8,${studentInfo.id})" class="success details-control" aria-expanded="true">
+                                             <i class="fa fa-window-close" aria-hidden="true"></i>
+                                         </a>
+                                     </td>--%>
                                 <td>
                                     <a  onclick="resetStudentData(9,${studentInfo.id})" class="success details-control" aria-expanded="true">
                                         <i class="fa fa-window-close" aria-hidden="true"></i>
@@ -774,13 +792,7 @@
                     </table>
                 </div>
             </div>
-
-            <div id="class_Level_Reports_Container" class="row" style="display:none;width: 75%;">
-
-            </div>
-
-    </div>
-
+        </div>
 </div>
 </div>
 

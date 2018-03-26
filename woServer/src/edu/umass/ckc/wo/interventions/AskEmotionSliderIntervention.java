@@ -16,14 +16,19 @@ public class AskEmotionSliderIntervention extends InputResponseIntervention impl
     public static final String LEVEL = "level" ;
     public static final String EMOTION = "emotion" ;
     public static final String REASON = "reason" ;
+    public static final String SKIP_REASON = "skipReason" ;
     private boolean askWhy;
+    private boolean askAboutSkipping;
+    private boolean skippedProblem;
     // the default question this thing asks has an emotion plugged into the string
     private String question = "Based on the last few problems tell us about your level of %s in solving math problems.";
     private String questionHeader = "Please tell us how you are feeling.";
 
-    public AskEmotionSliderIntervention(AskEmotionIS.Emotion emotionToQuery, String numVals, boolean askWhy, String questionHeader, String question) {
+    public AskEmotionSliderIntervention(AskEmotionIS.Emotion emotionToQuery, String numVals, boolean askWhy, boolean askAboutSkipping, String questionHeader, String question, boolean skippedProblem) {
         this.emotion = emotionToQuery;
         this.askWhy=askWhy;
+        this.askAboutSkipping=askAboutSkipping;
+        this.skippedProblem=skippedProblem;
         if (numVals != null)
             this.numVals = Integer.parseInt(numVals);
 
@@ -80,9 +85,15 @@ public class AskEmotionSliderIntervention extends InputResponseIntervention impl
             str += "Why is that?<br>";
             str += "<textarea name=\"" + REASON + "\" rows=\"4\" cols=\"40\"/>";
         }
-
-
-
+        if (askAboutSkipping && skippedProblem) {
+            str += "<br>";
+            str += "Have you skipped a problem recently (clicked on 'new problem' without answering)?";
+            str += "<input type='radio' name='skipFrequency' value='never'> Never<br>";
+            str += "<input type='radio' name='skipFrequency' value='fewTimes'> A few times<br>";
+            str += "<input type='radio' name='skipFrequency' value='aLot'> A lot<br>";
+            str += "If you skipped can you please say why?<br>";
+            str += "<textarea name=\"" + SKIP_REASON + "\" rows=\"3\" cols=\"40\"/>";
+        }
 
         str+="</p></form></div>";
         return str;

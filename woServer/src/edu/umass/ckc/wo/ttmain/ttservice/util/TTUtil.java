@@ -35,11 +35,13 @@ public class TTUtil {
     public static final String PASSWORD_TOKEN = "M8$tek@12";
 
     /** SQL Queries for Survey Settings **/
-    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS = "UPDATE classconfig SET pretest=(:pretest), posttest=(:posttest) where classId=(:classId)";
+    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS_ALL = "UPDATE classconfig SET pretest=(:pretest), posttest=(:posttest), showPostSurvey=(:showPostSurvey) where classId=(:classId)";
+    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS_PRE = "UPDATE classconfig SET pretest=(:pretest) where classId=(:classId)";
+    public static final String UPDATE_SURVEY_SETTING_FOR_CLASS_POST = "UPDATE classconfig SET posttest=(:posttest), showPostSurvey=(:showPostSurvey) where classId=(:classId)";
 
     /** SQL Queries For Reports **/
     public static final String PER_STUDENT_QUERY_FIRST ="Select studId AS studentId,concat(s.fname,' ',s.lname) As studentName, s.userName As userName,count(problemId) AS noOfProblems  from student s,studentproblemhistory sh where s.id=sh.studId and s.classId=(:classId) and sh.mode != 'demo' GROUP BY studId order by studId ; ";
-    public static final String PER_STUDENT_QUERY_SECOND ="select sh.id,sh.problemId, pg.description,sh.problemEndTime,pr.name,pr.nickname, pr.statementHTML,pr.screenShotURL,sh.isSolved,sh.numMistakes,sh.numHints,sh.numAttemptsToSolve,sh.effort from studentproblemhistory sh, problem pr, problemgroup pg where sh.studId in ( select id from student where classId=(:classId)) and sh.studId=(:studId) and sh.mode != 'demo'and sh.problemId = pr.id and sh.topicId=pg.id order by sh.problemEndTime desc;";
+    public static final String PER_STUDENT_QUERY_SECOND ="select sh.id,sh.problemId, pg.description,sh.problemEndTime,pr.name,pr.nickname, pr.statementHTML,pr.screenShotURL,sh.isSolved,sh.numMistakes,sh.numHints,sh.numAttemptsToSolve,sh.effort,sh.videoSeen,sh.exampleSeen from studentproblemhistory sh, problem pr, problemgroup pg where sh.studId in ( select id from student where classId=(:classId)) and sh.studId=(:studId) and sh.mode != 'demo'and sh.problemId = pr.id and sh.topicId=pg.id order by sh.problemEndTime desc;";
     public static final String PER_TOPIC_QUERY_FIRST = "select studId AS studentId,concat(s.fname,' ',s.lname) As studentName, s.userName As userName,sh.topicId,pg.description,CAST(MAX(sh.mastery) AS DECIMAL(16,2)) AS mastery from student s,studentproblemhistory sh ,problemgroup pg where s.id=sh.studId and s.classId=(:classId) and  sh.topicId = pg.id  and sh.mode != 'demo' group by sh.topicId,studId order by studId";
     public static final String PER_TOPIC_QUERY_SECOND = "select sh.topicId,sh.problemId,CAST(sh.mastery AS DECIMAL(16,2)) AS mastery,sh.effort,sh.problemEndTime,pr.name,pr.nickname, pr.statementHTML,pr.screenShotURL from studentproblemhistory sh,problem pr where sh.studId in ( select id from student where classId=(:classId)) and sh.studId=(:studId) and sh.topicId=(:topicId) and sh.mode != 'demo' and sh.problemId = pr.id order by sh.topicId,problemEndTime asc";
 
