@@ -634,8 +634,7 @@ public class BasePedagogicalModel extends PedagogicalModel implements Pedagogica
      public ProblemResponse getNextProblem(NextProblemEvent e) throws Exception {
         Problem curProb = problemSelector.selectProblem(smgr, e, lastProblemScore);
         // typically it takes 125 ms to finish the above call
-
-         ProblemResponse r=null;
+        ProblemResponse r=null;
         if (curProb != null) {
             curProb.setMode(Problem.PRACTICE);
 

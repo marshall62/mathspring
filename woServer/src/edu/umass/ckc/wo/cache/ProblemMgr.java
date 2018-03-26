@@ -166,7 +166,7 @@ public class ProblemMgr {
         String s = "select p.id, answer, animationResource, p.name, nickname," +
                 " strategicHintExists, hasVars, screenShotURL, diff_level, form," +
                 " isExternalActivity, type, video, example, p.status, p.questType," +
-                " statementHTML, imageURL, audioResource, units, problemFormat, imageFileId, audioFileId, layoutID" +
+                " statementHTML, imageURL, audioResource, units, problemFormat, imageFileId, audioFileId, layoutID, usableAsExample" +
                 " from Problem p, OverallProbDifficulty o" +
                 " where p.id=o.problemid" + problemFilter +
                 " and (status='Ready' or status='ready' or status='testable')" +

@@ -46,6 +46,8 @@ public class ChallengeModeProblemSelector extends BaseProblemSelector {
     public Problem selectProblem(SessionManager smgr, NextProblemEvent eIgnored, ProblemScore lastProblemScoreIgnored) throws Exception {
         StudentState state = smgr.getStudentState();
         List<Integer> topicProbIds = topicModel.getUnsolvedProblems();
+        if (topicProbIds.size() == 0)
+            return null;
         int nextIx = state.getCurProblemIndexInTopic();
         // THIS IS FAILING BECUASE IF They solve then you don't want to increase the index because the solved problem is thrown out
         // if they don't solve we want to increase the index.
