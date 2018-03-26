@@ -118,7 +118,7 @@ public class BaseProblemSelector implements ProblemSelector {
             topicProbIds.remove(loc);
         // now remove broken problems from the list
         for (String pidstr: brokenProblemsForThisStudent) {
-            loc = topicProbIds.indexOf(pidstr);
+            loc = topicProbIds.indexOf(Integer.parseInt(pidstr));
             if (loc != -1)
                 topicProbIds.remove(loc);
         }

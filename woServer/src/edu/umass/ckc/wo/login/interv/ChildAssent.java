@@ -30,7 +30,7 @@ public class ChildAssent extends LoginInterventionSelector {
     public void init (SessionManager smgr, PedagogicalModel pm) throws Exception {
         file = getConfigParameter2("file");
         if (file == null)
-            throw new UserException("ChildAssent expects config xml");
+            throw new UserException("ChildAssent expects config xml and a file parameter");
     }
 
 
