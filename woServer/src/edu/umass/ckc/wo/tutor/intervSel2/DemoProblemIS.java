@@ -102,10 +102,11 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
                     smgr.getStudentState().addExampleSeen(curTopic);
                 // see if there is a problem that is set as the demoProblem for the topic and use it if not -1
                 int bestDemoProbId = DbTopics.getTopicDemoProblem(smgr.getConnection(),curTopic);
-                if (bestDemoProbId == -1)
+                problem = bestDemoProbId != -1 ? ProblemMgr.getProblem(bestDemoProbId): null;
+                if (problem == null || !problem.isUsableAsExample())
+                    // o/w grab a problem from within the topic and use it as a demo
                     problem = topicSelector.getDemoProblem(curTopic);
-                // o/w grab a problem from within the topic and use it as a demo
-                else problem = ProblemMgr.getProblem(bestDemoProbId);
+
                 if (problem == null)
                     return null;
                 //  gets the solution to the problem from the hint selector and adds into the problem
@@ -116,7 +117,8 @@ public class DemoProblemIS extends NextProblemInterventionSelector {
                     !smgr.getStudentState().isExampleSeen(curTopic)) {
                 smgr.getStudentState().addExampleSeen(curTopic);
                 int bestDemoProbId = DbTopics.getTopicDemoProblem(smgr.getConnection(),curTopic);
-                if (bestDemoProbId == -1)
+                problem = bestDemoProbId != -1 ? ProblemMgr.getProblem(bestDemoProbId) : null;
+                if (problem == null || !problem.isUsableAsExample())
                     problem = topicSelector.getDemoProblem(curTopic);
                 else problem = ProblemMgr.getProblem(bestDemoProbId);
 
