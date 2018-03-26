@@ -558,9 +558,7 @@
                         <li class="huy-button huy-button--yellow" id="review_${topicId}">
                             <a href="#">Review</a>
                         </li>
-                        <li class="huy-button huy-button--brown" id="challenge_${topicId}">
-                            <a href="#">Challenge</a>
-                        </li>
+
                         </ul></td></tr>
                     </c:otherwise>
                 </c:choose>

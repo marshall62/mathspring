@@ -156,7 +156,8 @@ public class MPPTutorHandler {
 
                 smgr.getStudentModel().newProblem(state,p);
                 smgr.getStudentModel().save();
-                new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), rr, "practice",  typ, true, p.getResource(), null, false, lastProbId, this.showMPP);
+                new TutorPage(info,smgr).createTutorPageFromState(e.getElapsedTime(), 0, e.getTopicId(), rr,
+                        "practice",  typ, true, p != null ? p.getResource() : null, null, false, lastProbId, this.showMPP);
                 new TutorLogger(smgr).logMPPEvent(e,lastProbId);
             }
 
