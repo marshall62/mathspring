@@ -88,6 +88,8 @@ public class Problem implements Activity {
     private String units = null;
     private int imageFileId; // DM 1/23/18 added to point to ProblemMediaFile table
     private int audioFileId; // DM 1/23/18 added to point to ProblemMediaFile table
+    private boolean isUsableAsExample;
+
     public Problem () {}
     public Problem (int id) {
         this.id =id;
@@ -97,7 +99,7 @@ public class Problem implements Activity {
                    boolean hasStrategicHint, double diff, int[] topicIds,
                    String form, String _instructions, String type, String status, HashMap<String, ArrayList<String>> vars, String ssURL,
                    QuestType questType, String statementHTML, String imageURL, String audioResource, String units, String problemFormat,
-                   int imageFileId, int audioFileId)
+                   int imageFileId, int audioFileId, boolean usableAsExample)
     {
         this.id = id;
         this.resource = resource;
@@ -127,6 +129,7 @@ public class Problem implements Activity {
         this.imageFileId=imageFileId; // DM 1/23/18 added these two columns to Problem table which MAY point to ProblemMediaFile row
         this.audioFileId=audioFileId; // ProblemMgr will go into that table and get filenames if these values have non-negative IDs.
                                         // The values will then be used to overwrite Problem.imageURL and Problem.questionAudio
+        this.isUsableAsExample=usableAsExample;
 
     }
 
@@ -135,7 +138,7 @@ public class Problem implements Activity {
     */
 
     public Problem(int id, String resource, String answer) {
-        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null, null, -1, -1);
+        this(id,resource,answer,null,null,false,0,null,null,null,null, "ready",null, null, QuestType.multiChoice, null, null, null, null, null, -1, -1, true);
     }
 
     public static QuestType parseType(String t) {
@@ -158,7 +161,7 @@ public class Problem implements Activity {
     }
 
     public static void main(String[] args) {
-        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null, -1, -1);
+        Problem p = new Problem(1,"problem_102","c","pname","nname",false,0.4,new int[] {1,2}, "Flash","instructions are dumb", "Flash", "ready",null, null, QuestType.multiChoice, null, null, null, null, null, -1, -1, true);
         Hint h1 = new Hint(3,"hi");
         Hint h2 = new Hint(4,"there");
         List<Hint> hints = new ArrayList<Hint>();
@@ -634,6 +637,10 @@ public class Problem implements Activity {
                 return true;
         }
         return false;
+    }
+
+    public boolean isUsableAsExample() {
+        return isUsableAsExample;
     }
 
     public boolean isTestProblem() {

@@ -206,6 +206,7 @@ public class ProblemMgr {
         String audioRsc = rs.getString("audioResource");
         String units = rs.getString("units");
         String problemFormat = rs.getString("problemFormat");
+        boolean isUsableAsExample = rs.getBoolean("usableAsExample");
         int imageFileId = rs.getInt(Problem.IMAGE_FILE_ID); // DM 1/23/18 added
         if (rs.wasNull())
             imageFileId = -1;
@@ -242,7 +243,7 @@ public class ProblemMgr {
 
         Problem p = new Problem(id, resource, answer, name, nname, stratHint,
                 diff, null, form, instructions, type, status, vars, ssURL,
-                questType, statementHTML, imgURL, audioRsc, units, problemFormat, imageFileId, audioFileId); // DM 1/23/18 added imageFileId and audioFileId
+                questType, statementHTML, imgURL, audioRsc, units, problemFormat, imageFileId, audioFileId, isUsableAsExample); // DM 1/23/18 added imageFileId and audioFileId
 
         p.setExternalActivity(isExternal);
         List<Hint> hints = DbHint.getHintsForProblem(conn,id);

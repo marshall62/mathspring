@@ -33,12 +33,11 @@ import java.util.*;
 public class TopicSelectorImpl implements TopicSelector {
 
 
-    private static Logger logger = Logger.getLogger(TopicSelectorImpl.class);
     public static final int SOLVE_RECENCY_DAYS = 4;
     public static final int EXAMPLE_RECENCY_DAYS = 4;
     public static final int SOLVE_RECENCY_MS = SOLVE_RECENCY_DAYS * 24 * 60 * 60 * 1000;
     public static final int EXAMPLE_RECENCY_MS = EXAMPLE_RECENCY_DAYS * 24 * 60 * 60 * 1000;
-
+    private static Logger logger = Logger.getLogger(TopicSelectorImpl.class);
     public int classID;
     public List<Problem> probsInTopic;
 
@@ -120,19 +119,29 @@ public class TopicSelectorImpl implements TopicSelector {
 
         Problem p = ProblemMgr.getProblem(pid);
         // If the problem doesn't have hints,  its not good to use for a demo
-        if (p.getNumHints() > 0) {
+        if (p.getNumHints() > 0 && p.isUsableAsExample()) {
             smgr.getStudentState().setCurProblemIndexInTopic((probs.size()-1)/2);
             return p;
         }
-        else {   // the middle problem didn't have hints,  pick the next easiest problem until one has hints and then use it
+        else {   // the middle problem didn't have hints,  go away from the middle problem (first easier, then harder) looking for the
+            // closest one that can be a demo.
+            int offset = 1;
             do {
-                pid = probs.get(ix--);
+                pid = probs.get(ix - offset);
                 p = ProblemMgr.getProblem(pid);
-                if (p.getNumHints() > 0) {
-                    smgr.getStudentState().setCurProblemIndexInTopic((probs.size()-1)/2);
+                if (p.getNumHints() > 0 && p.isUsableAsExample()) {
+                    smgr.getStudentState().setCurProblemIndexInTopic(ix - offset);
                     return p;
                 }
-            } while (ix >= 1);
+                pid = probs.get(ix + offset);
+                p = ProblemMgr.getProblem(pid);
+                if (p.getNumHints() > 0 && p.isUsableAsExample()) {
+                    smgr.getStudentState().setCurProblemIndexInTopic(ix + offset);
+                    return p;
+                }
+                offset++;
+            } while (ix-offset > 0 && ix+offset < probs.size());
+
             return null; // can't find one.
         }
     }
