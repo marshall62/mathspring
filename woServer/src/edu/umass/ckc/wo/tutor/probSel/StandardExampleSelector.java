@@ -76,11 +76,11 @@ public class StandardExampleSelector implements ExampleSelector {
         double targetDiff = p.getDiff_level();
         List<CCStandard> standards = p.getStandards();
         List<Problem> relatedProbs = new ArrayList<Problem> ();
-        // go through all the related problems
+        // go through all the related problems that are usable as examples
         for (CCStandard s : standards) {
             List<Problem> probs = ProblemMgr.getStandardProblems(conn, s.getCode());
             for (Problem p2: probs) {
-                if (p2.getId() != targetProbId)
+                if (p2.getId() != targetProbId && p2.isUsableAsExample())
                     relatedProbs.add(p2);
             }
         }
