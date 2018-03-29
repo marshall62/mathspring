@@ -575,6 +575,15 @@ function showQuickAuthProblem (pid, solution, resource, mode, questType) {
 //            "&problemParams="+ encodeURIComponent(probParams));
 }
 
+function showTopicIntroHTML (htmlResource) {
+    hideHTMLProblem(false);
+    globals.probMode = false;
+    globals.probElapsedTime = 0;
+    globals.lastProbType = HTML_PROB_TYPE;
+    loadIframe(PROBLEM_WINDOWID, sysGlobals.problemContentPath + "/topicIntros/" + htmlResource + "/" + htmlResource+".html");
+    $(PROBLEM_WINDOWID).attr("domain", sysGlobals.problemContentDomain);
+}
+
 function showHTMLProblem (pid, solution, resource, mode) {
     hideHTMLProblem(false);
     globals.probMode = mode;
