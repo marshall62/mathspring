@@ -26,7 +26,12 @@
     </head>
 
     <body onload="quickAuthLoadProblem.requestProblemData(${problem.id}, ${sessionId}, ${elapsedTime}, ${eventCounter}, '${servletContext}', '${servletName}', ${previewMode}, ${teacherId})">
-    <div id="ProblemContainer" <c:if test="${not empty zoom}">style="transform:scale(${zoom})"</c:if>>
+    <div id="ProblemContainer"
+         <c:choose>
+             <c:when test="${not empty zoom}">style="background-color:white; transform:scale(${zoom})"</c:when>
+             <c:otherwise>style="background-color:white;"</c:otherwise>
+         </c:choose>>
+
         <div id="HintContainer" style="display: none">
             <div id="HintThumbs">
             </div>
