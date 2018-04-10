@@ -28,6 +28,7 @@ public class TutorPage {
 //    public static final String INITIAL_TUTOR_FRAME_CONTENT = "welcome.html"; // when it first comes up it has this welcome HTML content
     public static final String INITIAL_TUTOR_FRAME_CONTENT = "TutorBrain?action=SplashPage"; // show the MPP as the first iframe contents
     public static final String END_TUTOR_FRAME_CONTENT = "farewell.html"; // when it first comes up it has this welcome HTML content
+    public static final String NO_MORE_CONTENT = "noMoreProbs.html"; // when it first comes up it has this welcome HTML content
     private static Logger logger = Logger.getLogger(TutorPage.class);
     SessionManager smgr;
     private  ServletInfo info;

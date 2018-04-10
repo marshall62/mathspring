@@ -182,7 +182,8 @@ public class TopicModel extends LessonModel {
             List<Integer> probs = getUnsolvedProblems();
             if (probs == null || probs.size() <= 1)  {
                 curTopic =  topicSelector.getNextTopicWithAvailableProblems(smgr.getConnection(), curTopic, smgr.getStudentState(), smgr.getStudentModel());
-                curTopic = switchTopics(curTopic);
+                if (curTopic != -1)
+                    curTopic = switchTopics(curTopic);
             }
         }
 
