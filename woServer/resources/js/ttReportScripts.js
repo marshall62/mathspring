@@ -1198,8 +1198,16 @@ function registerAllEvents(){
                 bgcolor = '#FFB647'
             else if(td.attr('class') == 'span-info-layer-one')
                 bgcolor = '#33b5e5'
-            else
+            else if(td.attr('class') == 'span-sucess-layer-one')
                 bgcolor = '#00C851'
+            else if(td.attr('class') == 'span-danger-layer-two')
+                bgcolor = '#FF99AA'
+            else if(td.attr('class') == 'span-warning-layer-two')
+                bgcolor = '#FFD699'
+            else if(td.attr('class') == 'span-info-layer-two')
+                bgcolor = '#8ed6f0'
+            else if(td.attr('class') == 'span-sucess-layer-two')
+                bgcolor = '#4dff94'
 
         }
         var tr = $(this).closest('tr');
@@ -1673,19 +1681,27 @@ var completeDataChart;
                                 if (dataArray[1] <= 0.25) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-danger-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-danger-layer-two');
                                     }
 
                                 } else if (dataArray[1] > 0.25 && dataArray[1] < 0.5) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-warning-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-warning-layer-two');
                                     }
                                 } else if (dataArray[1] > 0.5 && dataArray[1] < 0.75) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-info-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-info-layer-two');
                                     }
                                 } else if (dataArray[1] > 0.75) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-sucess-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-sucess-layer-two');
                                     }
                                 }
                             }

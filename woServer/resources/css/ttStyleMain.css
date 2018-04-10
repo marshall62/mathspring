@@ -320,13 +320,22 @@ Span Color for Topic wise Report Legend
 background-color: #FF4766;
 
 }
+.span-danger-layer-two {
+  color: #FFFFFF;
+  background-color: #FF99AA;
+
+}
 .span-warning-layer-one {
   color: #FFFFFF;
   background-color: #FFB647;
 
 }
 
+.span-warning-layer-two {
+  color: #FFFFFF;
+  background-color: #FFD699;
 
+}
 
 .span-info-layer-one {
   color: #FFFFFF;
@@ -334,10 +343,20 @@ background-color: #FF4766;
 
 }
 
+.span-info-layer-two {
+  color: #FFFFFF;
+  background-color: #8ed6f0;
+
+}
 
 .span-sucess-layer-one {
   color: #FFFFFF;
   background-color: #00C851;
+
+}
+.span-sucess-layer-two {
+  color: #FFFFFF;
+  background-color: #4dff94;
 
 }
 
