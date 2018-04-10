@@ -154,7 +154,13 @@ m.build = function(activity, previewMode) {
             if(multiSelect) {
                 document.getElementById("submit_answer").addEventListener("click", submitMultiSelectAnswer);
             }
-            if(!previewMode) problemUtils.shuffleAnswers(!multiSelect);
+            ///////  -----------  shuffle ANSWER SHUFFLING -------------
+            // This moves the answers around with the flaw that it sends the orginal letters
+            // to the server when selections are made.  This preserves correct grading but logs
+            // the incorrect letter in the attempt eventlog entry.   E.g. if correct answer is C but
+            // this shuffles it to A,  if student clicks A, it sends C to server.   In dev mode
+            // it also shows the non-shuffled answer letter below the problem which sucks.
+            // if(!previewMode) problemUtils.shuffleAnswers(!multiSelect);
         } else {
             if(questType === "shortAnswer") {
                 document.getElementById("ShortAnswerBox").style.display = "block";
