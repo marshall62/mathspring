@@ -324,7 +324,7 @@ public class Pretest extends LoginInterventionSelector {
 //            return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
         }
         // if its a short-answer problem with an expected answer, check it
-        else if (thisProb.getAnswer() != null) {
+        else if (thisProb.getAnswer() != null && thisProb.getAnswer().trim() != "") {
             return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
         }
         // its not a question with an expected answer, so just mark it as correct
