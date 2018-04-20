@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.ttmain.ttservice.util;
 
 import edu.umass.ckc.wo.beans.Topic;
 import edu.umass.ckc.wo.cache.ProblemMgr;
+import edu.umass.ckc.wo.content.CCStandard;
 import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.DbProblem;
 import edu.umass.ckc.wo.db.DbTopics;
@@ -84,6 +85,11 @@ public class TTUtil {
                 for (Problem p : problems) {
                     if (!ids.contains("" + p.getId())) {
                         availabProblem++;
+                        if(p.getStandards().isEmpty())
+                        {
+                            CCStandard standard = new CCStandard("0.0.0.0","No Standard Associated With Problem","No Category","0","0.0.0.0");
+                            p.getStandards().add(standard);
+                        }
                         if(gradewiseProblemMap.containsKey(p.getStandards().get(0).getGrade())){
                             int numProb = gradewiseProblemMap.get(p.getStandards().get(0).getGrade());
                             numProb++;
