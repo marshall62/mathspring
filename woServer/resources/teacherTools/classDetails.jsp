@@ -432,11 +432,11 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>Only 20%-40% problems for this standard have been solved correctly on first attempt, and more than 1 hint has been seen for these problems on average</td>
+                                        <td>For more than 5 problems, only 20%-40% problems for this standard have been solved correctly on first attempt</td>
                                         <td class="span-warning-layer-one">Clusters that students found challenging</td>
                                     </tr>
                                     <tr>
-                                        <td>Less than 20% problems for this standard have been solved correctly on first attempt, and more than 1.5 hints have been seen for these problems, on average</td>
+                                        <td>For more than 5 problems, less than 20% problems for this standard have been solved correctly on first attempt</td>
                                         <td class="span-danger-layer-one">Clusters that students found really hard</td>
                                     </tr>
                                     </tbody>
@@ -512,24 +512,29 @@
                                     <thead>
                                     <tr>
                                         <th>Mastery Range</th>
-                                        <th>Grade/Color Code</th>
+                                        <th>Grade & Color Code for 2 or more problems</th>
+                                        <th>Grade/Color Code for 10 or more problems</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td>0.75 or Greater</td>
+                                        <td class="span-sucess-layer-two">Grade A (Excellent)</td>
                                         <td class="span-sucess-layer-one">Grade A (Excellent)</td>
                                     </tr>
                                     <tr>
                                         <td>Between 0.5 and 0.75</td>
+                                        <td class="span-info-layer-two">Grade B (Good)</td>
                                         <td class="span-info-layer-one">Grade B (Good)</td>
                                     </tr>
                                     <tr>
                                         <td>Between 0.25 and 0.5</td>
+                                        <td class="span-warning-layer-two">Grade C (Needs Improvement)</td>
                                         <td class="span-warning-layer-one">Grade C (Needs Improvement)</td>
                                     </tr>
                                     <tr>
                                         <td>0.25 or Less</td>
+                                        <td class="span-danger-layer-two">Grade D (Unsatisfactory)</td>
                                         <td class="span-danger-layer-one">Grade D (Unsatisfactory)</td>
                                     </tr>
                                     </tbody>
@@ -540,8 +545,8 @@
                             <div class="panel-body">
                                 <ul>
                                     <li>Each cell shows [number solved on first attempt / number problems solved] along with highest recorded "Mastery" <a title="What is Mastery?" style="cursor:pointer" rel="initialPopover"> <i class="fa fa-question-circle-o" aria-hidden="true"></i></a> value for that problem set.</li>
-                                    <li>Cell wherein students have attempted 10 or more problems are color coded.</li>
-                                    <li>Click on the cell to get the complete "Mastery Trajectory" for given student and problemset</li>
+                                    <li>Cell wherein students have attempted 2 or more problems are color coded.</li>
+                                    <li>Click on the cell to get the complete "Mastery Trajectory" for given student and problem set</li>
                                 </ul>
                             </div>
 
