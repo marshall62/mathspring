@@ -2108,6 +2108,8 @@ var completeDataChart;
                                     $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
                                 }else if(cellData <= 20 && rowData['noStudentsSeenProblem'] > 5 ){
                                     $(td).addClass('span-danger-layer-one');
+                                }else if(cellData >= 20 && cellData <= 40 && rowData['noStudentsSeenProblem'] > 5 ){
+                                    $(td).addClass('span-warning-layer-one');
                                 }
                             },"render": function ( data, type, full, meta ) {
                             return data+" %";

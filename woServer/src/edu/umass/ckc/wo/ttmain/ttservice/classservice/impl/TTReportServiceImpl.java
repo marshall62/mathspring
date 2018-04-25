@@ -937,11 +937,11 @@ public class TTReportServiceImpl implements TTReportService {
                             if (!isCorrect) {
                                 if (userInput.equalsIgnoreCase("a"))
                                     perProblemReportBeanObj.nA++;
-                            } else if (userInput.equalsIgnoreCase("b")) {
+                                    else if (userInput.equalsIgnoreCase("b"))
                                     perProblemReportBeanObj.nB++;
-                            } else if (userInput.equalsIgnoreCase("c")) {
+                                    else if (userInput.equalsIgnoreCase("c"))
                                     perProblemReportBeanObj.nC++;
-                            } else if (userInput.equalsIgnoreCase("d")) {
+                                    else if (userInput.equalsIgnoreCase("d"))
                                     perProblemReportBeanObj.nD++;
                             }
                         }
