@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="woServer:war">
+    <output-path>$PROJECT_DIR$/woServer/release</output-path>
+    <root id="archive" name="${warfile}.war">
+      <element id="artifact" artifact-name="woServer:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -24,10 +24,10 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/resources" relative="/" />
+          <root url="file://$MODULE_DIR$/web/META-INF" relative="META-INF" />
+          <root url="file://$MODULE_DIR$/${webdir}/WEB-INF/classes" relative="WEB-INF/classes" />
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="web" name="WebBeta">
@@ -39,7 +39,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/resources" relative="/" />
           <root url="file://$MODULE_DIR$/web/META-INF" relative="META-INF" />
-          <root url="file://$MODULE_DIR$/webBeta/WEB-INF/classes" relative="WEB-INF/classes" />
+          <root url="file://$MODULE_DIR$/${webdir}/WEB-INF/classes" relative="WEB-INF/classes" />
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
       </configuration>
@@ -58,8 +58,11 @@
         </sourceRoots>
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration />
+    </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/release/classes" />
     <output-test url="file://$MODULE_DIR$/release/test-classes" />
     <content url="file://$MODULE_DIR$">
