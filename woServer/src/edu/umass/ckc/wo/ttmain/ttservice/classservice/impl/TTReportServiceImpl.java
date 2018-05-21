@@ -311,6 +311,8 @@ public class TTReportServiceImpl implements TTReportService {
                     studentRecordValues.add(mappedRow.getString("standardID"));
                     studentRecordValues.add(mappedRow.getString("diff_level"));
                     studentRecordValues.add(mappedRow.getString("mastery"));
+                    studentRecordValues.add(mappedRow.getString("topicId"));
+                    studentRecordValues.add(mappedRow.getString("description"));
                     studentData.put(mappedRow.getString("id"), studentRecordValues);
 
                 }

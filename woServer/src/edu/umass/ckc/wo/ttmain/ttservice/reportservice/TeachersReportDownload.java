@@ -481,6 +481,8 @@ public class TeachersReportDownload extends AbstractXlsView {
             Cell childCellHeaderStandard = header.createCell(17);
             Cell childCellHeaderDifficulty = header.createCell(18);
             Cell childCellHeaderMastery = header.createCell(19);
+            Cell childCellHeaderTopicID = header.createCell(20);
+            Cell childCellHeaderTopicDescription = header.createCell(21);
 
             studentNameID.setCellValue("Student ID");
             studentNameCell.setCellValue("Student Name");
@@ -500,6 +502,8 @@ public class TeachersReportDownload extends AbstractXlsView {
             childCellHeaderStandard.setCellValue("Standard");
             childCellHeaderDifficulty.setCellValue("Difficulty");
             childCellHeaderMastery.setCellValue("Mastery");
+            childCellHeaderTopicID.setCellValue("Problem Set ID");
+            childCellHeaderTopicDescription.setCellValue("Problem Set");
 
             AtomicInteger atomicInteger = new AtomicInteger(4);
             detailDataMap.forEach((key, dataObject) -> {
@@ -549,6 +553,10 @@ public class TeachersReportDownload extends AbstractXlsView {
                     childCellDifficultyValue.setCellValue(studentVal.get(15));
                     Cell childCellMastery = dataRow.createCell(19);
                     childCellMastery.setCellValue(studentVal.get(16));
+                    Cell childCellTopicID = dataRow.createCell(20);
+                    childCellTopicID.setCellValue(studentVal.get(17));
+                    Cell childCellTopicDescription = dataRow.createCell(21);
+                    childCellTopicDescription.setCellValue(studentVal.get(18));
                 });
 
             });
