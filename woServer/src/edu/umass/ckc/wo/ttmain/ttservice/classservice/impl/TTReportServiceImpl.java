@@ -25,14 +25,13 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.CharacterData;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -189,6 +188,38 @@ public class TTReportServiceImpl implements TTReportService {
         return null;
     }
 
+
+    @Override
+    public Map<String, List<String[]>> generateEmotionsReportForDownload(String teacherId, String classId) throws TTCustomException {
+        List<ClassStudents> classStudents = generateClassReportPerStudent(teacherId, classId);
+        Map<String, List<String[]>> finalMapValues = new HashMap<>();
+        classStudents.forEach( classStudent ->{
+            SqlParameterSource namedParameters = new MapSqlParameterSource("studId", classStudent.getStudentId());
+            List<String[]> emotionReportValues =   namedParameterJdbcTemplate.query(TTUtil.EMOTION_REPORT_DOWNLOAD, namedParameters, (ResultSet mappedrow) -> {
+                List<String[]> addList = new ArrayList<>();
+                while (mappedrow.next()) {
+                    String[] finalValues = new String[13];
+                    finalValues[0] = (mappedrow.getString("studId"));
+                    finalValues[1] = (mappedrow.getString("userName"));
+                    finalValues[2] = (mappedrow.getString("problemId"));
+                    finalValues[3] = (mappedrow.getString("curTopicId"));
+                    finalValues[4] = (mappedrow.getString("description"));
+                    finalValues[5] = (mappedrow.getString("time"));
+                    finalValues[6] = (mappedrow.getString("name"));
+                    finalValues[7] = (mappedrow.getString("nickname"));
+                    finalValues[8] = (mappedrow.getString("standardID"));
+                    finalValues[9] = (mappedrow.getString("diff_level"));
+                    parseEmotionValues(mappedrow.getString("userInput"),finalValues);
+                    addList.add(finalValues);
+                }
+                return addList;
+            });
+            finalMapValues.put(classStudent.getStudentId(),emotionReportValues);
+        });
+        return finalMapValues;
+    }
+
+
     @Override
     public Map<String,PerClusterObjectBean> generatePerCommonCoreClusterReport(String classId) {
         Map<String,PerClusterObjectBean> completeDataMap = new LinkedHashMap<>();
@@ -251,6 +282,22 @@ public class TTReportServiceImpl implements TTReportService {
             studentEmotionMap.put(studentId, documentXmlEmotion);
         });
         return studentEmotionMap;
+    }
+
+    private void parseEmotionValues(String userInput, String[] emotionMapValues) {
+        try {
+        Document doc = parseXmlFromString(userInput);
+        Node emotionNode = doc.getFirstChild().getFirstChild();
+        Element emotionElement = (Element) emotionNode;
+        String emotion = emotionElement.getAttribute("name");
+        String emotionLevel = emotionElement.getAttribute("level");
+        String studentCommentsFrustration = getCharacterDataFromElement(emotionElement);
+        emotionMapValues[10] = (emotion);
+        emotionMapValues[11] = (emotionLevel);
+        emotionMapValues[12] = (studentCommentsFrustration);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

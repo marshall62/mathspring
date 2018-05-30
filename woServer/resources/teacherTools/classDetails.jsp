@@ -382,10 +382,28 @@
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <label style="padding-right: 10px;">Download student data, many rows per student</label>
-                                <a  href="${pageContext.request.contextPath}/tt/tt/downLoadPerStudentReport?teacherId=${teacherId}&classId=${classInfo.classid}" data-toggle="tooltip" title="Download this report" class="downloadPerStudentReport" aria-expanded="true" aria-controls="collapseThree">
-                                    <i class="fa fa-download fa-2x" aria-hidden="true"></i>
-                                </a>
+                                <ul>
+                                    <li>
+                                        <label style="padding-right: 10px;">Download student data, many rows per
+                                            student</label>
+                                        <a href="${pageContext.request.contextPath}/tt/tt/downLoadPerStudentReport?teacherId=${teacherId}&classId=${classInfo.classid}"
+                                           data-toggle="tooltip" title="Download this report"
+                                           class="downloadPerStudentReport" aria-expanded="true"
+                                           aria-controls="collapseThree">
+                                            <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <label style="padding-right: 10px;">Download Emotion data, many rows per
+                                            student</label>
+                                        <a href="${pageContext.request.contextPath}/tt/tt/downloadStudentEmotions?teacherId=${teacherId}&classId=${classInfo.classid}"
+                                           data-toggle="tooltip" title="Download this report"
+                                           class="downloadPerStudentReport" aria-expanded="true"
+                                           aria-controls="collapseThree">
+                                            <i class="fa fa-download fa-2x" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
 
                             <div class="panel-body">
