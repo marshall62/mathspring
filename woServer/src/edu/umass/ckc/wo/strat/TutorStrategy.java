@@ -56,9 +56,9 @@ public class TutorStrategy extends Pedagogy {
         this.tutor_sc = tutor_sc;
     }
 
-    public String getStudentModelClass () {
-        return tutor_sc.getParameterValue("studentModelClass");
-    }
+
+
+
 
     public String getLearningCompanionCharacter () {
         return lc.getCharacter();
@@ -81,27 +81,41 @@ public class TutorStrategy extends Pedagogy {
     }
 
     public String getLearningCompanionClass () {
-        return this.lc.getClassName();
+        if (this.lc != null)
+            return this.lc.getClassName();
+        else return null;
+    }
+
+
+    public String getPedagogicalModelClass () {
+        return tutor_sc.getParameterValue("pedagogicalModelClass", TutorSCParamDefaults.PEDAGOGICAL_MODEL);
+    }
+
+    public String getStudentModelClass () {
+        return tutor_sc.getParameterValue("studentModelClass", TutorSCParamDefaults.STUDENT_MODEL);
     }
 
     public String getProblemSelectorClass () {
-        return this.tutor_sc.getParameterValue("problemSelectorClass");
+
+        return this.tutor_sc.getParameterValue("problemSelectorClass", TutorSCParamDefaults.PROBLEM_SELECTOR );
     }
 
     public String getReviewModeProblemSelectorClass() {
-        return this.tutor_sc.getParameterValue("reviewModeProblemSelectorClass");
+        return this.tutor_sc.getParameterValue("reviewModeProblemSelectorClass",TutorSCParamDefaults.REVIEW_PROBLEM_SELECTOR);
     }
 
     public String getChallengeModeProblemSelectorClass() {
-        return this.tutor_sc.getParameterValue("challengeModeProblemSelectorClass");
+        return this.tutor_sc.getParameterValue("challengeModeProblemSelectorClass", TutorSCParamDefaults.CHALLENGE_PROBLEM_SELECTOR);
     }
 
     public String getHintSelectorClass() {
-        return this.tutor_sc.getParameterValue("hintSelectorClass");
+        return this.tutor_sc.getParameterValue("hintSelectorClass", TutorSCParamDefaults.HINT_SELECTOR_SELECTOR);
     }
 
     public boolean hasRuleset () {
-        return this.lc.getRulesets() != null;
+        if (this.lc != null)
+            return this.lc.getRulesets() != null;
+        return false;
     }
 
     public List<LCRuleset> getLearningCompanionRuleSets () {

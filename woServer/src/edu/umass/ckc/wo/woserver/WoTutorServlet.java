@@ -70,6 +70,8 @@ public class WoTutorServlet extends BaseServlet {
 
             String host = DbUtil.getHost(connection);
             String emailLogFilename = servletConfig.getInitParameter(Names.EMAIL_LOG_FILENAME);
+            String x = servletConfig.getInitParameter("useStrategyCaching");
+            Settings.useStrategyCaching = Boolean.parseBoolean(x);
             if (emailLogFilename != null)
                 Settings.emailLogFile = new File(emailLogFilename);
             System.out.println("Db Host: " + host);

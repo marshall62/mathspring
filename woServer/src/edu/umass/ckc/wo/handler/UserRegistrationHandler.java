@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.handler;
 
 
 import edu.umass.ckc.wo.admin.PedagogyAssigner;
+import edu.umass.ckc.wo.admin.StrategyAssigner;
 import edu.umass.ckc.wo.db.DbUser;
 import edu.umass.ckc.wo.db.DbClass;
 import edu.umass.ckc.wo.event.admin.*;
@@ -9,6 +10,7 @@ import edu.umass.ckc.wo.html.admin.*;
 import ckc.servlet.servbase.ServletEvent;
 import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.smgr.User;
+import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.email.Emailer;
 import edu.umass.ckc.wo.util.ServletURI;
@@ -287,11 +289,14 @@ public class UserRegistrationHandler {
         DbUser.updateStudentClass(conn, e.getStudId(), e.getClassId());
         User stud = DbUser.getStudent(conn,e.getStudId());
         ClassInfo classInfo = DbClass.getClass(conn,e.getClassId());
-        // Now that the student is in a class, he is assigned a Pedagogy from one of the pedagogies
+        // Now that the student is in a class, he is assigned a strategy or a pedagogy from one
         // that the class uses.
-        int pedId = PedagogyAssigner.assignPedagogy(conn,e.getStudId(), e.getClassId());
-        // store the pedagogy id in the student table row for this user.
-        DbUser.setStudentPedagogy(conn,e.getStudId(),pedId);
+        TutorStrategy strat = StrategyAssigner.assignStrategy(conn,e.getStudId(),e.getClassId());
+        if (strat == null) {
+            int pedId = PedagogyAssigner.assignPedagogy(conn, e.getStudId(), e.getClassId());
+            // store the pedagogy id in the student table row for this user.
+            DbUser.setStudentPedagogy(conn, e.getStudId(), pedId);
+        }
         req.setAttribute("userName", stud.getUname());
         req.setAttribute("fname", stud.getFname());
         req.setAttribute("lname", stud.getLname());

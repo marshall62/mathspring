@@ -109,6 +109,7 @@ public class Settings {
     public static boolean sendStudentStatusEmail = false;
 
     public static int interleavedTopicID;  // id of a problemGroup row in the db with the description Interleaved Problem Set.
+    public static boolean useStrategyCaching = false;
 
     public static String surveyDir;
     public static String surveyURI;
