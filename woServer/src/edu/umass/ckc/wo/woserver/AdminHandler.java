@@ -19,6 +19,7 @@ import ckc.servlet.servbase.ServletEvent;
 import ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.content.PrePostProblemDefn;
 import edu.umass.ckc.wo.db.DbPrePost;
+import edu.umass.ckc.wo.strat.StrategyCache;
 import edu.umass.ckc.wo.tutor.Settings;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
@@ -120,6 +121,12 @@ public class AdminHandler {
             disp.forward(servletRequest,servletResponse);
             logger.info("<< JSP: " + quickAuthJSP);
             return false;
+        }
+        else if (e instanceof AdminFlushStrategyCacheEvent) {
+            StrategyCache.getInstance().flush();
+        }
+        else if (e instanceof AdminFlushSingleStrategyFromCacheEvent) {
+            StrategyCache.getInstance().flushStrategy(((AdminFlushSingleStrategyFromCacheEvent) e).getStrategyId());
         }
         if (Settings.useAdminServletSession && !(e instanceof UserRegistrationEvent)) {
             HttpSession sess = servletRequest.getSession(false);
@@ -293,9 +300,7 @@ public class AdminHandler {
             new TutorAdminHandler().processEvent(servletRequest, servletResponse, e, conn);
             return false;
         }
-        else if (e instanceof AdminFlushStrategyCacheEvent) {
 
-        }
 
         else
             throw new UserException("Unknown event " + e);

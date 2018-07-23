@@ -44,4 +44,15 @@ public class StrategyCache {
     public void flush () {
         cache = new HashMap<Integer,TutorStrategy>();
     }
+
+    /**
+     * Allows the removal of a single strategy from the cache.  This enables the msadmin tool to flush individual
+     * strategies so that changes can be made to the live system.
+     * @param strategyId
+     */
+    public void flushStrategy (int strategyId) {
+        cache.remove(strategyId);
+    }
+
+
 }
