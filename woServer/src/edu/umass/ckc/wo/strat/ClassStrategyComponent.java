@@ -1,5 +1,6 @@
 package edu.umass.ckc.wo.strat;
 
+import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelector;
 import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class ClassStrategyComponent {
     public void addInterventionSelector(InterventionSelectorSpec isel) {
         this.interventionSelectors.add(isel);
     }
+
+    public void setInterventionSelectors(List<InterventionSelectorSpec> specs) { this.interventionSelectors = specs; }
 
     public void setParams(List<SCParam> params) {
         this.params = params;
@@ -60,5 +63,12 @@ public class ClassStrategyComponent {
                 return p.getValue();
         }
         return null;
+    }
+
+    public String getParameterValue(String name, String defaultVal) {
+        String v = getParameterValue(name);
+        if (v == null)
+            return defaultVal;
+        else return v;
     }
 }

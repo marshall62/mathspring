@@ -24,8 +24,8 @@
 
     <context-param>
         <param-name>host</param-name>
-        <!--<param-value>rose.cs.umass.edu</param-value>-->
-        <param-value>tutor.mathspring.org</param-value>
+        <param-value>rose.cs.umass.edu</param-value>
+        <!--<param-value>tutor.mathspring.org</param-value>-->
         <!--<param-value>cadmium.cs.umass.edu</param-value>-->
     </context-param>
     <!--
@@ -116,6 +116,11 @@
         <init-param>
             <param-name>externalActivityPercentage</param-name>
             <param-value>15.0</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>useStrategyCaching</param-name>
+            <param-value>true</param-value>
         </init-param>
 
         <init-param>

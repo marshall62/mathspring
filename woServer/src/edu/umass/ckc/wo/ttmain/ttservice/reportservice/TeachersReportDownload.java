@@ -6,6 +6,8 @@ import edu.umass.ckc.wo.ttmain.ttmodel.PerClusterObjectBean;
 import edu.umass.ckc.wo.ttmain.ttmodel.PerProblemReportBean;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.*;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
 
@@ -34,6 +36,80 @@ public class TeachersReportDownload extends AbstractXlsView {
             buildPerClusterReport(map, workbook, httpServletRequest, httpServletResponse);
         else if(reportType.equals("studentInfoDownload"))
             buildStudentTagsForDownload(map, workbook, httpServletRequest, httpServletResponse);
+        else if(reportType.equals("perStudentEmotion"))
+            buildEmotionReportForDownload(map, workbook, httpServletRequest, httpServletResponse);
+    }
+
+    private void buildEmotionReportForDownload(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        try {
+            String classId = (String) map.get("classId");
+            CreationHelper helper = workbook.getCreationHelper();
+            httpServletResponse.setContentType("application/vnd.ms-excel");
+            httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"student_emotions" + classId + ".xls\"");
+            Map<String, List<String[]>> emotionReportForDownload = (Map<String, List<String[]>>) map.get("dataForEmotionReport");
+            AtomicInteger atomicIntegerForHeaderForData = new AtomicInteger(4);
+            Sheet sheet = workbook.createSheet(classId);
+            Row header = sheet.createRow(3);
+            Cell studentIdHeader = header.createCell(3);
+            studentIdHeader.setCellValue("Student ID");
+            Cell userNameHeader = header.createCell(4);
+            userNameHeader.setCellValue("UserName");
+            Cell problemIDHeader = header.createCell(5);
+            problemIDHeader.setCellValue("After  Problem");
+            Cell topicIdHeader = header.createCell(6);
+            topicIdHeader.setCellValue("Topic ID");
+            Cell topicDescriptionHeader = header.createCell(7);
+            topicDescriptionHeader.setCellValue("Topic Description");
+            Cell timeHeader = header.createCell(8);
+            timeHeader.setCellValue("Timestamp");
+            Cell problemNameHeader = header.createCell(9);
+            problemNameHeader.setCellValue("Problem Name");
+            Cell problemNickName = header.createCell(10);
+            problemNickName.setCellValue("Problem Nick Name");
+            Cell standardIDHeader = header.createCell(11);
+            standardIDHeader.setCellValue("Standard ID");
+            Cell diffLevel = header.createCell(12);
+            diffLevel.setCellValue("Difficulty Level");
+            Cell emotionNameHeader = header.createCell(13);
+            emotionNameHeader.setCellValue("Emotion Recorded");
+            Cell emotionValuesHeader = header.createCell(14);
+            emotionValuesHeader.setCellValue("Emotion Level");
+            Cell emotionCOmmentsHeader = header.createCell(15);
+            emotionCOmmentsHeader.setCellValue("Emotion Comments");
+            emotionReportForDownload.forEach((student, emotionValues) -> {
+                emotionValues.forEach(emotionArray ->{
+                    Row dataRow = sheet.createRow(atomicIntegerForHeaderForData.getAndIncrement());
+                    Cell studentId = dataRow.createCell(3);
+                    studentId.setCellValue(emotionArray[0]);
+                    Cell userName = dataRow.createCell(4);
+                    userName.setCellValue(emotionArray[1]);
+                    Cell problemID = dataRow.createCell(5);
+                    problemID.setCellValue(emotionArray[2]);
+                    Cell topicId = dataRow.createCell(6);
+                    topicId.setCellValue(emotionArray[3]);
+                    Cell topicDescription = dataRow.createCell(7);
+                    topicDescription.setCellValue(emotionArray[4]);
+                    Cell time = dataRow.createCell(8);
+                    time.setCellValue(emotionArray[5]);
+                    Cell problemName = dataRow.createCell(9);
+                    problemName.setCellValue(emotionArray[6]);
+                    Cell problemNickNameValues = dataRow.createCell(10);
+                    problemNickNameValues.setCellValue(emotionArray[7]);
+                    Cell standardID = dataRow.createCell(11);
+                    standardID.setCellValue(emotionArray[8]);
+                    Cell diffLevelValues = dataRow.createCell(12);
+                    diffLevelValues.setCellValue(emotionArray[9]);
+                    Cell emotionName = dataRow.createCell(13);
+                    emotionName.setCellValue(emotionArray[10]);
+                    Cell emotionValue = dataRow.createCell(14);
+                    emotionValue.setCellValue(emotionArray[11]);
+                    Cell emotionComments = dataRow.createCell(15);
+                    emotionComments.setCellValue(emotionArray[12]);
+                });
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void buildStudentTagsForDownload(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
@@ -478,6 +554,11 @@ public class TeachersReportDownload extends AbstractXlsView {
             Cell childCellExampleSeen = header.createCell(14);
             Cell childCellVideosSeen = header.createCell(15);
             Cell childCellHeaderEffort = header.createCell(16);
+            Cell childCellHeaderStandard = header.createCell(17);
+            Cell childCellHeaderDifficulty = header.createCell(18);
+            Cell childCellHeaderMastery = header.createCell(19);
+            Cell childCellHeaderTopicID = header.createCell(20);
+            Cell childCellHeaderTopicDescription = header.createCell(21);
 
             studentNameID.setCellValue("Student ID");
             studentNameCell.setCellValue("Student Name");
@@ -494,6 +575,11 @@ public class TeachersReportDownload extends AbstractXlsView {
             childCellExampleSeen.setCellValue("Effort");
             childCellVideosSeen.setCellValue("# of video seen");
             childCellHeaderEffort.setCellValue("# of example seen");
+            childCellHeaderStandard.setCellValue("Standard");
+            childCellHeaderDifficulty.setCellValue("Difficulty");
+            childCellHeaderMastery.setCellValue("Mastery");
+            childCellHeaderTopicID.setCellValue("Problem Set ID");
+            childCellHeaderTopicDescription.setCellValue("Problem Set");
 
             AtomicInteger atomicInteger = new AtomicInteger(4);
             detailDataMap.forEach((key, dataObject) -> {
@@ -537,6 +623,16 @@ public class TeachersReportDownload extends AbstractXlsView {
                     childCellExampleSeenValue.setCellValue(studentVal.get(13));
                     Cell childCellVideoValue = dataRow.createCell(16);
                     childCellVideoValue.setCellValue(studentVal.get(12));
+                    Cell childCellStandardsValue = dataRow.createCell(17);
+                    childCellStandardsValue.setCellValue(studentVal.get(14));
+                    Cell childCellDifficultyValue = dataRow.createCell(18);
+                    childCellDifficultyValue.setCellValue(studentVal.get(15));
+                    Cell childCellMastery = dataRow.createCell(19);
+                    childCellMastery.setCellValue(studentVal.get(16));
+                    Cell childCellTopicID = dataRow.createCell(20);
+                    childCellTopicID.setCellValue(studentVal.get(17));
+                    Cell childCellTopicDescription = dataRow.createCell(21);
+                    childCellTopicDescription.setCellValue(studentVal.get(18));
                 });
 
             });

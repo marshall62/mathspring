@@ -11,6 +11,8 @@ import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.tutormeta.Intervention;
+import edu.umass.ckc.wo.woserver.WoTutorServlet;
+import org.apache.log4j.Logger;
 import org.jdom.Element;
 
 import javax.servlet.http.HttpServletRequest;
@@ -139,6 +141,7 @@ public class Pretest extends LoginInterventionSelector {
     private static final String SURVEY_URI = "surveyURI";
     private static final String JSP = "pretestQuestion.jsp";
     private static final String END_SURVEY_JSP = "endPretest.jsp";
+    private static Logger logger = Logger.getLogger(Pretest.class);
     protected int testId;
     protected int classId;
     protected int numProbsInTest;
@@ -324,7 +327,7 @@ public class Pretest extends LoginInterventionSelector {
 //            return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
         }
         // if its a short-answer problem with an expected answer, check it
-        else if (thisProb.getAnswer() != null) {
+        else if (thisProb.getAnswer() != null && thisProb.getAnswer().trim() != "") {
             return thisProb.getAnswer().toLowerCase().trim().equals(userAnswer.toLowerCase().trim());
         }
         // its not a question with an expected answer, so just mark it as correct

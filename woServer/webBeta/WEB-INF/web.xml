@@ -24,8 +24,8 @@
 
     <context-param>
         <param-name>host</param-name>
-        <!--<param-value>rose.cs.umass.edu</param-value>-->
-        <param-value>tutor.mathspring.org</param-value>
+        <param-value>rose.cs.umass.edu</param-value>
+        <!--<param-value>tutor.mathspring.org</param-value>-->
         <!--<param-value>cadmium.cs.umass.edu</param-value>-->
     </context-param>
     <!--
@@ -55,7 +55,7 @@
 
     <context-param>
         <param-name>webContentPath</param-name>
-        <param-value>http://tutor.mathspring.org/mathspring/mscontent/</param-value>
+        <param-value>http://rose.cs.umass.edu/mathspring/mscontent/</param-value>
     </context-param>
 
     <!--YOU MUST SET THESE PARAMS TO BE APPROPRIATE FOR YOUR MACHINE.   You must reference the Flash
@@ -116,6 +116,10 @@
         <init-param>
             <param-name>externalActivityPercentage</param-name>
             <param-value>15.0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>useStrategyCaching</param-name>
+            <param-value>true</param-value>
         </init-param>
 
         <init-param>

@@ -1198,8 +1198,16 @@ function registerAllEvents(){
                 bgcolor = '#FFB647'
             else if(td.attr('class') == 'span-info-layer-one')
                 bgcolor = '#33b5e5'
-            else
+            else if(td.attr('class') == 'span-sucess-layer-one')
                 bgcolor = '#00C851'
+            else if(td.attr('class') == 'span-danger-layer-two')
+                bgcolor = '#FF99AA'
+            else if(td.attr('class') == 'span-warning-layer-two')
+                bgcolor = '#FFD699'
+            else if(td.attr('class') == 'span-info-layer-two')
+                bgcolor = '#8ed6f0'
+            else if(td.attr('class') == 'span-sucess-layer-two')
+                bgcolor = '#4dff94'
 
         }
         var tr = $(this).closest('tr');
@@ -1673,19 +1681,27 @@ var completeDataChart;
                                 if (dataArray[1] <= 0.25) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-danger-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-danger-layer-two');
                                     }
 
                                 } else if (dataArray[1] > 0.25 && dataArray[1] < 0.5) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-warning-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-warning-layer-two');
                                     }
                                 } else if (dataArray[1] > 0.5 && dataArray[1] < 0.75) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-info-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-info-layer-two');
                                     }
                                 } else if (dataArray[1] > 0.75) {
                                     if (dataArray[2] >= 10) {
                                         $(td).addClass('span-sucess-layer-one');
+                                    }else if(dataArray[2] < 10 && dataArray[2] >= 2){
+                                        $(td).addClass('span-sucess-layer-two');
                                     }
                                 }
                             }
@@ -1935,32 +1951,32 @@ var completeDataChart;
                         var clusterCCName = full['clusterCCName'];
                         return "<a style='cursor:pointer' rel='popoverCluster' data-content='"+clusterCCName+"'>" + data + "</a>";
                     },"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20 ) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['noOfProblemsInCluster'] >= 5 ) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 ) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['noOfProblemsInCluster'] >= 5 ) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
                     { "title": "# of problems of this kind encountered", "name" : "noOfProblemsInCluster" , "targets" : [1],"render": function ( data, type, full, meta ) {
                         return '<label style="width: 50%;">'+data+'</label><a  class="getProblemDetailsPerCluster" aria-expanded="true" aria-controls="collapseOne"><i class="glyphicon glyphicon-menu-down"></i></a>';
                     },"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20 ) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['noOfProblemsInCluster'] >= 5 ) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['noOfProblemsInCluster'] >= 5 ) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
                     { "title": "% solved in the first attempt", "name" : "noOfProblemsonFirstAttempt","targets" : [2],"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['noOfProblemsInCluster'] >= 5) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['noOfProblemsInCluster'] >= 5) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     } },
                     { "title": "Avg ratio of hint requested", "name" : "totalHintsViewedPerCluster","targets" : [3],"createdCell": function (td, cellData, rowData, row, col) {
-                        if (rowData['noOfProblemsonFirstAttempt'] < 20) {
+                        if (rowData['noOfProblemsonFirstAttempt'] < 20 && rowData['noOfProblemsInCluster'] >= 5) {
                             $(td).addClass('span-danger-layer-one');
-                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 ) {
+                        } else if (rowData['noOfProblemsonFirstAttempt'] > 20 && rowData['noOfProblemsonFirstAttempt'] <  40 && rowData['noOfProblemsInCluster'] >= 5) {
                             $(td).addClass('span-warning-layer-one');
                         }
                     }},
@@ -2092,6 +2108,8 @@ var completeDataChart;
                                     $(td).html(cellData +"&nbsp;&nbsp;<i class='fa fa-thumbs-up' aria-hidden='true'></i>");
                                 }else if(cellData <= 20 && rowData['noStudentsSeenProblem'] > 5 ){
                                     $(td).addClass('span-danger-layer-one');
+                                }else if(cellData >= 20 && cellData <= 40 && rowData['noStudentsSeenProblem'] > 5 ){
+                                    $(td).addClass('span-warning-layer-one');
                                 }
                             },"render": function ( data, type, full, meta ) {
                             return data+" %";

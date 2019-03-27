@@ -72,7 +72,7 @@ public class WoLoginServlet extends BaseServlet {
         LoginServletAction action = ActionFactory.buildAction(params);
         ServletInfo servletInfo = new ServletInfo(servletContext,conn,request,response,params,servletOutput,hostPath,contextPath,this.getServletName());
 
-        logger.info(">>" + params.toString());
+        logger.debug(">>" + params.toString());
         // after the user/pw has been accepted all the other actions are LoginEvent or LoginInterventionInput
 //        if (action instanceof LoginEvent)   {
 //            LoginSequence ls = new LoginSequence(servletInfo,params.getInt("sessionId"));
@@ -118,6 +118,7 @@ public class WoLoginServlet extends BaseServlet {
                 servletInfo.getRequest().setAttribute("sessionId",smgr.getSessionNum());
                 RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(interv.getView());
                 disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
+                logger.debug("<< forwarding to JSP " + interv.getView() );
                 return false;
             }
             // This is a follow-up intervention being returned by the original intervention.  We need to handle it with LoginSequence.
@@ -137,6 +138,7 @@ public class WoLoginServlet extends BaseServlet {
             // WHen the login fails it is processed by forwarding to a JSP, so just return false because a page is already generated
             // that may ask the user to try again or to proceed by killing existing sessions.
             if (lr.isForwardedToJSP()) {
+                logger.debug("<< forwarded to login JSP");
                 return false;
             }
             // When login succeeds, it is processed here
