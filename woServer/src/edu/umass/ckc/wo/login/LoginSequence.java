@@ -5,6 +5,7 @@ import edu.umass.ckc.wo.config.LoginXML;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.wo.login.interv.LoginIntervention;
 import edu.umass.ckc.wo.login.interv.LoginInterventionSelector;
+import edu.umass.ckc.wo.login.interv.Pretest;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
@@ -14,6 +15,7 @@ import edu.umass.ckc.wo.tutor.intervSel2.InterventionSelectorSpec;
 import edu.umass.ckc.wo.tutor.model.InterventionGroup;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
 import edu.umass.ckc.wo.woserver.ServletInfo;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import java.sql.Connection;
@@ -33,6 +35,7 @@ public class LoginSequence {
     public static final String SERVLET_CONTEXT = "servletContext";
     public static final String SERVLET_NAME = "servletName";
     public static final String SESSION_ID = "sessionId";
+    private static Logger logger = Logger.getLogger(LoginSequence.class);
     private SessionManager smgr;
     private PedagogicalModel pedagogicalModel;
     private InterventionGroup interventionGroup;
@@ -111,12 +114,14 @@ public class LoginSequence {
             servletInfo.getRequest().setAttribute(SERVLET_NAME,servletInfo.getServletName());
             servletInfo.getRequest().setAttribute(SESSION_ID,smgr.getSessionNum());
             RequestDispatcher disp = servletInfo.getRequest().getRequestDispatcher(loginJSP);
+            logger.debug("<< forward to JSP " + loginJSP);
             disp.forward(servletInfo.getRequest(),servletInfo.getResponse());
         }
         else {
             // At the end of the login sequence, remove any state in interventions that were specified as ONCE_PER_SESSION
             // so that the next login will run them again.
             clearInterventionState();
+            logger.debug("<< Landing page");
             new LandingPage(servletInfo,smgr).handleRequest();
         }
     }

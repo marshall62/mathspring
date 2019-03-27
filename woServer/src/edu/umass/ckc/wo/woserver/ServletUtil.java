@@ -103,7 +103,7 @@ public class ServletUtil {
         Settings.html5ProblemURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
                 servletContext.getContextPath(),Settings.webContentPath,Settings.html5Probs);
 
-        Settings.surveyDir = "/surveys"; // the dir that holds surveyq_xxx dirs that contain images for survey questions
+        Settings.surveyDir = "surveys"; // the dir that holds surveyq_xxx dirs that contain images for survey questions
 
         Settings.surveyURI = ServletUtil.getURIForEnvironment(Settings.isDevelopmentEnv,Settings.host,Settings.port,
                 servletContext.getContextPath(),Settings.webContentPath,Settings.surveyDir);

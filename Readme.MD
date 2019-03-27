@@ -7,29 +7,112 @@ that makes up the client side.
 
 The project is set up to work with Intellij IDEA 2016 Ultimate edition.
 
-The file woServer/META-INF/context.xml is included but contains incorrect user/password to our public database.
-If you are using your own database, this file should be modified to contain the correct info for the localhost version
-of mysql.
+The web/META-INF has not been included in this repository because it contains
+the context.xml which has database user names and passwords.  More explanation of
+this is given in step 5 below.
 
-There is a large amount of math content that is not part of this repo.  You can still develop and run the tutor
-without it but if you need to see math problems as part of your testing, then you may need this.
-It can be downloaded from a shared
-google drive and unzipped in your woServer/webResources folder so that you get a result like:
- /woServer/webResources/mscontent/...
- To get access to this content you need to email marshall@cs.umass.edu so that I can share the drive with you.
+There is a large amount of math content that is also not part of this repo.  You can still develop and run the tutor
+without it but if you need to see math problems as part of your testing, then you will need to get this.
+That is explained below in step 6.
 
 Many IntelliJ files have been submitted, and this code is easiest to work with in IntelliJ.
 
 ---INSTALLATION INSTRUCTIONS---
 
-1. Fork the repository on Github, and clone the forked repository under your user.
-    ADMINS: Clone the repository on your local machine.
-   - Git Bash
+1. If you are person who wants to do a project based on mathspring with the possibility of having your
+changes added to the system, fork the repository on Github, and clone the forked repository under your user.
+You will then need to keep track of the upstream branch to make sure you get 
+fixes that are being added as you work on your own branch.  At some point you
+may submit a pull request and your code will be reviewed and potentially integrated.
+It will go smoother for you if you make sure your commits are small and commented.
+
+Mathspring developers: Clone the repository on your local machine.
+   - On Windows use Git Bash/  Linux use CLI git.  Mac Users are on your own.
    - cd to dir where you want it
    - git clone git@github.com:marshall62/mathspring.git
 
 
-4. You will need to install Tomcat 8 and configure IntelliJ to find its installation directory.
+2. You will need to install Tomcat 8 and configure IntelliJ to find its installation directory.
+This is done by Clicking Run | Edit Configurations , Click + in upper left.
+Add a local Tomcat Server (you may need to enable the Tomcat plug-in for IDEA)
+
+3.  Make sure your Intellij project points at the correct Java JDK 
+(vers 8 or higher - same with the language level because of lambdas in use)
+
+4.  Project dependencies are managed by Maven so you will want to enable the IDEA
+maven plug-in.  Each module has its own pom.xml which you shouldn't mess with unless you
+need to bring in new libraries to support what you are doing (take a look at
+whats in there, as there are likely libraries that will be useful).  Open the Maven Projects
+tool window (available off the View | Tool Window menu).   Once you have loaded all
+the code into Intellij IDEA, you need to tell Maven to go fetch all the libraries
+that the project depends on.   In the Maven tool window, click on the recycle
+arrow icon to Reimport all Maven projects.   THis may take some time to get all the
+stuff and put it in your local maven repo 
+
+5. The META-INF/context.xml is how mathspring knows how to connect to a database.  This
+file has been removed from the git repo.   If you are a member of the project
+you can get one from me (marshall62@gmail.com).   If you are not, you
+can create a standard context.xml that defines where your mysql db
+is and the user/password for connecting to a wayangoutpostdb (which
+you will also need to get from me).   The web.xml file in web/WEB-INF/web.xml
+defines an init-paramter called wodb.datasource.  It should be set to
+jdbc/wodblocal if you want to connect to your local db.   Thus your context.xml
+must have a resource like:
+
+<Resource name="jdbc/wodblocal" type="javax.sql.DataSource"
+            auth="Container" description="Mysql database for Mathforum"
+            maxActive="100" maxIdle="30" maxWait="10000" username="MyDBUser"
+            password="MyDBPassword" removeAbandoned="true" removeAbandonedTimeout="60"
+            logAbandoned="true"  testWhileIdle="true"
+            testOnBorrow="true"
+            testOnReturn="true"
+            timeBetweenEvictionRunMillis="600000"
+            numTestsPerEvictionRun="10"
+            validationQuery="SELECT 1"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost/wayangoutpostdb?autoReconnect=true" />
+
+If you want to connect to a database elsewhere (e.g. on the rose server) you will
+need to add additional resources to the context.xml and set the web.xml init parameter wodb.datasource so it uses
+them.
+
+Use Mysql Workbench and make sure this user and password is defined for your database (with only localhost access to be safe) and that
+it has select,insert,delete,update access.
+
+
+Note:  The database was originally designed on a Windows machine where table names
+are not case sensitive.   When you install the database on other systems that
+have case sensitive file systems, you will need to configure mysql (ubuntu has a 
+my.cnf file in /etc/mysql that you can edit  to have lower_case_table_names = 1 )
+
+
+6. Next you need to get the mathspring math content and unzip it.  This is a dir
+called mscontent and it must be placed in your woServer/webResources/mathspring dir (you will need 
+to create these dirs).
+Get the latest mscontent zip from rose.cs.umass.edu/mathspring/backup/
+The result should be /woServer/webResources/mathspring/mscontent.  If you run 
+mathspring and get a bunch of 404 errors so that it doesn't show the learning companion
+and math problems, it will be because you didn't do this right.
+
+7.  Now you should be able to run the system.  Click the Run | Edit Configurations
+menu and create a new Tomcat Server (local).  It should be pointing at your 
+installation tomcat if you followed step 2 correctly.  In the lower right
+you will see a button that says "Warning no artifacts marked for deployment" with a 
+"Fix" button .  Click the button and select woServer web-localhost exploded.
+Now go to the deployment tab of this dialog and give it a deployment context
+of /mt.  Return to the main tab and make sure the URL to main page is now:
+http://localhost:8080/mt/  and that it will automatically open a browser (Chrome is best
+for mathspring) to this page when you run.   Call this runtime configuration "Mathspring"
+.  You should now be able to Click Run | Run Mathspring or Run | Debug Mathspring
+and it will pop up a browser that takes you to an index.html with links
+to various parts of the system.  Note this index.html lives in /woServer/resources/index.html
+where you will find much of the front-end support for the system including JSPs, Javascript,
+HTML, CSS and images.
+
+
+
+The instructions below relate to set-up for a Mac OS and haven't been tested
+in awhile.  
 
 Getting MathSpring to Local
 

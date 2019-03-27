@@ -126,6 +126,11 @@ public class BaseProblemSelector implements ProblemSelector {
 //        List<Problem> topicProblems = xx;
         int lastIx = state.getCurProblemIndexInTopic();
         int nextIx=-1;
+
+        // Error in setting of difficulty Rate is possible if configuration of the strategy was not done well.
+        // Must correct it to a default because will lead to malfunction; set to the default difficulty rate
+        if (parameters.getDifficultyRate() == 0.0)
+            parameters.setDifficultyRate(PedagogicalModelParameters.DIFFICULTY_RATE);
         // lastIx is -1 when the topic is new.
         if (lastIx == -1)
             nextIx = (int) Math.round((topicProbIds.size()-1) / parameters.getDifficultyRate());

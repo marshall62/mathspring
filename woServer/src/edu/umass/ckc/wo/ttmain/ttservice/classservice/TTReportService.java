@@ -17,6 +17,8 @@ import java.util.Map;
 public interface TTReportService {
     public String generateTeacherReport(String teacherId, String classId, String reportType) throws TTCustomException;
 
+    public Map<String,List<String[]>> generateEmotionsReportForDownload(String teacherId, String classId) throws TTCustomException;
+
     public Map<String,PerClusterObjectBean> generatePerCommonCoreClusterReport(String classId);
 
     Map<String, List<Document>> generateEmotionMapValues(Map<String, String> studentIds) throws TTCustomException;

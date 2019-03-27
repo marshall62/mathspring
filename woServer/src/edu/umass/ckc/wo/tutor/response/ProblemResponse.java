@@ -1,6 +1,7 @@
 package edu.umass.ckc.wo.tutor.response;
 
 import edu.umass.ckc.wo.content.Problem;
+import edu.umass.ckc.wo.html.tutor.TutorPage;
 import edu.umass.ckc.wo.smgr.SessionManager;
 import edu.umass.ckc.wo.state.StudentState;
 import edu.umass.ckc.wo.tutormeta.Intervention;
@@ -45,6 +46,7 @@ public class ProblemResponse extends Response {
     }
 
     public ProblemResponse (boolean noMoreProblems, boolean noMoreReviewProblems, boolean noMoreChallengeProblems ) {
+        this.endPage = TutorPage.NO_MORE_CONTENT; // set some default end page.
         this.noMoreProblems=noMoreProblems;
         this.noMoreReviewProblems=noMoreReviewProblems;
         this.noMoreChallengeProblems=noMoreChallengeProblems;
@@ -108,22 +110,22 @@ public class ProblemResponse extends Response {
         return this.noMoreProblems;
     }
 
+    public String getEndPage() {
+        return endPage;
+    }
+
     public void setEndPage(String endPage) {
         this.endPage = endPage;
         jsonObject.element("endPage",endPage);
 
     }
 
-    public String getEndPage() {
-        return endPage;
+    public String getParams() {
+        return params;
     }
 
     public void setParams(String params) {
         this.params = params;
-    }
-
-    public String getParams() {
-        return params;
     }
 
     //This isn't used anywhere?

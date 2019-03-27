@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.strat;
 
 import edu.umass.ckc.wo.db.DbStrategy;
 import edu.umass.ckc.wo.db.DbUser;
+import edu.umass.ckc.wo.tutor.Settings;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,20 +20,24 @@ public class StrategyMgr {
      * @return
      * @throws SQLException
      */
-    public static TutorStrategy getStrategy (Connection conn, int studId, int classId) throws Exception {
+    public static TutorStrategy getStrategy(Connection conn, int studId) throws Exception {
 
         int stratId = DbUser.getStudentStrategy(conn,studId);
-        return getStrategyFromCache(conn, classId, stratId);
+        return getStrategyFromCache(conn,  stratId);
     }
 
-    public static TutorStrategy getStrategyFromCache(Connection conn, int classId, int stratId) throws Exception {
+    public static TutorStrategy getStrategyFromCache(Connection conn, int stratId) throws Exception {
         if (stratId == -1)
             return null;
+
         TutorStrategy strategy = StrategyCache.getInstance().getStrategy(stratId);
-        if (strategy == null) {
-            strategy = DbStrategy.getStrategy(conn, stratId, classId);
+
+        if (Settings.useStrategyCaching && strategy == null) {
+            strategy = DbStrategy.getStrategy(conn, stratId);
             StrategyCache.getInstance().putStrategy(stratId, strategy);
         }
+        else if (strategy==null)
+            strategy = DbStrategy.getStrategy(conn, stratId);
         return strategy;
     }
 }

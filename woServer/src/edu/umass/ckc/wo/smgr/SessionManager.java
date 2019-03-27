@@ -5,11 +5,9 @@ import edu.umass.ckc.wo.admin.PedagogyRetriever;
 import edu.umass.ckc.wo.admin.StrategyAssigner;
 import edu.umass.ckc.wo.beans.ClassConfig;
 import edu.umass.ckc.wo.collab.CollaborationManager;
-import edu.umass.ckc.wo.content.Problem;
 import edu.umass.ckc.wo.db.*;
 import edu.umass.ckc.wo.event.AdventurePSolvedEvent;
 import edu.umass.ckc.wo.event.tutorhut.LogoutEvent;
-import edu.umass.ckc.wo.exc.AdminException;
 import edu.umass.ckc.wo.exc.DeveloperException;
 import ckc.servlet.servbase.UserException;
 import edu.umass.ckc.wo.handler.NavigationHandler;
@@ -21,21 +19,15 @@ import edu.umass.ckc.wo.strat.ClassStrategyComponent;
 import edu.umass.ckc.wo.strat.StrategyMgr;
 import edu.umass.ckc.wo.strat.TutorStrategy;
 import edu.umass.ckc.wo.tutor.Pedagogy;
-import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.pedModel.PedagogicalModel;
-import edu.umass.ckc.wo.tutor.studmod.StudentProblemData;
-import edu.umass.ckc.wo.tutor.studmod.StudentProblemHistory;
 import edu.umass.ckc.wo.tutormeta.LearningCompanion;
 import edu.umass.ckc.wo.tutormeta.StudentModel;
-import edu.umass.ckc.wo.util.Dates;
 import edu.umass.ckc.wo.util.WoProps;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -265,7 +257,7 @@ public class SessionManager {
     }
 
     private Pedagogy getPedagogyOrStrategyForStudent (Connection conn, int studId, int classId) throws Exception {
-        TutorStrategy strat = StrategyMgr.getStrategy(connection,studId, classId); // will return null if student doesn't have a strategyId
+        TutorStrategy strat = StrategyMgr.getStrategy(connection,studId); // will return null if student doesn't have a strategyId
         if (strat != null) {
             this.usesStrategy=true;
             this.usesPedagogy=false;
@@ -295,7 +287,7 @@ public class SessionManager {
                 // assign a strategy to the student
                 strat= StrategyAssigner.assignStrategy(conn,studId,classId);
                 this.strategyId = Integer.parseInt(strat.getId());
-                return StrategyMgr.getStrategyFromCache(conn,classId,this.strategyId);
+                return StrategyMgr.getStrategyFromCache(conn,this.strategyId);
 
             }
             // Class is not set to use strategies, so use a default pedagogy and this student might be able to get something done.
@@ -654,7 +646,9 @@ public class SessionManager {
             // The strategy holds the information about the pedagogical model in the tutor strategy component.
             // Begin by getting the className of the pedagogical model.
             ClassStrategyComponent tutor_sc = strategy.getTutor_sc();
-            Class c = Class.forName(tutor_sc.getClassName()); // the pedagogical model class name
+//            Class c = Class.forName(tutor_sc.getClassName()); // the pedagogical model class name
+            // The pedModel class is now stored as an SC parameter on the tutor_sc rather than as a special field of it.
+            Class c = Class.forName(strategy.getPedagogicalModelClass());
             Constructor constr = c.getConstructor(SessionManager.class, Pedagogy.class);
             logger.debug("Instantiating a pedagogical model of type: " + c.getName());
 

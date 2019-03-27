@@ -154,7 +154,13 @@ m.build = function(activity, previewMode) {
             if(multiSelect) {
                 document.getElementById("submit_answer").addEventListener("click", submitMultiSelectAnswer);
             }
-            if(!previewMode) problemUtils.shuffleAnswers(!multiSelect);
+            ///////  -----------  shuffle ANSWER SHUFFLING -------------
+            // This moves the answers around with the flaw that it sends the orginal letters
+            // to the server when selections are made.  This preserves correct grading but logs
+            // the incorrect letter in the attempt eventlog entry.   E.g. if correct answer is C but
+            // this shuffles it to A,  if student clicks A, it sends C to server.   In dev mode
+            // it also shows the non-shuffled answer letter below the problem which sucks.
+            // if(!previewMode) problemUtils.shuffleAnswers(!multiSelect);
         } else {
             if(questType === "shortAnswer") {
                 document.getElementById("ShortAnswerBox").style.display = "block";
@@ -292,7 +298,17 @@ function formatTextWithImageParameters(text, resource, probContentPath, problemP
             // where parameter is supposed to specify where the image needs to be moved
             // when the hint is displayed (e.g. overlay, side, hint)
             var image_parameters = match.split(",");
-            var image_parts = image_parameters[0].trim().split("."); //separate into filename, extension
+            var imageFilename = image_parameters[0]
+            var dotloc = imageFilename.lastIndexOf('.');
+            var fileprefix,fileext;
+            if (dotloc == -1) {
+                fileprefix = imageFilename;
+                fileext = '';
+            }
+            else {
+                fileprefix = imageFilename.substr(0,imageFilename.lastIndexOf('.'));
+                fileext = imageFilename.substr(imageFilename.lastIndexOf('.')+1);
+            }
             var image_id = base_id + "-" + i;  // something like "Hint3-0"
             // currently assuming only one parameter
             // DM I'm guessing at what's going on here.  The base_id passed in is something like Hint1, Hint2, ... Hint10
@@ -302,7 +318,7 @@ function formatTextWithImageParameters(text, resource, probContentPath, problemP
                 imageParams[image_id] = image_parameters[1].trim();  // DM add the mapping like "Hint3-0"=> "side"
             }
             // DM builds a div containing an img tag with id like Hint3-0.
-            replacement = getImageHtml(image_parts[0], image_parts[1], resource, probContentPath, image_id, previewMode);
+            replacement = getImageHtml(fileprefix, fileext, resource, probContentPath, image_id, previewMode);
         }
         // DM it replaces {[]} in the statement text with the replacement div built above.
         // The caller of this function buries the imageParams mapping in hint_thumb.dataset.parameters as a JSON string.
@@ -459,7 +475,7 @@ function formatTextOld(rawText, components) {
                     escaped = false;
                 }
                 break;
-
+            // My guess is that there is an assumption that the filename contains only one '.'
             case '.':
                 if(startIndex != undefined){
                     if(isExtension){

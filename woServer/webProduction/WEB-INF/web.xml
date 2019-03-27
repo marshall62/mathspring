@@ -119,6 +119,11 @@
         </init-param>
 
         <init-param>
+            <param-name>useStrategyCaching</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+        <init-param>
             <param-name>assistmentsLogBackURL</param-name>
             <param-value>https://www.assistments.org/api2/partnerProblemLog</param-value>
             <!--<param-value>https://test1.assistments.org/api2/partnerProblemLog</param-value>-->

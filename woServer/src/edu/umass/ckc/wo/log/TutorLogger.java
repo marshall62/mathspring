@@ -129,17 +129,44 @@ public class TutorLogger {
         this.insertLogEntryWorker(studId, sessNum, "NewSession", "", false, elapsedTime, 0, -1, null, -1, null, null, -1, null, -1, -1);
     }
 
+    private int getStudentProblemHistoryEntry (int sessNum) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String q = "select max(id) from studentproblemhistory where sessionid=?";
+            ps = conn.prepareStatement(q);
+            ps.setInt(1, sessNum);
+            rs = ps.executeQuery();
+            if (rs.next())
+                return rs.getInt(1);
+            else
+                return 0;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        finally {
+            if (ps != null)
+                ps.close();
+            if (rs != null)
+                rs.close();
+        }
+    }
+
 
     public int insertLogEntryWorker(int studId, int sessNum, String action, String userInput, boolean isCorrect, long elapsedTime,
                                     long probElapsed, int probId, String hintStep, int hintId, String emotion, String activityName,
                                     int auxId, String auxTable, int curTopicId, long clickTimeMs) throws SQLException {
+        int studProbHistId = getStudentProblemHistoryEntry(sessNum);
+
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             if (probId < 1)
                 probId = getDummyProbId();
             String q = "insert into " + EventLog + " (studId, sessNum, action, userInput, isCorrect, elapsedTime, probElapsed, problemId, hintStep, " +
-                    "hintid, emotion, activityName, auxId, auxTable,time,curTopicId, clickTime) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    "hintid, emotion, activityName, auxId, auxTable,time,curTopicId, clickTime, probhistoryid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             ps = conn.prepareStatement(q, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, studId);
             ps.setInt(2, sessNum);
@@ -175,6 +202,7 @@ public class TutorLogger {
                 ps.setInt(16,curTopicId);
             else ps.setNull(16,Types.INTEGER);
             ps.setTimestamp(17, clickTimeMs > 0 ? new Timestamp(clickTimeMs) : new Timestamp(System.currentTimeMillis()));
+            ps.setInt(18,studProbHistId);
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
             rs.next();

@@ -117,6 +117,10 @@
             <param-name>externalActivityPercentage</param-name>
             <param-value>15.0</param-value>
         </init-param>
+        <init-param>
+            <param-name>useStrategyCaching</param-name>
+            <param-value>true</param-value>
+        </init-param>
 
         <init-param>
             <param-name>assistmentsLogBackURL</param-name>
