@@ -55,7 +55,7 @@
 
     <context-param>
         <param-name>webContentPath</param-name>
-        <param-value>http://tutor.mathspring.org/mathspring/mscontent/</param-value>
+        <param-value>http://rose.cs.umass.edu/mathspring/mscontent/</param-value>
     </context-param>
 
     <!--YOU MUST SET THESE PARAMS TO BE APPROPRIATE FOR YOUR MACHINE.   You must reference the Flash
